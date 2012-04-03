@@ -38,7 +38,7 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PropertyFileImpl() {
+	public PropertyFileImpl() {
 		super();
 	}
 
