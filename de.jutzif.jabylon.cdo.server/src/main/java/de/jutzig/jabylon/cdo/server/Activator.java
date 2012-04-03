@@ -10,7 +10,6 @@ import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
 import org.eclipse.emf.cdo.net4j.CDOSessionConfiguration;
 import org.eclipse.emf.cdo.server.CDOServerUtil;
 import org.eclipse.emf.cdo.server.IRepository;
-import org.eclipse.emf.cdo.server.IRepository.Props;
 import org.eclipse.emf.cdo.server.IStore;
 import org.eclipse.emf.cdo.server.db.CDODBUtil;
 import org.eclipse.emf.cdo.server.db.IDBStore;
@@ -224,14 +223,15 @@ public class Activator extends Plugin {
 //		myDataSource.setPassword(DATABASE_PASS);
 //		myDataSource.setAutoReconnect(true);
 		myDataSource.setDatabaseName(DATABASE_NAME);
+		myDataSource.setCreateDatabase("create");
 //		myDataSource.setPort(3306);
 //		myDataSource.setServerName("localhost");
 		IMappingStrategy mappingStrategy = CDODBUtil.createMappingStrategy("horizontal");
 		IDBStore store = CDODBUtil.createStore(mappingStrategy,
 				DBUtil.getDBAdapter("derby-embedded"),
 				DBUtil.createConnectionProvider(myDataSource));
-
 		mappingStrategy.setStore(store);
+		mappingStrategy.setProperties(new HashMap<String, String>());
 
 		return store;
 	}
