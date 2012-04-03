@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdoServer>
+
+	<!--acceptor type="http"/ -->
+	<acceptor type="tcp" listenAddr="0.0.0.0" port="2036">
+		<!-- negotiator type="challenge" description="/tmp/users.db"/ -->
+	</acceptor>
+
+	<repository name="repo1">
+		<property name="overrideUUID" value="1ff5d226-b1f0-40fb-aba2-0c31b38c764f" />
+		<property name="supportingAudits" value="true" />
+		<property name="verifyingRevisions" value="false" />
+		<property name="currentLRUCapacity" value="10000" />
+		<property name="revisedLRUCapacity" value="100" />
+
+		<store type="db">
+			<mappingStrategy type="horizontal">
+				<property name="toManyReferences" value="ONE_TABLE_PER_REFERENCE" />
+				<property name="toOneReferences" value="LIKE_ATTRIBUTES" />
+			</mappingStrategy>
+
+			<dbAdapter name="derby-embedded" />
+			<dataSource class="org.apache.derby.jdbc.EmbeddedDataSource"
+				databaseName="/home/joe/workspaces/translator/de.jutzig.jabylon.server.feature/work/cdo/test" createDatabase="create" />
+		</store>
+	</repository>
+</cdoServer>
