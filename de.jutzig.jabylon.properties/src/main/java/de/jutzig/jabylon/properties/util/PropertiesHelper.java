@@ -4,8 +4,8 @@
 package de.jutzig.jabylon.properties.util;
 
 import java.io.BufferedReader;
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;

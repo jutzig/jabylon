@@ -12,17 +12,13 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
@@ -49,7 +45,7 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  *
  * @generated
  */
-public class ProjectImpl extends EObjectImpl implements Project {
+public class ProjectImpl extends CDOObjectImpl implements Project {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -60,26 +56,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 */
 	protected static final String NAME_EDEFAULT = null;
 	
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getPropertyBags() <em>Property Bags</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPropertyBags()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<PropertyBag> propertyBags;
 
 	/**
 	 * The default value of the '{@link #getBase() <em>Base</em>}' attribute.
@@ -115,8 +91,18 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getName() {
-		return name;
+		return (String)eDynamicGet(PropertiesPackage.PROJECT__NAME, PropertiesPackage.Literals.PROJECT__NAME, true, true);
 	}
 
 	/**
@@ -125,10 +111,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 * @generated
 	 */
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROJECT__NAME, oldName, name));
+		eDynamicSet(PropertiesPackage.PROJECT__NAME, PropertiesPackage.Literals.PROJECT__NAME, newName);
 	}
 
 	/**
@@ -136,11 +119,9 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public EList<PropertyBag> getPropertyBags() {
-		if (propertyBags == null) {
-			propertyBags = new EObjectContainmentWithInverseEList<PropertyBag>(PropertyBag.class, this, PropertiesPackage.PROJECT__PROPERTY_BAGS, PropertiesPackage.PROPERTY_BAG__PROJECT);
-		}
-		return propertyBags;
+		return (EList<PropertyBag>)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_BAGS, PropertiesPackage.Literals.PROJECT__PROPERTY_BAGS, true, true);
 	}
 
 	/**
@@ -149,8 +130,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 * @generated
 	 */
 	public Workspace getWorkspace() {
-		if (eContainerFeatureID() != PropertiesPackage.PROJECT__WORKSPACE) return null;
-		return (Workspace)eContainer();
+		return (Workspace)eDynamicGet(PropertiesPackage.PROJECT__WORKSPACE, PropertiesPackage.Literals.PROJECT__WORKSPACE, true, true);
 	}
 
 	/**
@@ -169,19 +149,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 * @generated
 	 */
 	public void setWorkspace(Workspace newWorkspace) {
-		if (newWorkspace != eInternalContainer() || (eContainerFeatureID() != PropertiesPackage.PROJECT__WORKSPACE && newWorkspace != null)) {
-			if (EcoreUtil.isAncestor(this, newWorkspace))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			if (newWorkspace != null)
-				msgs = ((InternalEObject)newWorkspace).eInverseAdd(this, PropertiesPackage.WORKSPACE__PROJECTS, Workspace.class, msgs);
-			msgs = basicSetWorkspace(newWorkspace, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROJECT__WORKSPACE, newWorkspace, newWorkspace));
+		eDynamicSet(PropertiesPackage.PROJECT__WORKSPACE, PropertiesPackage.Literals.PROJECT__WORKSPACE, newWorkspace);
 	}
 
 	/**
@@ -326,9 +294,9 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
 			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				return propertyBags != null && !propertyBags.isEmpty();
+				return !getPropertyBags().isEmpty();
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				return getWorkspace() != null;
 			case PropertiesPackage.PROJECT__BASE:
@@ -337,22 +305,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(')');
-		return result.toString();
-	}
-	
 	class FileAcceptor implements PropertyFileAcceptor
 	{
 

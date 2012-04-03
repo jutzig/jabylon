@@ -6,12 +6,17 @@
  */
 package de.jutzig.jabylon.properties.util;
 
-import de.jutzig.jabylon.properties.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
+
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Property;
+import de.jutzig.jabylon.properties.PropertyBag;
+import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Workspace;
 
 /**
  * <!-- begin-user-doc -->

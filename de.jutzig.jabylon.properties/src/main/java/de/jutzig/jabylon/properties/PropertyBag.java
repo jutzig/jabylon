@@ -6,9 +6,9 @@
  */
 package de.jutzig.jabylon.properties;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,9 +28,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyBag()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface PropertyBag extends EObject {
+public interface PropertyBag extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Descriptors</b></em>' containment reference list.
 	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyFileDescriptor}.

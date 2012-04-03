@@ -6,7 +6,7 @@
  */
 package de.jutzig.jabylon.properties;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.cdo.CDOObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,9 +24,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getProperty()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface Property extends EObject {
+public interface Property extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -6,26 +6,19 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
-
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,7 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class WorkspaceImpl extends EObjectImpl implements Workspace {
+public class WorkspaceImpl extends CDOObjectImpl implements Workspace {
 	/**
 	 * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,26 +44,6 @@ public class WorkspaceImpl extends EObjectImpl implements Workspace {
 	 * @ordered
 	 */
 	protected static final URI ROOT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getRoot() <em>Root</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRoot()
-	 * @generated
-	 * @ordered
-	 */
-	protected URI root = ROOT_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getProjects() <em>Projects</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProjects()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Project> projects;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -96,8 +69,18 @@ public class WorkspaceImpl extends EObjectImpl implements Workspace {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public URI getRoot() {
-		return root;
+		return (URI)eDynamicGet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, true, true);
 	}
 
 	/**
@@ -106,10 +89,7 @@ public class WorkspaceImpl extends EObjectImpl implements Workspace {
 	 * @generated
 	 */
 	public void setRoot(URI newRoot) {
-		URI oldRoot = root;
-		root = newRoot;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.WORKSPACE__ROOT, oldRoot, root));
+		eDynamicSet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, newRoot);
 	}
 
 	/**
@@ -117,11 +97,9 @@ public class WorkspaceImpl extends EObjectImpl implements Workspace {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public EList<Project> getProjects() {
-		if (projects == null) {
-			projects = new EObjectContainmentWithInverseEList<Project>(Project.class, this, PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.PROJECT__WORKSPACE);
-		}
-		return projects;
+		return (EList<Project>)eDynamicGet(PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.Literals.WORKSPACE__PROJECTS, true, true);
 	}
 
 	/**
@@ -216,27 +194,11 @@ public class WorkspaceImpl extends EObjectImpl implements Workspace {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.WORKSPACE__ROOT:
-				return ROOT_EDEFAULT == null ? root != null : !ROOT_EDEFAULT.equals(root);
+				return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
 			case PropertiesPackage.WORKSPACE__PROJECTS:
-				return projects != null && !projects.isEmpty();
+				return !getProjects().isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (root: ");
-		result.append(root);
-		result.append(')');
-		return result.toString();
 	}
 
 } //WorkspaceImpl

@@ -6,25 +6,20 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.Project;
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyBag;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-
 import java.util.Collection;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyBag;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,17 +38,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
-	/**
-	 * The cached value of the '{@link #getDescriptors() <em>Descriptors</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescriptors()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<PropertyFileDescriptor> descriptors;
-
+public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 	/**
 	 * The default value of the '{@link #getPath() <em>Path</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -63,16 +48,6 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @ordered
 	 */
 	protected static final URI PATH_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getPath() <em>Path</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPath()
-	 * @generated
-	 * @ordered
-	 */
-	protected URI path = PATH_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getFullPath() <em>Full Path</em>}' attribute.
@@ -108,11 +83,19 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
 	public EList<PropertyFileDescriptor> getDescriptors() {
-		if (descriptors == null) {
-			descriptors = new EObjectContainmentWithInverseEList<PropertyFileDescriptor>(PropertyFileDescriptor.class, this, PropertiesPackage.PROPERTY_BAG__DESCRIPTORS, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG);
-		}
-		return descriptors;
+		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_BAG__DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_BAG__DESCRIPTORS, true, true);
 	}
 
 	/**
@@ -121,7 +104,7 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @generated
 	 */
 	public URI getPath() {
-		return path;
+		return (URI)eDynamicGet(PropertiesPackage.PROPERTY_BAG__PATH, PropertiesPackage.Literals.PROPERTY_BAG__PATH, true, true);
 	}
 
 	/**
@@ -130,10 +113,7 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @generated
 	 */
 	public void setPath(URI newPath) {
-		URI oldPath = path;
-		path = newPath;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY_BAG__PATH, oldPath, path));
+		eDynamicSet(PropertiesPackage.PROPERTY_BAG__PATH, PropertiesPackage.Literals.PROPERTY_BAG__PATH, newPath);
 	}
 
 	/**
@@ -142,8 +122,7 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @generated
 	 */
 	public PropertyFileDescriptor getMaster() {
-		PropertyFileDescriptor master = basicGetMaster();
-		return master != null && master.eIsProxy() ? (PropertyFileDescriptor)eResolveProxy((InternalEObject)master) : master;
+		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_BAG__MASTER, PropertiesPackage.Literals.PROPERTY_BAG__MASTER, true, true);
 	}
 
 	/**
@@ -183,8 +162,7 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @generated
 	 */
 	public Project getProject() {
-		if (eContainerFeatureID() != PropertiesPackage.PROPERTY_BAG__PROJECT) return null;
-		return (Project)eContainer();
+		return (Project)eDynamicGet(PropertiesPackage.PROPERTY_BAG__PROJECT, PropertiesPackage.Literals.PROPERTY_BAG__PROJECT, true, true);
 	}
 
 	/**
@@ -203,19 +181,7 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	 * @generated
 	 */
 	public void setProject(Project newProject) {
-		if (newProject != eInternalContainer() || (eContainerFeatureID() != PropertiesPackage.PROPERTY_BAG__PROJECT && newProject != null)) {
-			if (EcoreUtil.isAncestor(this, newProject))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			if (newProject != null)
-				msgs = ((InternalEObject)newProject).eInverseAdd(this, PropertiesPackage.PROJECT__PROPERTY_BAGS, Project.class, msgs);
-			msgs = basicSetProject(newProject, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY_BAG__PROJECT, newProject, newProject));
+		eDynamicSet(PropertiesPackage.PROPERTY_BAG__PROJECT, PropertiesPackage.Literals.PROPERTY_BAG__PROJECT, newProject);
 	}
 
 	/**
@@ -349,9 +315,9 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_BAG__DESCRIPTORS:
-				return descriptors != null && !descriptors.isEmpty();
+				return !getDescriptors().isEmpty();
 			case PropertiesPackage.PROPERTY_BAG__PATH:
-				return PATH_EDEFAULT == null ? path != null : !PATH_EDEFAULT.equals(path);
+				return PATH_EDEFAULT == null ? getPath() != null : !PATH_EDEFAULT.equals(getPath());
 			case PropertiesPackage.PROPERTY_BAG__MASTER:
 				return basicGetMaster() != null;
 			case PropertiesPackage.PROPERTY_BAG__FULL_PATH:
@@ -360,22 +326,6 @@ public class PropertyBagImpl extends EObjectImpl implements PropertyBag {
 				return getProject() != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (path: ");
-		result.append(path);
-		result.append(')');
-		return result.toString();
 	}
 
 } //PropertyBagImpl

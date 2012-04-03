@@ -6,8 +6,6 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.*;
-
 import java.util.Locale;
 
 import org.eclipse.emf.common.util.URI;
@@ -15,10 +13,17 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Property;
+import de.jutzig.jabylon.properties.PropertyBag;
+import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Workspace;
 
 /**
  * <!-- begin-user-doc -->
@@ -64,12 +69,12 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case PropertiesPackage.PROPERTY_FILE: return createPropertyFile();
-			case PropertiesPackage.PROPERTY: return createProperty();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR: return createPropertyFileDescriptor();
-			case PropertiesPackage.PROPERTY_BAG: return createPropertyBag();
-			case PropertiesPackage.PROJECT: return createProject();
-			case PropertiesPackage.WORKSPACE: return createWorkspace();
+			case PropertiesPackage.PROPERTY_FILE: return (EObject)createPropertyFile();
+			case PropertiesPackage.PROPERTY: return (EObject)createProperty();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR: return (EObject)createPropertyFileDescriptor();
+			case PropertiesPackage.PROPERTY_BAG: return (EObject)createPropertyBag();
+			case PropertiesPackage.PROJECT: return (EObject)createProject();
+			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

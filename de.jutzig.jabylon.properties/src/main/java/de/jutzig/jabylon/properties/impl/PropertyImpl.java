@@ -6,15 +6,11 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
-
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +27,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public class PropertyImpl extends EObjectImpl implements Property {
+public class PropertyImpl extends CDOObjectImpl implements Property {
 	/**
 	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -41,16 +37,6 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @ordered
 	 */
 	protected static final String KEY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected String key = KEY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -63,16 +49,6 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	protected static final String VALUE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected String value = VALUE_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #getComment() <em>Comment</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -81,16 +57,6 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @ordered
 	 */
 	protected static final String COMMENT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getComment() <em>Comment</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getComment()
-	 * @generated
-	 * @ordered
-	 */
-	protected String comment = COMMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -116,8 +82,18 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getKey() {
-		return key;
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, true, true);
 	}
 
 	/**
@@ -126,10 +102,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @generated
 	 */
 	public void setKey(String newKey) {
-		String oldKey = key;
-		key = newKey;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY__KEY, oldKey, key));
+		eDynamicSet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, newKey);
 	}
 
 	/**
@@ -138,7 +111,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @generated
 	 */
 	public String getValue() {
-		return value;
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, true, true);
 	}
 
 	/**
@@ -147,10 +120,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @generated
 	 */
 	public void setValue(String newValue) {
-		String oldValue = value;
-		value = newValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY__VALUE, oldValue, value));
+		eDynamicSet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, newValue);
 	}
 
 	/**
@@ -159,7 +129,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @generated
 	 */
 	public String getComment() {
-		return comment;
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, true, true);
 	}
 
 	/**
@@ -168,10 +138,7 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	 * @generated
 	 */
 	public void setComment(String newComment) {
-		String oldComment = comment;
-		comment = newComment;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY__COMMENT, oldComment, comment));
+		eDynamicSet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, newComment);
 	}
 
 	/**
@@ -243,33 +210,13 @@ public class PropertyImpl extends EObjectImpl implements Property {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY__KEY:
-				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+				return KEY_EDEFAULT == null ? getKey() != null : !KEY_EDEFAULT.equals(getKey());
 			case PropertiesPackage.PROPERTY__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return VALUE_EDEFAULT == null ? getValue() != null : !VALUE_EDEFAULT.equals(getValue());
 			case PropertiesPackage.PROPERTY__COMMENT:
-				return COMMENT_EDEFAULT == null ? comment != null : !COMMENT_EDEFAULT.equals(comment);
+				return COMMENT_EDEFAULT == null ? getComment() != null : !COMMENT_EDEFAULT.equals(getComment());
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (key: ");
-		result.append(key);
-		result.append(", value: ");
-		result.append(value);
-		result.append(", comment: ");
-		result.append(comment);
-		result.append(')');
-		return result.toString();
 	}
 
 } //PropertyImpl

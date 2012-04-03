@@ -6,10 +6,9 @@
  */
 package de.jutzig.jabylon.properties;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,9 +27,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface Project extends EObject {
+public interface Project extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

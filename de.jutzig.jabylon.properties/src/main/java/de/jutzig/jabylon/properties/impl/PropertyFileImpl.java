@@ -6,23 +6,18 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyFile;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Property;
+import de.jutzig.jabylon.properties.PropertyFile;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,17 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class PropertyFileImpl extends EObjectImpl implements PropertyFile {
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Property> properties;
-
+public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -72,11 +57,19 @@ public class PropertyFileImpl extends EObjectImpl implements PropertyFile {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
 	public EList<Property> getProperties() {
-		if (properties == null) {
-			properties = new EObjectContainmentEList<Property>(Property.class, this, PropertiesPackage.PROPERTY_FILE__PROPERTIES);
-		}
-		return properties;
+		return (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
 	}
 
 	/**
@@ -148,7 +141,7 @@ public class PropertyFileImpl extends EObjectImpl implements PropertyFile {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				return properties != null && !properties.isEmpty();
+				return !getProperties().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

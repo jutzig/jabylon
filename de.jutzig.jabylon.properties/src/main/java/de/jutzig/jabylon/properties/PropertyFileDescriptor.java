@@ -8,7 +8,7 @@ package de.jutzig.jabylon.properties;
 
 import java.util.Locale;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.cdo.CDOObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,9 +28,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface PropertyFileDescriptor extends EObject {
+public interface PropertyFileDescriptor extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Variant</b></em>' attribute.
 	 * <!-- begin-user-doc -->

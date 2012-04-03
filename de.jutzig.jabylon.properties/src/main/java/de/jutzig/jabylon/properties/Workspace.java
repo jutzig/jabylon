@@ -6,10 +6,9 @@
  */
 package de.jutzig.jabylon.properties;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,9 +25,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getWorkspace()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface Workspace extends EObject {
+public interface Workspace extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Root</b></em>' attribute.
 	 * <!-- begin-user-doc -->

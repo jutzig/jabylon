@@ -6,25 +6,21 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyBag;
-import de.jutzig.jabylon.properties.PropertyFile;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-
 import java.util.Locale;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyBag;
+import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,7 +39,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *
  * @generated
  */
-public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyFileDescriptor {
+public class PropertyFileDescriptorImpl extends CDOObjectImpl implements PropertyFileDescriptor {
 	/**
 	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -53,16 +49,6 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @ordered
 	 */
 	protected static final Locale VARIANT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getVariant() <em>Variant</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVariant()
-	 * @generated
-	 * @ordered
-	 */
-	protected Locale variant = VARIANT_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -75,16 +61,6 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #isMaster() <em>Master</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -94,15 +70,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 */
 	protected static final boolean MASTER_EDEFAULT = false;
 
-	/**
-	 * The cached value of the '{@link #getPropertyFile() <em>Property File</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPropertyFile()
-	 * @generated
-	 * @ordered
-	 */
-	protected PropertyFile propertyFile;
+	private PropertyFile propertyFile;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -128,8 +96,18 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Locale getVariant() {
-		return variant;
+		return (Locale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, true, true);
 	}
 
 	/**
@@ -138,10 +116,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @generated
 	 */
 	public void setVariant(Locale newVariant) {
-		Locale oldVariant = variant;
-		variant = newVariant;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, oldVariant, variant));
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, newVariant);
 	}
 
 	/**
@@ -150,7 +125,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @generated
 	 */
 	public String getName() {
-		return name;
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__NAME, true, true);
 	}
 
 	/**
@@ -159,10 +134,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @generated
 	 */
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME, oldName, name));
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__NAME, newName);
 	}
 
 	/**
@@ -171,8 +143,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @generated
 	 */
 	public PropertyBag getBag() {
-		if (eContainerFeatureID() != PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG) return null;
-		return (PropertyBag)eContainer();
+		return (PropertyBag)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__BAG, true, true);
 	}
 
 	/**
@@ -191,19 +162,7 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	 * @generated
 	 */
 	public void setBag(PropertyBag newBag) {
-		if (newBag != eInternalContainer() || (eContainerFeatureID() != PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG && newBag != null)) {
-			if (EcoreUtil.isAncestor(this, newBag))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			if (newBag != null)
-				msgs = ((InternalEObject)newBag).eInverseAdd(this, PropertiesPackage.PROPERTY_BAG__DESCRIPTORS, PropertyBag.class, msgs);
-			msgs = basicSetBag(newBag, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, newBag, newBag));
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__BAG, newBag);
 	}
 
 	/**
@@ -368,35 +327,17 @@ public class PropertyFileDescriptorImpl extends EObjectImpl implements PropertyF
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
-				return VARIANT_EDEFAULT == null ? variant != null : !VARIANT_EDEFAULT.equals(variant);
+				return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
 				return getBag() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				return isMaster() != MASTER_EDEFAULT;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
-				return propertyFile != null;
+				return basicGetPropertyFile() != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (variant: ");
-		result.append(variant);
-		result.append(", name: ");
-		result.append(name);
-		result.append(')');
-		return result.toString();
 	}
 
 } //PropertyFileDescriptorImpl

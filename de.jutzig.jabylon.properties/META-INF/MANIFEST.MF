@@ -11,5 +11,7 @@ Export-Package: de.jutzig.jabylon.properties,
  de.jutzig.jabylon.properties.impl,
  de.jutzig.jabylon.properties.util
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
- org.apache.ant;bundle-version="1.8.2"
+ org.apache.ant;bundle-version="1.8.2",
+ org.eclipse.emf.cdo;bundle-version="4.0.1",
+ org.eclipse.emf.cdo.common;bundle-version="4.0.1"
 Bundle-ActivationPolicy: lazy
