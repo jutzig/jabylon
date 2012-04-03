@@ -17,6 +17,7 @@ import org.eclipse.emf.cdo.server.db.mapping.IMappingStrategy;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.net4j.connector.IConnector;
 import org.eclipse.net4j.db.DBUtil;
 import org.eclipse.net4j.jvm.IJVMAcceptor;
@@ -79,6 +80,12 @@ public class Activator extends Plugin {
 			
 			@Override
 			public void run() {
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				populate();
 				
 			}
@@ -107,8 +114,18 @@ public class Activator extends Plugin {
 			e.printStackTrace();
 		}finally
 		{
-			cdoSession.close();			
+			cdoSession.close();		
+			cdoSession = null;
+			session = null;
 		}
+        
+        cdoSession = getSession();
+		transaction = cdoSession.openTransaction();
+        resource = transaction.getResource("/myResource");
+        file = (PropertyFile) resource.getContents().get(0);
+        Property property2 = file.getProperties().get(0);
+        System.out.println(property2.getKey());
+        
 		
 	}
 
