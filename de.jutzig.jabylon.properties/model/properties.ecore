@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="properties"
+    nsURI="http://jutzig.de/jabylon/properties" nsPrefix="prop">
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//Property" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Property">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Locale" instanceClassName="java.util.Locale"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bag" eType="#//PropertyBag"
+        eOpposite="#//PropertyBag/descriptors"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="master" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyFile" eType="#//PropertyFile"
+        changeable="false" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyBag">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
+        eType="#//PropertyFileDescriptor" containment="true" eOpposite="#//PropertyFileDescriptor/bag"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullPath" eType="#//URI"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
+        eOpposite="#//Project/propertyBags"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eOperations name="fullScan"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyBags" upperBound="-1"
+        eType="#//PropertyBag" containment="true" eOpposite="#//PropertyBag/project"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="workspace" eType="#//Workspace"
+        eOpposite="#//Workspace/projects"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Workspace">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
+        eType="#//Project" containment="true" eOpposite="#//Project/workspace"/>
+  </eClassifiers>
+</ecore:EPackage>
