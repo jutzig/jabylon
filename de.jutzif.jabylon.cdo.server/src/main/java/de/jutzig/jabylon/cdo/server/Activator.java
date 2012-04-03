@@ -75,8 +75,15 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-		populate();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				populate();
+				
+			}
+		}).start();
+
 	}
 
 	private void populate() {
