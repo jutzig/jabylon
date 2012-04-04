@@ -36,7 +36,7 @@ public class PropertiesHelper {
 			}
 			else
 			{
-				propertyValue.append(NativeToAsciiConverter.asciiToNative(line));
+				propertyValue.append(NativeToAsciiConverter.convertEncodedToUnicode(line));
 				if(line.endsWith("\\"))
 				{
 					propertyValue.append("\n");
@@ -100,13 +100,13 @@ public class PropertiesHelper {
 			writeComment(writer,property.getComment());
 		String key = property.getKey();
 		key = key.replaceAll("([ :=\n])", "\\\\$1");
-		writer.write(NativeToAsciiConverter.nativeToAscii(key));
+		writer.write(NativeToAsciiConverter.convertUnicodeToEncoded(key,true));
 		writer.write(" = ");
 		String value = property.getValue();
 		if(value!=null)
 		{
 			value = value.replaceAll("(\r?\n)", "\\\\$1");
-			value = NativeToAsciiConverter.nativeToAscii(value);
+			value = NativeToAsciiConverter.convertUnicodeToEncoded(value, true);
 			writer.write(value);
 		}
 		writer.write('\n');
