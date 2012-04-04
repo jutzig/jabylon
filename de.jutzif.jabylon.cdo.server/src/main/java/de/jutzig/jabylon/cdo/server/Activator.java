@@ -28,6 +28,7 @@ import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 import org.osgi.framework.BundleContext;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 
@@ -94,38 +95,41 @@ public class Activator extends Plugin {
 	}
 
 	private void populate() {
-		CDOSession cdoSession = getSession();
-		CDOTransaction transaction = cdoSession.openTransaction();
-        CDOResource resource = transaction.getOrCreateResource("/myResource");
-        PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
-
-        Property property = PropertiesFactory.eINSTANCE.createProperty();
-        property.setKey("test");
-        property.setValue("a value");
-        property.setComment("comment");
-        file.getProperties().add(property);
-
-
-        resource.getContents().add(file);
-        try {
-			transaction.commit();
-		} catch (CommitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally
-		{
-			cdoSession.close();		
-			cdoSession = null;
-			session = null;
-		}
+//		CDOSession cdoSession = getSession();
+//		cdoSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
+//		CDOTransaction transaction = cdoSession.openTransaction();
+//        CDOResource resource = transaction.getOrCreateResource("/myResource");
+//        PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+//
+//        Property property = PropertiesFactory.eINSTANCE.createProperty();
+//        property.setKey("test");
+//        property.setValue("a value");
+//        property.setComment("comment");
+//        file.getProperties().add(property);
+//
+//
+//        resource.getContents().add(file);
+//        try {
+//			transaction.commit();
+//		} catch (CommitException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}finally
+//		{
+//			
+//			cdoSession.close();		
+//			cdoSession = null;
+//			session = null;
+//		}
         
-        cdoSession = getSession();
+        CDOSession cdoSession = getSession();
+        
 		transaction = cdoSession.openTransaction();
         resource = transaction.getResource("/myResource");
-        file = (PropertyFile) resource.getContents().get(0);
+        PropertyFile file = (PropertyFile) resource.getContents().get(0);
         Property property2 = file.getProperties().get(0);
         System.out.println(property2.getKey());
-        
+//        
 		
 	}
 
@@ -187,6 +191,7 @@ public class Activator extends Plugin {
 			// config.setLazyPopulatingPackageRegistry();
 
 			session = config.openSession();
+			session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
 		}
 		return session;
 	}
@@ -238,7 +243,7 @@ public class Activator extends Plugin {
 	}
 
 	private IStore createStore() {
-		final String DATABASE_NAME = "/home/joe/workspaces/translator/de.jutzif.jabylon.cdo.server/work/cdo/derby";
+		final String DATABASE_NAME = "/home/joe/git/jabylon/de.jutzif.jabylon.cdo.server/work/cdo/derby";
 		final String DATABASE_USER = "scott";
 		final String DATABASE_PASS = "tiger";
 
@@ -247,15 +252,15 @@ public class Activator extends Plugin {
 //		myDataSource.setPassword(DATABASE_PASS);
 //		myDataSource.setAutoReconnect(true);
 		myDataSource.setDatabaseName(DATABASE_NAME);
+		
 		myDataSource.setCreateDatabase("create");
 //		myDataSource.setPort(3306);
 //		myDataSource.setServerName("localhost");
-		IMappingStrategy mappingStrategy = CDODBUtil.createMappingStrategy("horizontal");
+		IMappingStrategy mappingStrategy = CDODBUtil.createHorizontalMappingStrategy(false);
 		IDBStore store = CDODBUtil.createStore(mappingStrategy,
 				DBUtil.getDBAdapter("derby-embedded"),
 				DBUtil.createConnectionProvider(myDataSource));
 		mappingStrategy.setStore(store);
-		mappingStrategy.setProperties(new HashMap<String, String>());
 
 		return store;
 	}
