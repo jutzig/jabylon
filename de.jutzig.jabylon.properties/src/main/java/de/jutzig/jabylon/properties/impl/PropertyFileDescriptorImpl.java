@@ -8,12 +8,10 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.util.Locale;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
@@ -70,7 +68,7 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 */
 	protected static final boolean MASTER_EDEFAULT = false;
 
-	private PropertyFile propertyFile;
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -177,27 +175,19 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	public PropertyFile getPropertyFile() {
-		propertyFile = basicGetPropertyFile();
-		if (propertyFile != null && propertyFile.eIsProxy()) {
-			InternalEObject oldPropertyFile = (InternalEObject)propertyFile;
-			propertyFile = (PropertyFile)eResolveProxy(oldPropertyFile);
-			if (propertyFile != oldPropertyFile) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, oldPropertyFile, propertyFile));
-			}
-		}
-		return propertyFile;
+		return (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, true, true);
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	public PropertyFile basicGetPropertyFile() {
+		PropertyFile propertyFile = (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, false, true);
 		if(propertyFile==null && getBag()!=null)
 		{
 			URI path = getBag().getFullPath();
