@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getPropertyBags <em>Property Bags</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}</li>
  * </ul>
  * </p>
  *
@@ -117,6 +118,32 @@ public interface Project extends CDOObject {
 	 * @generated
 	 */
 	URI getBase();
+
+	/**
+	 * Returns the value of the '<em><b>Stats</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Stats</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Stats</em>' containment reference.
+	 * @see #setStats(ProjectStats)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Stats()
+	 * @model containment="true"
+	 * @generated
+	 */
+	ProjectStats getStats();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Stats</em>' containment reference.
+	 * @see #getStats()
+	 * @generated
+	 */
+	void setStats(ProjectStats value);
 
 	/**
 	 * <!-- begin-user-doc -->

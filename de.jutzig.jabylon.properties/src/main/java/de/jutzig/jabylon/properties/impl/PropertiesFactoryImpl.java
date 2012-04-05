@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import de.jutzig.jabylon.properties.*;
 import java.util.Locale;
 
 import org.eclipse.emf.common.util.URI;
@@ -75,6 +76,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.PROPERTY_BAG: return (EObject)createPropertyBag();
 			case PropertiesPackage.PROJECT: return (EObject)createProject();
 			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
+			case PropertiesPackage.PROJECT_STATS: return (EObject)createProjectStats();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -172,6 +174,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	public Workspace createWorkspace() {
 		WorkspaceImpl workspace = new WorkspaceImpl();
 		return workspace;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectStats createProjectStats() {
+		ProjectStatsImpl projectStats = new ProjectStatsImpl();
+		return projectStats;
 	}
 
 	/**

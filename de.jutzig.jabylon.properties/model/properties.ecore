@@ -45,10 +45,17 @@
         eOpposite="#//Workspace/projects"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
         volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stats" eType="#//ProjectStats"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
         eType="#//Project" containment="true" eOpposite="#//Project/workspace"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectStats">
+    <eOperations name="getPercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="total" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
 </ecore:EPackage>

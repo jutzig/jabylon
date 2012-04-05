@@ -309,13 +309,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__BASE = 3;
 
 	/**
+	 * The feature id for the '<em><b>Stats</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__STATS = 4;
+
+	/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = 4;
+	int PROJECT_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -355,6 +364,43 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectStatsImpl <em>Project Stats</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ProjectStatsImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectStats()
+	 * @generated
+	 */
+	int PROJECT_STATS = 6;
+
+	/**
+	 * The feature id for the '<em><b>Translated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_STATS__TRANSLATED = 0;
+
+	/**
+	 * The feature id for the '<em><b>Total</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_STATS__TOTAL = 1;
+
+	/**
+	 * The number of structural features of the '<em>Project Stats</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_STATS_FEATURE_COUNT = 2;
+
+	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -362,7 +408,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 6;
+	int LOCALE = 7;
 
 
 	/**
@@ -373,7 +419,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 7;
+	int URI = 8;
 
 
 	/**
@@ -625,6 +671,17 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProject_Base();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Stats</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getStats()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EReference getProject_Stats();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Workspace <em>Workspace</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -655,6 +712,38 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getWorkspace_Projects();
+
+	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectStats <em>Project Stats</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Project Stats</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectStats
+	 * @generated
+	 */
+	EClass getProjectStats();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectStats#getTranslated <em>Translated</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Translated</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectStats#getTranslated()
+	 * @see #getProjectStats()
+	 * @generated
+	 */
+	EAttribute getProjectStats_Translated();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectStats#getTotal <em>Total</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Total</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectStats#getTotal()
+	 * @see #getProjectStats()
+	 * @generated
+	 */
+	EAttribute getProjectStats_Total();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -895,6 +984,14 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROJECT__BASE = eINSTANCE.getProject_Base();
 
 		/**
+		 * The meta object literal for the '<em><b>Stats</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROJECT__STATS = eINSTANCE.getProject_Stats();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -919,6 +1016,32 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference WORKSPACE__PROJECTS = eINSTANCE.getWorkspace_Projects();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectStatsImpl <em>Project Stats</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ProjectStatsImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectStats()
+		 * @generated
+		 */
+		EClass PROJECT_STATS = eINSTANCE.getProjectStats();
+
+		/**
+		 * The meta object literal for the '<em><b>Translated</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT_STATS__TRANSLATED = eINSTANCE.getProjectStats_Translated();
+
+		/**
+		 * The meta object literal for the '<em><b>Total</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT_STATS__TOTAL = eINSTANCE.getProjectStats_Total();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

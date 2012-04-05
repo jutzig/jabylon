@@ -80,6 +80,15 @@ public interface PropertiesFactory extends EFactory {
 	Workspace createWorkspace();
 
 	/**
+	 * Returns a new object of class '<em>Project Stats</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Project Stats</em>'.
+	 * @generated
+	 */
+	ProjectStats createProjectStats();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

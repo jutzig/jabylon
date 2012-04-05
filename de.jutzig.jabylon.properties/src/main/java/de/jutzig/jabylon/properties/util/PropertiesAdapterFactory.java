@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -98,6 +99,10 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseWorkspace(Workspace object) {
 				return createWorkspaceAdapter();
+			}
+			@Override
+			public Adapter caseProjectStats(ProjectStats object) {
+				return createProjectStatsAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -200,6 +205,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createWorkspaceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ProjectStats <em>Project Stats</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.ProjectStats
+	 * @generated
+	 */
+	public Adapter createProjectStatsAdapter() {
 		return null;
 	}
 

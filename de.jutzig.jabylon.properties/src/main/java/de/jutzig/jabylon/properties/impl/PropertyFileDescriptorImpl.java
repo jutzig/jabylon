@@ -187,16 +187,7 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * @generated
 	 */
 	public PropertyFile basicGetPropertyFile() {
-		PropertyFile propertyFile = (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, false, true);
-		if(propertyFile==null && getBag()!=null)
-		{
-			URI path = getBag().getFullPath();
-			path = path.appendSegment(getName());
-			Resource resource = eResource().getResourceSet().getResource(path, true);
-			if(resource!=null && resource.getContents().size()>0)
-				propertyFile = (PropertyFile) resource.getContents().get(0);
-		}
-		return propertyFile;
+		return (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, false, true);
 	}
 
 	/**

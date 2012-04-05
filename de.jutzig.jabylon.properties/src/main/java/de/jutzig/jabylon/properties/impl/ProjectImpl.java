@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectStats;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyBag;
@@ -40,6 +41,7 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getPropertyBags <em>Property Bags</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getBase <em>Base</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getStats <em>Stats</em>}</li>
  * </ul>
  * </p>
  *
@@ -164,6 +166,34 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectStats getStats() {
+		return (ProjectStats)eDynamicGet(PropertiesPackage.PROJECT__STATS, PropertiesPackage.Literals.PROJECT__STATS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetStats(ProjectStats newStats, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newStats, PropertiesPackage.PROJECT__STATS, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setStats(ProjectStats newStats) {
+		eDynamicSet(PropertiesPackage.PROJECT__STATS, PropertiesPackage.Literals.PROJECT__STATS, newStats);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public void fullScan() {
@@ -203,6 +233,8 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return ((InternalEList<?>)getPropertyBags()).basicRemove(otherEnd, msgs);
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				return basicSetWorkspace(null, msgs);
+			case PropertiesPackage.PROJECT__STATS:
+				return basicSetStats(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -237,6 +269,8 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return getWorkspace();
 			case PropertiesPackage.PROJECT__BASE:
 				return getBase();
+			case PropertiesPackage.PROJECT__STATS:
+				return getStats();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -260,6 +294,9 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				setWorkspace((Workspace)newValue);
 				return;
+			case PropertiesPackage.PROJECT__STATS:
+				setStats((ProjectStats)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -281,6 +318,9 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				setWorkspace((Workspace)null);
 				return;
+			case PropertiesPackage.PROJECT__STATS:
+				setStats((ProjectStats)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -301,6 +341,8 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return getWorkspace() != null;
 			case PropertiesPackage.PROJECT__BASE:
 				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
+			case PropertiesPackage.PROJECT__STATS:
+				return getStats() != null;
 		}
 		return super.eIsSet(featureID);
 	}

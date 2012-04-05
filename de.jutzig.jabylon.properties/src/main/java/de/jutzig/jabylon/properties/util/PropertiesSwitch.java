@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -111,6 +112,12 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case PropertiesPackage.PROJECT_STATS: {
+				ProjectStats projectStats = (ProjectStats)theEObject;
+				T result = caseProjectStats(projectStats);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -202,6 +209,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseWorkspace(Workspace object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Project Stats</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Project Stats</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseProjectStats(ProjectStats object) {
 		return null;
 	}
 
