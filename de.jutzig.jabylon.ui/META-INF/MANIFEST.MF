@@ -5,7 +5,9 @@ Bundle-SymbolicName: de.jutzig.jabylon.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.jutzig.jabylon.cdo.connector,
+Import-Package: com.google.common.base;version="1.0.0",
+ com.google.common.collect;version="1.0.0",
+ de.jutzig.jabylon.cdo.connector,
  org.osgi.framework
 Require-Bundle: org.eclipse.equinox.http.registry,
  com.vaadin;bundle-version="6.7.5",
