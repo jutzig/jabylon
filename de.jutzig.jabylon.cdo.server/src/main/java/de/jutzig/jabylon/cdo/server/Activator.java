@@ -110,7 +110,7 @@ public class Activator extends Plugin {
 	}
 
 	private IStore createStore() {
-		final String DATABASE_NAME = "/home/joe/git/jabylon/de.jutzif.jabylon.cdo.server/work/cdo/derby";
+		final String DATABASE_NAME = "/home/joe/workspaces/translator/work/cdo/derby";
 		final String DATABASE_USER = "scott";
 		final String DATABASE_PASS = "tiger";
 
