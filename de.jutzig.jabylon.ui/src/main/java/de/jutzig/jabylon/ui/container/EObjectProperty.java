@@ -25,6 +25,8 @@ public class EObjectProperty extends AbstractProperty implements Adapter{
 
 	@Override
 	public Object getValue() {
+		if(object==null)
+			return null;
 		return object.eGet(feature);
 	}
 
@@ -62,11 +64,13 @@ public class EObjectProperty extends AbstractProperty implements Adapter{
 
 	@Override
 	public void setTarget(Notifier newTarget) {
-		if (newTarget != object && newTarget instanceof EObject) {
-			object = (EObject) newTarget;
+		if (newTarget != object)
+		{
+			if(newTarget instanceof EObject) 
+				object = (EObject) newTarget;
+			else
+				object = null;		
 		}
-		else
-			object = null;
 		
 	}
 
