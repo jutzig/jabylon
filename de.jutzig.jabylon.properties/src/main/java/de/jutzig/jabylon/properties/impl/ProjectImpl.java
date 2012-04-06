@@ -160,6 +160,10 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	 * @generated NOT
 	 */
 	public URI getBase() {
+		if(getWorkspace()==null)
+			return null;
+		if(getWorkspace().getRoot()==null)
+			return null;
 		return getWorkspace().getRoot().appendSegment(getName());
 	}
 
