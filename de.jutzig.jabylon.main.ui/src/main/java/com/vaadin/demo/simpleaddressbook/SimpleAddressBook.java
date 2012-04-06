@@ -32,6 +32,7 @@ public class SimpleAddressBook extends Application {
 
     @Override
     public void init() {
+    	setTheme("jabylon");
         initLayout();
         initContactAddRemoveButtons();
         initAddressList();

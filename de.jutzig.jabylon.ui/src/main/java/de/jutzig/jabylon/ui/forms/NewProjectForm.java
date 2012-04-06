@@ -89,6 +89,7 @@ public class NewProjectForm extends VerticalLayout {
                 		}
 					});
                 		
+                	System.out.println(project.cdoView());
 					MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName());
 //                    dashboard.setMainComponent(new ProjectDashboard(project));
                     

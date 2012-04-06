@@ -31,6 +31,7 @@ import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbs;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
+import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
 
@@ -46,6 +47,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	@Override
 	public void init() {
 		// mainWindow initialization omitted
+		setTheme("jabylon");
 		getContext().addTransactionListener(this);
 		application.set(this);
 		buildMainLayout();
@@ -221,7 +223,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public Component getComponent() {
-		return getMainWindow();
+		return new ProjectListPanel();
 	}
 
 	@Override
