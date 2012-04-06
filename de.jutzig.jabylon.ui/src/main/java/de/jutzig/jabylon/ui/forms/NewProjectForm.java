@@ -3,11 +3,8 @@ package de.jutzig.jabylon.ui.forms;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-import org.eclipse.emf.cdo.session.CDOSession;
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
@@ -23,6 +20,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 
+import de.jutzig.jabylon.cdo.connector.Modification;
+import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -74,13 +73,23 @@ public class NewProjectForm extends VerticalLayout {
         Button apply = new Button("Create", new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 try {
-                	CDOSession session = workspace.cdoView().getSession();
-                	CDOTransaction transaction = session.openTransaction();
-                	Workspace writeableWorkspace = (Workspace) transaction.getObject(workspace.cdoID());
+//                	CDOSession session = workspace.cdoView().getSession();
+//                	CDOTransaction transaction = session.openTransaction();
+//                	Workspace writeableWorkspace = (Workspace) transaction.getObject(workspace.cdoID());
                     projectForm.commit();
-                    writeableWorkspace.getProjects().add(EcoreUtil.copy(project)); //a copy so our project doesn't get stale. Not sure why we need this...
-                    transaction.commit();
-                    transaction.close();
+//                    writeableWorkspace.getProjects().add(EcoreUtil.copy(project)); //a copy so our project doesn't get stale. Not sure why we need this...
+//                    transaction.commit();
+//                    transaction.close();
+                	project = TransactionUtil.commit(workspace, new Modification<Workspace, Project>() {
+                		
+                		@Override
+                		public Project apply(Workspace object) {
+                			object.getProjects().add(project);
+                			return project;
+                		}
+					});
+                		
+					
                     dashboard.setMainComponent(new ProjectDashboard(project));
                     
                 } catch (Exception e) {
@@ -145,8 +154,10 @@ class ProjectNameValidator implements Validator
 	@Override
 	public boolean isValid(Object value) {
 		EList<Project> projects = workspace.getProjects();
+		if(value==null)
+			return false;
 		for (Project project : projects) {
-			if(project.getName().equals(value))
+			if(value.equals(project.getName()))
 				return false;
 		}
 		return true;

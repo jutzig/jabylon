@@ -213,19 +213,23 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public URI createURIFromString(EDataType eDataType, String initialValue) {
-		return (URI)super.createFromString(eDataType, initialValue);
+		if(initialValue==null)
+			return null;
+		return URI.createURI(initialValue, true);
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public String convertURIToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
+		if(instanceValue==null)
+			return null;
+		return instanceValue.toString();
 	}
 
 	/**

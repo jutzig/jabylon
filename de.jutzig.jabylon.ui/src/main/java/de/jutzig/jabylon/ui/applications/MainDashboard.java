@@ -1,23 +1,31 @@
 package de.jutzig.jabylon.ui.applications;
 
+import java.io.File;
+
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.view.CDOView;
+import org.eclipse.emf.common.util.URI;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.Sizeable;
-import com.vaadin.terminal.URIHandler;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ChameleonTheme;
+import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.Runo;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
@@ -25,7 +33,7 @@ import de.jutzig.jabylon.ui.forms.NewProjectForm;
 public class MainDashboard extends Application {
 
 	
-	private static final String WORKSPACE = "workspace";
+	
 	private RepositoryConnector repositoryConnector;
 	Button addProject;
 	private HorizontalSplitPanel horizontalSplit;
@@ -42,6 +50,8 @@ public class MainDashboard extends Application {
 		layout.setSizeFull();
 		horizontalSplit = new HorizontalSplitPanel();
 		layout.addComponent(createToolbar());
+		Component header = createHeader();
+		layout.addComponent(header);
 		layout.addComponent(horizontalSplit);
 
 		/* Allocate all available extra space to the horizontal split panel */
@@ -72,6 +82,28 @@ public class MainDashboard extends Application {
 		});
 		horizontalSplit.addComponent(addProject);
 
+	}
+
+	private Component createHeader() {
+		Label title = new Label();
+		title.setCaption("Jabylon");
+		title.setStyleName(Reindeer.LABEL_H1);
+		
+		HorizontalLayout header = new HorizontalLayout();
+		header.setWidth("100%");
+		header.setMargin(true);
+		header.setSpacing(true);
+		// header.setStyleName(Reindeer.LAYOUT_BLACK);
+
+		CssLayout titleLayout = new CssLayout();
+		titleLayout.addComponent(title);
+		Label description = new Label();
+		description.setStyleName(Reindeer.LABEL_SMALL);
+		description.setSizeUndefined();
+		description.setCaption("Translation Server");
+		titleLayout.addComponent(description);
+		header.addComponent(titleLayout);
+		return header;
 	}
 
 	public HorizontalLayout createToolbar() {
@@ -122,20 +154,26 @@ public class MainDashboard extends Application {
 	private Workspace getOrInitializeWorkspace() {
 		CDOView view = getView();
 		Workspace workspace = null;
-		if(view.hasResource(WORKSPACE))
+		if(view.hasResource(ServerConstants.WORKSPACE_RESOURCE))
 		{
 			
-			CDOResource resource = view.getResource(WORKSPACE);
+			CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 			workspace = (Workspace) resource.getContents().get(0);
 		}
 		else
 		{
 			CDOTransaction transaction = getRepositoryConnector().openTransaction();
-			CDOResource resource = transaction.createResource(WORKSPACE);
+			CDOResource resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
 			workspace = PropertiesFactory.eINSTANCE.createWorkspace();
+			URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
+			File root = new File(ServerConstants.WORKSPACE_DIR);
+			if(!root.exists())
+				root.mkdirs();
+			workspace.setRoot(uri);
 			resource.getContents().add(workspace);
 			try {
 				transaction.commit();
+				workspace = view.getObject(workspace);
 			} catch (final CommitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

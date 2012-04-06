@@ -30,10 +30,6 @@ public class Activator extends Plugin {
 	 */
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.cdo.server";
 
-	/**
-	 * The repository name
-	 */
-	private static final String REPOSITORY_NAME = "jabylon";
 
 	/**
 	 * Returns the shared instance
@@ -105,12 +101,12 @@ public class Activator extends Plugin {
 		// props.put(Props.PROP_SUPPORTING_REVISION_DELTAS, "false");
 		// props.put(Props.PROP_CURRENT_LRU_CAPACITY, "10000");
 		// props.put(Props.PROP_REVISED_LRU_CAPACITY, "10000");
-		return CDOServerUtil.createRepository(REPOSITORY_NAME, createStore(),
+		return CDOServerUtil.createRepository(ServerConstants.REPOSITORY_NAME, createStore(),
 				props);
 	}
 
 	private IStore createStore() {
-		final String DATABASE_NAME = "/home/joe/workspaces/translator/work/cdo/derby";
+		final String DATABASE_NAME = ServerConstants.WORKING_DIR+"/cdo/derby";
 		final String DATABASE_USER = "scott";
 		final String DATABASE_PASS = "tiger";
 

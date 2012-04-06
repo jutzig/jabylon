@@ -2,11 +2,16 @@ package de.jutzig.jabylon.cdo.connector;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
+
+import de.jutzig.jabylon.cdo.connector.internal.RepositoryConnectorImpl;
 
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	private static Activator plugin;
+	private RepositoryConnector connector;
 
 	static BundleContext getContext() {
 		return context;
@@ -18,7 +23,10 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+//		context.addFrameworkListener(this);
 		plugin = this;
+		connector = new RepositoryConnectorImpl();
+		bundleContext.registerService(RepositoryConnector.class, connector, null);
 	}
 
 	
@@ -49,8 +57,17 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
 		Activator.context = null;
+		connector.close();
+		connector = null;
 
 	}
+
+//	@Override
+//	public void frameworkEvent(FrameworkEvent event) {
+//		if(event.getType()==FrameworkEvent.STOPPED)
+//			connector.close();
+//		
+//	}
 
 
 

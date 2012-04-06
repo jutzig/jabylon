@@ -20,3 +20,4 @@ Require-Bundle: org.eclipse.emf.cdo;bundle-version="4.0.1",
  org.eclipse.net4j.db.derby;bundle-version="4.0.0",
  org.apache.derby;bundle-version="10.5.1",
  de.jutzig.jabylon.properties;bundle-version="1.0.0"
+Export-Package: de.jutzig.jabylon.cdo.server
