@@ -72,5 +72,8 @@ public interface Workspace extends CDOObject {
 	 * @generated
 	 */
 	EList<Project> getProjects();
+	
+	
+	Project getProject(String name);
 
 } // Workspace

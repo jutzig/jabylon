@@ -201,4 +201,16 @@ public class WorkspaceImpl extends CDOObjectImpl implements Workspace {
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	public Project getProject(String name) {
+		if(name==null)
+			return null;
+		EList<Project> projects = getProjects();
+		for (Project project : projects) {
+			if(name.equals(project.getName()))
+				return project;
+		}
+		return null;
+	}
+	
 } //WorkspaceImpl

@@ -89,8 +89,8 @@ public class NewProjectForm extends VerticalLayout {
                 		}
 					});
                 		
-					
-                    dashboard.setMainComponent(new ProjectDashboard(project));
+					MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName());
+//                    dashboard.setMainComponent(new ProjectDashboard(project));
                     
                 } catch (Exception e) {
                     // Ignored, we'll let the Form handle the errors
