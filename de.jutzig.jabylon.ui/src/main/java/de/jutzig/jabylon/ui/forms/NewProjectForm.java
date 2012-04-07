@@ -35,10 +35,10 @@ public class NewProjectForm extends VerticalLayout {
 	private Project project;
 	private Workspace workspace;
 	
-	public NewProjectForm(Workspace theWorkspace, final MainDashboard dashboard) {
-		this.workspace = theWorkspace;
+	public NewProjectForm(final MainDashboard dashboard) {
 		this.project = PropertiesFactory.eINSTANCE.createProject();
 		EObjectItem item = new EObjectItem(project);
+		this.workspace = dashboard.getWorkspace();
 		
 	    // Create the Form
         final Form projectForm = new Form();

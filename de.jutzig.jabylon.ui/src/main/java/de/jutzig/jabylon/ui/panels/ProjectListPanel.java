@@ -14,6 +14,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
+import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
 public class ProjectListPanel extends GridLayout implements ClickListener {
 
@@ -22,6 +23,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		createContents();
 		setMargin(true, true, true, true);
 		setSpacing(true);
+//		setSizeFull();
 		
 	}
 
@@ -35,8 +37,6 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		for (Project project : projects) {
 			Button projectName = new Button(project.getName());
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
-//			label.setWidth(300, UNITS_PIXELS);
-//			projectName.setWidth(200, UNITS_PIXELS);
 			addComponent(projectName);
 			projectName.setData(project);
 			projectName.addListener(this);
@@ -46,12 +46,24 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			addComponent(progress);
 		}
 		
+		Button addProject = new Button();
+		addProject.setCaption("Create Project");
+		addProject.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				MainDashboard dashboard = MainDashboard.getCurrent();
+				dashboard.setMainComponent(new NewProjectForm(dashboard));
+			}
+
+		});
+		addComponent(addProject);
+		
 	}
 
 	private void buildHeader() {
-//		Label label = new Label();
-//		label.setCaption("")
-//		addComponent(c, column, row)
+
 		
 	}
 
