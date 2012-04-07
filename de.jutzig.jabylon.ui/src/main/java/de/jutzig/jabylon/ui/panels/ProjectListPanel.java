@@ -36,7 +36,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			Button projectName = new Button(project.getName());
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
 //			label.setWidth(300, UNITS_PIXELS);
-			projectName.setWidth(200, UNITS_PIXELS);
+//			projectName.setWidth(200, UNITS_PIXELS);
 			addComponent(projectName);
 			projectName.setData(project);
 			projectName.addListener(this);
