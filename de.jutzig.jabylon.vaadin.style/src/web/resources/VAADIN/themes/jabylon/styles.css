@@ -1,22 +1,18 @@
 @IMPORT url("/VAADIN/themes/reindeer/styles.css");
 
 
-.jabylon-progress{
-    border: solid 1px;
-    border-color: grey;
-    width: 300px;
-    height: 14px;
-    
+.jabylon-progress {
+     border: 1px solid grey;
+     height: 18px;
+     width: 100px;
 }
- 
+
 .jabylon-progress-bar {
-   /* background-color: #0a0; */
-   background-color: #;
-} 
- 
-.jabylon-progress-label{
-	
-    position: relative;
-    top:-19px; 
-    left:45%;
+    height: 100%;
+}
+
+.jabylon-progress-label {
+     left: 45%;
+     position: relative;
+     top: -18px;
 }

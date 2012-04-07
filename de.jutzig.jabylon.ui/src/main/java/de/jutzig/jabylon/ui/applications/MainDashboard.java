@@ -41,17 +41,16 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private CDOView currentView;
 	private static final ThreadLocal<MainDashboard> application = new ThreadLocal<MainDashboard>();
 	private BreadCrumbs breadcrumbs;
-	private Label mainComponent;
 	private Workspace workspace;
 
 	@Override
 	public void init() {
 		// mainWindow initialization omitted
 		setTheme("jabylon");
+		workspace = getOrInitializeWorkspace();
 		getContext().addTransactionListener(this);
 		application.set(this);
 		buildMainLayout();
-		workspace = getOrInitializeWorkspace();
 	}
 
 	private void buildMainLayout() {
@@ -92,9 +91,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 		});
 		horizontalSplit.addComponent(addProject);
-		mainComponent = new Label();
-		mainComponent.setCaption("Home");
-		setMainComponent(mainComponent);
+		
+		setMainComponent(new ProjectListPanel());
 
 	}
 

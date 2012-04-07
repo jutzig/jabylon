@@ -45,6 +45,7 @@ public class BreadCrumbs extends CustomComponent implements ClickListener {
 		}
 
 	}
+	
 
 	private Button createEntry(CrumbTrail trail) {
 		Button link = new Button();
@@ -59,6 +60,7 @@ public class BreadCrumbs extends CustomComponent implements ClickListener {
 	public void buttonClick(ClickEvent event) {
 		Application application = getApplication();
 		if (application instanceof MainDashboard) {
+			//TODO: delete old stuff from breadcrumb
 			MainDashboard dashboard = (MainDashboard) application;
 			CrumbTrail trail = (CrumbTrail) event.getButton().getData();
 			dashboard.setMainComponent(trail.getComponent());
