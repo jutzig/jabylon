@@ -27,7 +27,8 @@ import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbs;
+import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
+import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbImpl;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
@@ -40,7 +41,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private HorizontalSplitPanel horizontalSplit;
 	private CDOView currentView;
 	private static final ThreadLocal<MainDashboard> application = new ThreadLocal<MainDashboard>();
-	private BreadCrumbs breadcrumbs;
+	private BreadCrumb breadcrumbs;
 	private Workspace workspace;
 
 	@Override
@@ -91,7 +92,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 		});
 		horizontalSplit.addComponent(addProject);
-		
 		setMainComponent(new ProjectListPanel());
 
 	}
@@ -115,8 +115,9 @@ public class MainDashboard extends Application implements TransactionListener, C
 		description.setCaption("Translation Server");
 		titleLayout.addComponent(description);
 		header.addComponent(titleLayout);
-		breadcrumbs = new BreadCrumbs();
-		titleLayout.addComponent(breadcrumbs);
+		BreadCrumbImpl crumbs = new BreadCrumbImpl();
+		breadcrumbs = crumbs;
+		titleLayout.addComponent(crumbs);
 		return header;
 	}
 
@@ -172,7 +173,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return application.get();
 	}
 
-	public BreadCrumbs getBreadcrumbs() {
+	public BreadCrumb getBreadcrumbs() {
 		return breadcrumbs;
 	}
 

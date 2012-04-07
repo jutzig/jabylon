@@ -58,7 +58,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 	@Override
 	public void buttonClick(ClickEvent event) {
 		Project project = (Project) event.getButton().getData();
-		MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName());
+		MainDashboard.getCurrent().getBreadcrumbs().walkTo(project.getName());
 		
 	}
 	
