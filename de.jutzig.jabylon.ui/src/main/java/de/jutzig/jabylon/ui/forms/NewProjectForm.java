@@ -2,6 +2,7 @@ package de.jutzig.jabylon.ui.forms;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -23,6 +24,8 @@ import com.vaadin.ui.themes.BaseTheme;
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
@@ -85,6 +88,21 @@ public class NewProjectForm extends VerticalLayout {
                 		@Override
                 		public Project apply(Workspace object) {
                 			object.getProjects().add(project);
+                			ProjectVersion master = PropertiesFactory.eINSTANCE.createProjectVersion();
+                			project.setMaster(master);
+                			
+                			ProjectLocale masterLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
+                			masterLocale.setLocale(Locale.ENGLISH);
+                			master.setMaster(masterLocale);
+                			
+                			//sample data
+                			ProjectLocale locale1 = PropertiesFactory.eINSTANCE.createProjectLocale();
+                			locale1.setLocale(Locale.GERMANY);
+                			master.getLocales().add(locale1);
+                			
+                			ProjectLocale locale2 = PropertiesFactory.eINSTANCE.createProjectLocale();
+                			locale2.setLocale(Locale.FRENCH);
+                			master.getLocales().add(locale2);
                 			return project;
                 		}
 					});
