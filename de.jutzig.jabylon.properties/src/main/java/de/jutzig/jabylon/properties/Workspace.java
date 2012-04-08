@@ -25,10 +25,9 @@ import org.eclipse.emf.common.util.URI;
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getWorkspace()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface Workspace extends CDOObject {
+public interface Workspace extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Root</b></em>' attribute.
 	 * <!-- begin-user-doc -->

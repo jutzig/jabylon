@@ -42,14 +42,13 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getProject <em>Project</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getBranch <em>Branch</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getLocales <em>Locales</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getFullPath <em>Full Path</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion {
+public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion {
 	/**
 	 * The default value of the '{@link #getTranslated() <em>Translated</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -78,17 +77,7 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BRANCH_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getFullPath() <em>Full Path</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFullPath()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final URI FULL_PATH_EDEFAULT = null;
+	protected static final String BRANCH_EDEFAULT = "master";
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -107,16 +96,6 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT_VERSION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
 	}
 
 	/**
@@ -190,15 +169,6 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@SuppressWarnings("unchecked")
 	public EList<ProjectLocale> getLocales() {
 		return (EList<ProjectLocale>)eDynamicGet(PropertiesPackage.PROJECT_VERSION__LOCALES, PropertiesPackage.Literals.PROJECT_VERSION__LOCALES, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public URI getFullPath() {
-		return (URI)eDynamicGet(PropertiesPackage.PROJECT_VERSION__FULL_PATH, PropertiesPackage.Literals.PROJECT_VERSION__FULL_PATH, true, true);
 	}
 
 	/**
@@ -303,8 +273,6 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 				return getBranch();
 			case PropertiesPackage.PROJECT_VERSION__LOCALES:
 				return getLocales();
-			case PropertiesPackage.PROJECT_VERSION__FULL_PATH:
-				return getFullPath();
 			case PropertiesPackage.PROJECT_VERSION__MASTER:
 				return getMaster();
 		}
@@ -385,8 +353,6 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 				return BRANCH_EDEFAULT == null ? getBranch() != null : !BRANCH_EDEFAULT.equals(getBranch());
 			case PropertiesPackage.PROJECT_VERSION__LOCALES:
 				return !getLocales().isEmpty();
-			case PropertiesPackage.PROJECT_VERSION__FULL_PATH:
-				return FULL_PATH_EDEFAULT == null ? getFullPath() != null : !FULL_PATH_EDEFAULT.equals(getFullPath());
 			case PropertiesPackage.PROJECT_VERSION__MASTER:
 				return getMaster() != null;
 		}
@@ -400,7 +366,9 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 		@Override
 		public void newMatch(File file) {
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-			descriptor.setName(file.getName());
+			URI location = URI.createFileURI(file.getAbsolutePath());
+			location = location.deresolve(fullPath());
+			descriptor.setLocation(location);
 			if(getMaster()==null)
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
 			getMaster().getDescriptors().add(descriptor);
@@ -416,7 +384,8 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 				if(matcher.matches())
 				{
 					PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-					fileDescriptor.setName(child);
+					URI childURI = location.trimSegments(1).appendSegment(child);
+					fileDescriptor.setLocation(childURI);
 					Locale locale = createVariant(matcher.group(1).substring(1));
 					fileDescriptor.setVariant(locale);
 					fileDescriptor.setMaster(descriptor);
@@ -458,6 +427,11 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 			projectLocale.setLocale(locale);
 		}
 		return projectLocale;
+	}
+
+	@Override
+	public URI relativePath() {
+		return URI.createHierarchicalURI(new String[] {getBranch()}, null, null);
 	}
 	
 } //ProjectVersionImpl

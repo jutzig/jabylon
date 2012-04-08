@@ -25,7 +25,6 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getBranch <em>Branch</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getFullPath <em>Full Path</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
@@ -34,7 +33,7 @@ import org.eclipse.emf.common.util.URI;
  * @model
  * @generated
  */
-public interface ProjectVersion extends Completable {
+public interface ProjectVersion extends Resolvable, Completable {
 	/**
 	 * Returns the value of the '<em><b>Translated</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -104,6 +103,7 @@ public interface ProjectVersion extends Completable {
 
 	/**
 	 * Returns the value of the '<em><b>Branch</b></em>' attribute.
+	 * The default value is <code>"master"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Branch</em>' attribute isn't clear,
@@ -113,7 +113,7 @@ public interface ProjectVersion extends Completable {
 	 * @return the value of the '<em>Branch</em>' attribute.
 	 * @see #setBranch(String)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Branch()
-	 * @model
+	 * @model default="master"
 	 * @generated
 	 */
 	String getBranch();
@@ -145,21 +145,6 @@ public interface ProjectVersion extends Completable {
 	 * @generated
 	 */
 	EList<ProjectLocale> getLocales();
-
-	/**
-	 * Returns the value of the '<em><b>Full Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Full Path</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Full Path</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_FullPath()
-	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated
-	 */
-	URI getFullPath();
 
 	/**
 	 * Returns the value of the '<em><b>Master</b></em>' containment reference.

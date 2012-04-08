@@ -123,29 +123,29 @@ public class ProjectTest extends TestCase {
 		assertEquals(URI.createFileURI("test/test2"), getFixture().getBase());
 	}
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.Project#fullScan() <em>Full Scan</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.Project#fullScan()
-	 * @generated NOT
-	 */
-	public void testFullScan() {
-		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
-		workspace.setRoot(URI.createFileURI("src/test/resources"));
-		workspace.getProjects().add(getFixture());
-		getFixture().setName("de");
-		getFixture().fullScan();
-		
-		assertEquals(1,getFixture().getPropertyBags().size());
-		PropertyBag bag = getFixture().getPropertyBags().get(0);
-		
-		assertEquals(3,bag.getDescriptors().size());
-		assertTrue(bag.getDescriptors().get(0).isMaster());
-		
-		assertEquals(Locale.GERMAN, bag.getDescriptors().get(1).getVariant());
-		
-		assertEquals(Locale.CANADA, bag.getDescriptors().get(2).getVariant());
-	}
+//	/**
+//	 * Tests the '{@link de.jutzig.jabylon.properties.Project#fullScan() <em>Full Scan</em>}' operation.
+//	 * <!-- begin-user-doc -->
+//	 * <!-- end-user-doc -->
+//	 * @see de.jutzig.jabylon.properties.Project#fullScan()
+//	 * @generated NOT
+//	 */
+//	public void testFullScan() {
+//		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
+//		workspace.setRoot(URI.createFileURI("src/test/resources"));
+//		workspace.getProjects().add(getFixture());
+//		getFixture().setName("de");
+//		getFixture().fullScan();
+//		
+//		assertEquals(1,getFixture().getPropertyBags().size());
+//		PropertyBag bag = getFixture().getPropertyBags().get(0);
+//		
+//		assertEquals(3,bag.getDescriptors().size());
+//		assertTrue(bag.getDescriptors().get(0).isMaster());
+//		
+//		assertEquals(Locale.GERMAN, bag.getDescriptors().get(1).getVariant());
+//		
+//		assertEquals(Locale.CANADA, bag.getDescriptors().get(2).getVariant());
+//	}
 
 } //ProjectTest

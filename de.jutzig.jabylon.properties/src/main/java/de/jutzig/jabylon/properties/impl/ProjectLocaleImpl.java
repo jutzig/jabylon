@@ -18,6 +18,7 @@ import java.util.Locale;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -41,7 +42,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class ProjectLocaleImpl extends CDOObjectImpl implements ProjectLocale {
+public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	/**
 	 * The default value of the '{@link #getLocale() <em>Locale</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -69,16 +70,6 @@ public class ProjectLocaleImpl extends CDOObjectImpl implements ProjectLocale {
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT_LOCALE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
 	}
 
 	/**
@@ -279,6 +270,13 @@ public class ProjectLocaleImpl extends CDOObjectImpl implements ProjectLocale {
 				return !getDescriptors().isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	@Override
+	public URI relativePath() {
+		if(isMaster())
+			return URI.createHierarchicalURI(new String[] {"master"}, null, null);
+		return URI.createHierarchicalURI(new String[] {getLocale().toString()}, null, null);
 	}
 
 } //ProjectLocaleImpl

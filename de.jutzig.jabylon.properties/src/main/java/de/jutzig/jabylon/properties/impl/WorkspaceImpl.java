@@ -34,7 +34,7 @@ import de.jutzig.jabylon.properties.Workspace;
  *
  * @generated
  */
-public class WorkspaceImpl extends CDOObjectImpl implements Workspace {
+public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	/**
 	 * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -62,16 +62,6 @@ public class WorkspaceImpl extends CDOObjectImpl implements Workspace {
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.WORKSPACE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
 	}
 
 	/**
@@ -211,6 +201,11 @@ public class WorkspaceImpl extends CDOObjectImpl implements Workspace {
 				return project;
 		}
 		return null;
+	}
+
+	@Override
+	public URI relativePath() {
+		return URI.createHierarchicalURI(new String[] {"/"}, null, null); //it's the root
 	}
 	
 } //WorkspaceImpl

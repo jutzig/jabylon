@@ -8,6 +8,7 @@ package de.jutzig.jabylon.properties;
 
 import java.util.Locale;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.cdo.CDOObject;
 
 /**
@@ -19,7 +20,7 @@ import org.eclipse.emf.cdo.CDOObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getVariant <em>Variant</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile <em>Property File</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
  * </ul>
@@ -29,7 +30,7 @@ import org.eclipse.emf.cdo.CDOObject;
  * @model
  * @generated
  */
-public interface PropertyFileDescriptor extends Completable {
+public interface PropertyFileDescriptor extends Resolvable, Completable {
 	/**
 	 * Returns the value of the '<em><b>Variant</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,30 +58,30 @@ public interface PropertyFileDescriptor extends Completable {
 	void setVariant(Locale value);
 
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Location</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Name()
-	 * @model
+	 * @return the value of the '<em>Location</em>' attribute.
+	 * @see #setLocation(URI)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Location()
+	 * @model dataType="de.jutzig.jabylon.properties.URI"
 	 * @generated
 	 */
-	String getName();
+	URI getLocation();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
+	 * @param value the new value of the '<em>Location</em>' attribute.
+	 * @see #getLocation()
 	 * @generated
 	 */
-	void setName(String value);
+	void setLocation(URI value);
 
 	/**
 	 * <!-- begin-user-doc -->

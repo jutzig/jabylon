@@ -36,7 +36,6 @@ public class PropertiesTests extends TestSuite {
 	public static Test suite() {
 		TestSuite suite = new PropertiesTests("properties Tests");
 		suite.addTestSuite(PropertyFileDescriptorTest.class);
-		suite.addTestSuite(PropertyBagTest.class);
 		suite.addTestSuite(ProjectTest.class);
 		return suite;
 	}

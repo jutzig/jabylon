@@ -61,6 +61,16 @@ public interface PropertiesPackage extends EPackage {
 	PropertiesPackage eINSTANCE = de.jutzig.jabylon.properties.impl.PropertiesPackageImpl.init();
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ResolvableImpl <em>Resolvable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ResolvableImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getResolvable()
+	 * @generated
+	 */
+	int RESOLVABLE = 8;
+
+	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileImpl <em>Property File</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -135,6 +145,15 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FEATURE_COUNT = 3;
 
 	/**
+	 * The number of structural features of the '<em>Resolvable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOLVABLE_FEATURE_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -143,15 +162,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	int COMPLETABLE = 7;
-
-	/**
-	 * The number of structural features of the '<em>Completable</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPLETABLE_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl <em>Property File Descriptor</em>}' class.
@@ -170,16 +180,16 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__VARIANT = COMPLETABLE_FEATURE_COUNT + 0;
+	int PROPERTY_FILE_DESCRIPTOR__VARIANT = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__NAME = COMPLETABLE_FEATURE_COUNT + 1;
+	int PROPERTY_FILE_DESCRIPTOR__LOCATION = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Property File</b></em>' reference.
@@ -188,7 +198,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE = COMPLETABLE_FEATURE_COUNT + 2;
+	int PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Master</b></em>' reference.
@@ -197,7 +207,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__MASTER = COMPLETABLE_FEATURE_COUNT + 3;
+	int PROPERTY_FILE_DESCRIPTOR__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
@@ -206,7 +216,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = COMPLETABLE_FEATURE_COUNT + 4;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -225,7 +235,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__NAME = COMPLETABLE_FEATURE_COUNT + 0;
+	int PROJECT__NAME = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Workspace</b></em>' container reference.
@@ -234,7 +244,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__WORKSPACE = COMPLETABLE_FEATURE_COUNT + 1;
+	int PROJECT__WORKSPACE = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Versions</b></em>' containment reference list.
@@ -243,7 +253,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__VERSIONS = COMPLETABLE_FEATURE_COUNT + 2;
+	int PROJECT__VERSIONS = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Master</b></em>' containment reference.
@@ -252,7 +262,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__MASTER = COMPLETABLE_FEATURE_COUNT + 3;
+	int PROJECT__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Base</b></em>' attribute.
@@ -261,7 +271,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__BASE = COMPLETABLE_FEATURE_COUNT + 4;
+	int PROJECT__BASE = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Project</em>' class.
@@ -270,7 +280,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = COMPLETABLE_FEATURE_COUNT + 5;
+	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -289,7 +299,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__TRANSLATED = COMPLETABLE_FEATURE_COUNT + 0;
+	int PROJECT_VERSION__TRANSLATED = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Total</b></em>' attribute.
@@ -298,7 +308,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__TOTAL = COMPLETABLE_FEATURE_COUNT + 1;
+	int PROJECT_VERSION__TOTAL = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Project</b></em>' reference.
@@ -307,7 +317,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__PROJECT = COMPLETABLE_FEATURE_COUNT + 2;
+	int PROJECT_VERSION__PROJECT = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Branch</b></em>' attribute.
@@ -316,7 +326,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__BRANCH = COMPLETABLE_FEATURE_COUNT + 3;
+	int PROJECT_VERSION__BRANCH = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Locales</b></em>' containment reference list.
@@ -325,16 +335,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__LOCALES = COMPLETABLE_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Full Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_VERSION__FULL_PATH = COMPLETABLE_FEATURE_COUNT + 5;
+	int PROJECT_VERSION__LOCALES = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Master</b></em>' containment reference.
@@ -343,7 +344,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__MASTER = COMPLETABLE_FEATURE_COUNT + 6;
+	int PROJECT_VERSION__MASTER = RESOLVABLE_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Project Version</em>' class.
@@ -352,7 +353,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION_FEATURE_COUNT = COMPLETABLE_FEATURE_COUNT + 7;
+	int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
@@ -371,7 +372,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__PROJECT_VERSION = COMPLETABLE_FEATURE_COUNT + 0;
+	int PROJECT_LOCALE__PROJECT_VERSION = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Locale</b></em>' attribute.
@@ -380,7 +381,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__LOCALE = COMPLETABLE_FEATURE_COUNT + 1;
+	int PROJECT_LOCALE__LOCALE = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Descriptors</b></em>' reference list.
@@ -389,7 +390,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__DESCRIPTORS = COMPLETABLE_FEATURE_COUNT + 2;
+	int PROJECT_LOCALE__DESCRIPTORS = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Project Locale</em>' class.
@@ -398,7 +399,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE_FEATURE_COUNT = COMPLETABLE_FEATURE_COUNT + 3;
+	int PROJECT_LOCALE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -417,7 +418,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKSPACE__ROOT = 0;
+	int WORKSPACE__ROOT = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Projects</b></em>' containment reference list.
@@ -426,7 +427,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKSPACE__PROJECTS = 1;
+	int WORKSPACE__PROJECTS = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Workspace</em>' class.
@@ -435,7 +436,16 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKSPACE_FEATURE_COUNT = 2;
+	int WORKSPACE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Completable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPLETABLE_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -445,7 +455,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 8;
+	int LOCALE = 9;
 
 
 	/**
@@ -456,7 +466,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 9;
+	int URI = 10;
 
 
 	/**
@@ -545,15 +555,15 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getPropertyFileDescriptor_Variant();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getName()
+	 * @return the meta object for the attribute '<em>Location</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation()
 	 * @see #getPropertyFileDescriptor()
 	 * @generated
 	 */
-	EAttribute getPropertyFileDescriptor_Name();
+	EAttribute getPropertyFileDescriptor_Location();
 
 	/**
 	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}'.
@@ -708,17 +718,6 @@ public interface PropertiesPackage extends EPackage {
 	EReference getProjectVersion_Locales();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getFullPath <em>Full Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Full Path</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getFullPath()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EAttribute getProjectVersion_FullPath();
-
-	/**
 	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getMaster <em>Master</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -813,6 +812,16 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getCompletable();
+
+	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Resolvable <em>Resolvable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Resolvable</em>'.
+	 * @see de.jutzig.jabylon.properties.Resolvable
+	 * @generated
+	 */
+	EClass getResolvable();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -929,12 +938,12 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROPERTY_FILE_DESCRIPTOR__VARIANT = eINSTANCE.getPropertyFileDescriptor_Variant();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PROPERTY_FILE_DESCRIPTOR__NAME = eINSTANCE.getPropertyFileDescriptor_Name();
+		EAttribute PROPERTY_FILE_DESCRIPTOR__LOCATION = eINSTANCE.getPropertyFileDescriptor_Location();
 
 		/**
 		 * The meta object literal for the '<em><b>Master</b></em>' reference feature.
@@ -1053,14 +1062,6 @@ public interface PropertiesPackage extends EPackage {
 		EReference PROJECT_VERSION__LOCALES = eINSTANCE.getProjectVersion_Locales();
 
 		/**
-		 * The meta object literal for the '<em><b>Full Path</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_VERSION__FULL_PATH = eINSTANCE.getProjectVersion_FullPath();
-
-		/**
 		 * The meta object literal for the '<em><b>Master</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1137,6 +1138,16 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EClass COMPLETABLE = eINSTANCE.getCompletable();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ResolvableImpl <em>Resolvable</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ResolvableImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getResolvable()
+		 * @generated
+		 */
+		EClass RESOLVABLE = eINSTANCE.getResolvable();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

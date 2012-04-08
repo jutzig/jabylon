@@ -28,7 +28,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getVariant <em>Variant</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getPropertyFile <em>Property File</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
  * </ul>
@@ -36,7 +36,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  *
  * @generated
  */
-public class PropertyFileDescriptorImpl extends CDOObjectImpl implements PropertyFileDescriptor {
+public class PropertyFileDescriptorImpl extends ResolvableImpl implements PropertyFileDescriptor {
 	/**
 	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -48,14 +48,14 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	protected static final Locale VARIANT_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getLocation()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final URI LOCATION_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -81,16 +81,6 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Locale getVariant() {
 		return (Locale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, true, true);
 	}
@@ -109,8 +99,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return (String)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__NAME, true, true);
+	public URI getLocation() {
+		return (URI)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, true, true);
 	}
 
 	/**
@@ -118,8 +108,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__NAME, newName);
+	public void setLocation(URI newLocation) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, newLocation);
 	}
 
 	/**
@@ -197,8 +187,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
 				return getVariant();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
-				return getName();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				return getLocation();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
 				if (resolve) return getPropertyFile();
 				return basicGetPropertyFile();
@@ -220,8 +210,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
 				setVariant((Locale)newValue);
 				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
-				setName((String)newValue);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				setLocation((URI)newValue);
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				setMaster((PropertyFileDescriptor)newValue);
@@ -241,8 +231,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
 				setVariant(VARIANT_EDEFAULT);
 				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
-				setName(NAME_EDEFAULT);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				setLocation(LOCATION_EDEFAULT);
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				setMaster((PropertyFileDescriptor)null);
@@ -261,14 +251,19 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
 				return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
 				return basicGetPropertyFile() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				return basicGetMaster() != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	@Override
+	public URI relativePath() {
+		return getLocation();
 	}
 
 } //PropertyFileDescriptorImpl

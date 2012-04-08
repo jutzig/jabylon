@@ -125,38 +125,38 @@ public class PropertyFileDescriptorTest extends TestCase {
 		assertTrue(getFixture().isMaster());
 	}
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile() <em>Property File</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile()
-	 * @generated NOT
-	 */
-	public void testGetPropertyFile() {
-		assertNull(getFixture().getPropertyFile());
-		getFixture().setName("wiki_example.properties");
-		ResourceSet set = new ResourceSetImpl();
-		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Registry.DEFAULT_EXTENSION, new PropertiesResourceFactoryImpl());
-		Resource resource = set.createResource(URI.createFileURI("src"));
-		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
-		resource.getContents().add(workspace);
-		workspace.setRoot(URI.createFileURI("../"));
-		
-		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.setName("de.jutzig.jabylon.properties");
-		workspace.getProjects().add(project);
-		
-		PropertyBag bag = PropertiesFactory.eINSTANCE.createPropertyBag();
-		bag.setPath(URI.createFileURI("src/test/resources/de/jutzig/jabylon/properties/util"));
-		bag.getDescriptors().add(getFixture());
-		project.getPropertyBags().add(bag);
-		
-		PropertyFile propertyFile = getFixture().getPropertyFile();
-		assertNotNull(propertyFile);
-		assertEquals(5, propertyFile.getProperties().size());
-		
-//		resource
-	}
+//	/**
+//	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile() <em>Property File</em>}' feature getter.
+//	 * <!-- begin-user-doc -->
+//	 * <!-- end-user-doc -->
+//	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile()
+//	 * @generated NOT
+//	 */
+//	public void testGetPropertyFile() {
+//		assertNull(getFixture().getPropertyFile());
+//		getFixture().setName("wiki_example.properties");
+//		ResourceSet set = new ResourceSetImpl();
+//		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Registry.DEFAULT_EXTENSION, new PropertiesResourceFactoryImpl());
+//		Resource resource = set.createResource(URI.createFileURI("src"));
+//		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
+//		resource.getContents().add(workspace);
+//		workspace.setRoot(URI.createFileURI("../"));
+//		
+//		Project project = PropertiesFactory.eINSTANCE.createProject();
+//		project.setName("de.jutzig.jabylon.properties");
+//		workspace.getProjects().add(project);
+//		
+//		PropertyBag bag = PropertiesFactory.eINSTANCE.createPropertyBag();
+//		bag.setPath(URI.createFileURI("src/test/resources/de/jutzig/jabylon/properties/util"));
+//		bag.getDescriptors().add(getFixture());
+//		project.getPropertyBags().add(bag);
+//		
+//		PropertyFile propertyFile = getFixture().getPropertyFile();
+//		assertNotNull(propertyFile);
+//		assertEquals(5, propertyFile.getProperties().size());
+//		
+////		resource
+//	}
 
 
 

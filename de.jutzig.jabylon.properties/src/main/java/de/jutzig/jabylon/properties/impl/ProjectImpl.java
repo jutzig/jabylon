@@ -48,7 +48,7 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  *
  * @generated
  */
-public class ProjectImpl extends CDOObjectImpl implements Project {
+public class ProjectImpl extends ResolvableImpl implements Project {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -88,16 +88,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
 	}
 
 	/**
@@ -351,6 +341,11 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
 		}
 		return super.eIsSet(featureID);
+	}
+
+	@Override
+	public URI relativePath() {
+		return URI.createHierarchicalURI(new String[] {getName()}, null, null);
 	}
 
 } //ProjectImpl

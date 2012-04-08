@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Workspace;
 
@@ -15,10 +16,13 @@ public class WorkspaceScannerTest {
 	@Test
 	public void testFullScan(){
 		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
-		workspace.setRoot(URI.createFileURI("."));
+		workspace.setRoot(URI.createFileURI("src/test/resources"));
 		
 		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.setName("src");
+		project.setName("de");
+		ProjectVersion masterVersion = PropertiesFactory.eINSTANCE.createProjectVersion();
+		project.setMaster(masterVersion);
+		
 		workspace.getProjects().add(project);
 		
 		WorkspaceScanner scanner = new WorkspaceScanner();
@@ -29,7 +33,7 @@ public class WorkspaceScannerTest {
 				System.out.println(file.getAbsolutePath());
 				
 			}
-		}, project);
+		}, masterVersion);
 	}
 	
 }
