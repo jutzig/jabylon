@@ -11,7 +11,7 @@ public class WorkspaceScanner {
 	
 	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project, String include, String exclude)
 	{
-		File baseDir = new File(project.getBase().toFileString()).getAbsoluteFile();
+		File baseDir = new File(project.getFullPath().toFileString()).getAbsoluteFile();
 		searchDirectory(baseDir, include, exclude, acceptor);
 	}
 	

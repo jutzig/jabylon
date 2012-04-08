@@ -29,9 +29,8 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getName <em>Name</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getBag <em>Bag</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#isMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getPropertyFile <em>Property File</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
@@ -57,18 +56,6 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #isMaster() <em>Master</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isMaster()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean MASTER_EDEFAULT = false;
-
-
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,34 +125,6 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PropertyBag getBag() {
-		return (PropertyBag)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__BAG, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetBag(PropertyBag newBag, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newBag, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setBag(PropertyBag newBag) {
-		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__BAG, newBag);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public boolean isMaster() {
@@ -195,15 +154,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetBag((PropertyBag)otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
+	public PropertyFileDescriptor getMaster() {
+		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, true, true);
 	}
 
 	/**
@@ -211,13 +163,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				return basicSetBag(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+	public PropertyFileDescriptor basicGetMaster() {
+		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, false, true);
 	}
 
 	/**
@@ -225,13 +172,19 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch (eContainerFeatureID()) {
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				return eInternalContainer().eInverseRemove(this, PropertiesPackage.PROPERTY_BAG__DESCRIPTORS, PropertyBag.class, msgs);
-		}
-		return super.eBasicRemoveFromContainerFeature(msgs);
+	public void setMaster(PropertyFileDescriptor newMaster) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int percentComplete() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -246,13 +199,12 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 				return getVariant();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
 				return getName();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				return getBag();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-				return isMaster();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
 				if (resolve) return getPropertyFile();
 				return basicGetPropertyFile();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				if (resolve) return getMaster();
+				return basicGetMaster();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -271,8 +223,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
 				setName((String)newValue);
 				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				setBag((PropertyBag)newValue);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				setMaster((PropertyFileDescriptor)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -292,8 +244,8 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				setBag((PropertyBag)null);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				setMaster((PropertyFileDescriptor)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -311,12 +263,10 @@ public class PropertyFileDescriptorImpl extends CDOObjectImpl implements Propert
 				return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__BAG:
-				return getBag() != null;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-				return isMaster() != MASTER_EDEFAULT;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
 				return basicGetPropertyFile() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				return basicGetMaster() != null;
 		}
 		return super.eIsSet(featureID);
 	}

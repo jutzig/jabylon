@@ -73,9 +73,9 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.PROPERTY_FILE: return (EObject)createPropertyFile();
 			case PropertiesPackage.PROPERTY: return (EObject)createProperty();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR: return (EObject)createPropertyFileDescriptor();
-			case PropertiesPackage.PROPERTY_BAG: return (EObject)createPropertyBag();
 			case PropertiesPackage.PROJECT: return (EObject)createProject();
 			case PropertiesPackage.PROJECT_VERSION: return (EObject)createProjectVersion();
+			case PropertiesPackage.PROJECT_LOCALE: return (EObject)createProjectLocale();
 			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -151,16 +151,6 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PropertyBag createPropertyBag() {
-		PropertyBagImpl propertyBag = new PropertyBagImpl();
-		return propertyBag;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Project createProject() {
 		ProjectImpl project = new ProjectImpl();
 		return project;
@@ -174,6 +164,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	public ProjectVersion createProjectVersion() {
 		ProjectVersionImpl projectVersion = new ProjectVersionImpl();
 		return projectVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectLocale createProjectLocale() {
+		ProjectLocaleImpl projectLocale = new ProjectLocaleImpl();
+		return projectLocale;
 	}
 
 	/**

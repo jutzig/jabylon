@@ -19,53 +19,21 @@ import org.eclipse.emf.common.util.URI;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags <em>Property Bags</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getBase <em>Base</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getTranslated <em>Translated</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getTotal <em>Total</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getBranch <em>Branch</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getFullPath <em>Full Path</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface ProjectVersion extends CDOObject {
-	/**
-	 * Returns the value of the '<em><b>Property Bags</b></em>' containment reference list.
-	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyBag}.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyBag#getProject <em>Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Property Bags</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Property Bags</em>' containment reference list.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_PropertyBags()
-	 * @see de.jutzig.jabylon.properties.PropertyBag#getProject
-	 * @model opposite="project" containment="true"
-	 * @generated
-	 */
-	EList<PropertyBag> getPropertyBags();
-
-	/**
-	 * Returns the value of the '<em><b>Base</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Base</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Base</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Base()
-	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated
-	 */
-	URI getBase();
-
+public interface ProjectVersion extends Completable {
 	/**
 	 * Returns the value of the '<em><b>Translated</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -127,22 +95,96 @@ public interface ProjectVersion extends CDOObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Project</em>' reference.
-	 * @see #setProject(Project)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Project()
-	 * @model resolveProxies="false" transient="true" volatile="true" derived="true"
+	 * @model resolveProxies="false" transient="true" changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	Project getProject();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}' reference.
+	 * Returns the value of the '<em><b>Branch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Branch</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Project</em>' reference.
-	 * @see #getProject()
+	 * @return the value of the '<em>Branch</em>' attribute.
+	 * @see #setBranch(String)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Branch()
+	 * @model
 	 * @generated
 	 */
-	void setProject(Project value);
+	String getBranch();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectVersion#getBranch <em>Branch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Branch</em>' attribute.
+	 * @see #getBranch()
+	 * @generated
+	 */
+	void setBranch(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Locales</b></em>' containment reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.ProjectLocale}.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Locales</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Locales</em>' containment reference list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Locales()
+	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion
+	 * @model opposite="projectVersion" containment="true"
+	 * @generated
+	 */
+	EList<ProjectLocale> getLocales();
+
+	/**
+	 * Returns the value of the '<em><b>Full Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Full Path</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Full Path</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_FullPath()
+	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
+	 * @generated
+	 */
+	URI getFullPath();
+
+	/**
+	 * Returns the value of the '<em><b>Master</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Master</em>' containment reference.
+	 * @see #setMaster(ProjectLocale)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Master()
+	 * @model containment="true"
+	 * @generated
+	 */
+	ProjectLocale getMaster();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectVersion#getMaster <em>Master</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Master</em>' containment reference.
+	 * @see #getMaster()
+	 * @generated
+	 */
+	void setMaster(ProjectLocale value);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,13 +193,5 @@ public interface ProjectVersion extends CDOObject {
 	 * @generated
 	 */
 	void fullScan();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	int getPercentComplete();
 
 } // ProjectVersion

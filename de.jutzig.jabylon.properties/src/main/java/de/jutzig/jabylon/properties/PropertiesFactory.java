@@ -53,15 +53,6 @@ public interface PropertiesFactory extends EFactory {
 	PropertyFileDescriptor createPropertyFileDescriptor();
 
 	/**
-	 * Returns a new object of class '<em>Property Bag</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Property Bag</em>'.
-	 * @generated
-	 */
-	PropertyBag createPropertyBag();
-
-	/**
 	 * Returns a new object of class '<em>Project</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -78,6 +69,15 @@ public interface PropertiesFactory extends EFactory {
 	 * @generated
 	 */
 	ProjectVersion createProjectVersion();
+
+	/**
+	 * Returns a new object of class '<em>Project Locale</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Project Locale</em>'.
+	 * @generated
+	 */
+	ProjectLocale createProjectLocale();
 
 	/**
 	 * Returns a new object of class '<em>Workspace</em>'.

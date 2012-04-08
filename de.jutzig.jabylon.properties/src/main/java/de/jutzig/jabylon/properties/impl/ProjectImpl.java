@@ -42,7 +42,7 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getMaster <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getLocales <em>Locales</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getBase <em>Base</em>}</li>
  * </ul>
  * </p>
  *
@@ -59,6 +59,17 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	 */
 	protected static final String NAME_EDEFAULT = null;
 	
+
+	/**
+	 * The default value of the '{@link #getBase() <em>Base</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBase()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final URI BASE_EDEFAULT = null;
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -176,16 +187,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	public EList<Locale> getLocales() {
-		return (EList<Locale>)eDynamicGet(PropertiesPackage.PROJECT__LOCALES, PropertiesPackage.Literals.PROJECT__LOCALES, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public URI getBase() {
@@ -197,6 +198,17 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	}
 
 
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int percentComplete() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -263,8 +275,8 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return getVersions();
 			case PropertiesPackage.PROJECT__MASTER:
 				return getMaster();
-			case PropertiesPackage.PROJECT__LOCALES:
-				return getLocales();
+			case PropertiesPackage.PROJECT__BASE:
+				return getBase();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -291,10 +303,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__MASTER:
 				setMaster((ProjectVersion)newValue);
 				return;
-			case PropertiesPackage.PROJECT__LOCALES:
-				getLocales().clear();
-				getLocales().addAll((Collection<? extends Locale>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -319,9 +327,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__MASTER:
 				setMaster((ProjectVersion)null);
 				return;
-			case PropertiesPackage.PROJECT__LOCALES:
-				getLocales().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -342,8 +347,8 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 				return !getVersions().isEmpty();
 			case PropertiesPackage.PROJECT__MASTER:
 				return getMaster() != null;
-			case PropertiesPackage.PROJECT__LOCALES:
-				return !getLocales().isEmpty();
+			case PropertiesPackage.PROJECT__BASE:
+				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
 		}
 		return super.eIsSet(featureID);
 	}

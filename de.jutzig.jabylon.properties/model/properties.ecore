@@ -14,29 +14,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Locale" instanceClassName="java.util.Locale"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor">
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor" eSuperTypes="#//Completable">
+    <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bag" eType="#//PropertyBag"
-        eOpposite="#//PropertyBag/descriptors"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="master" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="propertyFile" eType="#//PropertyFile"
         changeable="false" transient="true" derived="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PropertyBag">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
-        eType="#//PropertyFileDescriptor" containment="true" eOpposite="#//PropertyFileDescriptor/bag"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="#//URI"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"
-        volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullPath" eType="#//URI"
-        changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//ProjectVersion"
-        eOpposite="#//ProjectVersion/propertyBags"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Project">
+  <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//Completable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="workspace" eType="#//Workspace"
         eOpposite="#//Workspace/projects"/>
@@ -44,24 +31,37 @@
         eType="#//ProjectVersion" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locales" unique="false"
-        upperBound="-1" eType="#//Locale"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion">
-    <eOperations name="fullScan"/>
-    <eOperations name="getPercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyBags" upperBound="-1"
-        eType="#//PropertyBag" containment="true" eOpposite="#//PropertyBag/project"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
         volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Completable">
+    <eOperations name="fullScan"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="total" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
-        volatile="true" transient="true" derived="true" resolveProxies="false"/>
+        changeable="false" volatile="true" transient="true" derived="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="branch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="locales" upperBound="-1"
+        eType="#//ProjectLocale" containment="true" resolveProxies="false" eOpposite="#//ProjectLocale/projectVersion"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullPath" eType="#//URI"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectLocale"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale" eSuperTypes="#//Completable">
+    <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="projectVersion" eType="#//ProjectVersion"
+        eOpposite="#//ProjectVersion/locales"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
+        eType="#//PropertyFileDescriptor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
         eType="#//Project" containment="true" resolveProxies="false" eOpposite="#//Project/workspace"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Completable" abstract="true" interface="true">
+    <eOperations name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
 </ecore:EPackage>

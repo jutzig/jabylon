@@ -89,10 +89,6 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 				return createPropertyFileDescriptorAdapter();
 			}
 			@Override
-			public Adapter casePropertyBag(PropertyBag object) {
-				return createPropertyBagAdapter();
-			}
-			@Override
 			public Adapter caseProject(Project object) {
 				return createProjectAdapter();
 			}
@@ -101,8 +97,16 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 				return createProjectVersionAdapter();
 			}
 			@Override
+			public Adapter caseProjectLocale(ProjectLocale object) {
+				return createProjectLocaleAdapter();
+			}
+			@Override
 			public Adapter caseWorkspace(Workspace object) {
 				return createWorkspaceAdapter();
+			}
+			@Override
+			public Adapter caseCompletable(Completable object) {
+				return createCompletableAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -167,20 +171,6 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.PropertyBag <em>Property Bag</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see de.jutzig.jabylon.properties.PropertyBag
-	 * @generated
-	 */
-	public Adapter createPropertyBagAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.Project <em>Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -209,6 +199,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ProjectLocale <em>Project Locale</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.ProjectLocale
+	 * @generated
+	 */
+	public Adapter createProjectLocaleAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.Workspace <em>Workspace</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -219,6 +223,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createWorkspaceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.Completable
+	 * @generated
+	 */
+	public Adapter createCompletableAdapter() {
 		return null;
 	}
 

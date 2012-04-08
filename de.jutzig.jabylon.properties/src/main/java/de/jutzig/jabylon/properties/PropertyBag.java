@@ -19,19 +19,16 @@ import org.eclipse.emf.common.util.URI;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getDescriptors <em>Descriptors</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getPath <em>Path</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getMaster <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getFullPath <em>Full Path</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getProject <em>Project</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyBag#getPath <em>Path</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyBag()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface PropertyBag extends CDOObject {
+public interface PropertyBag extends Completable {
 	/**
 	 * Returns the value of the '<em><b>Descriptors</b></em>' containment reference list.
 	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyFileDescriptor}.
@@ -101,48 +98,5 @@ public interface PropertyBag extends CDOObject {
 	 * @generated
 	 */
 	void setMaster(PropertyFileDescriptor value);
-
-	/**
-	 * Returns the value of the '<em><b>Full Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Full Path</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Full Path</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyBag_FullPath()
-	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated
-	 */
-	URI getFullPath();
-
-	/**
-	 * Returns the value of the '<em><b>Project</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags <em>Property Bags</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Project</em>' container reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Project</em>' container reference.
-	 * @see #setProject(ProjectVersion)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyBag_Project()
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags
-	 * @model opposite="propertyBags" transient="false"
-	 * @generated
-	 */
-	ProjectVersion getProject();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyBag#getProject <em>Project</em>}' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Project</em>' container reference.
-	 * @see #getProject()
-	 * @generated
-	 */
-	void setProject(ProjectVersion value);
 
 } // PropertyBag

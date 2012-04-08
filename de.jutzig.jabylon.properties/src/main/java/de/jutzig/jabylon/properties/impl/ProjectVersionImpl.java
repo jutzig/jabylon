@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -36,27 +37,19 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getPropertyBags <em>Property Bags</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getBase <em>Base</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTranslated <em>Translated</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTotal <em>Total</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getProject <em>Project</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getBranch <em>Branch</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getLocales <em>Locales</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getFullPath <em>Full Path</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion {
-	/**
-	 * The default value of the '{@link #getBase() <em>Base</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getBase()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final URI BASE_EDEFAULT = null;
-
 	/**
 	 * The default value of the '{@link #getTranslated() <em>Translated</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -76,6 +69,26 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	 * @ordered
 	 */
 	protected static final int TOTAL_EDEFAULT = 0;
+
+	/**
+	 * The default value of the '{@link #getBranch() <em>Branch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBranch()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String BRANCH_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getFullPath() <em>Full Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFullPath()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final URI FULL_PATH_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -104,25 +117,6 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	protected int eStaticFeatureCount() {
 		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	public EList<PropertyBag> getPropertyBags() {
-		return (EList<PropertyBag>)eDynamicGet(PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS, PropertiesPackage.Literals.PROJECT_VERSION__PROPERTY_BAGS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public URI getBase() {
-		return (URI)eDynamicGet(PropertiesPackage.PROJECT_VERSION__BASE, PropertiesPackage.Literals.PROJECT_VERSION__BASE, true, true);
 	}
 
 	/**
@@ -164,10 +158,10 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public Project getProject() {
-		return (Project)eDynamicGet(PropertiesPackage.PROJECT_VERSION__PROJECT, PropertiesPackage.Literals.PROJECT_VERSION__PROJECT, true, true);
+		return (Project)eContainer();
 	}
 
 	/**
@@ -175,8 +169,64 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setProject(Project newProject) {
-		eDynamicSet(PropertiesPackage.PROJECT_VERSION__PROJECT, PropertiesPackage.Literals.PROJECT_VERSION__PROJECT, newProject);
+	public String getBranch() {
+		return (String)eDynamicGet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBranch(String newBranch) {
+		eDynamicSet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, newBranch);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<ProjectLocale> getLocales() {
+		return (EList<ProjectLocale>)eDynamicGet(PropertiesPackage.PROJECT_VERSION__LOCALES, PropertiesPackage.Literals.PROJECT_VERSION__LOCALES, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public URI getFullPath() {
+		return (URI)eDynamicGet(PropertiesPackage.PROJECT_VERSION__FULL_PATH, PropertiesPackage.Literals.PROJECT_VERSION__FULL_PATH, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectLocale getMaster() {
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMaster(ProjectLocale newMaster, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROJECT_VERSION__MASTER, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMaster(ProjectLocale newMaster) {
+		eDynamicSet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, newMaster);
 	}
 
 	/**
@@ -185,7 +235,10 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	 * @generated NOT
 	 */
 	public void fullScan() {
-		getPropertyBags().clear();
+		EList<ProjectLocale> locales = getLocales();
+		for (ProjectLocale projectLocale : locales) {
+			projectLocale.getDescriptors().clear();
+		}
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this);
 	}
@@ -195,7 +248,7 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getPercentComplete() {
+	public int percentComplete() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -210,8 +263,8 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPropertyBags()).basicAdd(otherEnd, msgs);
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocales()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -224,8 +277,10 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				return ((InternalEList<?>)getPropertyBags()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				return ((InternalEList<?>)getLocales()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.PROJECT_VERSION__MASTER:
+				return basicSetMaster(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -238,16 +293,20 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				return getPropertyBags();
-			case PropertiesPackage.PROJECT_VERSION__BASE:
-				return getBase();
 			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
 				return getTranslated();
 			case PropertiesPackage.PROJECT_VERSION__TOTAL:
 				return getTotal();
 			case PropertiesPackage.PROJECT_VERSION__PROJECT:
 				return getProject();
+			case PropertiesPackage.PROJECT_VERSION__BRANCH:
+				return getBranch();
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				return getLocales();
+			case PropertiesPackage.PROJECT_VERSION__FULL_PATH:
+				return getFullPath();
+			case PropertiesPackage.PROJECT_VERSION__MASTER:
+				return getMaster();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -261,18 +320,21 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				getPropertyBags().clear();
-				getPropertyBags().addAll((Collection<? extends PropertyBag>)newValue);
-				return;
 			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
 				setTranslated((Integer)newValue);
 				return;
 			case PropertiesPackage.PROJECT_VERSION__TOTAL:
 				setTotal((Integer)newValue);
 				return;
-			case PropertiesPackage.PROJECT_VERSION__PROJECT:
-				setProject((Project)newValue);
+			case PropertiesPackage.PROJECT_VERSION__BRANCH:
+				setBranch((String)newValue);
+				return;
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				getLocales().clear();
+				getLocales().addAll((Collection<? extends ProjectLocale>)newValue);
+				return;
+			case PropertiesPackage.PROJECT_VERSION__MASTER:
+				setMaster((ProjectLocale)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -286,17 +348,20 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				getPropertyBags().clear();
-				return;
 			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
 				setTranslated(TRANSLATED_EDEFAULT);
 				return;
 			case PropertiesPackage.PROJECT_VERSION__TOTAL:
 				setTotal(TOTAL_EDEFAULT);
 				return;
-			case PropertiesPackage.PROJECT_VERSION__PROJECT:
-				setProject((Project)null);
+			case PropertiesPackage.PROJECT_VERSION__BRANCH:
+				setBranch(BRANCH_EDEFAULT);
+				return;
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				getLocales().clear();
+				return;
+			case PropertiesPackage.PROJECT_VERSION__MASTER:
+				setMaster((ProjectLocale)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -310,16 +375,20 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS:
-				return !getPropertyBags().isEmpty();
-			case PropertiesPackage.PROJECT_VERSION__BASE:
-				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
 			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
 				return getTranslated() != TRANSLATED_EDEFAULT;
 			case PropertiesPackage.PROJECT_VERSION__TOTAL:
 				return getTotal() != TOTAL_EDEFAULT;
 			case PropertiesPackage.PROJECT_VERSION__PROJECT:
 				return getProject() != null;
+			case PropertiesPackage.PROJECT_VERSION__BRANCH:
+				return BRANCH_EDEFAULT == null ? getBranch() != null : !BRANCH_EDEFAULT.equals(getBranch());
+			case PropertiesPackage.PROJECT_VERSION__LOCALES:
+				return !getLocales().isEmpty();
+			case PropertiesPackage.PROJECT_VERSION__FULL_PATH:
+				return FULL_PATH_EDEFAULT == null ? getFullPath() != null : !FULL_PATH_EDEFAULT.equals(getFullPath());
+			case PropertiesPackage.PROJECT_VERSION__MASTER:
+				return getMaster() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -330,14 +399,13 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 
 		@Override
 		public void newMatch(File file) {
-			PropertyBag propertyBag = PropertiesFactory.eINSTANCE.createPropertyBag();
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 			descriptor.setName(file.getName());
-			propertyBag.getDescriptors().add(descriptor);
+			if(getMaster()==null)
+				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
+			getMaster().getDescriptors().add(descriptor);
 			String absolutePath = file.getParentFile().getAbsolutePath();
-			URI bagURI = URI.createFileURI(absolutePath);
-			bagURI = bagURI.deresolve(getBase());
-			propertyBag.setPath(bagURI);
+			
 			Pattern pattern = buildPatternFrom(file);
 			File folder = file.getParentFile();
 			String[] childNames = folder.list();
@@ -348,13 +416,14 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 				if(matcher.matches())
 				{
 					PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-					fileDescriptor.setBag(propertyBag);
 					fileDescriptor.setName(child);
 					Locale locale = createVariant(matcher.group(1).substring(1));
 					fileDescriptor.setVariant(locale);
+					fileDescriptor.setMaster(descriptor);
+					ProjectLocale projectLocale = getOrCreateProjectLocale(locale);
+					projectLocale.getDescriptors().add(fileDescriptor);
 				}
-			}
-			getPropertyBags().add(propertyBag);			
+			}	
 		}
 
 		private Locale createVariant(String localeString) {
@@ -368,6 +437,27 @@ public class ProjectVersionImpl extends CDOObjectImpl implements ProjectVersion 
 			return Pattern.compile(Pattern.quote(prefix) + "((_\\w\\w){1,3})"+Pattern.quote(suffix)); //messages.properties => messages_de_DE.properties
 		}
 		
+	}
+	
+	public ProjectLocale getProjectLocale(Locale locale)
+	{
+		EList<ProjectLocale> locales = getLocales();
+		for (ProjectLocale projectLocale : locales) {
+			if(locale.equals(projectLocale.getLocale()))
+				return projectLocale;
+		}
+		return null;
+	}
+	
+	public ProjectLocale getOrCreateProjectLocale(Locale locale)
+	{
+		ProjectLocale projectLocale = getProjectLocale(locale);
+		if(projectLocale==null)
+		{
+			projectLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
+			projectLocale.setLocale(locale);
+		}
+		return projectLocale;
 	}
 	
 } //ProjectVersionImpl

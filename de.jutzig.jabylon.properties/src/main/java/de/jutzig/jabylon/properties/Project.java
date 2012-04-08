@@ -23,16 +23,15 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getLocales <em>Locales</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface Project extends CDOObject {
+public interface Project extends Completable {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -130,19 +129,18 @@ public interface Project extends CDOObject {
 	void setMaster(ProjectVersion value);
 
 	/**
-	 * Returns the value of the '<em><b>Locales</b></em>' attribute list.
-	 * The list contents are of type {@link java.util.Locale}.
+	 * Returns the value of the '<em><b>Base</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Locales</em>' attribute list isn't clear,
+	 * If the meaning of the '<em>Base</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Locales</em>' attribute list.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Locales()
-	 * @model unique="false" dataType="de.jutzig.jabylon.properties.Locale"
+	 * @return the value of the '<em>Base</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Base()
+	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
-	EList<Locale> getLocales();
+	URI getBase();
 
 } // Project

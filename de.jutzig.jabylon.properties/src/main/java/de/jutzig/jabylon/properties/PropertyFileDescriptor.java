@@ -20,18 +20,16 @@ import org.eclipse.emf.cdo.CDOObject;
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getName <em>Name</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getBag <em>Bag</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#isMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile <em>Property File</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface PropertyFileDescriptor extends CDOObject {
+public interface PropertyFileDescriptor extends Completable {
 	/**
 	 * Returns the value of the '<em><b>Variant</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -85,44 +83,13 @@ public interface PropertyFileDescriptor extends CDOObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Bag</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyBag#getDescriptors <em>Descriptors</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Bag</em>' container reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Bag</em>' container reference.
-	 * @see #setBag(PropertyBag)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Bag()
-	 * @see de.jutzig.jabylon.properties.PropertyBag#getDescriptors
-	 * @model opposite="descriptors" transient="false"
-	 * @generated
-	 */
-	PropertyBag getBag();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getBag <em>Bag</em>}' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Bag</em>' container reference.
-	 * @see #getBag()
-	 * @generated
-	 */
-	void setBag(PropertyBag value);
-
-	/**
-	 * Returns the value of the '<em><b>Master</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Master</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Master</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Master()
-	 * @model transient="true" changeable="false" volatile="true" derived="true"
+	 * @model kind="operation"
 	 * @generated
 	 */
 	boolean isMaster();
@@ -141,5 +108,31 @@ public interface PropertyFileDescriptor extends CDOObject {
 	 * @generated
 	 */
 	PropertyFile getPropertyFile();
+
+	/**
+	 * Returns the value of the '<em><b>Master</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Master</em>' reference.
+	 * @see #setMaster(PropertyFileDescriptor)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Master()
+	 * @model
+	 * @generated
+	 */
+	PropertyFileDescriptor getMaster();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Master</em>' reference.
+	 * @see #getMaster()
+	 * @generated
+	 */
+	void setMaster(PropertyFileDescriptor value);
 
 } // PropertyFileDescriptor

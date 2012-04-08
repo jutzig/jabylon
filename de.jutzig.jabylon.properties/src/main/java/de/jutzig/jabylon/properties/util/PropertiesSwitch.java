@@ -91,30 +91,40 @@ public class PropertiesSwitch<T> extends Switch<T> {
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR: {
 				PropertyFileDescriptor propertyFileDescriptor = (PropertyFileDescriptor)theEObject;
 				T result = casePropertyFileDescriptor(propertyFileDescriptor);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case PropertiesPackage.PROPERTY_BAG: {
-				PropertyBag propertyBag = (PropertyBag)theEObject;
-				T result = casePropertyBag(propertyBag);
+				if (result == null) result = caseCompletable(propertyFileDescriptor);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case PropertiesPackage.PROJECT: {
 				Project project = (Project)theEObject;
 				T result = caseProject(project);
+				if (result == null) result = caseCompletable(project);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case PropertiesPackage.PROJECT_VERSION: {
 				ProjectVersion projectVersion = (ProjectVersion)theEObject;
 				T result = caseProjectVersion(projectVersion);
+				if (result == null) result = caseCompletable(projectVersion);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertiesPackage.PROJECT_LOCALE: {
+				ProjectLocale projectLocale = (ProjectLocale)theEObject;
+				T result = caseProjectLocale(projectLocale);
+				if (result == null) result = caseCompletable(projectLocale);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case PropertiesPackage.WORKSPACE: {
 				Workspace workspace = (Workspace)theEObject;
 				T result = caseWorkspace(workspace);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertiesPackage.COMPLETABLE: {
+				Completable completable = (Completable)theEObject;
+				T result = caseCompletable(completable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -168,21 +178,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Property Bag</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Property Bag</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T casePropertyBag(PropertyBag object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Project</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -213,6 +208,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Project Locale</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Project Locale</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseProjectLocale(ProjectLocale object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Workspace</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -224,6 +234,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseWorkspace(Workspace object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Completable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Completable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCompletable(Completable object) {
 		return null;
 	}
 
