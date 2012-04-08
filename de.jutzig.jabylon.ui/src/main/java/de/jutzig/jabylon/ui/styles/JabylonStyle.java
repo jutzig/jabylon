@@ -1,7 +1,8 @@
 package de.jutzig.jabylon.ui.styles;
 
 public enum JabylonStyle {
-	APPLICATION_TITLE("jabylon-application-title");
+	APPLICATION_TITLE("jabylon-application-title"),
+	BREADCRUMB_PANEL("jayblon-breadcrumb-panel");
 	
 	
 	String cssName;

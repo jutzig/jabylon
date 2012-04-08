@@ -73,21 +73,46 @@ public class MainDashboard extends Application implements TransactionListener, C
 	}
 
 	private Component createHeader() {
+//		Label title = new Label();
+//		title.setCaption("Jabylon");
+//		title.setStyleName(Reindeer.LABEL_H1);
+//		
+//		HorizontalLayout header = new HorizontalLayout();
+//		
+//		header.setSpacing(true);
+//		header.addComponent(title);
+//		
+//		header.addStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
+//		BreadCrumbImpl crumbs = new BreadCrumbImpl();
+//		breadcrumbs = crumbs;
+//		header.addComponent(crumbs);
+//		return header;
+		
+		
+        HorizontalLayout nav = new HorizontalLayout();
+        nav.setHeight("30px");
+        nav.setWidth("100%");
+        nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
+        nav.setSpacing(true);
+//        nav.setMargin(false, true, false, false);
+
+        // Upper left logo
 		Label title = new Label();
 		title.setCaption("Jabylon");
-		title.setStyleName(Reindeer.LABEL_H1);
-//		title.addStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
-		
-		HorizontalLayout header = new HorizontalLayout();
-		header.setMargin(true);
-		header.setSpacing(true);
-
-		
-		header.addComponent(title);
+		title.setWidth(150, Label.UNITS_PIXELS);
+//		title.setStyleName(Reindeer.LABEL_H1);
+		title.setStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
+        nav.addComponent(title);
+        nav.setComponentAlignment(title, Alignment.TOP_LEFT);
+        
+        // Breadcrumbs
 		BreadCrumbImpl crumbs = new BreadCrumbImpl();
 		breadcrumbs = crumbs;
-		header.addComponent(crumbs);
-		return header;
+		nav.addComponent(crumbs);
+        nav.setExpandRatio(crumbs, 1);
+        nav.setComponentAlignment(crumbs, Alignment.TOP_LEFT);
+        
+        return nav;
 	}
 
 	public HorizontalLayout createToolbar() {
