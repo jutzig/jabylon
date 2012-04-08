@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import de.jutzig.jabylon.properties.ProjectVersion;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -161,8 +162,8 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Project getProject() {
-		return (Project)eDynamicGet(PropertiesPackage.PROPERTY_BAG__PROJECT, PropertiesPackage.Literals.PROPERTY_BAG__PROJECT, true, true);
+	public ProjectVersion getProject() {
+		return (ProjectVersion)eDynamicGet(PropertiesPackage.PROPERTY_BAG__PROJECT, PropertiesPackage.Literals.PROPERTY_BAG__PROJECT, true, true);
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetProject(Project newProject, NotificationChain msgs) {
+	public NotificationChain basicSetProject(ProjectVersion newProject, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newProject, PropertiesPackage.PROPERTY_BAG__PROJECT, msgs);
 		return msgs;
 	}
@@ -180,7 +181,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setProject(Project newProject) {
+	public void setProject(ProjectVersion newProject) {
 		eDynamicSet(PropertiesPackage.PROPERTY_BAG__PROJECT, PropertiesPackage.Literals.PROPERTY_BAG__PROJECT, newProject);
 	}
 
@@ -198,7 +199,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 			case PropertiesPackage.PROPERTY_BAG__PROJECT:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetProject((Project)otherEnd, msgs);
+				return basicSetProject((ProjectVersion)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -228,7 +229,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 			case PropertiesPackage.PROPERTY_BAG__PROJECT:
-				return eInternalContainer().eInverseRemove(this, PropertiesPackage.PROJECT__PROPERTY_BAGS, Project.class, msgs);
+				return eInternalContainer().eInverseRemove(this, PropertiesPackage.PROJECT_VERSION__PROPERTY_BAGS, ProjectVersion.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -276,7 +277,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 				setMaster((PropertyFileDescriptor)newValue);
 				return;
 			case PropertiesPackage.PROPERTY_BAG__PROJECT:
-				setProject((Project)newValue);
+				setProject((ProjectVersion)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -300,7 +301,7 @@ public class PropertyBagImpl extends CDOObjectImpl implements PropertyBag {
 				setMaster((PropertyFileDescriptor)null);
 				return;
 			case PropertiesPackage.PROPERTY_BAG__PROJECT:
-				setProject((Project)null);
+				setProject((ProjectVersion)null);
 				return;
 		}
 		super.eUnset(featureID);

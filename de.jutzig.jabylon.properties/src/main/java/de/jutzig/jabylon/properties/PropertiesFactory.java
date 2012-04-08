@@ -71,6 +71,15 @@ public interface PropertiesFactory extends EFactory {
 	Project createProject();
 
 	/**
+	 * Returns a new object of class '<em>Project Version</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Project Version</em>'.
+	 * @generated
+	 */
+	ProjectVersion createProjectVersion();
+
+	/**
 	 * Returns a new object of class '<em>Workspace</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -78,15 +87,6 @@ public interface PropertiesFactory extends EFactory {
 	 * @generated
 	 */
 	Workspace createWorkspace();
-
-	/**
-	 * Returns a new object of class '<em>Project Stats</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Project Stats</em>'.
-	 * @generated
-	 */
-	ProjectStats createProjectStats();
 
 	/**
 	 * Returns the package supported by this factory.

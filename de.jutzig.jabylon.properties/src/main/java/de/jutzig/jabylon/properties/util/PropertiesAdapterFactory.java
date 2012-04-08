@@ -97,12 +97,12 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 				return createProjectAdapter();
 			}
 			@Override
-			public Adapter caseWorkspace(Workspace object) {
-				return createWorkspaceAdapter();
+			public Adapter caseProjectVersion(ProjectVersion object) {
+				return createProjectVersionAdapter();
 			}
 			@Override
-			public Adapter caseProjectStats(ProjectStats object) {
-				return createProjectStatsAdapter();
+			public Adapter caseWorkspace(Workspace object) {
+				return createWorkspaceAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -195,6 +195,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion
+	 * @generated
+	 */
+	public Adapter createProjectVersionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.Workspace <em>Workspace</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -205,20 +219,6 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createWorkspaceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ProjectStats <em>Project Stats</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see de.jutzig.jabylon.properties.ProjectStats
-	 * @generated
-	 */
-	public Adapter createProjectStatsAdapter() {
 		return null;
 	}
 

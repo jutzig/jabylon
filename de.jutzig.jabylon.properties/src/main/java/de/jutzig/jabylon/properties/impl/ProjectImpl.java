@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.ProjectStats;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -38,10 +39,9 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getName <em>Name</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getPropertyBags <em>Property Bags</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getWorkspace <em>Workspace</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getBase <em>Base</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getStats <em>Stats</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getVersions <em>Versions</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,16 +58,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	 */
 	protected static final String NAME_EDEFAULT = null;
 	
-
-	/**
-	 * The default value of the '{@link #getBase() <em>Base</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getBase()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final URI BASE_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -121,16 +111,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	public EList<PropertyBag> getPropertyBags() {
-		return (EList<PropertyBag>)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_BAGS, PropertiesPackage.Literals.PROJECT__PROPERTY_BAGS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Workspace getWorkspace() {
 		return (Workspace)eDynamicGet(PropertiesPackage.PROJECT__WORKSPACE, PropertiesPackage.Literals.PROJECT__WORKSPACE, true, true);
 	}
@@ -157,6 +137,44 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<ProjectVersion> getVersions() {
+		return (EList<ProjectVersion>)eDynamicGet(PropertiesPackage.PROJECT__VERSIONS, PropertiesPackage.Literals.PROJECT__VERSIONS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectVersion getMaster() {
+		return (ProjectVersion)eDynamicGet(PropertiesPackage.PROJECT__MASTER, PropertiesPackage.Literals.PROJECT__MASTER, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMaster(ProjectVersion newMaster, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROJECT__MASTER, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMaster(ProjectVersion newMaster) {
+		eDynamicSet(PropertiesPackage.PROJECT__MASTER, PropertiesPackage.Literals.PROJECT__MASTER, newMaster);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public URI getBase() {
@@ -167,44 +185,7 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 		return getWorkspace().getRoot().appendSegment(getName());
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ProjectStats getStats() {
-		return (ProjectStats)eDynamicGet(PropertiesPackage.PROJECT__STATS, PropertiesPackage.Literals.PROJECT__STATS, true, true);
-	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetStats(ProjectStats newStats, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newStats, PropertiesPackage.PROJECT__STATS, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setStats(ProjectStats newStats) {
-		eDynamicSet(PropertiesPackage.PROJECT__STATS, PropertiesPackage.Literals.PROJECT__STATS, newStats);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public void fullScan() {
-		getPropertyBags().clear();
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		scanner.fullScan(new FileAcceptor(), this);
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -215,8 +196,6 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPropertyBags()).basicAdd(otherEnd, msgs);
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
@@ -233,12 +212,12 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				return ((InternalEList<?>)getPropertyBags()).basicRemove(otherEnd, msgs);
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				return basicSetWorkspace(null, msgs);
-			case PropertiesPackage.PROJECT__STATS:
-				return basicSetStats(null, msgs);
+			case PropertiesPackage.PROJECT__VERSIONS:
+				return ((InternalEList<?>)getVersions()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.PROJECT__MASTER:
+				return basicSetMaster(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -267,14 +246,12 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT__NAME:
 				return getName();
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				return getPropertyBags();
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				return getWorkspace();
-			case PropertiesPackage.PROJECT__BASE:
-				return getBase();
-			case PropertiesPackage.PROJECT__STATS:
-				return getStats();
+			case PropertiesPackage.PROJECT__VERSIONS:
+				return getVersions();
+			case PropertiesPackage.PROJECT__MASTER:
+				return getMaster();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -291,15 +268,15 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__NAME:
 				setName((String)newValue);
 				return;
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				getPropertyBags().clear();
-				getPropertyBags().addAll((Collection<? extends PropertyBag>)newValue);
-				return;
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				setWorkspace((Workspace)newValue);
 				return;
-			case PropertiesPackage.PROJECT__STATS:
-				setStats((ProjectStats)newValue);
+			case PropertiesPackage.PROJECT__VERSIONS:
+				getVersions().clear();
+				getVersions().addAll((Collection<? extends ProjectVersion>)newValue);
+				return;
+			case PropertiesPackage.PROJECT__MASTER:
+				setMaster((ProjectVersion)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -316,14 +293,14 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 			case PropertiesPackage.PROJECT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				getPropertyBags().clear();
-				return;
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				setWorkspace((Workspace)null);
 				return;
-			case PropertiesPackage.PROJECT__STATS:
-				setStats((ProjectStats)null);
+			case PropertiesPackage.PROJECT__VERSIONS:
+				getVersions().clear();
+				return;
+			case PropertiesPackage.PROJECT__MASTER:
+				setMaster((ProjectVersion)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -339,61 +316,14 @@ public class ProjectImpl extends CDOObjectImpl implements Project {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case PropertiesPackage.PROJECT__PROPERTY_BAGS:
-				return !getPropertyBags().isEmpty();
 			case PropertiesPackage.PROJECT__WORKSPACE:
 				return getWorkspace() != null;
-			case PropertiesPackage.PROJECT__BASE:
-				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
-			case PropertiesPackage.PROJECT__STATS:
-				return getStats() != null;
+			case PropertiesPackage.PROJECT__VERSIONS:
+				return !getVersions().isEmpty();
+			case PropertiesPackage.PROJECT__MASTER:
+				return getMaster() != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	class FileAcceptor implements PropertyFileAcceptor
-	{
-
-		@Override
-		public void newMatch(File file) {
-			PropertyBag propertyBag = PropertiesFactory.eINSTANCE.createPropertyBag();
-			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-			descriptor.setName(file.getName());
-			propertyBag.getDescriptors().add(descriptor);
-			String absolutePath = file.getParentFile().getAbsolutePath();
-			URI bagURI = URI.createFileURI(absolutePath);
-			bagURI = bagURI.deresolve(getBase());
-			propertyBag.setPath(bagURI);
-			Pattern pattern = buildPatternFrom(file);
-			File folder = file.getParentFile();
-			String[] childNames = folder.list();
-			for (String child : childNames) {
-				if(child.equals(file.getName()))
-					continue;
-				Matcher matcher = pattern.matcher(child);
-				if(matcher.matches())
-				{
-					PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-					fileDescriptor.setBag(propertyBag);
-					fileDescriptor.setName(child);
-					Locale locale = createVariant(matcher.group(1).substring(1));
-					fileDescriptor.setVariant(locale);
-				}
-			}
-			getPropertyBags().add(propertyBag);			
-		}
-
-		private Locale createVariant(String localeString) {
-			return (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeString);
-		}
-
-		private Pattern buildPatternFrom(File file) {
-			int separator = file.getName().lastIndexOf(".");
-			String prefix = file.getName().substring(0,separator);
-			String suffix = file.getName().substring(separator);
-			return Pattern.compile(Pattern.quote(prefix) + "((_\\w\\w){1,3})"+Pattern.quote(suffix)); //messages.properties => messages_de_DE.properties
-		}
-		
 	}
 
 } //ProjectImpl

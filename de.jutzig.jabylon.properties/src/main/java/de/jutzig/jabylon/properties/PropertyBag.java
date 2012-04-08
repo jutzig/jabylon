@@ -119,7 +119,7 @@ public interface PropertyBag extends CDOObject {
 
 	/**
 	 * Returns the value of the '<em><b>Project</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.Project#getPropertyBags <em>Property Bags</em>}'.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags <em>Property Bags</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Project</em>' container reference isn't clear,
@@ -127,13 +127,13 @@ public interface PropertyBag extends CDOObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Project</em>' container reference.
-	 * @see #setProject(Project)
+	 * @see #setProject(ProjectVersion)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyBag_Project()
-	 * @see de.jutzig.jabylon.properties.Project#getPropertyBags
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags
 	 * @model opposite="propertyBags" transient="false"
 	 * @generated
 	 */
-	Project getProject();
+	ProjectVersion getProject();
 
 	/**
 	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyBag#getProject <em>Project</em>}' container reference.
@@ -143,6 +143,6 @@ public interface PropertyBag extends CDOObject {
 	 * @see #getProject()
 	 * @generated
 	 */
-	void setProject(Project value);
+	void setProject(ProjectVersion value);
 
 } // PropertyBag

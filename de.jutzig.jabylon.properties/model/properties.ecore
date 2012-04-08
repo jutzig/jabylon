@@ -32,30 +32,34 @@
         volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullPath" eType="#//URI"
         changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
-        eOpposite="#//Project/propertyBags"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//ProjectVersion"
+        eOpposite="#//ProjectVersion/propertyBags"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
   <eClassifiers xsi:type="ecore:EClass" name="Project">
-    <eOperations name="fullScan"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyBags" upperBound="-1"
-        eType="#//PropertyBag" containment="true" eOpposite="#//PropertyBag/project"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="workspace" eType="#//Workspace"
         eOpposite="#//Workspace/projects"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="versions" upperBound="-1"
+        eType="#//ProjectVersion" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion">
+    <eOperations name="fullScan"/>
+    <eOperations name="getPercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyBags" upperBound="-1"
+        eType="#//PropertyBag" containment="true" eOpposite="#//PropertyBag/project"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
         volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stats" eType="#//ProjectStats"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="total" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
+        volatile="true" transient="true" derived="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
-        eType="#//Project" containment="true" eOpposite="#//Project/workspace"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectStats">
-    <eOperations name="getPercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="total" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        eType="#//Project" containment="true" resolveProxies="false" eOpposite="#//Project/workspace"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -282,40 +282,31 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Property Bags</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT__PROPERTY_BAGS = 1;
-
-	/**
 	 * The feature id for the '<em><b>Workspace</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__WORKSPACE = 2;
+	int PROJECT__WORKSPACE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Base</b></em>' attribute.
+	 * The feature id for the '<em><b>Versions</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__BASE = 3;
+	int PROJECT__VERSIONS = 2;
 
 	/**
-	 * The feature id for the '<em><b>Stats</b></em>' containment reference.
+	 * The feature id for the '<em><b>Master</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__STATS = 4;
+	int PROJECT__MASTER = 3;
 
 	/**
 	 * The number of structural features of the '<em>Project</em>' class.
@@ -324,7 +315,71 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = 5;
+	int PROJECT_FEATURE_COUNT = 4;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ProjectVersionImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectVersion()
+	 * @generated
+	 */
+	int PROJECT_VERSION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Property Bags</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__PROPERTY_BAGS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Base</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__BASE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Translated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__TRANSLATED = 2;
+
+	/**
+	 * The feature id for the '<em><b>Total</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__TOTAL = 3;
+
+	/**
+	 * The feature id for the '<em><b>Project</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__PROJECT = 4;
+
+	/**
+	 * The number of structural features of the '<em>Project Version</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -334,7 +389,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getWorkspace()
 	 * @generated
 	 */
-	int WORKSPACE = 5;
+	int WORKSPACE = 6;
 
 	/**
 	 * The feature id for the '<em><b>Root</b></em>' attribute.
@@ -362,43 +417,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @ordered
 	 */
 	int WORKSPACE_FEATURE_COUNT = 2;
-
-	/**
-	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectStatsImpl <em>Project Stats</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.impl.ProjectStatsImpl
-	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectStats()
-	 * @generated
-	 */
-	int PROJECT_STATS = 6;
-
-	/**
-	 * The feature id for the '<em><b>Translated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_STATS__TRANSLATED = 0;
-
-	/**
-	 * The feature id for the '<em><b>Total</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_STATS__TOTAL = 1;
-
-	/**
-	 * The number of structural features of the '<em>Project Stats</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_STATS_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -638,17 +656,6 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProject_Name();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Project#getPropertyBags <em>Property Bags</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Property Bags</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getPropertyBags()
-	 * @see #getProject()
-	 * @generated
-	 */
-	EReference getProject_PropertyBags();
-
-	/**
 	 * Returns the meta object for the container reference '{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -660,26 +667,91 @@ public interface PropertiesPackage extends EPackage {
 	EReference getProject_Workspace();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}'.
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Versions</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getVersions()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EReference getProject_Versions();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Master</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getMaster()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EReference getProject_Master();
+
+	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Project Version</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion
+	 * @generated
+	 */
+	EClass getProjectVersion();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags <em>Property Bags</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Property Bags</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getPropertyBags()
+	 * @see #getProjectVersion()
+	 * @generated
+	 */
+	EReference getProjectVersion_PropertyBags();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getBase <em>Base</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Base</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getBase()
-	 * @see #getProject()
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getBase()
+	 * @see #getProjectVersion()
 	 * @generated
 	 */
-	EAttribute getProject_Base();
+	EAttribute getProjectVersion_Base();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}'.
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getTranslated <em>Translated</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Stats</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getStats()
-	 * @see #getProject()
+	 * @return the meta object for the attribute '<em>Translated</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getTranslated()
+	 * @see #getProjectVersion()
 	 * @generated
 	 */
-	EReference getProject_Stats();
+	EAttribute getProjectVersion_Translated();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getTotal <em>Total</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Total</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getTotal()
+	 * @see #getProjectVersion()
+	 * @generated
+	 */
+	EAttribute getProjectVersion_Total();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Project</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProject()
+	 * @see #getProjectVersion()
+	 * @generated
+	 */
+	EReference getProjectVersion_Project();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Workspace <em>Workspace</em>}'.
@@ -712,38 +784,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getWorkspace_Projects();
-
-	/**
-	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectStats <em>Project Stats</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Project Stats</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectStats
-	 * @generated
-	 */
-	EClass getProjectStats();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectStats#getTranslated <em>Translated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Translated</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectStats#getTranslated()
-	 * @see #getProjectStats()
-	 * @generated
-	 */
-	EAttribute getProjectStats_Translated();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectStats#getTotal <em>Total</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Total</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectStats#getTotal()
-	 * @see #getProjectStats()
-	 * @generated
-	 */
-	EAttribute getProjectStats_Total();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -960,14 +1000,6 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROJECT__NAME = eINSTANCE.getProject_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Property Bags</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT__PROPERTY_BAGS = eINSTANCE.getProject_PropertyBags();
-
-		/**
 		 * The meta object literal for the '<em><b>Workspace</b></em>' container reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -976,20 +1008,70 @@ public interface PropertiesPackage extends EPackage {
 		EReference PROJECT__WORKSPACE = eINSTANCE.getProject_Workspace();
 
 		/**
+		 * The meta object literal for the '<em><b>Versions</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROJECT__VERSIONS = eINSTANCE.getProject_Versions();
+
+		/**
+		 * The meta object literal for the '<em><b>Master</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROJECT__MASTER = eINSTANCE.getProject_Master();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ProjectVersionImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectVersion()
+		 * @generated
+		 */
+		EClass PROJECT_VERSION = eINSTANCE.getProjectVersion();
+
+		/**
+		 * The meta object literal for the '<em><b>Property Bags</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROJECT_VERSION__PROPERTY_BAGS = eINSTANCE.getProjectVersion_PropertyBags();
+
+		/**
 		 * The meta object literal for the '<em><b>Base</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PROJECT__BASE = eINSTANCE.getProject_Base();
+		EAttribute PROJECT_VERSION__BASE = eINSTANCE.getProjectVersion_Base();
 
 		/**
-		 * The meta object literal for the '<em><b>Stats</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Translated</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PROJECT__STATS = eINSTANCE.getProject_Stats();
+		EAttribute PROJECT_VERSION__TRANSLATED = eINSTANCE.getProjectVersion_Translated();
+
+		/**
+		 * The meta object literal for the '<em><b>Total</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT_VERSION__TOTAL = eINSTANCE.getProjectVersion_Total();
+
+		/**
+		 * The meta object literal for the '<em><b>Project</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROJECT_VERSION__PROJECT = eINSTANCE.getProjectVersion_Project();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -1016,32 +1098,6 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference WORKSPACE__PROJECTS = eINSTANCE.getWorkspace_Projects();
-
-		/**
-		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectStatsImpl <em>Project Stats</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see de.jutzig.jabylon.properties.impl.ProjectStatsImpl
-		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getProjectStats()
-		 * @generated
-		 */
-		EClass PROJECT_STATS = eINSTANCE.getProjectStats();
-
-		/**
-		 * The meta object literal for the '<em><b>Translated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_STATS__TRANSLATED = eINSTANCE.getProjectStats_Translated();
-
-		/**
-		 * The meta object literal for the '<em><b>Total</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_STATS__TOTAL = eINSTANCE.getProjectStats_Total();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

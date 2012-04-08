@@ -5,10 +5,11 @@ import java.io.File;
 import org.apache.tools.ant.types.selectors.SelectorUtils;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 
 public class WorkspaceScanner {
 	
-	public void fullScan(PropertyFileAcceptor acceptor, Project project, String include, String exclude)
+	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project, String include, String exclude)
 	{
 		File baseDir = new File(project.getBase().toFileString()).getAbsoluteFile();
 		searchDirectory(baseDir, include, exclude, acceptor);
@@ -41,7 +42,7 @@ public class WorkspaceScanner {
 	}
 
 
-	public void fullScan(PropertyFileAcceptor acceptor, Project project)
+	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project)
 	{
 		fullScan(acceptor, project, "/**/messages.properties",null);
 	}

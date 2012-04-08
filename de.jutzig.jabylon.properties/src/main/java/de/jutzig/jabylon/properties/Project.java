@@ -19,10 +19,9 @@ import org.eclipse.emf.common.util.URI;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getName <em>Name</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getPropertyBags <em>Property Bags</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
  * </ul>
  * </p>
  *
@@ -59,24 +58,6 @@ public interface Project extends CDOObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Property Bags</b></em>' containment reference list.
-	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyBag}.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyBag#getProject <em>Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Property Bags</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Property Bags</em>' containment reference list.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_PropertyBags()
-	 * @see de.jutzig.jabylon.properties.PropertyBag#getProject
-	 * @model opposite="project" containment="true"
-	 * @generated
-	 */
-	EList<PropertyBag> getPropertyBags();
-
-	/**
 	 * Returns the value of the '<em><b>Workspace</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.Workspace#getProjects <em>Projects</em>}'.
 	 * <!-- begin-user-doc -->
@@ -105,52 +86,45 @@ public interface Project extends CDOObject {
 	void setWorkspace(Workspace value);
 
 	/**
-	 * Returns the value of the '<em><b>Base</b></em>' attribute.
+	 * Returns the value of the '<em><b>Versions</b></em>' containment reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.ProjectVersion}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Base</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Versions</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Base</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Base()
-	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated
-	 */
-	URI getBase();
-
-	/**
-	 * Returns the value of the '<em><b>Stats</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Stats</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Stats</em>' containment reference.
-	 * @see #setStats(ProjectStats)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Stats()
+	 * @return the value of the '<em>Versions</em>' containment reference list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Versions()
 	 * @model containment="true"
 	 * @generated
 	 */
-	ProjectStats getStats();
+	EList<ProjectVersion> getVersions();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getStats <em>Stats</em>}' containment reference.
+	 * Returns the value of the '<em><b>Master</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Stats</em>' containment reference.
-	 * @see #getStats()
+	 * @return the value of the '<em>Master</em>' containment reference.
+	 * @see #setMaster(ProjectVersion)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Master()
+	 * @model containment="true"
 	 * @generated
 	 */
-	void setStats(ProjectStats value);
+	ProjectVersion getMaster();
 
 	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
+	 * @param value the new value of the '<em>Master</em>' containment reference.
+	 * @see #getMaster()
 	 * @generated
 	 */
-	void fullScan();
+	void setMaster(ProjectVersion value);
 
 } // Project

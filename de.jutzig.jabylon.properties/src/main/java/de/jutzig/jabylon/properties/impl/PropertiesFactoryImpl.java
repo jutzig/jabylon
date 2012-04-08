@@ -75,8 +75,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR: return (EObject)createPropertyFileDescriptor();
 			case PropertiesPackage.PROPERTY_BAG: return (EObject)createPropertyBag();
 			case PropertiesPackage.PROJECT: return (EObject)createProject();
+			case PropertiesPackage.PROJECT_VERSION: return (EObject)createProjectVersion();
 			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
-			case PropertiesPackage.PROJECT_STATS: return (EObject)createProjectStats();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -171,9 +171,9 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Workspace createWorkspace() {
-		WorkspaceImpl workspace = new WorkspaceImpl();
-		return workspace;
+	public ProjectVersion createProjectVersion() {
+		ProjectVersionImpl projectVersion = new ProjectVersionImpl();
+		return projectVersion;
 	}
 
 	/**
@@ -181,9 +181,9 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ProjectStats createProjectStats() {
-		ProjectStatsImpl projectStats = new ProjectStatsImpl();
-		return projectStats;
+	public Workspace createWorkspace() {
+		WorkspaceImpl workspace = new WorkspaceImpl();
+		return workspace;
 	}
 
 	/**

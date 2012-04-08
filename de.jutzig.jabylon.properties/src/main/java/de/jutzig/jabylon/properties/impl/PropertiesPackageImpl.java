@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.ProjectStats;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -72,14 +73,14 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass workspaceEClass = null;
+	private EClass projectVersionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass projectStatsEClass = null;
+	private EClass workspaceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -341,7 +342,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProject_PropertyBags() {
+	public EReference getProject_Workspace() {
 		return (EReference)projectEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -350,7 +351,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProject_Workspace() {
+	public EReference getProject_Versions() {
 		return (EReference)projectEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -359,8 +360,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getProject_Base() {
-		return (EAttribute)projectEClass.getEStructuralFeatures().get(3);
+	public EReference getProject_Master() {
+		return (EReference)projectEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -368,8 +369,53 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProject_Stats() {
-		return (EReference)projectEClass.getEStructuralFeatures().get(4);
+	public EClass getProjectVersion() {
+		return projectVersionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProjectVersion_PropertyBags() {
+		return (EReference)projectVersionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProjectVersion_Base() {
+		return (EAttribute)projectVersionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProjectVersion_Translated() {
+		return (EAttribute)projectVersionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProjectVersion_Total() {
+		return (EAttribute)projectVersionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProjectVersion_Project() {
+		return (EReference)projectVersionEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -397,33 +443,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 */
 	public EReference getWorkspace_Projects() {
 		return (EReference)workspaceEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getProjectStats() {
-		return projectStatsEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getProjectStats_Translated() {
-		return (EAttribute)projectStatsEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getProjectStats_Total() {
-		return (EAttribute)projectStatsEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -496,18 +515,20 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		projectEClass = createEClass(PROJECT);
 		createEAttribute(projectEClass, PROJECT__NAME);
-		createEReference(projectEClass, PROJECT__PROPERTY_BAGS);
 		createEReference(projectEClass, PROJECT__WORKSPACE);
-		createEAttribute(projectEClass, PROJECT__BASE);
-		createEReference(projectEClass, PROJECT__STATS);
+		createEReference(projectEClass, PROJECT__VERSIONS);
+		createEReference(projectEClass, PROJECT__MASTER);
+
+		projectVersionEClass = createEClass(PROJECT_VERSION);
+		createEReference(projectVersionEClass, PROJECT_VERSION__PROPERTY_BAGS);
+		createEAttribute(projectVersionEClass, PROJECT_VERSION__BASE);
+		createEAttribute(projectVersionEClass, PROJECT_VERSION__TRANSLATED);
+		createEAttribute(projectVersionEClass, PROJECT_VERSION__TOTAL);
+		createEReference(projectVersionEClass, PROJECT_VERSION__PROJECT);
 
 		workspaceEClass = createEClass(WORKSPACE);
 		createEAttribute(workspaceEClass, WORKSPACE__ROOT);
 		createEReference(workspaceEClass, WORKSPACE__PROJECTS);
-
-		projectStatsEClass = createEClass(PROJECT_STATS);
-		createEAttribute(projectStatsEClass, PROJECT_STATS__TRANSLATED);
-		createEAttribute(projectStatsEClass, PROJECT_STATS__TOTAL);
 
 		// Create data types
 		localeEDataType = createEDataType(LOCALE);
@@ -564,26 +585,28 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getPropertyBag_Path(), this.getURI(), "path", null, 0, 1, PropertyBag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPropertyBag_Master(), this.getPropertyFileDescriptor(), null, "master", null, 0, 1, PropertyBag.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyBag_FullPath(), this.getURI(), "fullPath", null, 0, 1, PropertyBag.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getPropertyBag_Project(), this.getProject(), this.getProject_PropertyBags(), "project", null, 0, 1, PropertyBag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPropertyBag_Project(), this.getProjectVersion(), this.getProjectVersion_PropertyBags(), "project", null, 0, 1, PropertyBag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProject_Name(), ecorePackage.getEString(), "name", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProject_PropertyBags(), this.getPropertyBag(), this.getPropertyBag_Project(), "propertyBags", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Workspace(), this.getWorkspace(), this.getWorkspace_Projects(), "workspace", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProject_Base(), this.getURI(), "base", null, 0, 1, Project.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getProject_Stats(), this.getProjectStats(), null, "stats", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProject_Versions(), this.getProjectVersion(), null, "versions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProject_Master(), this.getProjectVersion(), null, "master", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(projectEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getProjectVersion_PropertyBags(), this.getPropertyBag(), this.getPropertyBag_Project(), "propertyBags", null, 0, -1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProjectVersion_Base(), this.getURI(), "base", null, 0, 1, ProjectVersion.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProjectVersion_Translated(), ecorePackage.getEInt(), "translated", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProjectVersion_Total(), ecorePackage.getEInt(), "total", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProjectVersion_Project(), this.getProject(), null, "project", null, 0, 1, ProjectVersion.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+
+		addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(projectVersionEClass, ecorePackage.getEInt(), "getPercentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(workspaceEClass, Workspace.class, "Workspace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getWorkspace_Root(), this.getURI(), "root", null, 0, 1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkspace_Projects(), this.getProject(), this.getProject_Workspace(), "projects", null, 0, -1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(projectStatsEClass, ProjectStats.class, "ProjectStats", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProjectStats_Translated(), ecorePackage.getEInt(), "translated", null, 0, 1, ProjectStats.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProjectStats_Total(), ecorePackage.getEInt(), "total", null, 0, 1, ProjectStats.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		addEOperation(projectStatsEClass, ecorePackage.getEInt(), "getPercentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(localeEDataType, Locale.class, "Locale", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
