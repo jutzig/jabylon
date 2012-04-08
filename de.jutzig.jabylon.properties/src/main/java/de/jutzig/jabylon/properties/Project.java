@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties;
 
+import java.util.Locale;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -22,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getLocales <em>Locales</em>}</li>
  * </ul>
  * </p>
  *
@@ -126,5 +128,21 @@ public interface Project extends CDOObject {
 	 * @generated
 	 */
 	void setMaster(ProjectVersion value);
+
+	/**
+	 * Returns the value of the '<em><b>Locales</b></em>' attribute list.
+	 * The list contents are of type {@link java.util.Locale}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Locales</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Locales</em>' attribute list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Locales()
+	 * @model unique="false" dataType="de.jutzig.jabylon.properties.Locale"
+	 * @generated
+	 */
+	EList<Locale> getLocales();
 
 } // Project

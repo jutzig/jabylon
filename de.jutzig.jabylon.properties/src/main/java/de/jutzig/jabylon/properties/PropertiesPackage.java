@@ -309,13 +309,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__MASTER = 3;
 
 	/**
+	 * The feature id for the '<em><b>Locales</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__LOCALES = 4;
+
+	/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = 4;
+	int PROJECT_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -689,6 +698,17 @@ public interface PropertiesPackage extends EPackage {
 	EReference getProject_Master();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link de.jutzig.jabylon.properties.Project#getLocales <em>Locales</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Locales</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getLocales()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EAttribute getProject_Locales();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1022,6 +1042,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROJECT__MASTER = eINSTANCE.getProject_Master();
+
+		/**
+		 * The meta object literal for the '<em><b>Locales</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT__LOCALES = eINSTANCE.getProject_Locales();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.

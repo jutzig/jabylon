@@ -369,6 +369,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getProject_Locales() {
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProjectVersion() {
 		return projectVersionEClass;
 	}
@@ -518,6 +527,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEReference(projectEClass, PROJECT__WORKSPACE);
 		createEReference(projectEClass, PROJECT__VERSIONS);
 		createEReference(projectEClass, PROJECT__MASTER);
+		createEAttribute(projectEClass, PROJECT__LOCALES);
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
 		createEReference(projectVersionEClass, PROJECT_VERSION__PROPERTY_BAGS);
@@ -592,6 +602,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEReference(getProject_Workspace(), this.getWorkspace(), this.getWorkspace_Projects(), "workspace", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Versions(), this.getProjectVersion(), null, "versions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Master(), this.getProjectVersion(), null, "master", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProject_Locales(), this.getLocale(), "locales", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectVersion_PropertyBags(), this.getPropertyBag(), this.getPropertyBag_Project(), "propertyBags", null, 0, -1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

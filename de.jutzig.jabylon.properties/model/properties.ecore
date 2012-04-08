@@ -44,6 +44,8 @@
         eType="#//ProjectVersion" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
         containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locales" unique="false"
+        upperBound="-1" eType="#//Locale"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion">
     <eOperations name="fullScan"/>
