@@ -6,21 +6,21 @@ import java.util.Random;
 import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
-import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
 public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener {
 
@@ -31,6 +31,8 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 		super(projectName);
 		GridLayout layout = new GridLayout(2, 1);
 		setContent(layout);
+		layout.setMargin(true);
+		layout.setSpacing(true);
 		project = MainDashboard.getCurrent().getWorkspace()
 				.getProject(projectName);
 		version = getProjectVersion(project, versionName);
@@ -78,8 +80,9 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		// TODO Auto-generated method stub
-		return null;
+		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, path);
+		ProjectLocale projectLocale = version.getProjectLocale(locale);
+		return new ProjectLocaleDashboard(projectLocale);
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 	@Override
 	public void buttonClick(ClickEvent event) {
 		ProjectLocale locale = (ProjectLocale) event.getButton().getData();
-		MainDashboard.getCurrent().getBreadcrumbs().walkTo(locale.toString());
+		MainDashboard.getCurrent().getBreadcrumbs().walkTo(locale.getLocale().toString());
 		
 	}
 

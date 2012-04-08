@@ -31,7 +31,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		Workspace workspace = MainDashboard.getCurrent().getWorkspace();
 		EList<Project> projects = workspace.getProjects();
 		setColumns(2);
-		setRows(projects.size());
+		setRows(projects.size()+1);
 		buildHeader();
 		Random random = new Random();
 		for (Project project : projects) {

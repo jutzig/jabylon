@@ -140,12 +140,10 @@ public class ProjectLocaleImpl extends CDOObjectImpl implements ProjectLocale {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public boolean isMaster() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return !eIsSet(PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE);
 	}
 
 	/**

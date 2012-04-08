@@ -56,9 +56,9 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		int steps = 0;
+		int steps = parts.size();
 		for (Button button : parts) {
-			steps++;
+			steps--;
 			if (button == event.getButton()) {
 				goBack(steps);
 				break;
@@ -102,7 +102,9 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		}
 		else
 		{
-			currentTrail = (CrumbTrail) parts.get(parts.size()-1).getData();
+			Button button = parts.get(parts.size()-1);
+			button.setEnabled(true);
+			currentTrail = (CrumbTrail) button.getData();
 			
 		}
 		if (steps != null) {

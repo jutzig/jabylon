@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties;
 
+import java.util.Locale;
 import org.eclipse.emf.cdo.CDOObject;
 
 import org.eclipse.emf.common.util.EList;
@@ -193,5 +194,13 @@ public interface ProjectVersion extends Completable {
 	 * @generated
 	 */
 	void fullScan();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model localeDataType="de.jutzig.jabylon.properties.Locale"
+	 * @generated
+	 */
+	ProjectLocale getProjectLocale(Locale locale);
 
 } // ProjectVersion

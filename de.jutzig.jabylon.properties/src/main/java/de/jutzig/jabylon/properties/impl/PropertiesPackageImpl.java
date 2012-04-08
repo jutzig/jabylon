@@ -12,6 +12,7 @@ import java.util.Locale;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -622,6 +623,9 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEReference(getProjectVersion_Master(), this.getProjectLocale(), null, "master", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		EOperation op = addEOperation(projectVersionEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getLocale(), "locale", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectLocaleEClass, ProjectLocale.class, "ProjectLocale", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectLocale_ProjectVersion(), this.getProjectVersion(), this.getProjectVersion_Locales(), "projectVersion", null, 0, 1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
