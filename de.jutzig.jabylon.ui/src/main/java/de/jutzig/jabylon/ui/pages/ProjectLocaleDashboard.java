@@ -42,8 +42,9 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
 		Random random = new Random();
-		
-		for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
+		ProjectLocale master = locale.getProjectVersion().getMaster();
+		System.out.println(master.getDescriptors().size());
+		for (PropertyFileDescriptor descriptor : master.getDescriptors()) {
 			Button fileName = new Button(descriptor.getLocation().toString());
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
 			addComponent(fileName);

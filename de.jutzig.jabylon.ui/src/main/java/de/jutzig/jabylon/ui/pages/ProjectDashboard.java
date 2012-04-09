@@ -3,6 +3,7 @@ package de.jutzig.jabylon.ui.pages;
 import java.util.Locale;
 import java.util.Random;
 
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.ui.Button;
@@ -13,6 +14,8 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.cdo.connector.Modification;
+import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -21,6 +24,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
+import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
 public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener {
 
@@ -70,6 +74,30 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 			addComponent(progress);
 		}
 
+		Button addProject = new Button();
+		addProject.setCaption("Full Scan");
+		addProject.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				try {
+					TransactionUtil.commit(version, new Modification<ProjectVersion ,ProjectVersion>() {
+						@Override
+						public ProjectVersion apply(ProjectVersion object) {
+							object.fullScan();
+							return object;
+						}
+					});
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		});
+		addComponent(addProject);
 
 	}
 
