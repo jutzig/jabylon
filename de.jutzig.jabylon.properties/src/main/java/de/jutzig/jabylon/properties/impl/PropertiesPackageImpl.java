@@ -607,6 +607,9 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEClass(propertyFileEClass, PropertyFile.class, "PropertyFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPropertyFile_Properties(), this.getProperty(), null, "properties", null, 0, -1, PropertyFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		EOperation op = addEOperation(propertyFileEClass, this.getProperty(), "getProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "key", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(propertyEClass, Property.class, "Property", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProperty_Key(), ecorePackage.getEString(), "key", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProperty_Value(), ecorePackage.getEString(), "value", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -639,7 +642,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = addEOperation(projectVersionEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(projectVersionEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getLocale(), "locale", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectLocaleEClass, ProjectLocale.class, "ProjectLocale", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

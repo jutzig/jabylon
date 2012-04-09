@@ -47,7 +47,7 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		BufferedReader reader = null;
 		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
 		try {
-			reader = new BufferedReader(new InputStreamReader(inputStream));
+			reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1")); //TODO: configure charset
 			Property p = null;
 			while((p = helper.readProperty(reader))!=null)
 			{

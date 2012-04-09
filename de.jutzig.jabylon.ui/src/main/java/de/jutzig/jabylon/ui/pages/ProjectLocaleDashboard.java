@@ -1,30 +1,26 @@
 package de.jutzig.jabylon.ui.pages;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
-import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
+import de.jutzig.jabylon.ui.components.PropertiesEditor;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
-import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
 public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickListener {
 
@@ -46,7 +42,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 		buildHeader(parent);
 		Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation = associate(locale);
 		
-		ProjectLocale master = locale.getProjectVersion().getMaster();
+//		ProjectLocale master = locale.getProjectVersion().getMaster();
 		
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
 			Button fileName = new Button(entry.getKey().getLocation().toString());
@@ -88,9 +84,18 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		// TODO Auto-generated method stub
+		return new PropertiesEditor(getDescriptor(path));
+	}
+
+	private PropertyFileDescriptor getDescriptor(String path) {
+		EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+		for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+			if(path.equals(propertyFileDescriptor.getLocation().toString()))
+				return propertyFileDescriptor;
+		}
 		return null;
 	}
+
 
 	@Override
 	public Component getComponent() {
@@ -104,8 +109,9 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-//		ProjectLocale locale = (ProjectLocale) event.getButton().getData();
-//		MainDashboard.getCurrent().getBreadcrumbs().walkTo(locale.toString());
+		Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry = (Entry<PropertyFileDescriptor, PropertyFileDescriptor>) event.getButton().getData();
+		PropertyFileDescriptor target = entry.getValue();
+		MainDashboard.getCurrent().getBreadcrumbs().walkTo(target.getLocation().toString());
 		
 	}
 

@@ -75,6 +75,19 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Property getProperty(String key) {
+		for (Property property : getProperties()) {
+			if(key.equals(property.getKey()))
+				return property;
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override

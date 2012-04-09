@@ -43,4 +43,12 @@ public interface PropertyFile extends CDOObject {
 	 */
 	EList<Property> getProperties();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Property getProperty(String key);
+
 } // PropertyFile
