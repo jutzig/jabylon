@@ -143,5 +143,5 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 		MainDashboard.getCurrent().getBreadcrumbs().walkTo(target.getLocation().toString());
 		
 	}
-
+	
 }
