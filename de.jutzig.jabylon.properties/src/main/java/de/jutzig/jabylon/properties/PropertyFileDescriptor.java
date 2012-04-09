@@ -21,7 +21,6 @@ import org.eclipse.emf.cdo.CDOObject;
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile <em>Property File</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getTranslated <em>Translated</em>}</li>
@@ -98,19 +97,12 @@ public interface PropertyFileDescriptor extends Resolvable, Completable {
 	boolean isMaster();
 
 	/**
-	 * Returns the value of the '<em><b>Property File</b></em>' reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Property File</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Property File</em>' reference.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_PropertyFile()
-	 * @model transient="true" changeable="false" derived="true"
+	 * @model
 	 * @generated
 	 */
-	PropertyFile getPropertyFile();
+	PropertyFile loadProperties();
 
 	/**
 	 * Returns the value of the '<em><b>Master</b></em>' reference.

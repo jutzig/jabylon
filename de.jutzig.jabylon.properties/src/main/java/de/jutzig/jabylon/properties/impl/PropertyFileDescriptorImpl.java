@@ -6,19 +6,16 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import java.io.IOException;
 import java.util.Locale;
 
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +26,6 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLocation <em>Location</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getPropertyFile <em>Property File</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getKeys <em>Keys</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getTranslated <em>Translated</em>}</li>
@@ -146,19 +142,18 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	public PropertyFile getPropertyFile() {
-		return (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PropertyFile basicGetPropertyFile() {
-		return (PropertyFile)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE, false, true);
+	public PropertyFile loadProperties() {
+		URI path = absolutPath();
+		
+		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
+		try {
+			resource.load(null);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return (PropertyFile) resource.getContents().get(0);
 	}
 
 	/**
@@ -250,9 +245,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return getVariant();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
 				return getLocation();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
-				if (resolve) return getPropertyFile();
-				return basicGetPropertyFile();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				if (resolve) return getMaster();
 				return basicGetMaster();
@@ -330,8 +322,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
 				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE:
-				return basicGetPropertyFile() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				return basicGetMaster() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:

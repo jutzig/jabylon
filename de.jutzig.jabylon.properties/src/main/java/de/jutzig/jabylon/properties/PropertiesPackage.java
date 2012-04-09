@@ -192,22 +192,13 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__LOCATION = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Property File</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE = RESOLVABLE_FEATURE_COUNT + 2;
-
-	/**
 	 * The feature id for the '<em><b>Master</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROPERTY_FILE_DESCRIPTOR__MASTER = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Keys</b></em>' attribute.
@@ -216,7 +207,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Translated</b></em>' attribute.
@@ -225,7 +216,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__TRANSLATED = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROPERTY_FILE_DESCRIPTOR__TRANSLATED = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
@@ -234,7 +225,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 6;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -617,17 +608,6 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getPropertyFileDescriptor_Translated();
 
 	/**
-	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile <em>Property File</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Property File</em>'.
-	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile()
-	 * @see #getPropertyFileDescriptor()
-	 * @generated
-	 */
-	EReference getPropertyFileDescriptor_PropertyFile();
-
-	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Project <em>Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1008,14 +988,6 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROPERTY_FILE_DESCRIPTOR__TRANSLATED = eINSTANCE.getPropertyFileDescriptor_Translated();
-
-		/**
-		 * The meta object literal for the '<em><b>Property File</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE = eINSTANCE.getPropertyFileDescriptor_PropertyFile();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.

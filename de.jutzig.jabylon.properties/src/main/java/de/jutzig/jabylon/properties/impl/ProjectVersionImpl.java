@@ -377,7 +377,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			String absolutePath = file.getParentFile().getAbsolutePath();
 			
 			//load file to initialize statistics;
-			PropertyFile propertyFile = descriptor.getPropertyFile();
+			PropertyFile propertyFile = descriptor.loadProperties();
 			descriptor.setKeys(propertyFile.getProperties().size());
 			
 			Pattern pattern = buildPatternFrom(file);
@@ -399,7 +399,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					projectLocale.getDescriptors().add(fileDescriptor);
 					
 					//load file to initialize statistics;
-					PropertyFile translatedFile = fileDescriptor.getPropertyFile();
+					PropertyFile translatedFile = fileDescriptor.loadProperties();
 					fileDescriptor.setTranslated(translatedFile.getProperties().size());
 				}
 			}	

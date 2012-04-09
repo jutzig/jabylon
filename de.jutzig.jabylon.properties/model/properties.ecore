@@ -16,10 +16,9 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Locale" instanceClassName="java.util.Locale"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor" eSuperTypes="#//Resolvable #//Completable">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="loadProperties" eType="#//PropertyFile"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//URI"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="propertyFile" eType="#//PropertyFile"
-        changeable="false" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keys" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
