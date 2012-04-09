@@ -231,5 +231,10 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return workspace;
 	}
 
+	@Override
+	public boolean isDirty() {
+		return false;
+	}
+
 }
 

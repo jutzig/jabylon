@@ -129,4 +129,10 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 		
 	}
 
+	@Override
+	public boolean isDirty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

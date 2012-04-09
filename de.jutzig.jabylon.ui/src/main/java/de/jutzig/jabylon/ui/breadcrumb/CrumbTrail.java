@@ -10,4 +10,6 @@ public interface CrumbTrail {
 	
 	String getTrailCaption();
 	
+	boolean isDirty();
+	
 }
