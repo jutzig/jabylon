@@ -109,6 +109,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail, ItemClic
 						@Override
 						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
 							object.setKeys(resource.getSavedProperties());
+							object.updatePercentComplete();
 							return object;
 						}
 					});

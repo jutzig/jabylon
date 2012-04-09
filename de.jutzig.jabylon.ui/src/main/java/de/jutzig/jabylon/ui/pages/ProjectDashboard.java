@@ -23,6 +23,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
+import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
@@ -68,8 +69,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 			projectName.setData(locale);
 			projectName.addListener(this);
 
-			StaticProgressIndicator progress = new StaticProgressIndicator();
-			progress.setPercentage(locale.percentComplete());
+			StaticProgressIndicator progress = new CompletableProgressIndicator(locale);
 			addComponent(progress);
 		}
 

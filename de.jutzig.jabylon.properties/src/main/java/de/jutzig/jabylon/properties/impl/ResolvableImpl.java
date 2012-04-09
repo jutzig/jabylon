@@ -159,6 +159,7 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 					Resolvable resolvable = (Resolvable) container;
 					resolvable.updatePercentComplete();
 				}
+				container = container.eContainer();
 			}
 		}
 		return percentComplete;

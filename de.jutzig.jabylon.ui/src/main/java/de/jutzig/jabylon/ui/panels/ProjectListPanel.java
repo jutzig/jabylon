@@ -13,6 +13,7 @@ import com.vaadin.ui.themes.Reindeer;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
@@ -40,8 +41,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			projectName.setData(project);
 			projectName.addListener(this);
 			
-			StaticProgressIndicator progress = new StaticProgressIndicator();
-			progress.setPercentage(project.percentComplete());
+			StaticProgressIndicator progress = new CompletableProgressIndicator(project);
 			addComponent(progress);
 		}
 		

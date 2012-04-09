@@ -403,6 +403,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					//load file to initialize statistics;
 					PropertyFile translatedFile = fileDescriptor.loadProperties();
 					fileDescriptor.setKeys(translatedFile.getProperties().size());
+					fileDescriptor.updatePercentComplete();
 				}
 			}	
 		}

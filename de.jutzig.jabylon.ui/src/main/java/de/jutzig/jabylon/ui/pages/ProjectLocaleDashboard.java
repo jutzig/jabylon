@@ -23,6 +23,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
+import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 
@@ -57,12 +58,8 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 			fileName.setData(entry);
 			fileName.addListener(this);
 
-			StaticProgressIndicator progress = new StaticProgressIndicator();
 			PropertyFileDescriptor translation = entry.getValue();
-			if(translation!=null)
-				progress.setPercentage(translation.percentComplete());
-			else
-				progress.setPercentage(0);
+			StaticProgressIndicator progress = new CompletableProgressIndicator(translation);
 			addComponent(progress);
 		}
 
