@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.ui.Button;
@@ -14,8 +15,11 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.cdo.connector.Modification;
+import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
@@ -26,6 +30,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	private Project project;
 	private ProjectLocale locale;
+	Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation;
 
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 		this.locale = locale;
@@ -33,6 +38,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
+		masterToTransation = associate(locale);
 		createContents(layout);
 
 	}
@@ -40,7 +46,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
-		Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation = associate(locale);
+		
 		
 //		ProjectLocale master = locale.getProjectVersion().getMaster();
 		
@@ -109,8 +115,31 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry = (Entry<PropertyFileDescriptor, PropertyFileDescriptor>) event.getButton().getData();
+		final Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry = (Entry<PropertyFileDescriptor, PropertyFileDescriptor>) event.getButton().getData();
 		PropertyFileDescriptor target = entry.getValue();
+		if(target==null)
+		{
+			//create a new one
+			final PropertyFileDescriptor newTarget = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+			target = newTarget;
+			newTarget.setVariant(locale.getLocale());
+			newTarget.setMaster(entry.getKey());
+			newTarget.computeLocation();
+			try {
+				target = TransactionUtil.commit(locale, new Modification<ProjectLocale, PropertyFileDescriptor>() {
+					@Override
+					public PropertyFileDescriptor apply(ProjectLocale object) {
+
+						object.getDescriptors().add(newTarget);
+						return newTarget;
+					}
+				});
+			} catch (CommitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			entry.setValue(target);
+		}
 		MainDashboard.getCurrent().getBreadcrumbs().walkTo(target.getLocation().toString());
 		
 	}

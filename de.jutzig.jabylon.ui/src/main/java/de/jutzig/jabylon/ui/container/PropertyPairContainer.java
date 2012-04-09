@@ -13,6 +13,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
@@ -32,9 +33,9 @@ public class PropertyPairContainer extends AbstractContainer {
 	private PropertyFile target;
 	private PropertyFile source;
 	
-	public PropertyPairContainer(PropertyFileDescriptor descriptor) {
-		target = descriptor.loadProperties();
-		source = descriptor.getMaster().loadProperties();
+	public PropertyPairContainer(PropertyFile source, PropertyFile target) {
+		this.target = target;
+		this.source = source;
 	}
 	
 	@Override
@@ -45,10 +46,24 @@ public class PropertyPairContainer extends AbstractContainer {
 		}
 		else
 		{
-			return new EObjectProperty(target.getProperty((String) itemId), PropertiesPackage.Literals.PROPERTY__VALUE);
+			return new EObjectProperty(getOrCreateTargetProperty(itemId), PropertiesPackage.Literals.PROPERTY__VALUE);
 		}
 	}
 	
+	
+	private de.jutzig.jabylon.properties.Property getOrCreateTargetProperty(Object itemId)
+	{
+		de.jutzig.jabylon.properties.Property property = target.getProperty(itemId.toString());
+		de.jutzig.jabylon.properties.Property sourceProperty = source.getProperty(itemId.toString());
+		if(property==null)
+		{
+			//create a new property entry
+			property = PropertiesFactory.eINSTANCE.createProperty();
+			property.setKey(sourceProperty.getKey());
+			target.getProperties().add(property);
+		}
+		return property;
+	}
 	
 	@Override
 	public Collection<?> getContainerPropertyIds() {
@@ -58,14 +73,14 @@ public class PropertyPairContainer extends AbstractContainer {
 	@Override
 	public Item getItem(Object itemId) {
 		de.jutzig.jabylon.properties.Property sourceProp = source.getProperty(itemId.toString());
-		de.jutzig.jabylon.properties.Property targetProp = target.getProperty(itemId.toString());
+		de.jutzig.jabylon.properties.Property targetProp = getOrCreateTargetProperty(itemId);
 
 		return new PropertyPairItem(sourceProp, targetProp);
 	}
 
 	@Override
 	public Collection<?> getItemIds() {
-		return Collections2.transform(target.getProperties(), new Function<de.jutzig.jabylon.properties.Property,String>() {
+		return Collections2.transform(source.getProperties(), new Function<de.jutzig.jabylon.properties.Property,String>() {
 			
 			@Override
 			public String apply(de.jutzig.jabylon.properties.Property from) {

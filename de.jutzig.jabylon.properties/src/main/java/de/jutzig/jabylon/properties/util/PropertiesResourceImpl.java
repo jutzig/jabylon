@@ -7,13 +7,17 @@
 package de.jutzig.jabylon.properties.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
@@ -28,6 +32,11 @@ import de.jutzig.jabylon.properties.PropertyFile;
  * @generated
  */
 public class PropertiesResourceImpl extends ResourceImpl {
+	
+	
+	//TODO: this is a dirty hack...
+	private int savedProperties;
+	
 	/**
 	 * Creates an instance of the resource.
 	 * <!-- begin-user-doc -->
@@ -63,8 +72,41 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	@Override
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
-		// TODO Auto-generated method stub
-		super.doSave(outputStream, options);
+		savedProperties = 0;
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "ISO-8859-1"));
+		try {
+			PropertiesHelper helper = new PropertiesHelper();
+			PropertyFile file = (PropertyFile) getContents().get(0);
+			Iterator<Property> it = file.getProperties().iterator();
+			while (it.hasNext()) {
+				Property property = (Property) it.next();
+				//eliminate all empty property entries
+				if(isFilled(property))
+				{
+					helper.writeProperty(writer, property);
+					savedProperties++;
+				}
+					
+			}
+			
+		}
+		finally{
+			writer.close();
+		}
+		
+	}
+	
+	
+	private boolean isFilled(Property property) {
+		if(property==null)
+			return false;
+		if(property.getKey()==null || property.getKey().length()==0)
+			return false;
+		return !(property.getValue()==null || property.getValue().length()==0);
+	}
+	
+	public int getSavedProperties() {
+		return savedProperties;
 	}
 
 } //PropertiesResourceImpl

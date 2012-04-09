@@ -44,7 +44,7 @@ public class EObjectProperty extends AbstractProperty implements Adapter{
 	
 	@Override
 	public void addListener(ValueChangeListener listener) {
-		if(getListeners(ValueChangeListener.class).isEmpty())
+		if(getListeners(ValueChangeListener.class).isEmpty() && object!=null)
 		{
 			object.eAdapters().add(this);
 		}

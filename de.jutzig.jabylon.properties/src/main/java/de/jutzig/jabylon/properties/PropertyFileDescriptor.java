@@ -104,6 +104,14 @@ public interface PropertyFileDescriptor extends Resolvable, Completable {
 	PropertyFile loadProperties();
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void computeLocation();
+
+	/**
 	 * Returns the value of the '<em><b>Master</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>

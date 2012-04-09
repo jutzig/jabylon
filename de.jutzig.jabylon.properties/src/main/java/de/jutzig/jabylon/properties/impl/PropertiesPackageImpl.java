@@ -625,6 +625,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		addEOperation(propertyFileDescriptorEClass, this.getPropertyFile(), "loadProperties", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(propertyFileDescriptorEClass, null, "computeLocation", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProject_Name(), ecorePackage.getEString(), "name", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Workspace(), this.getWorkspace(), this.getWorkspace_Projects(), "workspace", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

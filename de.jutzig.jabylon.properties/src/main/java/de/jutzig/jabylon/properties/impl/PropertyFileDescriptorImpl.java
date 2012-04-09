@@ -6,12 +6,14 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
@@ -139,10 +141,39 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 		try {
 			resource.load(null);
-		} catch (IOException e) {
+		} catch (FileNotFoundException e)
+		{
+			//The file does not exist, create a new one.
+			//TODO: log this
+			return PropertiesFactory.eINSTANCE.createPropertyFile();
+		}
+		 catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return (PropertyFile) resource.getContents().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void computeLocation() {
+		if(isMaster())
+			return;
+		Locale locale = getVariant();
+		URI location = getMaster().getLocation();
+		String filename = location.lastSegment();
+		String extension = location.fileExtension();
+		if(extension!=null)
+		{
+			filename = filename.substring(0,filename.length()-extension.length()-1);
+			filename += "_";
+			filename += locale.toString();
+			filename += ".";
+			filename += extension;
+		}
+		setLocation(location.trimSegments(1).appendSegment(filename));
 	}
 
 	/**
