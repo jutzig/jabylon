@@ -21,6 +21,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="propertyFile" eType="#//PropertyFile"
         changeable="false" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keys" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
   <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//Resolvable #//Completable">

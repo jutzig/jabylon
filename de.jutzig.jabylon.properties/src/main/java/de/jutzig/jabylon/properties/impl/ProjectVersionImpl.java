@@ -26,6 +26,7 @@ import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyBag;
+import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
@@ -211,7 +212,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		}
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this);
-		System.out.println(getMaster().getDescriptors().size());
 	}
 
 	/**
@@ -366,15 +366,19 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 
 		@Override
 		public void newMatch(File file) {
-			System.out.println("New Match: "+file);
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 			URI location = URI.createFileURI(file.getAbsolutePath());
 			location = location.deresolve(absolutPath()); //get rid of the version
+			location = URI.createHierarchicalURI(location.scheme(),location.authority(),location.device(),location.segmentsList().subList(1, location.segmentCount()).toArray(new String[location.segmentCount()-1]),location.query(),location.fragment());
 			descriptor.setLocation(location);
 			if(getMaster()==null)
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
 			getMaster().getDescriptors().add(descriptor);
 			String absolutePath = file.getParentFile().getAbsolutePath();
+			
+			//load file to initialize statistics;
+			PropertyFile propertyFile = descriptor.getPropertyFile();
+			descriptor.setKeys(propertyFile.getProperties().size());
 			
 			Pattern pattern = buildPatternFrom(file);
 			File folder = file.getParentFile();
@@ -393,6 +397,10 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					fileDescriptor.setMaster(descriptor);
 					ProjectLocale projectLocale = getOrCreateProjectLocale(locale);
 					projectLocale.getDescriptors().add(fileDescriptor);
+					
+					//load file to initialize statistics;
+					PropertyFile translatedFile = fileDescriptor.getPropertyFile();
+					fileDescriptor.setTranslated(translatedFile.getProperties().size());
 				}
 			}	
 		}

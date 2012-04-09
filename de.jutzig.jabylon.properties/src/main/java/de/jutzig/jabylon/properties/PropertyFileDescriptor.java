@@ -23,6 +23,8 @@ import org.eclipse.emf.cdo.CDOObject;
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile <em>Property File</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getTranslated <em>Translated</em>}</li>
  * </ul>
  * </p>
  *
@@ -135,5 +137,57 @@ public interface PropertyFileDescriptor extends Resolvable, Completable {
 	 * @generated
 	 */
 	void setMaster(PropertyFileDescriptor value);
+
+	/**
+	 * Returns the value of the '<em><b>Keys</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Keys</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Keys</em>' attribute.
+	 * @see #setKeys(int)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Keys()
+	 * @model
+	 * @generated
+	 */
+	int getKeys();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Keys</em>' attribute.
+	 * @see #getKeys()
+	 * @generated
+	 */
+	void setKeys(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Translated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Translated</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Translated</em>' attribute.
+	 * @see #setTranslated(int)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Translated()
+	 * @model
+	 * @generated
+	 */
+	int getTranslated();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getTranslated <em>Translated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Translated</em>' attribute.
+	 * @see #getTranslated()
+	 * @generated
+	 */
+	void setTranslated(int value);
 
 } // PropertyFileDescriptor

@@ -270,6 +270,24 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getPropertyFileDescriptor_Keys() {
+		return (EAttribute)propertyFileDescriptorEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyFileDescriptor_Translated() {
+		return (EAttribute)propertyFileDescriptorEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getPropertyFileDescriptor_PropertyFile() {
 		return (EReference)propertyFileDescriptorEClass.getEStructuralFeatures().get(2);
 	}
@@ -531,6 +549,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__LOCATION);
 		createEReference(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__PROPERTY_FILE);
 		createEReference(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__MASTER);
+		createEAttribute(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__KEYS);
+		createEAttribute(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__TRANSLATED);
 
 		projectEClass = createEClass(PROJECT);
 		createEAttribute(projectEClass, PROJECT__NAME);
@@ -617,6 +637,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getPropertyFileDescriptor_Location(), this.getURI(), "location", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPropertyFileDescriptor_PropertyFile(), this.getPropertyFile(), null, "propertyFile", null, 0, 1, PropertyFileDescriptor.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getPropertyFileDescriptor_Master(), this.getPropertyFileDescriptor(), null, "master", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyFileDescriptor_Keys(), ecorePackage.getEInt(), "keys", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyFileDescriptor_Translated(), ecorePackage.getEInt(), "translated", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(propertyFileDescriptorEClass, ecorePackage.getEBoolean(), "isMaster", 0, 1, IS_UNIQUE, IS_ORDERED);
 
