@@ -28,7 +28,6 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getKeys <em>Keys</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getTranslated <em>Translated</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,16 +63,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * @ordered
 	 */
 	protected static final int KEYS_EDEFAULT = 0;
-
-	/**
-	 * The default value of the '{@link #getTranslated() <em>Translated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTranslated()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int TRANSLATED_EDEFAULT = 0;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -204,24 +193,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int getTranslated() {
-		return (Integer)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__TRANSLATED, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setTranslated(int newTranslated) {
-		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__TRANSLATED, newTranslated);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public int percentComplete() {
@@ -229,8 +200,8 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			return 100;
 		PropertyFileDescriptor master = getMaster();
 		int keys = master.getKeys();
-		int translated = getTranslated();
-		return (int) ((translated/(double)keys)*100);
+		int translated = getKeys();
+		return Math.min(100, (int) ((translated/(double)keys)*100));
 	}
 
 	/**
@@ -250,8 +221,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return basicGetMaster();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys();
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED:
-				return getTranslated();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -275,9 +244,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys((Integer)newValue);
-				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED:
-				setTranslated((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -303,9 +269,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys(KEYS_EDEFAULT);
 				return;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED:
-				setTranslated(TRANSLATED_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -326,8 +289,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return basicGetMaster() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys() != KEYS_EDEFAULT;
-			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__TRANSLATED:
-				return getTranslated() != TRANSLATED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

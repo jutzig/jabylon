@@ -95,14 +95,6 @@ public class NewProjectForm extends VerticalLayout {
                 			masterLocale.setLocale(Locale.ENGLISH);
                 			master.setMaster(masterLocale);
                 			
-                			//sample data
-                			ProjectLocale locale1 = PropertiesFactory.eINSTANCE.createProjectLocale();
-                			locale1.setLocale(Locale.GERMANY);
-                			master.getLocales().add(locale1);
-                			
-                			ProjectLocale locale2 = PropertiesFactory.eINSTANCE.createProjectLocale();
-                			locale2.setLocale(Locale.FRENCH);
-                			master.getLocales().add(locale2);
                 			return project;
                 		}
 					});

@@ -1,6 +1,9 @@
 package de.jutzig.jabylon.ui.pages;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.eclipse.emf.common.util.EList;
@@ -41,23 +44,42 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
-		Random random = new Random();
+		Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation = associate(locale);
+		
 		ProjectLocale master = locale.getProjectVersion().getMaster();
-		System.out.println(master.getDescriptors().size());
-		for (PropertyFileDescriptor descriptor : master.getDescriptors()) {
-			Button fileName = new Button(descriptor.getLocation().toString());
+		
+		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
+			Button fileName = new Button(entry.getKey().getLocation().toString());
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
 			addComponent(fileName);
-			fileName.setData(descriptor);
+			fileName.setData(entry);
 			fileName.addListener(this);
 
 			StaticProgressIndicator progress = new StaticProgressIndicator();
-			progress.setPercentage(random.nextInt(100));
+			PropertyFileDescriptor translation = entry.getValue();
+			if(translation!=null)
+				progress.setPercentage(translation.percentComplete());
+			else
+				progress.setPercentage(0);
 			addComponent(progress);
 		}
 
-
 	}
+
+	private Map<PropertyFileDescriptor, PropertyFileDescriptor> associate(
+			ProjectLocale locale) {
+		ProjectLocale master = locale.getProjectVersion().getMaster();
+		Map<PropertyFileDescriptor, PropertyFileDescriptor> result = new HashMap<PropertyFileDescriptor, PropertyFileDescriptor>();
+		for (PropertyFileDescriptor descriptor : master.getDescriptors()) {
+			result.put(descriptor, null);
+		}
+		
+		for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
+			result.put(descriptor.getMaster(), descriptor);
+		}
+		return result;
+	}
+
 
 	private void buildHeader(GridLayout parent) {
 		// TODO Auto-generated method stub

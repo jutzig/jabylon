@@ -1,51 +1,53 @@
 package de.jutzig.jabylon.properties.util.scanner;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
-import org.apache.tools.ant.types.selectors.SelectorUtils;
-
-import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 
 public class WorkspaceScanner {
-	
-	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project, String include, String exclude)
-	{
-		File baseDir = new File(project.absolutPath().toFileString()).getAbsoluteFile();
+
+	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project,
+			String include, String exclude) {
+		File baseDir = new File(project.absolutPath().toFileString())
+				.getAbsoluteFile();
 		searchDirectory(baseDir, include, exclude, acceptor);
 	}
-	
-	
-	private void searchDirectory(File baseDir, String include, String exclude, PropertyFileAcceptor acceptor) {
+
+	private void searchDirectory(File baseDir, String includeString,
+			String excludeString, PropertyFileAcceptor acceptor) {
+
+		Pattern include = Pattern.compile(includeString);
+		Pattern exclude = Pattern.compile(excludeString);
+		searchDirectory(baseDir, include, exclude, acceptor);
+
+	}
+
+	private void searchDirectory(File baseDir, Pattern include,
+			Pattern exclude, PropertyFileAcceptor acceptor) {
 		File[] children = baseDir.listFiles();
-		for (File child : children) {
-			if(child.isDirectory())
+		for (File child : children) 
+		{
+			if (child.isDirectory()) 
 			{
-				if(include!=null && SelectorUtils.matchPatternStart(include, child.getAbsolutePath()))
-				{
-					if(exclude!=null && SelectorUtils.matchPatternStart(exclude, child.getAbsolutePath()))
-						continue;
-					searchDirectory(child, include, exclude, acceptor);
-				}
-			}
-			else
+				searchDirectory(child, include, exclude, acceptor);
+			} else 
 			{
-				if(include!=null && SelectorUtils.matchPath(include, child.getAbsolutePath()))
+				String path = child.getAbsolutePath();
+				System.out.println(path);
+				if (include != null && include.matcher(path).matches())
 				{
-					if(exclude!=null && SelectorUtils.matchPath(exclude, child.getAbsolutePath()))
+					if (exclude != null && exclude.matcher(path).matches())
 						continue;
 					acceptor.newMatch(child);
 				}
 			}
 		}
-		
+
 	}
 
-
-	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project)
-	{
-		fullScan(acceptor, project, "/**/messages.properties",null);
+	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project) {
+		fullScan(acceptor, project, "[\\w/.\\\\&&[^_]]+.properties",".*build.properties");
 	}
-	
-	
+
 }

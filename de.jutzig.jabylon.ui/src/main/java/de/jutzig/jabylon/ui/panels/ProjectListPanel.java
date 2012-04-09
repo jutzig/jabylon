@@ -33,7 +33,6 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		setColumns(2);
 		setRows(projects.size()+1);
 		buildHeader();
-		Random random = new Random();
 		for (Project project : projects) {
 			Button projectName = new Button(project.getName());
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
@@ -42,7 +41,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			projectName.addListener(this);
 			
 			StaticProgressIndicator progress = new StaticProgressIndicator();
-			progress.setPercentage(random.nextInt(100));
+			progress.setPercentage(project.percentComplete());
 			addComponent(progress);
 		}
 		

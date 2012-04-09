@@ -140,12 +140,21 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public int percentComplete() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		int translatedProps = 0;
+		int totalProps = 0;
+		for (PropertyFileDescriptor descriptor : getDescriptors()) {
+			translatedProps += descriptor.getKeys();
+		}
+		
+		for (PropertyFileDescriptor descriptor : getProjectVersion().getMaster().getDescriptors()) {
+			totalProps += descriptor.getKeys();
+		}
+		
+		return Math.min(100, (int) ((translatedProps/(double)totalProps)*100));
+		
 	}
 
 	/**
@@ -276,9 +285,7 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 
 	@Override
 	public URI relativePath() {
-		if(isMaster())
-			return URI.createHierarchicalURI(new String[] {"master"}, null, null);
-		return URI.createHierarchicalURI(new String[] {getLocale().toString()}, null, null);
+		return URI.createURI(""); //locales are just virtual,  not in the FS
 	}
 
 } //ProjectLocaleImpl

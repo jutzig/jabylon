@@ -59,7 +59,6 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
-		Random random = new Random();
 		EList<ProjectLocale> locales = version.getLocales();
 		
 		for (ProjectLocale locale : locales) {
@@ -70,7 +69,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 			projectName.addListener(this);
 
 			StaticProgressIndicator progress = new StaticProgressIndicator();
-			progress.setPercentage(random.nextInt(100));
+			progress.setPercentage(locale.percentComplete());
 			addComponent(progress);
 		}
 

@@ -26,7 +26,8 @@ public class TransactionUtil {
 				if(view!=transaction)
 				{
 					transaction.close();
-					return view.getObject(returnValue);
+					if(returnValue!=null)
+						return view.getObject(returnValue);
 				}
 			}
 			

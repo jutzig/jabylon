@@ -210,6 +210,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		for (ProjectLocale projectLocale : locales) {
 			projectLocale.getDescriptors().clear();
 		}
+		getMaster().getDescriptors().clear();
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this);
 	}
@@ -217,12 +218,14 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public int percentComplete() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		int totalComplete = 0;
+		for (ProjectLocale locale : getLocales()) {
+			totalComplete += locale.percentComplete();
+		}
+		return totalComplete / getLocales().size();
 	}
 
 	/**
@@ -400,7 +403,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					
 					//load file to initialize statistics;
 					PropertyFile translatedFile = fileDescriptor.loadProperties();
-					fileDescriptor.setTranslated(translatedFile.getProperties().size());
+					fileDescriptor.setKeys(translatedFile.getProperties().size());
 				}
 			}	
 		}

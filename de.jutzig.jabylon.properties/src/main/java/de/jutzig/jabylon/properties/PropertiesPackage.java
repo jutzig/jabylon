@@ -210,22 +210,13 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Translated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROPERTY_FILE_DESCRIPTOR__TRANSLATED = RESOLVABLE_FEATURE_COUNT + 4;
-
-	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -595,17 +586,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getPropertyFileDescriptor_Keys();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getTranslated <em>Translated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Translated</em>'.
-	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getTranslated()
-	 * @see #getPropertyFileDescriptor()
-	 * @generated
-	 */
-	EAttribute getPropertyFileDescriptor_Translated();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Project <em>Project</em>}'.
@@ -980,14 +960,6 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROPERTY_FILE_DESCRIPTOR__KEYS = eINSTANCE.getPropertyFileDescriptor_Keys();
-
-		/**
-		 * The meta object literal for the '<em><b>Translated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROPERTY_FILE_DESCRIPTOR__TRANSLATED = eINSTANCE.getPropertyFileDescriptor_Translated();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
