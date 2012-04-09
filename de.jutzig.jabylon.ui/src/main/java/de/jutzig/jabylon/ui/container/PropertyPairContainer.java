@@ -23,11 +23,15 @@ public class PropertyPairContainer extends AbstractContainer {
 	
 	private static final String SOURCE_ID = "source.id";
 	private static final String TARGET_ID = "target.id";
+	private static final String SOURCE_COMMENT  = "source.comment";
+	private static final String TARGET_COMMENT  = "target.comment";
 	private static final List<String> IDS;
 	static {
 		IDS = new ArrayList<String>();
 		IDS.add(SOURCE_ID);
 		IDS.add(TARGET_ID);
+		IDS.add(SOURCE_COMMENT);
+		IDS.add(TARGET_COMMENT);
 		
 	}
 	private PropertyFile target;
@@ -44,10 +48,19 @@ public class PropertyPairContainer extends AbstractContainer {
 		{
 			return new EObjectProperty(source.getProperty((String) itemId), PropertiesPackage.Literals.PROPERTY__VALUE);
 		}
-		else
+		else if(propertyId==TARGET_ID)
 		{
 			return new EObjectProperty(getOrCreateTargetProperty(itemId), PropertiesPackage.Literals.PROPERTY__VALUE);
 		}
+		else if(propertyId==SOURCE_COMMENT)
+		{
+			return new EObjectProperty(source.getProperty((String) itemId), PropertiesPackage.Literals.PROPERTY__COMMENT);
+		}
+		else
+		{
+			return new EObjectProperty(getOrCreateTargetProperty(itemId), PropertiesPackage.Literals.PROPERTY__COMMENT);
+		}
+		
 	}
 	
 	
@@ -66,7 +79,7 @@ public class PropertyPairContainer extends AbstractContainer {
 	}
 	
 	@Override
-	public Collection<?> getContainerPropertyIds() {
+	public List<String> getContainerPropertyIds() {
 		return IDS;
 	}
 
@@ -149,9 +162,14 @@ public class PropertyPairContainer extends AbstractContainer {
 		
 		private Property source;
 		private Property target;
+		private Property sourceComment;
+		private Property targetComment;
 		
 		private de.jutzig.jabylon.properties.Property sourceProperty;
 		private de.jutzig.jabylon.properties.Property targetProperty;
+		
+
+
 		
 		
 		public PropertyPairItem(de.jutzig.jabylon.properties.Property source, de.jutzig.jabylon.properties.Property target) {
@@ -159,6 +177,8 @@ public class PropertyPairContainer extends AbstractContainer {
 			
 			this.source = new EObjectProperty(source,PropertiesPackage.Literals.PROPERTY__VALUE);
 			this.target = new EObjectProperty(target,PropertiesPackage.Literals.PROPERTY__VALUE);
+			this.sourceComment = new EObjectProperty(source,PropertiesPackage.Literals.PROPERTY__COMMENT);
+			this.targetComment = new EObjectProperty(target,PropertiesPackage.Literals.PROPERTY__COMMENT);
 			this.sourceProperty = source;
 			this.targetProperty = target;
 		}
@@ -169,9 +189,17 @@ public class PropertyPairContainer extends AbstractContainer {
 			{
 				return source;
 			}
-			else
+			else if(id==TARGET_ID)
 			{
 				return target;
+			}
+			else if(id==TARGET_COMMENT)
+			{
+				return targetComment;
+			}
+			else
+			{
+				return sourceComment;
 			}
 		}
 		
@@ -209,6 +237,14 @@ public class PropertyPairContainer extends AbstractContainer {
 		
 		public Property getSource() {
 			return source;
+		}
+		
+		public Property getSourceComment() {
+			return sourceComment;
+		}
+		
+		public Property getTargetComment() {
+			return targetComment;
 		}
 		
 	}

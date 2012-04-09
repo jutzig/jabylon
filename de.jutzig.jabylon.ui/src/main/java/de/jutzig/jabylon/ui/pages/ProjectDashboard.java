@@ -27,20 +27,27 @@ import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
-public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener {
+public class ProjectDashboard extends Panel implements CrumbTrail,
+		ClickListener {
 
 	private Project project;
 	private ProjectVersion version;
 
 	public ProjectDashboard(String projectName, String versionName) {
 		super(projectName);
+		project = MainDashboard.getCurrent().getWorkspace()
+				.getProject(projectName);
+		version = getProjectVersion(project, versionName);
+		initialize();
+
+	}
+
+	private void initialize() {
 		GridLayout layout = new GridLayout(2, 1);
 		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
-		project = MainDashboard.getCurrent().getWorkspace()
-				.getProject(projectName);
-		version = getProjectVersion(project, versionName);
+
 		createContents(layout);
 
 	}
@@ -61,7 +68,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
 		EList<ProjectLocale> locales = version.getLocales();
-		
+
 		for (ProjectLocale locale : locales) {
 			Button projectName = new Button(locale.getLocale().getDisplayName());
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
@@ -69,7 +76,8 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 			projectName.setData(locale);
 			projectName.addListener(this);
 
-			StaticProgressIndicator progress = new CompletableProgressIndicator(locale);
+			StaticProgressIndicator progress = new CompletableProgressIndicator(
+					locale);
 			addComponent(progress);
 		}
 
@@ -79,19 +87,24 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
+
 				try {
-					TransactionUtil.commit(version, new Modification<ProjectVersion ,ProjectVersion>() {
-						@Override
-						public ProjectVersion apply(ProjectVersion object) {
-							object.fullScan();
-							return object;
-						}
-					});
+					TransactionUtil.commit(version,
+							new Modification<ProjectVersion, ProjectVersion>() {
+								@Override
+								public ProjectVersion apply(
+										ProjectVersion object) {
+									object.fullScan();
+									return object;
+								}
+							});
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				getWindow().showNotification("Scan complete");
+				removeAllComponents();
+				initialize();
 
 			}
 
@@ -102,12 +115,13 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 
 	private void buildHeader(GridLayout parent) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, path);
+		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(
+				PropertiesPackage.Literals.LOCALE, path);
 		ProjectLocale projectLocale = version.getProjectLocale(locale);
 		return new ProjectLocaleDashboard(projectLocale);
 	}
@@ -125,8 +139,9 @@ public class ProjectDashboard extends Panel implements CrumbTrail, ClickListener
 	@Override
 	public void buttonClick(ClickEvent event) {
 		ProjectLocale locale = (ProjectLocale) event.getButton().getData();
-		MainDashboard.getCurrent().getBreadcrumbs().walkTo(locale.getLocale().toString());
-		
+		MainDashboard.getCurrent().getBreadcrumbs()
+				.walkTo(locale.getLocale().toString());
+
 	}
 
 	@Override

@@ -38,6 +38,8 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 	private PropertyFile source;
 	private boolean dirty;
 	private Button safeButton;
+	private TextArea orignalComment;
+	private TextArea translatedComment;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
@@ -57,8 +59,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 				source, target);
 		table.setContainerDataSource(propertyPairContainer);
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
-		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds()
-				.toArray());
+		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
 		table.setColumnHeaders(new String[] { "Original", "Translation" });
 		table.setEditable(false);
 		table.setWriteThrough(false);
@@ -79,18 +80,45 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		addComponent(keyLabel, 0, 2, 1, 2);
 
 		orignal = new TextArea();
-		orignal.setWidth(400, UNITS_PIXELS);
+//		orignal.setWidth(400, UNITS_PIXELS);
+		orignal.setColumns(40);
+		orignal.setRows(5);
 		// orignal.setEnabled(false);
 		orignal.setReadOnly(true);
-
 		addComponent(orignal);
+		
 		translated = new TextArea();
-		translated.setWidth(400, UNITS_PIXELS);
+		translated.setColumns(40);
+		translated.setRows(5);
+//		translated.setWidth(400, UNITS_PIXELS);
+		
 		translated.setNullRepresentation("");
-
+		translated.addListener(this);
+		translated.setWriteThrough(true);
 		addComponent(translated);
-
+		
+		orignalComment = new TextArea();
+//		orignalComment.setWidth(400, UNITS_PIXELS);
+		orignalComment.setReadOnly(true);
+		orignalComment.setColumns(40);
+		orignalComment.setRows(3);
+//		orignalComment.setHeight(30, UNITS_PIXELS);
+		addComponent(orignalComment);
+		
+		translatedComment = new TextArea();
+		translatedComment.setImmediate(true);
+//		translatedComment.setWidth(400, UNITS_PIXELS);
+		translatedComment.setRows(3);
+		translatedComment.setColumns(40);
+		translatedComment.setNullRepresentation("");
+		translatedComment.addListener(this);
+		translatedComment.setInputPrompt("Comment");
+		translatedComment.setWriteThrough(true);
+		addComponent(translatedComment);
+		
+		
 		safeButton = new Button();
+		safeButton.setEnabled(false);
 		safeButton.setCaption("Save");
 		safeButton.addListener(new ClickListener() {
 
@@ -153,12 +181,11 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		item.getSourceProperty();
 
 		keyLabel.setValue(item.getSourceProperty().getKey());
-		// orignal.setValue(item.getSourceProperty().getValue());
-		//
 		translated.setPropertyDataSource(item.getTarget());
-		translated.setWriteThrough(true);
-		translated.addListener(this);
 		orignal.setPropertyDataSource(item.getSource());
+		
+		translatedComment.setPropertyDataSource(item.getTargetComment());
+		orignalComment.setPropertyDataSource(item.getSourceComment());
 
 	}
 
