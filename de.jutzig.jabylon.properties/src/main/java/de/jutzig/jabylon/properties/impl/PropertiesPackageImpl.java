@@ -643,7 +643,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEClass(projectLocaleEClass, ProjectLocale.class, "ProjectLocale", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectLocale_ProjectVersion(), this.getProjectVersion(), this.getProjectVersion_Locales(), "projectVersion", null, 0, 1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProjectLocale_Locale(), this.getLocale(), "locale", null, 0, 1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProjectLocale_Descriptors(), this.getPropertyFileDescriptor(), null, "descriptors", null, 0, -1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProjectLocale_Descriptors(), this.getPropertyFileDescriptor(), null, "descriptors", null, 0, -1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(projectLocaleEClass, ecorePackage.getEBoolean(), "isMaster", 0, 1, IS_UNIQUE, IS_ORDERED);
 

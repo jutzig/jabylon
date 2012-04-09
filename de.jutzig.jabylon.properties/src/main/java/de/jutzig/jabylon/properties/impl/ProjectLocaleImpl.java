@@ -174,6 +174,8 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
 				return basicSetProjectVersion(null, msgs);
+			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+				return ((InternalEList<?>)getDescriptors()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}

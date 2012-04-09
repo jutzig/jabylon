@@ -211,6 +211,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		}
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this);
+		System.out.println(getMaster().getDescriptors().size());
 	}
 
 	/**
@@ -365,9 +366,10 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 
 		@Override
 		public void newMatch(File file) {
+			System.out.println("New Match: "+file);
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 			URI location = URI.createFileURI(file.getAbsolutePath());
-			location = location.deresolve(fullPath());
+			location = location.deresolve(absolutPath()); //get rid of the version
 			descriptor.setLocation(location);
 			if(getMaster()==null)
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
@@ -425,6 +427,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		{
 			projectLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
 			projectLocale.setLocale(locale);
+			getLocales().add(projectLocale);
 		}
 		return projectLocale;
 	}

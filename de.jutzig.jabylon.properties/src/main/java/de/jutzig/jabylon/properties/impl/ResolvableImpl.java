@@ -103,7 +103,7 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 				URI workingDir = URI.createFileURI(f.getAbsolutePath());
 				root = workingDir.appendSegments(root.segments());
 			}
-			return root.appendSegments(relativePath().segments());
+			return root.appendSegments(fullPath().segments());
 		}
 		return null;
 		

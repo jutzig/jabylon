@@ -384,7 +384,7 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_LOCALE__LOCALE = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Descriptors</b></em>' reference list.
+	 * The feature id for the '<em><b>Descriptors</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -761,10 +761,10 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProjectLocale_Locale();
 
 	/**
-	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}'.
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Descriptors</em>'.
+	 * @return the meta object for the containment reference list '<em>Descriptors</em>'.
 	 * @see de.jutzig.jabylon.properties.ProjectLocale#getDescriptors()
 	 * @see #getProjectLocale()
 	 * @generated
@@ -1096,7 +1096,7 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROJECT_LOCALE__LOCALE = eINSTANCE.getProjectLocale_Locale();
 
 		/**
-		 * The meta object literal for the '<em><b>Descriptors</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Descriptors</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

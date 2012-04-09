@@ -56,7 +56,7 @@
         eOpposite="#//ProjectVersion/locales"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
-        eType="#//PropertyFileDescriptor"/>
+        eType="#//PropertyFileDescriptor" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace" eSuperTypes="#//Resolvable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>

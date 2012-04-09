@@ -84,7 +84,7 @@ public interface ProjectLocale extends Resolvable, Completable {
 	void setLocale(Locale value);
 
 	/**
-	 * Returns the value of the '<em><b>Descriptors</b></em>' reference list.
+	 * Returns the value of the '<em><b>Descriptors</b></em>' containment reference list.
 	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyFileDescriptor}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -92,9 +92,9 @@ public interface ProjectLocale extends Resolvable, Completable {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Descriptors</em>' reference list.
+	 * @return the value of the '<em>Descriptors</em>' containment reference list.
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectLocale_Descriptors()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<PropertyFileDescriptor> getDescriptors();
