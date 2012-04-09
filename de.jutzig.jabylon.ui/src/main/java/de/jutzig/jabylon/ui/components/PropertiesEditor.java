@@ -83,7 +83,6 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 //		orignal.setWidth(400, UNITS_PIXELS);
 		orignal.setColumns(40);
 		orignal.setRows(5);
-		// orignal.setEnabled(false);
 		orignal.setReadOnly(true);
 		addComponent(orignal);
 		
