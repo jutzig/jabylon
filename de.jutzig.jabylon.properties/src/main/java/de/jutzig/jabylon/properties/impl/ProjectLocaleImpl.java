@@ -6,26 +6,20 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.ProjectLocale;
-import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.properties.PropertyBag;
-
 import java.util.Collection;
 import java.util.Locale;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 /**
  * <!-- begin-user-doc -->
@@ -142,7 +136,8 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public int percentComplete() {
+	@Override
+	public int internalUpdatePercentComplete() {
 		int translatedProps = 0;
 		int totalProps = 0;
 		for (PropertyFileDescriptor descriptor : getDescriptors()) {
@@ -153,8 +148,7 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 			totalProps += descriptor.getKeys();
 		}
 		
-		return Math.min(100, (int) ((translatedProps/(double)totalProps)*100));
-		
+		return  Math.min(100, (int) ((translatedProps/(double)totalProps)*100));		
 	}
 
 	/**

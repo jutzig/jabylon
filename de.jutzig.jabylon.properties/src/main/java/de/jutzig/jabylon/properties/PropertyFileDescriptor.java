@@ -30,7 +30,7 @@ import org.eclipse.emf.cdo.CDOObject;
  * @model
  * @generated
  */
-public interface PropertyFileDescriptor extends Resolvable, Completable {
+public interface PropertyFileDescriptor extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Variant</b></em>' attribute.
 	 * <!-- begin-user-doc -->

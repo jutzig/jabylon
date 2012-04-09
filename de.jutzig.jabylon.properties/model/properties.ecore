@@ -17,7 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Locale" instanceClassName="java.util.Locale"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor" eSuperTypes="#//Resolvable #//Completable">
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor" eSuperTypes="#//Resolvable">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="loadProperties" eType="#//PropertyFile"/>
     <eOperations name="computeLocation"/>
@@ -27,7 +27,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keys" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//Resolvable #//Completable">
+  <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//Resolvable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="workspace" eType="#//Workspace"
         eOpposite="#//Workspace/projects"/>
@@ -38,7 +38,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
         volatile="true" transient="true" derived="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable #//Completable">
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable">
     <eOperations name="fullScan"/>
     <eOperations name="getProjectLocale" eType="#//ProjectLocale">
       <eParameters name="locale" eType="#//Locale"/>
@@ -54,7 +54,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectLocale"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale" eSuperTypes="#//Resolvable #//Completable">
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale" eSuperTypes="#//Resolvable">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projectVersion" eType="#//ProjectVersion"
         eOpposite="#//ProjectVersion/locales"/>
@@ -67,12 +67,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
         eType="#//Project" containment="true" resolveProxies="false" eOpposite="#//Project/workspace"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Completable" abstract="true" interface="true">
-    <eOperations name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Resolvable" abstract="true">
     <eOperations name="fullPath" eType="#//URI"/>
     <eOperations name="relativePath" eType="#//URI"/>
     <eOperations name="absolutPath" eType="#//URI"/>
+    <eOperations name="updatePercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
 </ecore:EPackage>

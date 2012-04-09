@@ -6,18 +6,19 @@
  */
 package de.jutzig.jabylon.properties.util;
 
-import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -103,10 +104,6 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseWorkspace(Workspace object) {
 				return createWorkspaceAdapter();
-			}
-			@Override
-			public Adapter caseCompletable(Completable object) {
-				return createCompletableAdapter();
 			}
 			@Override
 			public Adapter caseResolvable(Resolvable object) {
@@ -227,20 +224,6 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createWorkspaceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see de.jutzig.jabylon.properties.Completable
-	 * @generated
-	 */
-	public Adapter createCompletableAdapter() {
 		return null;
 	}
 

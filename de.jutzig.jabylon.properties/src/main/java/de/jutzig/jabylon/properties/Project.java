@@ -31,7 +31,7 @@ import org.eclipse.emf.common.util.URI;
  * @model
  * @generated
  */
-public interface Project extends Resolvable, Completable {
+public interface Project extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -68,7 +68,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getResolvable()
 	 * @generated
 	 */
-	int RESOLVABLE = 8;
+	int RESOLVABLE = 7;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileImpl <em>Property File</em>}' class.
@@ -145,23 +145,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FEATURE_COUNT = 3;
 
 	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOLVABLE__PERCENT_COMPLETE = 0;
+
+	/**
 	 * The number of structural features of the '<em>Resolvable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RESOLVABLE_FEATURE_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.Completable
-	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getCompletable()
-	 * @generated
-	 */
-	int COMPLETABLE = 7;
+	int RESOLVABLE_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl <em>Property File Descriptor</em>}' class.
@@ -172,6 +171,15 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	int PROPERTY_FILE_DESCRIPTOR = 2;
+
+	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
 	 * The feature id for the '<em><b>Variant</b></em>' attribute.
@@ -227,6 +235,15 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	int PROJECT = 3;
+
+	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -291,6 +308,15 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	int PROJECT_VERSION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
 	 * The feature id for the '<em><b>Translated</b></em>' attribute.
@@ -366,6 +392,15 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_LOCALE = 5;
 
 	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_LOCALE__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
+
+	/**
 	 * The feature id for the '<em><b>Project Version</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -412,6 +447,15 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE = 6;
 
 	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKSPACE__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
+
+	/**
 	 * The feature id for the '<em><b>Root</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -439,15 +483,6 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Completable</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPLETABLE_FEATURE_COUNT = 0;
-
-	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -455,7 +490,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 9;
+	int LOCALE = 8;
 
 
 	/**
@@ -466,7 +501,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 10;
+	int URI = 9;
 
 
 	/**
@@ -804,16 +839,6 @@ public interface PropertiesPackage extends EPackage {
 	EReference getWorkspace_Projects();
 
 	/**
-	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Completable</em>'.
-	 * @see de.jutzig.jabylon.properties.Completable
-	 * @generated
-	 */
-	EClass getCompletable();
-
-	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Resolvable <em>Resolvable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -822,6 +847,17 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getResolvable();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Resolvable#getPercentComplete <em>Percent Complete</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Percent Complete</em>'.
+	 * @see de.jutzig.jabylon.properties.Resolvable#getPercentComplete()
+	 * @see #getResolvable()
+	 * @generated
+	 */
+	EAttribute getResolvable_PercentComplete();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -1130,16 +1166,6 @@ public interface PropertiesPackage extends EPackage {
 		EReference WORKSPACE__PROJECTS = eINSTANCE.getWorkspace_Projects();
 
 		/**
-		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.Completable <em>Completable</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see de.jutzig.jabylon.properties.Completable
-		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getCompletable()
-		 * @generated
-		 */
-		EClass COMPLETABLE = eINSTANCE.getCompletable();
-
-		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ResolvableImpl <em>Resolvable</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1148,6 +1174,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EClass RESOLVABLE = eINSTANCE.getResolvable();
+
+		/**
+		 * The meta object literal for the '<em><b>Percent Complete</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RESOLVABLE__PERCENT_COMPLETE = eINSTANCE.getResolvable_PercentComplete();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

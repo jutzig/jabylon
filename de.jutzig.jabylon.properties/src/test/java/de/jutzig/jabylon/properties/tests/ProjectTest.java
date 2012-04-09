@@ -6,18 +6,14 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
-import java.util.Locale;
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.Workspace;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->

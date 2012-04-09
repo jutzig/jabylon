@@ -6,11 +6,7 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import java.io.File;
 import java.util.Collection;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -18,18 +14,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.properties.ProjectStats;
-import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyBag;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
-import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
 
 /**
  * <!-- begin-user-doc -->
@@ -189,14 +178,6 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 
 
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public int percentComplete() {
-		return getMaster().percentComplete();
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -344,6 +325,15 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	@Override
 	public URI relativePath() {
 		return URI.createHierarchicalURI(new String[] {getName()}, null, null);
+	}
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public int internalUpdatePercentComplete() {
+		return getMaster().getPercentComplete();
 	}
 
 } //ProjectImpl

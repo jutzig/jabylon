@@ -6,7 +6,6 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.*;
 import java.util.Locale;
 
 import org.eclipse.emf.common.util.URI;
@@ -18,10 +17,11 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Workspace;

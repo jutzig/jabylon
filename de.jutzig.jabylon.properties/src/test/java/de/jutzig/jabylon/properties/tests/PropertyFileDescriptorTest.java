@@ -8,23 +8,10 @@ package de.jutzig.jabylon.properties.tests;
 
 import java.util.Locale;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
-import de.jutzig.jabylon.properties.Project;
-import de.jutzig.jabylon.properties.PropertiesFactory;
-import de.jutzig.jabylon.properties.PropertyBag;
-import de.jutzig.jabylon.properties.PropertyFile;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.properties.util.PropertiesResourceFactoryImpl;
-
 import junit.framework.TestCase;
-
 import junit.textui.TestRunner;
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 /**
  * <!-- begin-user-doc -->

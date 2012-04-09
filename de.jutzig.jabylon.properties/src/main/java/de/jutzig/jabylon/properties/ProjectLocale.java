@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ProjectLocale extends Resolvable, Completable {
+public interface ProjectLocale extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Project Version</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}'.

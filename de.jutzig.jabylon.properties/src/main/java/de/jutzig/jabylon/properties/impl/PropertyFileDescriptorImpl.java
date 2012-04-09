@@ -226,7 +226,8 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public int percentComplete() {
+	@Override
+	public int internalUpdatePercentComplete() {
 		if(isMaster())
 			return 100;
 		PropertyFileDescriptor master = getMaster();

@@ -33,7 +33,7 @@ import org.eclipse.emf.common.util.URI;
  * @model
  * @generated
  */
-public interface ProjectVersion extends Resolvable, Completable {
+public interface ProjectVersion extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Translated</b></em>' attribute.
 	 * <!-- begin-user-doc -->

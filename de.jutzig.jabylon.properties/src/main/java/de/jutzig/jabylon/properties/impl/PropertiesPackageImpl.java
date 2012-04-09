@@ -6,7 +6,6 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.Completable;
 import java.util.Locale;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -20,11 +19,9 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.properties.ProjectStats;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
@@ -85,13 +82,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	private EClass workspaceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass completableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -459,8 +449,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getCompletable() {
-		return completableEClass;
+	public EClass getResolvable() {
+		return resolvableEClass;
 	}
 
 	/**
@@ -468,8 +458,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getResolvable() {
-		return resolvableEClass;
+	public EAttribute getResolvable_PercentComplete() {
+		return (EAttribute)resolvableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -556,9 +546,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(workspaceEClass, WORKSPACE__ROOT);
 		createEReference(workspaceEClass, WORKSPACE__PROJECTS);
 
-		completableEClass = createEClass(COMPLETABLE);
-
 		resolvableEClass = createEClass(RESOLVABLE);
+		createEAttribute(resolvableEClass, RESOLVABLE__PERCENT_COMPLETE);
 
 		// Create data types
 		localeEDataType = createEDataType(LOCALE);
@@ -594,13 +583,9 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		// Add supertypes to classes
 		propertyFileDescriptorEClass.getESuperTypes().add(this.getResolvable());
-		propertyFileDescriptorEClass.getESuperTypes().add(this.getCompletable());
 		projectEClass.getESuperTypes().add(this.getResolvable());
-		projectEClass.getESuperTypes().add(this.getCompletable());
 		projectVersionEClass.getESuperTypes().add(this.getResolvable());
-		projectVersionEClass.getESuperTypes().add(this.getCompletable());
 		projectLocaleEClass.getESuperTypes().add(this.getResolvable());
-		projectLocaleEClass.getESuperTypes().add(this.getCompletable());
 		workspaceEClass.getESuperTypes().add(this.getResolvable());
 
 		// Initialize classes and features; add operations and parameters
@@ -658,17 +643,16 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getWorkspace_Root(), this.getURI(), "root", null, 0, 1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkspace_Projects(), this.getProject(), this.getProject_Workspace(), "projects", null, 0, -1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(completableEClass, Completable.class, "Completable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		addEOperation(completableEClass, ecorePackage.getEInt(), "percentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
-
 		initEClass(resolvableEClass, Resolvable.class, "Resolvable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getResolvable_PercentComplete(), ecorePackage.getEInt(), "percentComplete", null, 0, 1, Resolvable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(resolvableEClass, this.getURI(), "fullPath", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(resolvableEClass, this.getURI(), "relativePath", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(resolvableEClass, this.getURI(), "absolutPath", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(resolvableEClass, ecorePackage.getEInt(), "updatePercentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(localeEDataType, Locale.class, "Locale", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

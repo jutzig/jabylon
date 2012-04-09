@@ -18,14 +18,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
@@ -220,10 +218,11 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public int percentComplete() {
+	@Override
+	public int internalUpdatePercentComplete() {
 		int totalComplete = 0;
 		for (ProjectLocale locale : getLocales()) {
-			totalComplete += locale.percentComplete();
+			totalComplete += locale.getPercentComplete();
 		}
 		return totalComplete / getLocales().size();
 	}

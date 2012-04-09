@@ -6,17 +6,18 @@
  */
 package de.jutzig.jabylon.properties.util;
 
-import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyBag;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -92,7 +93,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				PropertyFileDescriptor propertyFileDescriptor = (PropertyFileDescriptor)theEObject;
 				T result = casePropertyFileDescriptor(propertyFileDescriptor);
 				if (result == null) result = caseResolvable(propertyFileDescriptor);
-				if (result == null) result = caseCompletable(propertyFileDescriptor);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -100,7 +100,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				Project project = (Project)theEObject;
 				T result = caseProject(project);
 				if (result == null) result = caseResolvable(project);
-				if (result == null) result = caseCompletable(project);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -108,7 +107,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				ProjectVersion projectVersion = (ProjectVersion)theEObject;
 				T result = caseProjectVersion(projectVersion);
 				if (result == null) result = caseResolvable(projectVersion);
-				if (result == null) result = caseCompletable(projectVersion);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -116,7 +114,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				ProjectLocale projectLocale = (ProjectLocale)theEObject;
 				T result = caseProjectLocale(projectLocale);
 				if (result == null) result = caseResolvable(projectLocale);
-				if (result == null) result = caseCompletable(projectLocale);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -124,12 +121,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				Workspace workspace = (Workspace)theEObject;
 				T result = caseWorkspace(workspace);
 				if (result == null) result = caseResolvable(workspace);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case PropertiesPackage.COMPLETABLE: {
-				Completable completable = (Completable)theEObject;
-				T result = caseCompletable(completable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -245,21 +236,6 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseWorkspace(Workspace object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Completable</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Completable</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseCompletable(Completable object) {
 		return null;
 	}
 
