@@ -12,7 +12,7 @@ import com.vaadin.ui.themes.Reindeer;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
-import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
+import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
@@ -36,7 +36,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		
 		final Table table = new Table();
 		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 		
 		for (Project project : projects) {
@@ -45,7 +45,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			projectName.setData(project);
 			projectName.addListener(this);
 			
-			StaticProgressIndicator progress = new CompletableProgressIndicator(project);
+			StaticProgressIndicator progress = new ResolvableProgressIndicator(project);
 			
 			table.addItem(new Object[] {projectName,progress},project.cdoID());
 		}

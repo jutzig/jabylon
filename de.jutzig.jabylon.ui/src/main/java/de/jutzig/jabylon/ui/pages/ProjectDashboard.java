@@ -25,7 +25,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
-import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
+import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
@@ -72,7 +72,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 		final Table table = new Table();
 		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 
 		 EList<ProjectLocale> locales = version.getLocales();
@@ -83,7 +83,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 				 projectName.setData(locale);
 				 projectName.addListener(this);
 				 
-				 StaticProgressIndicator progress = new CompletableProgressIndicator(locale);
+				 StaticProgressIndicator progress = new ResolvableProgressIndicator(locale);
 				 table.addItem(new Object[]{projectName,progress}, locale);
 		 }
 		 

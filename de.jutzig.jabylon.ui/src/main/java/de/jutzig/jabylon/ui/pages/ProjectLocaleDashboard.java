@@ -25,7 +25,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
-import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
+import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 
@@ -52,7 +52,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 		
 		final Table table = new Table();
 		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 		
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
@@ -63,7 +63,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 			fileName.addListener(this);
 
 			PropertyFileDescriptor translation = entry.getValue();
-			StaticProgressIndicator progress = new CompletableProgressIndicator(translation);
+			StaticProgressIndicator progress = new ResolvableProgressIndicator(translation);
 			
 			table.addItem(new Object[] {fileName,progress}, entry.getKey().cdoID());
 		}
