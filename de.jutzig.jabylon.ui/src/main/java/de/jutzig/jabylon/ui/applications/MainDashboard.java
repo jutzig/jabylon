@@ -29,6 +29,7 @@ import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbImpl;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
+import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
@@ -98,7 +99,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 
         // Upper left logo
 		Label title = new Label();
-		title.setCaption("Jabylon");
+		title.setIcon(ImageConstants.IMAGE_LOGO);
+//		title.setCaption("Jabylon");
 		title.setWidth(150, Label.UNITS_PIXELS);
 //		title.setStyleName(Reindeer.LABEL_H1);
 		title.setStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
