@@ -28,6 +28,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
+import de.jutzig.jabylon.ui.resources.ImageConstants;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
 		ClickListener {
@@ -93,6 +94,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 		Button scanProject = new Button();
 		scanProject.setCaption("Full Scan");
+		scanProject.setIcon(ImageConstants.IMAGE_PROJECT_SCAN);
 		scanProject.addListener(new ClickListener() {
 
 			@Override
@@ -124,6 +126,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 		
 		Button addLocale = new Button();
 		addLocale.setCaption("Add Locale");
+		addLocale.setIcon(ImageConstants.IMAGE_NEW_LOCALE);
 		addLocale.addListener(new ClickListener() {
 
 			@Override
@@ -147,7 +150,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 	public CrumbTrail walkTo(String path) {
 		if(CREATE_LOCALE.equals(path))
 		{
-			return new NewLocaleForm(project);
+			return new NewLocaleForm(version);
 		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(
 				PropertiesPackage.Literals.LOCALE, path);

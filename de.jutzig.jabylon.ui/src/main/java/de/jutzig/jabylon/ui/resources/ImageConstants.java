@@ -13,6 +13,10 @@ public final class ImageConstants {
 	public static final Resource IMAGE_LOGO = new ThemeResource("img/jabylon-logo.gif");
 	public static final Resource IMAGE_PROJECT = new ThemeResource("../runo/icons/"+ICON_SIZE+"/folder.png");
 	public static final Resource IMAGE_NEW_PROJECT = new ThemeResource("../runo/icons/"+ICON_SIZE+"/folder-add.png");
+	public static final Resource IMAGE_PROJECT_SCAN = new ThemeResource("../runo/icons/"+ICON_SIZE+"/reload.png");
+	
+	public static final Resource IMAGE_NEW_LOCALE = IMAGE_NEW_PROJECT;
+	
 	public static final Resource IMAGE_PROPERTIES_FILE = new ThemeResource("../runo/icons/"+ICON_SIZE+"/document-txt.png");
 	public static final Resource IMAGE_NEW_PROPERTIES_FILE = new ThemeResource("../runo/icons/"+ICON_SIZE+"/document-add.png");
 	
