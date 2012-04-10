@@ -27,10 +27,12 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
+import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
 		ClickListener {
 
+	private static final String CREATE_LOCALE = "create locale";
 	private Project project;
 	private ProjectVersion version;
 
@@ -44,8 +46,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 	}
 
 	private void initialize() {
-//		GridLayout layout = new GridLayout(1, 1);
-		VerticalLayout layout = new VerticalLayout();
+		GridLayout layout = new GridLayout(2, 1);
 		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -67,7 +68,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 	}
 
-	private void createContents(Layout parent) {
+	private void createContents(GridLayout parent) {
 		buildHeader(parent);
 
 		final Table table = new Table();
@@ -87,7 +88,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 				 table.addItem(new Object[]{projectName,progress}, locale);
 		 }
 		 
-		 addComponent(table);
+		 parent.addComponent(table, 0,0,1,0);
 		
 
 		Button scanProject = new Button();
@@ -118,7 +119,22 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 			}
 
 		});
-		addComponent(scanProject);
+		parent.addComponent(scanProject);
+		
+		
+		Button addLocale = new Button();
+		addLocale.setCaption("Add Locale");
+		addLocale.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				MainDashboard.getCurrent().getBreadcrumbs().walkTo(CREATE_LOCALE);
+
+			}
+
+		});
+		parent.addComponent(addLocale);
 
 	}
 
@@ -129,6 +145,10 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 	@Override
 	public CrumbTrail walkTo(String path) {
+		if(CREATE_LOCALE.equals(path))
+		{
+			return new NewLocaleForm(project);
+		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(
 				PropertiesPackage.Literals.LOCALE, path);
 		ProjectLocale projectLocale = version.getProjectLocale(locale);

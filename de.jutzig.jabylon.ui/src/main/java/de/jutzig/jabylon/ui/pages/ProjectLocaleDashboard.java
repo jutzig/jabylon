@@ -28,6 +28,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
+import de.jutzig.jabylon.ui.resources.ImageConstants;
 
 public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickListener {
 
@@ -54,9 +55,10 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 		table.addContainerProperty("location", Button.class, null);
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
-		
+//		table.setColumnWidth(locale,400);
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
 			Button fileName = new Button(entry.getKey().getLocation().toString());
+			fileName.setIcon(entry.getValue()==null ? ImageConstants.IMAGE_NEW_PROPERTIES_FILE : ImageConstants.IMAGE_PROPERTIES_FILE);
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
 			
 			fileName.setData(entry);
@@ -142,6 +144,8 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//change the icon
+			event.getButton().setIcon(ImageConstants.IMAGE_PROPERTIES_FILE);
 			entry.setValue(target);
 		}
 		MainDashboard.getCurrent().getBreadcrumbs().walkTo(target.getLocation().toString());

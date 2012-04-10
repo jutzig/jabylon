@@ -15,6 +15,7 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
+import de.jutzig.jabylon.ui.resources.ImageConstants;
 
 public class ProjectListPanel extends GridLayout implements ClickListener {
 
@@ -44,6 +45,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
 			projectName.setData(project);
 			projectName.addListener(this);
+			projectName.setIcon(ImageConstants.IMAGE_PROJECT);
 			
 			StaticProgressIndicator progress = new ResolvableProgressIndicator(project);
 			
@@ -53,6 +55,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		addComponent(table);
 		
 		Button addProject = new Button();
+		addProject.setIcon(ImageConstants.IMAGE_NEW_PROJECT);
 		addProject.setCaption("Create Project");
 		addProject.addListener(new ClickListener() {
 
