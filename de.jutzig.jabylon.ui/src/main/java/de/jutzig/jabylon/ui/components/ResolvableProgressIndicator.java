@@ -7,11 +7,11 @@ import org.eclipse.emf.common.notify.Notifier;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 
-public class CompletableProgressIndicator extends StaticProgressIndicator implements Adapter {
+public class ResolvableProgressIndicator extends StaticProgressIndicator implements Adapter {
 
 	private Resolvable resolvable;
 
-	public CompletableProgressIndicator(Resolvable resolvable) {
+	public ResolvableProgressIndicator(Resolvable resolvable) {
 		super();
 		this.resolvable = resolvable;
 		if(resolvable==null)
