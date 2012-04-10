@@ -1,13 +1,12 @@
 package de.jutzig.jabylon.ui.panels;
 
-import java.util.Random;
-
 import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.properties.Project;
@@ -31,19 +30,27 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 	private void createContents() {
 		Workspace workspace = MainDashboard.getCurrent().getWorkspace();
 		EList<Project> projects = workspace.getProjects();
-		setColumns(2);
+		setColumns(1);
 		setRows(projects.size()+1);
 		buildHeader();
+		
+		final Table table = new Table();
+		table.addContainerProperty("location", Button.class, null);
+		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.setColumnWidth("progress", 110);
+		
 		for (Project project : projects) {
 			Button projectName = new Button(project.getName());
 			projectName.setStyleName(Reindeer.BUTTON_LINK);
-			addComponent(projectName);
 			projectName.setData(project);
 			projectName.addListener(this);
 			
 			StaticProgressIndicator progress = new CompletableProgressIndicator(project);
-			addComponent(progress);
+			
+			table.addItem(new Object[] {projectName,progress},project.cdoID());
 		}
+		
+		addComponent(table);
 		
 		Button addProject = new Button();
 		addProject.setCaption("Create Project");

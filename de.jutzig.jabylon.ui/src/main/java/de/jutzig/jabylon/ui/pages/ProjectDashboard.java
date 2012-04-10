@@ -1,7 +1,6 @@
 package de.jutzig.jabylon.ui.pages;
 
 import java.util.Locale;
-import java.util.Random;
 
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
@@ -11,7 +10,10 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
@@ -25,7 +27,6 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.CompletableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
-import de.jutzig.jabylon.ui.forms.NewProjectForm;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
 		ClickListener {
@@ -43,7 +44,8 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 	}
 
 	private void initialize() {
-		GridLayout layout = new GridLayout(2, 1);
+//		GridLayout layout = new GridLayout(1, 1);
+		VerticalLayout layout = new VerticalLayout();
 		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -65,25 +67,32 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 	}
 
-	private void createContents(GridLayout parent) {
+	private void createContents(Layout parent) {
 		buildHeader(parent);
-		EList<ProjectLocale> locales = version.getLocales();
 
-		for (ProjectLocale locale : locales) {
-			Button projectName = new Button(locale.getLocale().getDisplayName());
-			projectName.setStyleName(Reindeer.BUTTON_LINK);
-			addComponent(projectName);
-			projectName.setData(locale);
-			projectName.addListener(this);
+		final Table table = new Table();
+		table.addContainerProperty("location", Button.class, null);
+		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.setColumnWidth("progress", 110);
 
-			StaticProgressIndicator progress = new CompletableProgressIndicator(
-					locale);
-			addComponent(progress);
-		}
+		 EList<ProjectLocale> locales = version.getLocales();
+		
+		 for (ProjectLocale locale : locales) {
+				 Button projectName = new Button(locale.getLocale().getDisplayName());
+				 projectName.setStyleName(Reindeer.BUTTON_LINK);
+				 projectName.setData(locale);
+				 projectName.addListener(this);
+				 
+				 StaticProgressIndicator progress = new CompletableProgressIndicator(locale);
+				 table.addItem(new Object[]{projectName,progress}, locale);
+		 }
+		 
+		 addComponent(table);
+		
 
-		Button addProject = new Button();
-		addProject.setCaption("Full Scan");
-		addProject.addListener(new ClickListener() {
+		Button scanProject = new Button();
+		scanProject.setCaption("Full Scan");
+		scanProject.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -109,11 +118,11 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 			}
 
 		});
-		addComponent(addProject);
+		addComponent(scanProject);
 
 	}
 
-	private void buildHeader(GridLayout parent) {
+	private void buildHeader(Layout parent) {
 		// TODO Auto-generated method stub
 
 	}

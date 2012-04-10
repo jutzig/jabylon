@@ -11,8 +11,10 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
@@ -35,7 +37,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 		this.locale = locale;
-		GridLayout layout = new GridLayout(2, 1);
+		VerticalLayout layout = new VerticalLayout();
 		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -45,23 +47,28 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 	}
 
 
-	private void createContents(GridLayout parent) {
+	private void createContents(Layout parent) {
 		buildHeader(parent);
 		
-		
-//		ProjectLocale master = locale.getProjectVersion().getMaster();
+		final Table table = new Table();
+		table.addContainerProperty("location", Button.class, null);
+		table.addContainerProperty("progress", CompletableProgressIndicator.class, null);
+		table.setColumnWidth("progress", 110);
 		
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
 			Button fileName = new Button(entry.getKey().getLocation().toString());
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
-			addComponent(fileName);
+			
 			fileName.setData(entry);
 			fileName.addListener(this);
 
 			PropertyFileDescriptor translation = entry.getValue();
 			StaticProgressIndicator progress = new CompletableProgressIndicator(translation);
-			addComponent(progress);
+			
+			table.addItem(new Object[] {fileName,progress}, entry.getKey().cdoID());
 		}
+		
+		addComponent(table);
 
 	}
 
@@ -80,7 +87,7 @@ public class ProjectLocaleDashboard extends Panel implements CrumbTrail, ClickLi
 	}
 
 
-	private void buildHeader(GridLayout parent) {
+	private void buildHeader(Layout parent) {
 		// TODO Auto-generated method stub
 		
 	}
