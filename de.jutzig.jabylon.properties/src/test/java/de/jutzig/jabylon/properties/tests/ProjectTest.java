@@ -116,7 +116,7 @@ public class ProjectTest extends TestCase {
 		workspace.setRoot(URI.createFileURI("test"));
 		workspace.getProjects().add(getFixture());
 		getFixture().setName("test2");
-		assertEquals(URI.createFileURI("test/test2"), getFixture().getBase());
+//		assertEquals(URI.createFileURI("test/test2"), getFixture().getBase());
 	}
 
 //	/**

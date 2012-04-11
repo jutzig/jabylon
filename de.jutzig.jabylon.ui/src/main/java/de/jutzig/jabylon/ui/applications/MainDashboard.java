@@ -1,6 +1,9 @@
 package de.jutzig.jabylon.ui.applications;
 
 import java.io.File;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
@@ -18,7 +21,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
@@ -31,6 +33,7 @@ import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
+import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
 
@@ -43,6 +46,11 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private Component mainComponent;
 	private VerticalLayout mainLayout;
 	private GridLayout contentArea;
+	private Map<String, TeamProvider> teamProvider;
+	
+	public MainDashboard() {
+		teamProvider = new HashMap<String, TeamProvider>();
+	}
 
 	@Override
 	public void init() {
@@ -238,5 +246,36 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return false;
 	}
 
+	
+	public void addTeamProvider(TeamProvider provider, Map properties)
+	{
+		//TODO: enable properties
+		teamProvider.put((String) properties.get("scheme"), provider);
+//		teamProvider.put("git", provider);
+	}
+	
+	public void addTeamProvider(TeamProvider provider)
+	{
+		//TODO: enable properties
+//		teamProvider.put((String) properties.get("scheme"), provider);
+		teamProvider.put("git", provider);
+	}
+	
+
+	
+	public void removeTeamProvider(TeamProvider provider)
+	{
+		//TODO: enable properties
+//		teamProvider.remove(properties.get("schema"));
+		teamProvider.remove("git");
+	}
+	
+	public TeamProvider getTeamProviderForURI(URI uri)
+	{
+		if(uri.lastSegment().endsWith(".git"))
+			return teamProvider.get("git");
+		return teamProvider.get(uri.scheme());
+	}
+	
 }
 

@@ -17,3 +17,4 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  de.jutzig.jabylon.cdo.server;bundle-version="1.0.0"
 Bundle-ClassPath: .
 Service-Component: OSGI-INF/main.xml
+Export-Package: de.jutzig.jabylon.ui.team

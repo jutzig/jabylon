@@ -314,7 +314,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getProject_Base() {
+	public EAttribute getProject_RepositoryURI() {
 		return (EAttribute)projectEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -527,7 +527,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEReference(projectEClass, PROJECT__WORKSPACE);
 		createEReference(projectEClass, PROJECT__VERSIONS);
 		createEReference(projectEClass, PROJECT__MASTER);
-		createEAttribute(projectEClass, PROJECT__BASE);
+		createEAttribute(projectEClass, PROJECT__REPOSITORY_URI);
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
 		createEAttribute(projectVersionEClass, PROJECT_VERSION__TRANSLATED);
@@ -617,7 +617,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEReference(getProject_Workspace(), this.getWorkspace(), this.getWorkspace_Projects(), "workspace", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Versions(), this.getProjectVersion(), null, "versions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Master(), this.getProjectVersion(), null, "master", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProject_Base(), this.getURI(), "base", null, 0, 1, Project.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProject_RepositoryURI(), this.getURI(), "repositoryURI", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProjectVersion_Translated(), ecorePackage.getEInt(), "translated", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

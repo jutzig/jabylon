@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" immediate="false" name="de.jutzig.jabylon.team.git">
+   <implementation class="de.jutzig.jabylon.team.git.impl.GitTeamProvider"/>
+   <service>
+      <provide interface="de.jutzig.jabylon.ui.team.TeamProvider"/>
+   </service>
+   <property name="scheme" type="String" value="git"/>
+</scr:component>

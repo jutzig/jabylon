@@ -282,13 +282,13 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Base</b></em>' attribute.
+	 * The feature id for the '<em><b>Repository URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__BASE = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROJECT__REPOSITORY_URI = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Project</em>' class.
@@ -677,15 +677,15 @@ public interface PropertiesPackage extends EPackage {
 	EReference getProject_Master();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}'.
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Base</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getBase()
+	 * @return the meta object for the attribute '<em>Repository URI</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getRepositoryURI()
 	 * @see #getProject()
 	 * @generated
 	 */
-	EAttribute getProject_Base();
+	EAttribute getProject_RepositoryURI();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
@@ -1040,12 +1040,12 @@ public interface PropertiesPackage extends EPackage {
 		EReference PROJECT__MASTER = eINSTANCE.getProject_Master();
 
 		/**
-		 * The meta object literal for the '<em><b>Base</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Repository URI</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PROJECT__BASE = eINSTANCE.getProject_Base();
+		EAttribute PROJECT__REPOSITORY_URI = eINSTANCE.getProject_RepositoryURI();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.

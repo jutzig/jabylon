@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getBase <em>Base</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}</li>
  * </ul>
  * </p>
  *
@@ -129,18 +129,29 @@ public interface Project extends Resolvable {
 	void setMaster(ProjectVersion value);
 
 	/**
-	 * Returns the value of the '<em><b>Base</b></em>' attribute.
+	 * Returns the value of the '<em><b>Repository URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Base</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Repository URI</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Base</em>' attribute.
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Base()
-	 * @model dataType="de.jutzig.jabylon.properties.URI" transient="true" changeable="false" volatile="true" derived="true"
+	 * @return the value of the '<em>Repository URI</em>' attribute.
+	 * @see #setRepositoryURI(URI)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_RepositoryURI()
+	 * @model dataType="de.jutzig.jabylon.properties.URI"
 	 * @generated
 	 */
-	URI getBase();
+	URI getRepositoryURI();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Repository URI</em>' attribute.
+	 * @see #getRepositoryURI()
+	 * @generated
+	 */
+	void setRepositoryURI(URI value);
 
 } // Project

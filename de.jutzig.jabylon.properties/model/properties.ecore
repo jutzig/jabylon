@@ -35,8 +35,7 @@
         eType="#//ProjectVersion" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="base" eType="#//URI" changeable="false"
-        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable">
     <eOperations name="fullScan"/>

@@ -31,7 +31,7 @@ import de.jutzig.jabylon.properties.Workspace;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getWorkspace <em>Workspace</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getMaster <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getBase <em>Base</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getRepositoryURI <em>Repository URI</em>}</li>
  * </ul>
  * </p>
  *
@@ -50,14 +50,14 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	
 
 	/**
-	 * The default value of the '{@link #getBase() <em>Base</em>}' attribute.
+	 * The default value of the '{@link #getRepositoryURI() <em>Repository URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getBase()
+	 * @see #getRepositoryURI()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final URI BASE_EDEFAULT = null;
+	protected static final URI REPOSITORY_URI_EDEFAULT = null;
 
 
 	/**
@@ -166,6 +166,24 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public URI getRepositoryURI() {
+		return (URI)eDynamicGet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRepositoryURI(URI newRepositoryURI) {
+		eDynamicSet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, newRepositoryURI);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public URI getBase() {
@@ -244,8 +262,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getVersions();
 			case PropertiesPackage.PROJECT__MASTER:
 				return getMaster();
-			case PropertiesPackage.PROJECT__BASE:
-				return getBase();
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				return getRepositoryURI();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -272,6 +290,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__MASTER:
 				setMaster((ProjectVersion)newValue);
 				return;
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				setRepositoryURI((URI)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -296,6 +317,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__MASTER:
 				setMaster((ProjectVersion)null);
 				return;
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				setRepositoryURI(REPOSITORY_URI_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -316,8 +340,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return !getVersions().isEmpty();
 			case PropertiesPackage.PROJECT__MASTER:
 				return getMaster() != null;
-			case PropertiesPackage.PROJECT__BASE:
-				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
 		}
 		return super.eIsSet(featureID);
 	}
