@@ -115,13 +115,13 @@ public class GitTeamProvider implements TeamProvider {
 //		clone.setBranch(project.getBranch());
 		
 		URI uri = project.getProject().getRepositoryURI();
-		if(uri.userInfo()!=null)
+		if(uri.userInfo()!=null && uri.userInfo().length()>0)
 		{
 			String userInfo = uri.userInfo();
 			String[] values = userInfo.split(":");
 			UsernamePasswordCredentialsProvider user = new UsernamePasswordCredentialsProvider(values[0], values[1]);                
 			clone.setCredentialsProvider(user);
-			uri = URI.createHierarchicalURI(uri.scheme(), uri.authority().replace("@"+userInfo, ""), uri.device(), uri.segments(), uri.query(), uri.fragment());
+			uri = URI.createHierarchicalURI(uri.scheme(), uri.authority().replace(userInfo+"@", ""), uri.device(), uri.segments(), uri.query(), uri.fragment());
 		}
 		clone.setURI(uri.toString());
 		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));

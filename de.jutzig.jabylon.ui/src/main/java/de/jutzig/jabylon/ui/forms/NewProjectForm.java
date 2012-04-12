@@ -113,17 +113,17 @@ public class NewProjectForm extends VerticalLayout {
 														bean.getRepositoryURI());
 										if (bean.getUsername() != null
 												&& bean.getUsername().length() > 0) {
-											String userinfo = "@"
-													+ bean.getUsername();
+											String userinfo = bean.getUsername();
 											if (bean.getPassword() != null
 													&& bean.getPassword()
 															.length() > 0) {
 												userinfo = userinfo + ":"
 														+ bean.getPassword();
 											}
+											userinfo = userinfo + "@"; //userinfo separator
 											uri = URI.createHierarchicalURI(
 													uri.scheme(),
-													uri.authority() + userinfo,
+													userinfo + uri.authority(),
 													uri.device(),
 													uri.segments(),
 													uri.query(), uri.fragment());
