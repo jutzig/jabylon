@@ -1,7 +1,9 @@
 package de.jutzig.jabylon.ui.pages;
 
+import java.io.IOException;
 import java.util.Locale;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 
@@ -29,6 +31,7 @@ import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
 		ClickListener {
@@ -138,6 +141,30 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 		});
 		parent.addComponent(addLocale);
+		
+		Button commit = new Button();
+		commit.setCaption("Commit Changes");
+		commit.setIcon(ImageConstants.IMAGE_PROJECT_COMMIT);
+		commit.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
+				if(teamProvider!=null)
+				{
+					try {
+						teamProvider.commit(version, new NullProgressMonitor());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+		});
+		parent.addComponent(commit);
 
 	}
 
