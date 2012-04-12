@@ -104,6 +104,8 @@ public class GitTeamProvider implements TeamProvider {
 	public void checkout(ProjectVersion project, IProgressMonitor monitor)
 			throws IOException {
 		SubMonitor subMon = SubMonitor.convert(monitor,100);
+		subMon.setTaskName("Checking out");
+		subMon.worked(20);
 		File repoDir = new File(project.absolutPath().toFileString());
 		CloneCommand clone = Git.cloneRepository();
 		clone.setBare(false);
@@ -122,26 +124,9 @@ public class GitTeamProvider implements TeamProvider {
 			uri = URI.createHierarchicalURI(uri.scheme(), uri.authority().replace("@"+userInfo, ""), uri.device(), uri.segments(), uri.query(), uri.fragment());
 		}
 		clone.setURI(uri.toString());
-		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
+		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
 
-		Git git = clone.call();  
-		CheckoutCommand checkout = git.checkout();
-		checkout.setName(project.getBranch());
-		try {
-			checkout.call();
-		} catch (JGitInternalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RefAlreadyExistsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RefNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidRefNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		clone.call();  
 		subMon.done();
 		if(monitor!=null)
 			monitor.done();

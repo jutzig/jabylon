@@ -11,7 +11,7 @@ public class ProgressMonitorIndicator extends ProgressIndicator implements IProg
 	
 	
 	public ProgressMonitorIndicator() {
-		super(3f);
+		super(0f);
 	}
 	
 	@Override
@@ -21,7 +21,7 @@ public class ProgressMonitorIndicator extends ProgressIndicator implements IProg
 
 	@Override
 	public void beginTask(String name, int totalWork) {
-		setCaption(name);
+		setTaskName(name);
 		this.totalWork = totalWork;
 		
 	}

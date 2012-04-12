@@ -1,5 +1,7 @@
 package de.jutzig.jabylon.team.git.impl.util;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jgit.lib.ProgressMonitor;
 
@@ -8,8 +10,12 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 	
 	private SubMonitor delegate;
 	private SubMonitor currentChild;
-	private boolean inIndeterminatedMode;
-	private int totalTicks;
+	
+	private static final String SUB_TASK_MESSAGE = "{0} of {1}";
+	
+	private int remainingTicks;
+	int total;
+	int current;
 	
 	
 	public ProgressMonitorWrapper(SubMonitor delegate) {
@@ -19,38 +25,40 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 
 	@Override
 	public void start(int totalTasks) {
-		totalTicks = totalTasks*100;
-		delegate.setWorkRemaining(totalTicks);
+		remainingTicks = (totalTasks)*100; 
+		delegate.setWorkRemaining(remainingTicks);
 	}
 
 	@Override
 	public void beginTask(String title, int totalWork) {
+		if(currentChild!=null)
+			currentChild.done();
+		total = totalWork;
+		current = 0;
 		if(totalWork<=0)
 		{
-			totalTicks -= 10;
-			currentChild = delegate.newChild(10); //don't take those as full tasks
-			currentChild.beginTask(title, 100);	
-			inIndeterminatedMode = true;
+			//don't take those as full tasks since they are undetermined
+			currentChild = delegate.newChild(0); 
+			currentChild.beginTask(title, 100);
 		}
 		else
 		{
-			totalTicks -= 100;
 			currentChild = delegate.newChild(100);
-			currentChild.beginTask(title, totalWork);			
-			inIndeterminatedMode = false;
+			currentChild.beginTask(title, totalWork);
+			
 		}
-
-		delegate.subTask(title);
-
+		delegate.setTaskName(title);
 	}
 
 	@Override
 	public void update(int completed) {
+		current += completed;
+		
 		if(currentChild!=null)
 			currentChild.worked(completed);
 		else
 			delegate.worked(completed);
-
+		delegate.subTask(MessageFormat.format(SUB_TASK_MESSAGE, current,total));
 	}
 
 	@Override
@@ -59,8 +67,6 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 		{
 			currentChild.done();			
 		}
-		if(inIndeterminatedMode)
-			delegate.setWorkRemaining(totalTicks);
 		currentChild=null;
 
 	}

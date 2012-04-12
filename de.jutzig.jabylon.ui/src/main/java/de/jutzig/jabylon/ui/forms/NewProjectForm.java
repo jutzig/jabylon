@@ -2,9 +2,9 @@ package de.jutzig.jabylon.ui.forms;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.Locale;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
@@ -34,9 +34,11 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.beans.ProjectBean;
+import de.jutzig.jabylon.ui.components.ProgressMonitorDialog;
 import de.jutzig.jabylon.ui.components.ProgressMonitorIndicator;
 import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.team.TeamProvider;
+import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 public class NewProjectForm extends VerticalLayout {
 
@@ -171,45 +173,22 @@ public class NewProjectForm extends VerticalLayout {
 
 	private void showProgressWindow() {
 
-		final Window progressDialog = new Window("Performing Checkout");
-		progressDialog.setModal(true);
-		progressDialog.setWidth(480, UNITS_PIXELS);
-		progressDialog.setHeight(240, UNITS_PIXELS);
-		VerticalLayout layout = new VerticalLayout();
-		layout.setMargin(true);
-		layout.setSpacing(true);
-		layout.setSizeFull();
-		final TeamProvider provider = MainDashboard.getCurrent()
-				.getTeamProviderForURI(project.getRepositoryURI());
-		final ProgressMonitorIndicator indicator = new ProgressMonitorIndicator();
-		indicator.setCaption("Checking out "
-				+ project.getRepositoryURI().toString());
-		indicator.setImmediate(true);
-		indicator.setWidth(450, UNITS_PIXELS);
-		indicator.setPollingInterval(200);
-		indicator.setHeight(50, UNITS_PIXELS);
-		
-		Thread t = new Thread(new Runnable() {
-
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(getWindow());
+		final TeamProvider provider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
+		dialog.setCaption("Checking out...");
+		dialog.run(true, new RunnableWithProgress() {
+			
 			@Override
-			public void run() {
+			public void run(IProgressMonitor monitor) {
 				try {
-					provider.checkout(project.getMaster(), indicator);
-					progressDialog.getParent().removeWindow(progressDialog);
+					provider.checkout(project.getMaster(), monitor);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				
 			}
 		});
-		t.setName("Checkout");
-		t.start();
-		layout.addComponent(indicator);
-		progressDialog.setContent(layout);
-
-		getWindow().addWindow(progressDialog);
-
 	}
 
 	private class ProjectFieldFactory extends DefaultFieldFactory {
