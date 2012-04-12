@@ -8,7 +8,8 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 	
 	private SubMonitor delegate;
 	private SubMonitor currentChild;
-	
+	private boolean inIndeterminatedMode;
+	private int totalTicks;
 	
 	
 	public ProgressMonitorWrapper(SubMonitor delegate) {
@@ -18,14 +19,28 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 
 	@Override
 	public void start(int totalTasks) {
-		delegate.beginTask("", totalTasks);
-
+		totalTicks = totalTasks*100;
+		delegate.setWorkRemaining(totalTicks);
 	}
 
 	@Override
 	public void beginTask(String title, int totalWork) {
-		delegate.newChild(totalWork);
-		delegate.setTaskName(title);
+		if(totalWork<=0)
+		{
+			totalTicks -= 10;
+			currentChild = delegate.newChild(10); //don't take those as full tasks
+			currentChild.beginTask(title, 100);	
+			inIndeterminatedMode = true;
+		}
+		else
+		{
+			totalTicks -= 100;
+			currentChild = delegate.newChild(100);
+			currentChild.beginTask(title, totalWork);			
+			inIndeterminatedMode = false;
+		}
+
+		delegate.subTask(title);
 
 	}
 
@@ -44,6 +59,8 @@ public class ProgressMonitorWrapper implements ProgressMonitor {
 		{
 			currentChild.done();			
 		}
+		if(inIndeterminatedMode)
+			delegate.setWorkRemaining(totalTicks);
 		currentChild=null;
 
 	}
