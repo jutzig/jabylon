@@ -104,7 +104,6 @@ public class GitTeamProvider implements TeamProvider {
 	public void checkout(ProjectVersion project, IProgressMonitor monitor)
 			throws IOException {
 		SubMonitor subMon = SubMonitor.convert(monitor,100);
-		subMon.worked(20);
 		File repoDir = new File(project.absolutPath().toFileString());
 		CloneCommand clone = Git.cloneRepository();
 		clone.setBare(false);

@@ -2,6 +2,7 @@ package de.jutzig.jabylon.ui.forms;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.Locale;
 
 import org.eclipse.emf.common.util.EList;
@@ -170,7 +171,7 @@ public class NewProjectForm extends VerticalLayout {
 
 	private void showProgressWindow() {
 
-		Window progressDialog = new Window("Performing Checkout");
+		final Window progressDialog = new Window("Performing Checkout");
 		progressDialog.setModal(true);
 		progressDialog.setWidth(480, UNITS_PIXELS);
 		progressDialog.setHeight(240, UNITS_PIXELS);
@@ -187,19 +188,23 @@ public class NewProjectForm extends VerticalLayout {
 		indicator.setWidth(450, UNITS_PIXELS);
 		indicator.setPollingInterval(200);
 		indicator.setHeight(50, UNITS_PIXELS);
-		new Thread(new Runnable() {
+		
+		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					provider.checkout(project.getMaster(), indicator);
+					progressDialog.getParent().removeWindow(progressDialog);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
-		}).start();
+		});
+		t.setName("Checkout");
+		t.start();
 		layout.addComponent(indicator);
 		progressDialog.setContent(layout);
 
