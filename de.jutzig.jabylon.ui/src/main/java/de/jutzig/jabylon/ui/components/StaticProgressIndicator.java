@@ -11,7 +11,6 @@ import com.vaadin.ui.Label;
 
 public class StaticProgressIndicator extends Label {
 
-	private int percentage;
 	private static final String PATTERN = "<div class=\"jabylon-progress\">"
 			+ "<div class=\"jabylon-progress-bar\" style=\"width:{0}%; background-color: {1};\">&nbsp;</div>"
 			+ "<div class=\"jabylon-progress-label\">{0}%</div>" + "</div>";
@@ -21,7 +20,6 @@ public class StaticProgressIndicator extends Label {
 	}
 
 	public void setPercentage(int percentage) {
-		this.percentage = percentage;
 		int rgb = calculateBackgroundColor(percentage);
 		String color = Integer.toHexString(rgb);
 		if (color.length() == 4) // pure green, no red left
@@ -30,10 +28,12 @@ public class StaticProgressIndicator extends Label {
 
 	}
 
-	private int calculateBackgroundColor(int percentage) {
+	protected int calculateBackgroundColor(int percentage) {
 
 		int ticks = (int) ((512 / 100.0) * percentage);
 		int red, green;
+		if(percentage==50) //exactly 50 => yellow
+			return 0xFFFF00;
 		if (percentage < 50) {
 			// first, red stays at 100%, green raises to 100%
 			red = 255;
