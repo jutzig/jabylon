@@ -13,6 +13,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
+import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewProjectForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
@@ -24,6 +25,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		createContents();
 		setMargin(true, true, true, true);
 		setSpacing(true);
+		setSizeFull();
 //		setSizeFull();
 		
 	}
@@ -35,7 +37,15 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		setRows(projects.size()+1);
 		buildHeader();
 		
+		Section section = new Section();
+		section.setTitle("Active Projects");
+		section.setWidth(100, UNITS_PERCENTAGE);
+//		section.setWidth(800, UNITS_PIXELS);
+		GridLayout layout = section.getBody();
+		
 		final Table table = new Table();
+		table.setSizeFull();
+//		table.setWidth(800, UNITS_PIXELS);
 		table.addContainerProperty("location", Button.class, null);
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
@@ -52,7 +62,8 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 			table.addItem(new Object[] {projectName,progress},project.cdoID());
 		}
 		
-		addComponent(table);
+		layout.addComponent(table);
+		addComponent(section);
 		
 		Button addProject = new Button();
 		addProject.setIcon(ImageConstants.IMAGE_NEW_PROJECT);

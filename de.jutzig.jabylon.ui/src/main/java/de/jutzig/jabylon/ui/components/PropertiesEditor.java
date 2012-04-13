@@ -170,7 +170,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 
 	@Override
 	public String getTrailCaption() {
-		return descriptor.getLocation().toString();
+		return descriptor.getLocation().lastSegment();
 	}
 
 	@Override

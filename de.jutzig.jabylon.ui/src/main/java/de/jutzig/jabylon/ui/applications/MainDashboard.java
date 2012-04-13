@@ -29,6 +29,8 @@ import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbImpl;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
+import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
+import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
@@ -43,9 +45,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private static final ThreadLocal<MainDashboard> application = new ThreadLocal<MainDashboard>();
 	private BreadCrumb breadcrumbs;
 	private Workspace workspace;
-	private Component mainComponent;
 	private VerticalLayout mainLayout;
-	private GridLayout contentArea;
+	private LabeledContainer contentArea;
 	private Map<String, TeamProvider> teamProvider;
 	
 	public MainDashboard() {
@@ -66,14 +67,19 @@ public class MainDashboard extends Application implements TransactionListener, C
 		setMainWindow(new Window("Jabylon"));
 
 		mainLayout = new VerticalLayout();
-		contentArea = new GridLayout();
-		contentArea.setSizeUndefined();
 		
-		Component header = createHeader();
+		ApplicationTitleBar titleBar = new ApplicationTitleBar();
+		mainLayout.addComponent(titleBar);
 		
-		mainLayout.addComponent(header);
-		mainLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
-		mainLayout.setExpandRatio(header, 0f);
+		contentArea = new LabeledContainer();
+		contentArea.setHeadClient(createHeader());
+		contentArea.setSizeFull();
+		
+//		Component header = createHeader();
+//		
+//		mainLayout.addComponent(header);
+//		mainLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
+//		mainLayout.setExpandRatio(header, 0f);
 		mainLayout.addComponent(contentArea);
 		
 		getMainWindow().setContent(mainLayout);
@@ -101,26 +107,17 @@ public class MainDashboard extends Application implements TransactionListener, C
         HorizontalLayout nav = new HorizontalLayout();
         nav.setHeight("30px");
         nav.setWidth("100%");
-        nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
+//        nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
         nav.setSpacing(true);
-//        nav.setMargin(false, true, false, false);
+//        nav.setMargin(true, true, false, true);
 
-        // Upper left logo
-		Label title = new Label();
-		title.setIcon(ImageConstants.IMAGE_LOGO);
-//		title.setCaption("Jabylon");
-		title.setWidth(150, Label.UNITS_PIXELS);
-//		title.setStyleName(Reindeer.LABEL_H1);
-		title.setStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
-        nav.addComponent(title);
-        nav.setComponentAlignment(title, Alignment.TOP_LEFT);
-        
+
         // Breadcrumbs
 		BreadCrumbImpl crumbs = new BreadCrumbImpl();
 		breadcrumbs = crumbs;
 		nav.addComponent(crumbs);
         nav.setExpandRatio(crumbs, 1);
-        nav.setComponentAlignment(crumbs, Alignment.TOP_LEFT);
+        nav.setComponentAlignment(crumbs, Alignment.MIDDLE_LEFT);
         
         return nav;
 	}
@@ -135,12 +132,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	}
 
 	public void setMainComponent(Component c) {
-		if(mainComponent!=null)
-		{
-			contentArea.removeComponent(mainComponent);
-		}
-		mainComponent = c;
-		contentArea.addComponent(mainComponent);
+		contentArea.setBody(c);
 		
 	}
 
@@ -234,7 +226,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public String getTrailCaption() {
-		return "Jabylon";
+		return "Home";
 	}
 	
 	public Workspace getWorkspace() {
