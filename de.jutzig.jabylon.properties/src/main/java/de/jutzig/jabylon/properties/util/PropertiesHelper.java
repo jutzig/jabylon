@@ -28,11 +28,12 @@ public class PropertiesHelper {
 			line=line.trim();
 			if(line.length()==0)
 				continue;
-			if(isComment(line) && line.length()>1)
+			if(isComment(line))
 			{
 				if(comment.length()>0) //there's already a comment, so now we have a new line
 					comment.append("\n");
-				comment.append(line.substring(1).trim());				
+				if(line.length()>1) //otherwise it's just an empty comment
+					comment.append(line.substring(1).trim());				
 			}
 			else
 			{
