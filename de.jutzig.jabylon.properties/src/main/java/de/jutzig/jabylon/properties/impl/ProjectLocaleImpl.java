@@ -148,7 +148,7 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 			totalProps += descriptor.getKeys();
 		}
 		
-		return  Math.min(100, (int) ((translatedProps/(double)totalProps)*100));		
+		return  Math.min(100, (int) Math.floor(((translatedProps/(double)totalProps)*100)));		
 	}
 
 	/**

@@ -233,7 +233,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		PropertyFileDescriptor master = getMaster();
 		int keys = master.getKeys();
 		int translated = getKeys();
-		return Math.min(100, (int) ((translated/(double)keys)*100));
+		return (int) Math.min(100, Math.floor(((translated/(double)keys)*100)));
 	}
 
 	/**

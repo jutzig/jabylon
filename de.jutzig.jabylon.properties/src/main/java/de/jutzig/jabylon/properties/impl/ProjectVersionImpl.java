@@ -224,7 +224,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		for (ProjectLocale locale : getLocales()) {
 			totalComplete += locale.getPercentComplete();
 		}
-		return totalComplete / getLocales().size();
+		return (int) Math.floor(totalComplete / getLocales().size());
 	}
 
 	/**
