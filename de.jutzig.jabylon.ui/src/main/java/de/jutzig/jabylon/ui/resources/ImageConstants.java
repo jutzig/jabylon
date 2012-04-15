@@ -24,4 +24,6 @@ public final class ImageConstants {
 	public static final Resource IMAGE_TWISTY_EXPANDED = new ThemeResource("../runo/icons/"+ICON_SIZE+"/arrow-down.png");
 	public static final Resource IMAGE_TWISTY_COLLAPSED = new ThemeResource("../runo/icons/"+ICON_SIZE+"/arrow-right.png");
 	
+	public static final String FOLDER_FLAGS = "img/flags/gif/";
+	
 }

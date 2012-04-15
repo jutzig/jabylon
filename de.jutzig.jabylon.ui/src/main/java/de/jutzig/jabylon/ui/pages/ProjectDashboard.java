@@ -7,6 +7,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 
+import com.vaadin.terminal.Resource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -32,6 +34,7 @@ import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.team.TeamProvider;
+import de.jutzig.jabylon.ui.util.LocaleUtil;
 
 public class ProjectDashboard extends Panel implements CrumbTrail,
 		ClickListener {
@@ -77,23 +80,30 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 		final Table table = new Table();
 		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
+		table.addContainerProperty("progress",
+				ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 
-		 EList<ProjectLocale> locales = version.getLocales();
-		
-		 for (ProjectLocale locale : locales) {
-				 Button projectName = new Button(locale.getLocale().getDisplayName());
-				 projectName.setStyleName(Reindeer.BUTTON_LINK);
-				 projectName.setData(locale);
-				 projectName.addListener(this);
-				 
-				 StaticProgressIndicator progress = new ResolvableProgressIndicator(locale);
-				 table.addItem(new Object[]{projectName,progress}, locale);
-		 }
-		 
-		 parent.addComponent(table, 0,0,1,0);
-		
+		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
+
+		EList<ProjectLocale> locales = version.getLocales();
+
+		for (ProjectLocale locale : locales) {
+
+			Button projectName = new Button(locale.getLocale().getDisplayName());
+			projectName.setStyleName(Reindeer.BUTTON_LINK);
+			projectName.setData(locale);
+			projectName.addListener(this);
+
+			StaticProgressIndicator progress = new ResolvableProgressIndicator(
+					locale);
+			table.addItem(new Object[] { projectName, progress }, locale);
+			Resource icon = LocaleUtil.getIconForLocale(locale);
+			if(icon!=null)
+				table.setItemIcon(locale, icon);
+		}
+
+		parent.addComponent(table, 0, 0, 1, 0);
 
 		Button scanProject = new Button();
 		scanProject.setCaption("Full Scan");
@@ -125,8 +135,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 		});
 		parent.addComponent(scanProject);
-		
-		
+
 		Button addLocale = new Button();
 		addLocale.setCaption("Add Locale");
 		addLocale.setIcon(ImageConstants.IMAGE_NEW_LOCALE);
@@ -134,14 +143,15 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
-				MainDashboard.getCurrent().getBreadcrumbs().walkTo(CREATE_LOCALE);
+
+				MainDashboard.getCurrent().getBreadcrumbs()
+						.walkTo(CREATE_LOCALE);
 
 			}
 
 		});
 		parent.addComponent(addLocale);
-		
+
 		Button commit = new Button();
 		commit.setCaption("Commit Changes");
 		commit.setIcon(ImageConstants.IMAGE_PROJECT_COMMIT);
@@ -149,10 +159,10 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
-				TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
-				if(teamProvider!=null)
-				{
+
+				TeamProvider teamProvider = MainDashboard.getCurrent()
+						.getTeamProviderForURI(project.getRepositoryURI());
+				if (teamProvider != null) {
 					try {
 						teamProvider.commit(version, new NullProgressMonitor());
 					} catch (IOException e) {
@@ -175,8 +185,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(CREATE_LOCALE.equals(path))
-		{
+		if (CREATE_LOCALE.equals(path)) {
 			return new NewLocaleForm(version);
 		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(

@@ -5,5 +5,8 @@ Bundle-SymbolicName: de.jutzig.jabylon.vaadin.style
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: com.vaadin;bundle-version="6.7.5"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: VAADIN.themes.jabylon
+Export-Package: VAADIN.themes.jabylon,
+ VAADIN.themes.jabylon.img,
+ VAADIN.themes.jabylon.img.flags,
+ VAADIN.themes.jabylon.img.flags.gif
 Bundle-ClassPath: .
