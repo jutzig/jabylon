@@ -20,8 +20,6 @@ import org.eclipse.emf.common.util.URI;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getTranslated <em>Translated</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getTotal <em>Total</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getBranch <em>Branch</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}</li>
@@ -34,58 +32,6 @@ import org.eclipse.emf.common.util.URI;
  * @generated
  */
 public interface ProjectVersion extends Resolvable {
-	/**
-	 * Returns the value of the '<em><b>Translated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Translated</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Translated</em>' attribute.
-	 * @see #setTranslated(int)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Translated()
-	 * @model
-	 * @generated
-	 */
-	int getTranslated();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectVersion#getTranslated <em>Translated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Translated</em>' attribute.
-	 * @see #getTranslated()
-	 * @generated
-	 */
-	void setTranslated(int value);
-
-	/**
-	 * Returns the value of the '<em><b>Total</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Total</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Total</em>' attribute.
-	 * @see #setTotal(int)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Total()
-	 * @model
-	 * @generated
-	 */
-	int getTotal();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectVersion#getTotal <em>Total</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Total</em>' attribute.
-	 * @see #getTotal()
-	 * @generated
-	 */
-	void setTotal(int value);
-
 	/**
 	 * Returns the value of the '<em><b>Project</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -131,7 +77,6 @@ public interface ProjectVersion extends Resolvable {
 	/**
 	 * Returns the value of the '<em><b>Locales</b></em>' containment reference list.
 	 * The list contents are of type {@link de.jutzig.jabylon.properties.ProjectLocale}.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Locales</em>' containment reference list isn't clear,
@@ -140,8 +85,7 @@ public interface ProjectVersion extends Resolvable {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Locales</em>' containment reference list.
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectVersion_Locales()
-	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion
-	 * @model opposite="projectVersion" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<ProjectLocale> getLocales();

@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectLocale#getLocale <em>Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ProjectLocale#getPropertyCount <em>Property Count</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,32 +31,19 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ProjectLocale extends Resolvable {
 	/**
-	 * Returns the value of the '<em><b>Project Version</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}'.
+	 * Returns the value of the '<em><b>Project Version</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Project Version</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Project Version</em>' container reference.
-	 * @see #setProjectVersion(ProjectVersion)
+	 * @return the value of the '<em>Project Version</em>' reference.
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectLocale_ProjectVersion()
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getLocales
-	 * @model opposite="locales" transient="false"
+	 * @model transient="true" changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	ProjectVersion getProjectVersion();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Project Version</em>' container reference.
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	void setProjectVersion(ProjectVersion value);
 
 	/**
 	 * Returns the value of the '<em><b>Locale</b></em>' attribute.
@@ -98,6 +86,32 @@ public interface ProjectLocale extends Resolvable {
 	 * @generated
 	 */
 	EList<PropertyFileDescriptor> getDescriptors();
+
+	/**
+	 * Returns the value of the '<em><b>Property Count</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Property Count</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Property Count</em>' attribute.
+	 * @see #setPropertyCount(int)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProjectLocale_PropertyCount()
+	 * @model
+	 * @generated
+	 */
+	int getPropertyCount();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.ProjectLocale#getPropertyCount <em>Property Count</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Property Count</em>' attribute.
+	 * @see #getPropertyCount()
+	 * @generated
+	 */
+	void setPropertyCount(int value);
 
 	/**
 	 * <!-- begin-user-doc -->

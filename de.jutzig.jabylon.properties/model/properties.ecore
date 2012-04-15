@@ -42,24 +42,23 @@
     <eOperations name="getProjectLocale" eType="#//ProjectLocale">
       <eParameters name="locale" eType="#//Locale"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="translated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="total" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
         changeable="false" volatile="true" transient="true" derived="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="branch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="master"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="locales" upperBound="-1"
-        eType="#//ProjectLocale" containment="true" resolveProxies="false" eOpposite="#//ProjectLocale/projectVersion"/>
+        eType="#//ProjectLocale" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectLocale"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale" eSuperTypes="#//Resolvable">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projectVersion" eType="#//ProjectVersion"
-        eOpposite="#//ProjectVersion/locales"/>
+        changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
         eType="#//PropertyFileDescriptor" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace" eSuperTypes="#//Resolvable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>

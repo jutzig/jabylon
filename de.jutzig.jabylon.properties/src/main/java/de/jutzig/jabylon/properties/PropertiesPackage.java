@@ -319,31 +319,13 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_VERSION__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
-	 * The feature id for the '<em><b>Translated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_VERSION__TRANSLATED = RESOLVABLE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Total</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT_VERSION__TOTAL = RESOLVABLE_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Project</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__PROJECT = RESOLVABLE_FEATURE_COUNT + 2;
+	int PROJECT_VERSION__PROJECT = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Branch</b></em>' attribute.
@@ -352,7 +334,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__BRANCH = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROJECT_VERSION__BRANCH = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Locales</b></em>' containment reference list.
@@ -361,7 +343,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__LOCALES = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROJECT_VERSION__LOCALES = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Master</b></em>' containment reference.
@@ -370,7 +352,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__MASTER = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROJECT_VERSION__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Project Version</em>' class.
@@ -379,7 +361,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 6;
+	int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
@@ -401,7 +383,7 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_LOCALE__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
-	 * The feature id for the '<em><b>Project Version</b></em>' container reference.
+	 * The feature id for the '<em><b>Project Version</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -428,13 +410,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_LOCALE__DESCRIPTORS = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Property Count</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_LOCALE__PROPERTY_COUNT = RESOLVABLE_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Project Locale</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROJECT_LOCALE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -698,28 +689,6 @@ public interface PropertiesPackage extends EPackage {
 	EClass getProjectVersion();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getTranslated <em>Translated</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Translated</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getTranslated()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EAttribute getProjectVersion_Translated();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getTotal <em>Total</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Total</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getTotal()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EAttribute getProjectVersion_Total();
-
-	/**
 	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -774,10 +743,10 @@ public interface PropertiesPackage extends EPackage {
 	EClass getProjectLocale();
 
 	/**
-	 * Returns the meta object for the container reference '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}'.
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Project Version</em>'.
+	 * @return the meta object for the reference '<em>Project Version</em>'.
 	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion()
 	 * @see #getProjectLocale()
 	 * @generated
@@ -805,6 +774,17 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getProjectLocale_Descriptors();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectLocale#getPropertyCount <em>Property Count</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Property Count</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectLocale#getPropertyCount()
+	 * @see #getProjectLocale()
+	 * @generated
+	 */
+	EAttribute getProjectLocale_PropertyCount();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Workspace <em>Workspace</em>}'.
@@ -1058,22 +1038,6 @@ public interface PropertiesPackage extends EPackage {
 		EClass PROJECT_VERSION = eINSTANCE.getProjectVersion();
 
 		/**
-		 * The meta object literal for the '<em><b>Translated</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_VERSION__TRANSLATED = eINSTANCE.getProjectVersion_Translated();
-
-		/**
-		 * The meta object literal for the '<em><b>Total</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_VERSION__TOTAL = eINSTANCE.getProjectVersion_Total();
-
-		/**
 		 * The meta object literal for the '<em><b>Project</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1116,7 +1080,7 @@ public interface PropertiesPackage extends EPackage {
 		EClass PROJECT_LOCALE = eINSTANCE.getProjectLocale();
 
 		/**
-		 * The meta object literal for the '<em><b>Project Version</b></em>' container reference feature.
+		 * The meta object literal for the '<em><b>Project Version</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1138,6 +1102,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROJECT_LOCALE__DESCRIPTORS = eINSTANCE.getProjectLocale_Descriptors();
+
+		/**
+		 * The meta object literal for the '<em><b>Property Count</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT_LOCALE__PROPERTY_COUNT = eINSTANCE.getProjectLocale_PropertyCount();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.

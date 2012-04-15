@@ -31,6 +31,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getProjectVersion <em>Project Version</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getLocale <em>Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getDescriptors <em>Descriptors</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getPropertyCount <em>Property Count</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,6 +47,16 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	 * @ordered
 	 */
 	protected static final Locale LOCALE_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getPropertyCount() <em>Property Count</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPropertyCount()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int PROPERTY_COUNT_EDEFAULT = 0;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -69,29 +80,19 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public ProjectVersion getProjectVersion() {
-		return (ProjectVersion)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION, PropertiesPackage.Literals.PROJECT_LOCALE__PROJECT_VERSION, true, true);
+		return (ProjectVersion) eContainer();
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	public NotificationChain basicSetProjectVersion(ProjectVersion newProjectVersion, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newProjectVersion, PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setProjectVersion(ProjectVersion newProjectVersion) {
-		eDynamicSet(PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION, PropertiesPackage.Literals.PROJECT_LOCALE__PROJECT_VERSION, newProjectVersion);
+	public ProjectVersion basicGetProjectVersion() {
+		return (ProjectVersion) eContainer();
 	}
 
 	/**
@@ -125,11 +126,30 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getPropertyCount() {
+		return (Integer)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPropertyCount(int newPropertyCount) {
+		eDynamicSet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, newPropertyCount);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public boolean isMaster() {
-		return !eIsSet(PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE);
+		return getProjectVersion()!=null && getProjectVersion().getMaster()==this;
 	}
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -139,32 +159,18 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public int internalUpdatePercentComplete() {
 		int translatedProps = 0;
-		int totalProps = 0;
 		for (PropertyFileDescriptor descriptor : getDescriptors()) {
 			translatedProps += descriptor.getKeys();
 		}
-		
-		for (PropertyFileDescriptor descriptor : getProjectVersion().getMaster().getDescriptors()) {
-			totalProps += descriptor.getKeys();
+		setPropertyCount(translatedProps);
+		if(!isMaster())
+		{
+			int totalProps = getProjectVersion().getMaster().getPropertyCount();
+			return  Math.min(100, (int) Math.floor(((translatedProps/(double)totalProps)*100)));					
 		}
+		else
+			return 100;
 		
-		return  Math.min(100, (int) Math.floor(((translatedProps/(double)totalProps)*100)));		
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetProjectVersion((ProjectVersion)otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -175,8 +181,6 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return basicSetProjectVersion(null, msgs);
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
 				return ((InternalEList<?>)getDescriptors()).basicRemove(otherEnd, msgs);
 		}
@@ -189,28 +193,17 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch (eContainerFeatureID()) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return eInternalContainer().eInverseRemove(this, PropertiesPackage.PROJECT_VERSION__LOCALES, ProjectVersion.class, msgs);
-		}
-		return super.eBasicRemoveFromContainerFeature(msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return getProjectVersion();
+				if (resolve) return getProjectVersion();
+				return basicGetProjectVersion();
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				return getLocale();
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
 				return getDescriptors();
+			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+				return getPropertyCount();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -224,15 +217,15 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				setProjectVersion((ProjectVersion)newValue);
-				return;
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				setLocale((Locale)newValue);
 				return;
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
 				getDescriptors().clear();
 				getDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
+				return;
+			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+				setPropertyCount((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -246,14 +239,14 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				setProjectVersion((ProjectVersion)null);
-				return;
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				setLocale(LOCALE_EDEFAULT);
 				return;
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
 				getDescriptors().clear();
+				return;
+			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+				setPropertyCount(PROPERTY_COUNT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -268,11 +261,13 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return getProjectVersion() != null;
+				return basicGetProjectVersion() != null;
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				return LOCALE_EDEFAULT == null ? getLocale() != null : !LOCALE_EDEFAULT.equals(getLocale());
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
 				return !getDescriptors().isEmpty();
+			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+				return getPropertyCount() != PROPERTY_COUNT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

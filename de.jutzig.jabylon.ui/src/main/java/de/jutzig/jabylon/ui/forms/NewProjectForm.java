@@ -5,6 +5,8 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
@@ -113,17 +115,19 @@ public class NewProjectForm extends VerticalLayout {
 														bean.getRepositoryURI());
 										if (bean.getUsername() != null
 												&& bean.getUsername().length() > 0) {
-											String userinfo = bean.getUsername();
+											String userinfo = bean
+													.getUsername();
 											if (bean.getPassword() != null
 													&& bean.getPassword()
 															.length() > 0) {
 												userinfo = userinfo + ":"
 														+ bean.getPassword();
 											}
-											userinfo = userinfo + "@"; //userinfo separator
+											userinfo = userinfo + "@"; // userinfo
+																		// separator
 											uri = URI.createHierarchicalURI(
-													uri.scheme(),
-													userinfo + uri.authority(),
+													uri.scheme(), userinfo
+															+ uri.authority(),
 													uri.device(),
 													uri.segments(),
 													uri.query(), uri.fragment());
@@ -149,14 +153,12 @@ public class NewProjectForm extends VerticalLayout {
 					if (beanItem.getBean().isCheckoutImmediately()) {
 						showProgressWindow();
 					}
-					
+
 					MainDashboard.getCurrent().getBreadcrumbs()
 							.walkTo(project.getName()); // TODO: should
 														// prefix with
 														// 'projects'
 														// fragment, or so
-
-
 
 				} catch (Exception e) {
 					// Ignored, we'll let the Form handle the errors
@@ -174,19 +176,42 @@ public class NewProjectForm extends VerticalLayout {
 	private void showProgressWindow() {
 
 		ProgressMonitorDialog dialog = new ProgressMonitorDialog(getWindow());
-		final TeamProvider provider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
+		final TeamProvider provider = MainDashboard.getCurrent()
+				.getTeamProviderForURI(project.getRepositoryURI());
 		dialog.setCaption("Checking out...");
 		dialog.run(true, new RunnableWithProgress() {
-			
+
 			@Override
 			public void run(IProgressMonitor monitor) {
 				try {
-					provider.checkout(project.getMaster(), monitor);
+					final SubMonitor subMonitor = SubMonitor.convert(monitor);
+					subMonitor.beginTask("Checkout", 100);
+					
+					provider.checkout(project.getMaster(), subMonitor.newChild(90));
+
+					SubMonitor child = subMonitor.newChild(10);
+					child.beginTask("Intial Scan", 1);
+					TransactionUtil.commit(project.getMaster(),
+							new Modification<ProjectVersion, ProjectVersion>() {
+								@Override
+								public ProjectVersion apply(
+										ProjectVersion object) {
+									object.fullScan();
+									return object;
+								}
+							});
+					child.worked(1);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				
+				finally{
+					monitor.done();
+				}
+
 			}
 		});
 	}

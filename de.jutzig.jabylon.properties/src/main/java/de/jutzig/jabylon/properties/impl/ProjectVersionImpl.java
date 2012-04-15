@@ -36,8 +36,6 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTranslated <em>Translated</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTotal <em>Total</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getProject <em>Project</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getBranch <em>Branch</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getLocales <em>Locales</em>}</li>
@@ -48,26 +46,6 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * @generated
  */
 public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion {
-	/**
-	 * The default value of the '{@link #getTranslated() <em>Translated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTranslated()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int TRANSLATED_EDEFAULT = 0;
-
-	/**
-	 * The default value of the '{@link #getTotal() <em>Total</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTotal()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int TOTAL_EDEFAULT = 0;
-
 	/**
 	 * The default value of the '{@link #getBranch() <em>Branch</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -95,42 +73,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT_VERSION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int getTranslated() {
-		return (Integer)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TRANSLATED, PropertiesPackage.Literals.PROJECT_VERSION__TRANSLATED, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setTranslated(int newTranslated) {
-		eDynamicSet(PropertiesPackage.PROJECT_VERSION__TRANSLATED, PropertiesPackage.Literals.PROJECT_VERSION__TRANSLATED, newTranslated);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int getTotal() {
-		return (Integer)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TOTAL, PropertiesPackage.Literals.PROJECT_VERSION__TOTAL, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setTotal(int newTotal) {
-		eDynamicSet(PropertiesPackage.PROJECT_VERSION__TOTAL, PropertiesPackage.Literals.PROJECT_VERSION__TOTAL, newTotal);
 	}
 
 	/**
@@ -211,6 +153,13 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		getMaster().getDescriptors().clear();
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this);
+//		getMaster().setProjectVersion(this);
+		getMaster().updatePercentComplete();
+		for (ProjectLocale projectLocale : getLocales()) {
+			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
+				descriptor.updatePercentComplete();
+			}
+		}
 	}
 
 	/**
@@ -224,22 +173,9 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		for (ProjectLocale locale : getLocales()) {
 			totalComplete += locale.getPercentComplete();
 		}
+		if(getLocales().size()==0)
+			return 100;
 		return (int) Math.floor(totalComplete / getLocales().size());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocales()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -266,10 +202,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
-				return getTranslated();
-			case PropertiesPackage.PROJECT_VERSION__TOTAL:
-				return getTotal();
 			case PropertiesPackage.PROJECT_VERSION__PROJECT:
 				return getProject();
 			case PropertiesPackage.PROJECT_VERSION__BRANCH:
@@ -291,12 +223,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
-				setTranslated((Integer)newValue);
-				return;
-			case PropertiesPackage.PROJECT_VERSION__TOTAL:
-				setTotal((Integer)newValue);
-				return;
 			case PropertiesPackage.PROJECT_VERSION__BRANCH:
 				setBranch((String)newValue);
 				return;
@@ -319,12 +245,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
-				setTranslated(TRANSLATED_EDEFAULT);
-				return;
-			case PropertiesPackage.PROJECT_VERSION__TOTAL:
-				setTotal(TOTAL_EDEFAULT);
-				return;
 			case PropertiesPackage.PROJECT_VERSION__BRANCH:
 				setBranch(BRANCH_EDEFAULT);
 				return;
@@ -346,10 +266,6 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TRANSLATED:
-				return getTranslated() != TRANSLATED_EDEFAULT;
-			case PropertiesPackage.PROJECT_VERSION__TOTAL:
-				return getTotal() != TOTAL_EDEFAULT;
 			case PropertiesPackage.PROJECT_VERSION__PROJECT:
 				return getProject() != null;
 			case PropertiesPackage.PROJECT_VERSION__BRANCH:
@@ -381,6 +297,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			//load file to initialize statistics;
 			PropertyFile propertyFile = descriptor.loadProperties();
 			descriptor.setKeys(propertyFile.getProperties().size());
+			descriptor.updatePercentComplete();
 			
 			Pattern pattern = buildPatternFrom(file);
 			File folder = file.getParentFile();
@@ -403,7 +320,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					//load file to initialize statistics;
 					PropertyFile translatedFile = fileDescriptor.loadProperties();
 					fileDescriptor.setKeys(translatedFile.getProperties().size());
-					fileDescriptor.updatePercentComplete();
+//					fileDescriptor.updatePercentComplete();
 				}
 			}	
 		}

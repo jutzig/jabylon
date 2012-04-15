@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.ui.pages;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -14,6 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
@@ -27,16 +29,18 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
+import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 import de.jutzig.jabylon.ui.util.LocaleUtil;
 
-public class ProjectDashboard extends Panel implements CrumbTrail,
+public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		ClickListener {
 
 	private static final String CREATE_LOCALE = "create locale";
@@ -44,7 +48,6 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 	private ProjectVersion version;
 
 	public ProjectDashboard(String projectName, String versionName) {
-		super(projectName);
 		project = MainDashboard.getCurrent().getWorkspace()
 				.getProject(projectName);
 		version = getProjectVersion(project, versionName);
@@ -54,11 +57,16 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 	private void initialize() {
 		GridLayout layout = new GridLayout(2, 1);
-		setContent(layout);
 		layout.setMargin(true);
 		layout.setSpacing(true);
-
+		layout.setSizeFull();
+		Section section = new Section();
+		section.setTitle("Available Locales");
+		section.getBody().addComponent(layout);
 		createContents(layout);
+		setSizeFull();
+		addComponent(section);
+		
 
 	}
 
@@ -78,12 +86,15 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 	private void createContents(GridLayout parent) {
 		buildHeader(parent);
 
+		Label translatableStrings = new Label();
+		translatableStrings.setValue("");
 		final Table table = new Table();
-		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress",
-				ResolvableProgressIndicator.class, null);
-		table.setColumnWidth("progress", 110);
-
+		table.addContainerProperty("Locale", Button.class, null);
+		table.addContainerProperty("Summary",String.class, "");
+		table.addContainerProperty("Progress",ResolvableProgressIndicator.class, null);
+		table.setColumnWidth("Progress", 110);
+		table.setSizeFull();
+		table.setColumnExpandRatio("Locale", 3f);
 		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 
 		EList<ProjectLocale> locales = version.getLocales();
@@ -97,7 +108,7 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 
 			StaticProgressIndicator progress = new ResolvableProgressIndicator(
 					locale);
-			table.addItem(new Object[] { projectName, progress }, locale);
+			table.addItem(new Object[] { projectName, buildSummary(locale),progress }, locale);
 			Resource icon = LocaleUtil.getIconForLocale(locale);
 			if(icon!=null)
 				table.setItemIcon(locale, icon);
@@ -176,6 +187,31 @@ public class ProjectDashboard extends Panel implements CrumbTrail,
 		});
 		parent.addComponent(commit);
 
+	}
+
+	private String buildSummary(ProjectLocale locale) {
+		
+		int totalKeys = version.getMaster().getPropertyCount();
+		int actualKeys = locale.getPropertyCount();
+		if(actualKeys==totalKeys)
+		{
+			return "Complete";
+		}
+		else if(actualKeys<totalKeys)
+		{
+			
+			String message = "{0} out of {1} strings need attention";
+			message = MessageFormat.format(message, totalKeys-actualKeys,totalKeys);
+			return message;
+		}
+		else
+		{
+			
+			String message = "Warning: Contains {0} keys more than the template language";
+			message = MessageFormat.format(message, actualKeys-totalKeys);
+			return message;
+		}
+		
 	}
 
 	private void buildHeader(Layout parent) {
