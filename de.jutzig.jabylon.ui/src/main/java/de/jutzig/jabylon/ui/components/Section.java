@@ -49,6 +49,7 @@ public class Section extends CustomComponent {
 				toggle.setIcon(image);
 			}
 		});
+		sectionTitle.addStyleName("jabylon-section-label");
 		body.setSizeFull();
 
 		// TODO add user code here

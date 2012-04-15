@@ -80,6 +80,14 @@
 
 .jabylon-section-title {
 	border-bottom-style: solid;
-	border-bottom-color: black;
-	border-bottom-width: thin;
+	border-bottom-color: gray;
+	border-bottom-width: 3px;
+}
+
+.jabylon-section-label {
+	font-family: sans-serif;
+	font-size: medium;
+	font-weight: bold;
+	font-style: italic;
+	color: gray;
 }
