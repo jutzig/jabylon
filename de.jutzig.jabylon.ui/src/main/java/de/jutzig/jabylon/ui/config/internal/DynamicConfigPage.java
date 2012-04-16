@@ -1,6 +1,5 @@
 package de.jutzig.jabylon.ui.config.internal;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,18 +7,23 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
+import de.jutzig.jabylon.ui.resources.ApplicationConstants;
 
 public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
@@ -38,14 +42,7 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
 	private Preferences initializePreferences() {
 
-		Preferences node = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		Collection<String> path = MainDashboard.getCurrent().getBreadcrumbs()
-				.currentPath();
-		for (String string : path) {
-			node = node.node(string);
-
-		}
-		return node;
+		return InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
 	}
 
 	private void initSections(Object domainElement) {
@@ -79,6 +76,29 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 			}
 
 		}
+		
+		Button safe = new Button();
+		safe.setCaption("OK");
+		safe.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				for (Entry<String, ConfigSection> entry : sections.entrySet()) {
+					String id = entry.getKey();
+					entry.getValue().commit(rootNode.node(id));
+				}
+				try {
+					rootNode.flush();
+					MainDashboard.getCurrent().getBreadcrumbs().goBack();
+				} catch (BackingStoreException e) {
+					Activator.error("Failed to persist settings of "+MainDashboard.getCurrent().getBreadcrumbs().currentPath(), e);
+                    getWindow().showNotification("Failed to persist changes",e.getMessage(),Notification.TYPE_ERROR_MESSAGE);
+
+				}
+				
+			}
+		});
+		addComponent(safe);
 	}
 
 	@Override
