@@ -9,11 +9,9 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Validator;
-import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.Label;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
