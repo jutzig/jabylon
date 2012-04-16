@@ -47,7 +47,7 @@ public class WorkspaceScanner {
 	}
 
 	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project) {
-		fullScan(acceptor, project, "[\\w/.\\\\&&[^_]]+.properties",".*build.properties");
+		fullScan(acceptor, project, "[:\\w/.\\\\&&[^_]]+.properties",".*build.properties");
 	}
 
 }
