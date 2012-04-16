@@ -205,4 +205,10 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		return dirty;
 	}
 
+	@Override
+	public Object getDomainObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

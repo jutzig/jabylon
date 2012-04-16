@@ -254,4 +254,9 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		return false;
 	}
 
+	@Override
+	public Object getDomainObject() {	
+		return project;
+	}
+
 }

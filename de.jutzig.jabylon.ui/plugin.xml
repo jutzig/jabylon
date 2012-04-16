@@ -2,4 +2,13 @@
 <?eclipse version="3.0"?>
 <plugin
 >
+   <extension-point id="config" name="Configuration Section" schema="schema/config.exsd"/>
+   <extension
+         point="de.jutzig.jabylon.ui.config">
+      <configSection
+            id="de.jutzig.jabylon.ui.projectConfig"
+            section="de.jutzig.jabylon.ui.config.internal.GeneralProjectConfig"
+            title="General">
+      </configSection>
+   </extension>
 </plugin>

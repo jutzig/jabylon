@@ -201,5 +201,11 @@ public class ProjectLocaleDashboard extends CustomComponent implements CrumbTrai
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	@Override
+	public Object getDomainObject() {
+		return locale;
+	}
 	
 }

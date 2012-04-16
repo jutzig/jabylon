@@ -268,6 +268,11 @@ public class MainDashboard extends Application implements TransactionListener, C
 			return teamProvider.get("git");
 		return teamProvider.get(uri.scheme());
 	}
+
+	@Override
+	public Object getDomainObject() {
+		return workspace;
+	}
 	
 }
 

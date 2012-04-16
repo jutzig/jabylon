@@ -2,11 +2,16 @@ package de.jutzig.jabylon.ui.components;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
+import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
@@ -57,6 +62,14 @@ public class ApplicationTitleBar extends CustomComponent {
 		mainLayout.setExpandRatio(help, 2f);
 		
 		Button settings = new Button("Settings");
+		settings.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				settingsPressed();
+				
+			}
+		});
 		settings.setStyleName(Reindeer.BUTTON_LINK);
 		mainLayout.addComponent(settings);
 		mainLayout.setComponentAlignment(settings, Alignment.BOTTOM_RIGHT);
@@ -69,6 +82,11 @@ public class ApplicationTitleBar extends CustomComponent {
 		
 		
 		return mainLayout;
+	}
+
+	protected void settingsPressed() {
+		MainDashboard.getCurrent().getBreadcrumbs().walkTo(BreadCrumb.CONFIG);
+		
 	}
 
 }

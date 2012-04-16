@@ -147,6 +147,11 @@ public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public Object getDomainObject() {
+		return project;
+	}
 	
 }
 

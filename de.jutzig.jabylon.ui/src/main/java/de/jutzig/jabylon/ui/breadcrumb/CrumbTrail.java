@@ -12,4 +12,6 @@ public interface CrumbTrail {
 	
 	boolean isDirty();
 	
+	Object getDomainObject();
+	
 }

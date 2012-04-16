@@ -1,6 +1,10 @@
 package de.jutzig.jabylon.ui.breadcrumb;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
 
 import com.vaadin.ui.Button;
@@ -14,6 +18,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
+import de.jutzig.jabylon.ui.config.internal.DynamicConfigSection;
 
 public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		BreadCrumb {
@@ -21,11 +27,14 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
 	private List<Button> parts;
 	private boolean ignoreDirty;
+	private Deque<String> segmentList;
+
 
 	public BreadCrumbImpl() {
 		parts = new ArrayList<Button>();
 		layout = new HorizontalLayout();
 		layout.setSpacing(true);
+		segmentList = new ArrayDeque<String>();
 		setCompositionRoot(layout);
 		setStyleName("breadcrumbs");
 		setPath((String[]) null);
@@ -141,6 +150,9 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 	public void goBack(int steps) {
 		if (checkDirty())
 			return;
+		for (int i = 0; i < steps; i++) {
+			segmentList.removeLast();
+		}
 		List<Button> subList = new ArrayList<Button>(parts.subList(0,
 				parts.size() - steps));
 		if (subList.isEmpty()) // never remove the root
@@ -162,11 +174,13 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 	public void walkTo(String... steps) {
 		if (checkDirty())
 			return;
+
 		Button link = null;
 		CrumbTrail currentTrail;
 		if (parts.isEmpty()) {
 			currentTrail = MainDashboard.getCurrent();
 			addEntry(currentTrail);
+			
 		} else {
 			Button button = parts.get(parts.size() - 1);
 			button.setEnabled(true);
@@ -176,7 +190,13 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		if (steps != null) {
 			for (int i = 0; i < steps.length; i++) {
 
-				currentTrail = currentTrail.walkTo(steps[i]);
+				
+				String step = steps[i];
+				segmentList.add(step);
+				if(step.equals(CONFIG))
+					currentTrail = new DynamicConfigPage(currentTrail.getDomainObject());
+				else
+					currentTrail = currentTrail.walkTo(step);
 				link = addEntry(currentTrail);
 
 			}
@@ -189,4 +209,16 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 				.setMainComponent(currentTrail.getComponent());
 
 	}
+
+	@Override
+	public Collection<String> currentPath() {
+		return Collections.unmodifiableCollection(segmentList);
+	}
+
+	@Override
+	public CrumbTrail currentTrail() {
+		return (CrumbTrail) parts.get(parts.size()-1).getData();
+	}
+	
+	
 }
