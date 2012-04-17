@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+>
+   <extension
+         id="id1"
+         point="org.eclipse.equinox.security.loginModule">
+      <loginModule
+            class="de.jutzig.jabylon.security.internal.DBLoginModule"
+            description="DB LoginModule">
+      </loginModule>
+   </extension>
+   <extension
+         id="callbackHandler"
+         point="org.eclipse.equinox.security.callbackHandler">
+      <callbackHandler
+            class="de.jutzig.jabylon.security.LoginDialog">
+      </callbackHandler>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.security.callbackHandlerMapping">
+      <callbackHandlerMapping
+            callbackHandlerId="de.jutzig.jabylon.security.callbackHandler"
+            configName="DB">
+      </callbackHandlerMapping>
+   </extension>
+</plugin>
