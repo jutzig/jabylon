@@ -13,6 +13,8 @@ import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 import com.vaadin.Application;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -47,26 +49,30 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
  		final ILoginContext loginContext = LoginContextFactory.createContext(configName, configUrl, this);
 
 		final Window loginWindow = new Window("Jabylon - Login");
+		HorizontalLayout outerLayout = new HorizontalLayout();
+		outerLayout.setMargin(true);
 		VerticalLayout loginLayout = new VerticalLayout();
 		addListener(new LoginListener() {
 			@Override
 			public void onLogin(LoginEvent event) {
-			    try {
-			    	loginEvent = event;
-			    	loginContext.login();
-			    	app.setUser(loginContext.getSubject());
-			    	app.removeWindow(loginWindow);
-			    	//app.setMainWindow(mainWindow); // done in app.init();
-			    	app.init();
-			    } catch( Throwable e ) {
-			    	//TODO: fix login failed
-			    	e.printStackTrace();
-			    }
+				try {
+					loginEvent = event;
+					loginContext.login();
+					app.setUser(loginContext.getSubject());
+					app.getMainWindow().removeWindow(loginWindow);
+				} catch( Throwable e ) {
+					//TODO: fix login failed
+					e.printStackTrace();
+				}
 			}
 		});
 		loginLayout.addComponent(this);
-		loginWindow.setContent(loginLayout);
-		app.removeWindow(app.getMainWindow());
-		app.setMainWindow(loginWindow);
+		outerLayout.addComponent(loginLayout);
+		outerLayout.setComponentAlignment(loginLayout, Alignment.MIDDLE_CENTER);
+		loginWindow.setContent(outerLayout);
+		loginWindow.setHeight("250px");
+		loginWindow.setWidth("350px");
+		loginWindow.setModal(true);
+		app.getMainWindow().addWindow(loginWindow);
 	}
 }

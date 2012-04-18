@@ -17,6 +17,12 @@ import junit.textui.TestRunner;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Role</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link de.jutzig.jabylon.users.Role#getAllPermissions() <em>Get All Permissions</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class RoleTest extends TestCase {
@@ -88,6 +94,19 @@ public class RoleTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.users.Role#getAllPermissions() <em>Get All Permissions</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.users.Role#getAllPermissions()
+	 * @generated
+	 */
+	public void testGetAllPermissions() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //RoleTest
