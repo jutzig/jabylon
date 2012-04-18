@@ -35,6 +35,7 @@ public class UsersAllTests extends TestSuite {
 	 */
 	public static Test suite() {
 		TestSuite suite = new UsersAllTests("Users Tests");
+		suite.addTest(UsersTests.suite());
 		return suite;
 	}
 

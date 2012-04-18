@@ -157,8 +157,17 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRole_Permissions() {
+	public EReference getRole_Parent() {
 		return (EReference)roleEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRole_Permissions() {
+		return (EReference)roleEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -177,6 +186,15 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 */
 	public EAttribute getPermission_Name() {
 		return (EAttribute)permissionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPermission_Description() {
+		return (EAttribute)permissionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -239,10 +257,12 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 
 		roleEClass = createEClass(ROLE);
 		createEAttribute(roleEClass, ROLE__NAME);
+		createEReference(roleEClass, ROLE__PARENT);
 		createEReference(roleEClass, ROLE__PERMISSIONS);
 
 		permissionEClass = createEClass(PERMISSION);
 		createEAttribute(permissionEClass, PERMISSION__NAME);
+		createEAttribute(permissionEClass, PERMISSION__DESCRIPTION);
 
 		authTypeEClass = createEClass(AUTH_TYPE);
 		createEAttribute(authTypeEClass, AUTH_TYPE__NAME);
@@ -284,10 +304,14 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 
 		initEClass(roleEClass, Role.class, "Role", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRole_Name(), ecorePackage.getEString(), "name", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRole_Parent(), this.getRole(), null, "parent", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRole_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(roleEClass, null, "getAllPermissions", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(permissionEClass, Permission.class, "Permission", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPermission_Name(), ecorePackage.getEString(), "name", null, 0, 1, Permission.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPermission_Description(), ecorePackage.getEString(), "description", null, 0, 1, Permission.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(authTypeEClass, AuthType.class, "AuthType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAuthType_Name(), ecorePackage.getEString(), "name", null, 0, 1, AuthType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

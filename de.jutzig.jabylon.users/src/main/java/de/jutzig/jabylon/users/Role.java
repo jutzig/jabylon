@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.users.Role#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.Role#getParent <em>Parent</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.Role#getPermissions <em>Permissions</em>}</li>
  * </ul>
  * </p>
@@ -56,6 +57,32 @@ public interface Role extends CDOObject {
 	void setName(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Parent</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parent</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parent</em>' reference.
+	 * @see #setParent(Role)
+	 * @see de.jutzig.jabylon.users.UsersPackage#getRole_Parent()
+	 * @model
+	 * @generated
+	 */
+	Role getParent();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.users.Role#getParent <em>Parent</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Parent</em>' reference.
+	 * @see #getParent()
+	 * @generated
+	 */
+	void setParent(Role value);
+
+	/**
 	 * Returns the value of the '<em><b>Permissions</b></em>' reference list.
 	 * The list contents are of type {@link de.jutzig.jabylon.users.Permission}.
 	 * <!-- begin-user-doc -->
@@ -70,5 +97,13 @@ public interface Role extends CDOObject {
 	 * @generated
 	 */
 	EList<Permission> getPermissions();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	void getAllPermissions();
 
 } // Role

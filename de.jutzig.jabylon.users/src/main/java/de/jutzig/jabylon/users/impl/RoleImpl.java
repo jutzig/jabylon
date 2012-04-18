@@ -18,6 +18,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -32,6 +34,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.users.impl.RoleImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.impl.RoleImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.impl.RoleImpl#getPermissions <em>Permissions</em>}</li>
  * </ul>
  * </p>
@@ -58,6 +61,16 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParent()
+	 * @generated
+	 * @ordered
+	 */
+	protected Role parent;
 
 	/**
 	 * The cached value of the '{@link #getPermissions() <em>Permissions</em>}' reference list.
@@ -114,6 +127,44 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Role getParent() {
+		if (parent != null && ((EObject)parent).eIsProxy()) {
+			InternalEObject oldParent = (InternalEObject)parent;
+			parent = (Role)eResolveProxy(oldParent);
+			if (parent != oldParent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, UsersPackage.ROLE__PARENT, oldParent, parent));
+			}
+		}
+		return parent;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Role basicGetParent() {
+		return parent;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setParent(Role newParent) {
+		Role oldParent = parent;
+		parent = newParent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, UsersPackage.ROLE__PARENT, oldParent, parent));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<Permission> getPermissions() {
 		if (permissions == null) {
 			permissions = new EObjectResolvingEList<Permission>(Permission.class, this, UsersPackage.ROLE__PERMISSIONS);
@@ -126,11 +177,25 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void getAllPermissions() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case UsersPackage.ROLE__NAME:
 				return getName();
+			case UsersPackage.ROLE__PARENT:
+				if (resolve) return getParent();
+				return basicGetParent();
 			case UsersPackage.ROLE__PERMISSIONS:
 				return getPermissions();
 		}
@@ -148,6 +213,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 		switch (featureID) {
 			case UsersPackage.ROLE__NAME:
 				setName((String)newValue);
+				return;
+			case UsersPackage.ROLE__PARENT:
+				setParent((Role)newValue);
 				return;
 			case UsersPackage.ROLE__PERMISSIONS:
 				getPermissions().clear();
@@ -168,6 +236,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 			case UsersPackage.ROLE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case UsersPackage.ROLE__PARENT:
+				setParent((Role)null);
+				return;
 			case UsersPackage.ROLE__PERMISSIONS:
 				getPermissions().clear();
 				return;
@@ -185,6 +256,8 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 		switch (featureID) {
 			case UsersPackage.ROLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case UsersPackage.ROLE__PARENT:
+				return parent != null;
 			case UsersPackage.ROLE__PERMISSIONS:
 				return permissions != null && !permissions.isEmpty();
 		}

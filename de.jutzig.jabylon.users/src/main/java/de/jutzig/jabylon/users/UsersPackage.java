@@ -107,13 +107,22 @@ public interface UsersPackage extends EPackage {
 	int ROLE__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROLE__PARENT = 1;
+
+	/**
 	 * The feature id for the '<em><b>Permissions</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROLE__PERMISSIONS = 1;
+	int ROLE__PERMISSIONS = 2;
 
 	/**
 	 * The number of structural features of the '<em>Role</em>' class.
@@ -122,7 +131,7 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROLE_FEATURE_COUNT = 2;
+	int ROLE_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.PermissionImpl <em>Permission</em>}' class.
@@ -144,13 +153,22 @@ public interface UsersPackage extends EPackage {
 	int PERMISSION__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERMISSION__DESCRIPTION = 1;
+
+	/**
 	 * The number of structural features of the '<em>Permission</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PERMISSION_FEATURE_COUNT = 1;
+	int PERMISSION_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.AuthTypeImpl <em>Auth Type</em>}' class.
@@ -233,6 +251,17 @@ public interface UsersPackage extends EPackage {
 	EAttribute getRole_Name();
 
 	/**
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.users.Role#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Parent</em>'.
+	 * @see de.jutzig.jabylon.users.Role#getParent()
+	 * @see #getRole()
+	 * @generated
+	 */
+	EReference getRole_Parent();
+
+	/**
 	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.users.Role#getPermissions <em>Permissions</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -263,6 +292,17 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getPermission_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.users.Permission#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see de.jutzig.jabylon.users.Permission#getDescription()
+	 * @see #getPermission()
+	 * @generated
+	 */
+	EAttribute getPermission_Description();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.users.AuthType <em>Auth Type</em>}'.
@@ -355,6 +395,14 @@ public interface UsersPackage extends EPackage {
 		EAttribute ROLE__NAME = eINSTANCE.getRole_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROLE__PARENT = eINSTANCE.getRole_Parent();
+
+		/**
 		 * The meta object literal for the '<em><b>Permissions</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -379,6 +427,14 @@ public interface UsersPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PERMISSION__NAME = eINSTANCE.getPermission_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PERMISSION__DESCRIPTION = eINSTANCE.getPermission_Description();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.users.impl.AuthTypeImpl <em>Auth Type</em>}' class.
