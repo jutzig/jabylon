@@ -128,7 +128,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	public void setMainComponent(Component c) {
 		contentArea.setBody(c);
-
 	}
 
 	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {

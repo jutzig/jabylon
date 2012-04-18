@@ -19,8 +19,8 @@ import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
-import de.jutzig.jabylon.ui.config.internal.DynamicConfigSection;
 
+@SuppressWarnings("serial")
 public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		BreadCrumb {
 	HorizontalLayout layout;
@@ -81,9 +81,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
 	@Override
 	public void goBack() {
-
 		goBack(1);
-
 	}
 
 	private boolean checkDirty() {
@@ -97,7 +95,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 			final Window subwindow = new Window("Unsafed Changes");
 			// ...and make it modal
 			subwindow.setModal(true);
-			
+
 			// Configure the windws layout; by default a VerticalLayout
 			VerticalLayout layout = (VerticalLayout) subwindow.getContent();
 			layout.setMargin(true);
@@ -115,14 +113,14 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 					(subwindow.getParent()).removeWindow(subwindow);
 				}
 			});
-			
+
 			Button ok = new Button("OK", new Button.ClickListener() {
 				// inline click-listener
 				public void buttonClick(ClickEvent event) {
 					// close the window by removing it from the parent window
 					ignoreDirty = true;
 					(subwindow.getParent()).removeWindow(subwindow);
-					
+
 					//TODO: repeat the original request somehow
 				}
 			});
@@ -180,7 +178,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		if (parts.isEmpty()) {
 			currentTrail = MainDashboard.getCurrent();
 			addEntry(currentTrail);
-			
+
 		} else {
 			Button button = parts.get(parts.size() - 1);
 			button.setEnabled(true);
@@ -190,7 +188,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		if (steps != null) {
 			for (int i = 0; i < steps.length; i++) {
 
-				
+
 				String step = steps[i];
 				segmentList.add(step);
 				if(step.equals(CONFIG))
@@ -205,8 +203,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 			link.setEnabled(false);
 		}
 
-		MainDashboard.getCurrent()
-				.setMainComponent(currentTrail.getComponent());
+		MainDashboard.getCurrent().setMainComponent(currentTrail.getComponent());
 
 	}
 
@@ -219,6 +216,4 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 	public CrumbTrail currentTrail() {
 		return (CrumbTrail) parts.get(parts.size()-1).getData();
 	}
-	
-	
 }

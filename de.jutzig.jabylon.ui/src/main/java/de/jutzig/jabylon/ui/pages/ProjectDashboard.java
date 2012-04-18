@@ -66,7 +66,7 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		createContents(layout);
 		setSizeFull();
 		addComponent(section);
-		
+
 
 	}
 
@@ -151,15 +151,10 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		addLocale.setCaption("Add Locale");
 		addLocale.setIcon(ImageConstants.IMAGE_NEW_LOCALE);
 		addLocale.addListener(new ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
-
-				MainDashboard.getCurrent().getBreadcrumbs()
-						.walkTo(CREATE_LOCALE);
-
+				MainDashboard.getCurrent().getBreadcrumbs().walkTo(CREATE_LOCALE);
 			}
-
 		});
 		parent.addComponent(addLocale);
 
@@ -190,7 +185,7 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 	}
 
 	private String buildSummary(ProjectLocale locale) {
-		
+
 		int totalKeys = version.getMaster().getPropertyCount();
 		int actualKeys = locale.getPropertyCount();
 		if(actualKeys==totalKeys)
@@ -199,19 +194,19 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		}
 		else if(actualKeys<totalKeys)
 		{
-			
+
 			String message = "{0} out of {1} strings need attention";
 			message = MessageFormat.format(message, totalKeys-actualKeys,totalKeys);
 			return message;
 		}
 		else
 		{
-			
+
 			String message = "Warning: Contains {0} keys more than the template language";
 			message = MessageFormat.format(message, actualKeys-totalKeys);
 			return message;
 		}
-		
+
 	}
 
 	private void buildHeader(Layout parent) {
@@ -255,7 +250,7 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 	}
 
 	@Override
-	public Object getDomainObject() {	
+	public Object getDomainObject() {
 		return project;
 	}
 
