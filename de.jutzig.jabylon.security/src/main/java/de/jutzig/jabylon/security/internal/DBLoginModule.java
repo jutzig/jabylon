@@ -1,71 +1,96 @@
 package de.jutzig.jabylon.security.internal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.TextOutputCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.UsersFactory;
+
 public class DBLoginModule implements LoginModule {
+	static final String EMPTY_STRING = "";
 	Subject subj;
 	CallbackHandler cbHandler;
+	boolean authenticated = false;
+	String user;
+	String pw;
+	List<Permission> permissions = new ArrayList<Permission>();
 
 	public DBLoginModule() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean abort() throws LoginException {
-		// TODO Auto-generated method stub
-		return false;
+		this.authenticated = false;
+		return true;
 	}
 
 	@Override
 	public boolean commit() throws LoginException {
-		// TODO Auto-generated method stub
-		return false;
+		if(this.authenticated) {
+			subj.getPublicCredentials().add(user);
+			addPermissions(subj.getPrivateCredentials());
+		} else {
+			subj.getPublicCredentials().remove(user);
+			subj.getPrivateCredentials(Permission.class).clear();
+		}
+		return true;
+	}
+
+	private void addPermissions(Set<Object> privateCredentials) {
+		for (Permission permission : permissions) {
+			privateCredentials.add(permission);
+		}
 	}
 
 	@Override
-	public void initialize(Subject arg0, CallbackHandler arg1, Map<String, ?> arg2, Map<String, ?> arg3) {
-		this.subj = arg0;
-		this.cbHandler = arg1;
+	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+		this.subj = subject;
+		this.cbHandler = callbackHandler;
 	}
 
 	@Override
 	public boolean login() throws LoginException {
-		Callback label = new TextOutputCallback(TextOutputCallback.INFORMATION, "Please login to Jabylon");
 		NameCallback nameCallback = new NameCallback("User:");
 		PasswordCallback passwordCallback = new PasswordCallback("Password:", false);
 		try {
 			cbHandler.handle(new Callback[]{
-			    label, nameCallback, passwordCallback
+			    nameCallback, passwordCallback
 			});
 		} catch(Exception e) {
 			//FIXME
 			e.printStackTrace();
 		}
 
-		String user = nameCallback.getName();
-		String pw = "";
+		user = nameCallback.getName();
+		pw = EMPTY_STRING;
 		if(passwordCallback.getPassword() != null) {
 			pw = String.valueOf(passwordCallback.getPassword());
 		}
 
-		return checkLogin(user, pw);
+		this.authenticated = checkLogin(user, pw);
+		return this.authenticated;
 	}
 
 	private boolean checkLogin(String user, String pw) {
+		Permission permission = UsersFactory.eINSTANCE.createPermission();
+		permission.setName("ALL");
+		permissions.add(permission);
 		return true;
 	}
 
 	@Override
 	public boolean logout() throws LoginException {
+		this.authenticated = false;
 		return true;
 	}
 

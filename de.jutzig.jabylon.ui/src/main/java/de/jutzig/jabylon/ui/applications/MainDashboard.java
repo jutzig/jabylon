@@ -1,7 +1,6 @@
 package de.jutzig.jabylon.ui.applications;
 
 import java.io.File;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +15,7 @@ import com.vaadin.service.ApplicationContext.TransactionListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -33,8 +30,6 @@ import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
 import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
-import de.jutzig.jabylon.ui.resources.ImageConstants;
-import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
@@ -48,7 +43,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private VerticalLayout mainLayout;
 	private LabeledContainer contentArea;
 	private Map<String, TeamProvider> teamProvider;
-	
+
 	public MainDashboard() {
 		teamProvider = new HashMap<String, TeamProvider>();
 	}
@@ -67,23 +62,23 @@ public class MainDashboard extends Application implements TransactionListener, C
 		setMainWindow(new Window("Jabylon"));
 
 		mainLayout = new VerticalLayout();
-		
+
 		ApplicationTitleBar titleBar = new ApplicationTitleBar();
 		mainLayout.addComponent(titleBar);
-		
+
 		contentArea = new LabeledContainer();
 		contentArea.setHeadClient(createHeader());
 		contentArea.setSizeFull();
-		
+
 //		Component header = createHeader();
-//		
+//
 //		mainLayout.addComponent(header);
 //		mainLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
 //		mainLayout.setExpandRatio(header, 0f);
 		mainLayout.addComponent(contentArea);
-		
+
 		getMainWindow().setContent(mainLayout);
-		
+
 
 	}
 
@@ -91,19 +86,19 @@ public class MainDashboard extends Application implements TransactionListener, C
 //		Label title = new Label();
 //		title.setCaption("Jabylon");
 //		title.setStyleName(Reindeer.LABEL_H1);
-//		
+//
 //		HorizontalLayout header = new HorizontalLayout();
-//		
+//
 //		header.setSpacing(true);
 //		header.addComponent(title);
-//		
+//
 //		header.addStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
 //		BreadCrumbImpl crumbs = new BreadCrumbImpl();
 //		breadcrumbs = crumbs;
 //		header.addComponent(crumbs);
 //		return header;
-		
-		
+
+
         HorizontalLayout nav = new HorizontalLayout();
         nav.setHeight("30px");
         nav.setWidth("100%");
@@ -118,7 +113,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		nav.addComponent(crumbs);
         nav.setExpandRatio(crumbs, 1);
         nav.setComponentAlignment(crumbs, Alignment.MIDDLE_LEFT);
-        
+
         return nav;
 	}
 
@@ -133,7 +128,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	public void setMainComponent(Component c) {
 		contentArea.setBody(c);
-		
+
 	}
 
 	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
@@ -184,14 +179,11 @@ public class MainDashboard extends Application implements TransactionListener, C
 		Workspace workspace = null;
 		if (view.hasResource(ServerConstants.WORKSPACE_RESOURCE)) {
 
-			CDOResource resource = view
-					.getResource(ServerConstants.WORKSPACE_RESOURCE);
+			CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 			workspace = (Workspace) resource.getContents().get(0);
 		} else {
-			CDOTransaction transaction = getRepositoryConnector()
-					.openTransaction();
-			CDOResource resource = transaction
-					.createResource(ServerConstants.WORKSPACE_RESOURCE);
+			CDOTransaction transaction = getRepositoryConnector().openTransaction();
+			CDOResource resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
 			workspace = PropertiesFactory.eINSTANCE.createWorkspace();
 			URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
 			File root = new File(ServerConstants.WORKSPACE_DIR);
@@ -228,7 +220,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	public String getTrailCaption() {
 		return "Home";
 	}
-	
+
 	public Workspace getWorkspace() {
 		return workspace;
 	}
@@ -238,30 +230,30 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return false;
 	}
 
-	
+
 	public void addTeamProvider(TeamProvider provider, Map properties)
 	{
 		//TODO: enable properties
 		teamProvider.put((String) properties.get("scheme"), provider);
 //		teamProvider.put("git", provider);
 	}
-	
+
 	public void addTeamProvider(TeamProvider provider)
 	{
 		//TODO: enable properties
 //		teamProvider.put((String) properties.get("scheme"), provider);
 		teamProvider.put("git", provider);
 	}
-	
 
-	
+
+
 	public void removeTeamProvider(TeamProvider provider)
 	{
 		//TODO: enable properties
 //		teamProvider.remove(properties.get("schema"));
 		teamProvider.remove("git");
 	}
-	
+
 	public TeamProvider getTeamProviderForURI(URI uri)
 	{
 		if(uri.lastSegment().endsWith(".git"))
@@ -273,6 +265,5 @@ public class MainDashboard extends Application implements TransactionListener, C
 	public Object getDomainObject() {
 		return workspace;
 	}
-	
-}
 
+}

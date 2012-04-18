@@ -3,7 +3,7 @@
 <plugin
 >
    <extension
-         id="id1"
+         id="dbLoginModule"
          point="org.eclipse.equinox.security.loginModule">
       <loginModule
             class="de.jutzig.jabylon.security.internal.DBLoginModule"

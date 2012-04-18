@@ -2,16 +2,16 @@ package de.jutzig.jabylon.ui.components;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.security.LoginDialog;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
-import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
@@ -44,7 +44,7 @@ public class ApplicationTitleBar extends CustomComponent {
 		mainLayout.setSpacing(true);
 		mainLayout.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
 		// top-level component properties
-		
+
         // Upper left logo
 		Label title = new Label();
 		title.setIcon(ImageConstants.IMAGE_LOGO);
@@ -54,39 +54,38 @@ public class ApplicationTitleBar extends CustomComponent {
 		title.setStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
 		mainLayout.addComponent(title);
 		mainLayout.setComponentAlignment(title, Alignment.TOP_LEFT);
-		
+
 		Button help = new Button("Help");
 		help.setStyleName(Reindeer.BUTTON_LINK);
 		mainLayout.addComponent(help);
 		mainLayout.setComponentAlignment(help, Alignment.BOTTOM_RIGHT);
 		mainLayout.setExpandRatio(help, 2f);
-		
+
 		Button settings = new Button("Settings");
-		settings.addListener(new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				settingsPressed();
-				
-			}
-		});
 		settings.setStyleName(Reindeer.BUTTON_LINK);
 		mainLayout.addComponent(settings);
 		mainLayout.setComponentAlignment(settings, Alignment.BOTTOM_RIGHT);
-		
-		
+
+
 		Button login = new Button("Login");
 		login.setStyleName(Reindeer.BUTTON_LINK);
+		login.addListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				LoginDialog loginDialog = new LoginDialog(MainDashboard.getCurrent());
+				loginDialog.display();
+			}
+		});
 		mainLayout.addComponent(login);
 		mainLayout.setComponentAlignment(login, Alignment.BOTTOM_RIGHT);
-		
-		
+
+
 		return mainLayout;
 	}
 
 	protected void settingsPressed() {
 		MainDashboard.getCurrent().getBreadcrumbs().walkTo(BreadCrumb.CONFIG);
-		
+
 	}
 
 }
