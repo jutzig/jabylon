@@ -44,19 +44,7 @@ public class Activator extends Plugin {
 	{
 		return activator;
 	}
-	
-	public List<IConfigurationElement> getConfigSections()
-	{
-		if(configSections==null)
-		{
-			configSections = new ArrayList<IConfigurationElement>();
-			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.config");
-			for (IConfigurationElement iConfigurationElement : elements) {
-				configSections.add(iConfigurationElement);
-			}
-		}
-		return configSections;
-	}
+
 
 	public static void error(String message, Throwable cause)
 	{

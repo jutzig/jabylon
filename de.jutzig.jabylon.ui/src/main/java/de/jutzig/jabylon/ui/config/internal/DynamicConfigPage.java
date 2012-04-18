@@ -1,9 +1,14 @@
 package de.jutzig.jabylon.ui.config.internal;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -14,6 +19,7 @@ import org.osgi.service.prefs.Preferences;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
@@ -57,16 +63,31 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
 		List<IConfigurationElement> configSections = DynamicConfigUtil
 				.getApplicableElements(domainElement);
+		Map<String, IConfigurationElement> visibleTabs = computeVisibleTabs(configSections);
+		
+		TabSheet sheet = new TabSheet();
+		Map<String, VerticalLayout> tabs = fillTabSheet(visibleTabs, sheet);
+		addComponent(sheet);
 		for (IConfigurationElement child : configSections) {
 			try {
 
 				ConfigSection section = (ConfigSection) child
 						.createExecutableExtension("section");
-				Section sectionWidget = new Section();
-				sectionWidget.setTitle(child.getAttribute("title"));
-				sectionWidget.getBody().addComponent(section.createContents());
+				String title = child.getAttribute("title");
+				VerticalLayout parent = tabs.get(child.getAttribute("tab"));
+				if(title!=null && title.length()>0)
+				{
+					Section sectionWidget = new Section();
+					sectionWidget.setTitle(title);
+					sectionWidget.getBody().addComponent(section.createContents());
+					parent.addComponent(sectionWidget);
+				}
+				else
+				{
+					parent.addComponent(section.createContents());
+				}
 				sections.put(child.getAttribute("id"), section);
-				addComponent(sectionWidget);
+				
 
 			} catch (CoreException e) {
 				Activator.error(
@@ -101,6 +122,38 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 			}
 		});
 		addComponent(safe);
+	}
+
+	private Map<String, VerticalLayout> fillTabSheet(Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) 
+	{
+		Map<String, VerticalLayout> result = new HashMap<String, VerticalLayout>();
+		//TODO: sort according to precedence
+		for (Entry<String, IConfigurationElement> entry : visibleTabs.entrySet()) {
+			IConfigurationElement element = entry.getValue();
+			VerticalLayout layout = new VerticalLayout();
+			sheet.addTab(layout, element.getAttribute("name"));
+			result.put(entry.getKey(), layout);
+		}
+		return result;
+	}
+
+
+	private Map<String, IConfigurationElement> computeVisibleTabs(List<IConfigurationElement> configSections) {
+		Map<String, IConfigurationElement> tabs = new HashMap<String, IConfigurationElement>();
+		List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
+		for (IConfigurationElement tab : tabList) {
+			tabs.put(tab.getAttribute("tabID"),tab);
+		}
+		Set<String> neededTabs = new HashSet<String>();
+		for (IConfigurationElement element : configSections) {
+			neededTabs.add(element.getAttribute("tab"));
+		}
+		tabs.keySet().retainAll(neededTabs);
+
+		
+		
+		return tabs;
+		
 	}
 
 	@Override

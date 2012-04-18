@@ -3,7 +3,7 @@
 <schema targetNamespace="de.jutzig.jabylon.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="de.jutzig.jabylon.ui" id="config" name="Configuration Section"/>
+         <meta.schema plugin="de.jutzig.jabylon.ui" id="configTab" name="Configuration Tabs"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -15,10 +15,13 @@
          <appInfo>
             <meta.element />
          </appInfo>
+         <documentation>
+            Allows adding a new Tab into the dynamic conifguration page
+         </documentation>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="configSection"/>
+            <element ref="tab"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,26 +50,21 @@
       </complexType>
    </element>
 
-   <element name="configSection">
+   <element name="tab">
+      <annotation>
+         <documentation>
+            a new configuration tab
+         </documentation>
+      </annotation>
       <complexType>
-         <attribute name="id" type="string" use="required">
+         <attribute name="tabID" type="string" use="required">
             <annotation>
                <documentation>
-                  unique ID of the section
+                  the unique identifier of this configuration tab
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="section" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn="de.jutzig.jabylon.ui.config.AbstractConfigSection:de.jutzig.jabylon.ui.config.ConfigSection"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="title" type="string">
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
                   
@@ -76,25 +74,38 @@
                </appInfo>
             </annotation>
          </attribute>
-         <attribute name="tab" type="string" use="required">
+         <attribute name="precedence">
             <annotation>
                <documentation>
-                  
+                  numeric value from 1 to 10.
+The tab will appear the closer to the beginning, the higher the number. 
+No number equals 0, or lowest precedence
                </documentation>
-               <appInfo>
-                  <meta.attribute kind="identifier" basedOn="de.jutzig.jabylon.ui.configTab/tab/@tabID"/>
-               </appInfo>
             </annotation>
-         </attribute>
-         <attribute name="objectClass" type="string">
-            <annotation>
-               <documentation>
-                  the object class this config section is applicable to
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn="java.lang.Object:"/>
-               </appInfo>
-            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="1">
+                  </enumeration>
+                  <enumeration value="2">
+                  </enumeration>
+                  <enumeration value="3">
+                  </enumeration>
+                  <enumeration value="4">
+                  </enumeration>
+                  <enumeration value="5">
+                  </enumeration>
+                  <enumeration value="6">
+                  </enumeration>
+                  <enumeration value="7">
+                  </enumeration>
+                  <enumeration value="8">
+                  </enumeration>
+                  <enumeration value="9">
+                  </enumeration>
+                  <enumeration value="0">
+                  </enumeration>
+               </restriction>
+            </simpleType>
          </attribute>
       </complexType>
    </element>

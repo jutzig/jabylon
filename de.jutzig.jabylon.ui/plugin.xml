@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
->
+<plugin>
    <extension-point id="config" name="Configuration Section" schema="schema/config.exsd"/>
+   <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension
          point="de.jutzig.jabylon.ui.config">
       <configSection
             id="de.jutzig.jabylon.ui.projectConfig"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.GeneralProjectConfig"
-            title="General">
+            tab="general">
       </configSection>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.configTab">
+      <tab
+            name="General"
+            tabID="general">
+      </tab>
+      <tab
+            name="User"
+            tabID="user">
+      </tab>
+      <tab
+            name="Repository"
+            tabID="repository">
+      </tab>
    </extension>
 </plugin>
