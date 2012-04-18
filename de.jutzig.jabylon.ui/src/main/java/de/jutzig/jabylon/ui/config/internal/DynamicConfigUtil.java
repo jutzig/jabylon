@@ -1,6 +1,8 @@
 package de.jutzig.jabylon.ui.config.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -70,6 +72,21 @@ public class DynamicConfigUtil {
 			for (IConfigurationElement iConfigurationElement : elements) {
 				configTabs.add(iConfigurationElement);
 			}
+			Collections.sort(configTabs, new Comparator<IConfigurationElement>() {
+			
+			@Override
+			public int compare(IConfigurationElement element1, IConfigurationElement element2) {
+				int precedence1 = 0;
+				int precedence2 = 0;
+				String pre1 = element1.getAttribute("precedence");
+				String pre2 = element2.getAttribute("precedence");
+				if(pre1!=null && !pre1.isEmpty())
+					precedence1 = Integer.valueOf(pre1);
+				if(pre2!=null && !pre2.isEmpty())
+					precedence2 = Integer.valueOf(pre2);
+				return precedence2-precedence1;
+			}
+		});
 		}
 		return configTabs;
 	}

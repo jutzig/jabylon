@@ -1,9 +1,9 @@
 package de.jutzig.jabylon.ui.config.internal;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,11 +17,11 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
 import de.jutzig.jabylon.ui.Activator;
@@ -71,8 +71,7 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 		for (IConfigurationElement child : configSections) {
 			try {
 
-				ConfigSection section = (ConfigSection) child
-						.createExecutableExtension("section");
+				ConfigSection section = (ConfigSection) child.createExecutableExtension("section");
 				String title = child.getAttribute("title");
 				VerticalLayout parent = tabs.get(child.getAttribute("tab"));
 				if(title!=null && title.length()>0)
@@ -124,10 +123,10 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 		addComponent(safe);
 	}
 
-	private Map<String, VerticalLayout> fillTabSheet(Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) 
+	private Map<String, VerticalLayout> fillTabSheet(final Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) 
 	{
 		Map<String, VerticalLayout> result = new HashMap<String, VerticalLayout>();
-		//TODO: sort according to precedence
+
 		for (Entry<String, IConfigurationElement> entry : visibleTabs.entrySet()) {
 			IConfigurationElement element = entry.getValue();
 			VerticalLayout layout = new VerticalLayout();
@@ -139,7 +138,8 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
 
 	private Map<String, IConfigurationElement> computeVisibleTabs(List<IConfigurationElement> configSections) {
-		Map<String, IConfigurationElement> tabs = new HashMap<String, IConfigurationElement>();
+		//linked hashmap to retain the precendence order
+		Map<String, IConfigurationElement> tabs = new LinkedHashMap<String, IConfigurationElement>();
 		List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
 		for (IConfigurationElement tab : tabList) {
 			tabs.put(tab.getAttribute("tabID"),tab);

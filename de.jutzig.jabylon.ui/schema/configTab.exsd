@@ -79,7 +79,7 @@
                <documentation>
                   numeric value from 1 to 10.
 The tab will appear the closer to the beginning, the higher the number. 
-No number equals 0, or lowest precedence
+No number equals 1, or lowest precedence
                </documentation>
             </annotation>
             <simpleType>
@@ -102,7 +102,7 @@ No number equals 0, or lowest precedence
                   </enumeration>
                   <enumeration value="9">
                   </enumeration>
-                  <enumeration value="0">
+                  <enumeration value="10">
                   </enumeration>
                </restriction>
             </simpleType>
