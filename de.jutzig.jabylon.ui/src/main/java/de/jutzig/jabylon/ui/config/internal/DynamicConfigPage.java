@@ -55,20 +55,19 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
 	private void createContents(Object domainElement) {
 
-		List<IConfigurationElement> configSections = Activator.getDefault()
-				.getConfigSections();
+		List<IConfigurationElement> configSections = DynamicConfigUtil
+				.getApplicableElements(domainElement);
 		for (IConfigurationElement child : configSections) {
 			try {
+
 				ConfigSection section = (ConfigSection) child
 						.createExecutableExtension("section");
-				if (section.appliesTo(domainElement)) {
-					Section sectionWidget = new Section();
-					sectionWidget.setTitle(child.getAttribute("title"));
-					sectionWidget.getBody().addComponent(
-							section.createContents());
-					sections.put(child.getAttribute("id"), section);
-					addComponent(sectionWidget);
-				}
+				Section sectionWidget = new Section();
+				sectionWidget.setTitle(child.getAttribute("title"));
+				sectionWidget.getBody().addComponent(section.createContents());
+				sections.put(child.getAttribute("id"), section);
+				addComponent(sectionWidget);
+
 			} catch (CoreException e) {
 				Activator.error(
 						"Failed to initialze config extension "
@@ -76,11 +75,11 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 			}
 
 		}
-		
+
 		Button safe = new Button();
 		safe.setCaption("OK");
 		safe.addListener(new ClickListener() {
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				for (Entry<String, ConfigSection> entry : sections.entrySet()) {
@@ -91,11 +90,14 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 					rootNode.flush();
 					MainDashboard.getCurrent().getBreadcrumbs().goBack();
 				} catch (BackingStoreException e) {
-					Activator.error("Failed to persist settings of "+MainDashboard.getCurrent().getBreadcrumbs().currentPath(), e);
-                    getWindow().showNotification("Failed to persist changes",e.getMessage(),Notification.TYPE_ERROR_MESSAGE);
+					Activator.error("Failed to persist settings of "
+							+ MainDashboard.getCurrent().getBreadcrumbs()
+									.currentPath(), e);
+					getWindow().showNotification("Failed to persist changes",
+							e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 
 				}
-				
+
 			}
 		});
 		addComponent(safe);

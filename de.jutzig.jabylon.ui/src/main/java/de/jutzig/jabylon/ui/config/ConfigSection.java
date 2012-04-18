@@ -10,8 +10,6 @@ public interface ConfigSection {
 	
 	void init(Object input, Preferences config);
 	
-	boolean appliesTo(Object input);
-	
 	void commit(Preferences config);
 	
 }

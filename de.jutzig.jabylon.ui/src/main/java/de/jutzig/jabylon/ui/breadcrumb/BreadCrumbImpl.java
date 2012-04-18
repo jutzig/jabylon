@@ -1,10 +1,12 @@
 package de.jutzig.jabylon.ui.breadcrumb;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 
 import com.vaadin.ui.Button;
@@ -28,9 +30,10 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 	private List<Button> parts;
 	private boolean ignoreDirty;
 	private Deque<String> segmentList;
-
+	private List<WeakReference<CrumbListener>> listeners;
 
 	public BreadCrumbImpl() {
+		listeners = new ArrayList<WeakReference<CrumbListener>>(1);
 		parts = new ArrayList<Button>();
 		layout = new HorizontalLayout();
 		layout.setSpacing(true);
@@ -166,7 +169,9 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 		}
 		if (trail != null) {
 			MainDashboard.getCurrent().setMainComponent(trail.getComponent());
+			fireCrumbChanged(trail);
 		}
+		
 
 	}
 
@@ -207,6 +212,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
 		MainDashboard.getCurrent()
 				.setMainComponent(currentTrail.getComponent());
+		fireCrumbChanged(currentTrail);
 
 	}
 
@@ -219,6 +225,40 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 	public CrumbTrail currentTrail() {
 		return (CrumbTrail) parts.get(parts.size()-1).getData();
 	}
+
+	@Override
+	public void addCrumbListener(CrumbListener listener) {
+		listeners.add(new WeakReference<CrumbListener>(listener));
+		
+	}
+
+	@Override
+	public void removeCrumbListener(CrumbListener listener) {
+		Iterator<WeakReference<CrumbListener>> it = listeners.iterator();
+		while(it.hasNext())
+		{
+			WeakReference<CrumbListener> existing = it.next();
+			if(listener==existing.get())
+			{
+				it.remove();
+				return;
+			}
+		}
+	}
 	
+	
+	private void fireCrumbChanged(CrumbTrail current)
+	{
+		Iterator<WeakReference<CrumbListener>> it = listeners.iterator();
+		while(it.hasNext())
+		{
+			WeakReference<CrumbListener> reference = it.next();
+			CrumbListener crumbListener = reference.get();
+			if(crumbListener==null)
+				it.remove();
+			else
+				crumbListener.activeCrumbTrailChanged(current);
+		}
+	}
 	
 }

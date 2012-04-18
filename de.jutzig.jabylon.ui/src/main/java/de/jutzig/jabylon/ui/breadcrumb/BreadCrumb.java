@@ -18,4 +18,8 @@ public interface BreadCrumb {
 	
 	String CONFIG = "|config";
 	
+	void addCrumbListener(CrumbListener listener);
+	
+	void removeCrumbListener(CrumbListener listener);
+	
 }

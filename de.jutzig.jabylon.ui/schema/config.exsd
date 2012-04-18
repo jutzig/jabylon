@@ -76,6 +76,16 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="objectClass" type="string">
+            <annotation>
+               <documentation>
+                  the object class this config section is applicable to
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.Object:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

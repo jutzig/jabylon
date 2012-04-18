@@ -31,12 +31,6 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	private static final String TEAM_PROVIDER = "teamProvider";
 	private Form form;
 
-	/**
-	 * @param domainClass
-	 */
-	public GeneralProjectConfig() {
-		super(Project.class);
-	}
 
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.ui.config.ConfigSection#createContents()

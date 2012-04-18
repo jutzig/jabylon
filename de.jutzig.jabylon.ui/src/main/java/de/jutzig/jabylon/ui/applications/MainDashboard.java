@@ -69,6 +69,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		contentArea = new LabeledContainer();
 		contentArea.setHeadClient(createHeader());
 		contentArea.setSizeFull();
+		breadcrumbs.addCrumbListener(titleBar);
 
 //		Component header = createHeader();
 //
