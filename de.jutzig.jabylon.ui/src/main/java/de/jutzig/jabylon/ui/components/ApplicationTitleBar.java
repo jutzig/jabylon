@@ -62,6 +62,14 @@ public class ApplicationTitleBar extends CustomComponent {
 		mainLayout.setExpandRatio(help, 2f);
 
 		Button settings = new Button("Settings");
+		settings.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				settingsPressed();
+				
+			}
+		});
 		settings.setStyleName(Reindeer.BUTTON_LINK);
 		mainLayout.addComponent(settings);
 		mainLayout.setComponentAlignment(settings, Alignment.BOTTOM_RIGHT);
