@@ -41,7 +41,7 @@
       <configSection
             id="de.jutzig.jabylon.ui.userConfig"
             objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.UserConfig"
+            section="de.jutzig.jabylon.ui.config.internal.general.UserConfig"
             tab="user">
       </configSection>
    </extension>
