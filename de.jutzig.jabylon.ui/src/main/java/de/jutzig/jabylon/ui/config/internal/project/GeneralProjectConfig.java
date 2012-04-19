@@ -3,39 +3,28 @@
  */
 package de.jutzig.jabylon.ui.config.internal.project;
 
-import java.text.MessageFormat;
 import java.util.EnumSet;
 
-import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.Preferences;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.Validator;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.ui.applications.MainDashboard;
-import de.jutzig.jabylon.ui.components.ProgressMonitorDialog;
+import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.container.PreferencesItem;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
-import de.jutzig.jabylon.ui.team.TeamProvider;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -60,20 +49,26 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 		form = new Form();
 		form.setWriteThrough(false);
 		form.setImmediate(true);
+		layout.addComponent(form);
 		
 		Component table = createTable();
 		layout.addComponent(table);
 		
-		layout.addComponent(form);
 		
 		return layout;
 		
 	}
 
 	private Component createTable() {
-		GridLayout layout = new GridLayout(2,2);
+		Section section = new Section();
+		section.setTitle("Locales");
+		section.setWidth(400, Section.UNITS_PIXELS);
+		GridLayout layout = section.getBody();
+		layout.setColumns(2);
+		layout.setRows(2);
 		layout.setSpacing(true);
 		table = new Table();
+		table.setWidth(300, Table.UNITS_PIXELS);
 		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 		layout.addComponent(table,0,0,0,1);
 		
@@ -94,7 +89,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 			}
 		});
 		layout.addComponent(add);
-		return layout;
+		return section;
 	}
 
 	/* (non-Javadoc)
