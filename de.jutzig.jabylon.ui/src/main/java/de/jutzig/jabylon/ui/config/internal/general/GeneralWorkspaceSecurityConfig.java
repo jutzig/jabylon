@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.ui.config.internal;
+package de.jutzig.jabylon.ui.config.internal.general;
 
 import org.osgi.service.prefs.Preferences;
 

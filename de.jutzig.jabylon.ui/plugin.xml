@@ -11,23 +11,32 @@
             section="de.jutzig.jabylon.ui.config.internal.GeneralProjectConfig"
             tab="general">
       </configSection>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.config">
       <configSection
-            id="de.jutzig.jabylon.ui.generalConfig"
+            id="de.jutzig.jabylon.ui.generalRepository"
             objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceConfig"
-            tab="general">
+            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceRepositoryConfig"
+            tab="repository">
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.generalSecurity"
             objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceSecurityConfig"
+            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceSecurityConfig"
             tab="security">
       </configSection>
       <configSection
-            id="de.jutzig.jabylon.ui.generalRepository"
+            id="de.jutzig.jabylon.ui.generalConfig"
             objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceRepositoryConfig"
-            tab="repository">
+            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceConfig"
+            tab="general">
+      </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.projects"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.general.WorkspaceProjectsSettings"
+            tab="projects">
       </configSection>
    </extension>
    <extension
@@ -51,6 +60,11 @@
             name="Security"
             precedence="5"
             tabID="security">
+      </tab>
+      <tab
+            name="Projects"
+            precedence="8"
+            tabID="projects">
       </tab>
    </extension>
 </plugin>
