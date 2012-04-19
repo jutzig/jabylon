@@ -29,6 +29,12 @@
             section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceRepositoryConfig"
             tab="repository">
       </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.userConfig"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.UserConfig"
+            tab="user">
+      </configSection>
    </extension>
    <extension
          point="de.jutzig.jabylon.ui.configTab">
