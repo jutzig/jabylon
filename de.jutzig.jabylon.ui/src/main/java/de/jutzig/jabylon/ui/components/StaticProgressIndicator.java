@@ -49,4 +49,5 @@ public class StaticProgressIndicator extends Label {
 		return color;
 
 	}
+	
 }
