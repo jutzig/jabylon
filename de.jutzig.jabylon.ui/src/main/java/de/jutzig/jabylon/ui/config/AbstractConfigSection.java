@@ -12,11 +12,6 @@ import org.osgi.service.prefs.Preferences;
 public abstract class AbstractConfigSection<T> implements ConfigSection{
 
 	private T domainObject;
-	private Class<T> domainClass;
-	
-	public AbstractConfigSection(Class<T> domainClass) {
-		this.domainClass = domainClass;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -26,13 +21,6 @@ public abstract class AbstractConfigSection<T> implements ConfigSection{
 	}
 
 	protected abstract void init(Preferences config);
-
-	@Override
-	public boolean appliesTo(Object input) {
-		if(input==null)
-			return false;
-		return domainClass.isAssignableFrom(input.getClass());
-	}
 
 	
 	public T getDomainObject() {

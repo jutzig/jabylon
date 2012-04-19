@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
->
+<plugin>
    <extension-point id="config" name="Configuration Section" schema="schema/config.exsd"/>
+   <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension
          point="de.jutzig.jabylon.ui.config">
       <configSection
             id="de.jutzig.jabylon.ui.projectConfig"
+            objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.GeneralProjectConfig"
-            title="General">
+            tab="general">
       </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.generalConfig"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceConfig"
+            tab="general">
+      </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.generalSecurity"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceSecurityConfig"
+            tab="security">
+      </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.generalRepository"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.GeneralWorkspaceRepositoryConfig"
+            tab="repository">
+      </configSection>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.configTab">
+      <tab
+            name="General"
+            precedence="10"
+            tabID="general">
+      </tab>
+      <tab
+            name="User"
+            precedence="7"
+            tabID="user">
+      </tab>
+      <tab
+            name="Repository"
+            precedence="6"
+            tabID="repository">
+      </tab>
+      <tab
+            name="Security"
+            precedence="5"
+            tabID="security">
+      </tab>
    </extension>
 </plugin>
