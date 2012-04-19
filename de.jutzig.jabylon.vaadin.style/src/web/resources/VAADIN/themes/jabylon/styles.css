@@ -16,21 +16,6 @@
 	top: -18px;
 }
 
-.v-captiontext {
-	font-size: 30px;
-	font-style: italic;
-	font-weight: bold;
-	/* padding: 20px 30px 20px 15px; */
-	color: white;
-	/*	background-image: linear-gradient(left top, #99C1F2 17%, #2D3761 59%);
-	background-image: -o-linear-gradient(left top, #99C1F2 17%, #2D3761 59%);
-	background-image: -moz-linear-gradient(left top, #99C1F2 17%, #2D3761 59%);
-	background-image: -webkit-linear-gradient(left top, #99C1F2 17%, #2D3761 59%);
-	background-image: -ms-linear-gradient(left top, #99C1F2 17%, #2D3761 59%);
-	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0.17,
-		#99C1F2), color-stop(0.59, #2D3761) ); */
-}
-
 .jayblon-breadcrumb-panel {
 	font-size: 24px;
 	font-style: italic;
