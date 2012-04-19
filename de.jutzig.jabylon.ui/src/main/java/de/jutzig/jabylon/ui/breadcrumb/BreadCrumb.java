@@ -12,6 +12,8 @@ public interface BreadCrumb {
 	
 	void walkTo(String... steps);
 	
+	void setPath(String...steps);
+	
 	Collection<String> currentPath();
 	
 	CrumbTrail currentTrail();

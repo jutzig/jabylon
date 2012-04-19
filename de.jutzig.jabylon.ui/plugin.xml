@@ -8,7 +8,7 @@
       <configSection
             id="de.jutzig.jabylon.ui.projectConfig"
             objectClass="de.jutzig.jabylon.properties.Project"
-            section="de.jutzig.jabylon.ui.config.internal.GeneralProjectConfig"
+            section="de.jutzig.jabylon.ui.config.internal.project.GeneralProjectConfig"
             tab="general">
       </configSection>
    </extension>

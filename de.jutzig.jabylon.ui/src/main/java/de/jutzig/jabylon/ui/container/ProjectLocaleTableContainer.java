@@ -6,7 +6,12 @@ package de.jutzig.jabylon.ui.container;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.Locale;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
@@ -19,19 +24,22 @@ import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.util.LocaleUtil;
+import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class ProjectLocaleTableContainer extends AbstractContainer {
+public class ProjectLocaleTableContainer extends AbstractContainer implements Container.ItemSetChangeNotifier {
 
 	
 	private ProjectVersion project;
+
 	
 	public static enum LocaleProperty{
 		
@@ -45,8 +53,20 @@ public class ProjectLocaleTableContainer extends AbstractContainer {
 	}
 	
 	
-	public ProjectLocaleTableContainer(ProjectVersion project) {
+	public ProjectLocaleTableContainer(final ProjectVersion project) {
 		this.project = project;
+		project.eAdapters().add(new WeakReferenceAdapter(new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification msg) {
+				if(msg.getFeature()==PropertiesPackage.Literals.PROJECT_VERSION__LOCALES)
+				{
+					//TODO: can probably do this more fine grained
+//					project.cdoView().reload(project);
+					fireItemSetChange();
+				}
+					
+			}
+		}));
 	}
 	
 	/* (non-Javadoc)
@@ -161,6 +181,17 @@ public class ProjectLocaleTableContainer extends AbstractContainer {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public void addListener(ItemSetChangeListener listener) {
+	
+		super.addListener(listener);
+	}
+	
+	@Override
+	public void removeListener(ItemSetChangeListener listener) {
+		super.removeListener(listener);
+	}
 
 }
 
@@ -227,14 +258,20 @@ class ProjectLocaleRow implements Item
 	public Property getLocale() {
 		if(locale==null)
 		{
-			String displayName = projectLocale.getLocale().getDisplayName(MainDashboard.getCurrent().getLocale());
+			Locale userLocale = Locale.getDefault();
+			if(MainDashboard.getCurrent()!=null) //doesn't work like that if triggered from another thread (EMF notification)
+			{
+				userLocale = MainDashboard.getCurrent().getLocale();
+			}
+			String displayName = projectLocale.getLocale().getDisplayName(userLocale);
 			Button button = new Button(displayName);
 			button.setStyleName(Reindeer.BUTTON_LINK);
 			button.addListener(new ClickListener() {
 				
 				@Override
 				public void buttonClick(ClickEvent event) {
-					MainDashboard.getCurrent().getBreadcrumbs().walkTo(projectLocale.getLocale().toString());
+					
+					MainDashboard.getCurrent().getBreadcrumbs().setPath(projectLocale.getProjectVersion().getProject().getName(),projectLocale.getLocale().toString());
 					
 				}
 			});

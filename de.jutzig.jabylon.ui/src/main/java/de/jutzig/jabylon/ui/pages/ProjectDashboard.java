@@ -41,7 +41,6 @@ import de.jutzig.jabylon.ui.team.TeamProvider;
 public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		ClickListener {
 
-	private static final String CREATE_LOCALE = "create locale";
 	private Project project;
 	private ProjectVersion version;
 
@@ -128,16 +127,6 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		});
 		parent.addComponent(scanProject);
 
-		Button addLocale = new Button();
-		addLocale.setCaption("Add Locale");
-		addLocale.setIcon(ImageConstants.IMAGE_NEW_LOCALE);
-		addLocale.addListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				MainDashboard.getCurrent().getBreadcrumbs().walkTo(CREATE_LOCALE);
-			}
-		});
-		parent.addComponent(addLocale);
 
 		Button commit = new Button();
 		commit.setCaption("Commit Changes");
@@ -174,9 +163,6 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if (CREATE_LOCALE.equals(path)) {
-			return new NewLocaleForm(version);
-		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(
 				PropertiesPackage.Literals.LOCALE, path);
 		ProjectLocale projectLocale = version.getProjectLocale(locale);
