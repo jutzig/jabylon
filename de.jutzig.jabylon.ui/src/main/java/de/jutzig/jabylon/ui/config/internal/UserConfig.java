@@ -9,6 +9,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -20,13 +22,17 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.Notification;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.users.User;
@@ -36,19 +42,26 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	RepositoryConnector connector = MainDashboard.getCurrent().getRepositoryConnector();
 	CDOView view;
 	Table userTable = null;
-	Object selectedItem = null;
+	User selectedUser = null;
+	VerticalLayout userConfig = new VerticalLayout();
+	Section userDetails = null;
 
 	@SuppressWarnings("serial")
 	@Override
 	public Component createContents() {
-		VerticalLayout userConfig = new VerticalLayout();
+		userConfig.setMargin(true);
 		userTable = new Table("Users", getUsers());
 		userTable.setSizeFull();
 		userTable.setSelectable(true);
 		userTable.addListener(new ItemClickListener() {
 			@Override
 			public void itemClick(ItemClickEvent event) {
-				selectedItem = event.getItemId();
+				if(selectedUser!=null && !selectedUser.equals(event.getItemId()))
+					removeUserDetails();
+
+				selectedUser = (User)event.getItemId();
+				if(selectedUser!=null)
+					addUserDetails();
 			}
 		});
 		userConfig.addComponent(userTable);
@@ -71,6 +84,36 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		buttonLine.addComponent(deleteUser);
 		userConfig.addComponent(buttonLine);
 		return userConfig;
+	}
+
+	private void removeUserDetails() {
+		userConfig.removeComponent(userDetails);
+		userDetails = null;
+	}
+
+	private void addUserDetails() {
+		userDetails = new Section();
+		userDetails.setTitle("User: "+selectedUser.getName());
+		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
+		permissionSelect.setMultiSelect(true);
+		permissionSelect.setLeftColumnCaption("Available permissions");
+		permissionSelect.setRightColumnCaption("Permissions currently assigned");
+		permissionSelect.addListener(new Property.ValueChangeListener() {
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				System.out.println(event.getProperty());
+			}
+		});
+		addAvailablePermissions(permissionSelect);
+		userDetails.getBody().addComponent(permissionSelect);
+		userConfig.addComponent(userDetails);
+	}
+
+	private void addAvailablePermissions(TwinColSelect permissionSelect) {
+		permissionSelect.addItem("Administrator");
+		permissionSelect.addItem("Project Admin");
+		permissionSelect.addItem("Translator");
+		permissionSelect.addItem("Reviewer");
 	}
 
 	private void addUser() {
@@ -108,7 +151,23 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 }
 
 	private void deleteUser() {
-
+		if(selectedUser==null) {
+			MainDashboard.getCurrent().getMainWindow().showNotification("No user select", "Please select a usser", Notification.TYPE_WARNING_MESSAGE);
+			return;
+		} else {
+			CDOTransaction transaction = connector.openTransaction();
+			CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
+			resource.getContents().remove(selectedUser);
+			try {
+				transaction.commit();
+				selectedUser=null;
+			} catch (CommitException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			} finally {
+				transaction.close();
+			}
+		}
 	}
 
 	private Container getUsers() {
