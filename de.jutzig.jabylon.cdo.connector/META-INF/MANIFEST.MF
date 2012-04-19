@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.equinox.common;bundle-version="3.6.0",
  org.eclipse.emf.cdo;bundle-version="4.0.1",
  org.eclipse.emf.cdo.common;bundle-version="4.0.1",
  org.eclipse.emf.cdo.net4j;bundle-version="4.0.1",
- org.eclipse.net4j.jvm;bundle-version="4.0.0"
+ org.eclipse.net4j.jvm;bundle-version="4.0.0",
+ de.jutzig.jabylon.users;bundle-version="1.0.0"
 Export-Package: de.jutzig.jabylon.cdo.connector

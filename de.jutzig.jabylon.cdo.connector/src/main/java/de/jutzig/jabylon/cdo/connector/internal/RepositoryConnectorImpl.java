@@ -13,6 +13,7 @@ import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.users.UsersPackage;
 
 public class RepositoryConnectorImpl implements RepositoryConnector {
 
@@ -36,7 +37,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 
 	/**
 	 * Getter for session including lazy initialization
-	 * 
+	 *
 	 * @return the CDO session
 	 */
 	public CDOSession getSession() {
@@ -46,8 +47,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 			if (connector == null)
 				connector = JVMUtil.getConnector(container, "default");
 
-			CDOSessionConfiguration config = CDONet4jUtil
-					.createSessionConfiguration();
+			CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
 			config.setConnector(connector);
 			config.setRepositoryName(REPOSITORY_NAME);
 			// config.setLegacySupportEnabled(false);
@@ -56,15 +56,15 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 			// config.setLazyPopulatingPackageRegistry();
 
 			session = config.openSession();
-			session.getPackageRegistry().putEPackage(
-					PropertiesPackage.eINSTANCE);
+			session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
+			session.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
 		}
 		return session;
 	}
 
 	/**
 	 * Getter for transaction including lazy initialization
-	 * 
+	 *
 	 * @return the transaction
 	 */
 	public CDOTransaction openTransaction() {
