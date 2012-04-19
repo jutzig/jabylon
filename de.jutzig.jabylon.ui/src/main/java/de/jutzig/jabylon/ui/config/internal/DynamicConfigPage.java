@@ -74,6 +74,8 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 				ConfigSection section = (ConfigSection) child.createExecutableExtension("section");
 				String title = child.getAttribute("title");
 				VerticalLayout parent = tabs.get(child.getAttribute("tab"));
+				parent.setSpacing(true);
+				parent.setMargin(true);
 				if(title!=null && title.length()>0)
 				{
 					Section sectionWidget = new Section();

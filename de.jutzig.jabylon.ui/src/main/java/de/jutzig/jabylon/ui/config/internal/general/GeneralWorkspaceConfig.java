@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.ui.config.internal;
+package de.jutzig.jabylon.ui.config.internal.general;
 
 import org.osgi.service.prefs.Preferences;
 
@@ -15,13 +15,13 @@ import de.jutzig.jabylon.ui.config.ConfigSection;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class GeneralWorkspaceRepositoryConfig extends AbstractConfigSection
-		implements ConfigSection {
+public class GeneralWorkspaceConfig extends AbstractConfigSection implements
+		ConfigSection {
 
 	/**
 	 * 
 	 */
-	public GeneralWorkspaceRepositoryConfig() {
+	public GeneralWorkspaceConfig() {
 		// TODO Auto-generated constructor stub
 	}
 

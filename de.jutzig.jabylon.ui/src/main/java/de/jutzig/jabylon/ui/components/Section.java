@@ -71,7 +71,7 @@ public class Section extends CustomComponent {
 		mainLayout = new VerticalLayout();
 		mainLayout.setImmediate(false);
 
-		mainLayout.setMargin(true);
+//		mainLayout.setMargin(true);
 		mainLayout.setSpacing(true);
 		
 

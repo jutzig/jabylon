@@ -30,7 +30,7 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.beans.LocaleBean;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 
-public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
+public class NewLocaleForm extends VerticalLayout {
 
 	private ProjectVersion project;
 	
@@ -44,7 +44,6 @@ public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
 	private void createContents() {
 		  // Create the Form
         final Form form = new Form();
-        form.setCaption("New Locale");
         form.setWriteThrough(true);
         form.setImmediate(true);
 //        form.setInvalidCommitted(false); // no invalid values in datamodel
@@ -80,7 +79,7 @@ public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
                 new Button.ClickListener() {
                     public void buttonClick(ClickEvent event) {
                         form.discard();
-                        MainDashboard.getCurrent().getBreadcrumbs().goBack();
+                        getWindow().getParent().removeWindow(getWindow());
                     }
                 });
         buttons.addComponent(discardChanges);
@@ -111,7 +110,7 @@ public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
                 		}
 					});
                 		
-					MainDashboard.getCurrent().getBreadcrumbs().goBack();
+                	getWindow().getParent().removeWindow(getWindow());
                     
                 } catch (Exception e) {
                     // Ignored, we'll let the Form handle the errors
@@ -125,33 +124,6 @@ public class NewLocaleForm extends VerticalLayout implements CrumbTrail{
 		
 	}
 
-
-	@Override
-	public CrumbTrail walkTo(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Component getComponent() {
-		return this;
-	}
-
-	@Override
-	public String getTrailCaption() {
-		return "Create Locale";
-	}
-
-	@Override
-	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Object getDomainObject() {
-		return project;
-	}
 	
 }
 
