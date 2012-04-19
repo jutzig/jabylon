@@ -41,17 +41,6 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getAuthModule() <em>Auth Module</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -61,16 +50,6 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * @ordered
 	 */
 	protected static final String AUTH_MODULE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAuthModule() <em>Auth Module</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAuthModule()
-	 * @generated
-	 * @ordered
-	 */
-	protected String authModule = AUTH_MODULE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -96,8 +75,18 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getName() {
-		return name;
+		return (String)eDynamicGet(UsersPackage.AUTH_TYPE__NAME, UsersPackage.Literals.AUTH_TYPE__NAME, true, true);
 	}
 
 	/**
@@ -106,10 +95,7 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * @generated
 	 */
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, UsersPackage.AUTH_TYPE__NAME, oldName, name));
+		eDynamicSet(UsersPackage.AUTH_TYPE__NAME, UsersPackage.Literals.AUTH_TYPE__NAME, newName);
 	}
 
 	/**
@@ -118,7 +104,7 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * @generated
 	 */
 	public String getAuthModule() {
-		return authModule;
+		return (String)eDynamicGet(UsersPackage.AUTH_TYPE__AUTH_MODULE, UsersPackage.Literals.AUTH_TYPE__AUTH_MODULE, true, true);
 	}
 
 	/**
@@ -127,10 +113,7 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	 * @generated
 	 */
 	public void setAuthModule(String newAuthModule) {
-		String oldAuthModule = authModule;
-		authModule = newAuthModule;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, UsersPackage.AUTH_TYPE__AUTH_MODULE, oldAuthModule, authModule));
+		eDynamicSet(UsersPackage.AUTH_TYPE__AUTH_MODULE, UsersPackage.Literals.AUTH_TYPE__AUTH_MODULE, newAuthModule);
 	}
 
 	/**
@@ -194,29 +177,11 @@ public class AuthTypeImpl extends CDOObjectImpl implements AuthType {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case UsersPackage.AUTH_TYPE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
 			case UsersPackage.AUTH_TYPE__AUTH_MODULE:
-				return AUTH_MODULE_EDEFAULT == null ? authModule != null : !AUTH_MODULE_EDEFAULT.equals(authModule);
+				return AUTH_MODULE_EDEFAULT == null ? getAuthModule() != null : !AUTH_MODULE_EDEFAULT.equals(getAuthModule());
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", authModule: ");
-		result.append(authModule);
-		result.append(')');
-		return result.toString();
 	}
 
 } //AuthTypeImpl

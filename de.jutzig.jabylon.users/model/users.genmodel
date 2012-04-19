@@ -7,7 +7,7 @@
     editorPluginClass="de.jutzig.jabylon.users.presentation.UsersEditorPlugin" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject"
     rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl" testsDirectory="/de.jutzig.jabylon.users/src/test/java"
     testSuiteClass="de.jutzig.jabylon.users.tests.UsersAllTests" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false">
+    featureDelegation="Dynamic" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>users.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
   <genPackages prefix="Users" basePackage="de.jutzig.jabylon" disposableProviderFactory="true"
@@ -17,10 +17,13 @@
     </genClasses>
     <genClasses ecoreClass="users.ecore#//Role">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//Role/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference users.ecore#//Role/parent"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference users.ecore#//Role/permissions"/>
+      <genOperations ecoreOperation="users.ecore#//Role/getAllPermissions"/>
     </genClasses>
     <genClasses ecoreClass="users.ecore#//Permission">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//Permission/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//Permission/description"/>
     </genClasses>
     <genClasses ecoreClass="users.ecore#//AuthType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//AuthType/name"/>

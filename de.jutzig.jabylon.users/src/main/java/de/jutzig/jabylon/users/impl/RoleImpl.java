@@ -53,36 +53,6 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParent()
-	 * @generated
-	 * @ordered
-	 */
-	protected Role parent;
-
-	/**
-	 * The cached value of the '{@link #getPermissions() <em>Permissions</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPermissions()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Permission> permissions;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -106,8 +76,18 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	protected int eStaticFeatureCount() {
+		return 0;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getName() {
-		return name;
+		return (String)eDynamicGet(UsersPackage.ROLE__NAME, UsersPackage.Literals.ROLE__NAME, true, true);
 	}
 
 	/**
@@ -116,10 +96,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * @generated
 	 */
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, UsersPackage.ROLE__NAME, oldName, name));
+		eDynamicSet(UsersPackage.ROLE__NAME, UsersPackage.Literals.ROLE__NAME, newName);
 	}
 
 	/**
@@ -128,15 +105,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * @generated
 	 */
 	public Role getParent() {
-		if (parent != null && ((EObject)parent).eIsProxy()) {
-			InternalEObject oldParent = (InternalEObject)parent;
-			parent = (Role)eResolveProxy(oldParent);
-			if (parent != oldParent) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, UsersPackage.ROLE__PARENT, oldParent, parent));
-			}
-		}
-		return parent;
+		return (Role)eDynamicGet(UsersPackage.ROLE__PARENT, UsersPackage.Literals.ROLE__PARENT, true, true);
 	}
 
 	/**
@@ -145,7 +114,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * @generated
 	 */
 	public Role basicGetParent() {
-		return parent;
+		return (Role)eDynamicGet(UsersPackage.ROLE__PARENT, UsersPackage.Literals.ROLE__PARENT, false, true);
 	}
 
 	/**
@@ -154,10 +123,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * @generated
 	 */
 	public void setParent(Role newParent) {
-		Role oldParent = parent;
-		parent = newParent;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, UsersPackage.ROLE__PARENT, oldParent, parent));
+		eDynamicSet(UsersPackage.ROLE__PARENT, UsersPackage.Literals.ROLE__PARENT, newParent);
 	}
 
 	/**
@@ -165,11 +131,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public EList<Permission> getPermissions() {
-		if (permissions == null) {
-			permissions = new EObjectResolvingEList<Permission>(Permission.class, this, UsersPackage.ROLE__PERMISSIONS);
-		}
-		return permissions;
+		return (EList<Permission>)eDynamicGet(UsersPackage.ROLE__PERMISSIONS, UsersPackage.Literals.ROLE__PERMISSIONS, true, true);
 	}
 
 	/**
@@ -255,29 +219,13 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case UsersPackage.ROLE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
 			case UsersPackage.ROLE__PARENT:
-				return parent != null;
+				return basicGetParent() != null;
 			case UsersPackage.ROLE__PERMISSIONS:
-				return permissions != null && !permissions.isEmpty();
+				return !getPermissions().isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(')');
-		return result.toString();
 	}
 
 } //RoleImpl
