@@ -9,6 +9,7 @@ import java.util.Set;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.osgi.service.prefs.Preferences;
 
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -68,14 +69,14 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 		section.setWidth(400, Section.UNITS_PIXELS);
 		GridLayout layout = section.getBody();
 		layout.setColumns(2);
-		layout.setRows(2);
+		layout.setRows(21);
 		layout.setSpacing(true);
 		table = new Table();
 		table.setWidth(300, Table.UNITS_PIXELS);
 		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 		table.setMultiSelect(true);
 		table.setSelectable(true);
-		layout.addComponent(table,0,0,0,1);
+		layout.addComponent(table,0,0,0,20);
 		
 		Button add = new Button("Add");
 		add.addListener(new ClickListener() {
@@ -94,6 +95,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 			}
 		});
 		layout.addComponent(add);
+		layout.setComponentAlignment(add, Alignment.TOP_LEFT);
 		
 		Button remove = new Button("Remove");
 		remove.addListener(new ClickListener() {
@@ -114,6 +116,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 			}
 		});
 		layout.addComponent(remove);
+		layout.setComponentAlignment(remove, Alignment.TOP_LEFT);
 		return section;
 	}
 
