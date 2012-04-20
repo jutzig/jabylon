@@ -10,9 +10,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.transaction.Transaction;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -31,19 +36,20 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.resources.ApplicationConstants;
 
-public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
+public class DynamicConfigPage implements CrumbTrail {
 
 	private Map<String, ConfigSection> sections;
 	private Preferences rootNode;
+	private CDOTransaction transaction;
+	private CDOObject domainElement;
+	private VerticalLayout layout;
+	
+	public DynamicConfigPage(CDOObject domainElement) {
 
-	public DynamicConfigPage(Object domainElement) {
+		this.domainElement = domainElement;
 		sections = new HashMap<String, ConfigSection>();
-		setMargin(true);
-		setSpacing(true);
-		setSizeFull();
 		rootNode = initializePreferences();
-		createContents(domainElement);
-		initSections(domainElement);
+
 	}
 
 	private Preferences initializePreferences() {
@@ -61,13 +67,22 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 
 	private void createContents(Object domainElement) {
 
-		List<IConfigurationElement> configSections = DynamicConfigUtil
-				.getApplicableElements(domainElement);
+		layout = new VerticalLayout() {
+			@Override
+			public void detach() {
+				super.detach();
+				transaction.close();
+			}
+		};
+		layout.setMargin(true);
+		layout.setSpacing(true);
+		layout.setSizeFull();
+		List<IConfigurationElement> configSections = DynamicConfigUtil.getApplicableElements(domainElement);
 		Map<String, IConfigurationElement> visibleTabs = computeVisibleTabs(configSections);
-		
+
 		TabSheet sheet = new TabSheet();
 		Map<String, VerticalLayout> tabs = fillTabSheet(visibleTabs, sheet);
-		addComponent(sheet);
+		layout.addComponent(sheet);
 		for (IConfigurationElement child : configSections) {
 			try {
 
@@ -76,24 +91,18 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 				VerticalLayout parent = tabs.get(child.getAttribute("tab"));
 				parent.setSpacing(true);
 				parent.setMargin(true);
-				if(title!=null && title.length()>0)
-				{
+				if (title != null && title.length() > 0) {
 					Section sectionWidget = new Section();
 					sectionWidget.setTitle(title);
 					sectionWidget.getBody().addComponent(section.createContents());
 					parent.addComponent(sectionWidget);
-				}
-				else
-				{
+				} else {
 					parent.addComponent(section.createContents());
 				}
 				sections.put(child.getAttribute("id"), section);
-				
 
 			} catch (CoreException e) {
-				Activator.error(
-						"Failed to initialze config extension "
-								+ child.getAttribute("id"), e);
+				Activator.error("Failed to initialze config extension " + child.getAttribute("id"), e);
 			}
 
 		}
@@ -110,23 +119,23 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 				}
 				try {
 					rootNode.flush();
+					transaction.commit();
 					MainDashboard.getCurrent().getBreadcrumbs().goBack();
+//					layout.getWindow().showNotification("Saved");
 				} catch (BackingStoreException e) {
-					Activator.error("Failed to persist settings of "
-							+ MainDashboard.getCurrent().getBreadcrumbs()
-									.currentPath(), e);
-					getWindow().showNotification("Failed to persist changes",
-							e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+					Activator.error("Failed to persist settings of " + MainDashboard.getCurrent().getBreadcrumbs().currentPath(), e);
+					layout.getWindow().showNotification("Failed to persist changes", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 
+				} catch (CommitException e) {
+					Activator.error("Commit failed", e);
 				}
 
 			}
 		});
-		addComponent(safe);
+		layout.addComponent(safe);
 	}
 
-	private Map<String, VerticalLayout> fillTabSheet(final Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) 
-	{
+	private Map<String, VerticalLayout> fillTabSheet(final Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) {
 		Map<String, VerticalLayout> result = new HashMap<String, VerticalLayout>();
 
 		for (Entry<String, IConfigurationElement> entry : visibleTabs.entrySet()) {
@@ -138,13 +147,12 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 		return result;
 	}
 
-
 	private Map<String, IConfigurationElement> computeVisibleTabs(List<IConfigurationElement> configSections) {
-		//linked hashmap to retain the precendence order
+		// linked hashmap to retain the precendence order
 		Map<String, IConfigurationElement> tabs = new LinkedHashMap<String, IConfigurationElement>();
 		List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
 		for (IConfigurationElement tab : tabList) {
-			tabs.put(tab.getAttribute("tabID"),tab);
+			tabs.put(tab.getAttribute("tabID"), tab);
 		}
 		Set<String> neededTabs = new HashSet<String>();
 		for (IConfigurationElement element : configSections) {
@@ -152,20 +160,13 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 		}
 		tabs.keySet().retainAll(neededTabs);
 
-		
-		
 		return tabs;
-		
+
 	}
 
 	@Override
 	public CrumbTrail walkTo(String path) {
 		return null;
-	}
-
-	@Override
-	public Component getComponent() {
-		return this;
 	}
 
 	@Override
@@ -180,9 +181,20 @@ public class DynamicConfigPage extends VerticalLayout implements CrumbTrail {
 	}
 
 	@Override
-	public Object getDomainObject() {
+	public CDOObject getDomainObject() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public Component createContents() {
+		transaction = (CDOTransaction) domainElement.cdoView().getSession().openTransaction();
+		CDOObject writable = transaction.getObject(domainElement);
+		createContents(writable);
+		initSections(writable);
+		return layout;
+		
 	}
 
 }

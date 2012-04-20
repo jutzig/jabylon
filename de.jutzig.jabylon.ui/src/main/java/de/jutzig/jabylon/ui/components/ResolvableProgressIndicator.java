@@ -56,7 +56,7 @@ public class ResolvableProgressIndicator extends StaticProgressIndicator impleme
 	
 	@Override
 	public void attach() {
-		if(resolvable!=null)
+		if(resolvable!=null && !resolvable.cdoInvalid())
 		{
 			resolvable.eAdapters().add(this);
 			setPercentage(resolvable.getPercentComplete());

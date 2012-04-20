@@ -166,7 +166,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
             addEntry(trail);
         }
         if (trail != null) {
-            MainDashboard.getCurrent().setMainComponent(trail.getComponent());
+            MainDashboard.getCurrent().setMainComponent(trail.createContents());
             fireCrumbChanged(trail);
         }
 
@@ -208,7 +208,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
             link.setEnabled(false);
         }
 
-        MainDashboard.getCurrent().setMainComponent(currentTrail.getComponent());
+        MainDashboard.getCurrent().setMainComponent(currentTrail.createContents());
         fireCrumbChanged(currentTrail);
 
     }

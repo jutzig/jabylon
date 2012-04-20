@@ -6,10 +6,13 @@ package de.jutzig.jabylon.ui.container;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -39,7 +42,7 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 
 	
 	private ProjectVersion project;
-
+	private Map<ProjectLocale, ProjectLocaleRow> itemCache;
 	
 	public static enum LocaleProperty{
 		
@@ -55,13 +58,15 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 	
 	public ProjectLocaleTableContainer(final ProjectVersion project) {
 		this.project = project;
+		itemCache = new HashMap<ProjectLocale, ProjectLocaleRow>();
 		project.eAdapters().add(new WeakReferenceAdapter(new AdapterImpl() {
 			@Override
 			public void notifyChanged(Notification msg) {
 				if(msg.getFeature()==PropertiesPackage.Literals.PROJECT_VERSION__LOCALES)
 				{
 					//TODO: can probably do this more fine grained
-//					project.cdoView().reload(project);
+					project.cdoReload();
+					itemCache.clear();
 					fireItemSetChange();
 				}
 					
@@ -76,7 +81,13 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 	public Item getItem(Object itemId) {
 		
 		ProjectLocale locale = (ProjectLocale)itemId;
-		return new ProjectLocaleRow(locale);
+		ProjectLocaleRow row = itemCache.get(itemId);
+		if(row == null)
+		{
+			row = new ProjectLocaleRow(locale);
+			itemCache.put(locale, row);
+		}
+		return row;
 	}
 
 	/* (non-Javadoc)

@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.util.CommitException;
 
 import com.vaadin.data.Container;
@@ -38,21 +39,23 @@ import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
-public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
+public class ProjectDashboard implements CrumbTrail,
 		ClickListener {
 
 	private Project project;
 	private ProjectVersion version;
+	private VerticalLayout mainLayout;
 
 	public ProjectDashboard(String projectName, String versionName) {
 		project = MainDashboard.getCurrent().getWorkspace()
 				.getProject(projectName);
 		version = getProjectVersion(project, versionName);
-		initialize();
+		
 
 	}
 
 	private void initialize() {
+		mainLayout = new VerticalLayout();
 		GridLayout layout = new GridLayout(2, 1);
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -61,8 +64,8 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 		section.setTitle("Available Locales");
 		section.getBody().addComponent(layout);
 		createContents(layout);
-		setSizeFull();
-		addComponent(section);
+		mainLayout.setSizeFull();
+		mainLayout.addComponent(section);
 
 
 	}
@@ -118,8 +121,8 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				getWindow().showNotification("Scan complete");
-				removeAllComponents();
+				mainLayout.getWindow().showNotification("Scan complete");
+				mainLayout.removeAllComponents();
 				initialize();
 
 			}
@@ -170,11 +173,6 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 	}
 
 	@Override
-	public Component getComponent() {
-		return this;
-	}
-
-	@Override
 	public String getTrailCaption() {
 		return project.getName();
 	}
@@ -194,8 +192,15 @@ public class ProjectDashboard extends VerticalLayout implements CrumbTrail,
 	}
 
 	@Override
-	public Object getDomainObject() {
+	public CDOObject getDomainObject() {
 		return project;
+	}
+
+	@Override
+	public Component createContents() {
+		initialize();
+		return mainLayout;
+		
 	}
 
 }

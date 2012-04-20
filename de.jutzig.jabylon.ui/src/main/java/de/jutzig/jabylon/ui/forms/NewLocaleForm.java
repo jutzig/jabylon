@@ -100,15 +100,7 @@ public class NewLocaleForm extends VerticalLayout {
                 	}
                     final ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
                     locale.setLocale(newLocale);
-                	project = TransactionUtil.commit(project, new Modification<ProjectVersion, ProjectVersion>() {
-                		
-                		@Override
-                		public ProjectVersion apply(ProjectVersion object) {
-                			
-                			object.getLocales().add(locale);                			
-                			return object;
-                		}
-					});
+                    project.getLocales().add(locale);     
                 		
                 	getWindow().getParent().removeWindow(getWindow());
                     

@@ -16,7 +16,7 @@ public class LocaleUtil {
 	
 	public static Resource getIconForLocale(ProjectLocale locale)
 	{
-		if(locale==null)
+		if(locale==null || locale.cdoInvalid())
 			return null;
 		return getIconForLocale(locale.getLocale());
 	}

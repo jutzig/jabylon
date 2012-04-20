@@ -4,7 +4,9 @@
 package de.jutzig.jabylon.ui.config.internal.project;
 
 import java.util.EnumSet;
+import java.util.Set;
 
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.ui.Button;
@@ -18,6 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
@@ -70,6 +73,8 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 		table = new Table();
 		table.setWidth(300, Table.UNITS_PIXELS);
 		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
+		table.setMultiSelect(true);
+		table.setSelectable(true);
 		layout.addComponent(table,0,0,0,1);
 		
 		Button add = new Button("Add");
@@ -89,6 +94,26 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 			}
 		});
 		layout.addComponent(add);
+		
+		Button remove = new Button("Remove");
+		remove.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				Object value = table.getValue();
+				if (value instanceof Set) {
+					Set selection = (Set)value;
+					version.getLocales().removeAll(selection);
+				}
+				else if (value instanceof ProjectLocale) {
+					ProjectLocale locale = (ProjectLocale) value;
+					version.getLocales().remove(locale);
+					
+				}
+			}
+		});
+		layout.addComponent(remove);
 		return section;
 	}
 
@@ -98,7 +123,6 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	@Override
 	public void commit(Preferences config) {
 		form.commit();
-
 	}
 
 	/* (non-Javadoc)
@@ -106,7 +130,8 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	 */
 	@Override
 	protected void init(Preferences config) {
-		version = getDomainObject().getMaster();
+		Project object = getDomainObject();
+		version = object.getMaster();
 		PreferencesItem item = new PreferencesItem(config);
 		item.addProperty(MASTER_LOCALE, String.class, "");
 		item.addProperty(INCLUDE_FILTER, String.class, "[:\\w/.\\\\&&[^_]]+.properties");

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 
@@ -12,9 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -27,13 +26,13 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
-import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
+import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 
-public class ProjectLocaleDashboard extends CustomComponent implements CrumbTrail, ClickListener {
+public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
 	private Project project;
 	private ProjectLocale locale;
@@ -42,15 +41,6 @@ public class ProjectLocaleDashboard extends CustomComponent implements CrumbTrai
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 		
 		this.locale = locale;
-		
-		setSizeFull();
-		
-		VerticalLayout layout = new VerticalLayout();
-		setCompositionRoot(layout);
-		layout.setMargin(true);
-		layout.setSpacing(true);
-		masterToTransation = associate(locale);
-		createContents(layout);
 
 	}
 
@@ -153,11 +143,6 @@ public class ProjectLocaleDashboard extends CustomComponent implements CrumbTrai
 
 
 	@Override
-	public Component getComponent() {
-		return this;
-	}
-
-	@Override
 	public String getTrailCaption() {
 		return locale.isMaster() ? "Master" : locale.getLocale().getDisplayName();
 	}
@@ -204,8 +189,20 @@ public class ProjectLocaleDashboard extends CustomComponent implements CrumbTrai
 
 
 	@Override
-	public Object getDomainObject() {
+	public CDOObject getDomainObject() {
 		return locale;
+	}
+
+
+	@Override
+	public Component createContents() {
+		VerticalLayout layout = new VerticalLayout();
+		layout.setMargin(true);
+		layout.setSpacing(true);
+		masterToTransation = associate(locale);
+		createContents(layout);
+		return layout;
+		
 	}
 	
 }

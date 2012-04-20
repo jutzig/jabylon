@@ -2,6 +2,7 @@ package de.jutzig.jabylon.ui.components;
 
 import java.io.IOException;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.util.CommitException;
 
 import com.vaadin.data.Item;
@@ -27,7 +28,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
-public class PropertiesEditor extends GridLayout implements CrumbTrail,
+public class PropertiesEditor  implements CrumbTrail,
 		ItemClickListener, TextChangeListener {
 
 	private PropertyFileDescriptor descriptor;
@@ -40,17 +41,19 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 	private Button safeButton;
 	private TextArea orignalComment;
 	private TextArea translatedComment;
+	private GridLayout layout;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
-		setColumns(2);
-		setRows(3);
-		createContents();
-		setSpacing(true);
-		setMargin(true);
+
 	}
 
-	private void createContents() {
+	public Component createContents() {
+		layout = new GridLayout();
+		layout.setColumns(2);
+		layout.setRows(3);
+		layout.setSpacing(true);
+		layout.setMargin(true);
 		Table table = new Table();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
@@ -63,28 +66,29 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		table.setColumnHeaders(new String[] { "Original", "Translation" });
 		table.setEditable(false);
 		table.setWriteThrough(false);
-		table.setWidth(100, UNITS_PERCENTAGE);
+		table.setWidth(100, Component.UNITS_PERCENTAGE);
 
 		table.setSelectable(true);
 		table.setMultiSelect(false);
 		table.setImmediate(true); // react at once when something is selected
 		table.addListener(this);
-		addComponent(table, 0, 0, 1, 1);
+		layout.addComponent(table, 0, 0, 1, 1);
 
 		createEditorArea();
+		return layout;
 	}
 
 	private void createEditorArea() {
 		keyLabel = new Label();
 		keyLabel.setValue("No Selection");
-		addComponent(keyLabel, 0, 2, 1, 2);
+		layout.addComponent(keyLabel, 0, 2, 1, 2);
 
 		orignal = new TextArea();
 //		orignal.setWidth(400, UNITS_PIXELS);
 		orignal.setColumns(40);
 		orignal.setRows(5);
 		orignal.setReadOnly(true);
-		addComponent(orignal);
+		layout.addComponent(orignal);
 		
 		translated = new TextArea();
 		translated.setColumns(40);
@@ -94,7 +98,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		translated.setNullRepresentation("");
 		translated.addListener(this);
 		translated.setWriteThrough(true);
-		addComponent(translated);
+		layout.addComponent(translated);
 		
 		orignalComment = new TextArea();
 //		orignalComment.setWidth(400, UNITS_PIXELS);
@@ -103,7 +107,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
 //		orignalComment.setHeight(30, UNITS_PIXELS);
-		addComponent(orignalComment);
+		layout.addComponent(orignalComment);
 		
 		translatedComment = new TextArea();
 		translatedComment.setImmediate(true);
@@ -114,7 +118,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 		translatedComment.addListener(this);
 		translatedComment.setInputPrompt("Comment");
 		translatedComment.setWriteThrough(true);
-		addComponent(translatedComment);
+		layout.addComponent(translatedComment);
 		
 		
 		safeButton = new Button();
@@ -143,7 +147,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 										}
 									});
 					setDirty(false);
-					getWindow().showNotification("File safed",descriptor.getLocation().lastSegment());
+					layout.getWindow().showNotification("File safed",descriptor.getLocation().lastSegment());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -154,7 +158,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 
 			}
 		});
-		addComponent(safeButton);
+		layout.addComponent(safeButton);
 
 	}
 
@@ -162,11 +166,6 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 	public CrumbTrail walkTo(String path) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public Component getComponent() {
-		return this;
 	}
 
 	@Override
@@ -207,7 +206,7 @@ public class PropertiesEditor extends GridLayout implements CrumbTrail,
 	}
 
 	@Override
-	public Object getDomainObject() {
+	public CDOObject getDomainObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}

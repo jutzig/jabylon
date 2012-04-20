@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
@@ -46,6 +47,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	public MainDashboard() {
 		teamProvider = new HashMap<String, TeamProvider>();
+		
 	}
 
 	@Override
@@ -56,6 +58,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		getContext().addTransactionListener(this);
 		application.set(this);
 		buildMainLayout();
+		
 	}
 
 	private void buildMainLayout() {
@@ -208,12 +211,12 @@ public class MainDashboard extends Application implements TransactionListener, C
 	@Override
 	public CrumbTrail walkTo(String path) {
 		ProjectDashboard dashboard = new ProjectDashboard(path);
-		setMainComponent(dashboard);
+//		setMainComponent(dashboard);
 		return dashboard;
 	}
 
 	@Override
-	public Component getComponent() {
+	public Component createContents() {
 		return new ProjectListPanel();
 	}
 
@@ -263,7 +266,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	}
 
 	@Override
-	public Object getDomainObject() {
+	public CDOObject getDomainObject() {
 		return workspace;
 	}
 
