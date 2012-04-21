@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  org.eclipse.equinox.preferences;bundle-version="3.4.2",
  org.eclipse.core.runtime;bundle-version="3.7.0",
  de.jutzig.jabylon.security;bundle-version="1.0.0",
- de.jutzig.jabylon.users;bundle-version="1.0.0"
+ de.jutzig.jabylon.users;bundle-version="1.0.0",
+ de.jutzig.jabylon.resources;bundle-version="1.0.0"
 Bundle-ClassPath: .
 Service-Component: OSGI-INF/main.xml
 Export-Package: de.jutzig.jabylon.ui.team

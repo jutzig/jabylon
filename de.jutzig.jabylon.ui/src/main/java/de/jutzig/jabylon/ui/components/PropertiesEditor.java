@@ -21,15 +21,17 @@ import com.vaadin.ui.TextArea;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
+import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
+import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
+import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
-public class PropertiesEditor  implements CrumbTrail,
-		ItemClickListener, TextChangeListener {
+public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChangeListener {
 
 	private PropertyFileDescriptor descriptor;
 	private TextArea orignal;
@@ -58,8 +60,7 @@ public class PropertiesEditor  implements CrumbTrail,
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
 
-		PropertyPairContainer propertyPairContainer = new PropertyPairContainer(
-				source, target);
+		PropertyPairContainer propertyPairContainer = new PropertyPairContainer(source, target);
 		table.setContainerDataSource(propertyPairContainer);
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
@@ -84,34 +85,34 @@ public class PropertiesEditor  implements CrumbTrail,
 		layout.addComponent(keyLabel, 0, 2, 1, 2);
 
 		orignal = new TextArea();
-//		orignal.setWidth(400, UNITS_PIXELS);
+		// orignal.setWidth(400, UNITS_PIXELS);
 		orignal.setColumns(40);
 		orignal.setRows(5);
 		orignal.setReadOnly(true);
 		layout.addComponent(orignal);
-		
+
 		translated = new TextArea();
 		translated.setColumns(40);
 		translated.setRows(5);
-//		translated.setWidth(400, UNITS_PIXELS);
-		
+		// translated.setWidth(400, UNITS_PIXELS);
+
 		translated.setNullRepresentation("");
 		translated.addListener(this);
 		translated.setWriteThrough(true);
 		layout.addComponent(translated);
-		
+
 		orignalComment = new TextArea();
-//		orignalComment.setWidth(400, UNITS_PIXELS);
+		// orignalComment.setWidth(400, UNITS_PIXELS);
 		orignalComment.setReadOnly(true);
 		orignalComment.setColumns(40);
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
-//		orignalComment.setHeight(30, UNITS_PIXELS);
+		// orignalComment.setHeight(30, UNITS_PIXELS);
 		layout.addComponent(orignalComment);
-		
+
 		translatedComment = new TextArea();
 		translatedComment.setImmediate(true);
-//		translatedComment.setWidth(400, UNITS_PIXELS);
+		// translatedComment.setWidth(400, UNITS_PIXELS);
 		translatedComment.setRows(3);
 		translatedComment.setColumns(40);
 		translatedComment.setNullRepresentation("");
@@ -119,8 +120,7 @@ public class PropertiesEditor  implements CrumbTrail,
 		translatedComment.setInputPrompt("Comment");
 		translatedComment.setWriteThrough(true);
 		layout.addComponent(translatedComment);
-		
-		
+
 		safeButton = new Button();
 		safeButton.setEnabled(false);
 		safeButton.setCaption("Save");
@@ -128,29 +128,22 @@ public class PropertiesEditor  implements CrumbTrail,
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				final PropertiesResourceImpl resource = new PropertiesResourceImpl(
-						descriptor.absolutPath());
-				resource.getContents().add(target);
+				PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
+				propertyPersistence.saveProperties(descriptor, target);
+				final int filledKeys = getFilledKeys(target);
 				try {
-					resource.save(null);
+
 					// do it after save, because safe eliminated all empty ones
-					TransactionUtil
-							.commit(descriptor,
-									new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
-										@Override
-										public PropertyFileDescriptor apply(
-												PropertyFileDescriptor object) {
-											object.setKeys(resource
-													.getSavedProperties());
-											object.updatePercentComplete();
-											return object;
-										}
-									});
+					descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
+						@Override
+						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
+							object.setKeys(filledKeys);
+							object.updatePercentComplete();
+							return object;
+						}
+					});
 					setDirty(false);
-					layout.getWindow().showNotification("File safed",descriptor.getLocation().lastSegment());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					layout.getWindow().showNotification("File safed", descriptor.getLocation().lastSegment());
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -160,6 +153,15 @@ public class PropertiesEditor  implements CrumbTrail,
 		});
 		layout.addComponent(safeButton);
 
+	}
+
+	protected int getFilledKeys(PropertyFile target2) {
+		int counter = 0;
+		for (Property prop : target2.getProperties()) {
+			if(prop.getValue()!=null && prop.getValue().length()>0)
+				counter++;
+		}
+		return counter;
 	}
 
 	@Override
@@ -182,7 +184,7 @@ public class PropertiesEditor  implements CrumbTrail,
 		keyLabel.setValue(item.getSourceProperty().getKey());
 		translated.setPropertyDataSource(item.getTarget());
 		orignal.setPropertyDataSource(item.getSource());
-		
+
 		translatedComment.setPropertyDataSource(item.getTargetComment());
 		orignalComment.setPropertyDataSource(item.getSourceComment());
 

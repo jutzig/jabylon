@@ -24,6 +24,7 @@ import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbImpl;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
@@ -44,6 +45,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private VerticalLayout mainLayout;
 	private LabeledContainer contentArea;
 	private Map<String, TeamProvider> teamProvider;
+	private PropertyPersistenceService propertyPersistence;
 
 	public MainDashboard() {
 		teamProvider = new HashMap<String, TeamProvider>();
@@ -135,6 +137,19 @@ public class MainDashboard extends Application implements TransactionListener, C
 		contentArea.setBody(c);
 	}
 
+	public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
+		this.propertyPersistence = propertyPersistence;
+	}
+	
+	
+	public PropertyPersistenceService getPropertyPersistence() {
+		return propertyPersistence;
+	}
+	
+	public void unsetPropertyPersistence(PropertyPersistenceService propertyPersistence) {
+		this.propertyPersistence = null;
+	}
+	
 	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
 		this.repositoryConnector = repositoryConnector;
 	}
