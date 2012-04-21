@@ -159,7 +159,7 @@ public class PropertiesHelperTest {
 
 	private BufferedReader loadFile(String name) throws FileNotFoundException {
 		File file = new File(
-				"src/test/resources/master/de/jutzig/jabylon/properties/util/"
+				"src/test/resources/project/master/de/jutzig/jabylon/properties/util/"
 						+ name);
 		return new BufferedReader(new FileReader(file));
 	}

@@ -19,7 +19,7 @@ public class WorkspaceScannerTest {
 		workspace.setRoot(URI.createFileURI("src/test/resources"));
 		
 		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.setName("de");
+		project.setName("project");
 		ProjectVersion masterVersion = PropertiesFactory.eINSTANCE.createProjectVersion();
 		project.setMaster(masterVersion);
 		
