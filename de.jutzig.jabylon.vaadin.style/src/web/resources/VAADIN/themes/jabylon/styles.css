@@ -37,8 +37,6 @@
 	border: medium;
 	border-color: silver;
 	border-bottom-style: solid;
-	
-	 
 	background-image: linear-gradient(top, #FFFFFF 41%, #A1B4FF 100%);
 	background-image: -o-linear-gradient(top, #FFFFFF 41%, #A1B4FF 100%);
 	background-image: -moz-linear-gradient(top, #FFFFFF 41%, #A1B4FF 100%);
@@ -46,20 +44,18 @@
 	background-image: -ms-linear-gradient(top, #FFFFFF 41%, #A1B4FF 100%);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.41, #FFFFFF
 		), color-stop(1, #A1B4FF) );
-	
 }
 
 .jabylon-container {
 	border: thin;
 	border-color: silver;
 	border-style: solid;
-	border-radius:10px;
-/* 	padding-left: 10px;
+	border-radius: 10px;
+	/* 	padding-left: 10px;
 	padding-right: 10px; */
 }
 
 .jabylon-container-content {
-
 	
 }
 
@@ -75,4 +71,34 @@
 	font-weight: bold;
 	font-style: italic;
 	color: gray;
+}
+
+div.breadcrumbs .v-button {
+	/* moz-border-radius: 5px;
+	webkit-border-radius: 5px;
+	khtml-border-radius: 5px;
+	border-radius: 5px;
+	background: blue; */
+	padding: 5px;
+}
+
+div.breadcrumbs .v-button.v-disabled {
+	background: #A1B4FF;
+	moz-border-radius: 5px;
+	webkit-border-radius: 5px;
+	khtml-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+div.breadcrumbs span.v-button-caption {
+	font-weight: bold;
+	font-size: 12px;
+	color: black;
+}
+
+div.breadcrumbs .v-button.v-disabled span.v-button-caption {
+	font-weight: bold;
+	font-size: 12px;
+	color: black;
 }

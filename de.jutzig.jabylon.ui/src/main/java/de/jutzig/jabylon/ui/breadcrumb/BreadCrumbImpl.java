@@ -46,11 +46,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
     public void setPath(String... segments) {
         // could be optimized: always builds path from scratch
         layout.removeAllComponents();
-        CrumbTrail currentTrail = MainDashboard.getCurrent();
-        // home
-        Button link = addEntry(currentTrail);
         parts.clear();
-        parts.add(link);
         walkTo(segments);
 
     }
