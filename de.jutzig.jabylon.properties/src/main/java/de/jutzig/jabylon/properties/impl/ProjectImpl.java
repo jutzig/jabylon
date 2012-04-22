@@ -389,7 +389,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 
 	@Override
 	public URI relativePath() {
-		return URI.createHierarchicalURI(new String[] {getName()}, null, null);
+		
+		return URI.createURI(getName(),false);
 	}
 	
 	/**
