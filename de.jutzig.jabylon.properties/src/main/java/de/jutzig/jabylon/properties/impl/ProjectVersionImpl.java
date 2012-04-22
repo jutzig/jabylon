@@ -57,6 +57,9 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	 */
 	protected static final String BRANCH_EDEFAULT = "master";
 
+	
+	private static final Pattern LOCALE_PATTERN = Pattern.compile(".+?((_\\w\\w){1,3})\\..+");
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -283,6 +286,8 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	class FileAcceptor implements PropertyFileAcceptor
 	{
 
+		
+		
 		@Override
 		public void newMatch(File file) {
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
@@ -291,16 +296,26 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			location = URI.createHierarchicalURI(location.scheme(),location.authority(),location.device(),location.segmentsList().subList(1, location.segmentCount()).toArray(new String[location.segmentCount()-1]),location.query(),location.fragment());
 			descriptor.setLocation(location);
 			if(getMaster()==null)
+			{
+				
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
+			}
 			getMaster().getDescriptors().add(descriptor);
-			String absolutePath = file.getParentFile().getAbsolutePath();
 			
 			//load file to initialize statistics;
 			PropertyFile propertyFile = descriptor.loadProperties();
 			descriptor.setKeys(propertyFile.getProperties().size());
 			descriptor.updatePercentComplete();
 			
-			Pattern pattern = buildPatternFrom(file);
+			String localeString = getLocaleString(file);
+			if(!localeString.isEmpty())
+			{
+				Locale locale = createVariant(localeString.substring(1));
+				descriptor.setVariant(locale);				
+			}
+			
+			
+			Pattern pattern = buildPatternFrom(file.getName().replace(localeString, ""));
 			File folder = file.getParentFile();
 			String[] childNames = folder.list();
 			for (String child : childNames) {
@@ -326,14 +341,21 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			}	
 		}
 
+		private String getLocaleString(File file) {
+			Matcher matcher = LOCALE_PATTERN.matcher(file.getName());
+			if(matcher.matches())
+				return matcher.group(1);
+			return "";
+		}
+
 		private Locale createVariant(String localeString) {
 			return (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeString);
 		}
 
-		private Pattern buildPatternFrom(File file) {
-			int separator = file.getName().lastIndexOf(".");
-			String prefix = file.getName().substring(0,separator);
-			String suffix = file.getName().substring(separator);
+		private Pattern buildPatternFrom(String fileName) {
+			int separator = fileName.lastIndexOf(".");
+			String prefix = fileName.substring(0,separator);
+			String suffix = fileName.substring(separator);
 			return Pattern.compile(Pattern.quote(prefix) + "((_\\w\\w){1,3})"+Pattern.quote(suffix)); //messages.properties => messages_de_DE.properties
 		}
 		

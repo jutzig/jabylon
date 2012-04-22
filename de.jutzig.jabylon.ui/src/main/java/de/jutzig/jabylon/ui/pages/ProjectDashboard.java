@@ -113,7 +113,7 @@ public class ProjectDashboard implements CrumbTrail,
 								@Override
 								public ProjectVersion apply(
 										ProjectVersion object) {
-									object.fullScan();
+									object.fullScan(PropertiesFactory.eINSTANCE.createScanConfiguration()); //TODO: initialize scan config properly
 									return object;
 								}
 							});
