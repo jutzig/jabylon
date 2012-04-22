@@ -16,6 +16,10 @@
 	top: -18px;
 }
 
+.v-progressindicator-indicator {
+	background: navy; none;
+}
+
 .jayblon-breadcrumb-panel {
 	font-size: 24px;
 	font-style: italic;
@@ -73,8 +77,7 @@
 	color: gray;
 }
 
-div.breadcrumbs .v-button {
-	/* moz-border-radius: 5px;
+div.breadcrumbs .v-button { /* moz-border-radius: 5px;
 	webkit-border-radius: 5px;
 	khtml-border-radius: 5px;
 	border-radius: 5px;
