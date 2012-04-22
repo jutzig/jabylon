@@ -89,5 +89,12 @@ public class WorkspaceTest extends TestCase {
 	protected void tearDown() throws Exception {
 		setFixture(null);
 	}
+	
+
+	public void testDummy()
+	{
+		//prevent warning for missing tests
+	}
+	
 
 } //WorkspaceTest

@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -153,5 +154,34 @@ public interface Project extends Resolvable {
 	 * @generated
 	 */
 	void setRepositoryURI(URI value);
+
+	/**
+	 * Returns the value of the '<em><b>Property Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link de.jutzig.jabylon.properties.PropertyType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Property Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Property Type</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @see #setPropertyType(PropertyType)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_PropertyType()
+	 * @model
+	 * @generated
+	 */
+	PropertyType getPropertyType();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Property Type</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @see #getPropertyType()
+	 * @generated
+	 */
+	void setPropertyType(PropertyType value);
 
 } // Project

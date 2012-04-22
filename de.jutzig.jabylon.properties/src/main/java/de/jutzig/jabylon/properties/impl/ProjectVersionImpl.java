@@ -24,6 +24,7 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
@@ -145,14 +146,14 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void fullScan() {
+	public void fullScan(ScanConfiguration configuration) {
 		EList<ProjectLocale> locales = getLocales();
 		for (ProjectLocale projectLocale : locales) {
 			projectLocale.getDescriptors().clear();
 		}
 		getMaster().getDescriptors().clear();
 		WorkspaceScanner scanner = new WorkspaceScanner();
-		scanner.fullScan(new FileAcceptor(), this);
+		scanner.fullScan(new FileAcceptor(), this, configuration);
 //		getMaster().setProjectVersion(this);
 		getMaster().updatePercentComplete();
 		for (ProjectLocale projectLocale : getLocales()) {

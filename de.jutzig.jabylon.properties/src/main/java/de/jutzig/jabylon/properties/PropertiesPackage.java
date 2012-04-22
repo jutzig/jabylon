@@ -9,6 +9,7 @@ package de.jutzig.jabylon.properties;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -291,13 +292,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__REPOSITORY_URI = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Property Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__PROPERTY_TYPE = RESOLVABLE_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -474,6 +484,80 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ScanConfigurationImpl <em>Scan Configuration</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ScanConfigurationImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getScanConfiguration()
+	 * @generated
+	 */
+	int SCAN_CONFIGURATION = 8;
+
+	/**
+	 * The feature id for the '<em><b>Excludes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION__EXCLUDES = 0;
+
+	/**
+	 * The feature id for the '<em><b>Includes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION__INCLUDES = 1;
+
+	/**
+	 * The feature id for the '<em><b>Master Locale</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION__MASTER_LOCALE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Include</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION__INCLUDE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Exclude</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION__EXCLUDE = 4;
+
+	/**
+	 * The number of structural features of the '<em>Scan Configuration</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCAN_CONFIGURATION_FEATURE_COUNT = 5;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
+	 * @generated
+	 */
+	int PROPERTY_TYPE = 9;
+
+	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -481,7 +565,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 8;
+	int LOCALE = 10;
 
 
 	/**
@@ -492,7 +576,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 9;
+	int URI = 11;
 
 
 	/**
@@ -679,6 +763,17 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProject_RepositoryURI();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Property Type</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getPropertyType()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EAttribute getProject_PropertyType();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -838,6 +933,81 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getResolvable_PercentComplete();
+
+	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ScanConfiguration <em>Scan Configuration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Scan Configuration</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration
+	 * @generated
+	 */
+	EClass getScanConfiguration();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link de.jutzig.jabylon.properties.ScanConfiguration#getExcludes <em>Excludes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Excludes</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getExcludes()
+	 * @see #getScanConfiguration()
+	 * @generated
+	 */
+	EAttribute getScanConfiguration_Excludes();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link de.jutzig.jabylon.properties.ScanConfiguration#getIncludes <em>Includes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Includes</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getIncludes()
+	 * @see #getScanConfiguration()
+	 * @generated
+	 */
+	EAttribute getScanConfiguration_Includes();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ScanConfiguration#getMasterLocale <em>Master Locale</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Master Locale</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getMasterLocale()
+	 * @see #getScanConfiguration()
+	 * @generated
+	 */
+	EAttribute getScanConfiguration_MasterLocale();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ScanConfiguration#getInclude <em>Include</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Include</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getInclude()
+	 * @see #getScanConfiguration()
+	 * @generated
+	 */
+	EAttribute getScanConfiguration_Include();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ScanConfiguration#getExclude <em>Exclude</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Exclude</em>'.
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getExclude()
+	 * @see #getScanConfiguration()
+	 * @generated
+	 */
+	EAttribute getScanConfiguration_Exclude();
+
+	/**
+	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Property Type</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @generated
+	 */
+	EEnum getPropertyType();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -1028,6 +1198,14 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROJECT__REPOSITORY_URI = eINSTANCE.getProject_RepositoryURI();
 
 		/**
+		 * The meta object literal for the '<em><b>Property Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT__PROPERTY_TYPE = eINSTANCE.getProject_PropertyType();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1154,6 +1332,66 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute RESOLVABLE__PERCENT_COMPLETE = eINSTANCE.getResolvable_PercentComplete();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ScanConfigurationImpl <em>Scan Configuration</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ScanConfigurationImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getScanConfiguration()
+		 * @generated
+		 */
+		EClass SCAN_CONFIGURATION = eINSTANCE.getScanConfiguration();
+
+		/**
+		 * The meta object literal for the '<em><b>Excludes</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCAN_CONFIGURATION__EXCLUDES = eINSTANCE.getScanConfiguration_Excludes();
+
+		/**
+		 * The meta object literal for the '<em><b>Includes</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCAN_CONFIGURATION__INCLUDES = eINSTANCE.getScanConfiguration_Includes();
+
+		/**
+		 * The meta object literal for the '<em><b>Master Locale</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCAN_CONFIGURATION__MASTER_LOCALE = eINSTANCE.getScanConfiguration_MasterLocale();
+
+		/**
+		 * The meta object literal for the '<em><b>Include</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCAN_CONFIGURATION__INCLUDE = eINSTANCE.getScanConfiguration_Include();
+
+		/**
+		 * The meta object literal for the '<em><b>Exclude</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCAN_CONFIGURATION__EXCLUDE = eINSTANCE.getScanConfiguration_Exclude();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.PropertyType
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
+		 * @generated
+		 */
+		EEnum PROPERTY_TYPE = eINSTANCE.getPropertyType();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

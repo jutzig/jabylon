@@ -36,9 +36,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="#//PropertyType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable">
-    <eOperations name="fullScan"/>
+    <eOperations name="fullScan">
+      <eParameters name="configuration" eType="#//ScanConfiguration"/>
+    </eOperations>
     <eOperations name="getProjectLocale" eType="#//ProjectLocale">
       <eParameters name="locale" eType="#//Locale"/>
     </eOperations>
@@ -71,5 +74,23 @@
     <eOperations name="absolutPath" eType="#//URI"/>
     <eOperations name="updatePercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PropertyType">
+    <eLiterals name="ENCODED_ISO"/>
+    <eLiterals name="UNICODE" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScanConfiguration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludes" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" defaultValueLiteral="** /.git\n** /build.properties"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="includes" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="masterLocale" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="include" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="** / *.properties"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exclude" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
 </ecore:EPackage>

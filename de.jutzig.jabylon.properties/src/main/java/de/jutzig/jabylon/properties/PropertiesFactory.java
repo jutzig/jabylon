@@ -89,6 +89,15 @@ public interface PropertiesFactory extends EFactory {
 	Workspace createWorkspace();
 
 	/**
+	 * Returns a new object of class '<em>Scan Configuration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Scan Configuration</em>'.
+	 * @generated
+	 */
+	ScanConfiguration createScanConfiguration();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

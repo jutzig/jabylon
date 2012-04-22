@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -32,6 +33,7 @@ import de.jutzig.jabylon.properties.Workspace;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getVersions <em>Versions</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getRepositoryURI <em>Repository URI</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getPropertyType <em>Property Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,6 +60,17 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	 * @ordered
 	 */
 	protected static final URI REPOSITORY_URI_EDEFAULT = null;
+
+
+	/**
+	 * The default value of the '{@link #getPropertyType() <em>Property Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPropertyType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final PropertyType PROPERTY_TYPE_EDEFAULT = PropertyType.ENCODED_ISO;
 
 
 	/**
@@ -184,6 +197,24 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PropertyType getPropertyType() {
+		return (PropertyType)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPropertyType(PropertyType newPropertyType) {
+		eDynamicSet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, newPropertyType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public URI getBase() {
@@ -264,6 +295,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getMaster();
 			case PropertiesPackage.PROJECT__REPOSITORY_URI:
 				return getRepositoryURI();
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				return getPropertyType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -293,6 +326,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__REPOSITORY_URI:
 				setRepositoryURI((URI)newValue);
 				return;
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				setPropertyType((PropertyType)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -320,6 +356,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__REPOSITORY_URI:
 				setRepositoryURI(REPOSITORY_URI_EDEFAULT);
 				return;
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				setPropertyType(PROPERTY_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -342,6 +381,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getMaster() != null;
 			case PropertiesPackage.PROJECT__REPOSITORY_URI:
 				return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

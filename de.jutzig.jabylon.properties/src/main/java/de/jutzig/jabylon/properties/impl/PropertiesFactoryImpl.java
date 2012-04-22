@@ -78,6 +78,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.PROJECT_VERSION: return (EObject)createProjectVersion();
 			case PropertiesPackage.PROJECT_LOCALE: return (EObject)createProjectLocale();
 			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
+			case PropertiesPackage.SCAN_CONFIGURATION: return (EObject)createScanConfiguration();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -91,6 +92,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
+			case PropertiesPackage.PROPERTY_TYPE:
+				return createPropertyTypeFromString(eDataType, initialValue);
 			case PropertiesPackage.LOCALE:
 				return createLocaleFromString(eDataType, initialValue);
 			case PropertiesPackage.URI:
@@ -108,6 +111,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
+			case PropertiesPackage.PROPERTY_TYPE:
+				return convertPropertyTypeToString(eDataType, instanceValue);
 			case PropertiesPackage.LOCALE:
 				return convertLocaleToString(eDataType, instanceValue);
 			case PropertiesPackage.URI:
@@ -185,6 +190,36 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	public Workspace createWorkspace() {
 		WorkspaceImpl workspace = new WorkspaceImpl();
 		return workspace;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScanConfiguration createScanConfiguration() {
+		ScanConfigurationImpl scanConfiguration = new ScanConfigurationImpl();
+		return scanConfiguration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PropertyType createPropertyTypeFromString(EDataType eDataType, String initialValue) {
+		PropertyType result = PropertyType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertPropertyTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

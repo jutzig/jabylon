@@ -11,9 +11,11 @@ import java.util.Locale;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.jutzig.jabylon.properties.Project;
@@ -24,7 +26,9 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -95,6 +99,20 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass scanConfigurationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum propertyTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType localeEDataType = null;
 
 	/**
@@ -140,7 +158,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @generated NOT
 	 */
 	public static PropertiesPackage init() {
 		if (isInited) return (PropertiesPackage)EPackage.Registry.INSTANCE.getEPackage(PropertiesPackage.eNS_URI);
@@ -155,6 +173,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		// Initialize created meta-data
 		thePropertiesPackage.initializePackageContents();
+		
+		fixedDefaultValues(thePropertiesPackage);
 
 		// Mark meta-data to indicate it can't be changed
 		thePropertiesPackage.freeze();
@@ -163,6 +183,26 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(PropertiesPackage.eNS_URI, thePropertiesPackage);
 		return thePropertiesPackage;
+	}
+
+	private static void fixedDefaultValues(PropertiesPackageImpl thePropertiesPackage) {
+		//fix the workaround spaces in the defaults
+		EStructuralFeature excludes = thePropertiesPackage.scanConfigurationEClass.getEStructuralFeature(SCAN_CONFIGURATION__EXCLUDE);
+		if(excludes.getDefaultValueLiteral()!=null)
+		{
+			String exclude = excludes.getDefaultValueLiteral().replace(" ", "");
+			exclude = exclude.replace("\\\\", "\\");
+			excludes.setDefaultValueLiteral(exclude);
+			
+		}
+		EStructuralFeature includes = thePropertiesPackage.scanConfigurationEClass.getEStructuralFeature(SCAN_CONFIGURATION__INCLUDE);
+		if(includes.getDefaultValueLiteral()!=null)
+		{
+			String include = includes.getDefaultValueLiteral().replace(" ", "");
+			include = include.replace("\\\\", "\\");
+			includes.setDefaultValueLiteral(include);
+			
+		}
 	}
 
 	/**
@@ -323,6 +363,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getProject_PropertyType() {
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProjectVersion() {
 		return projectVersionEClass;
 	}
@@ -458,6 +507,69 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getScanConfiguration() {
+		return scanConfigurationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScanConfiguration_Excludes() {
+		return (EAttribute)scanConfigurationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScanConfiguration_Includes() {
+		return (EAttribute)scanConfigurationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScanConfiguration_MasterLocale() {
+		return (EAttribute)scanConfigurationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScanConfiguration_Include() {
+		return (EAttribute)scanConfigurationEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScanConfiguration_Exclude() {
+		return (EAttribute)scanConfigurationEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getPropertyType() {
+		return propertyTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getLocale() {
 		return localeEDataType;
 	}
@@ -519,6 +631,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEReference(projectEClass, PROJECT__VERSIONS);
 		createEReference(projectEClass, PROJECT__MASTER);
 		createEAttribute(projectEClass, PROJECT__REPOSITORY_URI);
+		createEAttribute(projectEClass, PROJECT__PROPERTY_TYPE);
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
 		createEReference(projectVersionEClass, PROJECT_VERSION__PROJECT);
@@ -538,6 +651,16 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		resolvableEClass = createEClass(RESOLVABLE);
 		createEAttribute(resolvableEClass, RESOLVABLE__PERCENT_COMPLETE);
+
+		scanConfigurationEClass = createEClass(SCAN_CONFIGURATION);
+		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__EXCLUDES);
+		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__INCLUDES);
+		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__MASTER_LOCALE);
+		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__INCLUDE);
+		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__EXCLUDE);
+
+		// Create enums
+		propertyTypeEEnum = createEEnum(PROPERTY_TYPE);
 
 		// Create data types
 		localeEDataType = createEDataType(LOCALE);
@@ -608,6 +731,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEReference(getProject_Versions(), this.getProjectVersion(), null, "versions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProject_Master(), this.getProjectVersion(), null, "master", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_RepositoryURI(), this.getURI(), "repositoryURI", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProject_PropertyType(), this.getPropertyType(), "propertyType", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectVersion_Project(), this.getProject(), null, "project", null, 0, 1, ProjectVersion.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -615,7 +739,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEReference(getProjectVersion_Locales(), this.getProjectLocale(), null, "locales", null, 0, -1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProjectVersion_Master(), this.getProjectLocale(), null, "master", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(projectVersionEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getLocale(), "locale", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -642,6 +767,18 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEOperation(resolvableEClass, this.getURI(), "absolutPath", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(resolvableEClass, ecorePackage.getEInt(), "updatePercentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(scanConfigurationEClass, ScanConfiguration.class, "ScanConfiguration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getScanConfiguration_Excludes(), ecorePackage.getEString(), "excludes", "** /.git\\n** /build.properties", 0, -1, ScanConfiguration.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScanConfiguration_Includes(), ecorePackage.getEString(), "includes", null, 0, -1, ScanConfiguration.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScanConfiguration_MasterLocale(), ecorePackage.getEString(), "masterLocale", null, 0, 1, ScanConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScanConfiguration_Include(), ecorePackage.getEString(), "include", "** / *.properties", 0, 1, ScanConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScanConfiguration_Exclude(), ecorePackage.getEString(), "exclude", "", 0, 1, ScanConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(propertyTypeEEnum, PropertyType.class, "PropertyType");
+		addEEnumLiteral(propertyTypeEEnum, PropertyType.ENCODED_ISO);
+		addEEnumLiteral(propertyTypeEEnum, PropertyType.UNICODE);
 
 		// Initialize data types
 		initEDataType(localeEDataType, Locale.class, "Locale", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

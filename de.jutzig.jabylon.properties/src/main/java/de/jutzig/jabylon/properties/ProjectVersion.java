@@ -122,7 +122,7 @@ public interface ProjectVersion extends Resolvable {
 	 * @model
 	 * @generated
 	 */
-	void fullScan();
+	void fullScan(ScanConfiguration configuration);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -90,4 +90,11 @@ public class PropertyFileTest extends TestCase {
 		setFixture(null);
 	}
 
+
+	public void testDummy()
+	{
+		//prevent warning for missing tests
+	}
+	
+	
 } //PropertyFileTest
