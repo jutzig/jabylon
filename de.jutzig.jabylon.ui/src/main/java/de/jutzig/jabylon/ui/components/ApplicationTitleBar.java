@@ -9,6 +9,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.Reindeer;
@@ -56,10 +57,11 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 		// top-level component properties
 
         // Upper left logo
-		Label title = new Label();
-		title.setIcon(ImageConstants.IMAGE_LOGO);
+		Embedded title = new Embedded(null, ImageConstants.IMAGE_LOGO);
+		
+		title.setHeight(44,Embedded.UNITS_PIXELS);
 //		title.setCaption("Jabylon");
-		title.setWidth(150, Label.UNITS_PIXELS);
+		title.setWidth(124, Label.UNITS_PIXELS);
 //		title.setStyleName(Reindeer.LABEL_H1);
 		title.setStyleName(JabylonStyle.APPLICATION_TITLE.getCSSName());
 		mainLayout.addComponent(title);
