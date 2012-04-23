@@ -8,6 +8,7 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,15 +151,13 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
-		EList<ProjectLocale> locales = getLocales();
-		for (ProjectLocale projectLocale : locales) {
-			projectLocale.getDescriptors().clear();
-		}
-		getMaster().getDescriptors().clear();
+		getLocales().clear();
+		setMaster(null);
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		scanner.fullScan(new FileAcceptor(), this, configuration);
 //		getMaster().setProjectVersion(this);
-		getMaster().updatePercentComplete();
+		if(getMaster()!=null)
+			getMaster().updatePercentComplete();
 		for (ProjectLocale projectLocale : getLocales()) {
 			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
 				descriptor.updatePercentComplete();
