@@ -1,7 +1,7 @@
 package de.jutzig.jabylon.ui.container;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.osgi.service.prefs.Preferences;
@@ -21,7 +21,7 @@ public class PreferencesItem implements Item{
 	public PreferencesItem(Preferences node) {
 		super();
 		this.node = node;
-		properties = new HashMap<String, PreferencesProperty<?>>();
+		properties = new LinkedHashMap<String, PreferencesProperty<?>>();
 	}
 
 	@Override

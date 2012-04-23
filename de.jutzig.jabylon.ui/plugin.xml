@@ -11,6 +11,12 @@
             section="de.jutzig.jabylon.ui.config.internal.project.GeneralProjectConfig"
             tab="general">
       </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.projectScanConfig"
+            objectClass="de.jutzig.jabylon.properties.Project"
+            section="de.jutzig.jabylon.ui.config.internal.project.ScanConfig"
+            tab="scanning">
+      </configSection>
    </extension>
    <extension
          point="de.jutzig.jabylon.ui.config">
@@ -71,6 +77,11 @@
             name="Projects"
             precedence="8"
             tabID="projects">
+      </tab>
+      <tab
+            name="Scanning"
+            precedence="7"
+            tabID="scanning">
       </tab>
    </extension>
 </plugin>
