@@ -7,16 +7,21 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 import de.jutzig.jabylon.resources.changes.PropertiesListener;
 import de.jutzig.jabylon.resources.diff.PropertyDifferentiator;
@@ -102,18 +107,19 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 					PropertyFileDescriptor descriptor = tuple.getDescriptor();
 					PropertyFile file = tuple.getFile();
 					URI path = descriptor.absolutPath();
+					Map<String, Object> options = createOptions(descriptor);
 					if (new File(path.toFileString()).exists()) {
 						PropertyFile original = descriptor.loadProperties();
 						PropertyDifferentiator differentiator = new PropertyDifferentiator(original);
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
-						resource.save(null);
+						resource.save(options);
 						List<Notification> diff = differentiator.diff(file);
 						firePropertiesChanges(descriptor, diff);
 					} else {
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
-						resource.save(null);
+						resource.save(options);
 						firePropertiesAdded(descriptor);
 					}
 				} catch (IOException e) {
@@ -128,6 +134,17 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 			// let thread end...
 		}
 
+	}
+
+	private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
+		Map<String, Object> options = new HashMap<String, Object>();
+		if (descriptor.eContainer() instanceof ProjectVersion) {
+			ProjectVersion version = (ProjectVersion) descriptor.eContainer();
+			Project project = version.getProject();
+			PropertyType propertyType = project.getPropertyType();
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);
+		}
+		return options;
 	}
 
 	private void firePropertiesAdded(PropertyFileDescriptor descriptor) {

@@ -3,19 +3,25 @@
  */
 package de.jutzig.jabylon.ui.config.internal.project;
 
+import java.io.File;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.osgi.service.prefs.Preferences;
 
+import com.vaadin.data.Item;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.DefaultFieldFactory;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -23,9 +29,11 @@ import com.vaadin.ui.Window;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
-import de.jutzig.jabylon.ui.container.PreferencesItem;
+import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
@@ -36,9 +44,6 @@ import de.jutzig.jabylon.ui.forms.NewLocaleForm;
  */
 public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 
-	private static final String EXCLUDE_FILTER = "excludeFilter";
-	private static final String INCLUDE_FILTER = "includeFilter";
-	private static final String MASTER_LOCALE = "masterLocale";
 	private Form form;
 	private ProjectVersion version;
 	private Table table;
@@ -125,7 +130,21 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	 */
 	@Override
 	public void commit(Preferences config) {
+		String name = version.getProject().getName();
 		form.commit();
+		String newName = version.getProject().getName();
+		if(!newName.equals(name))
+		{
+			renameProject(name,newName);
+		}
+	}
+
+	private void renameProject(String oldName, String newName) {
+		URI uri = version.getProject().getWorkspace().absolutPath();
+		File workspaceDir = new File(uri.toFileString());
+		File projectDirectory = new File(workspaceDir,oldName);
+		projectDirectory.renameTo(new File(workspaceDir, newName));
+		
 	}
 
 	/* (non-Javadoc)
@@ -135,38 +154,29 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	protected void init(Preferences config) {
 		Project object = getDomainObject();
 		version = object.getMaster();
-		PreferencesItem item = new PreferencesItem(config);
-		item.addProperty(MASTER_LOCALE, String.class, "");
-		item.addProperty(INCLUDE_FILTER, String.class, "[:\\w/.\\\\&&[^_]]+.properties");
-		item.addProperty(EXCLUDE_FILTER, String.class, ".*build.properties");
+		EObjectItem item = new EObjectItem(object);
 		form.setItemDataSource(item);
 			
-		
-		
-		
-//		form.setFormFieldFactory(new DefaultFieldFactory() {
-//			
-//			@Override
-//			public Field createField(Item item, Object propertyId, Component uiContext) {
-//				if(propertyId.equals(INCLUDE_FILTER))
-//				{
-//					TextArea area = new TextArea();
-//					area.setCaption(createCaptionByPropertyId(propertyId));
-//					area.setRows(1);
-//					area.setRequired(true);
-//					return area;
-//				}
-//				else if(propertyId.equals(EXCLUDE_FILTER))
-//				{
-//					TextArea area = new TextArea();
-//					area.setCaption(createCaptionByPropertyId(propertyId));
-//					area.setRows(1);
-//					return area;
-//				}
-//				return super.createField(item, propertyId, uiContext);
-//			}
-//		});
-		form.setVisibleItemProperties(new Object[]{MASTER_LOCALE,INCLUDE_FILTER,EXCLUDE_FILTER});
+		form.setFormFieldFactory(new DefaultFieldFactory() {
+			
+			@Override
+			public Field createField(Item item, Object propertyId, Component uiContext) {
+				if(propertyId==PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE)
+				{
+					NativeSelect select = new NativeSelect("File Type");
+					select.addItem(PropertyType.ENCODED_ISO);
+					select.addItem(PropertyType.UNICODE);
+					select.setNewItemsAllowed(false);
+					select.setNullSelectionAllowed(false);
+					return select;
+				}
+				Field field = super.createField(item, propertyId, uiContext);
+				EStructuralFeature feature = (EStructuralFeature)propertyId;
+				field.setCaption(createCaptionByPropertyId(feature.getName()));
+				return field;
+			}
+		});
+		form.setVisibleItemProperties(new Object[]{PropertiesPackage.Literals.PROJECT__NAME,PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE});
 		
 		table.setContainerDataSource(new ProjectLocaleTableContainer(version));
 		table.setVisibleColumns(EnumSet.of(LocaleProperty.LOCALE).toArray());

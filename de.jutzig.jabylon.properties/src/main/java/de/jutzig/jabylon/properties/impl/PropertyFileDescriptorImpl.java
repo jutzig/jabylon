@@ -8,11 +8,14 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -139,8 +142,13 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		URI path = absolutPath();
 		
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
+		Map<String, Object> options = new HashMap<String, Object>();
+		if (eContainer() instanceof ProjectVersion) {
+			ProjectVersion version = (ProjectVersion)eContainer();
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, version.getProject().getPropertyType());
+		}
 		try {
-			resource.load(null);
+			resource.load(options);
 		} catch (FileNotFoundException e)
 		{
 			//The file does not exist, create a new one.
