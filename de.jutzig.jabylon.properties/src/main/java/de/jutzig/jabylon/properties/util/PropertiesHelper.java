@@ -17,6 +17,18 @@ import de.jutzig.jabylon.properties.Property;
  */
 public class PropertiesHelper {
 	
+	
+	private boolean unicodeEscaping;
+	
+	public PropertiesHelper() {
+		this(true);
+	}
+	
+	public PropertiesHelper(boolean unicodeEscaping) {
+		this.unicodeEscaping = unicodeEscaping;
+	}
+	
+	
 	public Property readProperty(BufferedReader reader) throws IOException
 	{
 		String line = null;
@@ -103,13 +115,17 @@ public class PropertiesHelper {
 			writeComment(writer,property.getComment());
 		String key = property.getKey();
 		key = key.replaceAll("([ :=\n])", "\\\\$1");
-		writer.write(NativeToAsciiConverter.convertUnicodeToEncoded(key,true));
+		if(unicodeEscaping)
+			writer.write(NativeToAsciiConverter.convertUnicodeToEncoded(key,true));
+		else
+			writer.write(key);
 		writer.write(" = ");
 		String value = property.getValue();
 		if(value!=null)
 		{
 			value = value.replaceAll("(\r?\n)", "\\\\$1");
-			value = NativeToAsciiConverter.convertUnicodeToEncoded(value, true);
+			if(unicodeEscaping)
+				value = NativeToAsciiConverter.convertUnicodeToEncoded(value, true);
 			writer.write(value);
 		}
 		writer.write('\n');

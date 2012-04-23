@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.PropertyType;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,6 +37,8 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	
 	//TODO: this is a dirty hack...
 	private int savedProperties;
+	
+	public static final String OPTION_FILEMODE = "file.mode";
 	
 	/**
 	 * Creates an instance of the resource.
@@ -52,11 +55,23 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
-		PropertiesHelper helper = new PropertiesHelper();
+		PropertiesHelper helper;
+		PropertyType type = getPropertyType(options);;
+		if(type==PropertyType.ENCODED_ISO)
+			helper = new PropertiesHelper(true);
+		else
+			helper = new PropertiesHelper(false);
 		BufferedReader reader = null;
 		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
 		try {
-			reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1")); //TODO: configure charset
+			if(type==PropertyType.ENCODED_ISO)
+			{
+				reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1")); 			
+			}
+			if(type==PropertyType.UNICODE)
+			{
+				reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8")); //TODO: use encoding property				
+			}
 			Property p = null;
 			while((p = helper.readProperty(reader))!=null)
 			{
@@ -69,13 +84,34 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		getContents().add(file);
 	}
 	
+	private PropertyType getPropertyType(Map<?, ?> options) {
+		if(options!=null && options.containsKey(OPTION_FILEMODE))
+		{
+			return (PropertyType) options.get(OPTION_FILEMODE);
+		}
+		return PropertyType.ENCODED_ISO;
+	}
+
+
 	@Override
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 		savedProperties = 0;
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "ISO-8859-1"));
+		PropertyType type = getPropertyType(options);
+		BufferedWriter writer;
+		boolean escapeUnicode;
+		if(type==PropertyType.ENCODED_ISO)
+		{
+			escapeUnicode = true;
+			writer = new BufferedWriter(new OutputStreamWriter(outputStream, "ISO-8859-1"));
+		}
+		else
+		{
+			escapeUnicode = true;
+			writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));			
+		}
 		try {
-			PropertiesHelper helper = new PropertiesHelper();
+			PropertiesHelper helper = new PropertiesHelper(escapeUnicode);
 			PropertyFile file = (PropertyFile) getContents().get(0);
 			Iterator<Property> it = file.getProperties().iterator();
 			while (it.hasNext()) {
