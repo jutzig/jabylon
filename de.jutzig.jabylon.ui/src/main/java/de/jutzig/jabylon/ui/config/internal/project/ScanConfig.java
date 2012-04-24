@@ -67,7 +67,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 				configuration.setInclude((String) form.getField(INCLUDE).getValue());
 				configuration.setExclude((String) form.getField(EXCLUDE).getValue());
 				configuration.setMasterLocale((String) form.getField(MASTER_LOCALE).getValue());
-				version.fullScan(configuration); //TODO: initialize scan config properly
+				getDomainObject().fullScan(configuration);
 				form.getWindow().showNotification("Scan complete");
 			}
 

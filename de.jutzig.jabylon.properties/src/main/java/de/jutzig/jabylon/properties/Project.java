@@ -184,4 +184,12 @@ public interface Project extends Resolvable {
 	 */
 	void setPropertyType(PropertyType value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void fullScan(ScanConfiguration configuration);
+
 } // Project

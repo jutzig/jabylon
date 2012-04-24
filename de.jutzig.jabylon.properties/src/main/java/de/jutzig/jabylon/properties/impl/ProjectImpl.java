@@ -19,6 +19,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyType;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -210,6 +211,20 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	 */
 	public void setPropertyType(PropertyType newPropertyType) {
 		eDynamicSet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, newPropertyType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void fullScan(ScanConfiguration configuration) {
+		ProjectVersion master = getMaster();
+		if(master!=null)
+			master.fullScan(configuration);
+		for (ProjectVersion version : getVersions()) {
+			version.fullScan(configuration);
+		}
 	}
 
 	/**
