@@ -17,6 +17,12 @@
             section="de.jutzig.jabylon.ui.config.internal.project.ScanConfig"
             tab="scanning">
       </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.projectLocaleConfig"
+            objectClass="de.jutzig.jabylon.properties.Project"
+            section="de.jutzig.jabylon.ui.config.internal.project.GeneralLocaleConfig"
+            tab="locales">
+      </configSection>
    </extension>
    <extension
          point="de.jutzig.jabylon.ui.config">
@@ -82,6 +88,11 @@
             name="Scanning"
             precedence="7"
             tabID="scanning">
+      </tab>
+      <tab
+            name="Locales"
+            precedence="8"
+            tabID="locales">
       </tab>
    </extension>
 </plugin>
