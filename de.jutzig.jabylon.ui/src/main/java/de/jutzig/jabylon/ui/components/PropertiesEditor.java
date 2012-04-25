@@ -63,6 +63,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
 		table.setColumnHeaders(new String[] { "Original", "Translation" });
+		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 480);
 		table.setEditable(false);
 		table.setWriteThrough(false);
 		table.setWidth(100, Component.UNITS_PERCENTAGE);
