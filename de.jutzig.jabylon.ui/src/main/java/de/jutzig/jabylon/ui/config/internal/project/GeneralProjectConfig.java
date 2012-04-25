@@ -45,6 +45,7 @@ import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
 import de.jutzig.jabylon.ui.team.TeamProvider;
+import de.jutzig.jabylon.ui.util.PreferencesUtil;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 /**
@@ -193,7 +194,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 					
 					@Override
 					public void buttonClick(ClickEvent event) {
-						version.fullScan(PropertiesFactory.eINSTANCE.createScanConfiguration()); //TODO: get actual scan configuration
+						version.fullScan(PreferencesUtil.getScanConfigForProject(getDomainObject()));
 						table.getWindow().showNotification("Scan complete");
 					}
 				});
@@ -249,7 +250,7 @@ class ProjectVersionContainer extends GenericEObjectContainer<ProjectVersion>
 	}
 	
 	@Override
-	public Collection<?> getItemIds() {
+	protected List<ProjectVersion> getAllItemIds() {
 		List<ProjectVersion> versions = new ArrayList<ProjectVersion>();
 		versions.add(project.getMaster());
 		versions.addAll(project.getVersions());

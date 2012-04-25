@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
@@ -30,7 +29,6 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
-import de.jutzig.jabylon.ui.resources.ApplicationConstants;
 import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class DynamicConfigPage implements CrumbTrail {
@@ -57,7 +55,7 @@ public class DynamicConfigPage implements CrumbTrail {
 	private void initSections(Object domainElement) {
 		for (Entry<String, ConfigSection> entry : sections.entrySet()) {
 			String id = entry.getKey();
-			entry.getValue().init(domainElement, rootNode.node(id));
+			entry.getValue().init(domainElement, rootNode);
 		}
 
 	}
@@ -111,8 +109,7 @@ public class DynamicConfigPage implements CrumbTrail {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				for (Entry<String, ConfigSection> entry : sections.entrySet()) {
-					String id = entry.getKey();
-					entry.getValue().commit(rootNode.node(id));
+					entry.getValue().commit(rootNode);
 				}
 				try {
 					rootNode.flush();

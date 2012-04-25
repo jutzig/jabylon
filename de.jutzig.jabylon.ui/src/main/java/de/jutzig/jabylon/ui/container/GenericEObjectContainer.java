@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.ui.container;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -48,8 +49,9 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 		return clazz.getEAllStructuralFeatures();
 	}
 
+	
 	@Override
-	public Collection<?> getItemIds() {
+	protected List<T> getAllItemIds() {
 		return getContents();
 	}
 
