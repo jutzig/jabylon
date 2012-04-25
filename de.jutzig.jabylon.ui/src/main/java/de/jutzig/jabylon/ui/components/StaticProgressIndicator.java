@@ -2,11 +2,6 @@ package de.jutzig.jabylon.ui.components;
 
 import java.text.MessageFormat;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 
 public class StaticProgressIndicator extends Label {
@@ -14,6 +9,7 @@ public class StaticProgressIndicator extends Label {
 	private static final String PATTERN = "<div class=\"jabylon-progress\">"
 			+ "<div class=\"jabylon-progress-bar\" style=\"width:{0}%; background-color: {1};\">&nbsp;</div>"
 			+ "<div class=\"jabylon-progress-label\">{0}%</div>" + "</div>";
+	private int percentage;
 
 	public StaticProgressIndicator() {
 		setContentMode(CONTENT_XHTML);
@@ -21,6 +17,7 @@ public class StaticProgressIndicator extends Label {
 
 	public void setPercentage(int percentage) {
 		int rgb = calculateBackgroundColor(percentage);
+		this.percentage = percentage;
 		String color = Integer.toHexString(rgb);
 		if (color.length() == 4) // pure green, no red left
 			color = "00" + color;
@@ -52,4 +49,16 @@ public class StaticProgressIndicator extends Label {
 
 	}
 
+	public int getPercentage() {
+		return percentage;
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof StaticProgressIndicator) {
+			StaticProgressIndicator indicator = (StaticProgressIndicator) o;
+			return getPercentage() - indicator.getPercentage();
+		}
+		return -1;
+	}
 }
