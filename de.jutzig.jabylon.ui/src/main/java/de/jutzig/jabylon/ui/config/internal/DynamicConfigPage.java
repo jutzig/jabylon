@@ -31,6 +31,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.resources.ApplicationConstants;
+import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class DynamicConfigPage implements CrumbTrail {
 
@@ -44,13 +45,13 @@ public class DynamicConfigPage implements CrumbTrail {
 
 		this.domainElement = domainElement;
 		sections = new HashMap<String, ConfigSection>();
-		rootNode = initializePreferences();
+		rootNode = initializePreferences(domainElement);
 
 	}
 
-	private Preferences initializePreferences() {
+	private Preferences initializePreferences(CDOObject domainElement2) {
 
-		return InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
+		return PreferencesUtil.scopeFor(domainElement2);
 	}
 
 	private void initSections(Object domainElement) {
