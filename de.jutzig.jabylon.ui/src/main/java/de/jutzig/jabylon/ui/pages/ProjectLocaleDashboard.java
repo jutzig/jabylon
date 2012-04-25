@@ -29,6 +29,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.Section;
+import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 
@@ -52,13 +53,13 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		section.setSizeFull();
 		final Table table = new Table();
 		table.setSizeFull();
-		table.addContainerProperty("location", Button.class, null);
+		table.addContainerProperty("location", SortableButton.class, null);
 		table.addContainerProperty("summary", String.class, "");
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 //		table.setColumnWidth(locale,400);
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
-			Button fileName = new Button(entry.getKey().getLocation().toString());
+			Button fileName = new SortableButton(entry.getKey().getLocation().toString());
 			fileName.setIcon(entry.getValue()==null ? ImageConstants.IMAGE_NEW_PROPERTIES_FILE : ImageConstants.IMAGE_PROPERTIES_FILE);
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
 			
@@ -70,6 +71,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			
 			table.addItem(new Object[] {fileName,buildSummary(entry),progress}, entry.getKey().cdoID());
 		}
+		table.setSortContainerPropertyId("location");
 		section.getBody().addComponent(table);
 		parent.addComponent(section);
 

@@ -4,20 +4,21 @@
 package de.jutzig.jabylon.ui.container;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.EList;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.data.util.AbstractInMemoryContainer;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -30,6 +31,7 @@ import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
+import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.util.LocaleUtil;
 import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
@@ -38,16 +40,16 @@ import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class ProjectLocaleTableContainer extends AbstractContainer implements Container.ItemSetChangeNotifier {
+public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<ProjectLocale, LocaleProperty, Item> implements Container.ItemSetChangeNotifier, Container.Sortable {
 
 	
 	private ProjectVersion project;
 	private Map<ProjectLocale, ProjectLocaleRow> itemCache;
+	private List<ProjectLocale> sortableList;
 	
 	public static enum LocaleProperty{
 		
 		FLAG(Resource.class),LOCALE(Button.class),SUMMARY(String.class),PROGRESS(Label.class);
-		
 		private Class<?> type;
 		
 		private LocaleProperty(Class<?> type) {
@@ -67,27 +69,13 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 					//TODO: can probably do this more fine grained
 					project.cdoReload();
 					itemCache.clear();
+					sortableList = new ArrayList<ProjectLocale>(project.getLocales());
 					fireItemSetChange();
 				}
 					
 			}
 		}));
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#getItem(java.lang.Object)
-	 */
-	@Override
-	public Item getItem(Object itemId) {
-		
-		ProjectLocale locale = (ProjectLocale)itemId;
-		ProjectLocaleRow row = itemCache.get(itemId);
-		if(row == null)
-		{
-			row = new ProjectLocaleRow(locale);
-			itemCache.put(locale, row);
-		}
-		return row;
+		sortableList = new ArrayList<ProjectLocale>(project.getLocales());
 	}
 
 	/* (non-Javadoc)
@@ -98,13 +86,6 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 		return EnumSet.allOf(LocaleProperty.class);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#getItemIds()
-	 */
-	@Override
-	public Collection<?> getItemIds() {
-		return project.getLocales();
-	}
 
 	/* (non-Javadoc)
 	 * @see com.vaadin.data.Container#getContainerProperty(java.lang.Object, java.lang.Object)
@@ -139,69 +120,32 @@ public class ProjectLocaleTableContainer extends AbstractContainer implements Co
 		return project.getLocales().contains(itemId);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#addItem(java.lang.Object)
-	 */
 	@Override
-	public Item addItem(Object itemId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#addItem()
-	 */
-	@Override
-	public Object addItem() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#removeItem(java.lang.Object)
-	 */
-	@Override
-	public boolean removeItem(Object itemId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#addContainerProperty(java.lang.Object, java.lang.Class, java.lang.Object)
-	 */
-	@Override
-	public boolean addContainerProperty(Object propertyId, Class<?> type, Object defaultValue) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#removeContainerProperty(java.lang.Object)
-	 */
-	@Override
-	public boolean removeContainerProperty(Object propertyId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#removeAllItems()
-	 */
-	@Override
-	public boolean removeAllItems() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
+	protected Item getUnfilteredItem(Object itemId) {
+		ProjectLocale locale = (ProjectLocale)itemId;
+		ProjectLocaleRow row = itemCache.get(itemId);
+		if(row == null)
+		{
+			row = new ProjectLocaleRow(locale);
+			itemCache.put(locale, row);
+		}
+		return row;
 	}
 	
 	@Override
-	public void addListener(ItemSetChangeListener listener) {
-	
-		super.addListener(listener);
+	protected List<ProjectLocale> getAllItemIds() {
+		return sortableList;
 	}
-	
+
 	@Override
-	public void removeListener(ItemSetChangeListener listener) {
-		super.removeListener(listener);
+	public void sort(Object[] propertyId, boolean[] ascending) {
+		sortContainer(propertyId, ascending);
+		
+	}
+
+	@Override
+	public Collection<?> getSortableContainerPropertyIds() {
+		return getContainerPropertyIds();
 	}
 
 }
@@ -216,10 +160,7 @@ class ProjectLocaleRow implements Item
 	private Property summary;
 	private Property progress;
 	private ProjectLocale projectLocale;
-	
-	
-	
-	
+
 	public ProjectLocaleRow(ProjectLocale locale) {
 		super();
 		this.projectLocale = locale;
@@ -275,7 +216,7 @@ class ProjectLocaleRow implements Item
 				userLocale = MainDashboard.getCurrent().getLocale();
 			}
 			String displayName = projectLocale.getLocale().getDisplayName(userLocale);
-			Button button = new Button(displayName);
+			Button button = new SortableButton(displayName);
 			button.setStyleName(Reindeer.BUTTON_LINK);
 			button.addListener(new ClickListener() {
 				

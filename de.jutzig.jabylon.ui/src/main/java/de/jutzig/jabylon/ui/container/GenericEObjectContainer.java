@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.data.util.AbstractInMemoryContainer;
 
 import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 
-public class GenericEObjectContainer<T extends EObject> extends AbstractContainer implements Container.ItemSetChangeNotifier{
+public class GenericEObjectContainer<T extends EObject> extends AbstractInMemoryContainer<T, EStructuralFeature, Item> implements Container.ItemSetChangeNotifier{
 
 	private EObject parent;
 	private EReference contentReference;
@@ -40,11 +40,6 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractContaine
 			}
 		}));
 		this.contentReference = contents;
-	}
-
-	@Override
-	public Item getItem(Object itemId) {
-		return new EObjectItem((EObject) itemId);
 	}
 
 	@Override
@@ -85,58 +80,14 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractContaine
 	public boolean containsId(Object itemId) {
 		return getContents().contains(itemId);
 	}
-
-	@Override
-	public Item addItem(Object itemId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object addItem() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean removeItem(Object itemId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addContainerProperty(Object propertyId, Class<?> type, Object defaultValue) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeContainerProperty(Object propertyId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllItems() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public EObject getParent() {
 		return parent;
 	}
-	
+
 	@Override
-	public void addListener(ItemSetChangeListener listener) {
-	
-		super.addListener(listener);
+	protected Item getUnfilteredItem(Object itemId) {
+		return new EObjectItem((EObject) itemId);
 	}
-	
-	@Override
-	public void removeListener(ItemSetChangeListener listener) {
-		super.removeListener(listener);
-	}
-	
-	
 
 }

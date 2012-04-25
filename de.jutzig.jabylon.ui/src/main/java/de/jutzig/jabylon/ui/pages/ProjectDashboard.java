@@ -82,14 +82,11 @@ public class ProjectDashboard implements CrumbTrail,
 		table.setColumnExpandRatio(ProjectLocaleTableContainer.LocaleProperty.SUMMARY, 3f);
 		table.setSizeFull();
 		table.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
-//		table.addItem(cells, itemId)
 		
 		table.setContainerDataSource(new ProjectLocaleTableContainer(version));
 		table.setVisibleColumns(EnumSet.of(LocaleProperty.LOCALE, LocaleProperty.SUMMARY, LocaleProperty.PROGRESS).toArray());
 		table.setItemIconPropertyId(LocaleProperty.FLAG);
 		parent.addComponent(table, 0, 0, 1, 0);
-
-
 
 		Button commit = new Button();
 		commit.setCaption("Commit Changes");
