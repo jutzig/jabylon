@@ -1,6 +1,5 @@
 package de.jutzig.jabylon.ui.config.internal;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -8,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
-
-import javax.transaction.Transaction;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -43,7 +39,7 @@ public class DynamicConfigPage implements CrumbTrail {
 	private CDOTransaction transaction;
 	private CDOObject domainElement;
 	private VerticalLayout layout;
-	
+
 	public DynamicConfigPage(CDOObject domainElement) {
 
 		this.domainElement = domainElement;
@@ -194,7 +190,7 @@ public class DynamicConfigPage implements CrumbTrail {
 		createContents(writable);
 		initSections(writable);
 		return layout;
-		
+
 	}
 
 }
