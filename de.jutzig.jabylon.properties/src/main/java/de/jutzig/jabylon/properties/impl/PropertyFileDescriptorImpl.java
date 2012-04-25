@@ -32,6 +32,7 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getProjectLocale <em>Project Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getKeys <em>Keys</em>}</li>
  * </ul>
  * </p>
@@ -142,11 +143,13 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		URI path = absolutPath();
 
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
+
 		Map<String, Object> options = new HashMap<String, Object>();
-		if (eContainer() instanceof ProjectLocale) {
-			ProjectLocale locale = (ProjectLocale)eContainer();
-			options.put(PropertiesResourceImpl.OPTION_FILEMODE, locale.getProjectVersion().getProject().getPropertyType());
+		if(getProjectLocale()!=null && getProjectLocale().getProjectVersion()!=null &&
+			getProjectLocale().getProjectVersion().getProject()!=null) {
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, getProjectLocale().getProjectVersion().getProject().getPropertyType());
 		}
+
 		try {
 			resource.load(options);
 		} catch (FileNotFoundException e)
@@ -216,6 +219,33 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ProjectLocale getProjectLocale() {
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProjectLocale basicGetProjectLocale() {
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, false, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProjectLocale(ProjectLocale newProjectLocale) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, newProjectLocale);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getKeys() {
 		return (Integer)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, true, true);
 	}
@@ -259,6 +289,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				if (resolve) return getMaster();
 				return basicGetMaster();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				if (resolve) return getProjectLocale();
+				return basicGetProjectLocale();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys();
 		}
@@ -281,6 +314,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				setMaster((PropertyFileDescriptor)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				setProjectLocale((ProjectLocale)newValue);
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys((Integer)newValue);
@@ -306,6 +342,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				setMaster((PropertyFileDescriptor)null);
 				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				setProjectLocale((ProjectLocale)null);
+				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys(KEYS_EDEFAULT);
 				return;
@@ -327,6 +366,8 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
 				return basicGetMaster() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				return basicGetProjectLocale() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys() != KEYS_EDEFAULT;
 		}

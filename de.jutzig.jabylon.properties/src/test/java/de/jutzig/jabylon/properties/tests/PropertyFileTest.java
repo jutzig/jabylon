@@ -17,6 +17,12 @@ import junit.textui.TestRunner;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Property File</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFile#getProperty(java.lang.String) <em>Get Property</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class PropertyFileTest extends TestCase {
@@ -90,6 +96,19 @@ public class PropertyFileTest extends TestCase {
 		setFixture(null);
 	}
 
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFile#getProperty(java.lang.String) <em>Get Property</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.PropertyFile#getProperty(java.lang.String)
+	 * @generated
+	 */
+	public void testGetProperty__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
 
 	public void testDummy()
 	{

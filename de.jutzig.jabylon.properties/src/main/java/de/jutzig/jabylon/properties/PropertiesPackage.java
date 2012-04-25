@@ -210,13 +210,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__MASTER = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Project Locale</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE = RESOLVABLE_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Keys</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
@@ -225,7 +234,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -687,6 +696,17 @@ public interface PropertiesPackage extends EPackage {
 	EReference getPropertyFileDescriptor_Master();
 
 	/**
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getProjectLocale <em>Project Locale</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Project Locale</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getProjectLocale()
+	 * @see #getPropertyFileDescriptor()
+	 * @generated
+	 */
+	EReference getPropertyFileDescriptor_ProjectLocale();
+
+	/**
 	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1138,6 +1158,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROPERTY_FILE_DESCRIPTOR__MASTER = eINSTANCE.getPropertyFileDescriptor_Master();
+
+		/**
+		 * The meta object literal for the '<em><b>Project Locale</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE = eINSTANCE.getPropertyFileDescriptor_ProjectLocale();
 
 		/**
 		 * The meta object literal for the '<em><b>Keys</b></em>' attribute feature.

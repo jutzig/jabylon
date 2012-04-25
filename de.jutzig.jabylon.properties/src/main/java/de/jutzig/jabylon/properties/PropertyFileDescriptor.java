@@ -22,6 +22,7 @@ import org.eclipse.emf.cdo.CDOObject;
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getVariant <em>Variant</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation <em>Location</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getProjectLocale <em>Project Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}</li>
  * </ul>
  * </p>
@@ -136,6 +137,32 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @generated
 	 */
 	void setMaster(PropertyFileDescriptor value);
+
+	/**
+	 * Returns the value of the '<em><b>Project Locale</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Project Locale</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Project Locale</em>' reference.
+	 * @see #setProjectLocale(ProjectLocale)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_ProjectLocale()
+	 * @model required="true"
+	 * @generated
+	 */
+	ProjectLocale getProjectLocale();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getProjectLocale <em>Project Locale</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Project Locale</em>' reference.
+	 * @see #getProjectLocale()
+	 * @generated
+	 */
+	void setProjectLocale(ProjectLocale value);
 
 	/**
 	 * Returns the value of the '<em><b>Keys</b></em>' attribute.

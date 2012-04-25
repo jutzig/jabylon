@@ -19,15 +19,7 @@ import junit.textui.TestRunner;
  * <!-- end-user-doc -->
  * @generated
  */
-public class WorkspaceTest extends TestCase {
-
-	/**
-	 * The fixture for this Workspace test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected Workspace fixture = null;
+public class WorkspaceTest extends ResolvableTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -49,23 +41,14 @@ public class WorkspaceTest extends TestCase {
 	}
 
 	/**
-	 * Sets the fixture for this Workspace test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void setFixture(Workspace fixture) {
-		this.fixture = fixture;
-	}
-
-	/**
 	 * Returns the fixture for this Workspace test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected Workspace getFixture() {
-		return fixture;
+		return (Workspace)fixture;
 	}
 
 	/**

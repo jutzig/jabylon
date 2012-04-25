@@ -65,7 +65,7 @@ public class PropertiesExample {
 			try {
 				Resource resource = resourceSet.createResource(URI.createURI("http:///My.properties"));
 				PropertyFile root = PropertiesFactory.eINSTANCE.createPropertyFile();
-				resource.getContents().add(root);
+				resource.getContents().add((EObject)root);
 				resource.save(System.out, null);
 			}
 			catch (IOException exception) {

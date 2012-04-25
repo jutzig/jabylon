@@ -20,28 +20,14 @@ import de.jutzig.jabylon.properties.Workspace;
  * A test case for the model object '<em><b>Project</b></em>'.
  * <!-- end-user-doc -->
  * <p>
- * The following features are tested:
- * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.Project#getBase() <em>Base</em>}</li>
- * </ul>
- * </p>
- * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.Project#fullScan() <em>Full Scan</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#fullScan(de.jutzig.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}</li>
  * </ul>
  * </p>
  * @generated
  */
-public class ProjectTest extends TestCase {
-
-	/**
-	 * The fixture for this Project test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected Project fixture = null;
+public class ProjectTest extends ResolvableTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -63,23 +49,14 @@ public class ProjectTest extends TestCase {
 	}
 
 	/**
-	 * Sets the fixture for this Project test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void setFixture(Project fixture) {
-		this.fixture = fixture;
-	}
-
-	/**
 	 * Returns the fixture for this Project test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected Project getFixture() {
-		return fixture;
+		return (Project)fixture;
 	}
 
 	/**
@@ -102,6 +79,19 @@ public class ProjectTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.Project#fullScan(de.jutzig.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.Project#fullScan(de.jutzig.jabylon.properties.ScanConfiguration)
+	 * @generated
+	 */
+	public void testFullScan__ScanConfiguration() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	/**

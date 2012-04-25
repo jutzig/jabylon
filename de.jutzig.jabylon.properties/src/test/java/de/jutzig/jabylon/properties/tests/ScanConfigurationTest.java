@@ -1,0 +1,126 @@
+/**
+ * <copyright>
+ * </copyright>
+ *
+ * $Id$
+ */
+package de.jutzig.jabylon.properties.tests;
+
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.ScanConfiguration;
+
+import junit.framework.TestCase;
+
+import junit.textui.TestRunner;
+
+/**
+ * <!-- begin-user-doc -->
+ * A test case for the model object '<em><b>Scan Configuration</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are tested:
+ * <ul>
+ *   <li>{@link de.jutzig.jabylon.properties.ScanConfiguration#getExcludes() <em>Excludes</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.ScanConfiguration#getIncludes() <em>Includes</em>}</li>
+ * </ul>
+ * </p>
+ * @generated
+ */
+public class ScanConfigurationTest extends TestCase {
+
+	/**
+	 * The fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScanConfiguration fixture = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		TestRunner.run(ScanConfigurationTest.class);
+	}
+
+	/**
+	 * Constructs a new Scan Configuration test case with the given name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScanConfigurationTest(String name) {
+		super(name);
+	}
+
+	/**
+	 * Sets the fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void setFixture(ScanConfiguration fixture) {
+		this.fixture = fixture;
+	}
+
+	/**
+	 * Returns the fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScanConfiguration getFixture() {
+		return fixture;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		setFixture(PropertiesFactory.eINSTANCE.createScanConfiguration());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.ScanConfiguration#getExcludes() <em>Excludes</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getExcludes()
+	 * @generated
+	 */
+	public void testGetExcludes() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.ScanConfiguration#getIncludes() <em>Includes</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getIncludes()
+	 * @generated
+	 */
+	public void testGetIncludes() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+} //ScanConfigurationTest

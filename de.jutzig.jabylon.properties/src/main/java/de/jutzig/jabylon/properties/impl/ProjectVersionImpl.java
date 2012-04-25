@@ -8,7 +8,6 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,9 +24,9 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
 
@@ -58,9 +57,9 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	 */
 	protected static final String BRANCH_EDEFAULT = "master";
 
-	
+
 	private static final Pattern LOCALE_PATTERN = Pattern.compile(".+?((_\\w\\w){1,3})\\..+");
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -281,12 +280,12 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		return super.eIsSet(featureID);
 	}
 
-	
+
 	class FileAcceptor implements PropertyFileAcceptor
 	{
 
-		
-		
+
+
 		@Override
 		public void newMatch(File file) {
 			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
@@ -296,24 +295,24 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			descriptor.setLocation(location);
 			if(getMaster()==null)
 			{
-				
+
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
 			}
 			getMaster().getDescriptors().add(descriptor);
-			
+
 			//load file to initialize statistics;
 			PropertyFile propertyFile = descriptor.loadProperties();
 			descriptor.setKeys(propertyFile.getProperties().size());
 			descriptor.updatePercentComplete();
-			
+
 			String localeString = getLocaleString(file);
 			if(!localeString.isEmpty())
 			{
 				Locale locale = createVariant(localeString.substring(1));
-				descriptor.setVariant(locale);				
+				descriptor.setVariant(locale);
 			}
-			
-			
+
+
 			Pattern pattern = buildPatternFrom(file.getName().replace(localeString, ""));
 			File folder = file.getParentFile();
 			String[] childNames = folder.list();
@@ -331,13 +330,13 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 					fileDescriptor.setMaster(descriptor);
 					ProjectLocale projectLocale = getOrCreateProjectLocale(locale);
 					projectLocale.getDescriptors().add(fileDescriptor);
-					
+
 					//load file to initialize statistics;
 					PropertyFile translatedFile = fileDescriptor.loadProperties();
 					fileDescriptor.setKeys(translatedFile.getProperties().size());
 //					fileDescriptor.updatePercentComplete();
 				}
-			}	
+			}
 		}
 
 		private String getLocaleString(File file) {
@@ -357,9 +356,9 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			String suffix = fileName.substring(separator);
 			return Pattern.compile(Pattern.quote(prefix) + "((_\\w\\w){1,3})"+Pattern.quote(suffix)); //messages.properties => messages_de_DE.properties
 		}
-		
+
 	}
-	
+
 	public ProjectLocale getProjectLocale(Locale locale)
 	{
 		EList<ProjectLocale> locales = getLocales();
@@ -369,7 +368,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		}
 		return null;
 	}
-	
+
 	public ProjectLocale getOrCreateProjectLocale(Locale locale)
 	{
 		ProjectLocale projectLocale = getProjectLocale(locale);
@@ -386,5 +385,5 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	public URI relativePath() {
 		return URI.createHierarchicalURI(new String[] {getBranch()}, null, null);
 	}
-	
+
 } //ProjectVersionImpl

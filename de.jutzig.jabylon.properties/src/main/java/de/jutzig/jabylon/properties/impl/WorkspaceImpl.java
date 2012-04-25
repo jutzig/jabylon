@@ -14,7 +14,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -212,5 +211,5 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	public int internalUpdatePercentComplete() {
 		return 100;
 	}
-	
+
 } //WorkspaceImpl

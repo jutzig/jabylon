@@ -18,23 +18,16 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  * A test case for the model object '<em><b>Property File Descriptor</b></em>'.
  * <!-- end-user-doc -->
  * <p>
- * The following features are tested:
+ * The following operations are tested:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#isMaster() <em>Master</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile() <em>Property File</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#isMaster() <em>Is Master</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#loadProperties() <em>Load Properties</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#computeLocation() <em>Compute Location</em>}</li>
  * </ul>
  * </p>
  * @generated
  */
-public class PropertyFileDescriptorTest extends TestCase {
-
-	/**
-	 * The fixture for this Property File Descriptor test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PropertyFileDescriptor fixture = null;
+public class PropertyFileDescriptorTest extends ResolvableTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -56,23 +49,14 @@ public class PropertyFileDescriptorTest extends TestCase {
 	}
 
 	/**
-	 * Sets the fixture for this Property File Descriptor test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void setFixture(PropertyFileDescriptor fixture) {
-		this.fixture = fixture;
-	}
-
-	/**
 	 * Returns the fixture for this Property File Descriptor test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected PropertyFileDescriptor getFixture() {
-		return fixture;
+		return (PropertyFileDescriptor)fixture;
 	}
 
 	/**
@@ -110,6 +94,32 @@ public class PropertyFileDescriptorTest extends TestCase {
 		assertFalse(getFixture().isMaster());
 		getFixture().setVariant(null);
 		assertTrue(getFixture().isMaster());
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#loadProperties() <em>Load Properties</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#loadProperties()
+	 * @generated
+	 */
+	public void testLoadProperties() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#computeLocation() <em>Compute Location</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#computeLocation()
+	 * @generated
+	 */
+	public void testComputeLocation() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 //	/**

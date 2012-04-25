@@ -50,7 +50,7 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
-	
+
 
 	/**
 	 * The default value of the '{@link #getRepositoryURI() <em>Repository URI</em>}' attribute.
@@ -404,10 +404,10 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 
 	@Override
 	public URI relativePath() {
-		
+
 		return URI.createURI(getName(),false);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

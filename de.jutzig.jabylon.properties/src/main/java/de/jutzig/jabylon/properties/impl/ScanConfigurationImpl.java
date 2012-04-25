@@ -6,18 +6,15 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.ScanConfiguration;
-
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 
 /**
  * <!-- begin-user-doc -->
@@ -109,7 +106,7 @@ public class ScanConfigurationImpl extends CDOObjectImpl implements ScanConfigur
 			excludes.addAll(Arrays.asList(split));
 		}
 		return excludes;
-		
+
 	}
 
 	/**
