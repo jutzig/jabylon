@@ -60,7 +60,7 @@
 }
 
 .jabylon-container-content {
-	
+
 }
 
 .jabylon-section-title {
@@ -82,6 +82,18 @@ div.breadcrumbs .v-button { /* moz-border-radius: 5px;
 	khtml-border-radius: 5px;
 	border-radius: 5px;
 	background: blue; */
+	padding: 5px;
+}
+
+div.breadcrumbs .v-button:ACTIVE {
+	padding: 5px;
+}
+
+div.breadcrumbs .v-button:FOCUS {
+	padding: 5px;
+}
+
+div.breadcrumbs .v-button: {
 	padding: 5px;
 }
 
