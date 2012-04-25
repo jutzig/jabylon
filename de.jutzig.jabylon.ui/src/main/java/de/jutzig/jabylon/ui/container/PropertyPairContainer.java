@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
-
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -16,7 +13,6 @@ import com.vaadin.data.util.AbstractContainer;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
-import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 public class PropertyPairContainer extends AbstractContainer {
 

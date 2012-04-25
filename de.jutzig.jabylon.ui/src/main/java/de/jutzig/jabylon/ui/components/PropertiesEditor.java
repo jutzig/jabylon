@@ -1,15 +1,13 @@
 package de.jutzig.jabylon.ui.components;
 
-import java.io.IOException;
-
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.util.CommitException;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -24,14 +22,13 @@ import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
-public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChangeListener {
+public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
 
 	private PropertyFileDescriptor descriptor;
 	private TextArea orignal;
@@ -44,6 +41,7 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 	private TextArea orignalComment;
 	private TextArea translatedComment;
 	private GridLayout layout;
+	private PropertyPairContainer propertyPairContainer;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
@@ -60,7 +58,7 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
 
-		PropertyPairContainer propertyPairContainer = new PropertyPairContainer(source, target);
+		propertyPairContainer = new PropertyPairContainer(source, target);
 		table.setContainerDataSource(propertyPairContainer);
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
@@ -97,7 +95,7 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 		// translated.setWidth(400, UNITS_PIXELS);
 
 		translated.setNullRepresentation("");
-		translated.addListener(this);
+		translated.addListener((TextChangeListener)this);
 		translated.setWriteThrough(true);
 		layout.addComponent(translated);
 
@@ -116,7 +114,7 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 		translatedComment.setRows(3);
 		translatedComment.setColumns(40);
 		translatedComment.setNullRepresentation("");
-		translatedComment.addListener(this);
+		translatedComment.addListener((TextChangeListener)this);
 		translatedComment.setInputPrompt("Comment");
 		translatedComment.setWriteThrough(true);
 		layout.addComponent(translatedComment);
@@ -176,21 +174,6 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 	}
 
 	@Override
-	public void itemClick(ItemClickEvent event) {
-		Item theItem = event.getItem();
-		PropertyPairItem item = (PropertyPairItem) theItem;
-		item.getSourceProperty();
-
-		keyLabel.setValue(item.getSourceProperty().getKey());
-		translated.setPropertyDataSource(item.getTarget());
-		orignal.setPropertyDataSource(item.getSource());
-
-		translatedComment.setPropertyDataSource(item.getTargetComment());
-		orignalComment.setPropertyDataSource(item.getSourceComment());
-
-	}
-
-	@Override
 	public void textChange(TextChangeEvent event) {
 		setDirty(true);
 
@@ -211,6 +194,21 @@ public class PropertiesEditor implements CrumbTrail, ItemClickListener, TextChan
 	public CDOObject getDomainObject() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void valueChange(ValueChangeEvent event) {
+		Item theItem = propertyPairContainer.getItem(event.getProperty().getValue());
+		PropertyPairItem item = (PropertyPairItem) theItem;
+		item.getSourceProperty();
+
+		keyLabel.setValue(item.getSourceProperty().getKey());
+		translated.setPropertyDataSource(item.getTarget());
+		orignal.setPropertyDataSource(item.getSource());
+
+		translatedComment.setPropertyDataSource(item.getTargetComment());
+		orignalComment.setPropertyDataSource(item.getSourceComment());
+		
 	}
 
 }
