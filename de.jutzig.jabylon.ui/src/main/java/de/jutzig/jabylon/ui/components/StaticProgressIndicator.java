@@ -24,6 +24,8 @@ public class StaticProgressIndicator extends Label {
 		String color = Integer.toHexString(rgb);
 		if (color.length() == 4) // pure green, no red left
 			color = "00" + color;
+		else if (color.length() == 5)
+			color = "0" + color;
 		setValue(MessageFormat.format(PATTERN, percentage, "#" + color));
 
 	}
@@ -49,5 +51,5 @@ public class StaticProgressIndicator extends Label {
 		return color;
 
 	}
-	
+
 }
