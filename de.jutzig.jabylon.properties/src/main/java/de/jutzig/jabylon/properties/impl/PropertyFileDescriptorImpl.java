@@ -15,7 +15,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
-import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -140,12 +140,12 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 */
 	public PropertyFile loadProperties() {
 		URI path = absolutPath();
-		
+
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 		Map<String, Object> options = new HashMap<String, Object>();
-		if (eContainer() instanceof ProjectVersion) {
-			ProjectVersion version = (ProjectVersion)eContainer();
-			options.put(PropertiesResourceImpl.OPTION_FILEMODE, version.getProject().getPropertyType());
+		if (eContainer() instanceof ProjectLocale) {
+			ProjectLocale locale = (ProjectLocale)eContainer();
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, locale.getProjectVersion().getProject().getPropertyType());
 		}
 		try {
 			resource.load(options);
