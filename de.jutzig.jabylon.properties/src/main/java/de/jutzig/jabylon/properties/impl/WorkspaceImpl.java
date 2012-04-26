@@ -204,7 +204,7 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 
 	@Override
 	public URI relativePath() {
-		return URI.createHierarchicalURI(new String[] {"/"}, null, null); //it's the root
+		return URI.createHierarchicalURI(new String[] {""}, null, null); //it's the root
 	}
 
 	@Override
