@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.config.internal.project;
 
@@ -33,10 +33,10 @@ import de.jutzig.jabylon.ui.util.PreferencesUtil;
  */
 public class ScanConfig extends AbstractConfigSection<Project> {
 
-	
+
 
 	private Form form;
-	
+
 
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.ui.config.ConfigSection#createContents()
@@ -47,7 +47,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 		layout.setSpacing(true);
 		form = createForm();
 		layout.addComponent(form);
-		
+
 		Button scanProject = new Button();
 		scanProject.setCaption("Full Scan");
 		scanProject.setIcon(ImageConstants.IMAGE_PROJECT_SCAN);
@@ -74,8 +74,8 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 		form.setWriteThrough(false);
 		form.setImmediate(true);
 		form.setFormFieldFactory(new DefaultFieldFactory() {
-			
-			
+
+
 			@Override
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				if(propertyId==PreferencesUtil.SCAN_CONFIG_INCLUDE)
@@ -84,6 +84,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 					area.setCaption(createCaptionByPropertyId(propertyId));
 					area.setDescription("ANT Fileset Pattern. Seperate includes with a linefeed");
 					area.setRows(3);
+					area.setColumns(30);
 					area.setNullRepresentation("");
 					return area;
 				}
@@ -93,6 +94,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 					area.setCaption(createCaptionByPropertyId(propertyId));
 					area.setDescription("ANT Fileset Pattern. Seperate excludes with a linefeed");
 					area.setRows(3);
+					area.setColumns(30);
 					area.setNullRepresentation("");
 					return area;
 				}
@@ -100,6 +102,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 				{
 					TextField field = new TextField();
 					field.setCaption("Master Locale");
+					field.setColumns(30);
 					field.setNullRepresentation("");
 					field.setDescription("Leave empty if you follow the standard java pattern of 'messages.properties'");
 					return field;
