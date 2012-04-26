@@ -128,9 +128,9 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 	@Override
 	protected void init(Preferences config) {
 		PreferencesItem item = new PreferencesItem(config);
-		item.addProperty(PreferencesUtil.SCAN_CONFIG_INCLUDE, String.class, null);
-		item.addProperty(PreferencesUtil.SCAN_CONFIG_EXCLUDE, String.class, null);
-		item.addProperty(PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, String.class, null);
+		item.addProperty(PreferencesUtil.SCAN_CONFIG_INCLUDE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__INCLUDE.getDefaultValueLiteral());
+		item.addProperty(PreferencesUtil.SCAN_CONFIG_EXCLUDE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__EXCLUDE.getDefaultValueLiteral());
+		item.addProperty(PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
 		form.setItemDataSource(item);
 
 	}

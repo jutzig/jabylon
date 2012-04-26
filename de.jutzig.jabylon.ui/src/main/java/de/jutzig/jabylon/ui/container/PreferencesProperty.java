@@ -46,7 +46,7 @@ public class PreferencesProperty<T> extends AbstractProperty {
 	@Override
 	public void setValue(Object newValue) throws ReadOnlyException,
 			ConversionException {
-		if(newValue == null || newValue.equals(defaultValue))
+		if(newValue == null)
 			return;
 		if(newValue instanceof String)
 			setValue((String)newValue);
