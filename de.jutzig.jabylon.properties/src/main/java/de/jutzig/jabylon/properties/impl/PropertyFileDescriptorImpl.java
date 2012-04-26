@@ -213,15 +213,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PropertyFileDescriptor basicGetMaster() {
-		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, false, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void setMaster(PropertyFileDescriptor newMaster) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
 	}
@@ -233,15 +224,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 */
 	public ProjectLocale getProjectLocale() {
 		return (ProjectLocale)eContainer();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ProjectLocale basicGetProjectLocale() {
-		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, false, true);
 	}
 
 	/**
@@ -299,11 +281,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
 				return getLocation();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-				if (resolve) return getMaster();
-				return basicGetMaster();
+				return getMaster();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-				if (resolve) return getProjectLocale();
-				return basicGetProjectLocale();
+				return getProjectLocale();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys();
 		}
@@ -377,9 +357,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
 				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-				return basicGetMaster() != null;
+				return getMaster() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-				return basicGetProjectLocale() != null;
+				return getProjectLocale() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys() != KEYS_EDEFAULT;
 		}

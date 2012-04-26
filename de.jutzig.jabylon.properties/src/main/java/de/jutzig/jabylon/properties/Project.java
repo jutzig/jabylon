@@ -72,7 +72,7 @@ public interface Project extends Resolvable {
 	 * @see #setWorkspace(Workspace)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Workspace()
 	 * @see de.jutzig.jabylon.properties.Workspace#getProjects
-	 * @model opposite="projects" transient="false"
+	 * @model opposite="projects" resolveProxies="false" transient="false"
 	 * @generated
 	 */
 	Workspace getWorkspace();

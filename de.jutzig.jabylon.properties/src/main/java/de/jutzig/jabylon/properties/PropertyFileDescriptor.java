@@ -112,9 +112,6 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
-	 * @see #isMaster()
-	 * @see #getLocation()
-	 * @see #getVariant()
 	 */
 	void computeLocation();
 
@@ -129,7 +126,7 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @return the value of the '<em>Master</em>' reference.
 	 * @see #setMaster(PropertyFileDescriptor)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Master()
-	 * @model
+	 * @model resolveProxies="false"
 	 * @generated
 	 */
 	PropertyFileDescriptor getMaster();
@@ -155,7 +152,7 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @return the value of the '<em>Project Locale</em>' reference.
 	 * @see #setProjectLocale(ProjectLocale)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_ProjectLocale()
-	 * @model required="true"
+	 * @model resolveProxies="false" required="true"
 	 * @generated
 	 */
 	ProjectLocale getProjectLocale();
