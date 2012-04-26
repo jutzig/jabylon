@@ -63,23 +63,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		}
 		
 		layout.addComponent(table);
-		addComponent(section);
-		
-		Button addProject = new Button();
-		addProject.setIcon(ImageConstants.IMAGE_NEW_PROJECT);
-		addProject.setCaption("Create Project");
-		addProject.addListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				
-				MainDashboard dashboard = MainDashboard.getCurrent();
-				dashboard.setMainComponent(new NewProjectForm(dashboard));
-			}
-
-		});
-		addComponent(addProject);
-		
+		addComponent(section);		
 	}
 
 	private void buildHeader() {
