@@ -4,6 +4,7 @@ import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
 import org.eclipse.emf.cdo.net4j.CDOSession;
 import org.eclipse.emf.cdo.net4j.CDOSessionConfiguration;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.net4j.connector.IConnector;
 import org.eclipse.net4j.jvm.JVMUtil;
@@ -54,8 +55,8 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 
 			// see explanation below
 			// config.setLazyPopulatingPackageRegistry();
-
 			session = config.openSession();
+			session.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
 			session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
 			session.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
 		}
