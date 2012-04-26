@@ -33,13 +33,13 @@ import de.jutzig.jabylon.properties.PropertyType;
  * @generated
  */
 public class PropertiesResourceImpl extends ResourceImpl {
-	
-	
+
+
 	//TODO: this is a dirty hack...
 	private int savedProperties;
-	
+
 	public static final String OPTION_FILEMODE = "file.mode";
-	
+
 	/**
 	 * Creates an instance of the resource.
 	 * <!-- begin-user-doc -->
@@ -50,8 +50,8 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	public PropertiesResourceImpl(URI uri) {
 		super(uri);
 	}
-	
-	
+
+
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
@@ -66,11 +66,11 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		try {
 			if(type==PropertyType.ENCODED_ISO)
 			{
-				reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1")); 			
+				reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1"));
 			}
 			if(type==PropertyType.UNICODE)
 			{
-				reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8")); //TODO: use encoding property				
+				reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8")); //TODO: use encoding property
 			}
 			Property p = null;
 			while((p = helper.readProperty(reader))!=null)
@@ -83,7 +83,7 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		}
 		getContents().add(file);
 	}
-	
+
 	private PropertyType getPropertyType(Map<?, ?> options) {
 		if(options!=null && options.containsKey(OPTION_FILEMODE))
 		{
@@ -107,8 +107,8 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		}
 		else
 		{
-			escapeUnicode = true;
-			writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));			
+			escapeUnicode = false;
+			writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 		}
 		try {
 			PropertiesHelper helper = new PropertiesHelper(escapeUnicode);
@@ -122,17 +122,17 @@ public class PropertiesResourceImpl extends ResourceImpl {
 					helper.writeProperty(writer, property);
 					savedProperties++;
 				}
-					
+
 			}
-			
+
 		}
 		finally{
 			writer.close();
 		}
-		
+
 	}
-	
-	
+
+
 	private boolean isFilled(Property property) {
 		if(property==null)
 			return false;
@@ -140,7 +140,7 @@ public class PropertiesResourceImpl extends ResourceImpl {
 			return false;
 		return !(property.getValue()==null || property.getValue().length()==0);
 	}
-	
+
 	public int getSavedProperties() {
 		return savedProperties;
 	}

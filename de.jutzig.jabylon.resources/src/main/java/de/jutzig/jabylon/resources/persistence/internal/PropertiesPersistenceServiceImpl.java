@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.resources.persistence.internal;
 
@@ -29,7 +29,7 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
@@ -47,7 +47,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
 	 * de.jutzig.jabylon.properties.PropertyFile)
@@ -64,7 +64,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * addPropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -77,7 +77,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * removePropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -138,8 +138,9 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
 		Map<String, Object> options = new HashMap<String, Object>();
-		if (descriptor.eContainer() instanceof ProjectVersion) {
-			ProjectVersion version = (ProjectVersion) descriptor.eContainer();
+		if (descriptor.getProjectLocale()!=null && descriptor.getProjectLocale().getProjectVersion()!=null &&
+				descriptor.getProjectLocale().getProjectVersion().getProject()!=null) {
+			ProjectVersion version = descriptor.getProjectLocale().getProjectVersion();
 			Project project = version.getProject();
 			PropertyType propertyType = project.getPropertyType();
 			options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);

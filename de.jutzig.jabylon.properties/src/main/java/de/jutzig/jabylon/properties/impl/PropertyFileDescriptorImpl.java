@@ -217,10 +217,10 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public ProjectLocale getProjectLocale() {
-		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
+		return (ProjectLocale)eContainer();
 	}
 
 	/**
