@@ -106,9 +106,15 @@ public interface PropertyFileDescriptor extends Resolvable {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Computes the location according to the current locale and the location of the master.
+	 * Does nothing if this is the master, or there is no master available
+	 * 
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
+	 * @see #isMaster()
+	 * @see #getLocation()
+	 * @see #getVariant()
 	 */
 	void computeLocation();
 
