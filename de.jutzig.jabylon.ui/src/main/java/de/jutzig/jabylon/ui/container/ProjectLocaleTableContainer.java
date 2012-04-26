@@ -223,7 +223,9 @@ class ProjectLocaleRow implements Item
 				@Override
 				public void buttonClick(ClickEvent event) {
 					
-					MainDashboard.getCurrent().getBreadcrumbs().setPath(projectLocale.getProjectVersion().getProject().getName(),projectLocale.getLocale().toString());
+					String projectName = projectLocale.getProjectVersion().getProject().getName();
+					String version = "?"+projectLocale.getProjectVersion().getBranch();
+					MainDashboard.getCurrent().getBreadcrumbs().setPath(projectName,version,projectLocale.getLocale().toString());
 					
 				}
 			});
@@ -251,6 +253,9 @@ class ProjectLocaleRow implements Item
 	
 	private String buildSummary(ProjectLocale locale) {
 
+		//TODO: how can this happen?
+		if(projectLocale==null || projectLocale.getProjectVersion()==null || projectLocale.getProjectVersion().getMaster()==null)
+			return "";
 		int totalKeys = projectLocale.getProjectVersion().getMaster().getPropertyCount();
 		int actualKeys = locale.getPropertyCount();
 		if(actualKeys==totalKeys)

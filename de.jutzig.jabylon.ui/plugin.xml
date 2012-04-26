@@ -19,12 +19,6 @@
             tab="scanning">
       </configSection>
       <configSection
-            id="de.jutzig.jabylon.ui.projectLocaleConfig"
-            objectClass="de.jutzig.jabylon.properties.Project"
-            section="de.jutzig.jabylon.ui.config.internal.project.GeneralLocaleConfig"
-            tab="locales">
-      </configSection>
-      <configSection
             id="de.jutzig.jabylon.ui.projectRepository"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.ProjectRepositorySettings"
