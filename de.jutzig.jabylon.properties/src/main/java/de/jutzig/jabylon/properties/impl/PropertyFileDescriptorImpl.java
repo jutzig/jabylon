@@ -131,7 +131,10 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * @generated NOT
 	 */
 	public boolean isMaster() {
-		return !eIsSet(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT);
+		ProjectLocale locale = getProjectLocale();
+		if(locale==null)
+			return false;
+		return locale.isMaster();
 	}
 
 	/**
@@ -170,15 +173,24 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * @generated NOT
 	 */
 	public void computeLocation() {
-		if(isMaster())
+		if(isMaster() || getMaster()==null)
 			return;
 		Locale locale = getVariant();
 		URI location = getMaster().getLocation();
 		String filename = location.lastSegment();
 		String extension = location.fileExtension();
+
 		if(extension!=null)
 		{
 			filename = filename.substring(0,filename.length()-extension.length()-1);
+			
+			//if the master has a locale as well (i.e. messages_en_EN.properties) we must remove the suffix
+			Locale masterLocale = getMaster().getVariant();
+			if(masterLocale!=null)
+			{
+				filename = filename.substring(0, filename.length() - (masterLocale.toString().length()+1));
+			}
+			
 			filename += "_";
 			filename += locale.toString();
 			filename += ".";

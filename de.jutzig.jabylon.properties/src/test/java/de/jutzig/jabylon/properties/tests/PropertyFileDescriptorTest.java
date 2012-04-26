@@ -8,8 +8,13 @@ package de.jutzig.jabylon.properties.tests;
 
 import java.util.Locale;
 
+import org.eclipse.emf.common.util.URI;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
@@ -89,11 +94,24 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 	 * @generated NOT
 	 */
 	public void testIsMaster() {
-		assertTrue(getFixture().isMaster());
+		assertFalse(getFixture().isMaster());
 		getFixture().setVariant(Locale.FRENCH);
 		assertFalse(getFixture().isMaster());
 		getFixture().setVariant(null);
+		assertFalse(getFixture().isMaster());
+		
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		ProjectLocale master = PropertiesFactory.eINSTANCE.createProjectLocale();
+		version.setMaster(master);
+		master.getDescriptors().add(getFixture());
 		assertTrue(getFixture().isMaster());
+		
+		
+		ProjectLocale slave = PropertiesFactory.eINSTANCE.createProjectLocale();
+		version.getLocales().add(slave);
+		slave.getDescriptors().add(getFixture());
+		assertFalse(getFixture().isMaster());
+		
 	}
 
 	/**
@@ -114,12 +132,33 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#computeLocation()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testComputeLocation() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		PropertyFileDescriptor master = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+		master.setLocation(URI.createURI("file://project/dir/master.properties"));
+		getFixture().setVariant(new Locale("de", "DE"));
+		getFixture().computeLocation(); //must not fail if no master is available
+		assertNull(getFixture().getLocation());
+		getFixture().setMaster(master);
+		getFixture().computeLocation();
+		assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
+	}
+	
+	public void testComputeLocationWithLocaledMaster() {
+		PropertyFileDescriptor master = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+		master.setLocation(URI.createURI("file://project/dir/master_en_EN.properties"));
+		master.setVariant(new Locale("en_EN"));
+		getFixture().setVariant(new Locale("de", "DE"));
+		getFixture().setMaster(master);
+		getFixture().computeLocation();
+		assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
+		
+		
+		master.setLocation(URI.createURI("file://project/dir/master_en_EN_FO.properties"));
+		master.setVariant(new Locale("en","EN","FO"));
+		getFixture().computeLocation();
+		assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
 	}
 
 //	/**
