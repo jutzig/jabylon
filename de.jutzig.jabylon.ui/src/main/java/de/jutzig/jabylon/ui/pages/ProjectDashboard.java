@@ -88,9 +88,9 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 				if (value instanceof ProjectVersion) {
 					version = (ProjectVersion) value;
 					//TODO: this isn't so great really
-					if("master".equals(version.getBranch()))
+					if (project.getMaster() == version)
 						MainDashboard.getCurrent().getBreadcrumbs().goBack();
-					else	
+					else
 						MainDashboard.getCurrent().getBreadcrumbs().walkTo("?" + version.getBranch());
 				}
 
@@ -100,7 +100,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 	}
 
 	private ProjectVersion getProjectVersion(Project project, String version) {
-		if (version == null) {
+		if (version == null || version.equals(project.getMaster().getBranch())) {
 			return project.getMaster();
 		}
 		for (ProjectVersion projectVersion : project.getVersions()) {
@@ -171,14 +171,14 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 			return this;
 		}
 		//TODO: this is a hack
-		
+
 		ProjectLocale projectLocale = version.getProjectLocale(locale);
 		return new ProjectLocaleDashboard(projectLocale);
 	}
 
 	@Override
 	public String getTrailCaption() {
-		if("master".equals(version.getBranch()))
+		if (project.getMaster() == version)
 			return project.getName();
 		return version.getBranch();
 	}
