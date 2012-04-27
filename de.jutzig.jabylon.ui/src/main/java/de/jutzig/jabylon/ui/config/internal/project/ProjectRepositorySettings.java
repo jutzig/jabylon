@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.config.internal.project;
 
@@ -26,7 +26,7 @@ import de.jutzig.jabylon.ui.config.ConfigSection;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class ProjectRepositorySettings extends AbstractConfigSection<Project> implements ConfigSection {
 
@@ -34,7 +34,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 	private BeanItem<ProjectBean> beanItem;
 
 	/**
-	 * 
+	 *
 	 */
 	public ProjectRepositorySettings() {
 		// TODO Auto-generated constructor stub
@@ -42,7 +42,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.ui.config.ConfigSection#createContents()
 	 */
 	@Override
@@ -64,14 +64,14 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 				if(propertyId.equals("repositoryURI"))
 				{
 					((TextField)field).setInputPrompt("https://github.org/example.git");
-					field.setCaption("Repository URI");					
+					field.setCaption("Repository URI");
 				}
 				if (field instanceof TextField) {
 					TextField text = (TextField) field;
 					text.setNullRepresentation("");
-					
+
 				}
-				
+
 				return field;
 			}
 
@@ -82,7 +82,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.jutzig.jabylon.ui.config.ConfigSection#commit(org.osgi.service.prefs
 	 * .Preferences)
@@ -108,7 +108,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.jutzig.jabylon.ui.config.AbstractConfigSection#init(org.osgi.service
 	 * .prefs.Preferences)
@@ -124,6 +124,9 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 	}
 
 	private void parseURI(ProjectBean projectBean, URI repositoryURI) {
+		if(repositoryURI==null)
+			return;
+
 		String userInfo = repositoryURI.userInfo();
 		parserUserInfo(projectBean, userInfo);
 		String authority = repositoryURI.authority();
@@ -140,7 +143,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 		projectBean.setUsername(split[0]);
 		if(split.length>0)
 			projectBean.setPassword(split[1]);
-		
+
 	}
 
 }
