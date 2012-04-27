@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.junit.Before;
@@ -87,6 +88,23 @@ public class PropertiesHelperTest {
 			
 			assertNull(fixture.readProperty(reader));
 
+		} finally {
+			if (reader != null)
+				reader.close();
+		}
+	}
+	
+	
+	@Test
+	public void testReadUnicodePropertyWithUnicodeEscapes() throws IOException {
+		
+		fixture = new PropertiesHelper(false);
+		BufferedReader reader = new BufferedReader(new StringReader("äö\\u00DC = aaa"));
+		
+		try {
+			Property property = fixture.readProperty(reader);
+			assertEquals("even with escaping turned of, it must still parse the escaped strings","äöÜ",property.getKey());
+			assertEquals("aaa", property.getValue());
 		} finally {
 			if (reader != null)
 				reader.close();
