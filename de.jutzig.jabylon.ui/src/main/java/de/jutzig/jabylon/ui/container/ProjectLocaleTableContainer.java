@@ -26,6 +26,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -223,9 +224,17 @@ class ProjectLocaleRow implements Item
 				@Override
 				public void buttonClick(ClickEvent event) {
 					
-					String projectName = projectLocale.getProjectVersion().getProject().getName();
-					String version = "?"+projectLocale.getProjectVersion().getBranch();
-					MainDashboard.getCurrent().getBreadcrumbs().setPath(projectName,version,projectLocale.getLocale().toString());
+					ProjectVersion projectVersion = projectLocale.getProjectVersion();
+					Project project = projectVersion.getProject();
+					if(projectVersion==projectVersion.getProject().getMaster())
+					{
+						MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName(),projectLocale.getLocale().toString());
+					}
+					else
+					{
+						String version = "?"+projectVersion.getBranch();
+						MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName(),version,projectLocale.getLocale().toString());						
+					}
 					
 				}
 			});
