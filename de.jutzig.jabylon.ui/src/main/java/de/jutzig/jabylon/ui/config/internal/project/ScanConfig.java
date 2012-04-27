@@ -18,7 +18,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import de.jutzig.jabylon.properties.Project;
-import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.ScanConfiguration;
@@ -31,12 +30,9 @@ import de.jutzig.jabylon.ui.util.PreferencesUtil;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@SuppressWarnings("serial")
 public class ScanConfig extends AbstractConfigSection<Project> {
-
-
-
 	private Form form;
-
 
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.ui.config.ConfigSection#createContents()

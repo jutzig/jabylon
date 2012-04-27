@@ -28,6 +28,7 @@ import de.jutzig.jabylon.ui.config.ConfigSection;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@SuppressWarnings("serial")
 public class ProjectRepositorySettings extends AbstractConfigSection<Project> implements ConfigSection {
 
 	private Form form;
@@ -58,6 +59,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 				if (propertyId.equals("password")) {
 					PasswordField field = new PasswordField();
 					field.setCaption(createCaptionByPropertyId(propertyId));
+					field.setColumns(30);
 					return field;
 				}
 				Field field = super.createField(item, propertyId, uiContext);
@@ -69,7 +71,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 				if (field instanceof TextField) {
 					TextField text = (TextField) field;
 					text.setNullRepresentation("");
-
+					text.setColumns(30);
 				}
 
 				return field;

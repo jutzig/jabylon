@@ -29,7 +29,6 @@ import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.jutzig.jabylon.properties.Project;
@@ -58,6 +57,7 @@ import de.jutzig.jabylon.ui.util.RunnableWithProgress;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
+@SuppressWarnings("serial")
 public class GeneralProjectConfig extends AbstractConfigSection<Project> implements ValueChangeListener{
 
 	private Form form;
