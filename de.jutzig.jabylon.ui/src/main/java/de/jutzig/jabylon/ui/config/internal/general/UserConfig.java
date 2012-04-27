@@ -1,5 +1,8 @@
 package de.jutzig.jabylon.ui.config.internal.general;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
@@ -9,8 +12,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -22,7 +23,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -94,18 +94,32 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	private void addUserDetails() {
 		userDetails = new Section();
 		userDetails.setTitle("User: "+selectedUser.getName());
-		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
+		final TwinColSelect permissionSelect = new TwinColSelect("Permissions");
 		permissionSelect.setMultiSelect(true);
 		permissionSelect.setLeftColumnCaption("Available permissions");
 		permissionSelect.setRightColumnCaption("Permissions currently assigned");
-		permissionSelect.addListener(new Property.ValueChangeListener() {
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				System.out.println(event.getProperty());
-			}
-		});
+		permissionSelect.setWidth("500px");
 		addAvailablePermissions(permissionSelect);
 		userDetails.getBody().addComponent(permissionSelect);
+		HorizontalLayout actions = new HorizontalLayout();
+		Button btnOk = new Button("Ok");
+		btnOk.addListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				System.out.println(permissionSelect.getData());
+				System.out.println(permissionSelect.getValue());
+			}
+		});
+		Button btnCancel = new Button("Cancel");
+		btnCancel.addListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+			}
+		});
+		actions.addComponent(btnOk);
+		actions.addComponent(btnCancel);
+		userDetails.getBody().addComponent(actions);
 		userConfig.addComponent(userDetails);
 	}
 
@@ -114,6 +128,10 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		permissionSelect.addItem("Project Admin");
 		permissionSelect.addItem("Translator");
 		permissionSelect.addItem("Reviewer");
+		List<String> selected = new ArrayList<String>();
+		selected.add("Translator");
+		permissionSelect.setValue(selected);
+		permissionSelect.setData(selected);
 	}
 
 	private void addUser() {
