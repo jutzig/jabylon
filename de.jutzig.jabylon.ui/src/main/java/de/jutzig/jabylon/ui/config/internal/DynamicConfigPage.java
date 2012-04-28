@@ -30,12 +30,13 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
+import de.jutzig.jabylon.ui.util.DelegatingPreferences;
 import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class DynamicConfigPage implements CrumbTrail {
 
 	private Map<String, ConfigSection> sections;
-	private Preferences rootNode;
+	private DelegatingPreferences rootNode;
 	private CDOTransaction transaction;
 	private CDOObject domainElement;
 	private VerticalLayout layout;
@@ -48,9 +49,9 @@ public class DynamicConfigPage implements CrumbTrail {
 
 	}
 
-	private Preferences initializePreferences(CDOObject domainElement2) {
+	private DelegatingPreferences initializePreferences(CDOObject domainElement2) {
 
-		return PreferencesUtil.scopeFor(domainElement2);
+		return new DelegatingPreferences(PreferencesUtil.scopeFor(domainElement2));
 	}
 
 	private void initSections(Object domainElement) {
@@ -171,8 +172,7 @@ public class DynamicConfigPage implements CrumbTrail {
 
 	@Override
 	public boolean isDirty() {
-		//TODO: check preferences as well
-		return transaction.isDirty();
+		return transaction.isDirty() || rootNode.isDirty();
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 
 	private Form createForm() {
 		Form form = new Form();
-		form.setWriteThrough(false);
+		form.setWriteThrough(true);
 		form.setImmediate(true);
 		form.setFormFieldFactory(new DefaultFieldFactory() {
 
