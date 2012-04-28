@@ -3,15 +3,12 @@
  */
 package de.jutzig.jabylon.ui.components;
 
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.ProgressIndicator;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Window;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -20,14 +17,14 @@ import com.vaadin.ui.Button.ClickListener;
 public class ConfirmationDialog extends Window {
 
 	private Window parent;
-	private Runnable action;
+	private Runnable proceedAction;
+	private Runnable cancelAction;
 
-	public ConfirmationDialog(Window parent, String message, Runnable action) {
+	public ConfirmationDialog(Window parent, String message) {
 		this.parent = parent;
 		setModal(true);
 		setWidth(440, UNITS_PIXELS);
 		setHeight(200, UNITS_PIXELS);
-		this.action = action;
 		createContents(message);
 	}
 	
@@ -36,7 +33,7 @@ public class ConfirmationDialog extends Window {
 		layout.setColumns(2);
 		layout.setRows(2);
 		layout.setMargin(true);
-		layout.setSpacing(true);
+		layout.setSpacing(true); 
 		layout.setSizeFull();
 		
 		Label label = new Label(message);
@@ -47,6 +44,8 @@ public class ConfirmationDialog extends Window {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
+				if(cancelAction!=null)
+					cancelAction.run();
 				parent.removeWindow(ConfirmationDialog.this);
 				
 			}
@@ -54,12 +53,13 @@ public class ConfirmationDialog extends Window {
 		layout.addComponent(cancel);
 		
 		
-		Button ok = new Button("OK");
+		Button ok = new Button("Proceed");
 		ok.addListener(new ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				action.run();
+				if(proceedAction!=null)
+					proceedAction.run();
 				parent.removeWindow(ConfirmationDialog.this);
 				
 			}
@@ -68,5 +68,15 @@ public class ConfirmationDialog extends Window {
 		
 		setContent(layout);
 
+	}
+	
+	public void setCancelAction(Runnable r)
+	{
+		cancelAction = r;
+	}
+	
+	public void setProceedAction(Runnable r)
+	{
+		proceedAction = r;
 	}
 }

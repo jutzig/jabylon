@@ -20,6 +20,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.components.ConfirmationDialog;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
 
 @SuppressWarnings("serial")
@@ -28,7 +29,6 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
     HorizontalLayout layout;
 
     private List<Button> parts;
-    private boolean ignoreDirty;
     private Deque<String> segmentList;
     private List<WeakReference<CrumbListener>> listeners;
 
@@ -43,12 +43,29 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
         setPath((String[]) null);
     }
 
-    public void setPath(String... segments) {
+    public void setPath(final String... segments) {
+    	
+        if (!checkDirty(new Runnable() {
+			
+			@Override
+			public void run() {
+				internalSetPath(segments);
+				
+			}
+		}))
+        {
+            internalSetPath(segments);   	
+        }
+
+
+    }
+    
+    private void internalSetPath(String... segments)
+    {
         // could be optimized: always builds path from scratch
         layout.removeAllComponents();
         parts.clear();
         walkTo(segments);
-
     }
 
     private Button addEntry(CrumbTrail trail) {
@@ -83,54 +100,13 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
         goBack(1);
     }
 
-    private boolean checkDirty() {
+    private boolean checkDirty(Runnable action) {
         CrumbTrail trail = currentCrumb();
-        if(ignoreDirty)
-        {
-            ignoreDirty = false;
-            return false;
-        }
         if (trail.isDirty()) {
-            final Window subwindow = new Window("Unsafed Changes");
-            // ...and make it modal
-            subwindow.setModal(true);
-
-            // Configure the windws layout; by default a VerticalLayout
-            VerticalLayout layout = (VerticalLayout) subwindow.getContent();
-            layout.setMargin(true);
-            layout.setSpacing(true);
-
-            // Add some content; a label and a close-button
-            Label message = new Label("There are unsafed modifications that will be lost if you proceed.\n Do still you want to proceed?");
-            subwindow.addComponent(message);
-
-            Button cancel = new Button("Cancel", new Button.ClickListener() {
-                // inline click-listener
-                public void buttonClick(ClickEvent event) {
-                    // close the window by removing it from the parent window
-                    ignoreDirty = false;
-                    (subwindow.getParent()).removeWindow(subwindow);
-                }
-            });
-
-            Button ok = new Button("OK", new Button.ClickListener() {
-                // inline click-listener
-                public void buttonClick(ClickEvent event) {
-                    // close the window by removing it from the parent window
-                    ignoreDirty = true;
-                    (subwindow.getParent()).removeWindow(subwindow);
-
-                    //TODO: repeat the original request somehow
-                }
-            });
-            // The components added to the window are actually added to the
-            // window's
-            // layout; you can use either. Alignments are set using the layout
-            layout.addComponent(ok);
-            layout.addComponent(cancel);
-
+            final ConfirmationDialog subwindow = new ConfirmationDialog(getWindow(),"There are unsafed modifications that will be lost if you proceed.\n Do still you want to proceed?");
+            subwindow.setProceedAction(action);
+            subwindow.setCaption("Unsafed Changes");
             getWindow().addWindow(subwindow);
-
             return true;
         }
         return false;
@@ -144,9 +120,23 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
     }
 
     @Override
-    public void goBack(int steps) {
-        if (checkDirty())
-            return;
+    public void goBack(final int steps) {
+        if (!checkDirty(new Runnable() {
+			
+			@Override
+			public void run() {
+				internalGoBack(steps);
+				
+			}
+		}))
+        {
+        	internalGoBack(steps);       	
+        }
+
+    }
+    
+    private void internalGoBack(int steps)
+    {
         for (int i = 0; i < steps; i++) {
             segmentList.removeLast();
         }
@@ -165,15 +155,26 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
             MainDashboard.getCurrent().setMainComponent(trail.createContents());
             fireCrumbChanged(trail);
         }
-
-
     }
 
     @Override
-    public void walkTo(String... steps) {
-        if (checkDirty())
-            return;
+    public void walkTo(final String... steps) {
+        if (!checkDirty(new Runnable() {
+			
+			@Override
+			public void run() {
+				internalWalkTo(steps);
+				
+			}
+		}))
+        {
+        	internalWalkTo(steps);        	
+        }
 
+    }
+    
+    private void internalWalkTo(String... steps)
+    {
         Button link = null;
         CrumbTrail currentTrail;
         if (parts.isEmpty()) {
@@ -206,7 +207,6 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
         MainDashboard.getCurrent().setMainComponent(currentTrail.createContents());
         fireCrumbChanged(currentTrail);
-
     }
 
     @Override

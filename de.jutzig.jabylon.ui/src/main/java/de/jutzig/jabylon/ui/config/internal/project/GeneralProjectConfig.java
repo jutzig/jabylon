@@ -66,6 +66,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	private EditableTable table;
 	private Table localeTable;
 	private Component slaveTable;
+	private String projectName;
 
 	/*
 	 * (non-Javadoc)
@@ -79,7 +80,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		layout.setRows(3);
 		layout.setSpacing(true);
 		form = new Form();
-		form.setWriteThrough(false);
+		form.setWriteThrough(true);
 		form.setImmediate(true);
 		layout.addComponent(form,0,0,1,0);
 
@@ -189,11 +190,10 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	 */
 	@Override
 	public void commit(Preferences config) {
-		String name = version.getProject().getName();
 		form.commit();
 		String newName = version.getProject().getName();
-		if (!newName.equals(name)) {
-			renameProject(name, newName);
+		if (!newName.equals(projectName)) {
+			renameProject(projectName, newName);
 		}
 	}
 
@@ -215,6 +215,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	@Override
 	protected void init(Preferences config) {
 		Project object = getDomainObject();
+		projectName = object.getName();
 		version = object.getMaster();
 		EObjectItem item = new EObjectItem(object);
 		form.setItemDataSource(item);
