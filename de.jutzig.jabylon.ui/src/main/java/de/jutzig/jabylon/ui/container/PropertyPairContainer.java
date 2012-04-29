@@ -14,9 +14,9 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 
+@SuppressWarnings("serial")
 public class PropertyPairContainer extends AbstractContainer {
 
-	
 	private static final String SOURCE_ID = "source.id";
 	private static final String TARGET_ID = "target.id";
 	private static final String SOURCE_COMMENT  = "source.comment";
@@ -28,16 +28,15 @@ public class PropertyPairContainer extends AbstractContainer {
 		IDS.add(TARGET_ID);
 		IDS.add(SOURCE_COMMENT);
 		IDS.add(TARGET_COMMENT);
-		
 	}
 	private PropertyFile target;
 	private PropertyFile source;
-	
+
 	public PropertyPairContainer(PropertyFile source, PropertyFile target) {
 		this.target = target;
 		this.source = source;
 	}
-	
+
 	@Override
 	public Property getContainerProperty(Object itemId, Object propertyId) {
 		if(propertyId==SOURCE_ID)
@@ -56,10 +55,10 @@ public class PropertyPairContainer extends AbstractContainer {
 		{
 			return new EObjectProperty(getOrCreateTargetProperty(itemId), PropertiesPackage.Literals.PROPERTY__COMMENT);
 		}
-		
+
 	}
-	
-	
+
+
 	private de.jutzig.jabylon.properties.Property getOrCreateTargetProperty(Object itemId)
 	{
 		de.jutzig.jabylon.properties.Property property = target.getProperty(itemId.toString());
@@ -73,7 +72,7 @@ public class PropertyPairContainer extends AbstractContainer {
 		}
 		return property;
 	}
-	
+
 	@Override
 	public List<String> getContainerPropertyIds() {
 		return IDS;
@@ -90,7 +89,7 @@ public class PropertyPairContainer extends AbstractContainer {
 	@Override
 	public Collection<?> getItemIds() {
 		return Collections2.transform(source.getProperties(), new Function<de.jutzig.jabylon.properties.Property,String>() {
-			
+
 			@Override
 			public String apply(de.jutzig.jabylon.properties.Property from) {
 				return from.getKey();
@@ -115,19 +114,16 @@ public class PropertyPairContainer extends AbstractContainer {
 
 	@Override
 	public Item addItem(Object itemId) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Cannot add new items to this container");
 	}
 
 	@Override
 	public Object addItem() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Cannot add new items to this container");
 	}
 
 	@Override
-	public boolean removeItem(Object itemId)
-			throws UnsupportedOperationException {
+	public boolean removeItem(Object itemId) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -152,25 +148,22 @@ public class PropertyPairContainer extends AbstractContainer {
 		return false;
 	}
 
-	
+
 	public static class PropertyPairItem implements Item
 	{
-		
+
 		private Property source;
 		private Property target;
 		private Property sourceComment;
 		private Property targetComment;
-		
+
 		private de.jutzig.jabylon.properties.Property sourceProperty;
 		private de.jutzig.jabylon.properties.Property targetProperty;
-		
 
 
-		
-		
 		public PropertyPairItem(de.jutzig.jabylon.properties.Property source, de.jutzig.jabylon.properties.Property target) {
 			super();
-			
+
 			this.source = new EObjectProperty(source,PropertiesPackage.Literals.PROPERTY__VALUE);
 			this.target = new EObjectProperty(target,PropertiesPackage.Literals.PROPERTY__VALUE);
 			this.sourceComment = new EObjectProperty(source,PropertiesPackage.Literals.PROPERTY__COMMENT);
@@ -198,50 +191,50 @@ public class PropertyPairContainer extends AbstractContainer {
 				return sourceComment;
 			}
 		}
-		
+
 		@Override
 		public Collection<?> getItemPropertyIds() {
 			return IDS;
 		}
-		
+
 		@Override
 		public boolean addItemProperty(Object id, Property property)
 				throws UnsupportedOperationException {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		@Override
 		public boolean removeItemProperty(Object id)
 				throws UnsupportedOperationException {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public de.jutzig.jabylon.properties.Property getSourceProperty() {
 			return sourceProperty;
 		}
-		
+
 		public de.jutzig.jabylon.properties.Property getTargetProperty() {
 			return targetProperty;
 		}
-		
-		
+
+
 		public Property getTarget() {
 			return target;
 		}
-		
+
 		public Property getSource() {
 			return source;
 		}
-		
+
 		public Property getSourceComment() {
 			return sourceComment;
 		}
-		
+
 		public Property getTargetComment() {
 			return targetComment;
 		}
-		
+
 	}
 }
