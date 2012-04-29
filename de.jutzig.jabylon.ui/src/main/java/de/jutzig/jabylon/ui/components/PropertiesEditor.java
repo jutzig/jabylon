@@ -5,7 +5,6 @@ import org.eclipse.emf.cdo.util.CommitException;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.ui.Button;
@@ -28,6 +27,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
+@SuppressWarnings("serial")
 public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
 
 	private PropertyFileDescriptor descriptor;
@@ -48,6 +48,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	}
 
+	@Override
 	public Component createContents() {
 		layout = new GridLayout();
 		layout.setColumns(2);
@@ -142,7 +143,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 						}
 					});
 					setDirty(false);
-					layout.getWindow().showNotification("File safed", descriptor.getLocation().lastSegment());
+					layout.getWindow().showNotification("File saved", descriptor.getLocation().lastSegment());
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -209,7 +210,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		translatedComment.setPropertyDataSource(item.getTargetComment());
 		orignalComment.setPropertyDataSource(item.getSourceComment());
-		
+
 	}
 
 }
