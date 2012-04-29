@@ -9,12 +9,16 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
@@ -34,11 +38,29 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
 
     public BreadCrumbImpl() {
         listeners = new ArrayList<WeakReference<CrumbListener>>(1);
+        HorizontalLayout mainLayout = new HorizontalLayout();
         parts = new ArrayList<Button>();
         layout = new HorizontalLayout();
         layout.setSpacing(true);
+        mainLayout.setWidth(100,HorizontalLayout.UNITS_PERCENTAGE);
         segmentList = new ArrayDeque<String>();
-        setCompositionRoot(layout);
+        
+        mainLayout.addComponent(layout);
+        mainLayout.setExpandRatio(layout, 3.0f);
+        
+        
+        final TextField search = new TextField();
+        search.setColumns(10);
+        search.setInputPrompt("search");
+        search.addShortcutListener(new ShortcutListener("Shortcut Name", ShortcutAction.KeyCode.ENTER, null) {
+            @Override
+            public void handleAction(Object sender, Object target) {
+            	MainDashboard.getCurrent().getQueryService().search(search.getValue().toString());
+            }
+        });
+        mainLayout.addComponent(search);
+        mainLayout.setComponentAlignment(search, Alignment.MIDDLE_RIGHT);
+        setCompositionRoot(mainLayout);
         setStyleName("breadcrumbs");
         setPath((String[]) null);
     }

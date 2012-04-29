@@ -43,22 +43,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 	 */
 	public CDOSession getSession() {
 		if (session == null) {
-			IManagedContainer container = IPluginContainer.INSTANCE;
-
-			if (connector == null)
-				connector = JVMUtil.getConnector(container, "default");
-
-			CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
-			config.setConnector(connector);
-			config.setRepositoryName(REPOSITORY_NAME);
-			// config.setLegacySupportEnabled(false);
-
-			// see explanation below
-			// config.setLazyPopulatingPackageRegistry();
-			session = config.openSession();
-			session.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
-			session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
-			session.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
+			session = createSession();
 		}
 		return session;
 	}
@@ -76,6 +61,23 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 	@Override
 	public CDOView openView() {
 		return getSession().openView();
+	}
+
+	@Override
+	public CDOSession createSession() {
+		IManagedContainer container = IPluginContainer.INSTANCE;
+
+		if (connector == null)
+			connector = JVMUtil.getConnector(container, "default");
+
+		CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
+		config.setConnector(connector);
+		config.setRepositoryName(REPOSITORY_NAME);
+		CDOSession theSession = config.openSession();
+		theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
+		theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
+		theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
+		return theSession;
 	}
 
 }

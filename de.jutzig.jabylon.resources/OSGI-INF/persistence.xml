@@ -4,4 +4,6 @@
       <provide interface="de.jutzig.jabylon.resources.persistence.PropertyPersistenceService"/>
    </service>
    <implementation class="de.jutzig.jabylon.resources.persistence.internal.PropertiesPersistenceServiceImpl"/>
+   <reference bind="addPropertiesListener" cardinality="0..n" interface="de.jutzig.jabylon.resources.changes.PropertiesListener" name="PropertiesListener" policy="static" unbind="removePropertiesListener"/>
+   <reference bind="setRepositoryConnector" cardinality="1..1" interface="de.jutzig.jabylon.cdo.connector.RepositoryConnector" name="RepositoryConnector" policy="static" unbind="unsetRepositoryConnector"/>
 </scr:component>
