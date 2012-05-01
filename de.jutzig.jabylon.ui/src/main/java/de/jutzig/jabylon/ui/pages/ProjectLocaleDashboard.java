@@ -32,6 +32,7 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.search.SearchResultPage;
 
 public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
@@ -131,6 +132,10 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public CrumbTrail walkTo(String path) {
+		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
+		{
+			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), locale);
+		}
 		return new PropertiesEditor(getDescriptor(path));
 	}
 

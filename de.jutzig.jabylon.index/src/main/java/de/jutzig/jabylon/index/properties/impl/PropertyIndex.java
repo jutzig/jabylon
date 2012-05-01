@@ -21,14 +21,14 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
+import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.changes.PropertiesListener;
 
 public class PropertyIndex extends Job implements PropertiesListener {
 
-
 	BlockingQueue<DocumentTuple> writes;
-	
+
 	public PropertyIndex() {
 		super("Index Job");
 		writes = new ArrayBlockingQueue<DocumentTuple>(50);
@@ -36,23 +36,23 @@ public class PropertyIndex extends Job implements PropertiesListener {
 
 	private IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-		
+
 		return new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_29), MaxFieldLength.UNLIMITED);
 	}
 
 	@Override
 	public void propertyFileAdded(PropertyFileDescriptor descriptor) {
 
-			PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
-			Document document = analyzer.createDocument(descriptor);
-			try {
-				writes.put(new DocumentTuple(document));
-				schedule();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
+		List<Document> documents = analyzer.createDocuments(descriptor);
+		try {
+			writes.put(new DocumentTuple(documents));
+			schedule();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -64,21 +64,21 @@ public class PropertyIndex extends Job implements PropertiesListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
 	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes) {
 		PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
-		Document document = analyzer.createDocument(descriptor);
+		List<Document> documents = analyzer.createDocuments(descriptor);
 		try {
-			writes.put(new DocumentTuple(descriptor,document));
+			writes.put(new DocumentTuple(descriptor, documents));
 			schedule();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -86,31 +86,33 @@ public class PropertyIndex extends Job implements PropertiesListener {
 		IndexWriter writer = null;
 		try {
 			writer = createIndexWriter();
-			while(true)
-			{
+			while (true) {
 				DocumentTuple documentTuple = writes.poll();
-				if(documentTuple==null)
+				if (documentTuple == null)
 					break;
-				Document document = documentTuple.getDocument();
+				List<Document> documents = documentTuple.getDocuments();
 				switch (documentTuple.getAction()) {
 				case CREATE:
-					writer.addDocument(document);
+					for (Document document : documents) {
+						writer.addDocument(document);
+					}
 					break;
 				case DELETE:
-					writer.deleteDocuments(new Term(PropertyFileAnalyzer.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
-					break;					
+					writer.deleteDocuments(new Term(QueryService.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
+					break;
 				case REPLACE:
-					writer.deleteDocuments(new Term(PropertyFileAnalyzer.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
-					writer.addDocument(document);
+					writer.deleteDocuments(new Term(QueryService.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
+					for (Document document : documents) {
+						writer.addDocument(document);
+					}
 					break;
 
 				default:
 					break;
 				}
 
-
 			}
-			
+
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,10 +122,9 @@ public class PropertyIndex extends Job implements PropertiesListener {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			try {
-				if(writer!=null)
+				if (writer != null)
 					writer.close();
 			} catch (CorruptIndexException e) {
 				// TODO Auto-generated catch block
@@ -136,53 +137,52 @@ public class PropertyIndex extends Job implements PropertiesListener {
 
 		return Status.OK_STATUS;
 	}
-	
-	
+
 	@Override
 	public boolean belongsTo(Object family) {
-		return IndexWriter.class==family;
+		return IndexWriter.class == family;
 	}
-	
-	
+
 }
 
-class DocumentTuple
-{
-	private Document doc;
+class DocumentTuple {
+	private List<Document> docs;
 	private DocumentAction action;
 	private PropertyFileDescriptor descriptor;
-	public DocumentTuple(Document doc) {
+
+	public DocumentTuple(List<Document> docs) {
 		super();
-		this.doc = doc;
+		this.docs = docs;
 		this.action = DocumentAction.CREATE;
 	}
-	
+
 	public DocumentTuple(PropertyFileDescriptor descriptor) {
 		super();
 		this.descriptor = descriptor;
 		this.action = DocumentAction.DELETE;
 	}
-	
-	public DocumentTuple(PropertyFileDescriptor descriptor, Document doc) {
+
+	public DocumentTuple(PropertyFileDescriptor descriptor, List<Document> docs) {
 		super();
 		this.descriptor = descriptor;
-		this.doc = doc;
+		this.docs = docs;
 		this.action = DocumentAction.REPLACE;
 	}
-	
+
 	public DocumentAction getAction() {
 		return action;
 	}
-	public Document getDocument() {
-		return doc;
+
+	public List<Document> getDocuments() {
+		return docs;
 	}
-	
+
 	public PropertyFileDescriptor getDescriptor() {
 		return descriptor;
 	}
-	
+
 }
 
-enum DocumentAction{
-	CREATE,DELETE,REPLACE;
+enum DocumentAction {
+	CREATE, DELETE, REPLACE;
 }

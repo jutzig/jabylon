@@ -19,7 +19,8 @@ Import-Package: org.apache.lucene;version="2.9.1",
  org.osgi.framework;version="1.6.0"
 Require-Bundle: de.jutzig.jabylon.properties;bundle-version="1.0.0",
  de.jutzig.jabylon.resources;bundle-version="1.0.0",
- de.jutzig.jabylon.cdo.server;bundle-version="1.0.0"
+ de.jutzig.jabylon.cdo.server;bundle-version="1.0.0",
+ org.eclipse.emf.cdo;bundle-version="4.0.1"
 Bundle-Activator: de.jutzig.jabylon.index.properties.IndexActivator
 Service-Component: OSGI-INF/indexer.xml, OSGI-INF/queryservice.xml
 Export-Package: de.jutzig.jabylon.index.properties

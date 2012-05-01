@@ -29,6 +29,7 @@ import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
 import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
+import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
@@ -195,6 +196,10 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public CrumbTrail walkTo(String path) {
+		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
+		{
+			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), workspace);
+		}
 		ProjectDashboard dashboard = new ProjectDashboard(path);
 		// setMainComponent(dashboard);
 		return dashboard;

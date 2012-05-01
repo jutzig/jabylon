@@ -31,6 +31,7 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class ProjectDashboard implements CrumbTrail, ClickListener {
@@ -163,6 +164,10 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public CrumbTrail walkTo(String path) {
+		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
+		{
+			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), version);
+		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, path);
 		if (path.startsWith("?")) {
 			version = getProjectVersion(project, path.substring(1));

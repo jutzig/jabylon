@@ -19,13 +19,12 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ConfirmationDialog;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
+import de.jutzig.jabylon.ui.search.SearchResultPage;
 
 @SuppressWarnings("serial")
 public class BreadCrumbImpl extends CustomComponent implements ClickListener,
@@ -55,7 +54,13 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener,
         search.addShortcutListener(new ShortcutListener("Shortcut Name", ShortcutAction.KeyCode.ENTER, null) {
             @Override
             public void handleAction(Object sender, Object target) {
-            	MainDashboard.getCurrent().getQueryService().search(search.getValue().toString());
+            	if(currentTrail() instanceof SearchResultPage)
+            	{
+            		SearchResultPage page = (SearchResultPage)currentTrail();
+            		page.search(search.getValue().toString());
+            	}
+            	else
+            		walkTo(SearchResultPage.SEARCH_ADDRESS+search.getValue());
             }
         });
         mainLayout.addComponent(search);
