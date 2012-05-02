@@ -143,7 +143,7 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 			return;
 		String[] split = userInfo.split(":");
 		projectBean.setUsername(split[0]);
-		if(split.length>0)
+		if(split.length>1)
 			projectBean.setPassword(split[1]);
 
 	}

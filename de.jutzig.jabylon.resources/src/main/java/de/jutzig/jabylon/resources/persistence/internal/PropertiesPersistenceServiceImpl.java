@@ -14,14 +14,29 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
+import org.eclipse.emf.cdo.eresource.CDOResource;
+import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.util.CDOLazyContentAdapter;
+import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyType;
+import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 import de.jutzig.jabylon.resources.changes.PropertiesListener;
 import de.jutzig.jabylon.resources.diff.PropertyDifferentiator;
@@ -29,12 +44,14 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
 	private List<WeakReference<PropertiesListener>> listeners;
 	private BlockingQueue<PropertyTuple> queue;
+
+	private Workspace workspace;
 
 	public PropertiesPersistenceServiceImpl() {
 		listeners = new ArrayList<WeakReference<PropertiesListener>>();
@@ -45,9 +62,74 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	}
 
+	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
+		CDOSession session = repositoryConnector.createSession();
+		session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
+		CDOView view = session.openView();
+		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
+		workspace = (Workspace) resource.getContents().get(0);
+		workspace.eAdapters().add(new EContentAdapter() {
+			@Override
+			public void notifyChanged(Notification notification) {
+
+				super.notifyChanged(notification);
+				if (notification.getNotifier() instanceof ProjectVersion) {
+					ProjectVersion version = (ProjectVersion) notification.getNotifier();
+					if (notification.getEventType() == Notification.ADD) {
+						Object object = (Object) notification.getNewValue();
+
+						if (object instanceof ProjectLocale) {
+							ProjectLocale locale = (ProjectLocale) object;
+							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+								firePropertiesAdded(propertyFileDescriptor);
+
+							}
+						}
+
+					}
+
+				}
+				if (notification.getNotifier() instanceof ProjectLocale) {
+					ProjectLocale locale = (ProjectLocale) notification.getNotifier();
+					if (notification.getEventType() == Notification.ADD
+							&& PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
+
+						Object object = notification.getNewValue();
+						if (object instanceof PropertyFileDescriptor) {
+							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+							firePropertiesAdded(descriptor);
+						}
+
+					}
+				}
+				
+			}
+			
+			@Override
+			protected void removeAdapter(Notifier notifier) {
+				if (notifier instanceof CDOObject) {
+					CDOObject o = (CDOObject) notifier;
+					if(!o.cdoInvalid())
+						super.removeAdapter(notifier);
+					
+				}
+			}
+		});
+	}
+
+	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
+		CDOView view = workspace.cdoView();
+		org.eclipse.emf.cdo.session.CDOSession session = view.getSession();
+		LifecycleUtil.deactivate(view);
+		LifecycleUtil.deactivate(session);
+
+		session = null;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
 	 * de.jutzig.jabylon.properties.PropertyFile)
@@ -64,7 +146,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * addPropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -77,7 +159,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * removePropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -138,8 +220,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
 		Map<String, Object> options = new HashMap<String, Object>();
-		if (descriptor.getProjectLocale()!=null && descriptor.getProjectLocale().getProjectVersion()!=null &&
-				descriptor.getProjectLocale().getProjectVersion().getProject()!=null) {
+		if (descriptor.getProjectLocale() != null && descriptor.getProjectLocale().getProjectVersion() != null
+				&& descriptor.getProjectLocale().getProjectVersion().getProject() != null) {
 			ProjectVersion version = descriptor.getProjectLocale().getProjectVersion();
 			Project project = version.getProject();
 			PropertyType propertyType = project.getPropertyType();
