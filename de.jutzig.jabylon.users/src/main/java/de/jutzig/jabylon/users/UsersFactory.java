@@ -62,6 +62,15 @@ public interface UsersFactory extends EFactory {
 	AuthType createAuthType();
 
 	/**
+	 * Returns a new object of class '<em>User Management</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>User Management</em>'.
+	 * @generated
+	 */
+	UserManagement createUserManagement();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

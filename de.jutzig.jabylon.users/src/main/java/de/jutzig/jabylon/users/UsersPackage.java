@@ -79,13 +79,31 @@ public interface UsersPackage extends EPackage {
 	int USER__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__ROLES = 1;
+
+	/**
+	 * The feature id for the '<em><b>Permissions</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__PERMISSIONS = 2;
+
+	/**
 	 * The number of structural features of the '<em>User</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER_FEATURE_COUNT = 1;
+	int USER_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.RoleImpl <em>Role</em>}' class.
@@ -209,6 +227,53 @@ public interface UsersPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.UserManagementImpl <em>User Management</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.users.impl.UserManagementImpl
+	 * @see de.jutzig.jabylon.users.impl.UsersPackageImpl#getUserManagement()
+	 * @generated
+	 */
+	int USER_MANAGEMENT = 4;
+
+	/**
+	 * The feature id for the '<em><b>Users</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_MANAGEMENT__USERS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Roles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_MANAGEMENT__ROLES = 1;
+
+	/**
+	 * The feature id for the '<em><b>Permissions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_MANAGEMENT__PERMISSIONS = 2;
+
+	/**
+	 * The number of structural features of the '<em>User Management</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_MANAGEMENT_FEATURE_COUNT = 3;
+
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.users.User <em>User</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -228,6 +293,28 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUser_Name();
+
+	/**
+	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.users.User#getRoles <em>Roles</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Roles</em>'.
+	 * @see de.jutzig.jabylon.users.User#getRoles()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EReference getUser_Roles();
+
+	/**
+	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.users.User#getPermissions <em>Permissions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Permissions</em>'.
+	 * @see de.jutzig.jabylon.users.User#getPermissions()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EReference getUser_Permissions();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.users.Role <em>Role</em>}'.
@@ -337,6 +424,49 @@ public interface UsersPackage extends EPackage {
 	EAttribute getAuthType_AuthModule();
 
 	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.users.UserManagement <em>User Management</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>User Management</em>'.
+	 * @see de.jutzig.jabylon.users.UserManagement
+	 * @generated
+	 */
+	EClass getUserManagement();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.users.UserManagement#getUsers <em>Users</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Users</em>'.
+	 * @see de.jutzig.jabylon.users.UserManagement#getUsers()
+	 * @see #getUserManagement()
+	 * @generated
+	 */
+	EReference getUserManagement_Users();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.users.UserManagement#getRoles <em>Roles</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Roles</em>'.
+	 * @see de.jutzig.jabylon.users.UserManagement#getRoles()
+	 * @see #getUserManagement()
+	 * @generated
+	 */
+	EReference getUserManagement_Roles();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.users.UserManagement#getPermissions <em>Permissions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Permissions</em>'.
+	 * @see de.jutzig.jabylon.users.UserManagement#getPermissions()
+	 * @see #getUserManagement()
+	 * @generated
+	 */
+	EReference getUserManagement_Permissions();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -375,6 +505,22 @@ public interface UsersPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute USER__NAME = eINSTANCE.getUser_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Roles</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER__ROLES = eINSTANCE.getUser_Roles();
+
+		/**
+		 * The meta object literal for the '<em><b>Permissions</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER__PERMISSIONS = eINSTANCE.getUser_Permissions();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.users.impl.RoleImpl <em>Role</em>}' class.
@@ -461,6 +607,40 @@ public interface UsersPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute AUTH_TYPE__AUTH_MODULE = eINSTANCE.getAuthType_AuthModule();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.users.impl.UserManagementImpl <em>User Management</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.users.impl.UserManagementImpl
+		 * @see de.jutzig.jabylon.users.impl.UsersPackageImpl#getUserManagement()
+		 * @generated
+		 */
+		EClass USER_MANAGEMENT = eINSTANCE.getUserManagement();
+
+		/**
+		 * The meta object literal for the '<em><b>Users</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_MANAGEMENT__USERS = eINSTANCE.getUserManagement_Users();
+
+		/**
+		 * The meta object literal for the '<em><b>Roles</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_MANAGEMENT__ROLES = eINSTANCE.getUserManagement_Roles();
+
+		/**
+		 * The meta object literal for the '<em><b>Permissions</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_MANAGEMENT__PERMISSIONS = eINSTANCE.getUserManagement_Permissions();
 
 	}
 

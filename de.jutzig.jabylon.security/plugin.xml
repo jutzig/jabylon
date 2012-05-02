@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 <plugin
 >
+   <extension-point id="permission" name="Permission" schema="schema/permission.exsd"/>
+   <extension-point id="role" name="Role" schema="schema/role.exsd"/>
    <extension
          id="dbLoginModule"
          point="org.eclipse.equinox.security.loginModule">
@@ -23,5 +25,29 @@
             callbackHandlerId="de.jutzig.jabylon.security.callbackHandler"
             configName="DB">
       </callbackHandlerMapping>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.security.permission">
+      <permission
+            description="Edit projects"
+            name="EDIT_PROJECTS">
+      </permission>
+      <permission
+            description="Edit users"
+            name="EDIT_USERS">
+      </permission>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.security.role">
+      <role
+            description="Administrator"
+            name="ADMINISTRATOR">
+         <permission_id
+               id="EDIT_PROJECTS">
+         </permission_id>
+         <permission_id
+               id="EDIT_USERS">
+         </permission_id>
+      </role>
    </extension>
 </plugin>

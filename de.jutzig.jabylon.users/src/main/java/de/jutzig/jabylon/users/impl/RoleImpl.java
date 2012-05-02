@@ -6,25 +6,15 @@
  */
 package de.jutzig.jabylon.users.impl;
 
+import java.util.Collection;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.UsersPackage;
-
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,6 +76,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return (String)eDynamicGet(UsersPackage.ROLE__NAME, UsersPackage.Literals.ROLE__NAME, true, true);
 	}
@@ -95,6 +86,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		eDynamicSet(UsersPackage.ROLE__NAME, UsersPackage.Literals.ROLE__NAME, newName);
 	}
@@ -104,6 +96,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Role getParent() {
 		return (Role)eDynamicGet(UsersPackage.ROLE__PARENT, UsersPackage.Literals.ROLE__PARENT, true, true);
 	}
@@ -122,6 +115,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setParent(Role newParent) {
 		eDynamicSet(UsersPackage.ROLE__PARENT, UsersPackage.Literals.ROLE__PARENT, newParent);
 	}
@@ -131,6 +125,7 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<Permission> getPermissions() {
 		return (EList<Permission>)eDynamicGet(UsersPackage.ROLE__PERMISSIONS, UsersPackage.Literals.ROLE__PERMISSIONS, true, true);
@@ -139,12 +134,15 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	public void getAllPermissions() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+	@Override
+	public EList<Permission> getAllPermissions() {
+		EList<Permission> allPermissions = getPermissions();
+		if(getParent()!=null) {
+			allPermissions.addAll(getParent().getPermissions());
+		}
+		return allPermissions;
 	}
 
 	/**

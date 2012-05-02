@@ -104,6 +104,6 @@ public interface Role extends CDOObject {
 	 * @model kind="operation"
 	 * @generated
 	 */
-	void getAllPermissions();
+	EList<Permission> getAllPermissions();
 
 } // Role

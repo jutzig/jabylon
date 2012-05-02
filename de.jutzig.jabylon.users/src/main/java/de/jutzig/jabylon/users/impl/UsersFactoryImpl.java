@@ -64,6 +64,7 @@ public class UsersFactoryImpl extends EFactoryImpl implements UsersFactory {
 			case UsersPackage.ROLE: return (EObject)createRole();
 			case UsersPackage.PERMISSION: return (EObject)createPermission();
 			case UsersPackage.AUTH_TYPE: return (EObject)createAuthType();
+			case UsersPackage.USER_MANAGEMENT: return (EObject)createUserManagement();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -107,6 +108,16 @@ public class UsersFactoryImpl extends EFactoryImpl implements UsersFactory {
 	public AuthType createAuthType() {
 		AuthTypeImpl authType = new AuthTypeImpl();
 		return authType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public UserManagement createUserManagement() {
+		UserManagementImpl userManagement = new UserManagementImpl();
+		return userManagement;
 	}
 
 	/**

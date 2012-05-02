@@ -6,7 +6,7 @@
  */
 package de.jutzig.jabylon.users.tests;
 
-import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersFactory;
 
 import junit.framework.TestCase;
@@ -15,25 +15,19 @@ import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>User</b></em>'.
+ * A test case for the model object '<em><b>User Management</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following operations are tested:
- * <ul>
- *   <li>{@link de.jutzig.jabylon.users.User#getAllPermissions() <em>Get All Permissions</em>}</li>
- * </ul>
- * </p>
  * @generated
  */
-public class UserTest extends TestCase {
+public class UserManagementTest extends TestCase {
 
 	/**
-	 * The fixture for this User test case.
+	 * The fixture for this User Management test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected User fixture = null;
+	protected UserManagement fixture = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -41,36 +35,36 @@ public class UserTest extends TestCase {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(UserTest.class);
+		TestRunner.run(UserManagementTest.class);
 	}
 
 	/**
-	 * Constructs a new User test case with the given name.
+	 * Constructs a new User Management test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UserTest(String name) {
+	public UserManagementTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this User test case.
+	 * Sets the fixture for this User Management test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(User fixture) {
+	protected void setFixture(UserManagement fixture) {
 		this.fixture = fixture;
 	}
 
 	/**
-	 * Returns the fixture for this User test case.
+	 * Returns the fixture for this User Management test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected User getFixture() {
+	protected UserManagement getFixture() {
 		return fixture;
 	}
 
@@ -82,7 +76,7 @@ public class UserTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(UsersFactory.eINSTANCE.createUser());
+		setFixture(UsersFactory.eINSTANCE.createUserManagement());
 	}
 
 	/**
@@ -96,17 +90,4 @@ public class UserTest extends TestCase {
 		setFixture(null);
 	}
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.users.User#getAllPermissions() <em>Get All Permissions</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.users.User#getAllPermissions()
-	 * @generated
-	 */
-	public void testGetAllPermissions() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-} //UserTest
+} //UserManagementTest

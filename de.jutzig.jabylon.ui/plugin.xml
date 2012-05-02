@@ -98,4 +98,15 @@
             tabID="locales">
       </tab>
    </extension>
+   <extension
+         point="de.jutzig.jabylon.security.permission">
+      <permission
+            description="Translate projects"
+            name="TRANSLATOR">
+      </permission>
+      <permission
+            description="Review projects"
+            name="REVIEWER">
+      </permission>
+   </extension>
 </plugin>

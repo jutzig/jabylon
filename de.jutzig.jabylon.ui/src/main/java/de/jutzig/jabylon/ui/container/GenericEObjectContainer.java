@@ -18,14 +18,15 @@ import com.vaadin.data.util.AbstractInMemoryContainer;
 
 import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 
+@SuppressWarnings("serial")
 public class GenericEObjectContainer<T extends EObject> extends AbstractInMemoryContainer<T, EStructuralFeature, Item> implements Container.ItemSetChangeNotifier{
 
 	private EObject parent;
 	private EReference contentReference;
 	private EList<T> contents;
-	
-	
-	
+
+
+
 	public GenericEObjectContainer(EObject parent, EReference contents) {
 		super();
 		this.parent = parent;
@@ -37,7 +38,7 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 					//TODO: can probably do this more fine grained
 					fireItemSetChange();
 				}
-					
+
 			}
 		}));
 		this.contentReference = contents;
@@ -49,7 +50,7 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 		return clazz.getEAllStructuralFeatures();
 	}
 
-	
+
 	@Override
 	protected List<T> getAllItemIds() {
 		return getContents();
@@ -60,7 +61,7 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 		if(contents==null)
 			contents = (EList<T>) parent.eGet(contentReference);
 		return contents;
-		
+
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 	public boolean containsId(Object itemId) {
 		return getContents().contains(itemId);
 	}
-	
+
 	public EObject getParent() {
 		return parent;
 	}
