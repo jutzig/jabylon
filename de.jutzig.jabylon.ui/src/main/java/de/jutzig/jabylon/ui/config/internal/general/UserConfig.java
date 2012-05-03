@@ -131,17 +131,13 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 				System.out.println(event.getProperty());
 			}
 		});
-		addAvailablePermissions(permissionSelect);
-		permissionSelect.setValue(new HashSet<Permission>(selectedUser.getAllPermissions()));
-		userDetails.getBody().addComponent(permissionSelect);
-		userConfig.addComponent(userDetails);
-	}
-
-	private void addAvailablePermissions(TwinColSelect permissionSelect) {
 		GenericEObjectContainer<Permission> ds = new GenericEObjectContainer<Permission>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
 		permissionSelect.setContainerDataSource(ds);
 		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
 		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.PERMISSION__DESCRIPTION);
+		permissionSelect.setValue(new HashSet<Permission>(selectedUser.getAllPermissions()));
+		userDetails.getBody().addComponent(permissionSelect);
+		userConfig.addComponent(userDetails);
 	}
 
 	private void addUser() {
@@ -223,11 +219,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	}
 
 	private Role addOrUpdateAdminRole() {
-		Role adminRole = null;
-		for(Role role : userManagement.getRoles()) {
-			if(role.getName().equals("Administrator"))
-				adminRole = role;
-		}
+		Role adminRole = userManagement.findRoleByName("Administrator");
 
 		if(adminRole==null)
 			return addAdminRole();
@@ -284,6 +276,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
 		User admin = UsersFactory.eINSTANCE.createUser();
 		admin.setName("admin");
+		admin.setPassword("changeme");
 		admin.getRoles().add(adminRole);
 		writeableUserManagement.getUsers().add(admin);
 		saveCommit(transaction);
