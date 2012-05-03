@@ -1,7 +1,6 @@
 package de.jutzig.jabylon.cdo.server;
 
 import java.io.File;
-import java.net.URL;
 
 public class ServerConstants {
 
@@ -14,7 +13,11 @@ public class ServerConstants {
 	static {
 		String tmpWorkingDir;
 		try {
-			tmpWorkingDir = (new File((new URL(System.getProperty("osgi.instance.area", "file:/"+System.getProperty("user.home") + "/jabylon"))).getFile())).getCanonicalPath();
+			String path = System.getProperty("osgi.instance.area", System.getProperty("user.home"));
+			if(path.startsWith("file:")) //eclipse does this when using variables in a launch config
+				path = path.substring("file:".length());
+			File instanceArea = new File(path);
+			tmpWorkingDir = instanceArea.getCanonicalPath();
 		} catch (Exception e) {
 			tmpWorkingDir = System.getProperty("user.home") + "/jabylon";
 		}
