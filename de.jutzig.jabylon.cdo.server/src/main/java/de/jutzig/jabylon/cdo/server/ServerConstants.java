@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.cdo.server;
 
+import java.io.File;
 import java.net.URL;
 
 public class ServerConstants {
@@ -13,7 +14,7 @@ public class ServerConstants {
 	static {
 		String tmpWorkingDir;
 		try {
-			tmpWorkingDir = (new URL(System.getProperty("osgi.instance.area", "file:/"+System.getProperty("user.home") + "/jabylon"))).getFile();
+			tmpWorkingDir = (new File((new URL(System.getProperty("osgi.instance.area", "file:/"+System.getProperty("user.home") + "/jabylon"))).getFile())).getCanonicalPath();
 		} catch (Exception e) {
 			tmpWorkingDir = System.getProperty("user.home") + "/jabylon";
 		}
