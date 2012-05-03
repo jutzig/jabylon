@@ -203,7 +203,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	}
 
 	private void initializeUserManagement() {
-		view = connector.openTransaction(); //FIXME: why is this needed to be able to read the selected users permissions?
+		view = connector.openView();
 
 		if(view.hasResource(ServerConstants.USERS_RESOURCE)) {
 			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
