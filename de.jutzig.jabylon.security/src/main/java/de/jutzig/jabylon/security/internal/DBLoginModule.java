@@ -13,8 +13,13 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.eclipse.emf.cdo.view.CDOView;
+
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.users.Permission;
-import de.jutzig.jabylon.users.UsersFactory;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
 
 public class DBLoginModule implements LoginModule {
 	static final String EMPTY_STRING = "";
@@ -24,6 +29,7 @@ public class DBLoginModule implements LoginModule {
 	String user;
 	String pw;
 	List<Permission> permissions = new ArrayList<Permission>();
+	private RepositoryConnector repositoryConnector;
 
 	public DBLoginModule() {
 	}
@@ -41,7 +47,8 @@ public class DBLoginModule implements LoginModule {
 			addPermissions(subj.getPrivateCredentials());
 		} else {
 			subj.getPublicCredentials().remove(user);
-			subj.getPrivateCredentials(Permission.class).clear();
+			subj.getPrivateCredentials().removeAll(permissions);
+			permissions = new ArrayList<Permission>();
 		}
 		return true;
 	}
@@ -63,9 +70,7 @@ public class DBLoginModule implements LoginModule {
 		NameCallback nameCallback = new NameCallback("User:");
 		PasswordCallback passwordCallback = new PasswordCallback("Password:", false);
 		try {
-			cbHandler.handle(new Callback[]{
-			    nameCallback, passwordCallback
-			});
+			cbHandler.handle(new Callback[]{nameCallback, passwordCallback});
 		} catch(Exception e) {
 			//FIXME
 			e.printStackTrace();
@@ -81,11 +86,29 @@ public class DBLoginModule implements LoginModule {
 		return this.authenticated;
 	}
 
-	private boolean checkLogin(String user, String pw) {
-		Permission permission = UsersFactory.eINSTANCE.createPermission();
-		permission.setName("ALL");
-		permissions.add(permission);
-		return true;
+	private boolean checkLogin(String userName, String pw) {
+		if(repositoryConnector==null)
+			return false;
+
+		CDOView view = repositoryConnector.openView();
+		try {
+			UserManagement userManagement = (UserManagement)view.getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
+			User user = userManagement.findUserByName(userName);
+			if(user==null)
+				return false;
+
+			if(user.getPassword().equals(pw)) {
+				permissions = user.getAllPermissions();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace(); //TODO logging
+			return false;
+		} finally {
+			view.close();
+		}
 	}
 
 	@Override
@@ -94,4 +117,11 @@ public class DBLoginModule implements LoginModule {
 		return true;
 	}
 
+	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
+		this.repositoryConnector = repositoryConnector;
+	}
+
+	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
+		this.repositoryConnector = null;
+	}
 }

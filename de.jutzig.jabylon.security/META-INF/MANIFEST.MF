@@ -5,7 +5,9 @@ Bundle-SymbolicName: de.jutzig.jabylon.security;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: javax.security.auth,
+Import-Package: de.jutzig.jabylon.cdo.connector,
+ de.jutzig.jabylon.cdo.server,
+ javax.security.auth,
  javax.security.auth.callback,
  javax.security.auth.login,
  javax.security.auth.spi,
