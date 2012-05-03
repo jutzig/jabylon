@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.users.User#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.User#getPassword <em>Password</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.User#getRoles <em>Roles</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.User#getPermissions <em>Permissions</em>}</li>
  * </ul>
@@ -54,6 +55,32 @@ public interface User extends CDOObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Password</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Password</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Password</em>' attribute.
+	 * @see #setPassword(String)
+	 * @see de.jutzig.jabylon.users.UsersPackage#getUser_Password()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getPassword();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.users.User#getPassword <em>Password</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Password</em>' attribute.
+	 * @see #getPassword()
+	 * @generated
+	 */
+	void setPassword(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Roles</b></em>' reference list.

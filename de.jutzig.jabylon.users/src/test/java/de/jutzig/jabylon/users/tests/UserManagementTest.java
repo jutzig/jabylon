@@ -17,6 +17,14 @@ import junit.textui.TestRunner;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>User Management</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link de.jutzig.jabylon.users.UserManagement#findUserByName(java.lang.String) <em>Find User By Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.UserManagement#findPermissionByName(java.lang.String) <em>Find Permission By Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.UserManagement#findRoleByName(java.lang.String) <em>Find Role By Name</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class UserManagementTest extends TestCase {
@@ -88,6 +96,45 @@ public class UserManagementTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.users.UserManagement#findUserByName(java.lang.String) <em>Find User By Name</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.users.UserManagement#findUserByName(java.lang.String)
+	 * @generated
+	 */
+	public void testFindUserByName__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.users.UserManagement#findPermissionByName(java.lang.String) <em>Find Permission By Name</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.users.UserManagement#findPermissionByName(java.lang.String)
+	 * @generated
+	 */
+	public void testFindPermissionByName__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link de.jutzig.jabylon.users.UserManagement#findRoleByName(java.lang.String) <em>Find Role By Name</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.users.UserManagement#findRoleByName(java.lang.String)
+	 * @generated
+	 */
+	public void testFindRoleByName__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //UserManagementTest

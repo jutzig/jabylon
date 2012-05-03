@@ -102,6 +102,48 @@ public class UserManagementImpl extends CDOObjectImpl implements UserManagement 
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * May return null!
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public User findUserByName(String name) {
+		for (User user : getUsers()) {
+			if(user.getName().equals(name))
+				return user;
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * May return null!
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Permission findPermissionByName(String name) {
+		for (Permission perm : getPermissions()) {
+			if(perm.getName().equals(name))
+				return perm;
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * May return null!
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Role findRoleByName(String name) {
+		for (Role role : getRoles()) {
+			if(role.getName().equals(name))
+				return role;
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

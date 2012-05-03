@@ -16,6 +16,7 @@ import de.jutzig.jabylon.users.UsersPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -147,8 +148,17 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getUser_Password() {
+		return (EAttribute)userEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getUser_Roles() {
-		return (EReference)userEClass.getEStructuralFeatures().get(1);
+		return (EReference)userEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -157,7 +167,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 * @generated
 	 */
 	public EReference getUser_Permissions() {
-		return (EReference)userEClass.getEStructuralFeatures().get(2);
+		return (EReference)userEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -316,6 +326,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		// Create classes and their features
 		userEClass = createEClass(USER);
 		createEAttribute(userEClass, USER__NAME);
+		createEAttribute(userEClass, USER__PASSWORD);
 		createEReference(userEClass, USER__ROLES);
 		createEReference(userEClass, USER__PERMISSIONS);
 
@@ -370,6 +381,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		// Initialize classes and features; add operations and parameters
 		initEClass(userEClass, User.class, "User", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUser_Name(), ecorePackage.getEString(), "name", null, 0, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUser_Password(), ecorePackage.getEString(), "password", null, 1, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUser_Roles(), this.getRole(), null, "roles", null, 0, -1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUser_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -394,6 +406,15 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		initEReference(getUserManagement_Users(), this.getUser(), null, "users", null, 0, -1, UserManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUserManagement_Roles(), this.getRole(), null, "roles", null, 0, -1, UserManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUserManagement_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, UserManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		EOperation op = addEOperation(userManagementEClass, this.getUser(), "findUserByName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(userManagementEClass, this.getPermission(), "findPermissionByName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(userManagementEClass, this.getRole(), "findRoleByName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

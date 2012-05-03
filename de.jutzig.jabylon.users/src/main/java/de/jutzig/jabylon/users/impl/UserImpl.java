@@ -27,6 +27,7 @@ import de.jutzig.jabylon.users.UsersPackage;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getPassword <em>Password</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getRoles <em>Roles</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getPermissions <em>Permissions</em>}</li>
  * </ul>
@@ -44,6 +45,16 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getPassword() <em>Password</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPassword()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PASSWORD_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -99,6 +110,24 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getPassword() {
+		return (String)eDynamicGet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPassword(String newPassword) {
+		eDynamicSet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, newPassword);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public EList<Role> getRoles() {
@@ -139,6 +168,8 @@ public class UserImpl extends CDOObjectImpl implements User {
 		switch (featureID) {
 			case UsersPackage.USER__NAME:
 				return getName();
+			case UsersPackage.USER__PASSWORD:
+				return getPassword();
 			case UsersPackage.USER__ROLES:
 				return getRoles();
 			case UsersPackage.USER__PERMISSIONS:
@@ -158,6 +189,9 @@ public class UserImpl extends CDOObjectImpl implements User {
 		switch (featureID) {
 			case UsersPackage.USER__NAME:
 				setName((String)newValue);
+				return;
+			case UsersPackage.USER__PASSWORD:
+				setPassword((String)newValue);
 				return;
 			case UsersPackage.USER__ROLES:
 				getRoles().clear();
@@ -182,6 +216,9 @@ public class UserImpl extends CDOObjectImpl implements User {
 			case UsersPackage.USER__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case UsersPackage.USER__PASSWORD:
+				setPassword(PASSWORD_EDEFAULT);
+				return;
 			case UsersPackage.USER__ROLES:
 				getRoles().clear();
 				return;
@@ -202,6 +239,8 @@ public class UserImpl extends CDOObjectImpl implements User {
 		switch (featureID) {
 			case UsersPackage.USER__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case UsersPackage.USER__PASSWORD:
+				return PASSWORD_EDEFAULT == null ? getPassword() != null : !PASSWORD_EDEFAULT.equals(getPassword());
 			case UsersPackage.USER__ROLES:
 				return !getRoles().isEmpty();
 			case UsersPackage.USER__PERMISSIONS:

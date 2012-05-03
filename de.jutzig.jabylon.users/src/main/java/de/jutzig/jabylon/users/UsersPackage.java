@@ -79,13 +79,22 @@ public interface UsersPackage extends EPackage {
 	int USER__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Password</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__PASSWORD = 1;
+
+	/**
 	 * The feature id for the '<em><b>Roles</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER__ROLES = 1;
+	int USER__ROLES = 2;
 
 	/**
 	 * The feature id for the '<em><b>Permissions</b></em>' reference list.
@@ -94,7 +103,7 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int USER__PERMISSIONS = 2;
+	int USER__PERMISSIONS = 3;
 
 	/**
 	 * The number of structural features of the '<em>User</em>' class.
@@ -103,7 +112,7 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int USER_FEATURE_COUNT = 3;
+	int USER_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.RoleImpl <em>Role</em>}' class.
@@ -293,6 +302,17 @@ public interface UsersPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUser_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.users.User#getPassword <em>Password</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Password</em>'.
+	 * @see de.jutzig.jabylon.users.User#getPassword()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EAttribute getUser_Password();
 
 	/**
 	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.users.User#getRoles <em>Roles</em>}'.
@@ -505,6 +525,14 @@ public interface UsersPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute USER__NAME = eINSTANCE.getUser_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Password</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER__PASSWORD = eINSTANCE.getUser_Password();
 
 		/**
 		 * The meta object literal for the '<em><b>Roles</b></em>' reference list feature.

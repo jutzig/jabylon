@@ -37,6 +37,7 @@ public class UsersTests extends TestSuite {
 		TestSuite suite = new UsersTests("users Tests");
 		suite.addTestSuite(UserTest.class);
 		suite.addTestSuite(RoleTest.class);
+		suite.addTestSuite(UserManagementTest.class);
 		return suite;
 	}
 

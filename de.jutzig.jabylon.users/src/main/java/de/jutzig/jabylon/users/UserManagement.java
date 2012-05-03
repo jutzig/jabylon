@@ -78,4 +78,28 @@ public interface UserManagement extends CDOObject {
 	 */
 	EList<Permission> getPermissions();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model nameRequired="true"
+	 * @generated
+	 */
+	User findUserByName(String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model nameRequired="true"
+	 * @generated
+	 */
+	Permission findPermissionByName(String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model nameRequired="true"
+	 * @generated
+	 */
+	Role findRoleByName(String name);
+
 } // UserManagement
