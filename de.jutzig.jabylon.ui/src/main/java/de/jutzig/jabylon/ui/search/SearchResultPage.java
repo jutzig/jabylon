@@ -119,11 +119,19 @@ public class SearchResultPage implements CrumbTrail{
 		}
 		QueryService queryService = MainDashboard.getCurrent().getQueryService();
 		result = queryService.search(searchString,scope);
-		table.setContainerDataSource(new ResultLuceneContainer(result.getTopDocs(), result.getSearcher()));
-		table.setVisibleColumns(new Object[]{QueryService.FIELD_URI,QueryService.FIELD_KEY,QueryService.FIELD_VALUE});
-		
-		table.setColumnWidth(QueryService.FIELD_KEY, 150);
-		table.setSizeFull();
+		if(result.getTopDocs().totalHits==0)
+		{
+			MainDashboard.getCurrent().getMainWindow().showNotification("No Hits");
+		}
+		else
+		{
+			table.setContainerDataSource(new ResultLuceneContainer(result.getTopDocs(), result.getSearcher()));
+			table.setVisibleColumns(new Object[]{QueryService.FIELD_URI,QueryService.FIELD_KEY,QueryService.FIELD_VALUE});
+			
+			table.setColumnWidth(QueryService.FIELD_KEY, 150);
+			table.setSizeFull();
+			
+		}
 	}
 
 	
