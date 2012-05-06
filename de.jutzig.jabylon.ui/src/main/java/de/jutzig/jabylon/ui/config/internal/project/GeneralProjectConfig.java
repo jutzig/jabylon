@@ -97,7 +97,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	private Component createVersionTable() {
 		final Section section = new Section();
 		section.setTitle("Versions");
-		section.setWidth(500, Section.UNITS_PIXELS);
+		section.setWidth(700, Section.UNITS_PIXELS);
 		GridLayout layout = section.getBody();
 		layout.setSpacing(true);
 		table = new EditableTable(true) {
@@ -284,6 +284,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 					public void buttonClick(ClickEvent event) {
 
 						ProgressMonitorDialog dialog = new ProgressMonitorDialog(table.getWindow());
+						dialog.setCaption("Checking out...");
 						final TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(
 								getDomainObject().getRepositoryURI());
 						dialog.run(true, new RunnableWithProgress() {
