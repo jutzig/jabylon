@@ -33,7 +33,7 @@ public class MessageFormatCheck implements ReviewParticipant {
 
 	@Override
 	public Review review(PropertyFileDescriptor descriptor, Property master, Property slave) {
-		if(master==null || slave==null)
+		if(master==null || slave==null || master.getValue()==null || slave.getValue()==null)
 			return null;
 		Matcher masterMatcher = PATTERN.matcher(master.getValue());
 		HashSet<String> masterPatterns = new HashSet<String>();
@@ -71,6 +71,12 @@ public class MessageFormatCheck implements ReviewParticipant {
 		return null;
 	}
 
-
+//TODO: unit test for this:
+	/*
+	 * {0} {1} doesn''t have a workspace snapshot attached,
+	 *Mit {0} {1} ist kein Schnappschuß eines Arbeitsbereiches verknüpft,	
+	 * 
+	 * 
+	 */
 
 }

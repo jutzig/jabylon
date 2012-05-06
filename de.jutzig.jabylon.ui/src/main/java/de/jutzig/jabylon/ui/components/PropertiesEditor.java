@@ -1,8 +1,15 @@
 package de.jutzig.jabylon.ui.components;
 
 import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.cdo.view.CDOView;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
@@ -11,9 +18,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextArea;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
@@ -22,10 +31,13 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
+import de.jutzig.jabylon.review.PropertyFileReview;
+import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
+import de.jutzig.jabylon.ui.resources.ImageConstants;
 
 @SuppressWarnings("serial")
 public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
@@ -42,10 +54,31 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private TextArea translatedComment;
 	private GridLayout layout;
 	private PropertyPairContainer propertyPairContainer;
+	private Multimap<String, Review> reviews;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
+		reviews = buildReviews(descriptor);
+	}
 
+	private Multimap<String, Review> buildReviews(PropertyFileDescriptor descriptor) {
+		Multimap<String, Review> map = ArrayListMultimap.create();
+		URI fullPath = descriptor.fullPath();
+		CDOView view = descriptor.cdoView();
+		if(view.hasResource("review/"+fullPath.toString()))
+		{
+			CDOResource resource = view.getResource("review/"+fullPath.toString());
+			EObject object = resource.getContents().get(0);
+			if (object instanceof PropertyFileReview) {
+				PropertyFileReview fileReview = (PropertyFileReview) object;
+				EList<Review> reviews = fileReview.getReviews();
+				for (Review review : reviews) {
+					map.put(review.getKey(), review);
+				}
+				
+			}
+		}
+		return map;
 	}
 
 	@Override
@@ -61,10 +94,29 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		propertyPairContainer = new PropertyPairContainer(source, target);
 		table.setContainerDataSource(propertyPairContainer);
-		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
-		table.setColumnHeaders(new String[] { "Original", "Translation" });
-		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 480);
+		table.addGeneratedColumn("Problems", new ColumnGenerator() {
+			
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+
+				if(reviews.containsKey(itemId))
+				{
+					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);					
+					Review review = reviews.get((String) itemId).iterator().next();
+					embedded.setDescription(review.getMessage());
+					return embedded;
+				}
+				else
+					return new Embedded("", ImageConstants.IMAGE_OK);
+			}
+		});
+		
+		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
+		
+		table.setColumnHeaders(new String[] { "Original", "Translation","Problems"});
+		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 420);
+		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 440);
 		table.setEditable(false);
 		table.setWriteThrough(false);
 		table.setWidth(100, Component.UNITS_PERCENTAGE);
@@ -73,6 +125,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setMultiSelect(false);
 		table.setImmediate(true); // react at once when something is selected
 		table.addListener(this);
+
 		layout.addComponent(table, 0, 0, 1, 1);
 
 		createEditorArea();
@@ -200,7 +253,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
-		Item theItem = propertyPairContainer.getItem(event.getProperty().getValue());
+		Object value = event.getProperty().getValue();
+		if(value==null)
+			return;
+		Item theItem = propertyPairContainer.getItem(value);
 		PropertyPairItem item = (PropertyPairItem) theItem;
 		item.getSourceProperty();
 

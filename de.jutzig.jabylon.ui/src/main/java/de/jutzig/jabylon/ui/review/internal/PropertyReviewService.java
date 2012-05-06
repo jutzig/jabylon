@@ -5,7 +5,6 @@ package de.jutzig.jabylon.ui.review.internal;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -88,6 +87,7 @@ public class PropertyReviewService implements PropertiesListener{
 				}
 				if(review!=null)
 				{
+					review.setKey(prop.getKey());
 					fileReview.getReviews().add(review);
 					dirty = true;
 				}
@@ -107,20 +107,25 @@ public class PropertyReviewService implements PropertiesListener{
 	}
 
 
-	private void removeKey(String key, PropertyFileReview fileReview) {
+	private boolean removeKey(String key, PropertyFileReview fileReview) {
 		Iterator<Review> it = fileReview.getReviews().iterator();
+		boolean dirty = false;
 		while (it.hasNext()) {
 			Review review = (Review) it.next();
 			if(key.equals(review.getKey()))
+			{
 				it.remove();
+				dirty=true;
+			}
 		}
+		return dirty;
 		
 	}
 
 	private PropertyFileReview getOrCreateReview(PropertyFileDescriptor descriptor) {
 		CDOSession session = descriptor.cdoView().getSession();
 		CDOTransaction transaction = session.openTransaction();
-		CDOResource resource = transaction.getOrCreateResource("review"+descriptor.fullPath().toString());
+		CDOResource resource = transaction.getOrCreateResource("review/"+descriptor.fullPath().toString());
 		EList<EObject> contents = resource.getContents();
 		PropertyFileReview review = null;
 		if(contents.isEmpty())
@@ -141,9 +146,9 @@ public class PropertyReviewService implements PropertiesListener{
 		
 		CDOSession session = descriptor.cdoView().getSession();
 		CDOTransaction transaction = session.openTransaction();
-		if(transaction.hasResource("review"+descriptor.fullPath().toString()))
+		if(transaction.hasResource("review/"+descriptor.fullPath().toString()))
 		{
-			CDOResource resource = transaction.getOrCreateResource("review"+descriptor.fullPath().toString());
+			CDOResource resource = transaction.getOrCreateResource("review/"+descriptor.fullPath().toString());
 			try {
 				resource.delete(null);
 				transaction.commit();
@@ -188,9 +193,11 @@ public class PropertyReviewService implements PropertiesListener{
 						review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);					
 					}
 					
+					if(removeKey(prop.getKey(),fileReview))
+						dirty=true;
 					if(review!=null)
 					{
-						removeKey(prop.getKey(),fileReview);
+						review.setKey(prop.getKey());
 						fileReview.getReviews().add(review);
 						dirty = true;
 					}
