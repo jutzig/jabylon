@@ -43,6 +43,7 @@ public class QueryServiceImpl implements QueryService {
 	 */
 	@Override
 	public SearchResult search(String search, Object scope) {
+		search = search.toLowerCase();
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 		try {
 			IndexSearcher searcher = new IndexSearcher(directory, true);
@@ -95,9 +96,11 @@ public class QueryServiceImpl implements QueryService {
 			query.add(createLocaleQuery(descriptor.getProjectLocale()), Occur.MUST);
 			query.add(createDescriptorQuery(descriptor), Occur.MUST);
 		}
-		query.add(new PrefixQuery(new Term(FIELD_COMMENT,search)),Occur.SHOULD);
-		query.add(new PrefixQuery(new Term(FIELD_KEY,search)),Occur.SHOULD);
-		query.add(new PrefixQuery(new Term(FIELD_VALUE,search)),Occur.SHOULD);
+		BooleanQuery termQuery = new BooleanQuery();
+		termQuery.add(new PrefixQuery(new Term(FIELD_COMMENT,search)),Occur.SHOULD);
+		termQuery.add(new PrefixQuery(new Term(FIELD_KEY,search)),Occur.SHOULD);
+		termQuery.add(new PrefixQuery(new Term(FIELD_VALUE,search)),Occur.SHOULD);
+		query.add(termQuery, Occur.MUST);
 		return query;
 	}
 
