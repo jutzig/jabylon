@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
+import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDOSession;
-import org.eclipse.emf.cdo.util.CDOLazyContentAdapter;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -88,6 +89,24 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						}
 
 					}
+					else if (notification.getEventType() == Notification.SET) {
+						
+						//FIXME: this is relevant for the template language.
+						//Disable for now, because we cannot display the master language at the moment, so it shouldn't
+						//be searchable either
+						
+//						Object object = (Object) notification.getNewValue();
+//
+//						if (object instanceof ProjectLocale) {
+//							ProjectLocale locale = (ProjectLocale) object;
+//							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+//							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+//								firePropertiesAdded(propertyFileDescriptor);
+//
+//							}
+//						}
+
+					}
 
 				}
 				if (notification.getNotifier() instanceof ProjectLocale) {
@@ -115,6 +134,48 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 					
 				}
 			}
+			
+			  protected void handleContainment(Notification notification)
+			  {
+			    switch (notification.getEventType())
+			    {
+			     //prevent ClassCastExceptions if old value is not a notified, but a CDOID
+			      case Notification.REMOVE:
+			      {
+			        Object oldValue = notification.getOldValue();
+		        	if (oldValue instanceof Notifier) {
+						Notifier notifier = (Notifier) oldValue;
+						removeAdapter(notifier);							
+					}
+		        	else if (oldValue instanceof CDOID) {
+						CDOID id = (CDOID) oldValue;
+						removeAdapter(workspace.cdoView().getObject(id));
+						
+					}
+			        break;
+			      }
+			      case Notification.REMOVE_MANY:
+			      {
+			        Collection<?> oldValues = (Collection<?>)notification.getOldValue();
+			        for ( Object oldContentValue : oldValues)
+			        {
+			        	if (oldContentValue instanceof Notifier) {
+							Notifier notifier = (Notifier) oldContentValue;
+							removeAdapter(notifier);							
+						}
+			        	else if (oldContentValue instanceof CDOID) {
+							CDOID id = (CDOID) oldContentValue;
+							removeAdapter(workspace.cdoView().getObject(id));
+							
+						}
+			        }
+			        break;
+			      }
+			      
+			      default:
+			    	  super.handleContainment(notification);
+			    }
+			  }
 		});
 	}
 

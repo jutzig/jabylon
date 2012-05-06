@@ -175,8 +175,12 @@ class ResultLuceneContainer extends LuceneContainer
 						ProjectLocale locale = descriptor.getProjectLocale();
 						String version = "?"+locale.getProjectVersion().getBranch();
 						String project = locale.getProjectVersion().getProject().getName();
-						MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,locale.getLocale().toString(),descriptor.relativePath().toString());
-						
+						if(locale.getLocale()!=null)
+						{
+							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,locale.getLocale().toString(),descriptor.relativePath().toString());							
+						}
+						else
+							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,descriptor.relativePath().toString());
 					}
 				});
 				GenericProperty<Button> property = new GenericProperty<Button>(Button.class, button);

@@ -38,8 +38,11 @@ public class PropertyFileAnalyzer {
 			doc.add(projectField);
 			Field versionField = new Field(QueryService.FIELD_VERSION, version.getBranch(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(versionField);
-			Field localeField = new Field(QueryService.FIELD_LOCALE, locale.getLocale().toString(), Store.YES, Index.NOT_ANALYZED);
-			doc.add(localeField);
+			if(locale.getLocale()!=null)
+			{
+				Field localeField = new Field(QueryService.FIELD_LOCALE, locale.getLocale().toString(), Store.YES, Index.NOT_ANALYZED);				
+				doc.add(localeField);
+			}
 			Field uriField = new Field(QueryService.FIELD_URI, descriptor.fullPath().toString(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(uriField);
 			CDOID cdoID = descriptor.cdoID();
