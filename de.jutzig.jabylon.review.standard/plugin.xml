@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+   <extension
+         point="de.jutzig.jabylon.ui.reviewParticipant">
+      <particpant
+            class="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"
+            description="Checks if java message format patterns match in template and translation. E.g. if the template language contains &quot;{0}&quot;, then the translation must contain &quot;{0}&quot; as well"
+            id="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"
+            name="Message Format Check">
+      </particpant>
+      <particpant
+            class="de.jutzig.jabylon.review.standard.internal.EqualityCheck"
+            description="Warns if the template and the translated string are identical"
+            id="de.jutzig.jabylon.review.standard.internal.EqualityCheck"
+            name="Equality Check">
+      </particpant>
+   </extension>
+
+</plugin>

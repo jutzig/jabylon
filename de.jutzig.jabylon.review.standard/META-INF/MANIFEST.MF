@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Standard Automatic Reviewers
+Bundle-SymbolicName: de.jutzig.jabylon.review.standard;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: de.jutzig.jabylon.review;bundle-version="1.0.0",
+ de.jutzig.jabylon.ui;bundle-version="1.0.0",
+ de.jutzig.jabylon.properties;bundle-version="1.0.0"

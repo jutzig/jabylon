@@ -171,6 +171,9 @@ public class DelegatingPreferences implements Preferences {
 		for (Entry<String, Object> entry : values.entrySet()) {
 			setValue(entry.getKey(), entry.getValue());
 		}
+		for (DelegatingPreferences child : children) {
+			child.flush();
+		}
 		delegate.flush();
 		dirty = false;
 	}

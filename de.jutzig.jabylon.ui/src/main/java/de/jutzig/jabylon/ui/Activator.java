@@ -1,11 +1,7 @@
 package de.jutzig.jabylon.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
@@ -15,7 +11,6 @@ public class Activator extends Plugin {
 
 	private static BundleContext context;
 	private static Activator activator;
-	private List<IConfigurationElement> configSections;
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.ui";
 
 	static BundleContext getContext() {
@@ -49,6 +44,12 @@ public class Activator extends Plugin {
 	public static void error(String message, Throwable cause)
 	{
 		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, message));
+	}
+
+	public IConfigurationElement[] getReviewParticipants()
+	{
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.reviewParticipant");
+		return elements;
 	}
 	
 }

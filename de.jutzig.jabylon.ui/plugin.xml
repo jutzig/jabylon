@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="config" name="Configuration Section" schema="schema/config.exsd"/>
    <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
+   <extension-point id="reviewParticipant" name="Review Participants" schema="schema/reviewParticipant.exsd"/>
    <extension
          name="project settings"
          point="de.jutzig.jabylon.ui.config">
@@ -24,6 +25,12 @@
             section="de.jutzig.jabylon.ui.config.internal.project.ProjectRepositorySettings"
             tab="repository"
             title="General Repository Settings">
+      </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.config.checks"
+            objectClass="de.jutzig.jabylon.properties.Project"
+            section="de.jutzig.jabylon.ui.config.internal.project.EnabledProjectChecksConfig"
+            tab="checks">
       </configSection>
    </extension>
    <extension
@@ -96,6 +103,11 @@
             name="Locales"
             precedence="8"
             tabID="locales">
+      </tab>
+      <tab
+            name="Checks"
+            precedence="3"
+            tabID="checks">
       </tab>
    </extension>
    <extension

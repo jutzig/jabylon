@@ -30,6 +30,7 @@ import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
 import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
+import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
@@ -46,6 +47,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private Map<String, TeamProvider> teamProvider;
 	private PropertyPersistenceService propertyPersistence;
 	private QueryService queryService;
+	private PropertyReviewService propertyReviewService;
 
 	public MainDashboard() {
 		teamProvider = new HashMap<String, TeamProvider>();
@@ -135,6 +137,9 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
 		this.propertyPersistence = propertyPersistence;
+		//TODO: could wire this directly with DS
+		propertyReviewService = new PropertyReviewService();
+		propertyPersistence.addPropertiesListener(propertyReviewService);
 	}
 
 	public PropertyPersistenceService getPropertyPersistence() {

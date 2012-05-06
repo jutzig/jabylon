@@ -24,6 +24,7 @@ public class PreferencesUtil {
 	public static final String SCAN_CONFIG_INCLUDE = "include";
 	public static final String SCAN_CONFIG_EXCLUDE = "exclude";
 	public static final String SCAN_CONFIG_MASTER_LOCALE = "master.locale";
+	public static final String NODE_CHECKS = "checks";
 	
 	private PreferencesUtil()
 	{

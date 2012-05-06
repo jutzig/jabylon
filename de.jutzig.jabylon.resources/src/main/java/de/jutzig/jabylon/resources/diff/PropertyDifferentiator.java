@@ -65,14 +65,14 @@ public class PropertyDifferentiator {
 		if (orignalPropertery.getValue() == null && modifiedProperty.getValue() == null)
 			return null; // if both are null, it's all good
 		if (orignalPropertery.getValue() == null && modifiedProperty.getValue() != null) {
-			return new CustomNotification(Notification.SET, null, modifiedProperty.getValue());
+			return new CustomNotification(Notification.SET, null, modifiedProperty.getValue(), modifiedProperty);
 		}
 		if (modifiedProperty.getValue() == null && orignalPropertery.getValue() != null) {
-			return new CustomNotification(Notification.UNSET, orignalPropertery.getValue(), null);
+			return new CustomNotification(Notification.UNSET, orignalPropertery.getValue(), null, modifiedProperty);
 		}
 		if(modifiedProperty.getValue().equals(orignalPropertery.getValue()))
 			return null;
-		return new CustomNotification(Notification.SET, orignalPropertery.getValue(), modifiedProperty.getValue());
+		return new CustomNotification(Notification.SET, orignalPropertery.getValue(), modifiedProperty.getValue(), modifiedProperty);
 	}
 
 	private Map<String, Property> buildMap(PropertyFile file) {
@@ -87,8 +87,11 @@ public class PropertyDifferentiator {
 
 class CustomNotification extends NotificationImpl {
 
-	public CustomNotification(int eventType, String oldValue, String newValue) {
+	private Property notifier;
+
+	public CustomNotification(int eventType, String oldValue, String newValue, Property notifier) {
 		super(eventType, oldValue, newValue);
+		this.notifier = notifier;
 	}
 
 	@Override
@@ -96,4 +99,9 @@ class CustomNotification extends NotificationImpl {
 		return PropertiesPackage.Literals.PROPERTY__VALUE;
 	}
 
+	@Override
+	public Property getNotifier() {
+		return notifier;
+	}
+	
 }

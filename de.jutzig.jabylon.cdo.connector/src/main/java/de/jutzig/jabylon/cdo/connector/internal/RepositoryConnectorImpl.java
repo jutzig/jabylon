@@ -14,6 +14,7 @@ import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.review.ReviewPackage;
 import de.jutzig.jabylon.users.UsersPackage;
 
 public class RepositoryConnectorImpl implements RepositoryConnector {
@@ -77,6 +78,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 		theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
 		theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
 		theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
+		theSession.getPackageRegistry().putEPackage(ReviewPackage.eINSTANCE);
 		return theSession;
 	}
 

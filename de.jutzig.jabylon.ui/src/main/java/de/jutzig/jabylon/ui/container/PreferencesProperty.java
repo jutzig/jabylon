@@ -28,17 +28,17 @@ public class PreferencesProperty<T> extends AbstractProperty {
 	public Object getValue() {
 		if(type.isAssignableFrom(String.class))
 			return node.get(key, (String) defaultValue);
-		if(type.isAssignableFrom(Boolean.class))
+		if(type.isAssignableFrom(Boolean.class) || type.isAssignableFrom(Boolean.TYPE))
 			return node.getBoolean(key, (Boolean)defaultValue);
 		if(type.isAssignableFrom(byte[].class))
 			return node.getByteArray(key, (byte[])defaultValue);
-		if(type.isAssignableFrom(Double.class))
+		if(type.isAssignableFrom(Double.class) || type.isAssignableFrom(Double.TYPE))
 			return node.getDouble(key, (Double)defaultValue);
-		if(type.isAssignableFrom(Float.class))
+		if(type.isAssignableFrom(Float.class) || type.isAssignableFrom(Float.TYPE))
 			return node.getFloat(key, (Float)defaultValue);
-		if(type.isAssignableFrom(Integer.class))
+		if(type.isAssignableFrom(Integer.class) || type.isAssignableFrom(Integer.TYPE))
 			return node.getInt(key, (Integer)defaultValue);
-		if(type.isAssignableFrom(Long.class))
+		if(type.isAssignableFrom(Long.class) || type.isAssignableFrom(Long.TYPE))
 			return node.getLong(key, (Long)defaultValue);
 		throw new UnsupportedOperationException(type+" not supported");
 	}
@@ -50,17 +50,17 @@ public class PreferencesProperty<T> extends AbstractProperty {
 			return;
 		if(newValue instanceof String)
 			setValue((String)newValue);
-		else if(type.isAssignableFrom(Boolean.class))
+		else if(type.isAssignableFrom(Boolean.class) || type.isAssignableFrom(Boolean.TYPE))
 			node.putBoolean(key, (Boolean)newValue);
 		else if(type.isAssignableFrom(byte[].class))
 			node.putByteArray(key, (byte[])newValue);
-		else if(type.isAssignableFrom(Double.class))
+		else if(type.isAssignableFrom(Double.class) || type.isAssignableFrom(Double.TYPE))
 			node.putDouble(key, (Double)newValue);
-		else if(type.isAssignableFrom(Float.class))
+		else if(type.isAssignableFrom(Float.class) || type.isAssignableFrom(Float.TYPE))
 			node.putFloat(key, (Float)newValue);
-		else if(type.isAssignableFrom(Integer.class))
+		else if(type.isAssignableFrom(Integer.class) || type.isAssignableFrom(Integer.TYPE))
 			node.putInt(key, (Integer)newValue);
-		else if(type.isAssignableFrom(Long.class))
+		else if(type.isAssignableFrom(Long.class) || type.isAssignableFrom(Long.TYPE))
 			node.putLong(key, (Long)newValue);
 		else
 			throw new UnsupportedOperationException(type+" not supported");
