@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.ui.applications;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -260,5 +261,9 @@ public class MainDashboard extends Application implements TransactionListener, C
 		this.queryService = null;
 	}
 	
+	
+	public Map<String, TeamProvider> getTeamProviders() {
+		return Collections.unmodifiableMap(teamProvider);
+	}
 	
 }

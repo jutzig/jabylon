@@ -232,6 +232,16 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 					select.setNullSelectionAllowed(false);
 					return select;
 				}
+				if (propertyId == PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER)
+				{
+					NativeSelect select = new NativeSelect("Team Provider");
+					Set<String> keySet = MainDashboard.getCurrent().getTeamProviders().keySet();
+					for (String string : keySet) {
+						select.addItem(string);
+					}
+					select.setNullSelectionAllowed(true);
+					return select;
+				}
 				Field field = super.createField(item, propertyId, uiContext);
 				EStructuralFeature feature = (EStructuralFeature) propertyId;
 				field.setCaption(createCaptionByPropertyId(feature.getName()));
@@ -239,7 +249,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			}
 		});
 		form.setVisibleItemProperties(new Object[] { PropertiesPackage.Literals.PROJECT__NAME,
-				PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE });
+				PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER });
 
 		versionTable.setContainerDataSource(new ProjectVersionContainer(getDomainObject()));
 
