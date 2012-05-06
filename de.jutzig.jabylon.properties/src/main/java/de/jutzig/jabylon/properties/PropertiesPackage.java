@@ -310,13 +310,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__PROPERTY_TYPE = RESOLVABLE_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Team Provider</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__TEAM_PROVIDER = RESOLVABLE_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 6;
+	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -794,6 +803,17 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProject_PropertyType();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Team Provider</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#getTeamProvider()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EAttribute getProject_TeamProvider();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1232,6 +1252,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROJECT__PROPERTY_TYPE = eINSTANCE.getProject_PropertyType();
+
+		/**
+		 * The meta object literal for the '<em><b>Team Provider</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT__TEAM_PROVIDER = eINSTANCE.getProject_TeamProvider();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.

@@ -43,6 +43,7 @@
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="#//PropertyType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamProvider" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable">
     <eOperations name="fullScan">

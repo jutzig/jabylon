@@ -35,6 +35,7 @@ import de.jutzig.jabylon.properties.Workspace;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getRepositoryURI <em>Repository URI</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getPropertyType <em>Property Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getTeamProvider <em>Team Provider</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,6 +73,17 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	 * @ordered
 	 */
 	protected static final PropertyType PROPERTY_TYPE_EDEFAULT = PropertyType.ENCODED_ISO;
+
+
+	/**
+	 * The default value of the '{@link #getTeamProvider() <em>Team Provider</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTeamProvider()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TEAM_PROVIDER_EDEFAULT = null;
 
 
 	/**
@@ -216,6 +228,24 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getTeamProvider() {
+		return (String)eDynamicGet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTeamProvider(String newTeamProvider) {
+		eDynamicSet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, newTeamProvider);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
@@ -312,6 +342,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getRepositoryURI();
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
 				return getPropertyType();
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				return getTeamProvider();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -344,6 +376,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
 				setPropertyType((PropertyType)newValue);
 				return;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				setTeamProvider((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -374,6 +409,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
 				setPropertyType(PROPERTY_TYPE_EDEFAULT);
 				return;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				setTeamProvider(TEAM_PROVIDER_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -398,6 +436,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
 				return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
 		}
 		return super.eIsSet(featureID);
 	}

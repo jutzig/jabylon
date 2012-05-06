@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}</li>
  * </ul>
  * </p>
  *
@@ -183,6 +184,32 @@ public interface Project extends Resolvable {
 	 * @generated
 	 */
 	void setPropertyType(PropertyType value);
+
+	/**
+	 * Returns the value of the '<em><b>Team Provider</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Team Provider</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Team Provider</em>' attribute.
+	 * @see #setTeamProvider(String)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_TeamProvider()
+	 * @model
+	 * @generated
+	 */
+	String getTeamProvider();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Team Provider</em>' attribute.
+	 * @see #getTeamProvider()
+	 * @generated
+	 */
+	void setTeamProvider(String value);
 
 	/**
 	 * <!-- begin-user-doc -->
