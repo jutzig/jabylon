@@ -20,6 +20,7 @@ import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -165,7 +166,12 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						}
 			        	else if (oldContentValue instanceof CDOID) {
 							CDOID id = (CDOID) oldContentValue;
-							removeAdapter(workspace.cdoView().getObject(id));
+							try {
+								removeAdapter(workspace.cdoView().getObject(id));
+							} catch (ObjectNotFoundException e) {
+//								object doesn't exist anymore, so we're good
+								//TODO: log
+							}
 							
 						}
 			        }

@@ -6,9 +6,11 @@ package de.jutzig.jabylon.ui.review.internal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
@@ -36,23 +38,25 @@ import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
-public class PropertyReviewService implements PropertiesListener{
+public class PropertyReviewService implements PropertiesListener {
 
-	private Map<String,ReviewParticipant> participants;
-	
+	private Map<String, ReviewParticipant> participants;
+
 	public PropertyReviewService() {
 		participants = fillParticipants();
 	}
 
 	private Map<String, ReviewParticipant> fillParticipants() {
 		Map<String, ReviewParticipant> map = new HashMap<String, ReviewParticipant>();
-		IConfigurationElement[] elements = Activator.getDefault().getReviewParticipants();
+		IConfigurationElement[] elements = Activator.getDefault()
+				.getReviewParticipants();
 		for (IConfigurationElement element : elements) {
 			try {
 				String id = element.getAttribute("id");
-				ReviewParticipant participant = (ReviewParticipant) element.createExecutableExtension("class");
+				ReviewParticipant participant = (ReviewParticipant) element
+						.createExecutableExtension("class");
 				map.put(id, participant);
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
@@ -64,91 +68,107 @@ public class PropertyReviewService implements PropertiesListener{
 
 	@Override
 	public void propertyFileAdded(PropertyFileDescriptor descriptor) {
-		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
+		Project project = descriptor.getProjectLocale().getProjectVersion()
+				.getProject();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
-		if(activeReviews.isEmpty())
+		if (activeReviews.isEmpty())
 			return;
-		PropertyFile slaveProperties =  descriptor.loadProperties();
+		PropertyFile slaveProperties = descriptor.loadProperties();
 		PropertyFile masterProperties = descriptor.getMaster().loadProperties();
-		
+
 		PropertyFileReview fileReview = getOrCreateReview(descriptor);
 		boolean dirty = false;
+		Set<String> allProperties = new HashSet<String>();
 		for (Property prop : slaveProperties.getProperties()) {
+			String key = prop.getKey();
+			if (key == null) // TODO: how can this happen?
+				continue;
+			allProperties.add(key);
+			Property masterProperty = masterProperties.getProperty(key);
 			for (ReviewParticipant reviewer : activeReviews) {
 
 				Review review = null;
-				if(descriptor.isMaster())
-				{
+				if (descriptor.isMaster()) {
 					review = reviewer.review(descriptor, prop, null);
+				} else {
+					review = reviewer.review(descriptor, masterProperty, prop);
 				}
-				else
-				{
-					review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);					
-				}
-				if(review!=null)
-				{
+				if (review != null) {
 					review.setKey(prop.getKey());
 					fileReview.getReviews().add(review);
 					dirty = true;
 				}
 			}
 		}
+		if (!descriptor.isMaster()) {
+			// process all properties that are missing in the slave
+			for (Property property : masterProperties.getProperties()) {
+				if (allProperties.contains(property.getKey()))
+					continue; // already processed
+				for (ReviewParticipant reviewer : activeReviews) {
+					Review review = reviewer.review(descriptor, property, null);
+					if (review != null) {
+						review.setKey(property.getKey());
+						fileReview.getReviews().add(review);
+						dirty = true;
+					}
+				}
+			}
+		}
 		CDOTransaction transaction = (CDOTransaction) fileReview.cdoView();
-		if(dirty)
-		{
+		if (dirty) {
 			try {
 				transaction.commit();
 			} catch (CommitException e) {
-				Activator.error("Failed to commit review transaction for "+descriptor.fullPath().toString(), e);
+				Activator.error("Failed to commit review transaction for "
+						+ descriptor.fullPath().toString(), e);
 			}
 		}
 		transaction.close();
-		
-	}
 
+	}
 
 	private boolean removeKey(String key, PropertyFileReview fileReview) {
 		Iterator<Review> it = fileReview.getReviews().iterator();
 		boolean dirty = false;
 		while (it.hasNext()) {
 			Review review = (Review) it.next();
-			if(key.equals(review.getKey()))
-			{
+			if (key.equals(review.getKey())) {
 				it.remove();
-				dirty=true;
+				dirty = true;
 			}
 		}
 		return dirty;
-		
+
 	}
 
-	private PropertyFileReview getOrCreateReview(PropertyFileDescriptor descriptor) {
+	private PropertyFileReview getOrCreateReview(
+			PropertyFileDescriptor descriptor) {
 		CDOSession session = descriptor.cdoView().getSession();
 		CDOTransaction transaction = session.openTransaction();
-		CDOResource resource = transaction.getOrCreateResource("review/"+descriptor.fullPath().toString());
+		CDOResource resource = transaction.getOrCreateResource("review/"
+				+ descriptor.fullPath().toString());
 		EList<EObject> contents = resource.getContents();
 		PropertyFileReview review = null;
-		if(contents.isEmpty())
-		{
+		if (contents.isEmpty()) {
 			review = ReviewFactory.eINSTANCE.createPropertyFileReview();
 			contents.add(review);
-		}
-		else
-		{
+		} else {
 			review = (PropertyFileReview) contents.get(0);
 		}
 		return review;
-		
+
 	}
 
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
-		
+
 		CDOSession session = descriptor.cdoView().getSession();
 		CDOTransaction transaction = session.openTransaction();
-		if(transaction.hasResource("review/"+descriptor.fullPath().toString()))
-		{
-			CDOResource resource = transaction.getOrCreateResource("review/"+descriptor.fullPath().toString());
+		if (transaction.hasResource("review/"
+				+ descriptor.fullPath().toString())) {
+			CDOResource resource = transaction.getOrCreateResource("review/"
+					+ descriptor.fullPath().toString());
 			try {
 				resource.delete(null);
 				transaction.commit();
@@ -158,23 +178,25 @@ public class PropertyReviewService implements PropertiesListener{
 			} catch (CommitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally{
+			} finally {
 				transaction.close();
 			}
-			
+
 		}
 	}
 
 	@Override
-	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes) {
-		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
+	public void propertyFileModified(PropertyFileDescriptor descriptor,
+			List<Notification> changes) {
+		Project project = descriptor.getProjectLocale().getProjectVersion()
+				.getProject();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
-		if(activeReviews.isEmpty())
+		if (activeReviews.isEmpty())
 			return;
 		PropertyFileReview fileReview = getOrCreateReview(descriptor);
-		
+
 		PropertyFile masterProperties = null;
-		if(!descriptor.isMaster())
+		if (!descriptor.isMaster())
 			masterProperties = descriptor.getMaster().loadProperties();
 		boolean dirty = false;
 		for (Notification change : changes) {
@@ -182,50 +204,49 @@ public class PropertyReviewService implements PropertiesListener{
 			if (notifier instanceof Property) {
 				Property prop = (Property) notifier;
 				for (ReviewParticipant reviewer : activeReviews) {
-					
+
 					Review review = null;
-					if(descriptor.isMaster())
-					{
+					if (descriptor.isMaster()) {
 						review = reviewer.review(descriptor, prop, null);
+					} else {
+						review = reviewer.review(descriptor,
+								masterProperties.getProperty(prop.getKey()),
+								prop);
 					}
-					else
-					{
-						review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);					
-					}
-					
-					if(removeKey(prop.getKey(),fileReview))
-						dirty=true;
-					if(review!=null)
-					{
+
+					if (removeKey(prop.getKey(), fileReview))
+						dirty = true;
+					if (review != null) {
 						review.setKey(prop.getKey());
 						fileReview.getReviews().add(review);
 						dirty = true;
 					}
 				}
-				
+
 			}
 		}
 		CDOTransaction transaction = (CDOTransaction) fileReview.cdoView();
-		if(dirty)
-		{
+		if (dirty) {
 			try {
 				transaction.commit();
 			} catch (CommitException e) {
-				Activator.error("Failed to commit review transaction for "+descriptor.fullPath().toString(), e);
+				Activator.error("Failed to commit review transaction for "
+						+ descriptor.fullPath().toString(), e);
 			}
 		}
 		transaction.close();
-		
+
 	}
 
 	private List<ReviewParticipant> getActiveReviews(Project project) {
 		List<ReviewParticipant> activeParticipants = new ArrayList<ReviewParticipant>();
-		Preferences node = PreferencesUtil.scopeFor(project).node(PreferencesUtil.NODE_CHECKS);
+		Preferences node = PreferencesUtil.scopeFor(project).node(
+				PreferencesUtil.NODE_CHECKS);
 		for (Entry<String, ReviewParticipant> entry : participants.entrySet()) {
-			if(node.getBoolean(entry.getKey(), false))
+			if (node.getBoolean(entry.getKey(), false))
 				activeParticipants.add(entry.getValue());
 		}
 		return activeParticipants;
 	}
-	
+
 }

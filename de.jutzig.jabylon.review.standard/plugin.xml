@@ -23,6 +23,12 @@
             id="de.jutzig.jabylon.review.standard.internal.EqualityCheck"
             name="Equality Check">
       </particpant>
+      <particpant
+            class="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"
+            description="Checks if a property exists in both template and translation language"
+            id="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"
+            name="Existence Check">
+      </particpant>
    </extension>
 
 </plugin>
