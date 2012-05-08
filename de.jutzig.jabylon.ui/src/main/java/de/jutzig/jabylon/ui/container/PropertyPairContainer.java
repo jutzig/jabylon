@@ -2,20 +2,20 @@ package de.jutzig.jabylon.ui.container;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.data.util.AbstractInMemoryContainer;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 
 @SuppressWarnings("serial")
-public class PropertyPairContainer extends AbstractContainer {
+public class PropertyPairContainer extends AbstractInMemoryContainer<String, String, PropertyPairContainer.PropertyPairItem> {
 
 	private static final String SOURCE_ID = "source.id";
 	private static final String TARGET_ID = "target.id";
@@ -40,7 +40,7 @@ public class PropertyPairContainer extends AbstractContainer {
 	}
 
 	private Set<String> fillItems(PropertyFile source2, PropertyFile target2) {
-		Set<String> items = new HashSet<String>(source2.getProperties().size());
+		Set<String> items = new LinkedHashSet<String>(source2.getProperties().size());
 		for (de.jutzig.jabylon.properties.Property property : source2.getProperties()) {
 			items.add(property.getKey());
 		}
@@ -96,23 +96,11 @@ public class PropertyPairContainer extends AbstractContainer {
 	public List<String> getContainerPropertyIds() {
 		return IDS;
 	}
-
+	
 	@Override
-	public Item getItem(Object itemId) {
-		de.jutzig.jabylon.properties.Property sourceProp = source.getProperty(itemId.toString());
-		if(sourceProp==null)
-		{
-			sourceProp = PropertiesFactory.eINSTANCE.createProperty();
-			sourceProp.setKey((String) itemId);
-		}
-		de.jutzig.jabylon.properties.Property targetProp = getOrCreateTargetProperty(itemId);
-
-		return new PropertyPairItem(sourceProp, targetProp);
-	}
-
-	@Override
-	public Collection<?> getItemIds() {
-		return items;
+	protected List<String> getAllItemIds() {
+		
+		return new ArrayList<String>(items);
 	}
 
 	@Override
@@ -164,6 +152,18 @@ public class PropertyPairContainer extends AbstractContainer {
 	public boolean removeAllItems() throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	protected PropertyPairItem getUnfilteredItem(Object itemId) {
+		de.jutzig.jabylon.properties.Property sourceProp = source.getProperty(itemId.toString());
+		if(sourceProp==null)
+		{
+			sourceProp = PropertiesFactory.eINSTANCE.createProperty();
+			sourceProp.setKey((String) itemId);
+		}
+		de.jutzig.jabylon.properties.Property targetProp = getOrCreateTargetProperty(itemId);
+		return new PropertyPairItem(sourceProp, targetProp);
 	}
 
 
