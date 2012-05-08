@@ -24,6 +24,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
@@ -38,6 +40,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.util.PropertyFilter;
 
 @SuppressWarnings("serial")
 public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
@@ -88,6 +91,22 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setRows(3);
 		layout.setSpacing(true);
 		layout.setMargin(true);
+		
+		VerticalLayout tableArea = new VerticalLayout();
+		TextField filterBox = new TextField();
+		filterBox.addListener(new TextChangeListener() {
+			
+			@Override
+			public void textChange(TextChangeEvent event) {
+				propertyPairContainer.removeAllContainerFilters();
+				propertyPairContainer.addContainerFilter(new PropertyFilter(event.getText()));
+				
+			}
+		});
+		filterBox.setInputPrompt("Filter");
+		tableArea.addComponent(filterBox);
+		
+		
 		Table table = new Table();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
@@ -126,8 +145,9 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setImmediate(true); // react at once when something is selected
 		table.addListener(this);
 
-		layout.addComponent(table, 0, 0, 1, 1);
-
+		tableArea.addComponent(table);
+		layout.addComponent(tableArea, 0, 0, 1, 1);
+		
 		createEditorArea();
 		return layout;
 	}

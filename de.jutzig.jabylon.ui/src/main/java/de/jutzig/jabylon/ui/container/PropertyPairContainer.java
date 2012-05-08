@@ -8,14 +8,14 @@ import java.util.Set;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.AbstractInMemoryContainer;
+import com.vaadin.data.util.IndexedContainer;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 
 @SuppressWarnings("serial")
-public class PropertyPairContainer extends AbstractInMemoryContainer<String, String, PropertyPairContainer.PropertyPairItem> {
+public class PropertyPairContainer extends IndexedContainer{
 
 	private static final String SOURCE_ID = "source.id";
 	private static final String TARGET_ID = "target.id";
@@ -98,10 +98,12 @@ public class PropertyPairContainer extends AbstractInMemoryContainer<String, Str
 	}
 	
 	@Override
-	protected List<String> getAllItemIds() {
+	protected List<Object> getAllItemIds() {
 		
-		return new ArrayList<String>(items);
+		return new ArrayList<Object>(items);
 	}
+	
+	
 
 	@Override
 	public Class<?> getType(Object propertyId) {
@@ -110,7 +112,7 @@ public class PropertyPairContainer extends AbstractInMemoryContainer<String, Str
 
 	@Override
 	public int size() {
-		return items.size();
+		return super.size();//items.size();
 	}
 
 	@Override
