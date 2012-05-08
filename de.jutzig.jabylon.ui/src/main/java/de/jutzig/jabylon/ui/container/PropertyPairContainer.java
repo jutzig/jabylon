@@ -2,10 +2,10 @@ package de.jutzig.jabylon.ui.container;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
@@ -22,6 +22,7 @@ public class PropertyPairContainer extends AbstractContainer {
 	private static final String SOURCE_COMMENT  = "source.comment";
 	private static final String TARGET_COMMENT  = "target.comment";
 	private static final List<String> IDS;
+	private Set<String> items; 
 	static {
 		IDS = new ArrayList<String>();
 		IDS.add(SOURCE_ID);
@@ -35,13 +36,31 @@ public class PropertyPairContainer extends AbstractContainer {
 	public PropertyPairContainer(PropertyFile source, PropertyFile target) {
 		this.target = target;
 		this.source = source;
+		items = fillItems(source,target);
+	}
+
+	private Set<String> fillItems(PropertyFile source2, PropertyFile target2) {
+		Set<String> items = new HashSet<String>(source2.getProperties().size());
+		for (de.jutzig.jabylon.properties.Property property : source2.getProperties()) {
+			items.add(property.getKey());
+		}
+		for (de.jutzig.jabylon.properties.Property property : target2.getProperties()) {
+			items.add(property.getKey());
+		}
+		return items;
 	}
 
 	@Override
 	public Property getContainerProperty(Object itemId, Object propertyId) {
 		if(propertyId==SOURCE_ID)
 		{
-			return new EObjectProperty(source.getProperty((String) itemId), PropertiesPackage.Literals.PROPERTY__VALUE);
+			de.jutzig.jabylon.properties.Property property = source.getProperty((String) itemId);
+			if(property==null)
+			{
+				property = PropertiesFactory.eINSTANCE.createProperty();
+				property.setKey((String) propertyId);
+			}
+			return new EObjectProperty(property, PropertiesPackage.Literals.PROPERTY__VALUE);
 		}
 		else if(propertyId==TARGET_ID)
 		{
@@ -81,6 +100,11 @@ public class PropertyPairContainer extends AbstractContainer {
 	@Override
 	public Item getItem(Object itemId) {
 		de.jutzig.jabylon.properties.Property sourceProp = source.getProperty(itemId.toString());
+		if(sourceProp==null)
+		{
+			sourceProp = PropertiesFactory.eINSTANCE.createProperty();
+			sourceProp.setKey((String) itemId);
+		}
 		de.jutzig.jabylon.properties.Property targetProp = getOrCreateTargetProperty(itemId);
 
 		return new PropertyPairItem(sourceProp, targetProp);
@@ -88,13 +112,7 @@ public class PropertyPairContainer extends AbstractContainer {
 
 	@Override
 	public Collection<?> getItemIds() {
-		return Collections2.transform(source.getProperties(), new Function<de.jutzig.jabylon.properties.Property,String>() {
-
-			@Override
-			public String apply(de.jutzig.jabylon.properties.Property from) {
-				return from.getKey();
-			}
-		});
+		return items;
 	}
 
 	@Override
@@ -104,12 +122,12 @@ public class PropertyPairContainer extends AbstractContainer {
 
 	@Override
 	public int size() {
-		return source.getProperties().size();
+		return items.size();
 	}
 
 	@Override
 	public boolean containsId(Object itemId) {
-		return source.getProperty((String) itemId)!=null;
+		return items.contains(itemId);
 	}
 
 	@Override
@@ -234,6 +252,13 @@ public class PropertyPairContainer extends AbstractContainer {
 
 		public Property getTargetComment() {
 			return targetComment;
+		}
+
+		public Object getKey() {	
+			String key = getSourceProperty().getKey();
+			if(key==null)
+				key = getTargetProperty().getKey();
+			return key;
 		}
 
 	}

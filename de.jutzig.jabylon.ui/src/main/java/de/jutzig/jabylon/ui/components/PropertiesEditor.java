@@ -260,7 +260,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		PropertyPairItem item = (PropertyPairItem) theItem;
 		item.getSourceProperty();
 
-		keyLabel.setValue(item.getSourceProperty().getKey());
+		
+		keyLabel.setValue(item.getKey());
 		translated.setPropertyDataSource(item.getTarget());
 		orignal.setPropertyDataSource(item.getSource());
 
