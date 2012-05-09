@@ -37,24 +37,6 @@
          name="general settings"
          point="de.jutzig.jabylon.ui.config">
       <configSection
-            id="de.jutzig.jabylon.ui.generalRepository"
-            objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceRepositoryConfig"
-            tab="repository">
-      </configSection>
-      <configSection
-            id="de.jutzig.jabylon.ui.generalSecurity"
-            objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceSecurityConfig"
-            tab="security">
-      </configSection>
-      <configSection
-            id="de.jutzig.jabylon.ui.generalConfig"
-            objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.ui.config.internal.general.GeneralWorkspaceConfig"
-            tab="general">
-      </configSection>
-      <configSection
             id="de.jutzig.jabylon.ui.projects"
             objectClass="de.jutzig.jabylon.properties.Workspace"
             section="de.jutzig.jabylon.ui.config.internal.general.WorkspaceProjectsSettings"
