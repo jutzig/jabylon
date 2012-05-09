@@ -3,6 +3,8 @@ package de.jutzig.jabylon.ui.container;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -33,6 +35,13 @@ public class EObjectProperty extends AbstractProperty implements Adapter{
 	@Override
 	public void setValue(Object newValue) throws ReadOnlyException,
 			ConversionException {
+		if (feature instanceof EAttribute && newValue!=null) {
+			EAttribute attribute = (EAttribute) feature;
+			EDataType type = attribute.getEAttributeType();
+			if(!type.isInstance(newValue))
+				newValue = feature.getEType().getEPackage().getEFactoryInstance().createFromString(type, newValue.toString());
+			
+		}
 		object.eSet(feature, newValue);
 	}
 
