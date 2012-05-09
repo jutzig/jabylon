@@ -174,7 +174,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 		localeTable = table.getTable();
 		localeTable.setWidth(300, Table.UNITS_PIXELS);
-		localeTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
+		
 		localeTable.setMultiSelect(true);
 		localeTable.setSelectable(true);
 		layout.addComponent(table);
@@ -318,6 +318,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			localeTable.setContainerDataSource(new ProjectLocaleTableContainer(version));
 			localeTable.setVisibleColumns(EnumSet.of(LocaleProperty.LOCALE).toArray());
 			localeTable.setItemIconPropertyId(LocaleProperty.FLAG);
+			localeTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 			slaveTable.setVisible(true);
 		} else
 			slaveTable.setVisible(false);
