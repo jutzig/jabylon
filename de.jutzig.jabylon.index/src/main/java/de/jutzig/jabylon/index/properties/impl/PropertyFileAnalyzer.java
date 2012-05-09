@@ -9,7 +9,6 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
-import org.eclipse.emf.cdo.spi.common.id.AbstractCDOID;
 import org.eclipse.emf.common.util.EList;
 
 import de.jutzig.jabylon.index.properties.QueryService;

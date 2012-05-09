@@ -90,6 +90,21 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						}
 
 					}
+					
+					else if (notification.getEventType() == Notification.REMOVE) {
+						Object object = (Object) notification.getOldValue();
+
+						if (object instanceof ProjectLocale) {
+							ProjectLocale locale = (ProjectLocale) object;
+							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+								firePropertiesDeleted(propertyFileDescriptor);
+
+							}
+						}
+
+					}
+					
 					else if (notification.getEventType() == Notification.SET) {
 						
 						//FIXME: this is relevant for the template language.
@@ -111,6 +126,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 				}
 				if (notification.getNotifier() instanceof ProjectLocale) {
+					//TODO: delete isn't properly working yet
 					ProjectLocale locale = (ProjectLocale) notification.getNotifier();
 					if (notification.getEventType() == Notification.ADD
 							&& PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
@@ -120,12 +136,24 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
 							firePropertiesAdded(descriptor);
 						}
+					}
+					
+					if (notification.getEventType() == Notification.REMOVE
+							&& PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
+
+						Object object = notification.getOldValue();
+						if (object instanceof PropertyFileDescriptor) {
+							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+							firePropertiesDeleted(descriptor);
+						}
 
 					}
 				}
 				
 			}
 			
+
+
 			@Override
 			protected void removeAdapter(Notifier notifier) {
 				if (notifier instanceof CDOObject) {
@@ -310,6 +338,20 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	}
 
+	
+	private void firePropertiesDeleted(PropertyFileDescriptor descriptor) {
+		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
+		while (it.hasNext()) {
+			WeakReference<PropertiesListener> ref = it.next();
+			PropertiesListener listener = ref.get();
+			if (listener == null)
+				it.remove();
+			else
+				listener.propertyFileDeleted(descriptor);
+		}
+		
+	}
+	
 	private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff) {
 		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
 		while (it.hasNext()) {

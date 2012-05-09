@@ -16,6 +16,7 @@ import org.apache.lucene.search.TopDocs;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
+import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.URI;
 
@@ -164,7 +165,16 @@ class ResultLuceneContainer extends LuceneContainer
 				button.setStyleName(Reindeer.BUTTON_LINK);
 				CDOView view = MainDashboard.getCurrent().getWorkspace().cdoView();
 				
-				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) view.getObject(CDOIDUtil.read(cdoID));
+				CDOID id = CDOIDUtil.read(cdoID);
+				
+				PropertyFileDescriptor descriptor = null;
+				try {
+					descriptor = (PropertyFileDescriptor) view.getObject(id);
+				} catch (ObjectNotFoundException e) {
+					//TODO: logging and handling if the object cannot be found
+					System.out.println("SearchResultPage: "+e.getMessage());
+					return null;
+				}
 				button.setData(descriptor);
 				button.addListener(new ClickListener() {
 					
