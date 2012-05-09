@@ -66,6 +66,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	private Multimap<String, Review> buildReviews(PropertyFileDescriptor descriptor) {
 		Multimap<String, Review> map = ArrayListMultimap.create();
+		if(descriptor==null)
+			return map;
 		URI fullPath = descriptor.fullPath();
 		CDOView view = descriptor.cdoView();
 		if(view.hasResource("review/"+fullPath.toString()))
