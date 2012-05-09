@@ -1,13 +1,8 @@
 package de.jutzig.jabylon.ui.applications;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.view.CDOView;
-import org.eclipse.emf.common.util.URI;
 
 import com.vaadin.Application;
 import com.vaadin.service.ApplicationContext.TransactionListener;
@@ -32,7 +27,6 @@ import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
-import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
 
@@ -44,13 +38,11 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private Workspace workspace;
 	private VerticalLayout mainLayout;
 	private LabeledContainer contentArea;
-	private Map<String, TeamProvider> teamProvider;
 	private PropertyPersistenceService propertyPersistence;
 	private QueryService queryService;
 	private PropertyReviewService propertyReviewService;
 
 	public MainDashboard() {
-		teamProvider = new HashMap<String, TeamProvider>();
 
 	}
 
@@ -79,11 +71,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 		contentArea.setSizeFull();
 		breadcrumbs.addCrumbListener(titleBar);
 
-		// Component header = createHeader();
-		//
-		// mainLayout.addComponent(header);
-		// mainLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
-		// mainLayout.setExpandRatio(header, 0f);
 		mainLayout.addComponent(contentArea);
 
 		getMainWindow().setContent(mainLayout);
@@ -91,20 +78,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 	}
 
 	private Component createHeader() {
-		// Label title = new Label();
-		// title.setCaption("Jabylon");
-		// title.setStyleName(Reindeer.LABEL_H1);
-		//
-		// HorizontalLayout header = new HorizontalLayout();
-		//
-		// header.setSpacing(true);
-		// header.addComponent(title);
-		//
-		// header.addStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
-		// BreadCrumbImpl crumbs = new BreadCrumbImpl();
-		// breadcrumbs = crumbs;
-		// header.addComponent(crumbs);
-		// return header;
 
 		HorizontalLayout nav = new HorizontalLayout();
 		nav.setHeight("30px");
@@ -230,25 +203,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return false;
 	}
 
-	public void addTeamProvider(TeamProvider provider, Map properties) {
-		teamProvider.put((String) properties.get("scheme"), provider);
-	}
-
-	public void removeTeamProvider(TeamProvider provider, Map properties) {
-		// TODO: enable properties
-		teamProvider.remove(properties.get("schema"));
-	}
-
-	public TeamProvider getTeamProviderForURI(URI uri) {
-		if (uri.lastSegment().endsWith(".git"))
-			return teamProvider.get("git");
-		if (uri.scheme().equals("pserver"))
-			return teamProvider.get("cvs");
-		if (uri.scheme().equals("scm:cvs"))
-			return teamProvider.get("cvs");
-		return teamProvider.get(uri.scheme());
-	}
-
 	@Override
 	public CDOObject getDomainObject() {
 		return workspace;
@@ -264,11 +218,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 	
 	public void unsetQueryService(QueryService queryService) {
 		this.queryService = null;
-	}
-	
-	
-	public Map<String, TeamProvider> getTeamProviders() {
-		return Collections.unmodifiableMap(teamProvider);
 	}
 	
 }

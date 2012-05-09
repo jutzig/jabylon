@@ -30,6 +30,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -38,6 +39,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.team.git.impl.util.ProgressMonitorWrapper;
 import de.jutzig.jabylon.ui.team.TeamProvider;
+import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class GitTeamProvider implements TeamProvider {
 
@@ -84,7 +86,7 @@ public class GitTeamProvider implements TeamProvider {
 
 		URI uri = project.getProject().getRepositoryURI();
 
-		clone.setCredentialsProvider(createCredentialsProvider(uri));
+		clone.setCredentialsProvider(createCredentialsProvider(project.getProject()));
 		clone.setURI(stripUserInfo(uri).toString());
 		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
 
@@ -111,7 +113,7 @@ public class GitTeamProvider implements TeamProvider {
 		try {
 			commit.call();
 			PushCommand push = git.push();
-			push.setCredentialsProvider(createCredentialsProvider(project.getProject().getRepositoryURI()));
+			push.setCredentialsProvider(createCredentialsProvider(project.getProject()));
 			push.setPushAll();
 			push.call();
 			
@@ -196,17 +198,12 @@ public class GitTeamProvider implements TeamProvider {
 		
 	}
 
-	private CredentialsProvider createCredentialsProvider(URI uri)
+	private CredentialsProvider createCredentialsProvider(Project project)
 	{
-		if(uri.userInfo()!=null && uri.userInfo().length()>0)
-		{
-			String userInfo = uri.userInfo();
-			String[] values = userInfo.split(":");
-			UsernamePasswordCredentialsProvider user = new UsernamePasswordCredentialsProvider(values[0], values[1]);
-			return user;
-			
-		}
-		return null;
+		Preferences node = PreferencesUtil.scopeFor(project);
+		String username = node.get(GitConstants.KEY_USERNAME, "");
+		String password = node.get(GitConstants.KEY_PASSWORD, "");
+		return new UsernamePasswordCredentialsProvider(username, password);
 	}
 	
 	private URI stripUserInfo(URI uri)

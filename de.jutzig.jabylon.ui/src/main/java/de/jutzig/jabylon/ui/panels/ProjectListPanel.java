@@ -15,7 +15,6 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
-import de.jutzig.jabylon.ui.forms.NewProjectForm;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 
 public class ProjectListPanel extends GridLayout implements ClickListener {

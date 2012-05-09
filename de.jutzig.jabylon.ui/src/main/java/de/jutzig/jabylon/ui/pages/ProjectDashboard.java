@@ -132,28 +132,28 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		table.setItemIconPropertyId(LocaleProperty.FLAG);
 		parent.addComponent(table, 0, 0, 1, 0);
 
-		Button commit = new Button();
-		commit.setCaption("Commit Changes");
-		commit.setIcon(ImageConstants.IMAGE_PROJECT_COMMIT);
-		commit.addListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-
-				TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
-				if (teamProvider != null) {
-					try {
-						teamProvider.commit(version, new NullProgressMonitor());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-			}
-
-		});
-		parent.addComponent(commit);
+//		Button commit = new Button();
+//		commit.setCaption("Commit Changes");
+//		commit.setIcon(ImageConstants.IMAGE_PROJECT_COMMIT);
+//		commit.addListener(new ClickListener() {
+//
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//
+//				TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
+//				if (teamProvider != null) {
+//					try {
+//						teamProvider.commit(version, new NullProgressMonitor());
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//
+//			}
+//
+//		});
+//		parent.addComponent(commit);
 
 	}
 

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Git Team Provider for Jabylon
-Bundle-SymbolicName: de.jutzig.jabylon.team.git
+Bundle-SymbolicName: de.jutzig.jabylon.team.git;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.jutzig.jabylon.team.git.Activator
 Bundle-ActivationPolicy: lazy
@@ -11,8 +11,10 @@ Import-Package: com.jcraft.jsch;version="0.1.41",
  de.jutzig.jabylon.ui.team,
  org.eclipse.core.runtime;version="3.4.0",
  org.eclipse.emf.common.util,
- org.osgi.framework;version="1.3.0"
+ org.osgi.framework;version="1.3.0",
+ org.osgi.service.prefs;version="1.1.1"
 Require-Bundle: org.eclipse.jgit;bundle-version="1.3.0",
  org.eclipse.emf.cdo.common;bundle-version="4.0.1",
- org.eclipse.emf.cdo;bundle-version="4.0.1"
-Service-Component: OSGI-INF/teamprovider.xml
+ org.eclipse.emf.cdo;bundle-version="4.0.1",
+ com.vaadin;bundle-version="6.7.5",
+ de.jutzig.jabylon.ui

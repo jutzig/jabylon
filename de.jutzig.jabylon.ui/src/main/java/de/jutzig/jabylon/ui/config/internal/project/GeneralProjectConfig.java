@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -38,7 +39,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
-import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.components.EditableTable;
 import de.jutzig.jabylon.ui.components.ProgressMonitorDialog;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
@@ -58,7 +59,7 @@ import de.jutzig.jabylon.ui.util.RunnableWithProgress;
  * 
  */
 @SuppressWarnings("serial")
-public class GeneralProjectConfig extends AbstractConfigSection<Project> implements ValueChangeListener{
+public class GeneralProjectConfig extends AbstractConfigSection<Project> implements ValueChangeListener {
 
 	private Form form;
 	private ProjectVersion version;
@@ -82,7 +83,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		form = new Form();
 		form.setWriteThrough(true);
 		form.setImmediate(true);
-		layout.addComponent(form,0,0,1,0);
+		layout.addComponent(form, 0, 0, 1, 0);
 
 		Component table = createVersionTable();
 		layout.addComponent(table);
@@ -124,7 +125,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				}
 			}
 		};
-		
+
 		versionTable = table.getTable();
 		versionTable.setImmediate(true);
 		versionTable.addListener(this);
@@ -232,16 +233,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 					select.setNullSelectionAllowed(false);
 					return select;
 				}
-				if (propertyId == PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER)
-				{
-					NativeSelect select = new NativeSelect("Team Provider");
-					Set<String> keySet = MainDashboard.getCurrent().getTeamProviders().keySet();
-					for (String string : keySet) {
-						select.addItem(string);
-					}
-					select.setNullSelectionAllowed(true);
-					return select;
-				}
+
 				Field field = super.createField(item, propertyId, uiContext);
 				EStructuralFeature feature = (EStructuralFeature) propertyId;
 				field.setCaption(createCaptionByPropertyId(feature.getName()));
@@ -249,7 +241,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			}
 		});
 		form.setVisibleItemProperties(new Object[] { PropertiesPackage.Literals.PROJECT__NAME,
-				PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER });
+				PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE });
 
 		versionTable.setContainerDataSource(new ProjectVersionContainer(getDomainObject()));
 
@@ -295,8 +287,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 						ProgressMonitorDialog dialog = new ProgressMonitorDialog(table.getWindow());
 						dialog.setCaption("Checking out...");
-						final TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(
-								getDomainObject().getRepositoryURI());
+						final TeamProvider teamProvider = Activator.getDefault().getTeamProviderFor(getDomainObject());
 						dialog.run(true, new RunnableWithProgress() {
 
 							@Override
@@ -317,10 +308,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		});
 
 		versionTable.setColumnHeaders(new String[] { "Branch", "Completeness", "Scan", "Checkout" });
-		
-		
 
-		
 	}
 
 	@Override
@@ -331,10 +319,9 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			localeTable.setVisibleColumns(EnumSet.of(LocaleProperty.LOCALE).toArray());
 			localeTable.setItemIconPropertyId(LocaleProperty.FLAG);
 			slaveTable.setVisible(true);
-		}
-		else
+		} else
 			slaveTable.setVisible(false);
-		
+
 	}
 }
 

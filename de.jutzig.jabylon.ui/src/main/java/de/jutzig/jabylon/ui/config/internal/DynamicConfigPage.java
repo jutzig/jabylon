@@ -80,7 +80,10 @@ public class DynamicConfigPage implements CrumbTrail {
 		TabSheet sheet = new TabSheet();
 		Map<String, VerticalLayout> tabs = fillTabSheet(visibleTabs, sheet);
 		layout.addComponent(sheet);
-		for (IConfigurationElement child : configSections) {
+		for(int i=configSections.size()-1;i>=0;i--)
+		{
+			//go in reverse order, because they are computed in reverse order
+			IConfigurationElement child = configSections.get(i);
 			try {
 
 				ConfigSection section = (ConfigSection) child.createExecutableExtension("section");

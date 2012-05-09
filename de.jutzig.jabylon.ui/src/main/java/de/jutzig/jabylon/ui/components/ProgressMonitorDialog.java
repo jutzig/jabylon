@@ -15,6 +15,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 public class ProgressMonitorDialog extends Window implements IProgressMonitor,
@@ -72,6 +73,7 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 				try {
 					runnable.run(ProgressMonitorDialog.this);
 				} catch (Exception e) {
+					Activator.error("Job execution failed", e);
 					end();
 				}
 			}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="de.jutzig.jabylon.ui.teamProvider">
+      <teamProvider
+            class="de.jutzig.jabylon.team.git.impl.GitTeamProvider"
+            description="Git Team Provider"
+            name="Git">
+      </teamProvider>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.config">
+      <configSection
+            id="de.jutzig.jabylon.team.git.config"
+            objectClass="de.jutzig.jabylon.properties.Project"
+            section="de.jutzig.jabylon.team.git.impl.config.GitConfigSection"
+            tab="repository">
+      </configSection>
+   </extension>
+
+</plugin>

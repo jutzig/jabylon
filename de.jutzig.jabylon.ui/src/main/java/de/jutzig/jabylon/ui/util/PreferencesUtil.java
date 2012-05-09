@@ -6,6 +6,7 @@ package de.jutzig.jabylon.ui.util;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.net4j.util.security.Credentials;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
@@ -50,5 +51,4 @@ public class PreferencesUtil {
 		configuration.setMasterLocale(node.get(SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral()));
 		return configuration;
 	}
-	
 }

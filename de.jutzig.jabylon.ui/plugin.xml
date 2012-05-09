@@ -4,6 +4,7 @@
    <extension-point id="config" name="Configuration Section" schema="schema/config.exsd"/>
    <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension-point id="reviewParticipant" name="Review Participants" schema="schema/reviewParticipant.exsd"/>
+   <extension-point id="teamProvider" name="Jabylon Team Provider" schema="schema/teamProvider.exsd"/>
    <extension
          name="project settings"
          point="de.jutzig.jabylon.ui.config">
@@ -23,8 +24,7 @@
             id="de.jutzig.jabylon.ui.projectRepository"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.ProjectRepositorySettings"
-            tab="repository"
-            title="General Repository Settings">
+            tab="repository">
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.config.checks"
