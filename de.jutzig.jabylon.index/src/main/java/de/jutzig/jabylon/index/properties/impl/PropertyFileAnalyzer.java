@@ -48,7 +48,7 @@ public class PropertyFileAnalyzer {
 			StringBuilder builder = new StringBuilder();
 			CDOIDUtil.write(builder, cdoID);
 
-			Field idField = new Field(QueryService.FIELD_CDO_ID, builder.toString(), Store.YES, Index.NO);
+			Field idField = new Field(QueryService.FIELD_CDO_ID, builder.toString(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(idField);
 
 			Field comment = new Field(QueryService.FIELD_COMMENT, nullSafe(property.getComment()), Store.YES, Index.ANALYZED);

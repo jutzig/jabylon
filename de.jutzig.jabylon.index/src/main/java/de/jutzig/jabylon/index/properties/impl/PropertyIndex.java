@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.common.notify.Notification;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
@@ -98,7 +99,9 @@ public class PropertyIndex extends Job implements PropertiesListener {
 					}
 					break;
 				case DELETE:
-					writer.deleteDocuments(new Term(QueryService.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
+					StringBuilder builder = new StringBuilder();
+					CDOIDUtil.write(builder, documentTuple.getDescriptor().cdoID());
+					writer.deleteDocuments(new Term(QueryService.FIELD_CDO_ID, builder.toString()));
 					break;
 				case REPLACE:
 					writer.deleteDocuments(new Term(QueryService.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
@@ -112,6 +115,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 				}
 
 			}
+			writer.commit();
 
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
