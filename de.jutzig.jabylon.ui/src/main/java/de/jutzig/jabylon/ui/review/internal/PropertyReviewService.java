@@ -139,9 +139,12 @@ public class PropertyReviewService implements PropertiesListener {
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
 
+		//TODO: this is unfortunately rather slow in case of a full rescan when potentially 
+		//tens of thousands of review files are deleted (by tens of thousands of commits)...
 		if (!ReviewUtil.hasReviewResource(descriptor))
 			return;
 		CDOSession session = descriptor.cdoView().getSession();
+//		System.out.println("Property Review Service: deleting review "+ descriptor.cdoID());
 		CDOTransaction transaction = session.openTransaction();
 		Resource resource = ReviewUtil.getReviewResource(descriptor, transaction);
 
