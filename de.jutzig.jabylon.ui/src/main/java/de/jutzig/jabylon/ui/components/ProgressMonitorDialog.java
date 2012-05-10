@@ -85,6 +85,8 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 	@Override
 	public void beginTask(String name, int totalWork) {
 		setTaskName(name);
+		if(totalWork==IProgressMonitor.UNKNOWN)
+			indicator.setIndeterminate(true);
 		this.totalWork = totalWork;
 
 	}
