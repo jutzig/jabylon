@@ -1,12 +1,8 @@
 package de.jutzig.jabylon.ui.components;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -40,6 +36,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
 
 @SuppressWarnings("serial")
@@ -66,23 +63,16 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	private Multimap<String, Review> buildReviews(PropertyFileDescriptor descriptor) {
 		Multimap<String, Review> map = ArrayListMultimap.create();
-		if(descriptor==null)
+		if (descriptor == null)
 			return map;
-		URI fullPath = descriptor.fullPath();
-		CDOView view = descriptor.cdoView();
-		if(view.hasResource("review/"+fullPath.toString()))
-		{
-			CDOResource resource = view.getResource("review/"+fullPath.toString());
-			EObject object = resource.getContents().get(0);
-			if (object instanceof PropertyFileReview) {
-				PropertyFileReview fileReview = (PropertyFileReview) object;
-				EList<Review> reviews = fileReview.getReviews();
-				for (Review review : reviews) {
-					map.put(review.getKey(), review);
-				}
-				
+		PropertyFileReview fileReview = ReviewUtil.getReviewFor(descriptor);
+		if (fileReview != null) {
+			EList<Review> reviews = fileReview.getReviews();
+			for (Review review : reviews) {
+				map.put(review.getKey(), review);
 			}
 		}
+
 		return map;
 	}
 
@@ -93,22 +83,21 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setRows(3);
 		layout.setSpacing(true);
 		layout.setMargin(true);
-		
+
 		VerticalLayout tableArea = new VerticalLayout();
 		TextField filterBox = new TextField();
 		filterBox.addListener(new TextChangeListener() {
-			
+
 			@Override
 			public void textChange(TextChangeEvent event) {
 				propertyPairContainer.removeAllContainerFilters();
 				propertyPairContainer.addContainerFilter(new PropertyFilter(event.getText()));
-				
+
 			}
 		});
 		filterBox.setInputPrompt("Filter");
 		tableArea.addComponent(filterBox);
-		
-		
+
 		Table table = new Table();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
@@ -117,25 +106,23 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setContainerDataSource(propertyPairContainer);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
 		table.addGeneratedColumn("Problems", new ColumnGenerator() {
-			
+
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 
-				if(reviews.containsKey(itemId))
-				{
-					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);					
+				if (reviews.containsKey(itemId)) {
+					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);
 					Review review = reviews.get((String) itemId).iterator().next();
 					embedded.setDescription(review.getMessage());
 					return embedded;
-				}
-				else
+				} else
 					return new Embedded("", ImageConstants.IMAGE_OK);
 			}
 		});
-		
+
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
-		
-		table.setColumnHeaders(new String[] { "Original", "Translation","Problems"});
+
+		table.setColumnHeaders(new String[] { "Original", "Translation", "Problems" });
 		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 420);
 		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 440);
 		table.setEditable(false);
@@ -149,7 +136,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		tableArea.addComponent(table);
 		layout.addComponent(tableArea, 0, 0, 1, 1);
-		
+
 		createEditorArea();
 		return layout;
 	}
@@ -172,7 +159,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		// translated.setWidth(400, UNITS_PIXELS);
 
 		translated.setNullRepresentation("");
-		translated.addListener((TextChangeListener)this);
+		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
 		layout.addComponent(translated);
 
@@ -191,7 +178,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setRows(3);
 		translatedComment.setColumns(40);
 		translatedComment.setNullRepresentation("");
-		translatedComment.addListener((TextChangeListener)this);
+		translatedComment.addListener((TextChangeListener) this);
 		translatedComment.setInputPrompt("Comment");
 		translatedComment.setWriteThrough(true);
 		layout.addComponent(translatedComment);
@@ -233,7 +220,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	protected int getFilledKeys(PropertyFile target2) {
 		int counter = 0;
 		for (Property prop : target2.getProperties()) {
-			if(prop.getValue()!=null && prop.getValue().length()>0)
+			if (prop.getValue() != null && prop.getValue().length() > 0)
 				counter++;
 		}
 		return counter;
@@ -276,13 +263,12 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 		Object value = event.getProperty().getValue();
-		if(value==null)
+		if (value == null)
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		PropertyPairItem item = (PropertyPairItem) theItem;
 		item.getSourceProperty();
 
-		
 		keyLabel.setValue(item.getKey());
 		translated.setPropertyDataSource(item.getTarget());
 		orignal.setPropertyDataSource(item.getSource());
