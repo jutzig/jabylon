@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.review.internal;
 
@@ -36,7 +36,7 @@ import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class PropertyReviewService implements PropertiesListener {
 
@@ -139,7 +139,7 @@ public class PropertyReviewService implements PropertiesListener {
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
 
-		//TODO: this is unfortunately rather slow in case of a full rescan when potentially 
+		//TODO: this is unfortunately rather slow in case of a full rescan when potentially
 		//tens of thousands of review files are deleted (by tens of thousands of commits)...
 		if (!ReviewUtil.hasReviewResource(descriptor))
 			return;
@@ -179,6 +179,7 @@ public class PropertyReviewService implements PropertiesListener {
 			Object notifier = change.getNotifier();
 			if (notifier instanceof Property) {
 				Property prop = (Property) notifier;
+				boolean firstReview = true;
 				for (ReviewParticipant reviewer : activeReviews) {
 
 					Review review = null;
@@ -188,13 +189,14 @@ public class PropertyReviewService implements PropertiesListener {
 						review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);
 					}
 
-					if (removeKey(prop.getKey(), fileReview))
+					if (firstReview && removeKey(prop.getKey(), fileReview))
 						dirty = true;
 					if (review != null) {
 						review.setKey(prop.getKey());
 						fileReview.getReviews().add(review);
 						dirty = true;
 					}
+					firstReview = false;
 				}
 
 			}
