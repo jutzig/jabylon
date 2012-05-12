@@ -40,30 +40,8 @@ public class QueryServiceImpl implements QueryService {
 	@Override
 	public SearchResult search(String search, Object scope) {
 		search = search.toLowerCase();
-		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-		try {
-			IndexSearcher searcher = new IndexSearcher(directory, true);
-//			String query = search += "*";
-
-			Query q = constructQuery(scope, search);
-
-//			Query q = new QueryParser(Version.LUCENE_29, QueryService.FIELD_VALUE, new StandardAnalyzer(Version.LUCENE_29)).parse(query);
-
-			TopDocs result = searcher.search(q, 1000);
-			return new SearchResult(searcher, result);
-
-		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-//		catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		return null;
+		Query q = constructQuery(scope, search);
+		return search(q);
 
 	}
 
@@ -117,6 +95,25 @@ public class QueryServiceImpl implements QueryService {
 	
 	private TermQuery createDescriptorQuery(PropertyFileDescriptor descriptor) {
 		return new TermQuery(new Term(FIELD_URI, descriptor.fullPath().toString()));
+	}
+
+	@Override
+	public SearchResult search(Query query) {
+		
+		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
+		try {
+			IndexSearcher searcher = new IndexSearcher(directory, true);
+			TopDocs result = searcher.search(query, 1000);
+			return new SearchResult(searcher, result);
+
+		} catch (CorruptIndexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
 	}
 
 

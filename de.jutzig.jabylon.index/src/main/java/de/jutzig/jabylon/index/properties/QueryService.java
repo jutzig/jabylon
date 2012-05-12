@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.index.properties;
 
+import org.apache.lucene.search.Query;
+
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -23,5 +25,6 @@ public interface QueryService {
 	
 	SearchResult search(String search, Object scope);
 	
+	SearchResult search(Query query);
 
 }
