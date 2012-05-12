@@ -18,6 +18,7 @@ public interface QueryService {
 	String FIELD_VERSION = "version";
 	String FIELD_PROJECT = "project";
 	String FIELD_CDO_ID = "cdoID";
+	String MASTER = "master";
 	
 	
 	SearchResult search(String search, Object scope);

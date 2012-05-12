@@ -37,7 +37,13 @@ public class PropertyFileAnalyzer {
 			doc.add(projectField);
 			Field versionField = new Field(QueryService.FIELD_VERSION, version.getBranch(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(versionField);
-			if(locale.getLocale()!=null)
+			if(locale.isMaster())
+			{
+				//mark the master files specifically
+				Field localeField = new Field(QueryService.FIELD_LOCALE, QueryService.MASTER, Store.YES, Index.NOT_ANALYZED);				
+				doc.add(localeField);
+			}
+			else if(locale.getLocale()!=null)
 			{
 				Field localeField = new Field(QueryService.FIELD_LOCALE, locale.getLocale().toString(), Store.YES, Index.NOT_ANALYZED);				
 				doc.add(localeField);

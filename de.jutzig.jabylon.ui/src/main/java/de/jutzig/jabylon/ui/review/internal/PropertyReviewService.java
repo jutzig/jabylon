@@ -26,7 +26,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.resources.changes.PropertiesListener;
+import de.jutzig.jabylon.resources.changes.AbstractCoalescingListener;
 import de.jutzig.jabylon.review.PropertyFileReview;
 import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.Activator;
@@ -36,9 +36,9 @@ import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
-public class PropertyReviewService implements PropertiesListener {
+public class PropertyReviewService extends AbstractCoalescingListener {
 
 	private Map<String, ReviewParticipant> participants;
 
@@ -64,6 +64,9 @@ public class PropertyReviewService implements PropertiesListener {
 
 	@Override
 	public void propertyFileAdded(PropertyFileDescriptor descriptor) {
+		if (descriptor.isMaster()) // TODO: or does the master language need to
+									// be checked too
+			return;
 		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())
@@ -71,7 +74,8 @@ public class PropertyReviewService implements PropertiesListener {
 		PropertyFile slaveProperties = descriptor.loadProperties();
 		PropertyFile masterProperties = descriptor.getMaster().loadProperties();
 
-		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor);
+		CDOTransaction transaction = retrieveTransaction(descriptor);
+		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor, transaction);
 		boolean dirty = false;
 		Set<String> allProperties = new HashSet<String>();
 		for (Property prop : slaveProperties.getProperties()) {
@@ -110,15 +114,10 @@ public class PropertyReviewService implements PropertiesListener {
 				}
 			}
 		}
-		CDOTransaction transaction = (CDOTransaction) fileReview.cdoView();
+
 		if (dirty) {
-			try {
-				transaction.commit();
-			} catch (CommitException e) {
-				Activator.error("Failed to commit review transaction for " + descriptor.fullPath().toString(), e);
-			}
+			process();
 		}
-		transaction.close();
 
 	}
 
@@ -139,27 +138,22 @@ public class PropertyReviewService implements PropertiesListener {
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
 
-		//TODO: this is unfortunately rather slow in case of a full rescan when potentially
-		//tens of thousands of review files are deleted (by tens of thousands of commits)...
+		// TODO: this is unfortunately rather slow in case of a full rescan when
+		// potentially
+		// tens of thousands of review files are deleted (by tens of thousands
+		// of commits)...
 		if (!ReviewUtil.hasReviewResource(descriptor))
 			return;
-		CDOSession session = descriptor.cdoView().getSession();
-//		System.out.println("Property Review Service: deleting review "+ descriptor.cdoID());
-		CDOTransaction transaction = session.openTransaction();
+		CDOTransaction transaction = retrieveTransaction(descriptor);
 		Resource resource = ReviewUtil.getReviewResource(descriptor, transaction);
 
 		try {
 			resource.delete(null);
-			transaction.commit();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (CommitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			transaction.close();
 		}
+		process();
 
 	}
 
@@ -169,7 +163,8 @@ public class PropertyReviewService implements PropertiesListener {
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())
 			return;
-		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor);
+		CDOTransaction transaction = retrieveTransaction(descriptor);
+		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor, transaction);
 
 		PropertyFile masterProperties = null;
 		if (!descriptor.isMaster())
@@ -201,15 +196,12 @@ public class PropertyReviewService implements PropertiesListener {
 
 			}
 		}
-		CDOTransaction transaction = (CDOTransaction) fileReview.cdoView();
+
 		if (dirty) {
-			try {
-				transaction.commit();
-			} catch (CommitException e) {
-				Activator.error("Failed to commit review transaction for " + descriptor.fullPath().toString(), e);
-			}
+
+			process();
+
 		}
-		transaction.close();
 
 	}
 

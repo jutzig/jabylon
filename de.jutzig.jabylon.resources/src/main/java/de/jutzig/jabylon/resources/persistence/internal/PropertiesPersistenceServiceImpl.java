@@ -111,23 +111,16 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 					else if (notification.getEventType() == Notification.SET) {
 
-						// FIXME: this is relevant for the template language.
-						// Disable for now, because we cannot display the master
-						// language at the moment, so it shouldn't
-						// be searchable either
+						Object object = (Object) notification.getNewValue();
 
-						// Object object = (Object) notification.getNewValue();
-						//
-						// if (object instanceof ProjectLocale) {
-						// ProjectLocale locale = (ProjectLocale) object;
-						// EList<PropertyFileDescriptor> descriptors =
-						// locale.getDescriptors();
-						// for (PropertyFileDescriptor propertyFileDescriptor :
-						// descriptors) {
-						// firePropertiesAdded(propertyFileDescriptor);
-						//
-						// }
-						// }
+						if (object instanceof ProjectLocale) {
+							ProjectLocale locale = (ProjectLocale) object;
+							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+								firePropertiesAdded(propertyFileDescriptor);
+
+							}
+						}
 
 					}
 
@@ -324,11 +317,9 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	}
 
 	private void firePropertiesAdded(PropertyFileDescriptor descriptor) {
-		Iterator<PropertiesListener> it = listeners.iterator();
-
-		PropertiesListener listener = it.next();
-
-		listener.propertyFileAdded(descriptor);
+		for (PropertiesListener listener : listeners) {
+			listener.propertyFileAdded(descriptor);
+		}
 
 	}
 

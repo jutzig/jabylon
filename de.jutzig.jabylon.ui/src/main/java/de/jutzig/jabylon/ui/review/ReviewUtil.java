@@ -66,6 +66,13 @@ public class ReviewUtil {
 	 */
 	public static PropertyFileReview getOrCreateReview(PropertyFileDescriptor descriptor) {
 		CDOTransaction transaction = descriptor.cdoView().getSession().openTransaction();
+		return getOrCreateReview(descriptor,transaction);
+
+	}
+	
+	
+
+	public static PropertyFileReview getOrCreateReview(PropertyFileDescriptor descriptor, CDOTransaction transaction) {
 		CDOResource resource = transaction.getOrCreateResource("review/" + getIDString(descriptor));
 		EList<EObject> contents = resource.getContents();
 		PropertyFileReview review = null;

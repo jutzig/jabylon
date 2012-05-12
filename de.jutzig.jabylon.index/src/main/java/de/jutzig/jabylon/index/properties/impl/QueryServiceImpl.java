@@ -5,11 +5,8 @@ package de.jutzig.jabylon.index.properties.impl;
 
 import java.io.IOException;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -18,7 +15,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.util.Version;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
@@ -101,6 +97,8 @@ public class QueryServiceImpl implements QueryService {
 		termQuery.add(new PrefixQuery(new Term(FIELD_KEY,search)),Occur.SHOULD);
 		termQuery.add(new PrefixQuery(new Term(FIELD_VALUE,search)),Occur.SHOULD);
 		query.add(termQuery, Occur.MUST);
+		//TODO: should master files be searchable too?
+		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT); //exclude all masters from the search
 		return query;
 	}
 
