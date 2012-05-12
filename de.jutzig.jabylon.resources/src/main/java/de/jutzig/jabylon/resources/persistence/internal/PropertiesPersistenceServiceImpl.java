@@ -5,8 +5,6 @@ package de.jutzig.jabylon.resources.persistence.internal;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.emf.cdo.CDONotification;
 import org.eclipse.emf.cdo.CDOObject;
@@ -52,13 +51,14 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
  */
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
-	private List<WeakReference<PropertiesListener>> listeners;
+	private List<PropertiesListener> listeners;
+
 	private BlockingQueue<PropertyTuple> queue;
 
 	private Workspace workspace;
 
 	public PropertiesPersistenceServiceImpl() {
-		listeners = new ArrayList<WeakReference<PropertiesListener>>();
+		listeners = new CopyOnWriteArrayList<PropertiesListener>();
 		queue = new ArrayBlockingQueue<PropertyTuple>(50);
 		Thread t = new Thread(this, "Properties Persistence Service");
 		t.setDaemon(true);
@@ -257,7 +257,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	 */
 	@Override
 	public void addPropertiesListener(PropertiesListener listener) {
-		listeners.add(new WeakReference<PropertiesListener>(listener));
+		listeners.add(listener);
 
 	}
 
@@ -270,18 +270,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	 */
 	@Override
 	public void removePropertiesListener(PropertiesListener listener) {
-		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
-		while (it.hasNext()) {
-			WeakReference<PropertiesListener> reference = it.next();
-			PropertiesListener propertiesListener = reference.get();
-			if (propertiesListener == null)
-				it.remove();
-			else if (propertiesListener == listener) {
-				it.remove();
-				break;
-			}
-		}
-
+		listeners.remove(listener);
 	}
 
 	@Override
@@ -335,40 +324,29 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	}
 
 	private void firePropertiesAdded(PropertyFileDescriptor descriptor) {
-		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
-		while (it.hasNext()) {
-			WeakReference<PropertiesListener> ref = it.next();
-			PropertiesListener listener = ref.get();
-			if (listener == null)
-				it.remove();
-			else
-				listener.propertyFileAdded(descriptor);
-		}
+		Iterator<PropertiesListener> it = listeners.iterator();
+
+		PropertiesListener listener = it.next();
+
+		listener.propertyFileAdded(descriptor);
 
 	}
 
 	private void firePropertiesDeleted(PropertyFileDescriptor descriptor) {
-		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
+		Iterator<PropertiesListener> it = listeners.iterator();
 		while (it.hasNext()) {
-			WeakReference<PropertiesListener> ref = it.next();
-			PropertiesListener listener = ref.get();
-			if (listener == null)
-				it.remove();
-			else
-				listener.propertyFileDeleted(descriptor);
+			PropertiesListener listener = it.next();
+			listener.propertyFileDeleted(descriptor);
 		}
 
 	}
 
 	private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff) {
-		Iterator<WeakReference<PropertiesListener>> it = listeners.iterator();
+		Iterator<PropertiesListener> it = listeners.iterator();
 		while (it.hasNext()) {
-			WeakReference<PropertiesListener> ref = it.next();
-			PropertiesListener listener = ref.get();
-			if (listener == null)
-				it.remove();
-			else
-				listener.propertyFileModified(descriptor, diff);
+			PropertiesListener listener = it.next();
+
+			listener.propertyFileModified(descriptor, diff);
 		}
 
 	}

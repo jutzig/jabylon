@@ -40,7 +40,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private LabeledContainer contentArea;
 	private PropertyPersistenceService propertyPersistence;
 	private QueryService queryService;
-	private PropertyReviewService propertyReviewService;
 
 	public MainDashboard() {
 
@@ -110,9 +109,6 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
 		this.propertyPersistence = propertyPersistence;
-		//TODO: could wire this directly with DS
-		propertyReviewService = new PropertyReviewService();
-		propertyPersistence.addPropertiesListener(propertyReviewService);
 	}
 
 	public PropertyPersistenceService getPropertyPersistence() {
