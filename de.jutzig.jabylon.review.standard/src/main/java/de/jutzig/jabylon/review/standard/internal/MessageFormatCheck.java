@@ -22,7 +22,7 @@ import de.jutzig.jabylon.ui.review.ReviewParticipant;
 public class MessageFormatCheck implements ReviewParticipant {
 
 	
-	private static final Pattern PATTERN = Pattern.compile("\\{(\\d+).*?\\}");
+	private static final Pattern PATTERN = Pattern.compile("\\({\\d+).*?\\})");
 	
 	/**
 	 * 
