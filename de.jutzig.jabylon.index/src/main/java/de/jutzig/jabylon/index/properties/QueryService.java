@@ -3,7 +3,11 @@
  */
 package de.jutzig.jabylon.index.properties;
 
+import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
+import org.eclipse.emf.cdo.view.CDOView;
+
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 
 /**
@@ -26,5 +30,7 @@ public interface QueryService {
 	SearchResult search(String search, Object scope);
 	
 	SearchResult search(Query query);
+	
+	PropertyFileDescriptor getDescriptor(Document doc, CDOView view);
 
 }

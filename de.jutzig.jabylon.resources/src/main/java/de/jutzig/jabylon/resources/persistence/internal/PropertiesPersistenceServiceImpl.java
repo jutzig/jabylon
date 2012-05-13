@@ -88,7 +88,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 							ProjectLocale locale = (ProjectLocale) object;
 							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
 							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesAdded(propertyFileDescriptor);
+								firePropertiesAdded(propertyFileDescriptor, false);
 
 							}
 						}
@@ -102,7 +102,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 							ProjectLocale locale = (ProjectLocale) object;
 							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
 							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesDeleted(propertyFileDescriptor);
+								firePropertiesDeleted(propertyFileDescriptor, false);
 
 							}
 						}
@@ -117,7 +117,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 							ProjectLocale locale = (ProjectLocale) object;
 							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
 							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesAdded(propertyFileDescriptor);
+								firePropertiesAdded(propertyFileDescriptor, false);
 
 							}
 						}
@@ -134,7 +134,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						Object object = notification.getNewValue();
 						if (object instanceof PropertyFileDescriptor) {
 							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-							firePropertiesAdded(descriptor);
+							firePropertiesAdded(descriptor, false);
 						}
 					}
 
@@ -144,7 +144,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						Object object = notification.getOldValue();
 						if (object instanceof PropertyFileDescriptor) {
 							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-							firePropertiesDeleted(descriptor);
+							firePropertiesDeleted(descriptor, false);
 						}
 
 					}
@@ -154,7 +154,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 					PropertyFileDescriptor descriptor = (PropertyFileDescriptor) notification.getNotifier();
 					if (notification.getEventType() == CDONotification.DETACH_OBJECT) {
 
-						firePropertiesDeleted(descriptor);
+						firePropertiesDeleted(descriptor, false);
 
 					}
 
@@ -233,8 +233,14 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	 */
 	@Override
 	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file) {
+		saveProperties(descriptor, file, false);
+
+	}
+
+	@Override
+	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
 		try {
-			queue.put(new PropertyTuple(descriptor, file));
+			queue.put(new PropertyTuple(descriptor, file, autoTranslate));
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
 		}
@@ -283,12 +289,12 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						resource.getContents().add(file);
 						resource.save(options);
 						List<Notification> diff = differentiator.diff(file);
-						firePropertiesChanges(descriptor, diff);
+						firePropertiesChanges(descriptor, diff,tuple.isAutoSync());
 					} else {
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
 						resource.save(options);
-						firePropertiesAdded(descriptor);
+						firePropertiesAdded(descriptor,tuple.isAutoSync());
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -316,28 +322,28 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		return options;
 	}
 
-	private void firePropertiesAdded(PropertyFileDescriptor descriptor) {
+	private void firePropertiesAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
 		for (PropertiesListener listener : listeners) {
-			listener.propertyFileAdded(descriptor);
+			listener.propertyFileAdded(descriptor, autoSync);
 		}
 
 	}
 
-	private void firePropertiesDeleted(PropertyFileDescriptor descriptor) {
+	private void firePropertiesDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
 		Iterator<PropertiesListener> it = listeners.iterator();
 		while (it.hasNext()) {
 			PropertiesListener listener = it.next();
-			listener.propertyFileDeleted(descriptor);
+			listener.propertyFileDeleted(descriptor, autoSync);
 		}
 
 	}
 
-	private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff) {
+	private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff, boolean autoSync) {
 		Iterator<PropertiesListener> it = listeners.iterator();
 		while (it.hasNext()) {
 			PropertiesListener listener = it.next();
 
-			listener.propertyFileModified(descriptor, diff);
+			listener.propertyFileModified(descriptor, diff, autoSync);
 		}
 
 	}
@@ -347,11 +353,13 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 class PropertyTuple {
 	private PropertyFileDescriptor descriptor;
 	private PropertyFile file;
+	private boolean autoSync;
 
-	public PropertyTuple(PropertyFileDescriptor descriptor, PropertyFile file) {
+	public PropertyTuple(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoSync) {
 		super();
 		this.descriptor = descriptor;
 		this.file = file;
+		this.autoSync = autoSync;
 	}
 
 	public PropertyFileDescriptor getDescriptor() {
@@ -360,6 +368,10 @@ class PropertyTuple {
 
 	public PropertyFile getFile() {
 		return file;
+	}
+	
+	public boolean isAutoSync() {
+		return autoSync;
 	}
 
 }

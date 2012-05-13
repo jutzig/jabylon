@@ -15,9 +15,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.osgi.service.prefs.Preferences;
@@ -63,7 +61,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 	}
 
 	@Override
-	public void propertyFileAdded(PropertyFileDescriptor descriptor) {
+	public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
 		if (descriptor.isMaster()) // TODO: or does the master language need to
 									// be checked too
 			return;
@@ -136,7 +134,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 	}
 
 	@Override
-	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
+	public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
 
 		// TODO: this is unfortunately rather slow in case of a full rescan when
 		// potentially
@@ -158,7 +156,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 	}
 
 	@Override
-	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes) {
+	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
 		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())

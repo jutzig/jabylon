@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="de.jutzig.jabylon.auto.translate">
+   <implementation class="de.jutzig.jabylon.auto.translate.impl.AutoTranslator"/>
+   <service>
+      <provide interface="de.jutzig.jabylon.resources.changes.PropertiesListener"/>
+   </service>
+   <reference bind="setQueryService" cardinality="1..1" interface="de.jutzig.jabylon.index.properties.QueryService" name="QueryService" policy="static" unbind="unsetQueryService"/>
+   <reference bind="setPersistenceService" cardinality="1..1" interface="de.jutzig.jabylon.resources.persistence.PropertyPersistenceService" name="unsetPersistenceService" policy="static" unbind="unsetPersistenceService"/>
+</scr:component>

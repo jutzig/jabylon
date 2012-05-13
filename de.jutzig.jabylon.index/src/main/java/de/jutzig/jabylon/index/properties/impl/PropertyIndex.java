@@ -42,7 +42,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 	}
 
 	@Override
-	public void propertyFileAdded(PropertyFileDescriptor descriptor) {
+	public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
 
 		PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
 		List<Document> documents = analyzer.createDocuments(descriptor);
@@ -57,7 +57,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 	}
 
 	@Override
-	public void propertyFileDeleted(PropertyFileDescriptor descriptor) {
+	public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
 		try {
 			writes.put(new DocumentTuple(descriptor));
 			schedule();
@@ -69,7 +69,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 	}
 
 	@Override
-	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes) {
+	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
 		PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
 		List<Document> documents = analyzer.createDocuments(descriptor);
 		try {

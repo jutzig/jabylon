@@ -5,6 +5,7 @@ package de.jutzig.jabylon.index.properties.impl;
 
 import java.io.IOException;
 
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -15,6 +16,11 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
+import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.cdo.common.id.CDOID;
+import org.eclipse.emf.cdo.common.id.CDOIDUtil;
+import org.eclipse.emf.cdo.util.ObjectNotFoundException;
+import org.eclipse.emf.cdo.view.CDOView;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
@@ -101,9 +107,11 @@ public class QueryServiceImpl implements QueryService {
 	public SearchResult search(Query query) {
 		
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
+		IndexSearcher searcher = null;
 		try {
-			IndexSearcher searcher = new IndexSearcher(directory, true);
+			searcher = new IndexSearcher(directory, true);
 			TopDocs result = searcher.search(query, 1000);
+			
 			return new SearchResult(searcher, result);
 
 		} catch (CorruptIndexException e) {
@@ -113,6 +121,32 @@ public class QueryServiceImpl implements QueryService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+//		finally{
+//			if(searcher!=null)
+//				try {
+//					searcher.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//		}
+		return null;
+	}
+
+	@Override
+	public PropertyFileDescriptor getDescriptor(Document doc, CDOView view) {
+		String cdoID = doc.get(FIELD_CDO_ID);
+		CDOID id = CDOIDUtil.read(cdoID);
+		CDOObject object = null;
+		try {
+			object = view.getObject(id);
+		} catch (ObjectNotFoundException e) {
+			return null;
+		}
+		if (object instanceof PropertyFileDescriptor) {
+			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+			return descriptor;
+		}
 		return null;
 	}
 

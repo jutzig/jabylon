@@ -8,6 +8,8 @@ public interface PropertyPersistenceService {
 
 	void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file);
 	
+	void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate);
+	
 //	void savePropertiesAndWait(PropertyFileDescriptor descriptor, PropertyFile file);
 	
 	void addPropertiesListener(PropertiesListener listener);
