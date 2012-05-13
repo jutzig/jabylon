@@ -10,6 +10,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UriFragmentUtility;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -25,7 +26,6 @@ import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
 import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
-import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
@@ -40,6 +40,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private LabeledContainer contentArea;
 	private PropertyPersistenceService propertyPersistence;
 	private QueryService queryService;
+	private UriFragmentUtility fragmentUtil;
 
 	public MainDashboard() {
 
@@ -60,7 +61,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 		setMainWindow(new Window("Jabylon"));
 
 		mainLayout = new VerticalLayout();
-
+		fragmentUtil = new UriFragmentUtility();
+		mainLayout.addComponent(fragmentUtil);
 		ApplicationTitleBar titleBar = new ApplicationTitleBar();
 		mainLayout.addComponent(titleBar);
 		addListener(titleBar); // user change listener
@@ -171,8 +173,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
-		{
+		if (path.startsWith(SearchResultPage.SEARCH_ADDRESS)) {
 			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), workspace);
 		}
 		ProjectDashboard dashboard = new ProjectDashboard(path);
@@ -207,13 +208,17 @@ public class MainDashboard extends Application implements TransactionListener, C
 	public QueryService getQueryService() {
 		return queryService;
 	}
-	
+
 	public void setQueryService(QueryService queryService) {
 		this.queryService = queryService;
 	}
-	
+
 	public void unsetQueryService(QueryService queryService) {
 		this.queryService = null;
 	}
 	
+	public UriFragmentUtility getFragmentUtil() {
+		return fragmentUtil;
+	}
+
 }

@@ -9,6 +9,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Alignment;
@@ -20,6 +22,9 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UriFragmentUtility;
+import com.vaadin.ui.UriFragmentUtility.FragmentChangedEvent;
+import com.vaadin.ui.UriFragmentUtility.FragmentChangedListener;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.ui.applications.MainDashboard;
@@ -28,14 +33,19 @@ import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 
 @SuppressWarnings("serial")
-public class BreadCrumbImpl extends CustomComponent implements ClickListener, BreadCrumb {
+public class BreadCrumbImpl extends CustomComponent implements ClickListener, BreadCrumb, FragmentChangedListener {
 	HorizontalLayout layout;
 
 	private List<Button> parts;
 	private Deque<String> segmentList;
 	private List<WeakReference<CrumbListener>> listeners;
+	private UriFragmentUtility fragmentUtil;
 
 	public BreadCrumbImpl() {
+		
+		fragmentUtil = MainDashboard.getCurrent().getFragmentUtil();
+		fragmentUtil.addListener(this);
+		
 		listeners = new ArrayList<WeakReference<CrumbListener>>(1);
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		parts = new ArrayList<Button>();
@@ -98,6 +108,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		// could be optimized: always builds path from scratch
 		layout.removeAllComponents();
 		parts.clear();
+		segmentList.clear();
 		walkTo(segments);
 	}
 
@@ -220,6 +231,8 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			for (int i = 0; i < steps.length; i++) {
 
 				String step = steps[i];
+				if(step==null || step.trim().length()==0)
+					continue;
 				segmentList.add(step);
 				if (step.equals(CONFIG))
 					currentTrail = new DynamicConfigPage(currentTrail.getDomainObject());
@@ -275,5 +288,42 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			else
 				crumbListener.activeCrumbTrailChanged(current);
 		}
+		
+		StringBuilder fragment = new StringBuilder();
+		for (String string : segmentList) {
+			string = string.replace("/", "\\");
+			String encodedFragment = URI.encodeFragment(string, true);
+			fragment.append(string);
+			fragment.append("/");
+		}
+		if(fragment.length()>1)
+		{
+			fragment.setLength(fragment.length()-1);
+			fragmentUtil.setFragment(fragment.toString(), false);			
+		}
+		else
+		{
+			fragmentUtil.setFragment(null,false);
+		}
+	}
+
+	@Override
+	public void fragmentChanged(FragmentChangedEvent source) {
+		String fragment = source.getUriFragmentUtility().getFragment();
+		if(fragment==null)
+		{
+			setPath((String[])null);			
+		}
+		else{
+			String[] segments = fragment.split("/");
+			for(int i=0;i<segments.length;i++)
+			{
+				String segment = segments[i];
+				segment = URI.decode(segment);
+				segments[i] = segment.replace("\\", "/");
+			}
+			setPath(segments);			
+		}
+		
 	}
 }
