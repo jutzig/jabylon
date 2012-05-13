@@ -112,8 +112,20 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 				if (reviews.containsKey(itemId)) {
 					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);
-					Review review = reviews.get((String) itemId).iterator().next();
-					embedded.setDescription(review.getMessage());
+					
+						Review review = reviews.get((String) itemId).iterator().next();
+						//TODO: this can't be the right way to refresh?
+						if(review.cdoInvalid())
+						{
+							reviews.remove(itemId, review); //the review is no longer valid
+							embedded.setIcon(ImageConstants.IMAGE_OK);
+							embedded.setDescription("");
+						}
+						else
+						{
+							embedded.setDescription(review.getMessage());
+						}
+							
 					return embedded;
 				} else
 					return new Embedded("", ImageConstants.IMAGE_OK);
