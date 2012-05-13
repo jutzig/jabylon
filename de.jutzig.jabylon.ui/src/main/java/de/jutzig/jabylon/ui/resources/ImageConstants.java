@@ -17,6 +17,11 @@ public final class ImageConstants {
 	public static final Resource IMAGE_PROJECT_COMMIT = new ThemeResource("../runo/icons/"+ICON_SIZE+"/arrow-up.png");
 	public static final Resource IMAGE_ERROR = new ThemeResource("../runo/icons/"+ICON_SIZE+"/error.png");
 	public static final Resource IMAGE_OK = new ThemeResource("../runo/icons/"+ICON_SIZE+"/ok.png");
+	public static final Resource IMAGE_DOWNLOAD_ARCHIVE = new ThemeResource("../runo/icons/"+ICON_SIZE+"/folder-add.png");
+	public static final Resource IMAGE_SETTINGS = new ThemeResource("../runo/icons/"+ICON_SIZE+"/settings.png");
+	public static final Resource IMAGE_HELP = new ThemeResource("../runo/icons/"+ICON_SIZE+"/help.png");
+	public static final Resource IMAGE_LOGIN = new ThemeResource("../runo/icons/"+ICON_SIZE+"/user.png");
+	
 	
 	
 	public static final Resource IMAGE_NEW_LOCALE = IMAGE_NEW_PROJECT;

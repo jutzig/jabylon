@@ -68,12 +68,14 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 		mainLayout.setComponentAlignment(title, Alignment.TOP_LEFT);
 
 		Button help = new Button("Help");
+		help.setIcon(ImageConstants.IMAGE_HELP);
 		help.setStyleName(Reindeer.BUTTON_LINK);
 		mainLayout.addComponent(help);
 		mainLayout.setComponentAlignment(help, Alignment.BOTTOM_RIGHT);
 		mainLayout.setExpandRatio(help, 2f);
 
 		settings = new Button("Settings");
+		settings.setIcon(ImageConstants.IMAGE_SETTINGS);
 		settings.addListener(new ClickListener() {
 			
 			@Override
@@ -89,6 +91,7 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 
 		login = new Button("Login");
 		login.setStyleName(Reindeer.BUTTON_LINK);
+		login.setIcon(ImageConstants.IMAGE_LOGIN);
 		login.addListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
