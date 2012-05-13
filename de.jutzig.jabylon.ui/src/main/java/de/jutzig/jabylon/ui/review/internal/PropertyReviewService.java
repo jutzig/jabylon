@@ -5,6 +5,7 @@ package de.jutzig.jabylon.ui.review.internal;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -211,6 +212,18 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 				activeParticipants.add(entry.getValue());
 		}
 		return activeParticipants;
+	}
+	
+	public Collection<Review> review(PropertyFileDescriptor descriptor,Property master, Property slave)
+	{
+		List<Review> reviews = new ArrayList<Review>();
+		List<ReviewParticipant> participants = getActiveReviews(descriptor.getProjectLocale().getProjectVersion().getProject());
+		for (ReviewParticipant reviewParticipant : participants) {
+			Review review = reviewParticipant.review(descriptor, master, slave);
+			if(review!=null)
+				reviews.add(review);
+		}
+		return reviews;
 	}
 
 }

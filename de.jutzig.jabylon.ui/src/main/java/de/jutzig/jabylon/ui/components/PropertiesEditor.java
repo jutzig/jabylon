@@ -1,5 +1,9 @@
 package de.jutzig.jabylon.ui.components;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
@@ -10,6 +14,9 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.terminal.CompositeErrorMessage;
+import com.vaadin.terminal.ErrorMessage;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -37,6 +44,7 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.review.ReviewUtil;
+import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
 
 @SuppressWarnings("serial")
@@ -55,10 +63,14 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private GridLayout layout;
 	private PropertyPairContainer propertyPairContainer;
 	private Multimap<String, Review> reviews;
+	private PropertyPairItem currentItem;
+	private PropertyReviewService reviewService;
+	private Table table;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
 		reviews = buildReviews(descriptor);
+		reviewService = new PropertyReviewService();
 	}
 
 	private Multimap<String, Review> buildReviews(PropertyFileDescriptor descriptor) {
@@ -98,7 +110,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		filterBox.setInputPrompt("Filter");
 		tableArea.addComponent(filterBox);
 
-		Table table = new Table();
+		table = new Table();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
 
@@ -173,6 +185,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translated.setNullRepresentation("");
 		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
+		translated.setImmediate(true);
 		layout.addComponent(translated);
 
 		orignalComment = new TextArea();
@@ -252,6 +265,24 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	@Override
 	public void textChange(TextChangeEvent event) {
 		setDirty(true);
+		if(currentItem==null)
+			return;
+		reviews.removeAll(currentItem.getKey());
+		translated.setComponentError(null);
+		currentItem.getTargetProperty().setValue(event.getText()); //apply current value first
+		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), currentItem.getTargetProperty());
+		if(!reviewList.isEmpty())
+		{
+			reviews.putAll((String) currentItem.getKey(), reviewList);
+			List<ErrorMessage> errors = new ArrayList<ErrorMessage>(reviewList.size());
+			for (Review review : reviewList) {
+				UserError error = new UserError(review.getMessage(),UserError.CONTENT_TEXT,ErrorMessage.ERROR);
+				errors.add(error);
+			}
+			CompositeErrorMessage message = new CompositeErrorMessage(errors);			
+			translated.setComponentError(message);
+		}
+		table.refreshRowCache();
 
 	}
 
@@ -278,16 +309,17 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		if (value == null)
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
-		PropertyPairItem item = (PropertyPairItem) theItem;
-		item.getSourceProperty();
+		currentItem = (PropertyPairItem) theItem;
+		currentItem.getSourceProperty();
 
-		keyLabel.setValue(item.getKey());
-		translated.setPropertyDataSource(item.getTarget());
-		orignal.setPropertyDataSource(item.getSource());
+		keyLabel.setValue(currentItem.getKey());
+		translated.setPropertyDataSource(currentItem.getTarget());
+		orignal.setPropertyDataSource(currentItem.getSource());
 
-		translatedComment.setPropertyDataSource(item.getTargetComment());
-		orignalComment.setPropertyDataSource(item.getSourceComment());
-
+		translatedComment.setPropertyDataSource(currentItem.getTargetComment());
+		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
+		
+		translated.setComponentError(null);
 	}
 
 }
