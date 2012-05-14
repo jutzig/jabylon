@@ -23,6 +23,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
@@ -90,12 +91,26 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public Component createContents() {
+		HorizontalSplitPanel split = new HorizontalSplitPanel();
+		split.setSizeFull();
+		split.setFirstComponent(createMainArea());
+		split.setSecondComponent(createToolArea());
+		split.setSplitPosition(80);
+		return split;
+	}
+
+	private Component createToolArea() {
+		return new Label("");
+	}
+
+	protected Component createMainArea() {
 		layout = new GridLayout();
 		layout.setColumns(2);
 		layout.setRows(3);
 		layout.setSpacing(true);
 		layout.setMargin(true);
-
+		layout.setSizeFull();
+		
 		VerticalLayout tableArea = new VerticalLayout();
 		TextField filterBox = new TextField();
 		filterBox.addListener(new TextChangeListener() {
@@ -117,6 +132,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		propertyPairContainer = new PropertyPairContainer(source, target);
 		table.setContainerDataSource(propertyPairContainer);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
+		table.setWidth(100, Table.UNITS_PERCENTAGE);
 		table.addGeneratedColumn("Problems", new ColumnGenerator() {
 
 			@Override
@@ -147,11 +163,16 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
 		table.setColumnHeaders(new String[] { "Original", "Translation", "Problems" });
-		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 420);
-		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 440);
+//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 420);
+//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 440);
+		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
+		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
+//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 1);
+//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 1);
+		table.setColumnExpandRatio("Problems", 0.0f);
+		
 		table.setEditable(false);
 		table.setWriteThrough(false);
-		table.setWidth(100, Component.UNITS_PERCENTAGE);
 
 		table.setSelectable(true);
 		table.setMultiSelect(false);
@@ -169,17 +190,20 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		keyLabel = new Label();
 		keyLabel.setValue("No Selection");
 		layout.addComponent(keyLabel, 0, 2, 1, 2);
-
+		layout.setColumnExpandRatio(0, 1.0f);
+		layout.setColumnExpandRatio(1, 1.0f);
 		orignal = new TextArea();
 		// orignal.setWidth(400, UNITS_PIXELS);
-		orignal.setColumns(40);
+//		orignal.setColumns(40);
 		orignal.setRows(5);
 		orignal.setReadOnly(true);
+		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		layout.addComponent(orignal);
 
 		translated = new TextArea();
-		translated.setColumns(40);
+//		translated.setColumns(40);
 		translated.setRows(5);
+		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		// translated.setWidth(400, UNITS_PIXELS);
 
 		translated.setNullRepresentation("");
@@ -191,17 +215,18 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		orignalComment = new TextArea();
 		// orignalComment.setWidth(400, UNITS_PIXELS);
 		orignalComment.setReadOnly(true);
-		orignalComment.setColumns(40);
+		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
 		// orignalComment.setHeight(30, UNITS_PIXELS);
 		layout.addComponent(orignalComment);
+		
 
 		translatedComment = new TextArea();
 		translatedComment.setImmediate(true);
-		// translatedComment.setWidth(400, UNITS_PIXELS);
+		translatedComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		translatedComment.setRows(3);
-		translatedComment.setColumns(40);
+		
 		translatedComment.setNullRepresentation("");
 		translatedComment.addListener((TextChangeListener) this);
 		translatedComment.setInputPrompt("Comment");
