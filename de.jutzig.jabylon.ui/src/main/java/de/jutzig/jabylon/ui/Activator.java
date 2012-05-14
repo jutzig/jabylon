@@ -81,4 +81,10 @@ public class Activator extends Plugin {
 		return null;
 	}
 	
+	public IConfigurationElement[] getPropertyEditorTools()
+	{
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.propertyTools");
+		return elements;
+	}
+	
 }

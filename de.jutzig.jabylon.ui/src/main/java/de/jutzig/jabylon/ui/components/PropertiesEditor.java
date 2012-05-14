@@ -21,6 +21,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Component.Listener;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -67,6 +68,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private PropertyPairItem currentItem;
 	private PropertyReviewService reviewService;
 	private Table table;
+	private PropertyToolArea propertyToolArea;
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
@@ -94,13 +96,16 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		HorizontalSplitPanel split = new HorizontalSplitPanel();
 		split.setSizeFull();
 		split.setFirstComponent(createMainArea());
-		split.setSecondComponent(createToolArea());
+		propertyToolArea = createToolArea();
+		split.setSecondComponent(propertyToolArea);
 		split.setSplitPosition(80);
 		return split;
 	}
 
-	private Component createToolArea() {
-		return new Label("");
+	private PropertyToolArea createToolArea() {
+		PropertyToolArea toolArea = new PropertyToolArea();
+		toolArea.init(descriptor.getMaster(), descriptor);
+		return toolArea;
 	}
 
 	protected Component createMainArea() {
@@ -163,12 +168,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
 		table.setColumnHeaders(new String[] { "Original", "Translation", "Problems" });
-//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 420);
-//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 440);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
-//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(0), 1);
-//		table.setColumnWidth(propertyPairContainer.getContainerPropertyIds().get(1), 1);
 		table.setColumnExpandRatio("Problems", 0.0f);
 		
 		table.setEditable(false);
@@ -177,7 +178,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setSelectable(true);
 		table.setMultiSelect(false);
 		table.setImmediate(true); // react at once when something is selected
-		table.addListener(this);
+		table.addListener((Table.ValueChangeListener)this);
 
 		tableArea.addComponent(table);
 		layout.addComponent(tableArea, 0, 0, 1, 1);
@@ -193,18 +194,15 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setColumnExpandRatio(0, 1.0f);
 		layout.setColumnExpandRatio(1, 1.0f);
 		orignal = new TextArea();
-		// orignal.setWidth(400, UNITS_PIXELS);
-//		orignal.setColumns(40);
 		orignal.setRows(5);
 		orignal.setReadOnly(true);
 		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
+		
 		layout.addComponent(orignal);
 
 		translated = new TextArea();
-//		translated.setColumns(40);
 		translated.setRows(5);
 		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
-		// translated.setWidth(400, UNITS_PIXELS);
 
 		translated.setNullRepresentation("");
 		translated.addListener((TextChangeListener) this);
@@ -213,12 +211,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.addComponent(translated);
 
 		orignalComment = new TextArea();
-		// orignalComment.setWidth(400, UNITS_PIXELS);
 		orignalComment.setReadOnly(true);
 		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
-		// orignalComment.setHeight(30, UNITS_PIXELS);
 		layout.addComponent(orignalComment);
 		
 
@@ -335,6 +331,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
+		propertyToolArea.selectionChanged(propertyPairContainer, reviews.get((String) currentItem.getKey()));
 		currentItem.getSourceProperty();
 
 		keyLabel.setValue(currentItem.getKey());

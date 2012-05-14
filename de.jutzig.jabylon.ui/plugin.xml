@@ -5,6 +5,7 @@
    <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension-point id="reviewParticipant" name="Review Participants" schema="schema/reviewParticipant.exsd"/>
    <extension-point id="teamProvider" name="Jabylon Team Provider" schema="schema/teamProvider.exsd"/>
+   <extension-point id="propertyTools" name="Property Editor Tools" schema="schema/propertyTools.exsd"/>
    <extension
          name="project settings"
          point="de.jutzig.jabylon.ui.config">
@@ -102,5 +103,14 @@
             description="Review projects"
             name="REVIEWER">
       </permission>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.propertyTools">
+      <tool
+            class="de.jutzig.jabylon.ui.tools.internal.ReviewTool"
+            icon="../runo/icons/16/users.png"
+            id="de.jutzig.jabylon.ui.property.tool.review"
+            name="Reviews">
+      </tool>
    </extension>
 </plugin>
