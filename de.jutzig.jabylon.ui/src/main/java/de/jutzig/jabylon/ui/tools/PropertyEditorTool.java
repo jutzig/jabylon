@@ -14,6 +14,7 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
+import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -21,7 +22,7 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer;
  */
 public interface PropertyEditorTool {
 	
-	void selectionChanged(PropertyPairContainer currentSelection, Collection<Review> reviews);
+	void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews);
 	
 	void init(PropertyFileDescriptor template, PropertyFileDescriptor translation);
 	

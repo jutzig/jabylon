@@ -21,7 +21,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Component.Listener;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -331,7 +330,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
-		propertyToolArea.selectionChanged(propertyPairContainer, reviews.get((String) currentItem.getKey()));
+		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()));
 		currentItem.getSourceProperty();
 
 		keyLabel.setValue(currentItem.getKey());

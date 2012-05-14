@@ -14,7 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.ui.container.PropertyPairContainer;
+import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
 
@@ -38,7 +38,7 @@ public class ReviewTool implements PropertyEditorTool {
 	 * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#selectionChanged(de.jutzig.jabylon.ui.container.PropertyPairContainer, java.util.List)
 	 */
 	@Override
-	public void selectionChanged(PropertyPairContainer currentSelection, Collection<Review> reviews) {
+	public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews) {
 		layout.removeAllComponents();
 		for (Review review : reviews) {
 			Label label = new Label();

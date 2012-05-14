@@ -21,7 +21,7 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.Activator;
-import de.jutzig.jabylon.ui.container.PropertyPairContainer;
+import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
 
 /**
@@ -70,7 +70,7 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 	}
 
 	@Override
-	public void selectionChanged(PropertyPairContainer currentSelection, Collection<Review> reviews) {
+	public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews) {
 		for (PropertyEditorTool tool : tools) {
 			tool.selectionChanged(currentSelection, reviews);
 		}
