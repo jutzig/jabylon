@@ -77,13 +77,13 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			Button fileName = new SortableButton(entry.getKey().getLocation().toString());
 			fileName.setIcon(entry.getValue()==null ? ImageConstants.IMAGE_NEW_PROPERTIES_FILE : ImageConstants.IMAGE_PROPERTIES_FILE);
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
-			
+
 			fileName.setData(entry);
 			fileName.addListener(this);
 
 			PropertyFileDescriptor translation = entry.getValue();
 			StaticProgressIndicator progress = new ResolvableProgressIndicator(translation);
-			
+
 			table.addItem(new Object[] {fileName,buildSummary(entry),progress}, entry.getKey().cdoID());
 		}
 		table.setSortContainerPropertyId("location");
@@ -231,7 +231,7 @@ class SaveToArchiveButton extends Link {
 
 	@Override
 	public void attach() {
-		super.attach(); // Must call.
+		super.attach();
 
 		StreamResource.StreamSource source = new StreamResource.StreamSource() {
 
@@ -251,7 +251,7 @@ class SaveToArchiveButton extends Link {
 		resource.setCacheTime(0);
 		setResource(resource);
 	}
-	
+
 
 	private byte[] createArchive() {
 		EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
@@ -263,14 +263,17 @@ class SaveToArchiveButton extends Link {
 				if(file.isFile())
 				{
 					URI fullPath = descriptor.relativePath();
-					zip.putNextEntry(new ZipEntry(fullPath.path()));
+					String path = fullPath.path();
+					if(path!=null && path.startsWith("/"))
+					    path = path.substring(1);
+					zip.putNextEntry(new ZipEntry(path));
 					store(file,zip);
 				}
 				else
 				{
 					//TODO: log?
 				}
-				
+
 			}
 			zip.closeEntry();
 			zip.close();
@@ -278,7 +281,7 @@ class SaveToArchiveButton extends Link {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return out.toByteArray();
 	}
 
@@ -299,6 +302,6 @@ class SaveToArchiveButton extends Link {
 			if(in!=null)
 				in.close();
 		}
-		
+
 	}
 }
