@@ -15,6 +15,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.ui.resources.ApplicationConstants;
+import de.jutzig.jabylon.users.User;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -35,6 +36,12 @@ public class PreferencesUtil {
 	public static Preferences scopeFor(EObject eobject)
 	{
 		IEclipsePreferences rootNode = InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
+		if (eobject instanceof User) {
+			IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ApplicationConstants.USER_NODE);
+			User user = (User) eobject;
+			return node.node(user.getName());
+			
+		}
 		if (eobject instanceof Resolvable) {
 			Resolvable resolvable = (Resolvable) eobject;
 			return rootNode.node(resolvable.relativePath().path());
