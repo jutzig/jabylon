@@ -77,6 +77,10 @@
 	color: gray;
 }
 
+div.breadcrumbs {
+	background: #9494FF;
+}
+
 div.breadcrumbs .v-button { /* moz-border-radius: 5px;
 	webkit-border-radius: 5px;
 	khtml-border-radius: 5px;
@@ -98,7 +102,7 @@ div.breadcrumbs .v-button: {
 }
 
 div.breadcrumbs .v-button.v-disabled {
-	background: #A1B4FF;
+	background: blue;/*  #A1B4FF;*/
 	moz-border-radius: 5px;
 	webkit-border-radius: 5px;
 	khtml-border-radius: 5px;
@@ -109,11 +113,13 @@ div.breadcrumbs .v-button.v-disabled {
 div.breadcrumbs span.v-button-caption {
 	font-weight: bold;
 	font-size: 12px;
-	color: black;
+	color: white;
 }
 
 div.breadcrumbs .v-button.v-disabled span.v-button-caption {
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 12px;
-	color: black;
+	color: white;
+	text-decoration: none;
+	
 }
