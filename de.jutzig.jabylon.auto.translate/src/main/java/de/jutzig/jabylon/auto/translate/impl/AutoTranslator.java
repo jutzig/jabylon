@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.auto.translate.impl;
 
@@ -38,20 +38,20 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
  *
  */
 public class AutoTranslator implements PropertiesListener {
-	
+
 	private PropertyPersistenceService persistenceService;
 	private QueryService queryService;
 
 	@Override
 	public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class AutoTranslator implements PropertiesListener {
 						}
 						System.out.println("Auto sync up at "+relatedDescriptor.relativePath());
 						persistenceService.saveProperties(relatedDescriptor, relatedProperties, true);
-						
+
 					}
 				} catch (CorruptIndexException e) {
 					// TODO Auto-generated catch block
@@ -126,15 +126,15 @@ public class AutoTranslator implements PropertiesListener {
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}					
+					}
 				}
 
 			}
 		}
-		
+
 	}
 
-	
+
 	private PropertyFileDescriptor getMatchingLocale(PropertyFileDescriptor master, ProjectLocale targetLocale) {
 		if(master==null)
 			return null;
@@ -154,7 +154,7 @@ public class AutoTranslator implements PropertiesListener {
 		if(value ==null)
 			return null;
 		Query query = constructQuery(value);
-		return queryService.search(query);
+		return queryService.search(query,10000);
 	}
 
 	private Query constructQuery(String value) {
@@ -175,17 +175,17 @@ public class AutoTranslator implements PropertiesListener {
 	public void setPersistenceService(PropertyPersistenceService persistenceService) {
 		this.persistenceService = persistenceService;
 	}
-	
+
 	public void unsetPersistenceService(PropertyPersistenceService persistenceService) {
 		this.persistenceService = null;
 	}
-	
+
 	public void setQueryService(QueryService queryService) {
 		this.queryService = queryService;
 	}
-	
+
 	public void unsetQueryService(QueryService queryService) {
 		this.queryService = null;
 	}
-	
+
 }

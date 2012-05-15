@@ -112,5 +112,11 @@
             id="de.jutzig.jabylon.ui.property.tool.review"
             name="Reviews">
       </tool>
+      <tool
+            class="de.jutzig.jabylon.ui.tools.internal.SimilarStringsTool"
+            icon="../runo/icons/16/note.png"
+            id="de.jutzig.jabylon.ui.property.tool.similarity"
+            name="Similar Strings">
+      </tool>
    </extension>
 </plugin>

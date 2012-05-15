@@ -7,7 +7,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
+import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 
@@ -16,6 +18,8 @@ public class Activator extends Plugin {
 	private static BundleContext context;
 	private static Activator activator;
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.ui";
+	private ServiceReference<QueryService> queryServiceReference;
+	private QueryService queryService;
 
 	static BundleContext getContext() {
 		return context;
@@ -39,8 +43,10 @@ public class Activator extends Plugin {
 		super.stop(bundleContext);
 		Activator.context = null;
 		activator = null;
+		if(queryService!=null)
+		    bundleContext.ungetService(queryServiceReference);
 	}
-	
+
 	public static Activator getDefault()
 	{
 		return activator;
@@ -57,7 +63,7 @@ public class Activator extends Plugin {
 		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.reviewParticipant");
 		return elements;
 	}
-	
+
 
 	public IConfigurationElement[] getTeamProviders()
 	{
@@ -75,16 +81,27 @@ public class Activator extends Plugin {
 					return (TeamProvider) element.createExecutableExtension("class");
 				} catch (CoreException e) {
 					error("Failed to create instance for team provider "+teamProvider,e);
-				}				
+				}
 			}
 		}
 		return null;
 	}
-	
+
 	public IConfigurationElement[] getPropertyEditorTools()
 	{
 		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.propertyTools");
 		return elements;
 	}
-	
+
+
+	public QueryService getQueryService()
+	{
+	    if(queryService==null)
+	    {
+	        queryServiceReference = context.getServiceReference(QueryService.class);
+	        queryService = context.getService(queryServiceReference);
+	    }
+	    return queryService;
+	}
+
 }

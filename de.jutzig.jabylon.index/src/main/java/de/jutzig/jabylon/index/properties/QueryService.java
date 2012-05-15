@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.index.properties;
 
@@ -15,7 +15,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  *
  */
 public interface QueryService {
-	
+
 	String FIELD_VALUE = "value";
 	String FIELD_KEY = "key";
 	String FIELD_URI = "uri";
@@ -25,12 +25,12 @@ public interface QueryService {
 	String FIELD_PROJECT = "project";
 	String FIELD_CDO_ID = "cdoID";
 	String MASTER = "master";
-	
-	
+
+
 	SearchResult search(String search, Object scope);
-	
-	SearchResult search(Query query);
-	
+
+	SearchResult search(Query query, int maxHits);
+
 	PropertyFileDescriptor getDescriptor(Document doc, CDOView view);
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.index.properties.impl;
 
@@ -33,13 +33,13 @@ import de.jutzig.jabylon.properties.Workspace;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class QueryServiceImpl implements QueryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.jutzig.jabylon.index.properties.QueryService#search(java.lang.String)
 	 */
@@ -47,7 +47,7 @@ public class QueryServiceImpl implements QueryService {
 	public SearchResult search(String search, Object scope) {
 		search = search.toLowerCase();
 		Query q = constructQuery(scope, search);
-		return search(q);
+		return search(q,1000);
 
 	}
 
@@ -98,20 +98,20 @@ public class QueryServiceImpl implements QueryService {
 		TermQuery query = new TermQuery(new Term(FIELD_PROJECT, project.getName()));
 		return query;
 	}
-	
+
 	private TermQuery createDescriptorQuery(PropertyFileDescriptor descriptor) {
 		return new TermQuery(new Term(FIELD_URI, descriptor.fullPath().toString()));
 	}
 
 	@Override
-	public SearchResult search(Query query) {
-		
+	public SearchResult search(Query query, int maxHits) {
+
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 		IndexSearcher searcher = null;
 		try {
 			searcher = new IndexSearcher(directory, true);
-			TopDocs result = searcher.search(query, 1000);
-			
+			TopDocs result = searcher.search(query, maxHits);
+
 			return new SearchResult(searcher, result);
 
 		} catch (CorruptIndexException e) {
@@ -120,7 +120,7 @@ public class QueryServiceImpl implements QueryService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 //		finally{
 //			if(searcher!=null)
 //				try {
