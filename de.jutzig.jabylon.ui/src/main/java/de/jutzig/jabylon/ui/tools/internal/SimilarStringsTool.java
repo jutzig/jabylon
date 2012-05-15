@@ -71,8 +71,8 @@ public class SimilarStringsTool
         container.removeAllItems();
 
 //        BooleanQuery query = new BooleanQuery();
-        FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(2, new StandardAnalyzer(Version.LUCENE_29));
-        query.addTerms("\""+currentSelection.getSourceProperty().getValue()+"\"", QueryService.FIELD_VALUE, 0.8f, 3);
+        FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(10, new StandardAnalyzer(Version.LUCENE_29));
+        query.addTerms(currentSelection.getSourceProperty().getValue(), QueryService.FIELD_VALUE, 0.6f, 3);
         SearchResult result = service.search(query,20);
 
         if(result==null)
@@ -81,7 +81,7 @@ public class SimilarStringsTool
         ScoreDoc[] doc = topDocs.scoreDocs;
         for (ScoreDoc scoreDoc : doc)
         {
-            if(scoreDoc.score<0.6)
+            if(scoreDoc.score<0.20)
                 continue;
             PropertyFileDescriptor descriptor;
             try
@@ -179,7 +179,7 @@ public class SimilarStringsTool
         container = new BeanItemContainer<Similarity>(Similarity.class);
         table.setContainerDataSource(container);
         table.setVisibleColumns(new Object[]{"original","translation","similarity"});
-        table.setColumnExpandRatio("original", 0f);
+        table.setColumnExpandRatio("original", 1f);
         table.setColumnExpandRatio("translation", 1f);
         table.setColumnExpandRatio("similarity", 0f);
         return table;
