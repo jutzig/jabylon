@@ -199,14 +199,14 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		grid.setColumnExpandRatio(0, 1.0f);
 		grid.setColumnExpandRatio(1, 1.0f);
 		orignal = new TextArea();
-		orignal.setRows(5);
+		orignal.setRows(3);
 		orignal.setReadOnly(true);
 		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		
 		grid.addComponent(orignal);
 
 		translated = new TextArea();
-		translated.setRows(5);
+		translated.setRows(3);
 		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
 
 		translated.setNullRepresentation("");
