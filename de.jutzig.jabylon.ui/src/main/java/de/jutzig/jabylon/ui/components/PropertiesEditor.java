@@ -30,6 +30,7 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.VerticalSplitPanel;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
@@ -92,12 +93,13 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public Component createContents() {
-		HorizontalSplitPanel split = new HorizontalSplitPanel();
+		VerticalSplitPanel split = new VerticalSplitPanel();
 		split.setSizeFull();
-		split.setFirstComponent(createMainArea());
 		propertyToolArea = createToolArea();
+		split.setFirstComponent(createMainArea());
 		split.setSecondComponent(propertyToolArea);
-		split.setSplitPosition(80);
+		split.setSplitPosition(70);
+		split.setHeight(500, VerticalSplitPanel.UNITS_PIXELS);
 		return split;
 	}
 

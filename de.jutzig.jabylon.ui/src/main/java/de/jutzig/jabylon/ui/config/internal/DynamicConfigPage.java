@@ -21,6 +21,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
@@ -73,13 +74,14 @@ public class DynamicConfigPage implements CrumbTrail {
 		};
 		layout.setMargin(true);
 		layout.setSpacing(true);
-		layout.setSizeFull();
+//		layout.setSizeFull();
 		List<IConfigurationElement> configSections = DynamicConfigUtil.getApplicableElements(domainElement);
 		Map<String, IConfigurationElement> visibleTabs = computeVisibleTabs(configSections);
 
 		TabSheet sheet = new TabSheet();
 		Map<String, VerticalLayout> tabs = fillTabSheet(visibleTabs, sheet);
 		layout.addComponent(sheet);
+		layout.setExpandRatio(sheet, 0);
 		for(int i=configSections.size()-1;i>=0;i--)
 		{
 			//go in reverse order, because they are computed in reverse order
@@ -132,6 +134,9 @@ public class DynamicConfigPage implements CrumbTrail {
 			}
 		});
 		layout.addComponent(safe);
+		Label spacer = new Label();
+		layout.addComponent(spacer);
+		layout.setExpandRatio(spacer, 1);
 	}
 
 	private Map<String, VerticalLayout> fillTabSheet(final Map<String, IConfigurationElement> visibleTabs, TabSheet sheet) {

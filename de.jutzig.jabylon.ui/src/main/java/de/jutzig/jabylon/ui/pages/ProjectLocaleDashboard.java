@@ -61,7 +61,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
 	}
 
-	private void createContents(Layout parent) {
+	private void createContents(VerticalLayout parent) {
 		buildHeader(parent);
 		Section section = new Section();
 		section.setTitle("Translatable Files");
@@ -90,6 +90,10 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		section.getBody().addComponent(table);
 		parent.addComponent(section);
 		parent.addComponent(new SaveToArchiveButton(locale));
+		parent.setExpandRatio(section, 1f);
+//		SaveToArchiveButton saveToArchiveButton = new SaveToArchiveButton(locale);
+//		parent.addComponent(saveToArchiveButton);
+//		parent.setExpandRatio(saveToArchiveButton, 0);
 
 	}
 

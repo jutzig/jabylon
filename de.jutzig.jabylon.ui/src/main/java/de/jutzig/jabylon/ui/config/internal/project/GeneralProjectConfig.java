@@ -30,6 +30,7 @@ import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.jutzig.jabylon.properties.Project;
@@ -77,6 +78,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	@Override
 	public Component createContents() {
 		GridLayout layout = new GridLayout();
+		layout.setSizeFull();
 		layout.setColumns(2);
 		layout.setRows(3);
 		layout.setSpacing(true);
@@ -84,7 +86,11 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		form.setWriteThrough(true);
 		form.setImmediate(true);
 		layout.addComponent(form, 0, 0, 1, 0);
-
+		layout.setRowExpandRatio(0, 1);
+		layout.setRowExpandRatio(1, 1);
+		layout.setRowExpandRatio(2, 1);
+		layout.setColumnExpandRatio(0, 1);
+		layout.setColumnExpandRatio(1, 1);
 		Component table = createVersionTable();
 		layout.addComponent(table);
 
@@ -96,11 +102,12 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	}
 
 	private Component createVersionTable() {
-		final Section section = new Section();
-		section.setTitle("Versions");
-		section.setWidth(700, Section.UNITS_PIXELS);
-		GridLayout layout = section.getBody();
-		layout.setSpacing(true);
+//		final Section section = new Section();
+//		section.setTitle("Versions");
+//		section.setSizeFull();
+//		VerticalLayout layout = section.getBody();
+//		layout.setSpacing(true);
+//		layout.setSizeFull();
 		table = new EditableTable(true) {
 			@Override
 			protected void addPressed() {
@@ -125,25 +132,23 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				}
 			}
 		};
-
+		
 		versionTable = table.getTable();
 		versionTable.setImmediate(true);
 		versionTable.addListener(this);
-		versionTable.setWidth(550, Table.UNITS_PIXELS);
 		versionTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 		versionTable.setSelectable(true);
 
-		section.getBody().addComponent(table);
-
-		return section;
+//		layout.addComponent(table);
+//		layout.setExpandRatio(table, 1);
+		return table;
 	}
 
 	private Component createLocalesTable() {
-		final Section section = new Section();
-		section.setTitle("Locales");
-		section.setWidth(400, Section.UNITS_PIXELS);
-		GridLayout layout = section.getBody();
-		layout.setSpacing(true);
+//		final Section section = new Section();
+//		section.setTitle("Locales");
+//		VerticalLayout layout = section.getBody();
+//		layout.setSpacing(true);
 
 		final EditableTable table = new EditableTable() {
 			@Override
@@ -155,7 +160,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				window.setHeight(300, Window.UNITS_PIXELS);
 				window.setCaption("Add new Locale");
 				window.setName("Add new Locale");
-				section.getWindow().addWindow(window);
+				form.getWindow().addWindow(window);
 			}
 
 			@Override
@@ -173,13 +178,12 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		};
 
 		localeTable = table.getTable();
-		localeTable.setWidth(300, Table.UNITS_PIXELS);
 		
 		localeTable.setMultiSelect(true);
 		localeTable.setSelectable(true);
-		layout.addComponent(table);
+//		layout.addComponent(table);
 
-		return section;
+		return table;
 	}
 
 	/*

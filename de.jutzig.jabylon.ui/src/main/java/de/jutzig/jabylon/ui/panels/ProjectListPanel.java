@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 import de.jutzig.jabylon.properties.Project;
@@ -37,10 +38,11 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		buildHeader();
 		
 		Section section = new Section();
+		section.setHeight(500, UNITS_PIXELS);
 		section.setTitle("Active Projects");
 		section.setWidth(100, UNITS_PERCENTAGE);
 //		section.setWidth(800, UNITS_PIXELS);
-		GridLayout layout = section.getBody();
+		VerticalLayout layout = section.getBody();
 		
 		final Table table = new Table();
 		table.setSizeFull();

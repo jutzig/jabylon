@@ -1,21 +1,17 @@
 package de.jutzig.jabylon.ui.pages;
 
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Locale;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.cdo.CDOObject;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -30,9 +26,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
-import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
-import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class ProjectDashboard implements CrumbTrail, ClickListener {
 
@@ -49,19 +43,18 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	private void initialize() {
 		mainLayout = new VerticalLayout();
-
+		mainLayout.setMargin(true);
 		mainLayout.addComponent(createVersionSelection());
 
 		Section section = new Section();
 		section.setTitle("Available Locales");
-		GridLayout layout = new GridLayout(2, 1);
-		layout.setMargin(true);
-		layout.setSpacing(true);
+		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		section.getBody().addComponent(layout);
 		createContents(layout);
 		mainLayout.setSizeFull();
 		mainLayout.addComponent(section);
+		mainLayout.setExpandRatio(section, 1);
 
 	}
 
@@ -117,7 +110,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	}
 
-	private void createContents(GridLayout parent) {
+	private void createContents(VerticalLayout parent) {
 		buildHeader(parent);
 
 		table = new Table();
@@ -130,7 +123,8 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		table.setContainerDataSource(new ProjectLocaleTableContainer(version));
 		table.setVisibleColumns(EnumSet.of(LocaleProperty.LOCALE, LocaleProperty.SUMMARY, LocaleProperty.PROGRESS).toArray());
 		table.setItemIconPropertyId(LocaleProperty.FLAG);
-		parent.addComponent(table, 0, 0, 1, 0);
+		parent.addComponent(table);
+		parent.setExpandRatio(table, 1);
 
 //		Button commit = new Button();
 //		commit.setCaption("Commit Changes");

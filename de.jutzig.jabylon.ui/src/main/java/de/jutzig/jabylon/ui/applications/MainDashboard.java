@@ -9,6 +9,7 @@ import com.vaadin.service.ApplicationContext.TransactionListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UriFragmentUtility;
 import com.vaadin.ui.VerticalLayout;
@@ -37,7 +38,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private BreadCrumb breadcrumbs;
 	private Workspace workspace;
 	private VerticalLayout mainLayout;
-	private LabeledContainer contentArea;
+	private ComponentContainer contentArea;
 	private PropertyPersistenceService propertyPersistence;
 	private QueryService queryService;
 	private UriFragmentUtility fragmentUtil;
@@ -61,19 +62,26 @@ public class MainDashboard extends Application implements TransactionListener, C
 		setMainWindow(new Window("Jabylon"));
 
 		mainLayout = new VerticalLayout();
+		mainLayout.setSizeFull();
 		fragmentUtil = new UriFragmentUtility();
 		mainLayout.addComponent(fragmentUtil);
 		ApplicationTitleBar titleBar = new ApplicationTitleBar();
 		mainLayout.addComponent(titleBar);
+		mainLayout.setExpandRatio(titleBar, 0f);
 		addListener(titleBar); // user change listener
 
-		contentArea = new LabeledContainer();
-		contentArea.setHeadClient(createHeader());
+		contentArea = new VerticalLayout();
 		contentArea.setSizeFull();
+//		contentArea.setHeight(800, Component.UNITS_PIXELS);
+		Component header = createHeader();
+		mainLayout.addComponent(header);
+		mainLayout.setExpandRatio(header, 0);
 		breadcrumbs.addCrumbListener(titleBar);
 
-		mainLayout.addComponent(contentArea);
 
+		mainLayout.addComponent(contentArea);
+		mainLayout.setExpandRatio(contentArea, 2);
+		getMainWindow().setSizeFull();
 		getMainWindow().setContent(mainLayout);
 
 	}
@@ -106,7 +114,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 	}
 
 	public void setMainComponent(Component c) {
-		contentArea.setBody(c);
+		contentArea.removeAllComponents();
+		contentArea.addComponent(c);
 	}
 
 	public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
