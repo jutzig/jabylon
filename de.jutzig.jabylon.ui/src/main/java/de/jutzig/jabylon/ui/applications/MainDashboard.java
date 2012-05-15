@@ -28,6 +28,8 @@ import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UsersFactory;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
 
@@ -55,6 +57,9 @@ public class MainDashboard extends Application implements TransactionListener, C
 		getContext().addTransactionListener(this);
 		application.set(this);
 		buildMainLayout();
+		User user = UsersFactory.eINSTANCE.createUser();
+		user.setName("anonymous");
+		setUser(user);
 
 	}
 
