@@ -15,6 +15,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 
 import de.jutzig.jabylon.properties.Property;
@@ -35,18 +36,19 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 	public PropertyToolArea() {
 		tools = new ArrayList<PropertyEditorTool>();
 		createContents();
+		setSizeFull();
 		
 	}
 
 	private void createContents() {
-		Accordion accordion = new Accordion();
+		TabSheet accordion = new TabSheet();
 		accordion.setSizeFull();
 		setCompositionRoot(accordion);
 		buildItems(accordion);
 		
 	}
 
-	private void buildItems(Accordion accordion) {
+	private void buildItems(TabSheet accordion) {
 		IConfigurationElement[] tools = Activator.getDefault().getPropertyEditorTools();
 		for (IConfigurationElement element : tools) {
 			String name = element.getAttribute("name");

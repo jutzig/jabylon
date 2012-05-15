@@ -25,6 +25,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextArea;
@@ -62,7 +63,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private Button safeButton;
 	private TextArea orignalComment;
 	private TextArea translatedComment;
-	private GridLayout layout;
+	private VerticalLayout layout;
 	private PropertyPairContainer propertyPairContainer;
 	private Multimap<String, Review> reviews;
 	private PropertyPairItem currentItem;
@@ -99,7 +100,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		split.setFirstComponent(createMainArea());
 		split.setSecondComponent(propertyToolArea);
 		split.setSplitPosition(70);
-		split.setHeight(500, VerticalSplitPanel.UNITS_PIXELS);
 		return split;
 	}
 
@@ -110,14 +110,11 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	}
 
 	protected Component createMainArea() {
-		layout = new GridLayout();
-		layout.setColumns(2);
-		layout.setRows(3);
+		layout = new VerticalLayout();
+
 		layout.setSpacing(true);
 		layout.setMargin(true);
 		layout.setSizeFull();
-		
-		VerticalLayout tableArea = new VerticalLayout();
 		TextField filterBox = new TextField();
 		filterBox.addListener(new TextChangeListener() {
 
@@ -129,9 +126,11 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			}
 		});
 		filterBox.setInputPrompt("Filter");
-		tableArea.addComponent(filterBox);
+		layout.addComponent(filterBox);
+		layout.setExpandRatio(filterBox, 0);
 
 		table = new Table();
+		table.setSizeFull();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
 
@@ -181,25 +180,30 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setImmediate(true); // react at once when something is selected
 		table.addListener((Table.ValueChangeListener)this);
 
-		tableArea.addComponent(table);
-		layout.addComponent(tableArea, 0, 0, 1, 1);
+		layout.addComponent(table);
+		layout.setExpandRatio(table, 2);
 
 		createEditorArea();
 		return layout;
 	}
 
 	private void createEditorArea() {
+		Panel editorArea = new Panel();
+		
+		GridLayout grid = new GridLayout(2,3);
+		grid.setSizeFull();
+		grid.setSpacing(true);
 		keyLabel = new Label();
 		keyLabel.setValue("No Selection");
-		layout.addComponent(keyLabel, 0, 2, 1, 2);
-		layout.setColumnExpandRatio(0, 1.0f);
-		layout.setColumnExpandRatio(1, 1.0f);
+		grid.addComponent(keyLabel, 0, 0, 1, 0);
+		grid.setColumnExpandRatio(0, 1.0f);
+		grid.setColumnExpandRatio(1, 1.0f);
 		orignal = new TextArea();
 		orignal.setRows(5);
 		orignal.setReadOnly(true);
 		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		
-		layout.addComponent(orignal);
+		grid.addComponent(orignal);
 
 		translated = new TextArea();
 		translated.setRows(5);
@@ -209,14 +213,14 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
 		translated.setImmediate(true);
-		layout.addComponent(translated);
+		grid.addComponent(translated);
 
 		orignalComment = new TextArea();
 		orignalComment.setReadOnly(true);
 		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
-		layout.addComponent(orignalComment);
+		grid.addComponent(orignalComment);
 		
 
 		translatedComment = new TextArea();
@@ -228,7 +232,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.addListener((TextChangeListener) this);
 		translatedComment.setInputPrompt("Comment");
 		translatedComment.setWriteThrough(true);
-		layout.addComponent(translatedComment);
+		grid.addComponent(translatedComment);
 
 		safeButton = new Button();
 		safeButton.setEnabled(false);
@@ -260,7 +264,11 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 			}
 		});
+		editorArea.setContent(grid);
+		layout.addComponent(editorArea);
+		layout.setExpandRatio(editorArea, 0);
 		layout.addComponent(safeButton);
+		layout.setExpandRatio(safeButton, 0);
 
 	}
 
