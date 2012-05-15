@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.terminal.ThemeResource;
@@ -63,6 +64,12 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 					if (user != null) {
 						Preferences scope = PreferencesUtil.scopeFor((EObject) user);
 						scope.put("selected.property.tool", id);
+						try {
+							scope.flush();
+						} catch (BackingStoreException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					
 				}
