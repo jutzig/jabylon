@@ -5,7 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.eclipse.emf.cdo.CDOObject;
@@ -21,7 +19,8 @@ import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
-import com.vaadin.terminal.DownloadStream;
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -30,6 +29,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
@@ -39,6 +39,9 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.review.PropertyFileReview;
+import de.jutzig.jabylon.review.ReviewFactory;
+import de.jutzig.jabylon.review.ReviewPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
@@ -47,6 +50,7 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
@@ -55,10 +59,21 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	private Project project;
 	private ProjectLocale locale;
 	Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation;
+	Map<PropertyFileDescriptor, PropertyFileReview> reviewCache;
 
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 
 		this.locale = locale;
+		reviewCache = new MapMaker().softValues().concurrencyLevel(1)
+				.makeComputingMap(new Function<PropertyFileDescriptor, PropertyFileReview>() {
+					@Override
+					public PropertyFileReview apply(PropertyFileDescriptor from) {
+						PropertyFileReview review = ReviewUtil.getReviewFor(from);
+						if (review == null)
+							review = ReviewFactory.eINSTANCE.createPropertyFileReview();
+						return review;
+					}
+				});
 
 	}
 
@@ -66,36 +81,67 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		buildHeader(parent);
 		Section section = new Section();
 		section.setCaption("Translatable Files");
-		section.setSizeFull();
 		final Table table = new Table();
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSizeFull();
 		table.addContainerProperty("location", SortableButton.class, null);
-		table.addContainerProperty("summary", String.class, "");
+		table.addContainerProperty("total", Integer.class, 0);
+		table.addContainerProperty("translated", Integer.class, 0);
+
+		table.addGeneratedColumn("fuzzy", new ColumnGenerator() {
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				StaticProgressIndicator indicator = new StaticProgressIndicator();
+				indicator.setPercentage(0);
+				indicator.setInvertColors(true);
+				if (itemId instanceof Entry) {
+					@SuppressWarnings("rawtypes")
+					Entry entry = (Entry) itemId;
+					Object value = entry.getValue();
+					if (value instanceof PropertyFileDescriptor) {
+						PropertyFileDescriptor translated = (PropertyFileDescriptor) value;
+						if (translated != null) {
+							PropertyFileReview review = reviewCache.get(translated);
+
+							int keys = translated.getMaster().getKeys();
+							int percentage = (int) ((review.getReviews().size() / (double) keys) * 100);
+							percentage = Math.min(percentage, 100);
+							// we can  have  multiple  reviews  per key
+							indicator.setPercentage(percentage);
+
+						}
+					}
+				}
+				return indicator;
+			}
+		});
+
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
-//		table.setColumnWidth(locale,400);
+		table.setColumnWidth("fuzzy", 110);
+
+		// table.setVisibleColumns(new Object[]{});
+		// table.setColumnWidth(locale,400);
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
 			Button fileName = new SortableButton(entry.getKey().getLocation().toString());
-			fileName.setIcon(entry.getValue()==null ? ImageConstants.IMAGE_NEW_PROPERTIES_FILE : ImageConstants.IMAGE_PROPERTIES_FILE);
+			fileName.setIcon(entry.getValue() == null ? ImageConstants.IMAGE_NEW_PROPERTIES_FILE : ImageConstants.IMAGE_PROPERTIES_FILE);
 			fileName.setStyleName(Reindeer.BUTTON_LINK);
 
 			fileName.setData(entry);
 			fileName.addListener(this);
-
 			PropertyFileDescriptor translation = entry.getValue();
+			int translated = translation == null ? 0 : translation.getKeys();
 			StaticProgressIndicator progress = new ResolvableProgressIndicator(translation);
 
-			table.addItem(new Object[] {fileName,buildSummary(entry),progress}, entry.getKey().cdoID());
+			table.addItem(new Object[] { fileName, entry.getKey().getKeys(), translated, progress }, entry);
 		}
+
+		table.setColumnHeaders(new String[] { "Location", "Total", "Translated", "Fuzzy", "Completion" });
 		table.setSortContainerPropertyId("location");
 		section.addComponent(table);
 		parent.addComponent(section);
 		parent.addComponent(new SaveToArchiveButton(locale));
-		parent.setExpandRatio(section, 1f);
-//		SaveToArchiveButton saveToArchiveButton = new SaveToArchiveButton(locale);
-//		parent.addComponent(saveToArchiveButton);
-//		parent.setExpandRatio(saveToArchiveButton, 0);
 
 	}
 
@@ -258,7 +304,6 @@ class SaveToArchiveButton extends Link {
 		setResource(resource);
 	}
 
-
 	private byte[] createArchive() {
 		EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -266,18 +311,15 @@ class SaveToArchiveButton extends Link {
 		try {
 			for (PropertyFileDescriptor descriptor : descriptors) {
 				File file = new File(descriptor.absolutPath().toFileString());
-				if(file.isFile())
-				{
+				if (file.isFile()) {
 					URI fullPath = descriptor.relativePath();
 					String path = fullPath.path();
-					if(path!=null && path.startsWith("/"))
-					    path = path.substring(1);
+					if (path != null && path.startsWith("/"))
+						path = path.substring(1);
 					zip.putNextEntry(new ZipEntry(path));
-					store(file,zip);
-				}
-				else
-				{
-					//TODO: log?
+					store(file, zip);
+				} else {
+					// TODO: log?
 				}
 
 			}
@@ -296,16 +338,14 @@ class SaveToArchiveButton extends Link {
 		byte[] buffer = new byte[1024];
 		int read = 0;
 		try {
-			while(true)
-			{
+			while (true) {
 				read = in.read(buffer);
-				if(read<1)
+				if (read < 1)
 					break;
-				zip.write(buffer,0,read);
+				zip.write(buffer, 0, read);
 			}
-		}
-		finally{
-			if(in!=null)
+		} finally {
+			if (in != null)
 				in.close();
 		}
 
