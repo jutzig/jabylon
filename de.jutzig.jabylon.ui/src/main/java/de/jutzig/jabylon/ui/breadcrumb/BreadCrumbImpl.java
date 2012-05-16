@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.ui.breadcrumb;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.URI;
 
 import com.vaadin.event.ShortcutAction;
@@ -27,6 +29,7 @@ import com.vaadin.ui.UriFragmentUtility.FragmentChangedEvent;
 import com.vaadin.ui.UriFragmentUtility.FragmentChangedListener;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ConfirmationDialog;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
@@ -41,6 +44,8 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 	private Deque<String> segmentList;
 	private List<WeakReference<CrumbListener>> listeners;
 	private UriFragmentUtility fragmentUtil;
+
+	private TextField search;
 
 	public BreadCrumbImpl() {
 		
@@ -65,7 +70,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		searchArea.setSizeFull();
 		panel.setWidth(200, UNITS_PIXELS);
 
-		final TextField search = new TextField();
+		search = new TextField();
 		search.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
 		final ShortcutListener actionSearch = new ShortcutListener("Default key", ShortcutAction.KeyCode.ENTER, null) {
 			@Override
@@ -196,6 +201,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			addEntry(trail);
 		}
 		if (trail != null) {
+			parts.get(parts.size()-1).setEnabled(false);
 			MainDashboard.getCurrent().setMainComponent(trail.createContents());
 			fireCrumbChanged(trail);
 		}
@@ -307,6 +313,22 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		{
 			fragmentUtil.setFragment(null,false);
 		}
+		
+		String searchInput = "Search";
+		if(current!=null)
+		{
+			CDOObject domainObject = current.getDomainObject();
+			if (domainObject instanceof Resolvable) {
+				Resolvable resolvable = (Resolvable) domainObject;
+				String segment = resolvable.relativePath().lastSegment();
+				if(segment!=null)
+				{
+					searchInput = MessageFormat.format("Search {0}", segment); 
+				}
+					
+			}
+		}
+		search.setInputPrompt(searchInput);
 	}
 
 	@Override
