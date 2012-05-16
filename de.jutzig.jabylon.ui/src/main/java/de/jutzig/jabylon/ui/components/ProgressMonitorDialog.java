@@ -1,11 +1,7 @@
 package de.jutzig.jabylon.ui.components;
 
-import javax.swing.plaf.ProgressBarUI;
-
-import org.eclipse.core.internal.runtime.IRuntimeConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -16,6 +12,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.jutzig.jabylon.ui.Activator;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 public class ProgressMonitorDialog extends Window implements IProgressMonitor,
@@ -39,6 +36,7 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 		mainTask.setWidth(100, UNITS_PERCENTAGE);
 
 		indicator = new ProgressIndicator(0f);
+		indicator.setStyleName(JabylonStyle.PROGRESS_INDICATOR.getCSSName());
 		indicator.setSizeFull();
 		layout.addComponent(indicator);
 
@@ -86,7 +84,10 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 	public void beginTask(String name, int totalWork) {
 		setTaskName(name);
 		if(totalWork==IProgressMonitor.UNKNOWN)
+		{
+			indicator.setStyleName(JabylonStyle.PROGRESS_INDICATOR_INDETERMINATE.getCSSName());
 			indicator.setIndeterminate(true);
+		}
 		this.totalWork = totalWork;
 
 	}

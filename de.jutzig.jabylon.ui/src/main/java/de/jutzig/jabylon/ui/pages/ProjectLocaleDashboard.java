@@ -48,6 +48,7 @@ import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
@@ -67,6 +68,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		section.setTitle("Translatable Files");
 		section.setSizeFull();
 		final Table table = new Table();
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSizeFull();
 		table.addContainerProperty("location", SortableButton.class, null);
 		table.addContainerProperty("summary", String.class, "");

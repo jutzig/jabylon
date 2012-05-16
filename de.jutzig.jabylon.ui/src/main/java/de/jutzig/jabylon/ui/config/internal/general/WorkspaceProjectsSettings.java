@@ -22,6 +22,7 @@ import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -77,6 +78,7 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 			}
 		};
 		projectTable = table.getTable();
+		projectTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		projectTable.setWidth(550, Table.UNITS_PIXELS);
 //		projectTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 		projectTable.setSelectable(true);

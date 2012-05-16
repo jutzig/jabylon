@@ -13,6 +13,8 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
+
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
@@ -38,6 +40,7 @@ public class EditableTable extends HorizontalLayout implements ClickListener{
 		layout.setSizeFull();
 		layout.setSpacing(true);
 		table = new Table();
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setWidth(100, UNITS_PERCENTAGE);
 		table.setHeight(300, UNITS_PIXELS);
 		layout.addComponent(table);

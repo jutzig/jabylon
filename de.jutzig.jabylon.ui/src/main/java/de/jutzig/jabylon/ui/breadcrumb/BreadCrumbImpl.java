@@ -31,6 +31,7 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.ConfirmationDialog;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 @SuppressWarnings("serial")
 public class BreadCrumbImpl extends CustomComponent implements ClickListener, BreadCrumb, FragmentChangedListener {
@@ -65,6 +66,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		panel.setWidth(200, UNITS_PIXELS);
 
 		final TextField search = new TextField();
+		search.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
 		final ShortcutListener actionSearch = new ShortcutListener("Default key", ShortcutAction.KeyCode.ENTER, null) {
 			@Override
 			public void handleAction(Object sender, Object target) {
@@ -114,7 +116,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 
 	private Button addEntry(CrumbTrail trail) {
 		if (!parts.isEmpty()) {
-			layout.addComponent(new Label("&raquo;", Label.CONTENT_XHTML));
+			layout.addComponent(new Label("/", Label.CONTENT_XHTML));
 		}
 		Button link = new Button();
 		link.setCaption(trail.getTrailCaption());

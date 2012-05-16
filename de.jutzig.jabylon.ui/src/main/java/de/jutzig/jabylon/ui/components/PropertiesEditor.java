@@ -48,6 +48,7 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
 
 @SuppressWarnings("serial")
@@ -130,6 +131,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setExpandRatio(filterBox, 0);
 
 		table = new Table();
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSizeFull();
 		target = descriptor.loadProperties();
 		source = descriptor.getMaster().loadProperties();
