@@ -3,18 +3,20 @@
 
 .jabylon-progress {
 	border: 1px solid grey;
-	height: 18px;
+	height: 12px;
 	width: 100px;
+	border-radius: 5px 5px 5px 5px;
 }
 
 .jabylon-progress-bar {
 	height: 100%;
+	border-radius: 5px 5px 5px 5px;
 }
 
 .jabylon-progress-label {
 	text-align: center;
 	position: relative;
-	top: -18px;
+	top: -15px;
 }
 
 .v-progressindicator-indicator {
