@@ -117,6 +117,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setMargin(true);
 		layout.setSizeFull();
 		TextField filterBox = new TextField();
+		filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
 		filterBox.addListener(new TextChangeListener() {
 
 			@Override
