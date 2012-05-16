@@ -122,7 +122,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	private void addUserDetails() {
 		userDetails = new Section();
-		userDetails.setTitle("User: "+selectedUser.getName());
+		userDetails.setCaption("User: "+selectedUser.getName());
 		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
 		permissionSelect.setMultiSelect(true);
 		permissionSelect.setLeftColumnCaption("Available permissions");
@@ -138,7 +138,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
 		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.PERMISSION__DESCRIPTION);
 		permissionSelect.setValue(new HashSet<Permission>(selectedUser.getAllPermissions()));
-		userDetails.getBody().addComponent(permissionSelect);
+		userDetails.addComponent(permissionSelect);
 		userConfig.addComponent(userDetails);
 	}
 

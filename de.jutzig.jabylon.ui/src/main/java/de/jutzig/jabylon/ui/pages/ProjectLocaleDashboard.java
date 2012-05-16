@@ -65,7 +65,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	private void createContents(VerticalLayout parent) {
 		buildHeader(parent);
 		Section section = new Section();
-		section.setTitle("Translatable Files");
+		section.setCaption("Translatable Files");
 		section.setSizeFull();
 		final Table table = new Table();
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
@@ -89,7 +89,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			table.addItem(new Object[] {fileName,buildSummary(entry),progress}, entry.getKey().cdoID());
 		}
 		table.setSortContainerPropertyId("location");
-		section.getBody().addComponent(table);
+		section.addComponent(table);
 		parent.addComponent(section);
 		parent.addComponent(new SaveToArchiveButton(locale));
 		parent.setExpandRatio(section, 1f);

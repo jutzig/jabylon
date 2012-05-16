@@ -40,10 +40,10 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		
 		Section section = new Section();
 		section.setHeight(500, UNITS_PIXELS);
-		section.setTitle("Active Projects");
+		section.setCaption("Active Projects");
 		section.setWidth(100, UNITS_PERCENTAGE);
 //		section.setWidth(800, UNITS_PIXELS);
-		VerticalLayout layout = section.getBody();
+		VerticalLayout layout = new VerticalLayout();
 		
 		final Table table = new Table();
 		table.setSizeFull();
@@ -66,6 +66,8 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		}
 		
 		layout.addComponent(table);
+		layout.setSizeFull();
+		section.setContent(layout);
 		addComponent(section);		
 	}
 

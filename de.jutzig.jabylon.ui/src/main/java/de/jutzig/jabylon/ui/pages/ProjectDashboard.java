@@ -48,10 +48,10 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		mainLayout.addComponent(createVersionSelection());
 
 		Section section = new Section();
-		section.setTitle("Available Locales");
+		section.setCaption("Available Locales");
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
-		section.getBody().addComponent(layout);
+		section.addComponent(layout);
 		createContents(layout);
 		mainLayout.setSizeFull();
 		mainLayout.addComponent(section);
