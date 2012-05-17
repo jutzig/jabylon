@@ -118,5 +118,11 @@
             id="de.jutzig.jabylon.ui.property.tool.similarity"
             name="Similar Strings">
       </tool>
+      <tool
+            class="de.jutzig.jabylon.ui.tools.internal.TerminologyTool"
+            icon="../runo/icons/16/document-web.png"
+            id="de.jutzig.jabylon.ui.property.tool.terminology"
+            name="Terminology">
+      </tool>
    </extension>
 </plugin>

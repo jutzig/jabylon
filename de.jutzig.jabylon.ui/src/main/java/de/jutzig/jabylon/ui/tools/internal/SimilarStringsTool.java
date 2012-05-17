@@ -35,6 +35,7 @@ import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
+import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
 
 
 /**
@@ -65,7 +66,7 @@ public class SimilarStringsTool
      * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#selectionChanged(de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem, java.util.Collection)
      */
     @Override
-    public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews)
+    public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor)
     {
         QueryService service = Activator.getDefault().getQueryService();
         container.removeAllItems();

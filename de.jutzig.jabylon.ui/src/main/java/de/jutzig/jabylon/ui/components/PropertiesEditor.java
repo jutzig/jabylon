@@ -23,6 +23,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
@@ -47,10 +48,11 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
+import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
 
 @SuppressWarnings("serial")
-public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
+public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener, SuggestionAcceptor {
 
 	private PropertyFileDescriptor descriptor;
 	private TextArea orignal;
@@ -178,18 +180,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.addListener((Table.ValueChangeListener) this);
 
 		layout.addComponent(table);
-		
-		Button editTemplate = new Button("Edit Template");
-		editTemplate.addListener(new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
-				crumb.walkTo("?master");
-				
-			}
-		});
-		layout.addComponent(editTemplate);
+
 		
 		layout.setExpandRatio(table, 2);
 		createEditorArea();
@@ -273,10 +264,27 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			}
 		});
 		editorArea.setContent(grid);
+		
+		HorizontalLayout buttonArea = new HorizontalLayout();
+		buttonArea.setSpacing(true);
 		layout.addComponent(editorArea);
 		layout.setExpandRatio(editorArea, 0);
-		layout.addComponent(safeButton);
-		layout.setExpandRatio(safeButton, 0);
+		buttonArea.addComponent(safeButton);
+		
+		
+		Button editTemplate = new Button("Edit Template");
+		editTemplate.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
+				crumb.walkTo("?master");
+				
+			}
+		});
+		buttonArea.addComponent(editTemplate);
+		layout.addComponent(buttonArea);
+		layout.setExpandRatio(buttonArea, 0);
 
 	}
 
@@ -351,7 +359,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
-		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()));
+		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()),this);
 		currentItem.getSourceProperty();
 
 		keyLabel.setValue(currentItem.getKey());
@@ -362,6 +370,27 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
 
 		translated.setComponentError(null);
+	}
+
+	@Override
+	public void append(String suggestion) {
+		String value = (String) translated.getValue();
+		if(value==null)
+			translated.setValue(suggestion);
+		else
+		{
+			if(value.endsWith(" "))
+				translated.setValue(value+suggestion);
+			else
+				translated.setValue(value+" "+suggestion);
+		}
+		
+	}
+
+	@Override
+	public void replace(String suggestion) {
+		translated.setValue(suggestion);
+		
 	}
 
 }
