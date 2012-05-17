@@ -19,6 +19,13 @@ import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.Container.Filter;
+import com.vaadin.data.Container.Filterable;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -28,6 +35,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
@@ -65,6 +73,26 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		Section section = new Section();
 		section.setCaption("Translatable Files");
 		final Table table = new Table();
+		
+		TextField filterBox = new TextField();
+		section.addComponent(filterBox);
+		filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
+		filterBox.addListener(new TextChangeListener() {
+
+			@Override
+			public void textChange(TextChangeEvent event) {
+				Container container = table.getContainerDataSource();
+				if (container instanceof Filterable) {
+					Filterable filterable = (Filterable) container;
+					filterable.removeAllContainerFilters();
+					filterable.addContainerFilter(new LocationFilter(event.getText()));
+					
+				}
+
+			}
+		});
+		filterBox.setInputPrompt("Filter");
+		
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSizeFull();
 		table.addContainerProperty("location", SortableButton.class, null);
@@ -332,4 +360,37 @@ class SaveToArchiveButton extends Link {
 		}
 
 	}
+}
+
+class LocationFilter implements Filter
+{
+	private String filter;
+
+	public LocationFilter(String filter) {
+		super();
+		this.filter = filter;
+	}
+
+	@Override
+	public boolean passesFilter(Object itemId, Item item) throws UnsupportedOperationException {
+		Property property = item.getItemProperty("location");
+		Object value = property.getValue();
+		if (value instanceof Button) {
+			Button button = (Button) value;
+			String caption = button.getCaption();
+			if(caption.contains(filter))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean appliesToProperty(Object propertyId) {
+		if(propertyId.equals("location"))
+			return true;
+		return false;
+	}
+	
+	
+	
 }
