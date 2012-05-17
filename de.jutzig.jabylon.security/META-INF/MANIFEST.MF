@@ -16,4 +16,5 @@ Require-Bundle: org.eclipse.equinox.security;bundle-version="1.1.1",
  com.vaadin;bundle-version="6.7.5",
  de.jutzig.jabylon.users;bundle-version="1.0.0"
 Export-Package: de.jutzig.jabylon.security
+Service-Component: OSGI-INF/main.xml
 Bundle-Activator: de.jutzig.jabylon.security.JabylonSecurityBundle

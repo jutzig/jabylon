@@ -29,8 +29,8 @@
    <extension
          point="de.jutzig.jabylon.security.permission">
       <permission
-            description="Edit projects"
-            name="EDIT_PROJECTS">
+            description="Edit all projects"
+            name="GLOBAL_EDIT_PROJECTS">
       </permission>
       <permission
             description="Edit users"
@@ -43,7 +43,7 @@
             description="Administrator"
             name="ADMINISTRATOR">
          <permission_id
-               id="EDIT_PROJECTS">
+               id="GLOBAL_EDIT_PROJECTS">
          </permission_id>
          <permission_id
                id="EDIT_USERS">

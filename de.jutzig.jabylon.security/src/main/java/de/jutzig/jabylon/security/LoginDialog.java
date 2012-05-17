@@ -13,6 +13,7 @@ import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 import com.vaadin.Application;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.LoginForm;
@@ -63,6 +64,7 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
 				} catch( Throwable e ) {
 					//TODO: fix login failed
 					e.printStackTrace();
+					loginWindow.setComponentError(new UserError("Login failed! Reason: "+e.getMessage()));
 				}
 			}
 		});

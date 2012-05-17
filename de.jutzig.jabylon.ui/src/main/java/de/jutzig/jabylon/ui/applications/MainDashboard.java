@@ -24,14 +24,14 @@ import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumbImpl;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.ApplicationTitleBar;
-import de.jutzig.jabylon.ui.components.LabeledContainer;
 import de.jutzig.jabylon.ui.pages.ProjectDashboard;
 import de.jutzig.jabylon.ui.panels.ProjectListPanel;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.users.User;
-import de.jutzig.jabylon.users.UsersFactory;
+import de.jutzig.jabylon.users.UserManagement;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
+	private static final long serialVersionUID = -400265217831682603L;
 
 	private RepositoryConnector repositoryConnector;
 	Button addProject;
@@ -57,10 +57,16 @@ public class MainDashboard extends Application implements TransactionListener, C
 		getContext().addTransactionListener(this);
 		application.set(this);
 		buildMainLayout();
-		User user = UsersFactory.eINSTANCE.createUser();
-		user.setName("anonymous");
-		setUser(user);
+		setUser(getAnonymousUser());
+	}
 
+	private User getAnonymousUser() {
+		CDOView view = getView();
+
+		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
+		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+
+		return userManagement.findUserByName("Anonymous");
 	}
 
 	private void buildMainLayout() {
@@ -160,6 +166,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		}
 	}
 
+	@Override
 	public void transactionStart(Application application, Object transactionData) {
 		if (application == this)
 			MainDashboard.application.set(this);
@@ -173,6 +180,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 		return breadcrumbs;
 	}
 
+	@Override
 	public void transactionEnd(Application application, Object transactionData) {
 	}
 
@@ -230,7 +238,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	public void unsetQueryService(QueryService queryService) {
 		this.queryService = null;
 	}
-	
+
 	public UriFragmentUtility getFragmentUtil() {
 		return fragmentUtil;
 	}
