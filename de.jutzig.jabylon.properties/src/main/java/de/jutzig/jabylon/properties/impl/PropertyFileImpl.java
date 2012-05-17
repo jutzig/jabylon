@@ -7,6 +7,7 @@
 package de.jutzig.jabylon.properties.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import java.util.Map;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -89,12 +90,15 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public Map<String, Property> asMap() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		EList<Property> properties = getProperties();
+		Map<String, Property> map = new HashMap<String, Property>(properties.size());
+		for (Property property : getProperties()) {
+			map.put(property.getKey(), property);
+		}
+		return map;
 	}
 
 	/**
