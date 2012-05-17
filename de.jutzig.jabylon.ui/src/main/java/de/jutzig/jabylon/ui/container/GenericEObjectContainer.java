@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.ui.container;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,16 +16,16 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractInMemoryContainer;
+import com.vaadin.data.util.filter.UnsupportedFilterException;
 
 import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 
 @SuppressWarnings("serial")
-public class GenericEObjectContainer<T extends EObject> extends AbstractInMemoryContainer<T, EStructuralFeature, Item> implements Container.ItemSetChangeNotifier{
+public class GenericEObjectContainer<T extends EObject> extends AbstractInMemoryContainer<T, EStructuralFeature, Item> implements Container.ItemSetChangeNotifier, Container.Filterable{
 
 	private EObject parent;
 	private EReference contentReference;
 	private EList<T> contents;
-
 
 
 	public GenericEObjectContainer(EObject parent, EReference contents) {
@@ -91,6 +92,24 @@ public class GenericEObjectContainer<T extends EObject> extends AbstractInMemory
 	@Override
 	protected Item getUnfilteredItem(Object itemId) {
 		return new EObjectItem((EObject) itemId);
+	}
+
+	@Override
+	public void addContainerFilter(Filter filter) throws UnsupportedFilterException {
+		super.addFilter(filter);
+		
+	}
+
+	@Override
+	public void removeContainerFilter(Filter filter) {
+		super.removeFilter(filter);
+		
+	}
+
+	@Override
+	public void removeAllContainerFilters() {
+		super.removeAllFilters();
+		
 	}
 
 }
