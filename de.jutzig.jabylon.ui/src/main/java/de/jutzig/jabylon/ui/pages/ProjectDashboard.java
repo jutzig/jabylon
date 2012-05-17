@@ -10,6 +10,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
@@ -21,8 +22,10 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
+import de.jutzig.jabylon.ui.components.PropertiesMasterEditor;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
@@ -149,6 +152,18 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 //
 //		});
 //		parent.addComponent(commit);
+		
+		Button editTemplate = new Button("Edit Template");
+		editTemplate.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				MainDashboard.getCurrent().getBreadcrumbs().walkTo("?master");
+				
+			}
+		});
+		editTemplate.setVisible(project.isTerminology());
+		parent.addComponent(editTemplate);
 
 	}
 
@@ -159,6 +174,11 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public CrumbTrail walkTo(String path) {
+		if(path.equals("?master"))
+		{
+			PropertyFileDescriptor descriptor = project.getMaster().getMaster().getDescriptors().get(0);
+			return new PropertiesMasterEditor(descriptor);
+		}
 		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
 		{
 			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), version);

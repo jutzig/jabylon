@@ -31,6 +31,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
@@ -48,6 +49,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
+import de.jutzig.jabylon.ui.components.PropertiesMasterEditor;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.SortableButton;
@@ -65,6 +67,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 
 		this.locale = locale;
+		this.project = locale.getProjectVersion().getProject();
 
 	}
 
@@ -159,7 +162,11 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		table.setSortContainerPropertyId("location");
 		section.addComponent(table);
 		parent.addComponent(section);
-		parent.addComponent(new SaveToArchiveButton(locale));
+		HorizontalLayout buttonBar = new HorizontalLayout();
+		buttonBar.setSpacing(true);
+
+		buttonBar.addComponent(new SaveToArchiveButton(locale));
+		parent.addComponent(buttonBar);
 
 	}
 

@@ -40,6 +40,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
@@ -177,8 +178,20 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.addListener((Table.ValueChangeListener) this);
 
 		layout.addComponent(table);
+		
+		Button editTemplate = new Button("Edit Template");
+		editTemplate.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
+				crumb.walkTo("?master");
+				
+			}
+		});
+		layout.addComponent(editTemplate);
+		
 		layout.setExpandRatio(table, 2);
-
 		createEditorArea();
 		return layout;
 	}
@@ -278,7 +291,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		// TODO Auto-generated method stub
+		if(path.equals("?master"))
+			return new PropertiesMasterEditor(descriptor.getMaster());
 		return null;
 	}
 

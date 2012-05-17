@@ -3,10 +3,12 @@
  */
 package de.jutzig.jabylon.ui.util;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Container.Filter;
-import com.vaadin.data.Property;
+import org.eclipse.emf.ecore.EObject;
 
+import com.vaadin.data.Container.Filter;
+import com.vaadin.data.Item;
+
+import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
 /**
@@ -32,8 +34,21 @@ public class PropertyFilter implements Filter {
 	@Override
 	public boolean passesFilter(Object itemId, Item item)
 			throws UnsupportedOperationException {
-		PropertyPairItem pair = (PropertyPairItem)item;
-		return matches(pair.getSourceProperty()) || matches(pair.getTargetProperty());
+		if (item instanceof PropertyPairItem) {
+			PropertyPairItem pair = (PropertyPairItem) item;
+			return matches(pair.getSourceProperty()) || matches(pair.getTargetProperty());
+		}
+		if (item instanceof EObjectItem) {
+			EObjectItem i = (EObjectItem) item;
+			EObject eObject = i.getEObject();
+			if (eObject instanceof de.jutzig.jabylon.properties.Property) {
+				de.jutzig.jabylon.properties.Property property = (de.jutzig.jabylon.properties.Property) eObject;
+				return matches(property);
+				
+			}
+			
+		}
+		return false;
 	}
 
 	private boolean matches(de.jutzig.jabylon.properties.Property property) {
