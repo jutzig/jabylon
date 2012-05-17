@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
 
@@ -89,6 +90,20 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	@SuppressWarnings("unchecked")
 	public EList<Project> getProjects() {
 		return (EList<Project>)eDynamicGet(PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.Literals.WORKSPACE__PROJECTS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public ProjectVersion getTerminology() {
+		EList<Project> projects = getProjects();
+		for (Project project : projects) {
+			if(project.isTerminology())
+				return project.getMaster();
+		}
+		return null;
 	}
 
 	/**

@@ -73,6 +73,14 @@ public interface Workspace extends Resolvable {
 	EList<Project> getProjects();
 	
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	ProjectVersion getTerminology();
+
 	Project getProject(String name);
 
 } // Workspace
