@@ -134,10 +134,14 @@ div.breadcrumbs div.v-label {
 	color: white;
 }
 
+.v-tabsheet-tabitem {
+	border-radius: 0px 10px 0px 0px;
+}
+
+
 .v-tabsheet-tabitem-selected {
 	background: rgb(84, 98, 255);
 	color: white;
-	text-shadow: none;
 }
 
 .v-panel-caption,.v-table-striped .v-table-row-odd,.sidebar-menu {
