@@ -32,6 +32,9 @@ import org.osgi.framework.BundleContext;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
+import de.jutzig.jabylon.users.UsersFactory;
 
 public class Activator extends Plugin {
 
@@ -47,7 +50,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -66,11 +69,47 @@ public class Activator extends Plugin {
 	/**
 	 * The usual start implementation ...
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		startRepository();
 		initializeWorkspace();
+		initializeUserManagement();
+	}
+
+	private void initializeUserManagement() {
+		CDOSession session = createSession();
+		CDOTransaction transaction = session.openTransaction();
+		if(!transaction.hasResource(ServerConstants.USERS_RESOURCE)) {
+			CDOResource resource = transaction.createResource(ServerConstants.USERS_RESOURCE);
+			UserManagement userManagement = UsersFactory.eINSTANCE.createUserManagement();
+			userManagement.getUsers().add(getAdminUser());
+			userManagement.getUsers().add(getAnonymousUser());
+			resource.getContents().add(userManagement);
+			try {
+				transaction.commit();
+			} catch (CommitException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		transaction.close();
+		session.close();
+	}
+
+	private User getAnonymousUser() {
+		User anonymous = UsersFactory.eINSTANCE.createUser();
+		anonymous.setName("Anonymous");
+		anonymous.setPassword("changeme");
+		return anonymous;
+	}
+
+	private User getAdminUser() {
+		User admin = UsersFactory.eINSTANCE.createUser();
+		admin.setName("Administrator");
+		admin.setPassword("changeme");
+		return admin;
 	}
 
 	private void initializeWorkspace() {
@@ -91,7 +130,7 @@ public class Activator extends Plugin {
 			} catch (final CommitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}
 		}
 		transaction.close();
 		session.close();
@@ -132,6 +171,7 @@ public class Activator extends Plugin {
 	/**
 	 * The usual stop implementation ... BUT including some CDO cleanup.
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 
@@ -146,7 +186,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Create and initialize/configure a repository
-	 * 
+	 *
 	 * @return the CDO repository created
 	 */
 	private IRepository createRepository() {

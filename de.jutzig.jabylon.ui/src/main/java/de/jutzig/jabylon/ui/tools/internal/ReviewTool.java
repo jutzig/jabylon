@@ -5,15 +5,12 @@ package de.jutzig.jabylon.ui.tools.internal;
 
 import java.util.Collection;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
@@ -58,15 +55,6 @@ public class ReviewTool implements PropertyEditorTool {
 	 */
 	@Override
 	public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#textSelection(java.lang.String, de.jutzig.jabylon.properties.Property, org.eclipse.emf.ecore.EStructuralFeature)
-	 */
-	@Override
-	public void textSelection(String text, Property owner, EStructuralFeature feature) {
 		// TODO Auto-generated method stub
 
 	}

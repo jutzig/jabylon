@@ -19,8 +19,6 @@ import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
-import com.google.common.base.Function;
-import com.google.common.collect.MapMaker;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -39,9 +37,6 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.PropertyFileReview;
-import de.jutzig.jabylon.review.ReviewFactory;
-import de.jutzig.jabylon.review.ReviewPackage;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.PropertiesEditor;
@@ -50,7 +45,6 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.SortableButton;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
-import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
@@ -59,21 +53,10 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	private Project project;
 	private ProjectLocale locale;
 	Map<PropertyFileDescriptor, PropertyFileDescriptor> masterToTransation;
-	Map<PropertyFileDescriptor, PropertyFileReview> reviewCache;
 
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 
 		this.locale = locale;
-		reviewCache = new MapMaker().softValues().concurrencyLevel(1)
-				.makeComputingMap(new Function<PropertyFileDescriptor, PropertyFileReview>() {
-					@Override
-					public PropertyFileReview apply(PropertyFileDescriptor from) {
-						PropertyFileReview review = ReviewUtil.getReviewFor(from);
-						if (review == null)
-							review = ReviewFactory.eINSTANCE.createPropertyFileReview();
-						return review;
-					}
-				});
 
 	}
 
@@ -102,10 +85,9 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 					if (value instanceof PropertyFileDescriptor) {
 						PropertyFileDescriptor translated = (PropertyFileDescriptor) value;
 						if (translated != null) {
-							PropertyFileReview review = reviewCache.get(translated);
 
 							int keys = translated.getMaster().getKeys();
-							int percentage = (int) ((review.getReviews().size() / (double) keys) * 100);
+							int percentage = (int) ((translated.getReviews().size() / (double) keys) * 100);
 							percentage = Math.min(percentage, 100);
 							// we can  have  multiple  reviews  per key
 							indicator.setPercentage(percentage);

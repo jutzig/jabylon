@@ -10,11 +10,14 @@ package de.jutzig.jabylon.security;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+
 
 public class JabylonSecurityBundle implements BundleActivator {
 	public static final String BUNDLE_ID = "de.jutzig.jabylon.security";
 
 	private static BundleContext context;
+	private static RepositoryConnector repositoryConnector;
 
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -29,5 +32,17 @@ public class JabylonSecurityBundle implements BundleActivator {
 
 	public static BundleContext getBundleContext() {
 		return JabylonSecurityBundle.context;
+	}
+
+	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
+		JabylonSecurityBundle.repositoryConnector = repositoryConnector;
+	}
+
+	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
+		JabylonSecurityBundle.repositoryConnector = null;
+	}
+
+	public static RepositoryConnector getRepositoryConnector() {
+		return JabylonSecurityBundle.repositoryConnector;
 	}
 }

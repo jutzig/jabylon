@@ -18,7 +18,6 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.util.Version;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
@@ -31,7 +30,7 @@ import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
@@ -158,17 +157,6 @@ public class SimilarStringsTool
     public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation)
     {
         this.translation = translation;
-
-    }
-
-
-    /**
-     * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#textSelection(java.lang.String, de.jutzig.jabylon.properties.Property, org.eclipse.emf.ecore.EStructuralFeature)
-     */
-    @Override
-    public void textSelection(String text, Property owner, EStructuralFeature feature)
-    {
-        // TODO Auto-generated method stub
 
     }
 

@@ -202,17 +202,8 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	private void initializeUserManagement() {
 		view = connector.openView();
-
-		if(view.hasResource(ServerConstants.USERS_RESOURCE)) {
-			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-			userManagement = (UserManagement)resource.getContents().get(0);
-		} else {
-			CDOTransaction transaction = connector.openTransaction();
-			CDOResource resource = transaction.createResource(ServerConstants.USERS_RESOURCE);
-			resource.getContents().add(UsersFactory.eINSTANCE.createUserManagement());
-			saveCommit(transaction);
-			userManagement = (UserManagement) view.getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
-		}
+		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
+		userManagement = (UserManagement)resource.getContents().get(0);
 
 		addAvailablePermissions();
 		Role adminRole = addOrUpdateAdminRole();
@@ -276,11 +267,8 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		}
 		CDOTransaction transaction = connector.openTransaction();
 		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
-		User admin = UsersFactory.eINSTANCE.createUser();
-		admin.setName("admin");
-		admin.setPassword("changeme");
+		User admin = writeableUserManagement.findUserByName("Administrator");
 		admin.getRoles().add(adminRole);
-		writeableUserManagement.getUsers().add(admin);
 		saveCommit(transaction);
 	}
 

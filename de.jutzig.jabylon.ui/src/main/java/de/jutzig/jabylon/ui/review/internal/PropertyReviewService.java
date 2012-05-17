@@ -3,7 +3,6 @@
  */
 package de.jutzig.jabylon.ui.review.internal;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,19 +17,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.changes.AbstractCoalescingListener;
-import de.jutzig.jabylon.review.PropertyFileReview;
-import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
-import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
@@ -74,7 +70,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		PropertyFile masterProperties = descriptor.getMaster().loadProperties();
 
 		CDOTransaction transaction = retrieveTransaction(descriptor);
-		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor, transaction);
+		descriptor = transaction.getObject(descriptor);
 		boolean dirty = false;
 		Set<String> allProperties = new HashSet<String>();
 		for (Property prop : slaveProperties.getProperties()) {
@@ -93,7 +89,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 				}
 				if (review != null) {
 					review.setKey(prop.getKey());
-					fileReview.getReviews().add(review);
+					descriptor.getReviews().add(review);
 					dirty = true;
 				}
 			}
@@ -107,7 +103,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 					Review review = reviewer.review(descriptor, property, null);
 					if (review != null) {
 						review.setKey(property.getKey());
-						fileReview.getReviews().add(review);
+						descriptor.getReviews().add(review);
 						dirty = true;
 					}
 				}
@@ -120,8 +116,8 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 
 	}
 
-	private boolean removeKey(String key, PropertyFileReview fileReview) {
-		Iterator<Review> it = fileReview.getReviews().iterator();
+	private boolean removeKey(String key, List<Review> reviews) {
+		Iterator<Review> it = reviews.iterator();
 		boolean dirty = false;
 		while (it.hasNext()) {
 			Review review = (Review) it.next();
@@ -137,22 +133,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 	@Override
 	public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
 
-		// TODO: this is unfortunately rather slow in case of a full rescan when
-		// potentially
-		// tens of thousands of review files are deleted (by tens of thousands
-		// of commits)...
-		if (!ReviewUtil.hasReviewResource(descriptor))
-			return;
-		CDOTransaction transaction = retrieveTransaction(descriptor);
-		Resource resource = ReviewUtil.getReviewResource(descriptor, transaction);
-
-		try {
-			resource.delete(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		process();
+		// nothing to do
 
 	}
 
@@ -164,8 +145,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		if (activeReviews.isEmpty())
 			return;
 		CDOTransaction transaction = retrieveTransaction(descriptor);
-		PropertyFileReview fileReview = ReviewUtil.getOrCreateReview(descriptor, transaction);
-
+		descriptor = transaction.getObject(descriptor);
 		PropertyFile masterProperties = null;
 		if (!descriptor.isMaster())
 			masterProperties = descriptor.getMaster().loadProperties();
@@ -174,20 +154,20 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 			Object notifier = change.getNotifier();
 			if (notifier instanceof Property) {
 				Property prop = (Property) notifier;
-				dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, prop);
+				dirty = analyzeProperty(descriptor, activeReviews, masterProperties, prop);
 			}
 			else if (notifier instanceof PropertyFile) {
 				Object newValue = change.getNewValue();
 				
 				if (change.getEventType()==Notification.ADD && newValue instanceof Property) {
 					Property property = (Property) newValue;
-					dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, property);
+					dirty = analyzeProperty(descriptor, activeReviews, masterProperties, property);
 				}
 				
 				else if (change.getEventType()==Notification.ADD_MANY && newValue instanceof Collection) {
 					Collection<Property> properties = (Collection<Property>) newValue;
 					for (Property property : properties) {
-						dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, property);						
+						dirty = analyzeProperty(descriptor, activeReviews, masterProperties, property);						
 					}
 				}
 				
@@ -202,8 +182,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 
 	}
 
-	protected boolean analyzeProperty(PropertyFileDescriptor descriptor, List<ReviewParticipant> activeReviews,
-			PropertyFileReview fileReview, PropertyFile masterProperties, Property prop) {
+	protected boolean analyzeProperty(PropertyFileDescriptor descriptor, List<ReviewParticipant> activeReviews, PropertyFile masterProperties, Property prop) {
 		boolean dirty = false;
 		boolean firstReview = true;
 		for (ReviewParticipant reviewer : activeReviews) {
@@ -215,11 +194,11 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 				review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);
 			}
 
-			if (firstReview && removeKey(prop.getKey(), fileReview))
+			if (firstReview && removeKey(prop.getKey(), descriptor.getReviews()))
 				dirty = true;
 			if (review != null) {
 				review.setKey(prop.getKey());
-				fileReview.getReviews().add(review);
+				descriptor.getReviews().add(review);
 				dirty = true;
 			}
 			firstReview = false;

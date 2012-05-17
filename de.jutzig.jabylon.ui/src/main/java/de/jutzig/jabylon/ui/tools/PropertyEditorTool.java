@@ -4,7 +4,6 @@
 package de.jutzig.jabylon.ui.tools;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -12,8 +11,7 @@ import com.vaadin.ui.Component;
 
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.ui.container.PropertyPairContainer;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 
 /**
@@ -25,8 +23,6 @@ public interface PropertyEditorTool {
 	void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews);
 	
 	void init(PropertyFileDescriptor template, PropertyFileDescriptor translation);
-	
-	void textSelection(String text, Property owner, EStructuralFeature feature);
 	
 	Component createComponent();
 	

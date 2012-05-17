@@ -96,12 +96,12 @@
    <extension
          point="de.jutzig.jabylon.security.permission">
       <permission
-            description="Translate projects"
-            name="TRANSLATOR">
+            description="Translate all projects"
+            name="GLOBAL_TRANSLATOR">
       </permission>
       <permission
-            description="Review projects"
-            name="REVIEWER">
+            description="Review all projects"
+            name="GLOBAL_REVIEWER">
       </permission>
    </extension>
    <extension

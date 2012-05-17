@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -25,9 +24,8 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.TabSheet.Tab;
 
-import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
@@ -123,14 +121,6 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 	public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
 		for (PropertyEditorTool tool : tools) {
 			tool.init(template, translation);
-		}
-		
-	}
-
-	@Override
-	public void textSelection(String text, Property owner, EStructuralFeature feature) {
-		for (PropertyEditorTool tool : tools) {
-			tool.textSelection(text, owner, feature);
 		}
 		
 	}

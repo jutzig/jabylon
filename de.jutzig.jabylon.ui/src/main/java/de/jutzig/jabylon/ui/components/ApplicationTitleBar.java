@@ -1,5 +1,7 @@
 package de.jutzig.jabylon.ui.components;
 
+import java.util.Set;
+
 import javax.security.auth.Subject;
 
 import com.vaadin.Application.UserChangeEvent;
@@ -19,7 +21,6 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbListener;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
-import de.jutzig.jabylon.ui.config.internal.DynamicConfigPage;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigUtil;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
@@ -58,7 +59,7 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 
         // Upper left logo
 		Embedded title = new Embedded(null, ImageConstants.IMAGE_LOGO);
-		
+
 		title.setHeight(44,Embedded.UNITS_PIXELS);
 //		title.setCaption("Jabylon");
 		title.setWidth(124, Label.UNITS_PIXELS);
@@ -77,11 +78,11 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 		settings = new Button("Settings");
 		settings.setIcon(ImageConstants.IMAGE_SETTINGS);
 		settings.addListener(new ClickListener() {
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				settingsPressed();
-				
+
 			}
 		});
 		settings.setStyleName(Reindeer.BUTTON_LINK);
@@ -95,8 +96,12 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 		login.addListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				LoginDialog loginDialog = new LoginDialog(MainDashboard.getCurrent());
-				loginDialog.display();
+				if(MainDashboard.getCurrent().getUser()!=null) {
+					MainDashboard.getCurrent().setUser(null);
+				} else {
+					LoginDialog loginDialog = new LoginDialog(MainDashboard.getCurrent());
+					loginDialog.display();
+				}
 			}
 		});
 		mainLayout.addComponent(login);
@@ -113,18 +118,27 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 
 	@Override
 	public void activeCrumbTrailChanged(CrumbTrail current) {
-		settings.setVisible(!DynamicConfigUtil.getApplicableElements(current.getDomainObject()).isEmpty());		
+		settings.setVisible(!DynamicConfigUtil.getApplicableElements(current.getDomainObject()).isEmpty());
 	}
 
 	@Override
 	public void applicationUserChanged(UserChangeEvent event) {
 		Object newUser = event.getNewUser();
+		if(newUser==null) {
+			login.setCaption("Login");
+			return;
+		}
+
 		if (newUser instanceof Subject) {
 			Subject user = (Subject) newUser;
-			login.setCaption("Logout");
-			
+			Set<String> publicCredentials = user.getPublicCredentials(String.class);
+			if(publicCredentials.size()==1) {
+				login.setCaption("Logout <"+publicCredentials.iterator().next()+">");
+			}
+			else
+				;// TODO error handling
 		}
-		
+
 	}
 
 }

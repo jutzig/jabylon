@@ -15,8 +15,8 @@ import javax.security.auth.spi.LoginModule;
 
 import org.eclipse.emf.cdo.view.CDOView;
 
-import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
+import de.jutzig.jabylon.security.JabylonSecurityBundle;
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
@@ -29,7 +29,6 @@ public class DBLoginModule implements LoginModule {
 	String user;
 	String pw;
 	List<Permission> permissions = new ArrayList<Permission>();
-	private RepositoryConnector repositoryConnector;
 
 	public DBLoginModule() {
 	}
@@ -87,10 +86,10 @@ public class DBLoginModule implements LoginModule {
 	}
 
 	private boolean checkLogin(String userName, String pw) {
-		if(repositoryConnector==null)
+		if(JabylonSecurityBundle.getRepositoryConnector()==null)
 			return false;
 
-		CDOView view = repositoryConnector.openView();
+		CDOView view = JabylonSecurityBundle.getRepositoryConnector().openView();
 		try {
 			UserManagement userManagement = (UserManagement)view.getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
 			User user = userManagement.findUserByName(userName);
@@ -115,13 +114,5 @@ public class DBLoginModule implements LoginModule {
 	public boolean logout() throws LoginException {
 		this.authenticated = false;
 		return true;
-	}
-
-	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = repositoryConnector;
-	}
-
-	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = null;
 	}
 }

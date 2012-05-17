@@ -23,7 +23,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
@@ -38,15 +37,13 @@ import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
-import de.jutzig.jabylon.review.PropertyFileReview;
-import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
-import de.jutzig.jabylon.ui.review.ReviewUtil;
 import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
@@ -82,12 +79,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		Multimap<String, Review> map = ArrayListMultimap.create();
 		if (descriptor == null)
 			return map;
-		PropertyFileReview fileReview = ReviewUtil.getReviewFor(descriptor);
-		if (fileReview != null) {
-			EList<Review> reviews = fileReview.getReviews();
-			for (Review review : reviews) {
-				map.put(review.getKey(), review);
-			}
+
+		EList<Review> reviews = descriptor.getReviews();
+		for (Review review : reviews) {
+			map.put(review.getKey(), review);
 		}
 
 		return map;
@@ -148,20 +143,18 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 				if (reviews.containsKey(itemId)) {
 					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);
-					
-						Review review = reviews.get((String) itemId).iterator().next();
-						//TODO: this can't be the right way to refresh?
-						if(review.cdoInvalid())
-						{
-							reviews.remove(itemId, review); //the review is no longer valid
-							embedded.setIcon(ImageConstants.IMAGE_OK);
-							embedded.setDescription("");
-						}
-						else
-						{
-							embedded.setDescription(review.getMessage());
-						}
-							
+
+					Review review = reviews.get((String) itemId).iterator().next();
+					// TODO: this can't be the right way to refresh?
+					if (review.cdoInvalid()) {
+						reviews.remove(itemId, review); // the review is no
+														// longer valid
+						embedded.setIcon(ImageConstants.IMAGE_OK);
+						embedded.setDescription("");
+					} else {
+						embedded.setDescription(review.getMessage());
+					}
+
 					return embedded;
 				} else
 					return new Embedded("", ImageConstants.IMAGE_OK);
@@ -174,14 +167,14 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
 		table.setColumnExpandRatio("Problems", 0.0f);
-		
+
 		table.setEditable(false);
 		table.setWriteThrough(false);
 
 		table.setSelectable(true);
 		table.setMultiSelect(false);
 		table.setImmediate(true); // react at once when something is selected
-		table.addListener((Table.ValueChangeListener)this);
+		table.addListener((Table.ValueChangeListener) this);
 
 		layout.addComponent(table);
 		layout.setExpandRatio(table, 2);
@@ -192,8 +185,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	private void createEditorArea() {
 		Panel editorArea = new Panel();
-		
-		GridLayout grid = new GridLayout(2,3);
+
+		GridLayout grid = new GridLayout(2, 3);
 		grid.setSizeFull();
 		grid.setSpacing(true);
 		keyLabel = new Label();
@@ -205,7 +198,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		orignal.setRows(3);
 		orignal.setReadOnly(true);
 		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
-		
+
 		grid.addComponent(orignal);
 
 		translated = new TextArea();
@@ -224,13 +217,12 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		orignalComment.setRows(3);
 		orignalComment.setNullRepresentation("");
 		grid.addComponent(orignalComment);
-		
 
 		translatedComment = new TextArea();
 		translatedComment.setImmediate(true);
 		translatedComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		translatedComment.setRows(3);
-		
+
 		translatedComment.setNullRepresentation("");
 		translatedComment.addListener((TextChangeListener) this);
 		translatedComment.setInputPrompt("Comment");
@@ -298,21 +290,23 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	@Override
 	public void textChange(TextChangeEvent event) {
 		setDirty(true);
-		if(currentItem==null)
+		if (currentItem == null)
 			return;
 		reviews.removeAll(currentItem.getKey());
 		translated.setComponentError(null);
-		currentItem.getTargetProperty().setValue(event.getText()); //apply current value first
+		currentItem.getTargetProperty().setValue(event.getText()); // apply
+																	// current
+																	// value
+																	// first
 		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), currentItem.getTargetProperty());
-		if(!reviewList.isEmpty())
-		{
+		if (!reviewList.isEmpty()) {
 			reviews.putAll((String) currentItem.getKey(), reviewList);
 			List<ErrorMessage> errors = new ArrayList<ErrorMessage>(reviewList.size());
 			for (Review review : reviewList) {
-				UserError error = new UserError(review.getMessage(),UserError.CONTENT_TEXT,ErrorMessage.ERROR);
+				UserError error = new UserError(review.getMessage(), UserError.CONTENT_TEXT, ErrorMessage.ERROR);
 				errors.add(error);
 			}
-			CompositeErrorMessage message = new CompositeErrorMessage(errors);			
+			CompositeErrorMessage message = new CompositeErrorMessage(errors);
 			translated.setComponentError(message);
 		}
 		table.refreshRowCache();
@@ -352,7 +346,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		translatedComment.setPropertyDataSource(currentItem.getTargetComment());
 		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
-		
+
 		translated.setComponentError(null);
 	}
 
