@@ -35,6 +35,7 @@ import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
  */
 public class TerminologyTool implements PropertyEditorTool {
 
+	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 	private BeanItemContainer<Property> container;
 	private Map<String, Property> terminology;
 	private SuggestionAcceptor acceptor;
@@ -62,7 +63,7 @@ public class TerminologyTool implements PropertyEditorTool {
 	private void tokenize(String value) {
 		if(value==null)
 			return;
-		StringTokenizer tokenizer = new StringTokenizer(value, " \t\n\r\f.,;:(){}\"'<>");
+		StringTokenizer tokenizer = new StringTokenizer(value, TERMINOLOGY_DELIMITER);
 		while(tokenizer.hasMoreTokens())
 		{
 			String token = tokenizer.nextToken();

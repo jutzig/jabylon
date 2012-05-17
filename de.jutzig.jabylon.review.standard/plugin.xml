@@ -29,6 +29,12 @@
             id="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"
             name="Existence Check">
       </particpant>
+      <particpant
+            class="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"
+            description="checks that terms from the terminology project are properly translated"
+            id="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"
+            name="Terminology Check">
+      </particpant>
    </extension>
 
 </plugin>

@@ -7,3 +7,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: de.jutzig.jabylon.ui;bundle-version="1.0.0",
  de.jutzig.jabylon.properties;bundle-version="1.0.0",
  org.eclipse.emf.cdo;bundle-version="4.0.1"
+Import-Package: com.google.common.base;version="1.0.0",
+ com.google.common.collect;version="1.0.0"
