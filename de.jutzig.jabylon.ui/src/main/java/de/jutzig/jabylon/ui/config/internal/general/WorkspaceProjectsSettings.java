@@ -3,15 +3,23 @@
  */
 package de.jutzig.jabylon.ui.config.internal.general;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.Preferences;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.VerticalLayout;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -23,6 +31,7 @@ import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
+import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -32,6 +41,7 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 
 	private EditableTable table;
 	private Table projectTable;
+	private Button createTerminology;
 
 	/**
 	 * 
@@ -48,7 +58,9 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 //		EditableTable table = new EditableTable(true);
 //		table.getTable().setContainerDataSource(new GenericEObjectContainer<Project>(getDomainObject(),PropertiesPackage.Literals.WORKSPACE__PROJECTS));
 //		table.getTable().set
-		
+		VerticalLayout layout = new VerticalLayout();
+		layout.setSpacing(true);
+		layout.setSizeFull();
 		table = new EditableTable(true) {
 			@Override
 			protected void addPressed() {
@@ -82,9 +94,39 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 		projectTable.setWidth(550, Table.UNITS_PIXELS);
 //		projectTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
 		projectTable.setSelectable(true);
-		
-		
-		return table;
+		createTerminology =new Button("Create Terminology Project"); 
+		createTerminology.setDisableOnClick(true);
+		createTerminology.addListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Workspace workspace = getDomainObject();
+				Project project = PropertiesFactory.eINSTANCE.createProject();
+				project.setTerminology(true);
+				workspace.getProjects().add(project);
+				project.setName("Terminology");
+				ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+				version.setBranch("master");
+				project.setMaster(version);
+				
+				ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
+				version.setMaster(locale);
+				URI path = version.absolutPath();
+				File folder = new File(path.toFileString());
+				folder.mkdirs();
+				File properties = new File(folder,"messages.properties");
+				try {
+					properties.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				version.fullScan(PreferencesUtil.getScanConfigForProject(project));
+			}
+		});
+		layout.addComponent(table);
+		layout.addComponent(createTerminology);
+		return layout;
 	}
 
 	/* (non-Javadoc)
@@ -111,6 +153,7 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 				return new ResolvableProgressIndicator((Resolvable) itemId);
 			}
 		});
+		createTerminology.setEnabled(getDomainObject().getTerminology()==null);
 
 	}
 
