@@ -240,12 +240,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
-				propertyPersistence.saveProperties(descriptor, target);
+
 				final int filledKeys = getFilledKeys(target);
 				try {
 
-					// do it after save, because safe eliminated all empty ones
 					descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
 						@Override
 						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
@@ -255,6 +253,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 						}
 					});
 					setDirty(false);
+					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
+					propertyPersistence.saveProperties(descriptor, target);
 					layout.getWindow().showNotification("File saved", descriptor.getLocation().lastSegment());
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
