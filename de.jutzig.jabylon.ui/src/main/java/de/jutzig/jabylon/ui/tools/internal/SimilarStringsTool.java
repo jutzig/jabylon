@@ -34,6 +34,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.review.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
 
 
@@ -180,6 +181,7 @@ public class SimilarStringsTool
     {
         Table table = new Table();
         table.setSizeFull();
+        table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
         container = new BeanItemContainer<Similarity>(Similarity.class);
         table.setContainerDataSource(container);
         table.setVisibleColumns(new Object[]{"original","translation","similarity"});

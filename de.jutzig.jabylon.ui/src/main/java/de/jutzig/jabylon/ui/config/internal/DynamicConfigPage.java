@@ -95,8 +95,8 @@ public class DynamicConfigPage implements CrumbTrail {
 				parent.setMargin(true);
 				if (title != null && title.length() > 0) {
 					Section sectionWidget = new Section();
-					sectionWidget.setTitle(title);
-					sectionWidget.getBody().addComponent(section.createContents());
+					sectionWidget.setCaption(title);
+					sectionWidget.addComponent(section.createContents());
 					parent.addComponent(sectionWidget);
 				} else {
 					parent.addComponent(section.createContents());

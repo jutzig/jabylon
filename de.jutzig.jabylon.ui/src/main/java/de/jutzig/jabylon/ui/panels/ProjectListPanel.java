@@ -17,6 +17,7 @@ import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.components.StaticProgressIndicator;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 public class ProjectListPanel extends GridLayout implements ClickListener {
 
@@ -39,13 +40,14 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		
 		Section section = new Section();
 		section.setHeight(500, UNITS_PIXELS);
-		section.setTitle("Active Projects");
+		section.setCaption("Active Projects");
 		section.setWidth(100, UNITS_PERCENTAGE);
 //		section.setWidth(800, UNITS_PIXELS);
-		VerticalLayout layout = section.getBody();
+		VerticalLayout layout = new VerticalLayout();
 		
 		final Table table = new Table();
 		table.setSizeFull();
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 //		table.setWidth(800, UNITS_PIXELS);
 		table.addContainerProperty("location", Button.class, null);
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
@@ -64,6 +66,8 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 		}
 		
 		layout.addComponent(table);
+		layout.setSizeFull();
+		section.setContent(layout);
 		addComponent(section);		
 	}
 

@@ -27,6 +27,7 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.search.SearchResultPage;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 public class ProjectDashboard implements CrumbTrail, ClickListener {
 
@@ -47,10 +48,10 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		mainLayout.addComponent(createVersionSelection());
 
 		Section section = new Section();
-		section.setTitle("Available Locales");
+		section.setCaption("Available Locales");
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
-		section.getBody().addComponent(layout);
+		section.addComponent(layout);
 		createContents(layout);
 		mainLayout.setSizeFull();
 		mainLayout.addComponent(section);
@@ -114,7 +115,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		buildHeader(parent);
 
 		table = new Table();
-
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setColumnWidth(ProjectLocaleTableContainer.LocaleProperty.PROGRESS, 110);
 		table.setColumnExpandRatio(ProjectLocaleTableContainer.LocaleProperty.SUMMARY, 3f);
 		table.setSizeFull();

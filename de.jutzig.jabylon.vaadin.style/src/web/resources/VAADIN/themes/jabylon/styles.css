@@ -1,27 +1,30 @@
-@IMPORT url("/VAADIN/themes/reindeer/styles.css");
+/* @IMPORT url("/VAADIN/themes/reindeer/styles.css"); */
+@IMPORT url("base-style.css");
 
 .jabylon-progress {
 	border: 1px solid grey;
-	height: 18px;
+	height: 12px;
 	width: 100px;
+	border-radius: 5px 5px 5px 5px;
 }
 
 .jabylon-progress-bar {
 	height: 100%;
+	border-radius: 5px 5px 5px 5px;
 }
 
 .jabylon-progress-label {
 	text-align: center;
 	position: relative;
-	top: -18px;
+	top: -15px;
 }
 
 .v-progressindicator-indicator {
-	background: navy; none;
+	background: navy;
+	none;
 }
 
-.jayblon-breadcrumb-panel {
-	font-size: 24px;
+.jayblon-breadcrumb-panel { /* font-size: 24px; */
 	font-style: italic;
 	/* padding: 10px 10px 10px 15px; */
 	color: white;
@@ -60,7 +63,7 @@
 }
 
 .jabylon-container-content {
-
+	
 }
 
 .jabylon-section-title {
@@ -102,24 +105,58 @@ div.breadcrumbs .v-button: {
 }
 
 div.breadcrumbs .v-button.v-disabled {
-	background: blue;/*  #A1B4FF;*/
-	moz-border-radius: 5px;
-	webkit-border-radius: 5px;
-	khtml-border-radius: 5px;
-	border-radius: 5px;
+	background: blue; /*  #A1B4FF;*/
+	moz-border-radius: 10px;
+	webkit-border-radius: 10px;
+	khtml-border-radius: 10px;
+	border-radius: 10px;
 	padding: 5px;
 }
 
 div.breadcrumbs span.v-button-caption {
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 13px;
 	color: white;
 }
 
 div.breadcrumbs .v-button.v-disabled span.v-button-caption {
 	font-weight: bolder;
-	font-size: 12px;
+	font-size: 14px;
 	color: white;
 	text-decoration: none;
-	
+}
+
+/* the separator between the breadcrumb items*/
+div.breadcrumbs div.v-label {
+	padding-top: 3px;
+	font-weight: bolder;
+	font-size: 18px;
+	color: white;
+}
+
+.v-tabsheet-tabitem-selected {
+	background: rgb(84, 98, 255);
+	color: white;
+	text-shadow: none;
+}
+
+.v-panel-caption,.v-table-striped .v-table-row-odd,.sidebar-menu {
+	background: #E0E0E0;
+}
+
+input.v-textfield-readonly, textarea.v-textarea-readonly {
+ 	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: url("img/input-bg.png") repeat-x scroll 0 0 #FFFFFF;
+	border-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.3);
+	border-radius: 2px 2px 2px 2px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+	line-height: normal;
+	margin: 0;
+	padding: 0.3em; 
 }

@@ -156,6 +156,7 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
 		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
@@ -173,26 +174,23 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 			Object notifier = change.getNotifier();
 			if (notifier instanceof Property) {
 				Property prop = (Property) notifier;
-				boolean firstReview = true;
-				for (ReviewParticipant reviewer : activeReviews) {
-
-					Review review = null;
-					if (descriptor.isMaster()) {
-						review = reviewer.review(descriptor, prop, null);
-					} else {
-						review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);
-					}
-
-					if (firstReview && removeKey(prop.getKey(), fileReview))
-						dirty = true;
-					if (review != null) {
-						review.setKey(prop.getKey());
-						fileReview.getReviews().add(review);
-						dirty = true;
-					}
-					firstReview = false;
+				dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, prop);
+			}
+			else if (notifier instanceof PropertyFile) {
+				Object newValue = change.getNewValue();
+				
+				if (change.getEventType()==Notification.ADD && newValue instanceof Property) {
+					Property property = (Property) newValue;
+					dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, property);
 				}
-
+				
+				else if (change.getEventType()==Notification.ADD_MANY && newValue instanceof Collection) {
+					Collection<Property> properties = (Collection<Property>) newValue;
+					for (Property property : properties) {
+						dirty = analyzeProperty(descriptor, activeReviews, fileReview, masterProperties, property);						
+					}
+				}
+				
 			}
 		}
 
@@ -202,6 +200,31 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 
 		}
 
+	}
+
+	protected boolean analyzeProperty(PropertyFileDescriptor descriptor, List<ReviewParticipant> activeReviews,
+			PropertyFileReview fileReview, PropertyFile masterProperties, Property prop) {
+		boolean dirty = false;
+		boolean firstReview = true;
+		for (ReviewParticipant reviewer : activeReviews) {
+
+			Review review = null;
+			if (descriptor.isMaster()) {
+				review = reviewer.review(descriptor, prop, null);
+			} else {
+				review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);
+			}
+
+			if (firstReview && removeKey(prop.getKey(), fileReview))
+				dirty = true;
+			if (review != null) {
+				review.setKey(prop.getKey());
+				fileReview.getReviews().add(review);
+				dirty = true;
+			}
+			firstReview = false;
+		}
+		return dirty;
 	}
 
 	private List<ReviewParticipant> getActiveReviews(Project project) {

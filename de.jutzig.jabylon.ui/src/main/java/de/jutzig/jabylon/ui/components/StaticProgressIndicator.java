@@ -10,6 +10,7 @@ public class StaticProgressIndicator extends Label {
 			+ "<div class=\"jabylon-progress-bar\" style=\"width:{0}%; background-color: {1};\">&nbsp;</div>"
 			+ "<div class=\"jabylon-progress-label\">{0}%</div>" + "</div>";
 	private int percentage;
+	private boolean invert;
 
 	public StaticProgressIndicator() {
 		setContentMode(CONTENT_XHTML);
@@ -27,6 +28,12 @@ public class StaticProgressIndicator extends Label {
 
 	}
 
+	
+	public void setInvertColors(boolean invert)
+	{
+		this.invert = invert;
+	}
+	
 	protected int calculateBackgroundColor(int percentage) {
 
 		int ticks = (int) ((512 / 100.0) * percentage);
@@ -43,6 +50,15 @@ public class StaticProgressIndicator extends Label {
 			red = 512 - ticks;
 		}
 		int color = 0;
+		
+		if(invert)
+		{
+			color = red;
+			red = green;
+			green = color;
+			color = 0;
+		}
+		
 		color += red << 16;
 		color += green << 8;
 		return color;

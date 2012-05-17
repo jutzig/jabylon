@@ -51,6 +51,7 @@ import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.team.TeamProvider;
 import de.jutzig.jabylon.ui.util.PreferencesUtil;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
@@ -137,6 +138,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		versionTable.setImmediate(true);
 		versionTable.addListener(this);
 		versionTable.setRowHeaderMode(Table.ROW_HEADER_MODE_ICON_ONLY);
+		versionTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		versionTable.setSelectable(true);
 
 //		layout.addComponent(table);
@@ -178,7 +180,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		};
 
 		localeTable = table.getTable();
-		
+		localeTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		localeTable.setMultiSelect(true);
 		localeTable.setSelectable(true);
 //		layout.addComponent(table);

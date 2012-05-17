@@ -36,6 +36,7 @@ import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.container.GenericProperty;
 import de.jutzig.jabylon.ui.container.LuceneContainer;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -100,6 +101,7 @@ public class SearchResultPage implements CrumbTrail{
 				return super.getPropertyValue(rowId, colId, property);
 			}
 		};
+		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSelectable(true);
 		
 		search(searchString);

@@ -39,6 +39,7 @@ import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
+import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
@@ -62,6 +63,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 		userConfig.setMargin(true);
 		userTable = new Table("Users", getUsers());
+		userTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		userTable.setVisibleColumns(new Object[]{UsersPackage.Literals.USER__NAME});
 		userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
 		userTable.addGeneratedColumn("Roles", new ColumnGenerator() {
@@ -120,7 +122,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	private void addUserDetails() {
 		userDetails = new Section();
-		userDetails.setTitle("User: "+selectedUser.getName());
+		userDetails.setCaption("User: "+selectedUser.getName());
 		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
 		permissionSelect.setMultiSelect(true);
 		permissionSelect.setLeftColumnCaption("Available permissions");
@@ -136,7 +138,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
 		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.PERMISSION__DESCRIPTION);
 		permissionSelect.setValue(new HashSet<Permission>(selectedUser.getAllPermissions()));
-		userDetails.getBody().addComponent(permissionSelect);
+		userDetails.addComponent(permissionSelect);
 		userConfig.addComponent(userDetails);
 	}
 
