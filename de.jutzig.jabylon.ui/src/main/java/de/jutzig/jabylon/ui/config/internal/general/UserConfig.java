@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.osgi.service.prefs.Preferences;
@@ -31,7 +30,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
-import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
@@ -48,8 +46,6 @@ import de.jutzig.jabylon.users.UsersFactory;
 import de.jutzig.jabylon.users.UsersPackage;
 
 public class UserConfig extends AbstractConfigSection<Workspace> implements ConfigSection {
-	RepositoryConnector connector = MainDashboard.getCurrent().getRepositoryConnector();
-	CDOView view;
 	Table userTable = null;
 	User selectedUser = null;
 	VerticalLayout userConfig = new VerticalLayout();
@@ -59,26 +55,11 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	@SuppressWarnings("serial")
 	@Override
 	public Component createContents() {
-		initializeUserManagement();
 
 		userConfig.setMargin(true);
-		userTable = new Table("Users", getUsers());
+		userTable = new Table("Users");
 		userTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
-		userTable.setVisibleColumns(new Object[]{UsersPackage.Literals.USER__NAME});
-		userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
-		userTable.addGeneratedColumn("Roles", new ColumnGenerator() {
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return getRolesList(((User)itemId).getRoles());
-			}
 
-			public String getRolesList(EList<Role> roles) {
-				StringBuffer sb = new StringBuffer();
-				for(Role role : roles)
-					sb.append(role.getName()).append(", ");
-				return sb.toString();
-			}
-		});
 		userTable.setSizeFull();
 		userTable.setSelectable(true);
 		userTable.addListener(new ItemClickListener() {
@@ -86,8 +67,8 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 			public void itemClick(ItemClickEvent event) {
 				removeUserDetails();
 
-				selectedUser = (User)event.getItemId();
-				if(selectedUser!=null)
+				selectedUser = (User) event.getItemId();
+				if (selectedUser != null)
 					addUserDetails();
 			}
 		});
@@ -114,7 +95,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	}
 
 	private void removeUserDetails() {
-		if(userDetails==null)
+		if (userDetails == null)
 			return;
 		userConfig.removeComponent(userDetails);
 		userDetails = null;
@@ -122,7 +103,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	private void addUserDetails() {
 		userDetails = new Section();
-		userDetails.setCaption("User: "+selectedUser.getName());
+		userDetails.setCaption("User: " + selectedUser.getName());
 		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
 		permissionSelect.setMultiSelect(true);
 		permissionSelect.setLeftColumnCaption("Available permissions");
@@ -133,7 +114,8 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 				System.out.println(event.getProperty());
 			}
 		});
-		GenericEObjectContainer<Permission> ds = new GenericEObjectContainer<Permission>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
+		GenericEObjectContainer<Permission> ds = new GenericEObjectContainer<Permission>(userManagement,
+				UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
 		permissionSelect.setContainerDataSource(ds);
 		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
 		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.PERMISSION__DESCRIPTION);
@@ -156,43 +138,29 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		ok.addListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				CDOTransaction transaction = connector.openTransaction();
+				CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 				CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
-				resource.getContents().add(((BeanItem<User>)addUserForm.getItemDataSource()).getBean());
-				try {
-					transaction.commit();
-				} catch (CommitException e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				} finally {
-					transaction.close();
-					MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
-				}
+				resource.getContents().add(((BeanItem<User>) addUserForm.getItemDataSource()).getBean());
+				MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
 			}
 		});
 		layout.addComponent(ok);
 		layout.setMargin(true);
 		addUser.setContent(layout);
 		MainDashboard.getCurrent().getMainWindow().addWindow(addUser);
-}
+	}
 
 	private void deleteUser() {
-		if(selectedUser==null) {
-			MainDashboard.getCurrent().getMainWindow().showNotification("No user select", "Please select a usser", Notification.TYPE_WARNING_MESSAGE);
+		if (selectedUser == null) {
+			MainDashboard.getCurrent().getMainWindow()
+					.showNotification("No user select", "Please select a usser", Notification.TYPE_WARNING_MESSAGE);
 			return;
 		} else {
-			CDOTransaction transaction = connector.openTransaction();
+			CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 			CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
 			resource.getContents().remove(selectedUser);
-			try {
-				transaction.commit();
-				selectedUser=null;
-			} catch (CommitException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			} finally {
-				transaction.close();
-			}
+			selectedUser = null;
+
 		}
 	}
 
@@ -201,9 +169,10 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	}
 
 	private void initializeUserManagement() {
-		view = connector.openView();
+		//FIXME the config section shouldn't change things without user interaction
+		CDOView view = getDomainObject().cdoView();
 		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-		userManagement = (UserManagement)resource.getContents().get(0);
+		userManagement = (UserManagement) resource.getContents().get(0);
 
 		addAvailablePermissions();
 		Role adminRole = addOrUpdateAdminRole();
@@ -214,38 +183,27 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	private Role addOrUpdateAdminRole() {
 		Role adminRole = userManagement.findRoleByName("Administrator");
 
-		if(adminRole==null)
+		if (adminRole == null)
 			return addAdminRole();
 		else
 			return updateAdminRole(adminRole);
 	}
 
 	private Role updateAdminRole(Role adminRole) {
-		CDOTransaction transaction = connector.openTransaction();
+		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 		EList<Permission> allPermissions = getWriteableUserManagement(transaction).getPermissions();
 
-		for(Permission perm : allPermissions) {
-			if(!adminRole.getPermissions().contains(perm))
+		for (Permission perm : allPermissions) {
+			if (!adminRole.getPermissions().contains(perm))
 				adminRole.getPermissions().add(perm);
 		}
 
-		saveCommit(transaction);
 		return adminRole;
 	}
 
-	private void saveCommit(CDOTransaction transaction) {
-		try {
-			transaction.commit();
-		} catch (CommitException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		} finally {
-			transaction.close();
-		}
-	}
 
 	private Role addAdminRole() {
-		CDOTransaction transaction = connector.openTransaction();
+		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 		Role adminRole = UsersFactory.eINSTANCE.createRole();
 		adminRole.setName("Administrator");
 		EList<Permission> allPermissions = userManagement.getPermissions();
@@ -253,35 +211,34 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 			adminRole.getPermissions().add(perm);
 		}
 		getWriteableUserManagement(transaction).getRoles().add(adminRole);
-		saveCommit(transaction);
 		return adminRole;
 	}
 
 	private void addAdminUserIfMissing(Role adminRole) {
 		EList<User> users = userManagement.getUsers();
-		for(User user : users) {
-			for(Role role : user.getRoles()) {
-				if(role.equals(adminRole))
+		for (User user : users) {
+			for (Role role : user.getRoles()) {
+				if (role.equals(adminRole))
 					return;
 			}
 		}
-		CDOTransaction transaction = connector.openTransaction();
+		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
 		User admin = writeableUserManagement.findUserByName("Administrator");
 		admin.getRoles().add(adminRole);
-		saveCommit(transaction);
 	}
 
 	private void addAvailablePermissions() {
-		IConfigurationElement[] permissions = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.security.permission");
+		IConfigurationElement[] permissions = RegistryFactory.getRegistry().getConfigurationElementsFor(
+				"de.jutzig.jabylon.security.permission");
 
-		CDOTransaction transaction = connector.openTransaction();
+		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
 		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
 		EList<Permission> dbPermissions = writeableUserManagement.getPermissions();
 
 		for (IConfigurationElement config : permissions) {
 			String permissionName = config.getAttribute("name");
-			if(dbContainsPermission(dbPermissions, permissionName))
+			if (dbContainsPermission(dbPermissions, permissionName))
 				continue;
 
 			String permissionDescription = config.getAttribute("description");
@@ -290,8 +247,6 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 			perm.setDescription(permissionDescription);
 			dbPermissions.add(perm);
 		}
-
-		saveCommit(transaction);
 	}
 
 	private UserManagement getWriteableUserManagement(CDOTransaction transaction) {
@@ -300,7 +255,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	private boolean dbContainsPermission(EList<Permission> dbPermissions, String permissionName) {
 		for (Permission permission : dbPermissions) {
-			if(permission.getName().equals(permissionName))
+			if (permission.getName().equals(permissionName))
 				return true;
 		}
 		return false;
@@ -308,13 +263,28 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	@Override
 	public void commit(Preferences config) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void init(Preferences config) {
+		initializeUserManagement();
+		userTable.setContainerDataSource(getUsers());
+		userTable.setVisibleColumns(new Object[] { UsersPackage.Literals.USER__NAME });
+		userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
+		userTable.addGeneratedColumn("Roles", new ColumnGenerator() {
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				return getRolesList(((User) itemId).getRoles());
+			}
 
+			public String getRolesList(EList<Role> roles) {
+				StringBuffer sb = new StringBuffer();
+				for (Role role : roles)
+					sb.append(role.getName()).append(", ");
+				return sb.toString();
+			}
+		});
 	}
 
 }
