@@ -73,7 +73,9 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		Section section = new Section();
 		section.setCaption("Translatable Files");
 		final Table table = new Table();
-		
+        table.setColumnReorderingAllowed(true);
+        table.setColumnCollapsingAllowed(true);
+
 		TextField filterBox = new TextField();
 		section.addComponent(filterBox);
 		filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
@@ -127,10 +129,16 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			}
 		});
 
+		
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
 		table.setColumnWidth("fuzzy", 110);
 
+		table.setColumnAlignment("total", Table.ALIGN_CENTER);
+		table.setColumnAlignment("translated", Table.ALIGN_CENTER);
+		table.setColumnAlignment("fuzzy", Table.ALIGN_CENTER);
+		table.setColumnAlignment("progress", Table.ALIGN_CENTER);
+		
 		// table.setVisibleColumns(new Object[]{});
 		// table.setColumnWidth(locale,400);
 		for (Entry<PropertyFileDescriptor, PropertyFileDescriptor> entry : masterToTransation.entrySet()) {
