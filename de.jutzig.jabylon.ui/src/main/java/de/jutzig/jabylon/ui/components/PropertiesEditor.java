@@ -374,6 +374,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public void append(String suggestion) {
+		setDirty(true);
 		String value = (String) translated.getValue();
 		if(value==null)
 			translated.setValue(suggestion);
@@ -389,6 +390,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public void replace(String suggestion) {
+		setDirty(true);
 		translated.setValue(suggestion);
 		
 	}
