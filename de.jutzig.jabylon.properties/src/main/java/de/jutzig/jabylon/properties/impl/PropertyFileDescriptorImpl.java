@@ -6,20 +6,27 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import de.jutzig.jabylon.properties.Comment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Review;
+import java.util.Collection;
 import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 
 /**
@@ -34,6 +41,9 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getProjectLocale <em>Project Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getKeys <em>Keys</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getReviews <em>Reviews</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLastModified <em>Last Modified</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLastModification <em>Last Modification</em>}</li>
  * </ul>
  * </p>
  *
@@ -69,6 +79,16 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * @ordered
 	 */
 	protected static final int KEYS_EDEFAULT = 0;
+
+	/**
+	 * The default value of the '{@link #getLastModified() <em>Last Modified</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLastModified()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final long LAST_MODIFIED_EDEFAULT = 0L;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -204,6 +224,20 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return ((InternalEList<?>)getReviews()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PropertyFileDescriptor getMaster() {
 		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, true, true);
 	}
@@ -256,6 +290,52 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<Review> getReviews() {
+		return (EList<Review>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__REVIEWS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public long getLastModified() {
+		return (Long)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastModified(long newLastModified) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, newLastModified);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Comment getLastModification() {
+		return (Comment)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastModification(Comment newLastModification) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, newLastModification);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -286,6 +366,12 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return getProjectLocale();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return getReviews();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				return getLastModified();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				return getLastModification();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -295,6 +381,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -312,6 +399,16 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys((Integer)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				getReviews().clear();
+				getReviews().addAll((Collection<? extends Review>)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				setLastModified((Long)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				setLastModification((Comment)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -340,6 +437,15 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				setKeys(KEYS_EDEFAULT);
 				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				getReviews().clear();
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				setLastModified(LAST_MODIFIED_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				setLastModification((Comment)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -362,6 +468,12 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return getProjectLocale() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
 				return getKeys() != KEYS_EDEFAULT;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return !getReviews().isEmpty();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				return getLastModified() != LAST_MODIFIED_EDEFAULT;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				return getLastModification() != null;
 		}
 		return super.eIsSet(featureID);
 	}

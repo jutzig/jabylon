@@ -36,6 +36,7 @@ import de.jutzig.jabylon.properties.Workspace;
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getRepositoryURI <em>Repository URI</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getPropertyType <em>Property Type</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#getTeamProvider <em>Team Provider</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectImpl#isTerminology <em>Terminology</em>}</li>
  * </ul>
  * </p>
  *
@@ -84,6 +85,17 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	 * @ordered
 	 */
 	protected static final String TEAM_PROVIDER_EDEFAULT = null;
+
+
+	/**
+	 * The default value of the '{@link #isTerminology() <em>Terminology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isTerminology()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean TERMINOLOGY_EDEFAULT = false;
 
 
 	/**
@@ -246,6 +258,24 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isTerminology() {
+		return (Boolean)eDynamicGet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTerminology(boolean newTerminology) {
+		eDynamicSet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, newTerminology);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
@@ -344,6 +374,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getPropertyType();
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				return getTeamProvider();
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				return isTerminology();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -379,6 +411,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				setTeamProvider((String)newValue);
 				return;
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				setTerminology((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -412,6 +447,9 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				setTeamProvider(TEAM_PROVIDER_EDEFAULT);
 				return;
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				setTerminology(TERMINOLOGY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -438,6 +476,8 @@ public class ProjectImpl extends ResolvableImpl implements Project {
 				return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				return isTerminology() != TERMINOLOGY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

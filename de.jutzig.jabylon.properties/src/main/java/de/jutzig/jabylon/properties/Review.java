@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package de.jutzig.jabylon.review;
+package de.jutzig.jabylon.properties;
 
 import org.eclipse.emf.cdo.CDOObject;
 
@@ -16,17 +16,17 @@ import org.eclipse.emf.cdo.CDOObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.review.Review#getMessage <em>Message</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getUser <em>User</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getComments <em>Comments</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getState <em>State</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getReviewType <em>Review Type</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getKey <em>Key</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.Review#getSeverity <em>Severity</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getMessage <em>Message</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getUser <em>User</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getState <em>State</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getReviewType <em>Review Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getKey <em>Key</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Review#getSeverity <em>Severity</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.jutzig.jabylon.review.ReviewPackage#getReview()
+ * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview()
  * @model
  * @extends CDOObject
  * @generated
@@ -42,14 +42,14 @@ public interface Review extends CDOObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Message</em>' attribute.
 	 * @see #setMessage(String)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_Message()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_Message()
 	 * @model
 	 * @generated
 	 */
 	String getMessage();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getMessage <em>Message</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getMessage <em>Message</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Message</em>' attribute.
@@ -68,14 +68,14 @@ public interface Review extends CDOObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>User</em>' attribute.
 	 * @see #setUser(String)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_User()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_User()
 	 * @model
 	 * @generated
 	 */
 	String getUser();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getUser <em>User</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getUser <em>User</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>User</em>' attribute.
@@ -94,14 +94,14 @@ public interface Review extends CDOObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Comments</em>' containment reference.
 	 * @see #setComments(Comment)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_Comments()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_Comments()
 	 * @model containment="true"
 	 * @generated
 	 */
 	Comment getComments();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getComments <em>Comments</em>}' containment reference.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Comments</em>' containment reference.
@@ -112,7 +112,7 @@ public interface Review extends CDOObject {
 
 	/**
 	 * Returns the value of the '<em><b>State</b></em>' attribute.
-	 * The literals are from the enumeration {@link de.jutzig.jabylon.review.ReviewState}.
+	 * The literals are from the enumeration {@link de.jutzig.jabylon.properties.ReviewState}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>State</em>' attribute isn't clear,
@@ -120,20 +120,20 @@ public interface Review extends CDOObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>State</em>' attribute.
-	 * @see de.jutzig.jabylon.review.ReviewState
+	 * @see de.jutzig.jabylon.properties.ReviewState
 	 * @see #setState(ReviewState)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_State()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_State()
 	 * @model
 	 * @generated
 	 */
 	ReviewState getState();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getState <em>State</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getState <em>State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>State</em>' attribute.
-	 * @see de.jutzig.jabylon.review.ReviewState
+	 * @see de.jutzig.jabylon.properties.ReviewState
 	 * @see #getState()
 	 * @generated
 	 */
@@ -149,14 +149,14 @@ public interface Review extends CDOObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Review Type</em>' attribute.
 	 * @see #setReviewType(String)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_ReviewType()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_ReviewType()
 	 * @model
 	 * @generated
 	 */
 	String getReviewType();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getReviewType <em>Review Type</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getReviewType <em>Review Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Review Type</em>' attribute.
@@ -175,14 +175,14 @@ public interface Review extends CDOObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Key</em>' attribute.
 	 * @see #setKey(String)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_Key()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_Key()
 	 * @model
 	 * @generated
 	 */
 	String getKey();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getKey <em>Key</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getKey <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Key</em>' attribute.
@@ -193,7 +193,7 @@ public interface Review extends CDOObject {
 
 	/**
 	 * Returns the value of the '<em><b>Severity</b></em>' attribute.
-	 * The literals are from the enumeration {@link de.jutzig.jabylon.review.Severity}.
+	 * The literals are from the enumeration {@link de.jutzig.jabylon.properties.Severity}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Severity</em>' attribute isn't clear,
@@ -201,20 +201,20 @@ public interface Review extends CDOObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Severity</em>' attribute.
-	 * @see de.jutzig.jabylon.review.Severity
+	 * @see de.jutzig.jabylon.properties.Severity
 	 * @see #setSeverity(Severity)
-	 * @see de.jutzig.jabylon.review.ReviewPackage#getReview_Severity()
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_Severity()
 	 * @model
 	 * @generated
 	 */
 	Severity getSeverity();
 
 	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.review.Review#getSeverity <em>Severity</em>}' attribute.
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getSeverity <em>Severity</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Severity</em>' attribute.
-	 * @see de.jutzig.jabylon.review.Severity
+	 * @see de.jutzig.jabylon.properties.Severity
 	 * @see #getSeverity()
 	 * @generated
 	 */

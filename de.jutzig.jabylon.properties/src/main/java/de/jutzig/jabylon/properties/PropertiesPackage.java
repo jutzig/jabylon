@@ -228,13 +228,40 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__KEYS = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Reviews</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__REVIEWS = RESOLVABLE_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Last Modified</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED = RESOLVABLE_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Last Modification</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = RESOLVABLE_FEATURE_COUNT + 7;
+
+	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -319,13 +346,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__TEAM_PROVIDER = RESOLVABLE_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Terminology</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__TERMINOLOGY = RESOLVABLE_FEATURE_COUNT + 7;
+
+	/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 7;
+	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -566,6 +602,125 @@ public interface PropertiesPackage extends EPackage {
 	int SCAN_CONFIGURATION_FEATURE_COUNT = 5;
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ReviewImpl <em>Review</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ReviewImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReview()
+	 * @generated
+	 */
+	int REVIEW = 9;
+
+	/**
+	 * The feature id for the '<em><b>Message</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__MESSAGE = 0;
+
+	/**
+	 * The feature id for the '<em><b>User</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__USER = 1;
+
+	/**
+	 * The feature id for the '<em><b>Comments</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__COMMENTS = 2;
+
+	/**
+	 * The feature id for the '<em><b>State</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__STATE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Review Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__REVIEW_TYPE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__KEY = 5;
+
+	/**
+	 * The feature id for the '<em><b>Severity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW__SEVERITY = 6;
+
+	/**
+	 * The number of structural features of the '<em>Review</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REVIEW_FEATURE_COUNT = 7;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.CommentImpl <em>Comment</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.CommentImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getComment()
+	 * @generated
+	 */
+	int COMMENT = 10;
+
+	/**
+	 * The feature id for the '<em><b>User</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMENT__USER = 0;
+
+	/**
+	 * The feature id for the '<em><b>Message</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMENT__MESSAGE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Comment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMENT_FEATURE_COUNT = 2;
+
+	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -573,7 +728,27 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
 	 * @generated
 	 */
-	int PROPERTY_TYPE = 9;
+	int PROPERTY_TYPE = 11;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.Severity <em>Severity</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.Severity
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
+	 * @generated
+	 */
+	int SEVERITY = 12;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.ReviewState <em>Review State</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.ReviewState
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
+	 * @generated
+	 */
+	int REVIEW_STATE = 13;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -583,7 +758,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 10;
+	int LOCALE = 14;
 
 
 	/**
@@ -594,7 +769,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 11;
+	int URI = 15;
 
 
 	/**
@@ -727,6 +902,39 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getPropertyFileDescriptor_Keys();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getReviews <em>Reviews</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Reviews</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getReviews()
+	 * @see #getPropertyFileDescriptor()
+	 * @generated
+	 */
+	EReference getPropertyFileDescriptor_Reviews();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModified <em>Last Modified</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Modified</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModified()
+	 * @see #getPropertyFileDescriptor()
+	 * @generated
+	 */
+	EAttribute getPropertyFileDescriptor_LastModified();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModification <em>Last Modification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Last Modification</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModification()
+	 * @see #getPropertyFileDescriptor()
+	 * @generated
+	 */
+	EReference getPropertyFileDescriptor_LastModification();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Project <em>Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -812,6 +1020,17 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getProject_TeamProvider();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#isTerminology <em>Terminology</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Terminology</em>'.
+	 * @see de.jutzig.jabylon.properties.Project#isTerminology()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EAttribute getProject_Terminology();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
@@ -1040,6 +1259,125 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getScanConfiguration_Exclude();
 
 	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Review <em>Review</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Review</em>'.
+	 * @see de.jutzig.jabylon.properties.Review
+	 * @generated
+	 */
+	EClass getReview();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getMessage <em>Message</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Message</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getMessage()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_Message();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getUser <em>User</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>User</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getUser()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_User();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Comments</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getComments()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EReference getReview_Comments();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getState <em>State</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>State</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getState()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_State();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getReviewType <em>Review Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Review Type</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getReviewType()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_ReviewType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getKey <em>Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getKey()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_Key();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Review#getSeverity <em>Severity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Severity</em>'.
+	 * @see de.jutzig.jabylon.properties.Review#getSeverity()
+	 * @see #getReview()
+	 * @generated
+	 */
+	EAttribute getReview_Severity();
+
+	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Comment <em>Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Comment</em>'.
+	 * @see de.jutzig.jabylon.properties.Comment
+	 * @generated
+	 */
+	EClass getComment();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Comment#getUser <em>User</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>User</em>'.
+	 * @see de.jutzig.jabylon.properties.Comment#getUser()
+	 * @see #getComment()
+	 * @generated
+	 */
+	EAttribute getComment_User();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Comment#getMessage <em>Message</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Message</em>'.
+	 * @see de.jutzig.jabylon.properties.Comment#getMessage()
+	 * @see #getComment()
+	 * @generated
+	 */
+	EAttribute getComment_Message();
+
+	/**
 	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1048,6 +1386,26 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getPropertyType();
+
+	/**
+	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.Severity <em>Severity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Severity</em>'.
+	 * @see de.jutzig.jabylon.properties.Severity
+	 * @generated
+	 */
+	EEnum getSeverity();
+
+	/**
+	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.ReviewState <em>Review State</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Review State</em>'.
+	 * @see de.jutzig.jabylon.properties.ReviewState
+	 * @generated
+	 */
+	EEnum getReviewState();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -1196,6 +1554,30 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROPERTY_FILE_DESCRIPTOR__KEYS = eINSTANCE.getPropertyFileDescriptor_Keys();
 
 		/**
+		 * The meta object literal for the '<em><b>Reviews</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY_FILE_DESCRIPTOR__REVIEWS = eINSTANCE.getPropertyFileDescriptor_Reviews();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Modified</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED = eINSTANCE.getPropertyFileDescriptor_LastModified();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Modification</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = eINSTANCE.getPropertyFileDescriptor_LastModification();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1260,6 +1642,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROJECT__TEAM_PROVIDER = eINSTANCE.getProject_TeamProvider();
+
+		/**
+		 * The meta object literal for the '<em><b>Terminology</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT__TERMINOLOGY = eINSTANCE.getProject_Terminology();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -1440,6 +1830,98 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute SCAN_CONFIGURATION__EXCLUDE = eINSTANCE.getScanConfiguration_Exclude();
 
 		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ReviewImpl <em>Review</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ReviewImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReview()
+		 * @generated
+		 */
+		EClass REVIEW = eINSTANCE.getReview();
+
+		/**
+		 * The meta object literal for the '<em><b>Message</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__MESSAGE = eINSTANCE.getReview_Message();
+
+		/**
+		 * The meta object literal for the '<em><b>User</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__USER = eINSTANCE.getReview_User();
+
+		/**
+		 * The meta object literal for the '<em><b>Comments</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REVIEW__COMMENTS = eINSTANCE.getReview_Comments();
+
+		/**
+		 * The meta object literal for the '<em><b>State</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__STATE = eINSTANCE.getReview_State();
+
+		/**
+		 * The meta object literal for the '<em><b>Review Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__REVIEW_TYPE = eINSTANCE.getReview_ReviewType();
+
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__KEY = eINSTANCE.getReview_Key();
+
+		/**
+		 * The meta object literal for the '<em><b>Severity</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REVIEW__SEVERITY = eINSTANCE.getReview_Severity();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.CommentImpl <em>Comment</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.CommentImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getComment()
+		 * @generated
+		 */
+		EClass COMMENT = eINSTANCE.getComment();
+
+		/**
+		 * The meta object literal for the '<em><b>User</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMMENT__USER = eINSTANCE.getComment_User();
+
+		/**
+		 * The meta object literal for the '<em><b>Message</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMMENT__MESSAGE = eINSTANCE.getComment_Message();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1448,6 +1930,26 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum PROPERTY_TYPE = eINSTANCE.getPropertyType();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.Severity <em>Severity</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.Severity
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
+		 * @generated
+		 */
+		EEnum SEVERITY = eINSTANCE.getSeverity();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.ReviewState <em>Review State</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.ReviewState
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
+		 * @generated
+		 */
+		EEnum REVIEW_STATE = eINSTANCE.getReviewState();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

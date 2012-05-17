@@ -8,6 +8,7 @@ package de.jutzig.jabylon.properties;
 
 import java.util.Locale;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.cdo.CDOObject;
 
@@ -24,6 +25,9 @@ import org.eclipse.emf.cdo.CDOObject;
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getProjectLocale <em>Project Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getKeys <em>Keys</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getReviews <em>Reviews</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModified <em>Last Modified</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModification <em>Last Modification</em>}</li>
  * </ul>
  * </p>
  *
@@ -192,5 +196,73 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @generated
 	 */
 	void setKeys(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Reviews</b></em>' containment reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.Review}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Reviews</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Reviews</em>' containment reference list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Reviews()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Review> getReviews();
+
+	/**
+	 * Returns the value of the '<em><b>Last Modified</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Modified</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Modified</em>' attribute.
+	 * @see #setLastModified(long)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_LastModified()
+	 * @model
+	 * @generated
+	 */
+	long getLastModified();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModified <em>Last Modified</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Modified</em>' attribute.
+	 * @see #getLastModified()
+	 * @generated
+	 */
+	void setLastModified(long value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Modification</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Modification</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Modification</em>' reference.
+	 * @see #setLastModification(Comment)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_LastModification()
+	 * @model resolveProxies="false"
+	 * @generated
+	 */
+	Comment getLastModification();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModification <em>Last Modification</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Modification</em>' reference.
+	 * @see #getLastModification()
+	 * @generated
+	 */
+	void setLastModification(Comment value);
 
 } // PropertyFileDescriptor

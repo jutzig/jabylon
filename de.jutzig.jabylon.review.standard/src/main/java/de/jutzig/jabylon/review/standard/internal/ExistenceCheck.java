@@ -5,11 +5,11 @@ package de.jutzig.jabylon.review.standard.internal;
 
 import java.text.MessageFormat;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.review.ReviewFactory;
-import de.jutzig.jabylon.review.Severity;
+import de.jutzig.jabylon.properties.Review;
+import de.jutzig.jabylon.properties.Severity;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
@@ -35,7 +35,7 @@ public class ExistenceCheck implements ReviewParticipant {
 		boolean slaveExists = exists(slave);
 		if(masterExists!=slaveExists)
 		{
-			Review review = ReviewFactory.eINSTANCE.createReview();
+			Review review = PropertiesFactory.eINSTANCE.createReview();
 			String message = "";
 			if(masterExists)
 			{

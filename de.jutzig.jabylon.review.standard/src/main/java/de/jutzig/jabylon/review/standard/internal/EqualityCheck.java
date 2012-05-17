@@ -3,11 +3,11 @@
  */
 package de.jutzig.jabylon.review.standard.internal;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.review.ReviewFactory;
-import de.jutzig.jabylon.review.Severity;
+import de.jutzig.jabylon.properties.Review;
+import de.jutzig.jabylon.properties.Severity;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
@@ -31,7 +31,7 @@ public class EqualityCheck implements ReviewParticipant {
 		{
 			if(masterValue.equals(slaveValue))
 			{
-				Review review = ReviewFactory.eINSTANCE.createReview();
+				Review review = PropertiesFactory.eINSTANCE.createReview();
 				review.setMessage("Template and translated string are identical");
 				review.setReviewType("EqualityCheck");
 				review.setSeverity(Severity.WARNING);

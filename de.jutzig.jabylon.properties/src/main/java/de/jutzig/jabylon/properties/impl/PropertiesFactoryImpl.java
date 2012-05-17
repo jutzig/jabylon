@@ -79,6 +79,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.PROJECT_LOCALE: return (EObject)createProjectLocale();
 			case PropertiesPackage.WORKSPACE: return (EObject)createWorkspace();
 			case PropertiesPackage.SCAN_CONFIGURATION: return (EObject)createScanConfiguration();
+			case PropertiesPackage.REVIEW: return (EObject)createReview();
+			case PropertiesPackage.COMMENT: return (EObject)createComment();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -94,6 +96,10 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 		switch (eDataType.getClassifierID()) {
 			case PropertiesPackage.PROPERTY_TYPE:
 				return createPropertyTypeFromString(eDataType, initialValue);
+			case PropertiesPackage.SEVERITY:
+				return createSeverityFromString(eDataType, initialValue);
+			case PropertiesPackage.REVIEW_STATE:
+				return createReviewStateFromString(eDataType, initialValue);
 			case PropertiesPackage.LOCALE:
 				return createLocaleFromString(eDataType, initialValue);
 			case PropertiesPackage.URI:
@@ -113,6 +119,10 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 		switch (eDataType.getClassifierID()) {
 			case PropertiesPackage.PROPERTY_TYPE:
 				return convertPropertyTypeToString(eDataType, instanceValue);
+			case PropertiesPackage.SEVERITY:
+				return convertSeverityToString(eDataType, instanceValue);
+			case PropertiesPackage.REVIEW_STATE:
+				return convertReviewStateToString(eDataType, instanceValue);
 			case PropertiesPackage.LOCALE:
 				return convertLocaleToString(eDataType, instanceValue);
 			case PropertiesPackage.URI:
@@ -207,6 +217,26 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Review createReview() {
+		ReviewImpl review = new ReviewImpl();
+		return review;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Comment createComment() {
+		CommentImpl comment = new CommentImpl();
+		return comment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PropertyType createPropertyTypeFromString(EDataType eDataType, String initialValue) {
 		PropertyType result = PropertyType.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -219,6 +249,46 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * @generated
 	 */
 	public String convertPropertyTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Severity createSeverityFromString(EDataType eDataType, String initialValue) {
+		Severity result = Severity.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertSeverityToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ReviewState createReviewStateFromString(EDataType eDataType, String initialValue) {
+		ReviewState result = ReviewState.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertReviewStateToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

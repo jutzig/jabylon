@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.Project#isTerminology <em>Terminology</em>}</li>
  * </ul>
  * </p>
  *
@@ -210,6 +211,32 @@ public interface Project extends Resolvable {
 	 * @generated
 	 */
 	void setTeamProvider(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Terminology</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Terminology</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Terminology</em>' attribute.
+	 * @see #setTerminology(boolean)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Terminology()
+	 * @model
+	 * @generated
+	 */
+	boolean isTerminology();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#isTerminology <em>Terminology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Terminology</em>' attribute.
+	 * @see #isTerminology()
+	 * @generated
+	 */
+	void setTerminology(boolean value);
 
 	/**
 	 * <!-- begin-user-doc -->

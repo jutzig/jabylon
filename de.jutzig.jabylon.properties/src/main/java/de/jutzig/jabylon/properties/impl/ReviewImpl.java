@@ -4,20 +4,18 @@
  *
  * $Id$
  */
-package de.jutzig.jabylon.review.impl;
+package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.review.Comment;
-import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.review.ReviewPackage;
-import de.jutzig.jabylon.review.ReviewState;
-
-import de.jutzig.jabylon.review.Severity;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.Comment;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Review;
+import de.jutzig.jabylon.properties.ReviewState;
+import de.jutzig.jabylon.properties.Severity;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,13 +24,13 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getMessage <em>Message</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getUser <em>User</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getComments <em>Comments</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getState <em>State</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getReviewType <em>Review Type</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getKey <em>Key</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.ReviewImpl#getSeverity <em>Severity</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getMessage <em>Message</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getUser <em>User</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getComments <em>Comments</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getState <em>State</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getReviewType <em>Review Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getKey <em>Key</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ReviewImpl#getSeverity <em>Severity</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,7 +113,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ReviewPackage.Literals.REVIEW;
+		return PropertiesPackage.Literals.REVIEW;
 	}
 
 	/**
@@ -134,7 +132,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public String getMessage() {
-		return (String)eDynamicGet(ReviewPackage.REVIEW__MESSAGE, ReviewPackage.Literals.REVIEW__MESSAGE, true, true);
+		return (String)eDynamicGet(PropertiesPackage.REVIEW__MESSAGE, PropertiesPackage.Literals.REVIEW__MESSAGE, true, true);
 	}
 
 	/**
@@ -143,7 +141,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setMessage(String newMessage) {
-		eDynamicSet(ReviewPackage.REVIEW__MESSAGE, ReviewPackage.Literals.REVIEW__MESSAGE, newMessage);
+		eDynamicSet(PropertiesPackage.REVIEW__MESSAGE, PropertiesPackage.Literals.REVIEW__MESSAGE, newMessage);
 	}
 
 	/**
@@ -152,7 +150,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public String getUser() {
-		return (String)eDynamicGet(ReviewPackage.REVIEW__USER, ReviewPackage.Literals.REVIEW__USER, true, true);
+		return (String)eDynamicGet(PropertiesPackage.REVIEW__USER, PropertiesPackage.Literals.REVIEW__USER, true, true);
 	}
 
 	/**
@@ -161,7 +159,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setUser(String newUser) {
-		eDynamicSet(ReviewPackage.REVIEW__USER, ReviewPackage.Literals.REVIEW__USER, newUser);
+		eDynamicSet(PropertiesPackage.REVIEW__USER, PropertiesPackage.Literals.REVIEW__USER, newUser);
 	}
 
 	/**
@@ -170,7 +168,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public Comment getComments() {
-		return (Comment)eDynamicGet(ReviewPackage.REVIEW__COMMENTS, ReviewPackage.Literals.REVIEW__COMMENTS, true, true);
+		return (Comment)eDynamicGet(PropertiesPackage.REVIEW__COMMENTS, PropertiesPackage.Literals.REVIEW__COMMENTS, true, true);
 	}
 
 	/**
@@ -179,7 +177,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public NotificationChain basicSetComments(Comment newComments, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newComments, ReviewPackage.REVIEW__COMMENTS, msgs);
+		msgs = eDynamicInverseAdd((InternalEObject)newComments, PropertiesPackage.REVIEW__COMMENTS, msgs);
 		return msgs;
 	}
 
@@ -189,7 +187,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setComments(Comment newComments) {
-		eDynamicSet(ReviewPackage.REVIEW__COMMENTS, ReviewPackage.Literals.REVIEW__COMMENTS, newComments);
+		eDynamicSet(PropertiesPackage.REVIEW__COMMENTS, PropertiesPackage.Literals.REVIEW__COMMENTS, newComments);
 	}
 
 	/**
@@ -198,7 +196,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public ReviewState getState() {
-		return (ReviewState)eDynamicGet(ReviewPackage.REVIEW__STATE, ReviewPackage.Literals.REVIEW__STATE, true, true);
+		return (ReviewState)eDynamicGet(PropertiesPackage.REVIEW__STATE, PropertiesPackage.Literals.REVIEW__STATE, true, true);
 	}
 
 	/**
@@ -207,7 +205,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setState(ReviewState newState) {
-		eDynamicSet(ReviewPackage.REVIEW__STATE, ReviewPackage.Literals.REVIEW__STATE, newState);
+		eDynamicSet(PropertiesPackage.REVIEW__STATE, PropertiesPackage.Literals.REVIEW__STATE, newState);
 	}
 
 	/**
@@ -216,7 +214,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public String getReviewType() {
-		return (String)eDynamicGet(ReviewPackage.REVIEW__REVIEW_TYPE, ReviewPackage.Literals.REVIEW__REVIEW_TYPE, true, true);
+		return (String)eDynamicGet(PropertiesPackage.REVIEW__REVIEW_TYPE, PropertiesPackage.Literals.REVIEW__REVIEW_TYPE, true, true);
 	}
 
 	/**
@@ -225,7 +223,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setReviewType(String newReviewType) {
-		eDynamicSet(ReviewPackage.REVIEW__REVIEW_TYPE, ReviewPackage.Literals.REVIEW__REVIEW_TYPE, newReviewType);
+		eDynamicSet(PropertiesPackage.REVIEW__REVIEW_TYPE, PropertiesPackage.Literals.REVIEW__REVIEW_TYPE, newReviewType);
 	}
 
 	/**
@@ -234,7 +232,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public String getKey() {
-		return (String)eDynamicGet(ReviewPackage.REVIEW__KEY, ReviewPackage.Literals.REVIEW__KEY, true, true);
+		return (String)eDynamicGet(PropertiesPackage.REVIEW__KEY, PropertiesPackage.Literals.REVIEW__KEY, true, true);
 	}
 
 	/**
@@ -243,7 +241,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setKey(String newKey) {
-		eDynamicSet(ReviewPackage.REVIEW__KEY, ReviewPackage.Literals.REVIEW__KEY, newKey);
+		eDynamicSet(PropertiesPackage.REVIEW__KEY, PropertiesPackage.Literals.REVIEW__KEY, newKey);
 	}
 
 	/**
@@ -252,7 +250,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public Severity getSeverity() {
-		return (Severity)eDynamicGet(ReviewPackage.REVIEW__SEVERITY, ReviewPackage.Literals.REVIEW__SEVERITY, true, true);
+		return (Severity)eDynamicGet(PropertiesPackage.REVIEW__SEVERITY, PropertiesPackage.Literals.REVIEW__SEVERITY, true, true);
 	}
 
 	/**
@@ -261,7 +259,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * @generated
 	 */
 	public void setSeverity(Severity newSeverity) {
-		eDynamicSet(ReviewPackage.REVIEW__SEVERITY, ReviewPackage.Literals.REVIEW__SEVERITY, newSeverity);
+		eDynamicSet(PropertiesPackage.REVIEW__SEVERITY, PropertiesPackage.Literals.REVIEW__SEVERITY, newSeverity);
 	}
 
 	/**
@@ -272,7 +270,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ReviewPackage.REVIEW__COMMENTS:
+			case PropertiesPackage.REVIEW__COMMENTS:
 				return basicSetComments(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -286,19 +284,19 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ReviewPackage.REVIEW__MESSAGE:
+			case PropertiesPackage.REVIEW__MESSAGE:
 				return getMessage();
-			case ReviewPackage.REVIEW__USER:
+			case PropertiesPackage.REVIEW__USER:
 				return getUser();
-			case ReviewPackage.REVIEW__COMMENTS:
+			case PropertiesPackage.REVIEW__COMMENTS:
 				return getComments();
-			case ReviewPackage.REVIEW__STATE:
+			case PropertiesPackage.REVIEW__STATE:
 				return getState();
-			case ReviewPackage.REVIEW__REVIEW_TYPE:
+			case PropertiesPackage.REVIEW__REVIEW_TYPE:
 				return getReviewType();
-			case ReviewPackage.REVIEW__KEY:
+			case PropertiesPackage.REVIEW__KEY:
 				return getKey();
-			case ReviewPackage.REVIEW__SEVERITY:
+			case PropertiesPackage.REVIEW__SEVERITY:
 				return getSeverity();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -312,25 +310,25 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ReviewPackage.REVIEW__MESSAGE:
+			case PropertiesPackage.REVIEW__MESSAGE:
 				setMessage((String)newValue);
 				return;
-			case ReviewPackage.REVIEW__USER:
+			case PropertiesPackage.REVIEW__USER:
 				setUser((String)newValue);
 				return;
-			case ReviewPackage.REVIEW__COMMENTS:
+			case PropertiesPackage.REVIEW__COMMENTS:
 				setComments((Comment)newValue);
 				return;
-			case ReviewPackage.REVIEW__STATE:
+			case PropertiesPackage.REVIEW__STATE:
 				setState((ReviewState)newValue);
 				return;
-			case ReviewPackage.REVIEW__REVIEW_TYPE:
+			case PropertiesPackage.REVIEW__REVIEW_TYPE:
 				setReviewType((String)newValue);
 				return;
-			case ReviewPackage.REVIEW__KEY:
+			case PropertiesPackage.REVIEW__KEY:
 				setKey((String)newValue);
 				return;
-			case ReviewPackage.REVIEW__SEVERITY:
+			case PropertiesPackage.REVIEW__SEVERITY:
 				setSeverity((Severity)newValue);
 				return;
 		}
@@ -345,25 +343,25 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ReviewPackage.REVIEW__MESSAGE:
+			case PropertiesPackage.REVIEW__MESSAGE:
 				setMessage(MESSAGE_EDEFAULT);
 				return;
-			case ReviewPackage.REVIEW__USER:
+			case PropertiesPackage.REVIEW__USER:
 				setUser(USER_EDEFAULT);
 				return;
-			case ReviewPackage.REVIEW__COMMENTS:
+			case PropertiesPackage.REVIEW__COMMENTS:
 				setComments((Comment)null);
 				return;
-			case ReviewPackage.REVIEW__STATE:
+			case PropertiesPackage.REVIEW__STATE:
 				setState(STATE_EDEFAULT);
 				return;
-			case ReviewPackage.REVIEW__REVIEW_TYPE:
+			case PropertiesPackage.REVIEW__REVIEW_TYPE:
 				setReviewType(REVIEW_TYPE_EDEFAULT);
 				return;
-			case ReviewPackage.REVIEW__KEY:
+			case PropertiesPackage.REVIEW__KEY:
 				setKey(KEY_EDEFAULT);
 				return;
-			case ReviewPackage.REVIEW__SEVERITY:
+			case PropertiesPackage.REVIEW__SEVERITY:
 				setSeverity(SEVERITY_EDEFAULT);
 				return;
 		}
@@ -378,19 +376,19 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ReviewPackage.REVIEW__MESSAGE:
+			case PropertiesPackage.REVIEW__MESSAGE:
 				return MESSAGE_EDEFAULT == null ? getMessage() != null : !MESSAGE_EDEFAULT.equals(getMessage());
-			case ReviewPackage.REVIEW__USER:
+			case PropertiesPackage.REVIEW__USER:
 				return USER_EDEFAULT == null ? getUser() != null : !USER_EDEFAULT.equals(getUser());
-			case ReviewPackage.REVIEW__COMMENTS:
+			case PropertiesPackage.REVIEW__COMMENTS:
 				return getComments() != null;
-			case ReviewPackage.REVIEW__STATE:
+			case PropertiesPackage.REVIEW__STATE:
 				return getState() != STATE_EDEFAULT;
-			case ReviewPackage.REVIEW__REVIEW_TYPE:
+			case PropertiesPackage.REVIEW__REVIEW_TYPE:
 				return REVIEW_TYPE_EDEFAULT == null ? getReviewType() != null : !REVIEW_TYPE_EDEFAULT.equals(getReviewType());
-			case ReviewPackage.REVIEW__KEY:
+			case PropertiesPackage.REVIEW__KEY:
 				return KEY_EDEFAULT == null ? getKey() != null : !KEY_EDEFAULT.equals(getKey());
-			case ReviewPackage.REVIEW__SEVERITY:
+			case PropertiesPackage.REVIEW__SEVERITY:
 				return getSeverity() != SEVERITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

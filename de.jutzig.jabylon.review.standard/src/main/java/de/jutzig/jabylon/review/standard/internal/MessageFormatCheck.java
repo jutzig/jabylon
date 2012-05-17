@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
-import de.jutzig.jabylon.review.Review;
-import de.jutzig.jabylon.review.ReviewFactory;
-import de.jutzig.jabylon.review.Severity;
+import de.jutzig.jabylon.properties.Review;
+import de.jutzig.jabylon.properties.Severity;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
@@ -48,7 +48,7 @@ public class MessageFormatCheck implements ReviewParticipant {
 			String pattern = slaveMatcher.group(1);
 			if(!masterPatterns.remove(pattern))
 			{
-				Review review = ReviewFactory.eINSTANCE.createReview();
+				Review review = PropertiesFactory.eINSTANCE.createReview();
 				String message = "Translation contains message format ''{0}'' which is not present in the template language";
 				review.setMessage(MessageFormat.format(message, pattern));
 				review.setUser("Message Format Check");
@@ -59,7 +59,7 @@ public class MessageFormatCheck implements ReviewParticipant {
 		}
 		if(!masterPatterns.isEmpty())
 		{
-			Review review = ReviewFactory.eINSTANCE.createReview();
+			Review review = PropertiesFactory.eINSTANCE.createReview();
 			String message = "The template language contains message format ''{0}'' which is not referenced in the translation";
 			review.setMessage(MessageFormat.format(message, masterPatterns.iterator().next()));
 			review.setUser("Jabylon");

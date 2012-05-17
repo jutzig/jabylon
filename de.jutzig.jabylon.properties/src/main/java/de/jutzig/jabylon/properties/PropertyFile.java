@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties;
 
+import java.util.Map;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 
@@ -50,5 +51,13 @@ public interface PropertyFile extends CDOObject {
 	 * @generated
 	 */
 	Property getProperty(String key);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Map<String, Property> asMap();
 
 } // PropertyFile

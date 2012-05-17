@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package de.jutzig.jabylon.review;
+package de.jutzig.jabylon.properties;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,145 +14,119 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>State</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Severity</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see de.jutzig.jabylon.review.ReviewPackage#getReviewState()
+ * @see de.jutzig.jabylon.properties.PropertiesPackage#getSeverity()
  * @model
  * @generated
  */
-public enum ReviewState implements Enumerator {
+public enum Severity implements Enumerator {
 	/**
-	 * The '<em><b>OPEN</b></em>' literal object.
+	 * The '<em><b>INFO</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #OPEN_VALUE
+	 * @see #INFO_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	OPEN(0, "OPEN", "OPEN"),
+	INFO(0, "INFO", "INFO"),
 
 	/**
-	 * The '<em><b>RESOLVED</b></em>' literal object.
+	 * The '<em><b>WARNING</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #RESOLVED_VALUE
+	 * @see #WARNING_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	RESOLVED(1, "RESOLVED", "RESOLVED"),
+	WARNING(1, "WARNING", "WARNING"),
 
 	/**
-	 * The '<em><b>INVALID</b></em>' literal object.
+	 * The '<em><b>ERROR</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #INVALID_VALUE
+	 * @see #ERROR_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	INVALID(2, "INVALID", "INVALID"),
+	ERROR(2, "ERROR", "ERROR");
 
 	/**
-	 * The '<em><b>REOPENED</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #REOPENED_VALUE
-	 * @generated
-	 * @ordered
-	 */
-	REOPENED(3, "REOPENED", "REOPENED");
-
-	/**
-	 * The '<em><b>OPEN</b></em>' literal value.
+	 * The '<em><b>INFO</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>OPEN</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>INFO</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #OPEN
+	 * @see #INFO
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int OPEN_VALUE = 0;
+	public static final int INFO_VALUE = 0;
 
 	/**
-	 * The '<em><b>RESOLVED</b></em>' literal value.
+	 * The '<em><b>WARNING</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>RESOLVED</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>WARNING</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #RESOLVED
+	 * @see #WARNING
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int RESOLVED_VALUE = 1;
+	public static final int WARNING_VALUE = 1;
 
 	/**
-	 * The '<em><b>INVALID</b></em>' literal value.
+	 * The '<em><b>ERROR</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>INVALID</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>ERROR</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #INVALID
+	 * @see #ERROR
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int INVALID_VALUE = 2;
+	public static final int ERROR_VALUE = 2;
 
 	/**
-	 * The '<em><b>REOPENED</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>REOPENED</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @see #REOPENED
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
-	public static final int REOPENED_VALUE = 3;
-
-	/**
-	 * An array of all the '<em><b>State</b></em>' enumerators.
+	 * An array of all the '<em><b>Severity</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final ReviewState[] VALUES_ARRAY =
-		new ReviewState[] {
-			OPEN,
-			RESOLVED,
-			INVALID,
-			REOPENED,
+	private static final Severity[] VALUES_ARRAY =
+		new Severity[] {
+			INFO,
+			WARNING,
+			ERROR,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>State</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Severity</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<ReviewState> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<Severity> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>State</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Severity</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static ReviewState get(String literal) {
+	public static Severity get(String literal) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ReviewState result = VALUES_ARRAY[i];
+			Severity result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal)) {
 				return result;
 			}
@@ -161,14 +135,14 @@ public enum ReviewState implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>State</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Severity</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static ReviewState getByName(String name) {
+	public static Severity getByName(String name) {
 		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ReviewState result = VALUES_ARRAY[i];
+			Severity result = VALUES_ARRAY[i];
 			if (result.getName().equals(name)) {
 				return result;
 			}
@@ -177,17 +151,16 @@ public enum ReviewState implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>State</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Severity</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static ReviewState get(int value) {
+	public static Severity get(int value) {
 		switch (value) {
-			case OPEN_VALUE: return OPEN;
-			case RESOLVED_VALUE: return RESOLVED;
-			case INVALID_VALUE: return INVALID;
-			case REOPENED_VALUE: return REOPENED;
+			case INFO_VALUE: return INFO;
+			case WARNING_VALUE: return WARNING;
+			case ERROR_VALUE: return ERROR;
 		}
 		return null;
 	}
@@ -219,7 +192,7 @@ public enum ReviewState implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private ReviewState(int value, String name, String literal) {
+	private Severity(int value, String name, String literal) {
 		this.value = value;
 		this.name = name;
 		this.literal = literal;
@@ -263,4 +236,4 @@ public enum ReviewState implements Enumerator {
 		return literal;
 	}
 	
-} //ReviewState
+} //Severity

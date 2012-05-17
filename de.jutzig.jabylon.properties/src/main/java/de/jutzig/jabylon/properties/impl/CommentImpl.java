@@ -4,10 +4,10 @@
  *
  * $Id$
  */
-package de.jutzig.jabylon.review.impl;
+package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.review.Comment;
-import de.jutzig.jabylon.review.ReviewPackage;
+import de.jutzig.jabylon.properties.Comment;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -20,8 +20,8 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.review.impl.CommentImpl#getUser <em>User</em>}</li>
- *   <li>{@link de.jutzig.jabylon.review.impl.CommentImpl#getMessage <em>Message</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.CommentImpl#getUser <em>User</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.CommentImpl#getMessage <em>Message</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,7 +64,7 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return ReviewPackage.Literals.COMMENT;
+		return PropertiesPackage.Literals.COMMENT;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	 * @generated
 	 */
 	public String getUser() {
-		return (String)eDynamicGet(ReviewPackage.COMMENT__USER, ReviewPackage.Literals.COMMENT__USER, true, true);
+		return (String)eDynamicGet(PropertiesPackage.COMMENT__USER, PropertiesPackage.Literals.COMMENT__USER, true, true);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	 * @generated
 	 */
 	public void setUser(String newUser) {
-		eDynamicSet(ReviewPackage.COMMENT__USER, ReviewPackage.Literals.COMMENT__USER, newUser);
+		eDynamicSet(PropertiesPackage.COMMENT__USER, PropertiesPackage.Literals.COMMENT__USER, newUser);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	 * @generated
 	 */
 	public String getMessage() {
-		return (String)eDynamicGet(ReviewPackage.COMMENT__MESSAGE, ReviewPackage.Literals.COMMENT__MESSAGE, true, true);
+		return (String)eDynamicGet(PropertiesPackage.COMMENT__MESSAGE, PropertiesPackage.Literals.COMMENT__MESSAGE, true, true);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	 * @generated
 	 */
 	public void setMessage(String newMessage) {
-		eDynamicSet(ReviewPackage.COMMENT__MESSAGE, ReviewPackage.Literals.COMMENT__MESSAGE, newMessage);
+		eDynamicSet(PropertiesPackage.COMMENT__MESSAGE, PropertiesPackage.Literals.COMMENT__MESSAGE, newMessage);
 	}
 
 	/**
@@ -121,9 +121,9 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ReviewPackage.COMMENT__USER:
+			case PropertiesPackage.COMMENT__USER:
 				return getUser();
-			case ReviewPackage.COMMENT__MESSAGE:
+			case PropertiesPackage.COMMENT__MESSAGE:
 				return getMessage();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -137,10 +137,10 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ReviewPackage.COMMENT__USER:
+			case PropertiesPackage.COMMENT__USER:
 				setUser((String)newValue);
 				return;
-			case ReviewPackage.COMMENT__MESSAGE:
+			case PropertiesPackage.COMMENT__MESSAGE:
 				setMessage((String)newValue);
 				return;
 		}
@@ -155,10 +155,10 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ReviewPackage.COMMENT__USER:
+			case PropertiesPackage.COMMENT__USER:
 				setUser(USER_EDEFAULT);
 				return;
-			case ReviewPackage.COMMENT__MESSAGE:
+			case PropertiesPackage.COMMENT__MESSAGE:
 				setMessage(MESSAGE_EDEFAULT);
 				return;
 		}
@@ -173,9 +173,9 @@ public class CommentImpl extends CDOObjectImpl implements Comment {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ReviewPackage.COMMENT__USER:
+			case PropertiesPackage.COMMENT__USER:
 				return USER_EDEFAULT == null ? getUser() != null : !USER_EDEFAULT.equals(getUser());
-			case ReviewPackage.COMMENT__MESSAGE:
+			case PropertiesPackage.COMMENT__MESSAGE:
 				return MESSAGE_EDEFAULT == null ? getMessage() != null : !MESSAGE_EDEFAULT.equals(getMessage());
 		}
 		return super.eIsSet(featureID);

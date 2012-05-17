@@ -98,6 +98,24 @@ public interface PropertiesFactory extends EFactory {
 	ScanConfiguration createScanConfiguration();
 
 	/**
+	 * Returns a new object of class '<em>Review</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Review</em>'.
+	 * @generated
+	 */
+	Review createReview();
+
+	/**
+	 * Returns a new object of class '<em>Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Comment</em>'.
+	 * @generated
+	 */
+	Comment createComment();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
