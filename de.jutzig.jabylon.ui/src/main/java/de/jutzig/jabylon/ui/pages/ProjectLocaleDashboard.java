@@ -103,35 +103,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 		table.addContainerProperty("location", SortableButton.class, null);
 		table.addContainerProperty("total", Integer.class, 0);
 		table.addContainerProperty("translated", Integer.class, 0);
-
-		table.addGeneratedColumn("fuzzy", new ColumnGenerator() {
-
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				StaticProgressIndicator indicator = new StaticProgressIndicator();
-				indicator.setPercentage(0);
-				indicator.setInvertColors(true);
-				if (itemId instanceof Entry) {
-					@SuppressWarnings("rawtypes")
-					Entry entry = (Entry) itemId;
-					Object value = entry.getValue();
-					if (value instanceof PropertyFileDescriptor) {
-						PropertyFileDescriptor translated = (PropertyFileDescriptor) value;
-						if (translated != null) {
-
-							int keys = translated.getMaster().getKeys();
-							int percentage = (int) ((translated.getReviews().size() / (double) keys) * 100);
-							percentage = Math.min(percentage, 100);
-							// we can  have  multiple  reviews  per key
-							indicator.setPercentage(percentage);
-
-						}
-					}
-				}
-				return indicator;
-			}
-		});
-
+		table.addContainerProperty("fuzzy", StaticProgressIndicator.class, 0);
 		
 		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
 		table.setColumnWidth("progress", 110);
@@ -154,8 +126,18 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			PropertyFileDescriptor translation = entry.getValue();
 			int translated = translation == null ? 0 : translation.getKeys();
 			StaticProgressIndicator progress = new ResolvableProgressIndicator(translation);
-
-			table.addItem(new Object[] { fileName, entry.getKey().getKeys(), translated, progress }, entry);
+			
+			int fuzzy = translation == null ? 0 : translation.getReviews().size();
+			StaticProgressIndicator fuzzyIndicator = new StaticProgressIndicator();
+			fuzzyIndicator.setValue(fuzzy);
+			fuzzyIndicator.setInvertColors(true);
+			int keys = entry.getKey().getKeys();
+			int percentage = (int) ((fuzzy / (double) keys) * 100);
+			percentage = Math.min(percentage, 100);
+			// we can  have  multiple  reviews  per key
+			fuzzyIndicator.setPercentage(percentage);
+			
+			table.addItem(new Object[] { fileName, keys, translated, fuzzyIndicator, progress }, entry);
 		}
 
 		table.setColumnHeaders(new String[] { "Location", "Total", "Translated", "Fuzzy", "Completion" });
