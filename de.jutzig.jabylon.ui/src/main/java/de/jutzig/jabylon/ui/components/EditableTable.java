@@ -37,7 +37,6 @@ public class EditableTable extends HorizontalLayout implements ClickListener{
 	
 	public EditableTable(boolean editable) {
 		HorizontalLayout layout = this;
-		layout.setSizeFull();
 		layout.setSpacing(true);
 		table = new Table();
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
