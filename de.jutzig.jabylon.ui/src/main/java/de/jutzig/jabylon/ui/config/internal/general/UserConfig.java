@@ -2,11 +2,8 @@ package de.jutzig.jabylon.ui.config.internal.general;
 
 import java.util.HashSet;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
-import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.osgi.service.prefs.Preferences;
 
@@ -168,99 +165,6 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		return new GenericEObjectContainer<User>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__USERS);
 	}
 
-	private void initializeUserManagement() {
-		//FIXME the config section shouldn't change things without user interaction
-		CDOView view = getDomainObject().cdoView();
-		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-		userManagement = (UserManagement) resource.getContents().get(0);
-
-		addAvailablePermissions();
-		Role adminRole = addOrUpdateAdminRole();
-		addAdminUserIfMissing(adminRole);
-
-	}
-
-	private Role addOrUpdateAdminRole() {
-		Role adminRole = userManagement.findRoleByName("Administrator");
-
-		if (adminRole == null)
-			return addAdminRole();
-		else
-			return updateAdminRole(adminRole);
-	}
-
-	private Role updateAdminRole(Role adminRole) {
-		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-		EList<Permission> allPermissions = getWriteableUserManagement(transaction).getPermissions();
-
-		for (Permission perm : allPermissions) {
-			if (!adminRole.getPermissions().contains(perm))
-				adminRole.getPermissions().add(perm);
-		}
-
-		return adminRole;
-	}
-
-
-	private Role addAdminRole() {
-		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-		Role adminRole = UsersFactory.eINSTANCE.createRole();
-		adminRole.setName("Administrator");
-		EList<Permission> allPermissions = userManagement.getPermissions();
-		for (Permission perm : allPermissions) {
-			adminRole.getPermissions().add(perm);
-		}
-		getWriteableUserManagement(transaction).getRoles().add(adminRole);
-		return adminRole;
-	}
-
-	private void addAdminUserIfMissing(Role adminRole) {
-		EList<User> users = userManagement.getUsers();
-		for (User user : users) {
-			for (Role role : user.getRoles()) {
-				if (role.equals(adminRole))
-					return;
-			}
-		}
-		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
-		User admin = writeableUserManagement.findUserByName("Administrator");
-		admin.getRoles().add(adminRole);
-	}
-
-	private void addAvailablePermissions() {
-		IConfigurationElement[] permissions = RegistryFactory.getRegistry().getConfigurationElementsFor(
-				"de.jutzig.jabylon.security.permission");
-
-		CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-		UserManagement writeableUserManagement = getWriteableUserManagement(transaction);
-		EList<Permission> dbPermissions = writeableUserManagement.getPermissions();
-
-		for (IConfigurationElement config : permissions) {
-			String permissionName = config.getAttribute("name");
-			if (dbContainsPermission(dbPermissions, permissionName))
-				continue;
-
-			String permissionDescription = config.getAttribute("description");
-			Permission perm = UsersFactory.eINSTANCE.createPermission();
-			perm.setName(permissionName);
-			perm.setDescription(permissionDescription);
-			dbPermissions.add(perm);
-		}
-	}
-
-	private UserManagement getWriteableUserManagement(CDOTransaction transaction) {
-		return (UserManagement) transaction.getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
-	}
-
-	private boolean dbContainsPermission(EList<Permission> dbPermissions, String permissionName) {
-		for (Permission permission : dbPermissions) {
-			if (permission.getName().equals(permissionName))
-				return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void commit(Preferences config) {
 
@@ -268,7 +172,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	@Override
 	protected void init(Preferences config) {
-		initializeUserManagement();
+		userManagement = (UserManagement)getDomainObject().cdoView().getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
 		userTable.setContainerDataSource(getUsers());
 		userTable.setVisibleColumns(new Object[] { UsersPackage.Literals.USER__NAME });
 		userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
