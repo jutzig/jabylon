@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.util;
 
@@ -15,16 +15,18 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
  * @author joe
  *
  */
+@SuppressWarnings("serial")
 public class PropertyFilter implements Filter {
 
-	
 	private String filter;
-	
-	
-	
-	
+
+
 	public PropertyFilter(String filter) {
 		super();
+		this.filter = filter;
+	}
+
+	public void setFilterText(String filter) {
 		this.filter = filter;
 	}
 
@@ -44,9 +46,9 @@ public class PropertyFilter implements Filter {
 			if (eObject instanceof de.jutzig.jabylon.properties.Property) {
 				de.jutzig.jabylon.properties.Property property = (de.jutzig.jabylon.properties.Property) eObject;
 				return matches(property);
-				
+
 			}
-			
+
 		}
 		return false;
 	}
@@ -55,7 +57,7 @@ public class PropertyFilter implements Filter {
 		String key = property.getKey();
 		if(key != null && key.contains(filter))
 			return true;
-		
+
 		String comment = property.getComment();
 		if(comment != null && comment.contains(filter))
 			return true;
