@@ -20,6 +20,7 @@ import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
@@ -50,6 +51,7 @@ import de.jutzig.jabylon.ui.review.internal.PropertyReviewService;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
 import de.jutzig.jabylon.ui.util.PropertyFilter;
+import de.jutzig.jabylon.ui.util.UntranslatedFilter;
 
 @SuppressWarnings("serial")
 public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener, SuggestionAcceptor {
@@ -71,6 +73,8 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private PropertyReviewService reviewService;
 	private Table table;
 	private PropertyToolArea propertyToolArea;
+	private PropertyFilter propertyFilter = new PropertyFilter("");
+	private UntranslatedFilter untranslatedFilter = new UntranslatedFilter();
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
 		this.descriptor = descriptor;
@@ -114,20 +118,38 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setSpacing(true);
 		layout.setMargin(true);
 		layout.setSizeFull();
+
+		HorizontalLayout filterLine = new HorizontalLayout();
+
 		TextField filterBox = new TextField();
 		filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
 		filterBox.addListener(new TextChangeListener() {
 
 			@Override
 			public void textChange(TextChangeEvent event) {
-				propertyPairContainer.removeAllContainerFilters();
-				propertyPairContainer.addContainerFilter(new PropertyFilter(event.getText()));
+				propertyFilter.setFilterText(event.getText());
+				propertyPairContainer.addContainerFilter(propertyFilter);
 
 			}
 		});
 		filterBox.setInputPrompt("Filter");
-		layout.addComponent(filterBox);
-		layout.setExpandRatio(filterBox, 0);
+		filterLine.addComponent(filterBox);
+
+		final CheckBox untranslatedBox = new CheckBox("Show only untranslated");
+		untranslatedBox.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				propertyPairContainer.removeContainerFilter(untranslatedFilter);
+				if(untranslatedBox.getValue().equals(Boolean.TRUE))
+					propertyPairContainer.addContainerFilter(untranslatedFilter);
+			}
+		});
+		untranslatedBox.setImmediate(true);
+		filterLine.addComponent(untranslatedBox);
+
+		layout.addComponent(filterLine);
+		layout.setExpandRatio(filterLine, 0);
 
 		table = new Table();
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
@@ -177,11 +199,11 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setSelectable(true);
 		table.setMultiSelect(false);
 		table.setImmediate(true); // react at once when something is selected
-		table.addListener((Table.ValueChangeListener) this);
+		table.addListener(this);
 
 		layout.addComponent(table);
 
-		
+
 		layout.setExpandRatio(table, 2);
 		createEditorArea();
 		return layout;
@@ -264,22 +286,22 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			}
 		});
 		editorArea.setContent(grid);
-		
+
 		HorizontalLayout buttonArea = new HorizontalLayout();
 		buttonArea.setSpacing(true);
 		layout.addComponent(editorArea);
 		layout.setExpandRatio(editorArea, 0);
 		buttonArea.addComponent(safeButton);
-		
-		
+
+
 		Button editTemplate = new Button("Edit Template");
 		editTemplate.addListener(new ClickListener() {
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
 				crumb.walkTo("?master");
-				
+
 			}
 		});
 		buttonArea.addComponent(editTemplate);
@@ -385,14 +407,14 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			else
 				translated.setValue(value+" "+suggestion);
 		}
-		
+
 	}
 
 	@Override
 	public void replace(String suggestion) {
 		setDirty(true);
 		translated.setValue(suggestion);
-		
+
 	}
 
 }
