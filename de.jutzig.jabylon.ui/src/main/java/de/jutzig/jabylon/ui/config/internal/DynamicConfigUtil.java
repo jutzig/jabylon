@@ -8,8 +8,8 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
-import de.jutzig.jabylon.ui.Activator;
-import de.jutzig.jabylon.ui.config.ConfigSection;
+import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.users.User;
 
 public class DynamicConfigUtil {
 
@@ -22,16 +22,32 @@ public class DynamicConfigUtil {
 
 	public static List<IConfigurationElement> getApplicableElements(
 			Object domainObject) {
+		
 		List<IConfigurationElement> configSections = getConfigSections();
 		List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
 		for (IConfigurationElement child : configSections) {
 
-			if (isApplicable(child, domainObject)) {
+			if (hasPermissions(child) && isApplicable(child, domainObject)) {
 				applicable.add(child);
 			}
 
 		}
 		return applicable;
+	}
+
+	private static boolean hasPermissions(IConfigurationElement child) {
+		Object userObject = MainDashboard.getCurrent().getUser();
+		if (userObject instanceof User) {
+			User user = (User) userObject;
+			IConfigurationElement[] children = child.getChildren("permission");
+			for (IConfigurationElement permission : children) {
+				if(!user.hasPermission(permission.getAttribute("requires")))
+					return false;
+			}
+			return true;
+		}
+		return false;
+		
 	}
 
 	private static boolean isApplicable(IConfigurationElement child,

@@ -7,6 +7,8 @@
 package de.jutzig.jabylon.users.impl;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -163,7 +165,12 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @generated NOT
 	 */
 	public boolean hasPermission(String permission) {
-		return getAllPermissions().contains(permission);
+		EList<Permission> allPermissions = getAllPermissions();
+		for (Permission permission2 : allPermissions) {
+			if(permission2.getName().equals(permission))
+				return true; 
+		}
+		return false;
 	}
 
 	/**

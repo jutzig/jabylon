@@ -127,7 +127,6 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 		Object newUser = event.getNewUser();
 		if(newUser==null) {
 			login.setCaption("Login");
-			return;
 		}
 
 		if (newUser instanceof Subject) {
@@ -145,6 +144,8 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 			String message = "logout <{0}>";
 			login.setCaption(MessageFormat.format(message, user.getName()));
 		}
+		CrumbTrail current = MainDashboard.getCurrent().getBreadcrumbs().currentTrail();
+		settings.setVisible(!DynamicConfigUtil.getApplicableElements(current.getDomainObject()).isEmpty());
 
 	}
 

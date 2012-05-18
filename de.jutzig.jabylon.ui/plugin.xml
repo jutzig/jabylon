@@ -14,24 +14,36 @@
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.GeneralProjectConfig"
             tab="general">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.projectScanConfig"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.ScanConfig"
             tab="scanning">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.projectRepository"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.ProjectRepositorySettings"
             tab="repository">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.config.checks"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.ui.config.internal.project.EnabledProjectChecksConfig"
             tab="checks">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
    </extension>
    <extension
@@ -42,12 +54,18 @@
             objectClass="de.jutzig.jabylon.properties.Workspace"
             section="de.jutzig.jabylon.ui.config.internal.general.WorkspaceProjectsSettings"
             tab="projects">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
       <configSection
             id="de.jutzig.jabylon.ui.userConfig"
             objectClass="de.jutzig.jabylon.properties.Workspace"
             section="de.jutzig.jabylon.ui.config.internal.general.UserConfig"
             tab="user">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
    </extension>
    <extension

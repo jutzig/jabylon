@@ -16,6 +16,9 @@
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.team.git.impl.config.GitConfigSection"
             tab="repository">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
       </configSection>
    </extension>
 

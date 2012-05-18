@@ -17,7 +17,7 @@
          </appInfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
+         <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="configSection"/>
          </sequence>
          <attribute name="point" type="string" use="required">
@@ -49,6 +49,9 @@
 
    <element name="configSection">
       <complexType>
+         <sequence>
+            <element ref="permission" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
@@ -93,6 +96,21 @@
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="java.lang.Object:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="permission">
+      <complexType>
+         <attribute name="requires" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="identifier" basedOn="de.jutzig.jabylon.security.permission/permission/@name"/>
                </appInfo>
             </annotation>
          </attribute>
