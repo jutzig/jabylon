@@ -5,6 +5,9 @@
     nsURI="http://jutzig.de/jabylon/users" nsPrefix="users">
   <eClassifiers xsi:type="ecore:EClass" name="User">
     <eOperations name="getAllPermissions" upperBound="-1" eType="#//Permission"/>
+    <eOperations name="hasPermission" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="permission" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="password" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

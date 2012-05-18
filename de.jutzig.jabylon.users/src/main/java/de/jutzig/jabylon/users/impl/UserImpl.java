@@ -9,7 +9,6 @@ package de.jutzig.jabylon.users.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
@@ -156,6 +155,15 @@ public class UserImpl extends CDOObjectImpl implements User {
 		for(Role role : getRoles())
 			allPermissions.addAll(role.getAllPermissions());
 		return allPermissions;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean hasPermission(String permission) {
+		return getAllPermissions().contains(permission);
 	}
 
 	/**

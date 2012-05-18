@@ -387,6 +387,9 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 
 		addEOperation(userEClass, this.getPermission(), "getAllPermissions", 0, -1, IS_UNIQUE, IS_ORDERED);
 
+		EOperation op = addEOperation(userEClass, ecorePackage.getEBoolean(), "hasPermission", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "permission", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(roleEClass, Role.class, "Role", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRole_Name(), ecorePackage.getEString(), "name", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRole_Parent(), this.getRole(), null, "parent", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -407,7 +410,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		initEReference(getUserManagement_Roles(), this.getRole(), null, "roles", null, 0, -1, UserManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUserManagement_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, UserManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		EOperation op = addEOperation(userManagementEClass, this.getUser(), "findUserByName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(userManagementEClass, this.getUser(), "findUserByName", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(userManagementEClass, this.getPermission(), "findPermissionByName", 0, 1, IS_UNIQUE, IS_ORDERED);

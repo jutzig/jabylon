@@ -122,4 +122,12 @@ public interface User extends CDOObject {
 	 */
 	EList<Permission> getAllPermissions();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasPermission(String permission);
+
 } // User
