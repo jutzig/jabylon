@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.security;
+package de.jutzig.jabylon.ui.components;
 
 import java.io.IOException;
 import java.net.URL;
@@ -8,17 +8,26 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.LoginException;
 
+import org.eclipse.emf.cdo.eresource.CDOResource;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 import com.vaadin.Application;
-import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.Notification;
+
+import de.jutzig.jabylon.cdo.server.ServerConstants;
+import de.jutzig.jabylon.security.JabylonSecurityBundle;
+import de.jutzig.jabylon.ui.applications.MainDashboard;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
 
 @SuppressWarnings("serial")
 public class LoginDialog extends LoginForm implements CallbackHandler {
@@ -59,12 +68,21 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
 				try {
 					loginEvent = event;
 					loginContext.login();
-					app.setUser(loginContext.getSubject());
+					CDOResource resource = MainDashboard.getCurrent().getWorkspace().cdoView().getResource(ServerConstants.USERS_RESOURCE);
+					UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+					User user = userManagement.findUserByName(loginEvent.getLoginParameter("username"));
+					app.setUser(user);
 					app.getMainWindow().removeWindow(loginWindow);
-				} catch( Throwable e ) {
+					
+				} catch (LoginException e) {
+                    getWindow().showNotification("Login Failed","Wrong username or password",Notification.TYPE_ERROR_MESSAGE);
+				} 
+				catch( Exception e ) {
 					//TODO: fix login failed
 					e.printStackTrace();
-					loginWindow.setComponentError(new UserError("Login failed! Reason: "+e.getMessage()));
+                    getWindow().showNotification("Login Failed",e.getLocalizedMessage(),Notification.TYPE_ERROR_MESSAGE);
+
+		
 				}
 			}
 		});

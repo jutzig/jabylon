@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.ui.components;
 
+import java.text.MessageFormat;
 import java.util.Set;
 
 import javax.security.auth.Subject;
@@ -16,7 +17,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.Reindeer;
 
-import de.jutzig.jabylon.security.LoginDialog;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.BreadCrumb;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbListener;
@@ -24,6 +24,7 @@ import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.config.internal.DynamicConfigUtil;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
+import de.jutzig.jabylon.users.User;
 
 public class ApplicationTitleBar extends CustomComponent implements CrumbListener, UserChangeListener{
 
@@ -137,6 +138,12 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 			}
 			else
 				;// TODO error handling
+		}
+		
+		if (newUser instanceof User) {
+			User user = (User) newUser;
+			String message = "logout <{0}>";
+			login.setCaption(MessageFormat.format(message, user.getName()));
 		}
 
 	}
