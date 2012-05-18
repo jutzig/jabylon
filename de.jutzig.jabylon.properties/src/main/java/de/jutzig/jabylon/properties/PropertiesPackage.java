@@ -630,7 +630,7 @@ public interface PropertiesPackage extends EPackage {
 	int REVIEW__USER = 1;
 
 	/**
-	 * The feature id for the '<em><b>Comments</b></em>' containment reference.
+	 * The feature id for the '<em><b>Comments</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1291,10 +1291,10 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getReview_User();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}'.
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Comments</em>'.
+	 * @return the meta object for the containment reference list '<em>Comments</em>'.
 	 * @see de.jutzig.jabylon.properties.Review#getComments()
 	 * @see #getReview()
 	 * @generated
@@ -1856,7 +1856,7 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute REVIEW__USER = eINSTANCE.getReview_User();
 
 		/**
-		 * The meta object literal for the '<em><b>Comments</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Comments</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

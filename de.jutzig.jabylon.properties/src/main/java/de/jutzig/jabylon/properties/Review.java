@@ -7,6 +7,7 @@
 package de.jutzig.jabylon.properties;
 
 import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -85,30 +86,20 @@ public interface Review extends CDOObject {
 	void setUser(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Comments</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Comments</b></em>' containment reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.Comment}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Comments</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Comments</em>' containment reference.
-	 * @see #setComments(Comment)
+	 * @return the value of the '<em>Comments</em>' containment reference list.
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getReview_Comments()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Comment getComments();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Review#getComments <em>Comments</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Comments</em>' containment reference.
-	 * @see #getComments()
-	 * @generated
-	 */
-	void setComments(Comment value);
+	EList<Comment> getComments();
 
 	/**
 	 * Returns the value of the '<em><b>State</b></em>' attribute.

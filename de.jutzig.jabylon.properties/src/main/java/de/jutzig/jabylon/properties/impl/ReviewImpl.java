@@ -7,8 +7,10 @@
 package de.jutzig.jabylon.properties.impl;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.Comment;
@@ -16,6 +18,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ReviewState;
 import de.jutzig.jabylon.properties.Severity;
+import java.util.Collection;
 
 /**
  * <!-- begin-user-doc -->
@@ -167,27 +170,9 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Comment getComments() {
-		return (Comment)eDynamicGet(PropertiesPackage.REVIEW__COMMENTS, PropertiesPackage.Literals.REVIEW__COMMENTS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetComments(Comment newComments, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newComments, PropertiesPackage.REVIEW__COMMENTS, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setComments(Comment newComments) {
-		eDynamicSet(PropertiesPackage.REVIEW__COMMENTS, PropertiesPackage.Literals.REVIEW__COMMENTS, newComments);
+	@SuppressWarnings("unchecked")
+	public EList<Comment> getComments() {
+		return (EList<Comment>)eDynamicGet(PropertiesPackage.REVIEW__COMMENTS, PropertiesPackage.Literals.REVIEW__COMMENTS, true, true);
 	}
 
 	/**
@@ -271,7 +256,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case PropertiesPackage.REVIEW__COMMENTS:
-				return basicSetComments(null, msgs);
+				return ((InternalEList<?>)getComments()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -307,6 +292,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -317,7 +303,8 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 				setUser((String)newValue);
 				return;
 			case PropertiesPackage.REVIEW__COMMENTS:
-				setComments((Comment)newValue);
+				getComments().clear();
+				getComments().addAll((Collection<? extends Comment>)newValue);
 				return;
 			case PropertiesPackage.REVIEW__STATE:
 				setState((ReviewState)newValue);
@@ -350,7 +337,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 				setUser(USER_EDEFAULT);
 				return;
 			case PropertiesPackage.REVIEW__COMMENTS:
-				setComments((Comment)null);
+				getComments().clear();
 				return;
 			case PropertiesPackage.REVIEW__STATE:
 				setState(STATE_EDEFAULT);
@@ -381,7 +368,7 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
 			case PropertiesPackage.REVIEW__USER:
 				return USER_EDEFAULT == null ? getUser() != null : !USER_EDEFAULT.equals(getUser());
 			case PropertiesPackage.REVIEW__COMMENTS:
-				return getComments() != null;
+				return !getComments().isEmpty();
 			case PropertiesPackage.REVIEW__STATE:
 				return getState() != STATE_EDEFAULT;
 			case PropertiesPackage.REVIEW__REVIEW_TYPE:
