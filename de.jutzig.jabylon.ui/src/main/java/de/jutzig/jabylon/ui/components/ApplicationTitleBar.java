@@ -138,10 +138,10 @@ public class ApplicationTitleBar extends CustomComponent implements CrumbListene
 			else
 				;// TODO error handling
 		}
-		
+
 		if (newUser instanceof User) {
 			User user = (User) newUser;
-			String message = "logout <{0}>";
+			String message = "Logout <{0}>";
 			login.setCaption(MessageFormat.format(message, user.getName()));
 		}
 		CrumbTrail current = MainDashboard.getCurrent().getBreadcrumbs().currentTrail();
