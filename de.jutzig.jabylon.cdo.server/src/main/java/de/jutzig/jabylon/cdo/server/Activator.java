@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDataSource;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
 import org.eclipse.emf.cdo.net4j.CDOSession;
@@ -19,6 +21,7 @@ import org.eclipse.emf.cdo.server.db.mapping.IMappingStrategy;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.net4j.db.DBUtil;
 import org.eclipse.net4j.jvm.IJVMAcceptor;
@@ -32,6 +35,8 @@ import org.osgi.framework.BundleContext;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersFactory;
@@ -50,7 +55,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -74,49 +79,114 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 		startRepository();
-		initializeWorkspace();
-		initializeUserManagement();
-	}
-
-	private void initializeUserManagement() {
 		CDOSession session = createSession();
 		CDOTransaction transaction = session.openTransaction();
-		if(!transaction.hasResource(ServerConstants.USERS_RESOURCE)) {
-			CDOResource resource = transaction.createResource(ServerConstants.USERS_RESOURCE);
+		try {
+			initializeWorkspace(transaction);
+			initializeUserManagement(transaction);
+		} finally{
+			transaction.close();
+			session.close();
+		}
+		
+	}
+
+	private void initializeUserManagement(CDOTransaction transaction) throws CommitException {
+		CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
+		if(resource.getContents().isEmpty())
+		{
 			UserManagement userManagement = UsersFactory.eINSTANCE.createUserManagement();
-			userManagement.getUsers().add(getAdminUser());
-			userManagement.getUsers().add(getAnonymousUser());
 			resource.getContents().add(userManagement);
-			try {
-				transaction.commit();
-			} catch (CommitException e) {
-				// TODO: handle exception
-				e.printStackTrace();
+		}
+		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+
+		addAvailablePermissions(userManagement);
+		Role adminRole = addOrUpdateAdminRole(userManagement);
+		addAdminUserIfMissing(adminRole, userManagement);
+		transaction.commit();
+
+	}
+
+	private Role addOrUpdateAdminRole(UserManagement userManagement) {
+		Role adminRole = userManagement.findRoleByName("Administrator");
+
+		if (adminRole == null)
+			return addAdminRole(userManagement);
+		else
+			return updateAdminRole(adminRole, userManagement);
+	}
+
+	private Role updateAdminRole(Role adminRole, UserManagement userManagement) {
+		EList<Permission> allPermissions = userManagement.getPermissions();
+
+		for (Permission perm : allPermissions) {
+			if (!adminRole.getPermissions().contains(perm))
+				adminRole.getPermissions().add(perm);
+		}
+
+		return adminRole;
+	}
+
+	private Role addAdminRole(UserManagement userManagement) {
+		Role adminRole = UsersFactory.eINSTANCE.createRole();
+		adminRole.setName("Administrator");
+		EList<Permission> allPermissions = userManagement.getPermissions();
+		for (Permission perm : allPermissions) {
+			adminRole.getPermissions().add(perm);
+		}
+		userManagement.getRoles().add(adminRole);
+		return adminRole;
+	}
+
+	private void addAdminUserIfMissing(Role adminRole, UserManagement userManagement) {
+		EList<User> users = userManagement.getUsers();
+		for (User user : users) {
+			for (Role role : user.getRoles()) {
+				if (role.equals(adminRole))
+					return;
 			}
 		}
-		transaction.close();
-		session.close();
-	}
-
-	private User getAnonymousUser() {
-		User anonymous = UsersFactory.eINSTANCE.createUser();
-		anonymous.setName("Anonymous");
-		anonymous.setPassword("changeme");
-		return anonymous;
-	}
-
-	private User getAdminUser() {
-		User admin = UsersFactory.eINSTANCE.createUser();
-		admin.setName("Administrator");
-		admin.setPassword("changeme");
-		return admin;
-	}
-
-	private void initializeWorkspace() {
-		CDOSession session = createSession();
-		CDOTransaction transaction = session.openTransaction();
-		if(!transaction.hasResource(ServerConstants.WORKSPACE_RESOURCE))
+		User admin = userManagement.findUserByName("Administrator");
+		if(admin==null)
 		{
+			admin = UsersFactory.eINSTANCE.createUser();
+			admin.setName("Administrator");
+			admin.setPassword("changeme");
+			userManagement.getUsers().add(admin);
+		}
+		admin.getRoles().add(adminRole);
+	}
+
+	private void addAvailablePermissions(UserManagement userManagement) {
+		IConfigurationElement[] permissions = RegistryFactory.getRegistry().getConfigurationElementsFor(
+				"de.jutzig.jabylon.security.permission");
+
+		EList<Permission> dbPermissions = userManagement.getPermissions();
+
+		for (IConfigurationElement config : permissions) {
+			String permissionName = config.getAttribute("name");
+			if (dbContainsPermission(dbPermissions, permissionName))
+				continue;
+
+			String permissionDescription = config.getAttribute("description");
+			Permission perm = UsersFactory.eINSTANCE.createPermission();
+			perm.setName(permissionName);
+			perm.setDescription(permissionDescription);
+			dbPermissions.add(perm);
+		}
+	}
+
+	private boolean dbContainsPermission(EList<Permission> dbPermissions, String permissionName) {
+		for (Permission permission : dbPermissions) {
+			if (permission.getName().equals(permissionName))
+				return true;
+		}
+		return false;
+	}
+
+	private void initializeWorkspace(CDOTransaction transaction) throws CommitException {
+
+		if (!transaction.hasResource(ServerConstants.WORKSPACE_RESOURCE)) {
 			CDOResource resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
 			Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
 			URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
@@ -125,15 +195,9 @@ public class Activator extends Plugin {
 				root.mkdirs();
 			workspace.setRoot(uri);
 			resource.getContents().add(workspace);
-			try {
-				transaction.commit();
-			} catch (final CommitException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			transaction.commit();
+
 		}
-		transaction.close();
-		session.close();
 
 	}
 
@@ -156,7 +220,7 @@ public class Activator extends Plugin {
 
 	private void startRepository() {
 		IPluginContainer container = IPluginContainer.INSTANCE;
-
+		System.out.println("Starting Repository");
 		// initialize acceptor
 		if (acceptor == null)
 			acceptor = JVMUtil.getAcceptor(container, "default");
@@ -186,7 +250,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Create and initialize/configure a repository
-	 *
+	 * 
 	 * @return the CDO repository created
 	 */
 	private IRepository createRepository() {
