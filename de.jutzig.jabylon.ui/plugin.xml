@@ -64,7 +64,16 @@
             section="de.jutzig.jabylon.ui.config.internal.general.UserConfig"
             tab="user">
          <permission
-               requires="GLOBAL_EDIT_PROJECTS">
+               requires="EDIT_USERS">
+         </permission>
+      </configSection>
+      <configSection
+            id="de.jutzig.jabylon.ui.roleConfig"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.ui.config.internal.general.RoleConfig"
+            tab="role">
+         <permission
+               requires="EDIT_USERS">
          </permission>
       </configSection>
    </extension>
@@ -109,6 +118,11 @@
             name="Checks"
             precedence="3"
             tabID="checks">
+      </tab>
+      <tab
+            name="Role"
+            precedence="8"
+            tabID="role">
       </tab>
    </extension>
    <extension
