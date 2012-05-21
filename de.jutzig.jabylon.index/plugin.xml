@@ -6,7 +6,6 @@
       <job
             activeByDefault="true"
             class="de.jutzig.jabylon.index.properties.jobs.impl.ReorgIndexJob"
-            defaultSchedule="0 * * * * ?"
             id="de.jutzig.jabylon.index.reorg"
             name="Index Reorg">
       </job>
