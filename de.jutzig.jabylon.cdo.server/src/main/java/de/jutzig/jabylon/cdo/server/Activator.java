@@ -96,6 +96,8 @@ public class Activator extends Plugin {
 		if(resource.getContents().isEmpty())
 		{
 			UserManagement userManagement = UsersFactory.eINSTANCE.createUserManagement();
+			userManagement.getUsers().add(getAdminUser());
+			userManagement.getUsers().add(getAnonymousUser());
 			resource.getContents().add(userManagement);
 		}
 		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
@@ -114,6 +116,21 @@ public class Activator extends Plugin {
 			return addAdminRole(userManagement);
 		else
 			return updateAdminRole(adminRole, userManagement);
+	}
+
+
+	private User getAnonymousUser() {
+		User anonymous = UsersFactory.eINSTANCE.createUser();
+		anonymous.setName("Anonymous");
+		anonymous.setPassword("changeme");
+		return anonymous;
+	}
+
+	private User getAdminUser() {
+		User admin = UsersFactory.eINSTANCE.createUser();
+		admin.setName("Administrator");
+		admin.setPassword("changeme");
+		return admin;
 	}
 
 	private Role updateAdminRole(Role adminRole, UserManagement userManagement) {
@@ -147,13 +164,6 @@ public class Activator extends Plugin {
 			}
 		}
 		User admin = userManagement.findUserByName("Administrator");
-		if(admin==null)
-		{
-			admin = UsersFactory.eINSTANCE.createUser();
-			admin.setName("Administrator");
-			admin.setPassword("changeme");
-			userManagement.getUsers().add(admin);
-		}
 		admin.getRoles().add(adminRole);
 	}
 
