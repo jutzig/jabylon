@@ -11,7 +11,7 @@ import org.quartz.SchedulerException;
 
 import de.jutzig.jabylon.scheduler.internal.JobRegistry;
 
-public class SchedulerActivator implements BundleActivator, ActionListener {
+public class SchedulerActivator implements BundleActivator {
 
 	private static BundleContext context;
 	
@@ -30,33 +30,7 @@ public class SchedulerActivator implements BundleActivator, ActionListener {
 	public void start(BundleContext bundleContext) throws Exception {
 		SchedulerActivator.context = bundleContext;
 		
-		Timer timer = new Timer(10*1000, this);
-		timer.setRepeats(false);
-		timer.start(); //initialize the jobs after a minute pause
-//		 SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-//
-//		  Scheduler sched = schedFact.getScheduler();
-//
-//		  sched.start();
-//
-//		  // define the job and tie it to our HelloJob class
-//		  JobDetail job = JobBuilder.newJob().ofType(JabylonJob.class).build();
-////		  JobDetail job = new Job(HelloJob.class)
-////		      .withIdentity("myJob", "group1")
-////		      .build();
-//
-//		  // Trigger the job to run now, and then every 40 seconds
-//		  CronScheduleBuilder.cronSchedule(cronExpression)
-//		  Trigger trigger = TriggerBuilder.newTrigger().forJob(job).withSchedule(schedBuilder)
-//		      .withIdentity("myTrigger", "group1")
-//		      .startNow()
-//		      .withSchedule(simpleSchedule()
-//		          .withIntervalInSeconds(40)
-//		          .repeatForever())
-//		      .build();
-
-		  // Tell quartz to schedule the job using our trigger
-//		  sched.scheduleJob(job, trigger);
+		registerJobs();
 	}
 
 	/*
@@ -67,17 +41,6 @@ public class SchedulerActivator implements BundleActivator, ActionListener {
 		SchedulerActivator.context = null;
 		if(jobRegistry!=null)
 			jobRegistry.shutdown();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		try {
-			registerJobs();
-		} catch (SchedulerException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 	}
 
 	private void registerJobs() throws SchedulerException {

@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.scheduler.internal;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.quartz.InterruptableJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,7 +17,8 @@ import org.quartz.UnableToInterruptJobException;
 public class JabylonJob implements InterruptableJob {
 
 	private Thread thread;
-	public static final String RUNNABLE_KEY = "runnable";
+	private static final String RUNNABLE_KEY = "runnable";
+	public static final String ELEMENT_KEY = "configurationElement";
 	
 	/* (non-Javadoc)
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
@@ -23,7 +26,13 @@ public class JabylonJob implements InterruptableJob {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		this.thread = Thread.currentThread();
-		Runnable runnable = (Runnable) context.getMergedJobDataMap().get(RUNNABLE_KEY);
+		IConfigurationElement element = (IConfigurationElement) context.getMergedJobDataMap().get(ELEMENT_KEY);
+		Runnable runnable;
+		try {
+			runnable = (Runnable) element.createExecutableExtension("class");
+		} catch (CoreException e) {
+			throw new JobExecutionException(e);
+		}
 		runnable.run();
 
 	}

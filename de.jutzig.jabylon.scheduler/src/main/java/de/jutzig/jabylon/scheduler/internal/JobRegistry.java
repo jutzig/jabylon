@@ -6,7 +6,6 @@ package de.jutzig.jabylon.scheduler.internal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -20,7 +19,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.TriggerBuilder;
-import org.quartz.spi.MutableTrigger;
 
 import de.jutzig.jabylon.scheduler.SchedulerActivator;
 
@@ -57,12 +55,8 @@ public class JobRegistry {
 			boolean active = node.getBoolean(KEY_ACTIVE, defaultActive);
 			if (active) {
 				CronTrigger trigger = createSchedule(detail, node, iConfigurationElement);
-				try {
-					trigger.getJobDataMap().put(JabylonJob.RUNNABLE_KEY, iConfigurationElement.createExecutableExtension("class"));
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				trigger.getJobDataMap().put(JabylonJob.ELEMENT_KEY, iConfigurationElement);
+
 				scheduler.addJob(detail, true);
 				scheduler.scheduleJob(trigger);
 			}
