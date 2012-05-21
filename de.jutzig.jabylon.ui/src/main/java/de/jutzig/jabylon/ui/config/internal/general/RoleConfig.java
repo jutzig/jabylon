@@ -104,6 +104,10 @@ public class RoleConfig extends AbstractConfigSection<Workspace> implements Conf
 	private void addRoleDetails() {
 		roleDetails = new Section();
 		roleDetails.setCaption("User: " + selectedRole.getName());
+
+		Select parentSelection = createParentSelection(new BeanItem<Role>(selectedRole));
+		roleDetails.addComponent(parentSelection);
+
 		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
 		permissionSelect.setMultiSelect(true);
 		permissionSelect.setLeftColumnCaption("Available permissions");
@@ -131,20 +135,25 @@ public class RoleConfig extends AbstractConfigSection<Workspace> implements Conf
 		addRole.setHeight("180px");
 		addRole.setWidth("280px");
 		final Form addRoleForm = new Form();
-		Role role = UsersFactory.eINSTANCE.createRole();
-		role.setName("<name>");
-		addRoleForm.setItemDataSource(new BeanItem<Role>(role));
 		addRoleForm.setVisibleItemProperties(new Object[]{"name", "parent"});
 		addRoleForm.setFormFieldFactory(new FormFieldFactory() {
 			@Override
 			public Field createField(Item item, Object propertyId, Component uiContext) {
-				if(propertyId==UsersPackage.Literals.ROLE__NAME)
-					return new TextField();
-				else if(propertyId==UsersPackage.Literals.ROLE__PARENT)
-					return new Select("Parent role", userManagement.getRoles());
+				if(propertyId.equals("name"))
+					return new TextField("Name:");
+				else if(propertyId.equals("parent")) {
+					Select parentSelection = createParentSelection((BeanItem<Role>)item);
+					return parentSelection;
+				}
 				return null;
 			}
+
 		});
+
+		Role role = UsersFactory.eINSTANCE.createRole();
+		role.setName("<name>");
+		addRoleForm.setItemDataSource(new BeanItem<Role>(role));
+
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponent(addRoleForm);
 		Button ok = new Button("Submit");
@@ -159,6 +168,17 @@ public class RoleConfig extends AbstractConfigSection<Workspace> implements Conf
 		layout.setMargin(true);
 		addRole.setContent(layout);
 		MainDashboard.getCurrent().getMainWindow().addWindow(addRole);
+	}
+
+	private Select createParentSelection(BeanItem<Role> item) {
+		Select parentSelection = new Select("Parent role", userManagement.getRoles());
+		GenericEObjectContainer<Permission> ds = new GenericEObjectContainer<Permission>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__ROLES);
+		parentSelection.setContainerDataSource(ds);
+		parentSelection.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
+		parentSelection.setItemCaptionPropertyId(UsersPackage.Literals.ROLE__NAME);
+		if(item.getBean().getParent()!=null)
+			parentSelection.setValue(item.getBean().getParent());
+		return parentSelection;
 	}
 
 	private void deleteRole() {
@@ -186,8 +206,8 @@ public class RoleConfig extends AbstractConfigSection<Workspace> implements Conf
 		userManagement = (UserManagement)getDomainObject().cdoView().getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
 		roleTable.setContainerDataSource(getRoles());
 		roleTable.setVisibleColumns(new Object[] { UsersPackage.Literals.ROLE__NAME });
-		roleTable.setColumnHeader(UsersPackage.Literals.ROLE__NAME, "Role");
-		roleTable.addGeneratedColumn("Roles", new ColumnGenerator() {
+		roleTable.setColumnHeader(UsersPackage.Literals.ROLE__NAME, "Name");
+		roleTable.addGeneratedColumn("Permissions", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				return getPermissionsList(((Role) itemId).getAllPermissions());
