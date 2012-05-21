@@ -2,14 +2,11 @@ package de.jutzig.jabylon.ui.config.internal.general;
 
 import java.util.HashSet;
 
-import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.util.EList;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
@@ -18,10 +15,14 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
+import com.vaadin.ui.FormFieldFactory;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -35,7 +36,6 @@ import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
-import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
@@ -101,22 +101,15 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	private void addUserDetails() {
 		userDetails = new Section();
 		userDetails.setCaption("User: " + selectedUser.getName());
-		TwinColSelect permissionSelect = new TwinColSelect("Permissions");
+		TwinColSelect permissionSelect = new TwinColSelect("Roles");
 		permissionSelect.setMultiSelect(true);
-		permissionSelect.setLeftColumnCaption("Available permissions");
-		permissionSelect.setRightColumnCaption("Permissions currently assigned");
-		permissionSelect.addListener(new Property.ValueChangeListener() {
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				System.out.println(event.getProperty());
-			}
-		});
-		GenericEObjectContainer<Permission> ds = new GenericEObjectContainer<Permission>(userManagement,
-				UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
+		permissionSelect.setLeftColumnCaption("Available roles");
+		permissionSelect.setRightColumnCaption("Roles currently assigned");
+		GenericEObjectContainer<Role> ds = new GenericEObjectContainer<Role>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__ROLES);
 		permissionSelect.setContainerDataSource(ds);
 		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
-		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.PERMISSION__DESCRIPTION);
-		permissionSelect.setValue(new HashSet<Permission>(selectedUser.getAllPermissions()));
+		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.ROLE__NAME);
+		permissionSelect.setValue(new HashSet<Role>(selectedUser.getRoles()));
 		userDetails.addComponent(permissionSelect);
 		userConfig.addComponent(userDetails);
 	}
@@ -127,17 +120,32 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		addUser.setHeight("180px");
 		addUser.setWidth("280px");
 		final Form addUserForm = new Form();
+
+		addUserForm.setVisibleItemProperties(new Object[]{"name", "password"});
+		addUserForm.setFormFieldFactory(new FormFieldFactory() {
+			@Override
+			public Field createField(Item item, Object propertyId, Component uiContext) {
+				if(propertyId.equals("password"))
+					return new PasswordField("Password:");
+				else if(propertyId.equals("name"))
+					return new TextField("Name:");
+				return null;
+			}
+		});
+
 		User user = UsersFactory.eINSTANCE.createUser();
+		user.setName("<Name>");
+		user.setPassword("");
 		addUserForm.setItemDataSource(new BeanItem<User>(user));
+
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponent(addUserForm);
 		Button ok = new Button("Submit");
 		ok.addListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-				CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
-				resource.getContents().add(((BeanItem<User>) addUserForm.getItemDataSource()).getBean());
+				User addedUser = ((BeanItem<User>) addUserForm.getItemDataSource()).getBean();
+				userManagement.getUsers().add(addedUser);
 				MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
 			}
 		});
@@ -150,14 +158,11 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 	private void deleteUser() {
 		if (selectedUser == null) {
 			MainDashboard.getCurrent().getMainWindow()
-					.showNotification("No user select", "Please select a usser", Notification.TYPE_WARNING_MESSAGE);
+					.showNotification("No user select", "Please select a user", Notification.TYPE_WARNING_MESSAGE);
 			return;
 		} else {
-			CDOTransaction transaction = (CDOTransaction) getDomainObject().cdoView();
-			CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
-			resource.getContents().remove(selectedUser);
+			userManagement.getUsers().remove(selectedUser);
 			selectedUser = null;
-
 		}
 	}
 
