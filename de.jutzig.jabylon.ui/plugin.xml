@@ -121,7 +121,7 @@
       </tab>
       <tab
             name="Role"
-            precedence="8"
+            precedence="5"
             tabID="role">
       </tab>
    </extension>
