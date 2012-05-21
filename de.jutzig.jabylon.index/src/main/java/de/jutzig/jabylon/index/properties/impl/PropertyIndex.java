@@ -35,7 +35,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 		writes = new ArrayBlockingQueue<DocumentTuple>(50);
 	}
 
-	private IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
+	protected IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 
 		return new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_29), MaxFieldLength.UNLIMITED);

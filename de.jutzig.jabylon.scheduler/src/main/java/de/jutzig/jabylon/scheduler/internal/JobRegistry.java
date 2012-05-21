@@ -56,7 +56,7 @@ public class JobRegistry {
 			if (active) {
 				CronTrigger trigger = createSchedule(detail, node, iConfigurationElement);
 				trigger.getJobDataMap().put(JabylonJob.ELEMENT_KEY, iConfigurationElement);
-
+				trigger.getJobDataMap().put(JabylonJob.CONNECTOR_KEY, SchedulerActivator.getRepositoryConnector());
 				scheduler.addJob(detail, true);
 				scheduler.scheduleJob(trigger);
 			}

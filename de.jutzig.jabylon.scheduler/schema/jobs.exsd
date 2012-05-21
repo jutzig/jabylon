@@ -82,7 +82,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":java.lang.Runnable"/>
+                  <meta.attribute kind="java" basedOn=":de.jutzig.jabylon.scheduler.JobExecution"/>
                </appinfo>
             </annotation>
          </attribute>

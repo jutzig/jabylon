@@ -10,6 +10,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.UnableToInterruptJobException;
 
+import de.jutzig.jabylon.scheduler.JobExecution;
+
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
@@ -17,8 +19,8 @@ import org.quartz.UnableToInterruptJobException;
 public class JabylonJob implements InterruptableJob {
 
 	private Thread thread;
-	private static final String RUNNABLE_KEY = "runnable";
 	public static final String ELEMENT_KEY = "configurationElement";
+	public static final String CONNECTOR_KEY = "repository.connector";
 	
 	/* (non-Javadoc)
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
@@ -27,13 +29,20 @@ public class JabylonJob implements InterruptableJob {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		this.thread = Thread.currentThread();
 		IConfigurationElement element = (IConfigurationElement) context.getMergedJobDataMap().get(ELEMENT_KEY);
-		Runnable runnable;
+		JobExecution runnable;
 		try {
-			runnable = (Runnable) element.createExecutableExtension("class");
+			runnable = (JobExecution) element.createExecutableExtension("class");
 		} catch (CoreException e) {
-			throw new JobExecutionException(e);
+			//no point in refiring if the class cannot be instantiated
+			JobExecutionException exception = new JobExecutionException(e,false);
+			exception.setUnscheduleFiringTrigger(true);
+			throw exception;
 		}
-		runnable.run();
+		try {
+			runnable.run(context.getMergedJobDataMap().getWrappedMap());
+		} catch (Exception e) {
+			throw new JobExecutionException(e,true);
+		}
 
 	}
 
