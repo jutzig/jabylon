@@ -22,6 +22,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -120,20 +121,22 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 		addUser.setWidth("280px");
 		final Form addUserForm = new Form();
 
-		User user = UsersFactory.eINSTANCE.createUser();
-		user.setName("<Name>");
-		user.setPassword("");
-
-		addUserForm.setItemDataSource(new BeanItem<User>(user));
 		addUserForm.setVisibleItemProperties(new Object[]{"name", "password"});
 		addUserForm.setFormFieldFactory(new FormFieldFactory() {
 			@Override
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				if(propertyId.equals("password"))
-					return new PasswordField("Password");
+					return new PasswordField("Password:");
+				else if(propertyId.equals("name"))
+					return new TextField("Name:");
 				return null;
 			}
 		});
+
+		User user = UsersFactory.eINSTANCE.createUser();
+		user.setName("<Name>");
+		user.setPassword("");
+		addUserForm.setItemDataSource(new BeanItem<User>(user));
 
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponent(addUserForm);
