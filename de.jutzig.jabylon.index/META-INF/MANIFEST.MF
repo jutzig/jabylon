@@ -4,17 +4,7 @@ Bundle-Name: Index
 Bundle-SymbolicName: de.jutzig.jabylon.index;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.apache.lucene;version="2.9.1",
- org.apache.lucene.analysis;version="2.9.1",
- org.apache.lucene.analysis.query;version="2.9.1",
- org.apache.lucene.analysis.standard;version="2.9.1",
- org.apache.lucene.document;version="2.9.1",
- org.apache.lucene.index;version="2.9.1",
- org.apache.lucene.queryParser;version="2.9.1",
- org.apache.lucene.search;version="2.9.1",
- org.apache.lucene.store;version="2.9.1",
- org.apache.lucene.util;version="2.9.1",
- org.eclipse.core.runtime;version="3.4.0",
+Import-Package: org.eclipse.core.runtime;version="3.4.0",
  org.eclipse.core.runtime.jobs,
  org.osgi.framework;version="1.6.0"
 Require-Bundle: de.jutzig.jabylon.properties;bundle-version="1.0.0",
@@ -23,7 +13,12 @@ Require-Bundle: de.jutzig.jabylon.properties;bundle-version="1.0.0",
  org.eclipse.emf.cdo;bundle-version="4.0.1",
  de.jutzig.jabylon.scheduler;bundle-version="1.0.0",
  de.jutzig.jabylon.cdo.connector;bundle-version="1.0.0",
- org.eclipse.emf.cdo.net4j;bundle-version="4.0.1"
+ org.eclipse.emf.cdo.net4j;bundle-version="4.0.1",
+ org.apache.lucene;bundle-version="2.9.1",
+ org.apache.lucene.analysis;bundle-version="2.9.1",
+ org.apache.lucene.core;bundle-version="2.9.1",
+ org.apache.lucene.misc;bundle-version="2.9.1",
+ org.apache.lucene.queries;bundle-version="2.9.1"
 Bundle-Activator: de.jutzig.jabylon.index.properties.IndexActivator
 Service-Component: OSGI-INF/indexer.xml, OSGI-INF/queryservice.xml
 Export-Package: de.jutzig.jabylon.index.properties
