@@ -8,7 +8,9 @@
 
 	<properties>
 		<tycho-version>0.14.1</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
 	<repositories>
 		<repository>
 			<id>helios</id>
@@ -21,7 +23,6 @@
 			<url>http://svogt.github.com/jabylon/update-site/</url>
 		</repository>
 	</repositories>
-
 
 	<build>
 		<plugins>
