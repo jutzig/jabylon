@@ -5,7 +5,7 @@
 
 
 
-    <localRepository>$OPENSHIFT_DATA_DIR/m2/repository</localRepository>
+    <localRepository>/var/lib/stickshift/fa692f1d82404c68bb7d017b1da9c547/slave/data/m2/repository</localRepository>
 
 
 </settings>
