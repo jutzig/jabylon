@@ -3,16 +3,18 @@
 
 <product name="%product.name" uid="jabylon" id="org.eclipse.emf.cdo.server.product" application="org.eclipse.emf.cdo.server.app" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
       <programArgs>-consoleLog -console</programArgs>
-      <vmArgs>-XX:MaxPermSize=256m -Xms40m -Xmx768m  -Dorg.eclipse.equinox.http.jetty.http.port=8080</vmArgs>
+      <vmArgs>-XX:MaxPermSize=256m -Xms40m -Xmx768m  -Dorg.eclipse.equinox.http.jetty.http.port=8080 -Declipse.ignoreApp -Dosgi.noShutdown</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
    <windowImages/>
+
 
    <launcher>
       <solaris/>
@@ -21,10 +23,15 @@
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
+
    <plugins>
+      <plugin id="ch.qos.logback.classic"/>
+      <plugin id="ch.qos.logback.core"/>
+      <plugin id="ch.qos.logback.slf4j" fragment="true"/>
       <plugin id="com.google.collect"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.jcraft.jsch"/>
@@ -35,6 +42,7 @@
       <plugin id="de.jutzig.jabylon.properties"/>
       <plugin id="de.jutzig.jabylon.resources"/>
       <plugin id="de.jutzig.jabylon.review.standard"/>
+      <plugin id="de.jutzig.jabylon.scheduler"/>
       <plugin id="de.jutzig.jabylon.security"/>
       <plugin id="de.jutzig.jabylon.team.git"/>
       <plugin id="de.jutzig.jabylon.ui"/>
@@ -94,6 +102,7 @@
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.mortbay.jetty.server"/>
       <plugin id="org.mortbay.jetty.util"/>
+      <plugin id="org.slf4j.api"/>
       <plugin id="org.vaadin.osgi"/>
       <plugin id="org.vaadin.osgi.staticres"/>
    </plugins>
