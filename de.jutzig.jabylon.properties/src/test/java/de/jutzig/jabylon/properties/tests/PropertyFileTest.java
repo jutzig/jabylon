@@ -7,7 +7,9 @@
 package de.jutzig.jabylon.properties.tests;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 
 import junit.framework.TestCase;
 
@@ -102,12 +104,16 @@ public class PropertyFileTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.PropertyFile#getProperty(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetProperty__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertNull(getFixture().getProperty(null));
+		assertNull(getFixture().getProperty("foo"));
+		
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("foo");
+		getFixture().getProperties().add(property);
+		assertSame(property, getFixture().getProperty("foo"));
 	}
 
 	public void testDummy()

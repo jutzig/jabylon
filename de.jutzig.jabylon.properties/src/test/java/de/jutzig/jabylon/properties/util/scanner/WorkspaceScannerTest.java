@@ -40,11 +40,13 @@ public class WorkspaceScannerTest {
 				
 			}
 		}, masterVersion, PropertiesFactory.eINSTANCE.createScanConfiguration());
-		assertEquals(3,filenames.size());
 		int index = 0;
+		assertEquals("messages.properties", filenames.get(index++));
+		assertEquals("messages2.properties", filenames.get(index++));
 		assertEquals("plugin.properties", filenames.get(index++));
 		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals("wiki_example.properties", filenames.get(index++));
+		assertEquals(5,filenames.size());
 	}
 	
 	@Test
@@ -70,10 +72,12 @@ public class WorkspaceScannerTest {
 				
 			}
 		}, masterVersion, configuration);
-		assertEquals(2,filenames.size());
 		int index = 0;
+		assertEquals("messages.properties", filenames.get(index++));
+		assertEquals("messages2.properties", filenames.get(index++));
 		assertEquals("plugin.properties", filenames.get(index++));
 		assertEquals("messages.properties", filenames.get(index++));
+		assertEquals(4,filenames.size());
 	}
 	
 	@Test

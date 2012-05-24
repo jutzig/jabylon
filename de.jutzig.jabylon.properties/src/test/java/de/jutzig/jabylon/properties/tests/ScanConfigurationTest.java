@@ -6,6 +6,8 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import org.junit.Assert;
+
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 
@@ -102,12 +104,16 @@ public class ScanConfigurationTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getExcludes()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetExcludes() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertEquals(0, getFixture().getExcludes().size());
+		
+		getFixture().setExclude("A\nB\nC");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
+		
+		getFixture().setExclude("A\nB\nC\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
 	}
 
 	/**
@@ -115,12 +121,18 @@ public class ScanConfigurationTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getIncludes()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetIncludes() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		
+		assertEquals(1, getFixture().getIncludes().size());
+		Assert.assertArrayEquals(new String[]{"**/*.properties"}, getFixture().getIncludes().toArray(new String[0]));
+		
+		getFixture().setInclude("A\nB\nC");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
+		
+		getFixture().setInclude("A\nB\nC\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
 	}
 
 } //ScanConfigurationTest
