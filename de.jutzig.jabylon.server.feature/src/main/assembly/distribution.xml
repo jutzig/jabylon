@@ -9,11 +9,13 @@
     <file>
       <source>rootfiles/jabylon.sh</source>
       <outputDirectory>/</outputDirectory>
+      <fileMode>774</fileMode>
     </file>
   </files>
   <fileSets>
   	<fileSet>
   		<directory>target/site</directory>
+  		<outputDirectory>/</outputDirectory>
   		<includes>
   			<include>plugins/*</include>
   			<include>features/*</include>
