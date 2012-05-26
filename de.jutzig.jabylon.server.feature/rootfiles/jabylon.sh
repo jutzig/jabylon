@@ -3,9 +3,12 @@
 
 pidfile=jabylon.pid
 
-VMARGS="-XX:MaxPermSize=256m -Xms40m -Xmx768m -Dorg.eclipse.equinox.http.jetty.http.port=8080 -Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.instance.area=$2"
+VMARGS="-XX:MaxPermSize=100m -Xms40m -Xmx256m -Declipse.ignoreApp=true -Dosgi.noShutdown=true"
 #SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+DATA="workspace"
+PORT="8080"
+HOST="0.0.0.0"
 
 usage()
 {
@@ -19,16 +22,29 @@ start()
 		exit 1
 	fi
        	echo "Starting Jabylon"
+    VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.host=${HOST}";
+    VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
+    VMARGS="${VMARGS} -Dosgi.instance.area=${DATA}"       	
 	PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar"
 	nohup ${PROGRAM} > wrapper.log 2>&1 &
 	PID=$!
 	echo $PID > "$pidfile"
-	echo "Jabylon running as $PID"
+	echo "Jabylon running at port ${PORT} (PID=${PID})"
 }
 
-if [ $# -gt 0 ]; then	
+
+while [ "$1" != "" ]; do
     case $1 in
-        start )			start
+        -d | --data )           shift
+                                DATA=$1
+                                ;;
+        -h | --host )    		shift
+        						HOST=$1
+                                ;;
+        -p | --port )           shift
+        						PORT=$1
+                                ;;
+        start )					start
                                 ;;
         stop )	pid2kill=`cat $pidfile`
 				echo "stopping Jabylon"
@@ -44,9 +60,8 @@ if [ $# -gt 0 ]; then
 				$PROGRAM
                                 ;;
         * )                     usage
-                                exit 1
-    esac  
-else
-    usage
-    exit 1	
-fi
+                                exit 1                                
+    esac
+    shift
+done
+
