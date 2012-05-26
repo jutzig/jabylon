@@ -65,6 +65,8 @@ public class JobRegistry {
 
 	private CronTrigger createSchedule(JobDetail detail, Preferences prefs, IConfigurationElement element) {
 		String cron = prefs.get(KEY_SCHEDULE, element.getAttribute("defaultSchedule"));
+		if(cron==null || cron.trim().isEmpty())
+			cron = "0 0 0 * * ?";
 		return TriggerBuilder.newTrigger().forJob(detail).startNow().withIdentity("trigger"+element.getAttribute("id")).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
 
 	}
