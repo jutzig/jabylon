@@ -30,17 +30,17 @@ if [ $# -gt 0 ]; then
     case $1 in
         start )			start
                                 ;;
-        stop )    		pid2kill=`cat $pidfile`
+        stop )	pid2kill=`cat $pidfile`
+				echo "stopping Jabylon"
 				kill -9 $pid2kill
-				echo "shutting down Jabylon"
+				wait $pid2kill
+				echo "Jabylon stopped"
 				rm $pidfile
                                 ;;
         console )           	
 				VMARGS="${VMARGS} -Dosgi.console=true -Declipse.consoleLog=true"
-				echo "Vmargs: ${VMARGS}"
-			       	echo "Starting Jabylon"
+			    echo "Starting Jabylon"
 				PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar"
-				echo ${PROGRAM}
 				$PROGRAM
                                 ;;
         * )                     usage
