@@ -30,7 +30,9 @@ import org.eclipse.net4j.jvm.JVMUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -65,6 +67,8 @@ public class Activator extends Plugin {
 	private IJVMAcceptor acceptor = null;
 	private IRepository repository = null;
 
+	private boolean needsShutdown;
+	
 	/**
 	 * The constructor
 	 */
@@ -88,6 +92,8 @@ public class Activator extends Plugin {
 			transaction.close();
 			session.close();
 		}
+		needsShutdown=true;
+		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
 		
 	}
 
@@ -248,13 +254,12 @@ public class Activator extends Plugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-
+		needsShutdown = false;
 		if (acceptor != null)
 			LifecycleUtil.deactivate(acceptor);
 
 		if (repository != null)
 			LifecycleUtil.deactivate(repository);
-
 		super.stop(context);
 	}
 
@@ -291,5 +296,23 @@ public class Activator extends Plugin {
 		mappingStrategy.setStore(store);
 
 		return store;
+	}
+	
+	class ShutdownThread extends Thread{
+		@Override
+		public void run() {
+			if(needsShutdown && plugin!=null)
+			{
+				BundleContext context = getBundle().getBundleContext();
+				Bundle bundle = context.getBundle(0); //system bundle
+				try {
+					getBundle().stop();
+					bundle.stop();
+				} catch (BundleException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
