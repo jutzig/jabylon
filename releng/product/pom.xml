@@ -1,41 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.jutzig.jabylon</artifactId>
-	<packaging>eclipse-repository</packaging>
-
-	<parent>
-		<groupId>de.jutzig.jabylon</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<artifactId>jabylon-parent</artifactId>
-		<relativePath>../parent</relativePath>
-	</parent>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-p2-director-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<executions>
-					<execution>
-						<id>materialize-products</id>
-						<goals>
-							<goal>materialize-products</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>archive-products</id>
-						<goals>
-							<goal>archive-products</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
-
-
-
+	<groupId>de.jutzig.jabylon</groupId>
+	<artifactId>jabylon.distribution</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0.0-SNAPHOT</version>
+	
+	<modules>
+		<module>../../de.jutzig.jabylon.server.feature</module>
+		<module>definition</module>
+	</modules>
 </project>

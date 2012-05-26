@@ -13,14 +13,15 @@
 
 	<build>
 		<plugins>
-<!-- 			<plugin>
+ 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-packaging-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<deployableFeature>true</deployableFeature>
+					<archiveSite>true</archiveSite>
+					<!-- <deployableFeature>true</deployableFeature> -->
 				</configuration>
-			</plugin> -->
+			</plugin> 
 
 <!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
