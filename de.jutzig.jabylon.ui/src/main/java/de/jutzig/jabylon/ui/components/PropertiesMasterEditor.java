@@ -5,7 +5,6 @@ import org.eclipse.emf.cdo.util.CommitException;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.ui.Button;

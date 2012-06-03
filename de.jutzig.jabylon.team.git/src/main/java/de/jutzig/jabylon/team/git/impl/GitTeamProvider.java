@@ -32,6 +32,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.osgi.service.prefs.Preferences;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
@@ -39,7 +40,6 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.team.git.impl.util.ProgressMonitorWrapper;
 import de.jutzig.jabylon.ui.team.TeamProvider;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class GitTeamProvider implements TeamProvider {
 

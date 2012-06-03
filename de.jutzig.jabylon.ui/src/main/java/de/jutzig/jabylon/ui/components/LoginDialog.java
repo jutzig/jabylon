@@ -11,7 +11,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 

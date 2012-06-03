@@ -11,13 +11,14 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -31,7 +32,6 @@ import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

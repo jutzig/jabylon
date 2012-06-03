@@ -1,8 +1,6 @@
 package de.jutzig.jabylon.ui.breadcrumb;
 
 import java.util.Collection;
-import java.util.Deque;
-import java.util.List;
 
 public interface BreadCrumb {
 	

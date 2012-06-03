@@ -24,13 +24,13 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.util.DelegatingPreferences;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 public class DynamicConfigPage implements CrumbTrail {
 
@@ -114,10 +114,14 @@ public class DynamicConfigPage implements CrumbTrail {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				for (Entry<String, ConfigSection> entry : sections.entrySet()) {
-					entry.getValue().commit(rootNode);
+					entry.getValue().apply(rootNode);
 				}
 				try {
 					rootNode.flush();
+					for (Entry<String, ConfigSection> entry : sections.entrySet()) {
+						entry.getValue().commit(rootNode);
+					}
+					
 					transaction.commit();
 					MainDashboard.getCurrent().getBreadcrumbs().goBack();
 //					layout.getWindow().showNotification("Saved");

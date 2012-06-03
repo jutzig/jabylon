@@ -10,7 +10,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,9 +29,9 @@ import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -44,7 +43,6 @@ import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.components.EditableTable;
 import de.jutzig.jabylon.ui.components.ProgressMonitorDialog;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
-import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
@@ -53,7 +51,6 @@ import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.team.TeamProvider;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 /**

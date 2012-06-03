@@ -6,6 +6,7 @@
       <job
             activeByDefault="true"
             class="de.jutzig.jabylon.index.properties.jobs.impl.ReorgIndexJob"
+            description="Rebuilds the lucene index for full text search"
             id="de.jutzig.jabylon.index.reorg"
             name="Index Reorg">
       </job>

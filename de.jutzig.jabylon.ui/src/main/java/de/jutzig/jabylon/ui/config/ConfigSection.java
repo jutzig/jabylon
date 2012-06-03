@@ -10,6 +10,8 @@ public interface ConfigSection {
 	
 	void init(Object input, Preferences config);
 	
+	void apply(Preferences config);
+	
 	void commit(Preferences config);
 	
 }

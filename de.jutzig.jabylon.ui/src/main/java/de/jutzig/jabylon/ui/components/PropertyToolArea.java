@@ -24,13 +24,13 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.TabSheet.Tab;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
 import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

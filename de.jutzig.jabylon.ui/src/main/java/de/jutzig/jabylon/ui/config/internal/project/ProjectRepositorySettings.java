@@ -9,19 +9,16 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.Activator;
-import de.jutzig.jabylon.ui.beans.ProjectBean;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.EObjectItem;

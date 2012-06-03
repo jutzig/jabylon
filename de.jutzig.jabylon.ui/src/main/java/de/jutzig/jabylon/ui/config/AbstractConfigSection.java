@@ -26,4 +26,10 @@ public abstract class AbstractConfigSection<T> implements ConfigSection{
 	public T getDomainObject() {
 		return domainObject;
 	}
+	
+	@Override
+	public void apply(Preferences config) {
+		//base implementation does nothing
+		
+	}
 }

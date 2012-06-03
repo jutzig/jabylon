@@ -13,12 +13,12 @@ import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.PreferencesItem;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

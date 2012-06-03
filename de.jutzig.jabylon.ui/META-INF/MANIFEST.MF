@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  org.apache.lucene;bundle-version="2.9.1",
  org.eclipse.equinox.security;bundle-version="1.1.1",
  org.apache.lucene.queries;bundle-version="2.9.1",
- org.apache.lucene.misc;bundle-version="2.9.1"
+ org.apache.lucene.misc;bundle-version="2.9.1",
+ de.jutzig.jabylon.common;bundle-version="1.0.0"
 Bundle-ClassPath: .
 Service-Component: OSGI-INF/main.xml, OSGI-INF/reviewservice.xml
 Export-Package: de.jutzig.jabylon.ui.config,

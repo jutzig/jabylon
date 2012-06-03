@@ -19,6 +19,7 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.notify.Notification;
 import org.osgi.service.prefs.Preferences;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -27,7 +28,6 @@ import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.changes.AbstractCoalescingListener;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

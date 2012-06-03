@@ -7,7 +7,6 @@ import java.util.Locale;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -16,19 +15,13 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.FormFieldFactory;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
-import de.jutzig.jabylon.cdo.connector.Modification;
-import de.jutzig.jabylon.cdo.connector.TransactionUtil;
-import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
-import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.beans.LocaleBean;
-import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 
 public class NewLocaleForm extends VerticalLayout {
 

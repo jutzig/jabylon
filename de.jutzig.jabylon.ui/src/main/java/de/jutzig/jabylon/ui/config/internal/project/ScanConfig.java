@@ -17,6 +17,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -24,7 +25,6 @@ import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.container.PreferencesItem;
 import de.jutzig.jabylon.ui.resources.ImageConstants;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

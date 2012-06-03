@@ -11,11 +11,13 @@
 		<module>../../de.jutzig.jabylon.auto.translate</module>
 		<module>../../de.jutzig.jabylon.cdo.connector</module>
 		<module>../../de.jutzig.jabylon.cdo.server</module>
+		<module>../../de.jutzig.jabylon.common</module>
 		<module>../../de.jutzig.jabylon.index</module>
 		<module>../../de.jutzig.jabylon.properties</module>
 		<module>../../de.jutzig.jabylon.resources</module>
 		<module>../../de.jutzig.jabylon.review.standard</module>
 		<module>../../de.jutzig.jabylon.scheduler</module>
+		<module>../../de.jutzig.jabylon.scheduler.ui</module>
 		<module>../../de.jutzig.jabylon.security</module>
 		<module>../../de.jutzig.jabylon.team.git</module>
 		<module>../../de.jutzig.jabylon.ui</module>
