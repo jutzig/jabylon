@@ -8,6 +8,6 @@
 	
 	<modules>
 		<module>releng/reactor</module>
-		<module>releng/product</module>
+		<module>releng/product/definition</module>
 	</modules>
 </project>
