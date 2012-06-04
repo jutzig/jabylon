@@ -8,7 +8,7 @@
 	
 	<modules>
 		<module>../parent</module>
-<!-- 		<module>../../de.jutzig.jabylon.auto.translate</module>
+		<module>../../de.jutzig.jabylon.auto.translate</module>
 		<module>../../de.jutzig.jabylon.cdo.connector</module>
 		<module>../../de.jutzig.jabylon.cdo.server</module>
 		<module>../../de.jutzig.jabylon.common</module>
@@ -23,7 +23,7 @@
 		<module>../../de.jutzig.jabylon.ui</module>
 		<module>../../de.jutzig.jabylon.users</module>
 		<module>../../de.jutzig.jabylon.vaadin.style</module>
-		<module>../../de.jutzig.jabylon.server.feature</module> -->
+		<module>../../de.jutzig.jabylon.server.feature</module>
 		<!-- <module>../product</module> -->
 	</modules>
 </project>
