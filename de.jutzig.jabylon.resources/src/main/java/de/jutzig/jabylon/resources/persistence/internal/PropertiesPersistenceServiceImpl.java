@@ -240,7 +240,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	@Override
 	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
 		try {
-			queue.put(new PropertyTuple(descriptor, file, autoTranslate));
+			PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
+			queue.put(new PropertyTuple(adaptedDescriptor, file, autoTranslate));
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
 		}
