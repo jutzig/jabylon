@@ -6,9 +6,10 @@
       <job
             activeByDefault="true"
             class="de.jutzig.jabylon.index.properties.jobs.impl.ReorgIndexJob"
+            defaultSchedule="0 2 0 * * ?"
             description="Rebuilds the lucene index for full text search"
             id="de.jutzig.jabylon.index.reorg"
-            name="Index Reorg">
+            name="Rebuild Index">
       </job>
    </extension>
 
