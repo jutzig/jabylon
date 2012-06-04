@@ -117,7 +117,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 	 */
 	@Override
 	public void commit(Preferences config) {
-		form.commit();
+		
 
 	}
 

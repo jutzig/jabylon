@@ -117,11 +117,13 @@ public class DynamicConfigPage implements CrumbTrail {
 					entry.getValue().apply(rootNode);
 				}
 				try {
+					//flush once, so clients using the preferences during 'commit' see the changes
 					rootNode.flush();
 					for (Entry<String, ConfigSection> entry : sections.entrySet()) {
 						entry.getValue().commit(rootNode);
 					}
-					
+					//flush twice if commit changed something
+					rootNode.flush();
 					transaction.commit();
 					MainDashboard.getCurrent().getBreadcrumbs().goBack();
 //					layout.getWindow().showNotification("Saved");
