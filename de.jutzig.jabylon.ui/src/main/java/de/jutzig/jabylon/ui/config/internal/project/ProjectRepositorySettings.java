@@ -56,10 +56,10 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				if (propertyId == PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER)
 				{
-					NativeSelect select = new NativeSelect("Team Provider");
+					NativeSelect select = new NativeSelect(Messages.getString("ProjectRepositorySettings_SELECT_TEAM_PROVIDER_CAPTION"));
 					IConfigurationElement[] teamProviders = Activator.getDefault().getTeamProviders();
 					for (IConfigurationElement iConfigurationElement : teamProviders) {
-						String name = iConfigurationElement.getAttribute("name");
+						String name = iConfigurationElement.getAttribute("name"); //$NON-NLS-1$
 						select.addItem(name);
 					}
 					
@@ -69,12 +69,12 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 				Field field = super.createField(item, propertyId, uiContext);
 				if(propertyId == PropertiesPackage.Literals.PROJECT__REPOSITORY_URI)
 				{
-					((TextField)field).setInputPrompt("https://github.org/example.git");
-					field.setCaption("Repository URI");
+					((TextField)field).setInputPrompt(Messages.getString("ProjectRepositorySettings_REPOSITORY_URI_TEXTFIELD_PROMPT"));
+					field.setCaption(Messages.getString("ProjectRepositorySettings_REPOSITORY_URI_TEXTFIELD_CAPTION"));
 				}
 				if (field instanceof TextField) {
 					TextField text = (TextField) field;
-					text.setNullRepresentation("");
+					text.setNullRepresentation(""); //$NON-NLS-1$
 					text.setColumns(30);
 				}
 

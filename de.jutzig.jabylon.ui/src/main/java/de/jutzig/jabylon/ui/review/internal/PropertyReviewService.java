@@ -46,8 +46,8 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		IConfigurationElement[] elements = Activator.getDefault().getReviewParticipants();
 		for (IConfigurationElement element : elements) {
 			try {
-				String id = element.getAttribute("id");
-				ReviewParticipant participant = (ReviewParticipant) element.createExecutableExtension("class");
+				String id = element.getAttribute("id"); //$NON-NLS-1$
+				ReviewParticipant participant = (ReviewParticipant) element.createExecutableExtension("class"); //$NON-NLS-1$
 				map.put(id, participant);
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block

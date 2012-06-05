@@ -68,7 +68,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 
 			}
 		});
-		filterBox.setInputPrompt("Filter");
+		filterBox.setInputPrompt(Messages.getString("PropertiesMasterEditor_FILTER_INPUT_PROMPT")); //$NON-NLS-1$
 		layout.addComponent(filterBox);
 		layout.setExpandRatio(filterBox, 0);
 
@@ -76,7 +76,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 			@Override
 			protected void addPressed() {
 				Property property = PropertiesFactory.eINSTANCE.createProperty();
-				property.setKey("enter.key");
+				property.setKey("enter.key"); //$NON-NLS-1$
 				source.getProperties().add(property);
 				
 			}
@@ -120,7 +120,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
-		table.setColumnHeaders(new String[] { "Key", "Value"/*, "Problems" */});
+		table.setColumnHeaders(new String[] { Messages.getString("PropertiesMasterEditor_PROPERTY_KEY_COLUMN_HEADER"), Messages.getString("PropertiesMasterEditor_PROPERTY_VALUE_COLUMN_HEADER")/*, "Problems" */}); //$NON-NLS-1$ //$NON-NLS-2$
 //		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 //		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
 //		table.setColumnExpandRatio("Problems", 0.0f);
@@ -149,7 +149,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 		grid.setSizeFull();
 		grid.setSpacing(true);
 		keyLabel = new TextField();
-		keyLabel.setValue("No Selection");
+		keyLabel.setValue(Messages.getString("PropertiesMasterEditor_NO_PROPERTY_SELECTED_LABEL")); //$NON-NLS-1$
 		keyLabel.setWriteThrough(true);
 		keyLabel.setImmediate(true);
 		keyLabel.addListener((TextChangeListener)this);
@@ -163,8 +163,8 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 		orignalComment = new TextArea();
 		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
-		orignalComment.setNullRepresentation("");
-		orignalComment.setInputPrompt("enter comment");
+		orignalComment.setNullRepresentation(""); //$NON-NLS-1$
+		orignalComment.setInputPrompt(Messages.getString("PropertiesMasterEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
 		orignalComment.addListener((TextChangeListener)this);
 		orignalComment.setWriteThrough(true);
 		orignalComment.setImmediate(true);
@@ -173,11 +173,11 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 		orignal = new TextArea();
 		orignal.setRows(5);
 		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
-		orignal.setInputPrompt("enter value");
+		orignal.setInputPrompt(Messages.getString("PropertiesMasterEditor_VALUE_INPUT_PROMPT")); //$NON-NLS-1$
 		orignal.addListener((TextChangeListener)this);
 		orignal.setImmediate(true);
 		orignal.setWriteThrough(true);
-		orignal.setNullRepresentation("");
+		orignal.setNullRepresentation(""); //$NON-NLS-1$
 		
 		grid.addComponent(orignal,1,0,1,1);
 
@@ -186,7 +186,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 
 		safeButton = new Button();
 		safeButton.setEnabled(false);
-		safeButton.setCaption("Save");
+		safeButton.setCaption(Messages.getString("PropertiesMasterEditor_SAFE_BUTTON_CAPTION")); //$NON-NLS-1$
 		safeButton.addListener(new ClickListener() {
 
 			@Override
@@ -206,7 +206,7 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
 					propertyPersistence.saveProperties(descriptor, source);
 					setDirty(false);
-					layout.getWindow().showNotification("File saved", descriptor.getLocation().lastSegment());
+					layout.getWindow().showNotification(Messages.getString("PropertiesMasterEditor_SAFED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

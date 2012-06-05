@@ -40,7 +40,7 @@ public class PreferencesProperty<T> extends AbstractProperty {
 			return node.getInt(key, (Integer)defaultValue);
 		if(type.isAssignableFrom(Long.class) || type.isAssignableFrom(Long.TYPE))
 			return node.getLong(key, (Long)defaultValue);
-		throw new UnsupportedOperationException(type+" not supported");
+		throw new UnsupportedOperationException(type+" not supported"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class PreferencesProperty<T> extends AbstractProperty {
 		else if(type.isAssignableFrom(Long.class) || type.isAssignableFrom(Long.TYPE))
 			node.putLong(key, (Long)newValue);
 		else
-			throw new UnsupportedOperationException(type+" not supported");
+			throw new UnsupportedOperationException(type+" not supported"); //$NON-NLS-1$
 
 	}
 
@@ -74,7 +74,7 @@ public class PreferencesProperty<T> extends AbstractProperty {
 		else if(type.isAssignableFrom(Boolean.class))
 			node.putBoolean(key, Boolean.valueOf(newValue));
 		else if(type.isAssignableFrom(byte[].class))
-			node.putByteArray(key, newValue.getBytes(Charset.forName("UTF-8")));
+			node.putByteArray(key, newValue.getBytes(Charset.forName("UTF-8"))); //$NON-NLS-1$
 		else if(type.isAssignableFrom(Double.class))
 			node.putDouble(key, Double.valueOf(newValue));
 		else if(type.isAssignableFrom(Float.class))
@@ -84,7 +84,7 @@ public class PreferencesProperty<T> extends AbstractProperty {
 		else if(type.isAssignableFrom(Long.class))
 			node.putLong(key, Long.valueOf(newValue));
 		else
-			throw new UnsupportedOperationException(type+" not supported");
+			throw new UnsupportedOperationException(type+" not supported"); //$NON-NLS-1$
 	}
 	
 	

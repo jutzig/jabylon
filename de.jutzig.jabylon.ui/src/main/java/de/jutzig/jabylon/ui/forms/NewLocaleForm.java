@@ -50,16 +50,16 @@ public class NewLocaleForm extends VerticalLayout {
 
         		Field field = super.createField(item, propertyId, uiContext);
         		field.addValidator(new ProjectLocaleValidator());
-        		if(propertyId.equals("language"))
+        		if(propertyId.equals("language")) //$NON-NLS-1$
         			field.setRequired(true);
         		return field;
         	}
 		});
         // Determines which properties are shown, and in which order:
         List<String> properties = new ArrayList<String>(3);
-        properties.add("language");
-        properties.add("country");
-        properties.add("variant");
+        properties.add("language"); //$NON-NLS-1$
+        properties.add("country"); //$NON-NLS-1$
+        properties.add("variant"); //$NON-NLS-1$
         form.setVisibleItemProperties(properties);
 
         // Add form to layout
@@ -68,7 +68,7 @@ public class NewLocaleForm extends VerticalLayout {
         // The cancel / apply buttons
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.setSpacing(true);
-        Button discardChanges = new Button("Cancel",
+        Button discardChanges = new Button(Messages.getString("NewLocaleForm_CANCEL_BUTTON"),
                 new Button.ClickListener() {
                     public void buttonClick(ClickEvent event) {
                         form.discard();
@@ -78,7 +78,7 @@ public class NewLocaleForm extends VerticalLayout {
         buttons.addComponent(discardChanges);
         buttons.setComponentAlignment(discardChanges, Alignment.MIDDLE_LEFT);
 
-        Button apply = new Button("Create", new Button.ClickListener() {
+        Button apply = new Button(Messages.getString("NewLocaleForm_CREATE_LOCALE_BUTTON"), new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 try {
                 	if(!form.isValid())

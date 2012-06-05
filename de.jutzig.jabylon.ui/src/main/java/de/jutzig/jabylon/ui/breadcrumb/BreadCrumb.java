@@ -16,7 +16,7 @@ public interface BreadCrumb {
 	
 	CrumbTrail currentTrail();
 	
-	String CONFIG = "|config";
+	String CONFIG = "|config"; //$NON-NLS-1$
 	
 	void addCrumbListener(CrumbListener listener);
 	

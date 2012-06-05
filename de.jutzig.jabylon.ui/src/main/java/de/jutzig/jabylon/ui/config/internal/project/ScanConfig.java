@@ -45,7 +45,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 		layout.addComponent(form);
 
 		Button scanProject = new Button();
-		scanProject.setCaption("Full Scan");
+		scanProject.setCaption(Messages.getString("ScanConfig_FULL_SCAN_BUTTON"));
 		scanProject.setIcon(ImageConstants.IMAGE_PROJECT_SCAN);
 		scanProject.addListener(new ClickListener() {
 
@@ -60,7 +60,7 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 				
 				//TODO: remove this
 				
-				form.getWindow().showNotification("Scan complete");
+				form.getWindow().showNotification(Messages.getString("ScanConfig_SCAN_COMPLETED_NOTIFICATION"));
 			}
 
 		});
@@ -81,29 +81,29 @@ public class ScanConfig extends AbstractConfigSection<Project> {
 				{
 					TextArea area = new TextArea();
 					area.setCaption(createCaptionByPropertyId(propertyId));
-					area.setDescription("ANT Fileset Pattern. Seperate includes with a linefeed");
+					area.setDescription(Messages.getString("ScanConfig_INCLUDE_FILTER_TEXTAREA_DESCRIPTION"));
 					area.setRows(3);
 					area.setColumns(30);
-					area.setNullRepresentation("");
+					area.setNullRepresentation(""); //$NON-NLS-1$
 					return area;
 				}
 				if(propertyId==PreferencesUtil.SCAN_CONFIG_EXCLUDE)
 				{
 					TextArea area = new TextArea();
 					area.setCaption(createCaptionByPropertyId(propertyId));
-					area.setDescription("ANT Fileset Pattern. Seperate excludes with a linefeed");
+					area.setDescription(Messages.getString("ScanConfig_EXCLUDE_FILTER_TEXTAREA_DESCRIPTION"));
 					area.setRows(3);
 					area.setColumns(30);
-					area.setNullRepresentation("");
+					area.setNullRepresentation(""); //$NON-NLS-1$
 					return area;
 				}
 				if(propertyId==PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE)
 				{
 					TextField field = new TextField();
-					field.setCaption("Master Locale");
+					field.setCaption(Messages.getString("ScanConfig_MASTER_LOCALE_TEXT_FIELD"));
 					field.setColumns(30);
-					field.setNullRepresentation("");
-					field.setDescription("Leave empty if you follow the standard java pattern of 'messages.properties'");
+					field.setNullRepresentation(""); //$NON-NLS-1$
+					field.setDescription(Messages.getString("ScanConfig_MASTER_LOCALE_TEXT_FIELD_DESCRIPTION"));
 					return field;
 				}
 				return super.createField(item, propertyId, uiContext);

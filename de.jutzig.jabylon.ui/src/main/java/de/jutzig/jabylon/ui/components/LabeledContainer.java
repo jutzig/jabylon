@@ -55,7 +55,7 @@ public class LabeledContainer extends CustomComponent implements ComponentContai
 	private VerticalLayout buildMainLayout() {
 		// common part: create layout
 		mainLayout = new VerticalLayout();
-		mainLayout.setStyleName("jabylon-container");
+		mainLayout.setStyleName("jabylon-container"); //$NON-NLS-1$
 		mainLayout.setImmediate(false);
 //		mainLayout.setWidth("100%");
 //		mainLayout.setHeight("100%");
@@ -67,10 +67,10 @@ public class LabeledContainer extends CustomComponent implements ComponentContai
 
 		// header
 		header = new HorizontalLayout();
-		header.setStyleName("jabylon-container-header");
+		header.setStyleName("jabylon-container-header"); //$NON-NLS-1$
 		header.setImmediate(false);
-		header.setWidth("100.0%");
-		header.setHeight("-1px");
+		header.setWidth("100.0%"); //$NON-NLS-1$
+		header.setHeight("-1px"); //$NON-NLS-1$
 		header.setMargin(false);
 		mainLayout.addComponent(header);
 
@@ -86,16 +86,16 @@ public class LabeledContainer extends CustomComponent implements ComponentContai
 	private Panel buildContentPanel() {
 		// common part: create layout
 		contentPanel = new Panel();
-		contentPanel.setStyleName("jabylon-container-content");
+		contentPanel.setStyleName("jabylon-container-content"); //$NON-NLS-1$
 		contentPanel.setImmediate(false);
-		contentPanel.setWidth("100.0%");
-		contentPanel.setHeight("100.0%");
+		contentPanel.setWidth("100.0%"); //$NON-NLS-1$
+		contentPanel.setHeight("100.0%"); //$NON-NLS-1$
 
 		// content
 		content = new VerticalLayout();
 		content.setImmediate(false);
-		content.setWidth("100.0%");
-		content.setHeight("100.0%");
+		content.setWidth("100.0%"); //$NON-NLS-1$
+		content.setHeight("100.0%"); //$NON-NLS-1$
 		content.setMargin(false);
 		contentPanel.setContent(content);
 

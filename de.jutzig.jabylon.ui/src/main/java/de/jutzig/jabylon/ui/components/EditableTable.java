@@ -45,11 +45,11 @@ public class EditableTable extends HorizontalLayout implements ClickListener{
 		layout.setExpandRatio(table, 1);
 
 		VerticalLayout buttonLayout = new VerticalLayout();
-		addButton = new Button("Add");
+		addButton = new Button(Messages.getString("EditableTable_ADD_BUTTON")); //$NON-NLS-1$
 		addButton.setWidth(100, UNITS_PERCENTAGE);
 		addButton.addListener(this);
 		buttonLayout.addComponent(addButton);
-		removeButton = new Button("Remove");
+		removeButton = new Button(Messages.getString("EditableTable_REMOVE_BUTTON")); //$NON-NLS-1$
 		removeButton.addListener(this);
 		removeButton.setWidth(100, UNITS_PERCENTAGE);
 		buttonLayout.addComponent(removeButton);
@@ -64,7 +64,7 @@ public class EditableTable extends HorizontalLayout implements ClickListener{
 		
 		if(editable)
 		{
-			edit = new CheckBox("Edit");
+			edit = new CheckBox(Messages.getString("EditableTable_EDIT_BUTTON")); //$NON-NLS-1$
 			edit.addListener(this);
 			edit.setImmediate(true);
 

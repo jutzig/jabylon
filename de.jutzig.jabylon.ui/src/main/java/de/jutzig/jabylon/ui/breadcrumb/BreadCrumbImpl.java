@@ -72,7 +72,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 
 		search = new TextField();
 		search.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
-		final ShortcutListener actionSearch = new ShortcutListener("Default key", ShortcutAction.KeyCode.ENTER, null) {
+		final ShortcutListener actionSearch = new ShortcutListener("Default key", ShortcutAction.KeyCode.ENTER, null) { //$NON-NLS-1$
 			@Override
 			public void handleAction(Object sender, Object target) {
 				if (currentTrail() instanceof SearchResultPage) {
@@ -85,14 +85,14 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 
 		panel.addAction(actionSearch);
 		search.setWidth(200, UNITS_PIXELS);
-		search.setInputPrompt("search");
+		search.setInputPrompt(Messages.getString("BreadCrumbImpl_SEARCH_INPUT_PROMPT"));
 		searchArea.addComponent(search);
 		
 		
 		mainLayout.addComponent(panel);
 		mainLayout.setComponentAlignment(panel, Alignment.MIDDLE_RIGHT);
 		setCompositionRoot(mainLayout);
-		setStyleName("breadcrumbs");
+		setStyleName("breadcrumbs"); //$NON-NLS-1$
 		setPath((String[]) null);
 	}
 
@@ -121,7 +121,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 
 	private Button addEntry(CrumbTrail trail) {
 		if (!parts.isEmpty()) {
-			layout.addComponent(new Label("/", Label.CONTENT_XHTML));
+			layout.addComponent(new Label("/", Label.CONTENT_XHTML)); //$NON-NLS-1$
 		}
 		Button link = new Button();
 		link.setCaption(trail.getTrailCaption());
@@ -155,9 +155,9 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		CrumbTrail trail = currentCrumb();
 		if (trail.isDirty()) {
 			final ConfirmationDialog subwindow = new ConfirmationDialog(getWindow(),
-					"There are unsafed modifications that will be lost if you proceed.\n Do still you want to proceed?");
+					Messages.getString("BreadCrumbImpl_UNSAFED_MODIFCATIONS_MESSAGE"));
 			subwindow.setProceedAction(action);
-			subwindow.setCaption("Unsafed Changes");
+			subwindow.setCaption(Messages.getString("BreadCrumbImpl_UNSAFED_MODIFICATIONS_TITLE"));
 			getWindow().addWindow(subwindow);
 			return true;
 		}
@@ -299,10 +299,10 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 		
 		StringBuilder fragment = new StringBuilder();
 		for (String string : segmentList) {
-			string = string.replace("/", "\\");
+			string = string.replace("/", "\\"); //$NON-NLS-1$ //$NON-NLS-2$
 			String encodedFragment = URI.encodeFragment(string, true);
 			fragment.append(string);
-			fragment.append("/");
+			fragment.append("/"); //$NON-NLS-1$
 		}
 		if(fragment.length()>1)
 		{
@@ -314,7 +314,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			fragmentUtil.setFragment(null,false);
 		}
 		
-		String searchInput = "Search";
+		String searchInput = Messages.getString("BreadCrumbImpl_SEARCH_INPUT_PROMPT");
 		if(current!=null)
 		{
 			CDOObject domainObject = current.getDomainObject();
@@ -323,7 +323,7 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 				String segment = resolvable.relativePath().lastSegment();
 				if(segment!=null)
 				{
-					searchInput = MessageFormat.format("Search {0}", segment); 
+					searchInput = MessageFormat.format(Messages.getString("BreadCrumbImpl_SEARCH_INPUT_PROMPT_SCOPED"), segment); 
 				}
 					
 			}
@@ -339,12 +339,12 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			setPath((String[])null);			
 		}
 		else{
-			String[] segments = fragment.split("/");
+			String[] segments = fragment.split("/"); //$NON-NLS-1$
 			for(int i=0;i<segments.length;i++)
 			{
 				String segment = segments[i];
 				segment = URI.decode(segment);
-				segments[i] = segment.replace("\\", "/");
+				segments[i] = segment.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			setPath(segments);			
 		}

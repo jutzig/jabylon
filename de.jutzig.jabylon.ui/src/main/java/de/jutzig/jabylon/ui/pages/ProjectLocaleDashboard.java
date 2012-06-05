@@ -72,7 +72,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	private void createContents(VerticalLayout parent) {
 		buildHeader(parent);
 		Section section = new Section();
-		section.setCaption("Translatable Files");
+		section.setCaption(Messages.getString("ProjectLocaleDashboard_TRANSLATABLE_FILES_SECTION"));
 		final Table table = new Table();
         table.setColumnReorderingAllowed(true);
         table.setColumnCollapsingAllowed(true);
@@ -94,23 +94,23 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
 			}
 		});
-		filterBox.setInputPrompt("Filter");
+		filterBox.setInputPrompt(Messages.getString("ProjectLocaleDashboard_FILTER_PROMPT"));
 		
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSizeFull();
-		table.addContainerProperty("location", SortableButton.class, null);
-		table.addContainerProperty("total", Integer.class, 0);
-		table.addContainerProperty("translated", Integer.class, 0);
-		table.addContainerProperty("fuzzy", StaticProgressIndicator.class, 0);
+		table.addContainerProperty("location", SortableButton.class, null); //$NON-NLS-1$
+		table.addContainerProperty("total", Integer.class, 0); //$NON-NLS-1$
+		table.addContainerProperty("translated", Integer.class, 0); //$NON-NLS-1$
+		table.addContainerProperty("fuzzy", StaticProgressIndicator.class, 0); //$NON-NLS-1$
 		
-		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
-		table.setColumnWidth("progress", 110);
-		table.setColumnWidth("fuzzy", 110);
+		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null); //$NON-NLS-1$
+		table.setColumnWidth("progress", 110); //$NON-NLS-1$
+		table.setColumnWidth("fuzzy", 110); //$NON-NLS-1$
 
-		table.setColumnAlignment("total", Table.ALIGN_CENTER);
-		table.setColumnAlignment("translated", Table.ALIGN_CENTER);
-		table.setColumnAlignment("fuzzy", Table.ALIGN_CENTER);
-		table.setColumnAlignment("progress", Table.ALIGN_CENTER);
+		table.setColumnAlignment("total", Table.ALIGN_CENTER); //$NON-NLS-1$
+		table.setColumnAlignment("translated", Table.ALIGN_CENTER); //$NON-NLS-1$
+		table.setColumnAlignment("fuzzy", Table.ALIGN_CENTER); //$NON-NLS-1$
+		table.setColumnAlignment("progress", Table.ALIGN_CENTER); //$NON-NLS-1$
 		
 		// table.setVisibleColumns(new Object[]{});
 		// table.setColumnWidth(locale,400);
@@ -138,8 +138,8 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 			table.addItem(new Object[] { fileName, keys, translated, fuzzyIndicator, progress }, entry);
 		}
 
-		table.setColumnHeaders(new String[] { "Location", "Total", "Translated", "Fuzzy", "Completion" });
-		table.setSortContainerPropertyId("location");
+		table.setColumnHeaders(new String[] { Messages.getString("ProjectLocaleDashboard_LOCATION_COLUMN_HEADER"), Messages.getString("ProjectLocaleDashboard_TOTAL_KEYS_COLUMN_HEADER"), Messages.getString("ProjectLocaleDashboard_TRANSLATED_KEYS_COLUMN_HEADER"), Messages.getString("ProjectLocaleDashboard_FUZZY_KEYS_COLUMN_HEADER"), Messages.getString("ProjectLocaleDashboard_COMPLETION_COLUMN_HEADER") });
+		table.setSortContainerPropertyId("location"); //$NON-NLS-1$
 		section.addComponent(table);
 		parent.addComponent(section);
 		HorizontalLayout buttonBar = new HorizontalLayout();
@@ -213,7 +213,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public String getTrailCaption() {
-		return locale.isMaster() ? "Master" : locale.getLocale().getDisplayName();
+		return locale.isMaster() ? "Master" : locale.getLocale().getDisplayName(); //$NON-NLS-1$
 	}
 
 	@Override
@@ -279,10 +279,10 @@ class SaveToArchiveButton extends Link {
 
 	public SaveToArchiveButton(ProjectLocale locale) {
 		super();
-		setCaption("Download Archive");
+		setCaption(Messages.getString("ProjectLocaleDashboard_DOWNLOAD_AS_ARCHIVE_BUTTON"));
 		setIcon(ImageConstants.IMAGE_DOWNLOAD_ARCHIVE);
-		setDescription("Download all translated properties as a zip file");
-		setTargetName("_blank");
+		setDescription(Messages.getString("ProjectLocaleDashboard_DOWNLOAD_AS_ARCHIVE_BUTTON_DESCRIPTION"));
+		setTargetName("_blank"); //$NON-NLS-1$
 		this.locale = locale;
 	}
 
@@ -300,11 +300,11 @@ class SaveToArchiveButton extends Link {
 		};
 
 		String name = locale.getProjectVersion().getProject().getName();
-		name += "_";
+		name += "_"; //$NON-NLS-1$
 		name += locale.getLocale().toString();
-		name += ".zip";
+		name += ".zip"; //$NON-NLS-1$
 		StreamResource resource = new StreamResource(source, name, getApplication());
-		resource.setMIMEType("application/zip");
+		resource.setMIMEType("application/zip"); //$NON-NLS-1$
 		resource.setCacheTime(0);
 		setResource(resource);
 	}
@@ -319,7 +319,7 @@ class SaveToArchiveButton extends Link {
 				if (file.isFile()) {
 					URI fullPath = descriptor.relativePath();
 					String path = fullPath.path();
-					if (path != null && path.startsWith("/"))
+					if (path != null && path.startsWith("/")) //$NON-NLS-1$
 						path = path.substring(1);
 					zip.putNextEntry(new ZipEntry(path));
 					store(file, zip);
@@ -368,7 +368,7 @@ class LocationFilter implements Filter
 
 	@Override
 	public boolean passesFilter(Object itemId, Item item) throws UnsupportedOperationException {
-		Property property = item.getItemProperty("location");
+		Property property = item.getItemProperty("location"); //$NON-NLS-1$
 		Object value = property.getValue();
 		if (value instanceof Button) {
 			Button button = (Button) value;
@@ -381,7 +381,7 @@ class LocationFilter implements Filter
 
 	@Override
 	public boolean appliesToProperty(Object propertyId) {
-		if(propertyId.equals("location"))
+		if(propertyId.equals("location")) //$NON-NLS-1$
 			return true;
 		return false;
 	}

@@ -48,11 +48,11 @@ public class EnabledProjectChecksConfig extends AbstractConfigSection<Project> i
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				Field field = new CheckBox();
 				for (IConfigurationElement participants : reviewParticipants) {
-					String id = participants.getAttribute("id");
+					String id = participants.getAttribute("id"); //$NON-NLS-1$
 					if(propertyId.equals(id))
 					{
-						field.setCaption(participants.getAttribute("name"));
-						field.setDescription(participants.getAttribute("description"));
+						field.setCaption(participants.getAttribute("name")); //$NON-NLS-1$
+						field.setDescription(participants.getAttribute("description")); //$NON-NLS-1$
 						break;
 					}
 					
@@ -79,7 +79,7 @@ public class EnabledProjectChecksConfig extends AbstractConfigSection<Project> i
 	protected void init(Preferences config) {
 		PreferencesItem item = new PreferencesItem(config.node(PreferencesUtil.NODE_CHECKS));
 		for (IConfigurationElement participants : reviewParticipants) {
-			String id = participants.getAttribute("id");
+			String id = participants.getAttribute("id"); //$NON-NLS-1$
 			item.addProperty(id, Boolean.TYPE, false);
 		}
 		form.setItemDataSource(item);

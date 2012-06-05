@@ -58,8 +58,8 @@ public class ProgressMonitorIndicator extends ProgressIndicator implements IProg
 
 	@Override
 	public void subTask(String name) {
-		String caption = getCaption() == null ? "" : getCaption();
-		setCaption(caption+": "+name);
+		String caption = getCaption() == null ? "" : getCaption(); //$NON-NLS-1$
+		setCaption(caption+": "+name); //$NON-NLS-1$
 		
 	}
 

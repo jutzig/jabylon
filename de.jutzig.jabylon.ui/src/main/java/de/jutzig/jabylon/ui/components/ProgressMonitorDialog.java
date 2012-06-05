@@ -44,7 +44,7 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 		layout.addComponent(subTask);
 		subTask.setWidth(100, UNITS_PERCENTAGE);
 
-		cancel = new Button("Cancel");
+		cancel = new Button(Messages.getString("ProgressMonitorDialog_CANCEL_BUTTON_CAPTION")); //$NON-NLS-1$
 		cancel.addListener((ClickListener) this);
 		layout.addComponent(cancel);
 		layout.setComponentAlignment(cancel, Alignment.MIDDLE_RIGHT);
@@ -63,7 +63,7 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 
 	public void run(boolean cancelable, final RunnableWithProgress runnable) {
 		cancel.setEnabled(cancelable);
-		setTaskName("Processing...");
+		setTaskName(Messages.getString("ProgressMonitorDialog_GENERIC_PROGRESS_LABEL")); //$NON-NLS-1$
 		parent.addWindow(this);
 		this.runnable = runnable;
 		Thread t = new Thread() {
@@ -71,7 +71,7 @@ public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 				try {
 					runnable.run(ProgressMonitorDialog.this);
 				} catch (Exception e) {
-					Activator.error("Job execution failed", e);
+					Activator.error("Job execution failed", e); //$NON-NLS-1$
 					end();
 				}
 			}

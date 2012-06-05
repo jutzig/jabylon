@@ -9,9 +9,9 @@ import com.vaadin.ui.Table;
 public class MementoUtil {
 
 	
-	private static final String SORT_PROPERTY = "sort.property";
-	private static final String SORT_ORDER = "sort.order";
-	private static final String FIRST_ITEM = "first.item";
+	private static final String SORT_PROPERTY = "sort.property"; //$NON-NLS-1$
+	private static final String SORT_ORDER = "sort.order"; //$NON-NLS-1$
+	private static final String FIRST_ITEM = "first.item"; //$NON-NLS-1$
 	
 	public static void storeTable(Memento memento, Table table)
 	{

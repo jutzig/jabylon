@@ -73,7 +73,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private PropertyReviewService reviewService;
 	private Table table;
 	private PropertyToolArea propertyToolArea;
-	private PropertyFilter propertyFilter = new PropertyFilter("");
+	private PropertyFilter propertyFilter = new PropertyFilter(""); //$NON-NLS-1$
 	private UntranslatedFilter untranslatedFilter = new UntranslatedFilter();
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
@@ -132,10 +132,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 			}
 		});
-		filterBox.setInputPrompt("Filter");
+		filterBox.setInputPrompt(Messages.getString("PropertiesEditor_FILTER_INPUT_PROMPT")); //$NON-NLS-1$
 		filterLine.addComponent(filterBox);
 
-		final CheckBox untranslatedBox = new CheckBox("Show only untranslated");
+		final CheckBox untranslatedBox = new CheckBox(Messages.getString("PropertiesEditor_SHOW_ONLY_UNTRANSLATED_BUTTON_CAPTION")); //$NON-NLS-1$
 		untranslatedBox.addListener(new ClickListener() {
 
 			@Override
@@ -161,13 +161,13 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setContainerDataSource(propertyPairContainer);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
 		table.setWidth(100, Table.UNITS_PERCENTAGE);
-		table.addGeneratedColumn("Problems", new ColumnGenerator() {
+		table.addGeneratedColumn(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), new ColumnGenerator() { //$NON-NLS-1$
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 
 				if (reviews.containsKey(itemId)) {
-					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);
+					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR); //$NON-NLS-1$
 
 					Review review = reviews.get((String) itemId).iterator().next();
 					// TODO: this can't be the right way to refresh?
@@ -175,23 +175,23 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 						reviews.remove(itemId, review); // the review is no
 														// longer valid
 						embedded.setIcon(ImageConstants.IMAGE_OK);
-						embedded.setDescription("");
+						embedded.setDescription(""); //$NON-NLS-1$
 					} else {
 						embedded.setDescription(review.getMessage());
 					}
 
 					return embedded;
 				} else
-					return new Embedded("", ImageConstants.IMAGE_OK);
+					return new Embedded("", ImageConstants.IMAGE_OK); //$NON-NLS-1$
 			}
 		});
 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
-		table.setColumnHeaders(new String[] { "Original", "Translation", "Problems" });
+		table.setColumnHeaders(new String[] { Messages.getString("PropertiesEditor_ORIGINAL_COLUMN_HEADER"), Messages.getString("PropertiesEditor_TRANSLATED_COLUMN_HEADER"), Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
-		table.setColumnExpandRatio("Problems", 0.0f);
+		table.setColumnExpandRatio(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), 0.0f); //$NON-NLS-1$
 
 		table.setEditable(false);
 		table.setWriteThrough(false);
@@ -216,7 +216,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		grid.setSizeFull();
 		grid.setSpacing(true);
 		keyLabel = new Label();
-		keyLabel.setValue("No Selection");
+		keyLabel.setValue(Messages.getString("PropertiesEditor_NO_SELECTION_LABEL")); //$NON-NLS-1$
 		grid.addComponent(keyLabel, 0, 0, 1, 0);
 		grid.setColumnExpandRatio(0, 1.0f);
 		grid.setColumnExpandRatio(1, 1.0f);
@@ -231,7 +231,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translated.setRows(3);
 		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
 
-		translated.setNullRepresentation("");
+		translated.setNullRepresentation(""); //$NON-NLS-1$
 		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
 		translated.setImmediate(true);
@@ -241,7 +241,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		orignalComment.setReadOnly(true);
 		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
-		orignalComment.setNullRepresentation("");
+		orignalComment.setNullRepresentation(""); //$NON-NLS-1$
 		grid.addComponent(orignalComment);
 
 		translatedComment = new TextArea();
@@ -249,15 +249,15 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		translatedComment.setRows(3);
 
-		translatedComment.setNullRepresentation("");
+		translatedComment.setNullRepresentation(""); //$NON-NLS-1$
 		translatedComment.addListener((TextChangeListener) this);
-		translatedComment.setInputPrompt("Comment");
+		translatedComment.setInputPrompt(Messages.getString("PropertiesEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
 		translatedComment.setWriteThrough(true);
 		grid.addComponent(translatedComment);
 
 		safeButton = new Button();
 		safeButton.setEnabled(false);
-		safeButton.setCaption("Save");
+		safeButton.setCaption(Messages.getString("PropertiesEditor_SAVE_BUTTON_CAPTION")); //$NON-NLS-1$
 		safeButton.addListener(new ClickListener() {
 
 			@Override
@@ -277,7 +277,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 					setDirty(false);
 					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
 					propertyPersistence.saveProperties(descriptor, target);
-					layout.getWindow().showNotification("File saved", descriptor.getLocation().lastSegment());
+					layout.getWindow().showNotification(Messages.getString("PropertiesEditor_SAVED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -294,13 +294,13 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		buttonArea.addComponent(safeButton);
 
 
-		Button editTemplate = new Button("Edit Template");
+		Button editTemplate = new Button(Messages.getString("PropertiesEditor_EDIT_TEMPLATE_BUTTON_CAPTION")); //$NON-NLS-1$
 		editTemplate.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
-				crumb.walkTo("?master");
+				crumb.walkTo("?master"); //$NON-NLS-1$
 
 			}
 		});
@@ -321,7 +321,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(path.equals("?master"))
+		if(path.equals("?master")) //$NON-NLS-1$
 			return new PropertiesMasterEditor(descriptor.getMaster());
 		return null;
 	}
@@ -402,10 +402,10 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			translated.setValue(suggestion);
 		else
 		{
-			if(value.endsWith(" "))
+			if(value.endsWith(" ")) //$NON-NLS-1$
 				translated.setValue(value+suggestion);
 			else
-				translated.setValue(value+" "+suggestion);
+				translated.setValue(value+" "+suggestion); //$NON-NLS-1$
 		}
 
 	}

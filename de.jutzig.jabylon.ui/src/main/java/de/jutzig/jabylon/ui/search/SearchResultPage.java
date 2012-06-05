@@ -43,7 +43,7 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
 public class SearchResultPage implements CrumbTrail{
 
 	
-	public static final String SEARCH_ADDRESS ="?search";
+	public static final String SEARCH_ADDRESS ="?search"; //$NON-NLS-1$
 	private Object scope;
 	private String searchString;
 	private Table table;
@@ -62,7 +62,7 @@ public class SearchResultPage implements CrumbTrail{
 
 	@Override
 	public String getTrailCaption() {
-		return "Search Results";
+		return Messages.getString("SearchResultPage_SEARCH_RESULT_TRAIL_CAPTION"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class SearchResultPage implements CrumbTrail{
 		result = queryService.search(searchString,scope);
 		if(result.getTopDocs().totalHits==0)
 		{
-			MainDashboard.getCurrent().getMainWindow().showNotification("No Hits");
+			MainDashboard.getCurrent().getMainWindow().showNotification(Messages.getString("SearchResultPage_NO_HITS_NOTIFICATION")); //$NON-NLS-1$
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class ResultLuceneContainer extends LuceneContainer
 					descriptor = (PropertyFileDescriptor) view.getObject(id);
 				} catch (ObjectNotFoundException e) {
 					//TODO: logging and handling if the object cannot be found
-					System.out.println("SearchResultPage: "+e.getMessage());
+					System.out.println("SearchResultPage: "+e.getMessage()); //$NON-NLS-1$
 					return null;
 				}
 				button.setData(descriptor);
@@ -183,7 +183,7 @@ class ResultLuceneContainer extends LuceneContainer
 						//TODO: walk to
 						PropertyFileDescriptor descriptor = (PropertyFileDescriptor) event.getButton().getData();
 						ProjectLocale locale = descriptor.getProjectLocale();
-						String version = "?"+locale.getProjectVersion().getBranch();
+						String version = "?"+locale.getProjectVersion().getBranch(); //$NON-NLS-1$
 						String project = locale.getProjectVersion().getProject().getName();
 						if(locale.getLocale()!=null)
 						{
