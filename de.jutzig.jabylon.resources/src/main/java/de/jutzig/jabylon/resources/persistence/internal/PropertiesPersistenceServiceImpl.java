@@ -298,6 +298,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						resource.save(options);
 						descriptor.setKeys(resource.getSavedProperties());
 						descriptor.updatePercentComplete();
+						transaction.commit();
 						List<Notification> diff = differentiator.diff(file);
 						firePropertiesChanges(descriptor, diff,tuple.isAutoSync());
 					} else {
@@ -306,10 +307,9 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						resource.save(options);
 						descriptor.setKeys(resource.getSavedProperties());
 						descriptor.updatePercentComplete();
+						transaction.commit();
 						firePropertiesAdded(descriptor,tuple.isAutoSync());
 					}
-					if(queue.isEmpty())
-						transaction.commit();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 
@@ -317,6 +317,9 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					//clean up the dirty transaction
+					transaction.close();
+					transaction = null;
 				}
 			}
 		} catch (InterruptedException e) {

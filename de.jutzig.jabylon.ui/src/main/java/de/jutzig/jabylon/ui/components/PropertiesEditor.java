@@ -141,7 +141,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				propertyPairContainer.removeContainerFilter(untranslatedFilter);
-				if(untranslatedBox.getValue().equals(Boolean.TRUE))
+				if (untranslatedBox.getValue().equals(Boolean.TRUE))
 					propertyPairContainer.addContainerFilter(untranslatedFilter);
 			}
 		});
@@ -163,32 +163,34 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setWidth(100, Table.UNITS_PERCENTAGE);
 		table.addGeneratedColumn(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), new ColumnGenerator() { //$NON-NLS-1$
 
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
+					@Override
+					public Object generateCell(Table source, Object itemId, Object columnId) {
 
-				if (reviews.containsKey(itemId)) {
-					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR); //$NON-NLS-1$
+						if (reviews.containsKey(itemId)) {
+							Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR); //$NON-NLS-1$
 
-					Review review = reviews.get((String) itemId).iterator().next();
-					// TODO: this can't be the right way to refresh?
-					if (review.cdoInvalid()) {
-						reviews.remove(itemId, review); // the review is no
-														// longer valid
-						embedded.setIcon(ImageConstants.IMAGE_OK);
-						embedded.setDescription(""); //$NON-NLS-1$
-					} else {
-						embedded.setDescription(review.getMessage());
+							Review review = reviews.get((String) itemId).iterator().next();
+							// TODO: this can't be the right way to refresh?
+							if (review.cdoInvalid()) {
+								reviews.remove(itemId, review); // the review is
+																// no
+																// longer valid
+								embedded.setIcon(ImageConstants.IMAGE_OK);
+								embedded.setDescription(""); //$NON-NLS-1$
+							} else {
+								embedded.setDescription(review.getMessage());
+							}
+
+							return embedded;
+						} else
+							return new Embedded("", ImageConstants.IMAGE_OK); //$NON-NLS-1$
 					}
-
-					return embedded;
-				} else
-					return new Embedded("", ImageConstants.IMAGE_OK); //$NON-NLS-1$
-			}
-		});
+				});
 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
-		table.setColumnHeaders(new String[] { Messages.getString("PropertiesEditor_ORIGINAL_COLUMN_HEADER"), Messages.getString("PropertiesEditor_TRANSLATED_COLUMN_HEADER"), Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		table.setColumnHeaders(new String[] {
+				Messages.getString("PropertiesEditor_ORIGINAL_COLUMN_HEADER"), Messages.getString("PropertiesEditor_TRANSLATED_COLUMN_HEADER"), Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
 		table.setColumnExpandRatio(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), 0.0f); //$NON-NLS-1$
@@ -202,7 +204,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.addListener(this);
 
 		layout.addComponent(table);
-
 
 		layout.setExpandRatio(table, 2);
 		createEditorArea();
@@ -263,25 +264,11 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			@Override
 			public void buttonClick(ClickEvent event) {
 
-				final int filledKeys = getFilledKeys(target);
-				try {
-
-					descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
-						@Override
-						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
-							object.setKeys(filledKeys);
-							object.updatePercentComplete();
-							return object;
-						}
-					});
-					setDirty(false);
-					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
-					propertyPersistence.saveProperties(descriptor, target);
-					layout.getWindow().showNotification(Messages.getString("PropertiesEditor_SAVED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				setDirty(false);
+				PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
+				propertyPersistence.saveProperties(descriptor, target);
+				layout.getWindow().showNotification(
+						Messages.getString("PropertiesEditor_SAVED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
 
 			}
 		});
@@ -292,7 +279,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.addComponent(editorArea);
 		layout.setExpandRatio(editorArea, 0);
 		buttonArea.addComponent(safeButton);
-
 
 		Button editTemplate = new Button(Messages.getString("PropertiesEditor_EDIT_TEMPLATE_BUTTON_CAPTION")); //$NON-NLS-1$
 		editTemplate.addListener(new ClickListener() {
@@ -310,18 +296,9 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	}
 
-	protected int getFilledKeys(PropertyFile target2) {
-		int counter = 0;
-		for (Property prop : target2.getProperties()) {
-			if (prop.getValue() != null && prop.getValue().length() > 0)
-				counter++;
-		}
-		return counter;
-	}
-
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(path.equals("?master")) //$NON-NLS-1$
+		if (path.equals("?master")) //$NON-NLS-1$
 			return new PropertiesMasterEditor(descriptor.getMaster());
 		return null;
 	}
@@ -381,7 +358,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
-		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()),this);
+		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()), this);
 		currentItem.getSourceProperty();
 
 		keyLabel.setValue(currentItem.getKey());
@@ -398,14 +375,13 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	public void append(String suggestion) {
 		setDirty(true);
 		String value = (String) translated.getValue();
-		if(value==null)
+		if (value == null)
 			translated.setValue(suggestion);
-		else
-		{
-			if(value.endsWith(" ")) //$NON-NLS-1$
-				translated.setValue(value+suggestion);
+		else {
+			if (value.endsWith(" ")) //$NON-NLS-1$
+				translated.setValue(value + suggestion);
 			else
-				translated.setValue(value+" "+suggestion); //$NON-NLS-1$
+				translated.setValue(value + " " + suggestion); //$NON-NLS-1$
 		}
 
 	}
