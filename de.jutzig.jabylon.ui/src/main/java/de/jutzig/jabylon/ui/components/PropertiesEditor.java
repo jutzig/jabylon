@@ -251,7 +251,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setRows(3);
 
 		translatedComment.setNullRepresentation(""); //$NON-NLS-1$
-		translatedComment.addListener((TextChangeListener) this);
 		translatedComment.setInputPrompt(Messages.getString("PropertiesEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
 		translatedComment.setWriteThrough(true);
 		grid.addComponent(translatedComment);
