@@ -182,6 +182,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public void transactionEnd(Application application, Object transactionData) {
+		MainDashboard.application.remove();
 	}
 
 	private Workspace getOrInitializeWorkspace() {
