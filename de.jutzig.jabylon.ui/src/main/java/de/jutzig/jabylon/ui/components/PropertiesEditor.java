@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -17,6 +17,7 @@ import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.CompositeErrorMessage;
 import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -34,9 +35,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
-import de.jutzig.jabylon.cdo.connector.Modification;
-import de.jutzig.jabylon.cdo.connector.TransactionUtil;
-import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
@@ -230,12 +228,16 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		translated = new TextArea();
 		translated.setRows(3);
+		translated.setInvalidCommitted(true);
 		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
 
 		translated.setNullRepresentation(""); //$NON-NLS-1$
 		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
 		translated.setImmediate(true);
+        translated.setTextChangeEventMode(TextChangeEventMode.LAZY);
+        translated.setTextChangeTimeout(500);
+
 		grid.addComponent(translated);
 
 		orignalComment = new TextArea();
@@ -253,6 +255,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setNullRepresentation(""); //$NON-NLS-1$
 		translatedComment.setInputPrompt(Messages.getString("PropertiesEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
 		translatedComment.setWriteThrough(true);
+		translatedComment.addListener((TextChangeListener) this);
 		grid.addComponent(translatedComment);
 
 		safeButton = new Button();
@@ -310,16 +313,22 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	@Override
 	public void textChange(TextChangeEvent event) {
 		setDirty(true);
-		if (currentItem == null)
+		if (event.getComponent()!=translated || currentItem == null)
 			return;
+		
+		de.jutzig.jabylon.properties.Property copy = EcoreUtil.copy(currentItem.getTargetProperty());
+		copy.setValue(event.getText());
+		applyValidation(copy);
+	}
+
+	protected void applyValidation(de.jutzig.jabylon.properties.Property property) {
+		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), property);
 		reviews.removeAll(currentItem.getKey());
-		translated.setComponentError(null);
-		currentItem.getTargetProperty().setValue(event.getText()); // apply
-																	// current
-																	// value
-																	// first
-		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), currentItem.getTargetProperty());
-		if (!reviewList.isEmpty()) {
+		if (reviewList.isEmpty()) {
+			if(translated.getComponentError()!=null)
+				translated.setComponentError(null);
+		}
+		else{
 			reviews.putAll((String) currentItem.getKey(), reviewList);
 			List<ErrorMessage> errors = new ArrayList<ErrorMessage>(reviewList.size());
 			for (Review review : reviewList) {
@@ -329,8 +338,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			CompositeErrorMessage message = new CompositeErrorMessage(errors);
 			translated.setComponentError(message);
 		}
-		table.refreshRowCache();
-
 	}
 
 	public void setDirty(boolean dirty) {
@@ -367,7 +374,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setPropertyDataSource(currentItem.getTargetComment());
 		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
 
-		translated.setComponentError(null);
+		applyValidation(currentItem.getTargetProperty());
 	}
 
 	@Override
