@@ -153,7 +153,8 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		getLocales().clear();
 		setMaster(null);
 		WorkspaceScanner scanner = new WorkspaceScanner();
-		scanner.fullScan(new FileAcceptor(), this, configuration);
+		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
+		scanner.fullScan(new FileAcceptor(), baseDir, configuration);
 //		getMaster().setProjectVersion(this);
 		if(getMaster()!=null)
 			getMaster().updatePercentComplete();
@@ -164,6 +165,26 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		}
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void partialScan(ScanConfiguration configuration, String relativeFilePath) {
+		WorkspaceScanner scanner = new WorkspaceScanner();
+		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
+		File singleFile = new File(baseDir,relativeFilePath);
+		scanner.partialScan(new FileAcceptor(), baseDir, configuration, singleFile);
+//		getMaster().setProjectVersion(this);
+		if(getMaster()!=null)
+			getMaster().updatePercentComplete();
+		for (ProjectLocale projectLocale : getLocales()) {
+			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
+				descriptor.updatePercentComplete();
+			}
+		}
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -368,6 +389,8 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		}
 		return null;
 	}
+
+
 
 	public ProjectLocale getOrCreateProjectLocale(Locale locale)
 	{

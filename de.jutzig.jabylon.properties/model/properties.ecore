@@ -64,6 +64,10 @@
     <eOperations name="getProjectLocale" eType="#//ProjectLocale">
       <eParameters name="locale" eType="#//Locale"/>
     </eOperations>
+    <eOperations name="partialScan">
+      <eParameters name="configuration" eType="#//ScanConfiguration"/>
+      <eParameters name="relativeFilePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
         changeable="false" volatile="true" transient="true" derived="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="branch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
