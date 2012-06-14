@@ -26,7 +26,7 @@ public class ConfirmationDialog extends Window {
 	public ConfirmationDialog(Window parent, String message) {
 		this.parent = parent;
 		setModal(true);
-		addStyleName("opaque");
+		addStyleName("opaque"); //$NON-NLS-1$
 		setWidth(440, UNITS_PIXELS);
 		setHeight(200, UNITS_PIXELS);
 		createContents(message);
@@ -40,7 +40,7 @@ public class ConfirmationDialog extends Window {
 		layout.setSpacing(true); 
 		layout.setSizeFull();
 		
-		String status = getCaption()==null ? "" : getCaption(); 
+		String status = getCaption()==null ? "" : getCaption();  //$NON-NLS-1$
 		statusLabel = new Label(status);
 		statusLabel.addStyleName(JabylonStyle.BIG_WARNING.getCSSName());
 		layout.addComponent(statusLabel, 0, 0,1,0);
@@ -48,7 +48,7 @@ public class ConfirmationDialog extends Window {
 		Label label = new Label(message);
 		layout.addComponent(label, 0, 1,1,1);
 		
-		Button cancel = new Button("Cancel");
+		Button cancel = new Button(Messages.getString("ConfirmationDialog_CANCEL_BUTTON")); //$NON-NLS-1$
 		cancel.addListener(new ClickListener() {
 			
 			@Override
@@ -62,7 +62,7 @@ public class ConfirmationDialog extends Window {
 		layout.addComponent(cancel);
 		
 		
-		Button ok = new Button("Proceed");
+		Button ok = new Button(Messages.getString("ConfirmationDialog_PROCEED_BUTTON")); //$NON-NLS-1$
 		ok.addListener(new ClickListener() {
 			
 			@Override

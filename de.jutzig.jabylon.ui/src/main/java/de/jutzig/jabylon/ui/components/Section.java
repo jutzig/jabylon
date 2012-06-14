@@ -13,7 +13,7 @@ public class Section extends Panel {
 	 */
 	public Section() {
 
-		setStyleName("bubble");
+		setStyleName("bubble"); //$NON-NLS-1$
 
 	}
 

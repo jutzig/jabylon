@@ -3,9 +3,9 @@ package de.jutzig.jabylon.ui.beans;
 import java.util.Locale;
 
 public class LocaleBean {
-	private String language = "";
-	private String country = "";
-	private String variant = ""; 
+	private String language = ""; //$NON-NLS-1$
+	private String country = ""; //$NON-NLS-1$
+	private String variant = "";  //$NON-NLS-1$
 
 	public String getLanguage() {
 		return language;

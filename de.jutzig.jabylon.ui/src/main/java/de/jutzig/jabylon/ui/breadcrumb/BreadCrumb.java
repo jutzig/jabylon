@@ -1,8 +1,6 @@
 package de.jutzig.jabylon.ui.breadcrumb;
 
 import java.util.Collection;
-import java.util.Deque;
-import java.util.List;
 
 public interface BreadCrumb {
 	
@@ -18,7 +16,7 @@ public interface BreadCrumb {
 	
 	CrumbTrail currentTrail();
 	
-	String CONFIG = "|config";
+	String CONFIG = "|config"; //$NON-NLS-1$
 	
 	void addCrumbListener(CrumbListener listener);
 	

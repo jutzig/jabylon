@@ -16,24 +16,26 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.osgi.service.prefs.Preferences;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
-import de.jutzig.jabylon.resources.changes.AbstractCoalescingListener;
+import de.jutzig.jabylon.resources.changes.PropertiesListener;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.review.ReviewParticipant;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class PropertyReviewService extends AbstractCoalescingListener {
+public class PropertyReviewService implements PropertiesListener {
 
 	private Map<String, ReviewParticipant> participants;
 
@@ -46,8 +48,8 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		IConfigurationElement[] elements = Activator.getDefault().getReviewParticipants();
 		for (IConfigurationElement element : elements) {
 			try {
-				String id = element.getAttribute("id");
-				ReviewParticipant participant = (ReviewParticipant) element.createExecutableExtension("class");
+				String id = element.getAttribute("id"); //$NON-NLS-1$
+				ReviewParticipant participant = (ReviewParticipant) element.createExecutableExtension("class"); //$NON-NLS-1$
 				map.put(id, participant);
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
@@ -69,9 +71,8 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		PropertyFile slaveProperties = descriptor.loadProperties();
 		PropertyFile masterProperties = descriptor.getMaster().loadProperties();
 
-		CDOTransaction transaction = retrieveTransaction(descriptor);
+		CDOTransaction transaction = descriptor.cdoView().getSession().openTransaction();
 		descriptor = transaction.getObject(descriptor);
-		boolean dirty = false;
 		Set<String> allProperties = new HashSet<String>();
 		for (Property prop : slaveProperties.getProperties()) {
 			String key = prop.getKey();
@@ -90,7 +91,6 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 				if (review != null) {
 					review.setKey(prop.getKey());
 					descriptor.getReviews().add(review);
-					dirty = true;
 				}
 			}
 		}
@@ -104,29 +104,32 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 					if (review != null) {
 						review.setKey(property.getKey());
 						descriptor.getReviews().add(review);
-						dirty = true;
 					}
 				}
 			}
 		}
 
-		if (dirty) {
-			process();
+		try {
+			if (transaction.isDirty()) {
+				transaction.commit();
+			}
+		} catch (CommitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			transaction.close();
 		}
 
 	}
 
-	private boolean removeKey(String key, List<Review> reviews) {
+	private void removeKey(String key, List<Review> reviews) {
 		Iterator<Review> it = reviews.iterator();
-		boolean dirty = false;
 		while (it.hasNext()) {
 			Review review = (Review) it.next();
 			if (key.equals(review.getKey())) {
 				it.remove();
-				dirty = true;
 			}
 		}
-		return dirty;
 
 	}
 
@@ -144,47 +147,50 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())
 			return;
-		CDOTransaction transaction = retrieveTransaction(descriptor);
+		CDOTransaction transaction = descriptor.cdoView().getSession().openTransaction();
 		descriptor = transaction.getObject(descriptor);
 		PropertyFile masterProperties = null;
 		if (!descriptor.isMaster())
 			masterProperties = descriptor.getMaster().loadProperties();
-		boolean dirty = false;
 		for (Notification change : changes) {
 			Object notifier = change.getNotifier();
 			if (notifier instanceof Property) {
 				Property prop = (Property) notifier;
-				dirty = analyzeProperty(descriptor, activeReviews, masterProperties, prop);
-			}
-			else if (notifier instanceof PropertyFile) {
+				analyzeProperty(descriptor, activeReviews, masterProperties, prop);
+			} else if (notifier instanceof PropertyFile) {
 				Object newValue = change.getNewValue();
-				
-				if (change.getEventType()==Notification.ADD && newValue instanceof Property) {
+
+				if (change.getEventType() == Notification.ADD && newValue instanceof Property) {
 					Property property = (Property) newValue;
-					dirty = analyzeProperty(descriptor, activeReviews, masterProperties, property);
+					analyzeProperty(descriptor, activeReviews, masterProperties, property);
 				}
-				
-				else if (change.getEventType()==Notification.ADD_MANY && newValue instanceof Collection) {
+
+				else if (change.getEventType() == Notification.ADD_MANY && newValue instanceof Collection) {
 					Collection<Property> properties = (Collection<Property>) newValue;
 					for (Property property : properties) {
-						dirty = analyzeProperty(descriptor, activeReviews, masterProperties, property);						
+						analyzeProperty(descriptor, activeReviews, masterProperties, property);
 					}
 				}
-				
+
 			}
 		}
 
-		if (dirty) {
-
-			process();
-
+		try {
+			if (transaction.isDirty()) {
+				transaction.commit();
+			}
+		} catch (CommitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			transaction.close();
 		}
 
 	}
 
-	protected boolean analyzeProperty(PropertyFileDescriptor descriptor, List<ReviewParticipant> activeReviews, PropertyFile masterProperties, Property prop) {
-		boolean dirty = false;
-		boolean firstReview = true;
+	protected void analyzeProperty(PropertyFileDescriptor descriptor, List<ReviewParticipant> activeReviews, PropertyFile masterProperties,
+			Property prop) {
+		removeKey(prop.getKey(), descriptor.getReviews());
 		for (ReviewParticipant reviewer : activeReviews) {
 
 			Review review = null;
@@ -193,17 +199,14 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 			} else {
 				review = reviewer.review(descriptor, masterProperties.getProperty(prop.getKey()), prop);
 			}
-
-			if (firstReview && removeKey(prop.getKey(), descriptor.getReviews()))
-				dirty = true;
+			EList<Review> reviews = descriptor.getReviews();
+			
+			
 			if (review != null) {
 				review.setKey(prop.getKey());
 				descriptor.getReviews().add(review);
-				dirty = true;
 			}
-			firstReview = false;
 		}
-		return dirty;
 	}
 
 	private List<ReviewParticipant> getActiveReviews(Project project) {
@@ -215,14 +218,13 @@ public class PropertyReviewService extends AbstractCoalescingListener {
 		}
 		return activeParticipants;
 	}
-	
-	public Collection<Review> review(PropertyFileDescriptor descriptor,Property master, Property slave)
-	{
+
+	public Collection<Review> review(PropertyFileDescriptor descriptor, Property master, Property slave) {
 		List<Review> reviews = new ArrayList<Review>();
 		List<ReviewParticipant> participants = getActiveReviews(descriptor.getProjectLocale().getProjectVersion().getProject());
 		for (ReviewParticipant reviewParticipant : participants) {
 			Review review = reviewParticipant.review(descriptor, master, slave);
-			if(review!=null)
+			if (review != null)
 				reviews.add(review);
 		}
 		return reviews;

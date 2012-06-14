@@ -40,7 +40,7 @@ public class GenericProperty<T> extends AbstractProperty {
 	 */
 	@Override
 	public void setValue(Object newValue) throws ReadOnlyException, ConversionException {
-		throw new UnsupportedOperationException("Read Only");
+		throw new UnsupportedOperationException("Read Only"); //$NON-NLS-1$
 
 	}
 

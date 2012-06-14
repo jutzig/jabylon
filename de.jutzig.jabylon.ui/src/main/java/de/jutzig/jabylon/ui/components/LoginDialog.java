@@ -11,7 +11,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
@@ -32,7 +31,7 @@ import de.jutzig.jabylon.users.UserManagement;
 @SuppressWarnings("serial")
 public class LoginDialog extends LoginForm implements CallbackHandler {
 
-	private static final String JAAS_CONFIG_FILE = "META-INF/jaas.config";
+	private static final String JAAS_CONFIG_FILE = "META-INF/jaas.config"; //$NON-NLS-1$
 
 	private Application app;
 	private LoginEvent loginEvent;
@@ -46,19 +45,19 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
 		for (int i = 0; i < callbacks.length; i++) {
 			Callback cb = callbacks[i];
 			if(cb instanceof NameCallback) {
-				((NameCallback) cb).setName(loginEvent.getLoginParameter("username"));
+				((NameCallback) cb).setName(loginEvent.getLoginParameter("username")); //$NON-NLS-1$
 			} else if (cb instanceof PasswordCallback) {
-				((PasswordCallback) cb).setPassword(loginEvent.getLoginParameter("password").toCharArray());
+				((PasswordCallback) cb).setPassword(loginEvent.getLoginParameter("password").toCharArray()); //$NON-NLS-1$
 			}
 		}
 	}
 
 	public void display() {
-		String configName = "DB";
+		String configName = "DB"; //$NON-NLS-1$
 		URL configUrl = JabylonSecurityBundle.getBundleContext().getBundle().getEntry(JAAS_CONFIG_FILE);
  		final ILoginContext loginContext = LoginContextFactory.createContext(configName, configUrl, this);
 
-		final Window loginWindow = new Window("Jabylon - Login");
+		final Window loginWindow = new Window(Messages.getString("LoginDialog_LOGIN_DIALOG_TITLE")); //$NON-NLS-1$
 		HorizontalLayout outerLayout = new HorizontalLayout();
 		outerLayout.setMargin(true);
 		VerticalLayout loginLayout = new VerticalLayout();
@@ -70,17 +69,17 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
 					loginContext.login();
 					CDOResource resource = MainDashboard.getCurrent().getWorkspace().cdoView().getResource(ServerConstants.USERS_RESOURCE);
 					UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-					User user = userManagement.findUserByName(loginEvent.getLoginParameter("username"));
+					User user = userManagement.findUserByName(loginEvent.getLoginParameter("username")); //$NON-NLS-1$
 					app.setUser(user);
 					app.getMainWindow().removeWindow(loginWindow);
 					
 				} catch (LoginException e) {
-                    getWindow().showNotification("Login Failed","Wrong username or password",Notification.TYPE_ERROR_MESSAGE);
+                    getWindow().showNotification(Messages.getString("LoginDialog_WRONG_CREDENTIALS_TITLE"),Messages.getString("LoginDialog_WRONG_CREDENTIALS_MESSAGE"),Notification.TYPE_ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				} 
 				catch( Exception e ) {
 					//TODO: fix login failed
 					e.printStackTrace();
-                    getWindow().showNotification("Login Failed",e.getLocalizedMessage(),Notification.TYPE_ERROR_MESSAGE);
+                    getWindow().showNotification(Messages.getString("LoginDialog_LOGIN_FAILED_TITLE"),e.getLocalizedMessage(),Notification.TYPE_ERROR_MESSAGE); //$NON-NLS-1$
 
 		
 				}
@@ -90,8 +89,8 @@ public class LoginDialog extends LoginForm implements CallbackHandler {
 		outerLayout.addComponent(loginLayout);
 		outerLayout.setComponentAlignment(loginLayout, Alignment.MIDDLE_CENTER);
 		loginWindow.setContent(outerLayout);
-		loginWindow.setHeight("250px");
-		loginWindow.setWidth("350px");
+		loginWindow.setHeight("250px"); //$NON-NLS-1$
+		loginWindow.setWidth("350px"); //$NON-NLS-1$
 		loginWindow.setModal(true);
 		app.getMainWindow().addWindow(loginWindow);
 	}

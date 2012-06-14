@@ -132,4 +132,12 @@ public interface ProjectVersion extends Resolvable {
 	 */
 	ProjectLocale getProjectLocale(Locale locale);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void partialScan(ScanConfiguration configuration, String relativeFilePath);
+
 } // ProjectVersion

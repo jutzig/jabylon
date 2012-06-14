@@ -24,13 +24,13 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.TabSheet.Tab;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
 import de.jutzig.jabylon.ui.tools.PropertyEditorTool;
 import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -62,7 +62,7 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 					Object user = getApplication().getUser();
 					if (user != null) {
 						Preferences scope = PreferencesUtil.scopeFor((EObject) user);
-						scope.put("selected.property.tool", id);
+						scope.put("selected.property.tool", id); //$NON-NLS-1$
 						try {
 							scope.flush();
 						} catch (BackingStoreException e) {
@@ -86,11 +86,11 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 		
 		IConfigurationElement[] tools = Activator.getDefault().getPropertyEditorTools();
 		for (IConfigurationElement element : tools) {
-			String name = element.getAttribute("name");
+			String name = element.getAttribute(Messages.getString("PropertyToolArea.1")); //$NON-NLS-1$
 			try {
-				PropertyEditorTool tool = (PropertyEditorTool) element.createExecutableExtension("class");
-				String iconString = element.getAttribute("icon");
-				String id = element.getAttribute("id");
+				PropertyEditorTool tool = (PropertyEditorTool) element.createExecutableExtension("class"); //$NON-NLS-1$
+				String iconString = element.getAttribute("icon"); //$NON-NLS-1$
+				String id = element.getAttribute("id"); //$NON-NLS-1$
 				Component component = tool.createComponent();
 				toolIDMap.put(component, id);
 				Tab tab = accordion.addTab(component);
@@ -140,7 +140,7 @@ public class PropertyToolArea extends CustomComponent implements PropertyEditorT
 		if(user!=null)
 		{
 			Preferences scope = PreferencesUtil.scopeFor((EObject) user);
-			String activeID = scope.get("selected.property.tool", null);
+			String activeID = scope.get("selected.property.tool", null); //$NON-NLS-1$
 			if(activeID!=null && toolIDMap.containsValue(activeID))
 			{
 				for (Entry<Component, String> entry : toolIDMap.entrySet()) {

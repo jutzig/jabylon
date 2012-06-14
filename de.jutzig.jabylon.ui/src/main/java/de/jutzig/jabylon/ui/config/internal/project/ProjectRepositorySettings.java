@@ -9,19 +9,16 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.osgi.service.prefs.Preferences;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.ui.Activator;
-import de.jutzig.jabylon.ui.beans.ProjectBean;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.config.ConfigSection;
 import de.jutzig.jabylon.ui.container.EObjectItem;
@@ -59,10 +56,10 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				if (propertyId == PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER)
 				{
-					NativeSelect select = new NativeSelect("Team Provider");
+					NativeSelect select = new NativeSelect(Messages.getString("ProjectRepositorySettings_SELECT_TEAM_PROVIDER_CAPTION"));
 					IConfigurationElement[] teamProviders = Activator.getDefault().getTeamProviders();
 					for (IConfigurationElement iConfigurationElement : teamProviders) {
-						String name = iConfigurationElement.getAttribute("name");
+						String name = iConfigurationElement.getAttribute("name"); //$NON-NLS-1$
 						select.addItem(name);
 					}
 					
@@ -72,12 +69,12 @@ public class ProjectRepositorySettings extends AbstractConfigSection<Project> im
 				Field field = super.createField(item, propertyId, uiContext);
 				if(propertyId == PropertiesPackage.Literals.PROJECT__REPOSITORY_URI)
 				{
-					((TextField)field).setInputPrompt("https://github.org/example.git");
-					field.setCaption("Repository URI");
+					((TextField)field).setInputPrompt(Messages.getString("ProjectRepositorySettings_REPOSITORY_URI_TEXTFIELD_PROMPT"));
+					field.setCaption(Messages.getString("ProjectRepositorySettings_REPOSITORY_URI_TEXTFIELD_CAPTION"));
 				}
 				if (field instanceof TextField) {
 					TextField text = (TextField) field;
-					text.setNullRepresentation("");
+					text.setNullRepresentation(""); //$NON-NLS-1$
 					text.setColumns(30);
 				}
 

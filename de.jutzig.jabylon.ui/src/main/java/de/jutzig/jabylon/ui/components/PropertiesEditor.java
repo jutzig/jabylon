@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -17,6 +17,7 @@ import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.CompositeErrorMessage;
 import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -34,9 +35,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
-import de.jutzig.jabylon.cdo.connector.Modification;
-import de.jutzig.jabylon.cdo.connector.TransactionUtil;
-import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
@@ -73,7 +71,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	private PropertyReviewService reviewService;
 	private Table table;
 	private PropertyToolArea propertyToolArea;
-	private PropertyFilter propertyFilter = new PropertyFilter("");
+	private PropertyFilter propertyFilter = new PropertyFilter(""); //$NON-NLS-1$
 	private UntranslatedFilter untranslatedFilter = new UntranslatedFilter();
 
 	public PropertiesEditor(PropertyFileDescriptor descriptor) {
@@ -132,16 +130,16 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 			}
 		});
-		filterBox.setInputPrompt("Filter");
+		filterBox.setInputPrompt(Messages.getString("PropertiesEditor_FILTER_INPUT_PROMPT")); //$NON-NLS-1$
 		filterLine.addComponent(filterBox);
 
-		final CheckBox untranslatedBox = new CheckBox("Show only untranslated");
+		final CheckBox untranslatedBox = new CheckBox(Messages.getString("PropertiesEditor_SHOW_ONLY_UNTRANSLATED_BUTTON_CAPTION")); //$NON-NLS-1$
 		untranslatedBox.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				propertyPairContainer.removeContainerFilter(untranslatedFilter);
-				if(untranslatedBox.getValue().equals(Boolean.TRUE))
+				if (untranslatedBox.getValue().equals(Boolean.TRUE))
 					propertyPairContainer.addContainerFilter(untranslatedFilter);
 			}
 		});
@@ -161,37 +159,39 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.setContainerDataSource(propertyPairContainer);
 		table.setVisibleColumns(propertyPairContainer.getContainerPropertyIds().subList(0, 2).toArray());
 		table.setWidth(100, Table.UNITS_PERCENTAGE);
-		table.addGeneratedColumn("Problems", new ColumnGenerator() {
+		table.addGeneratedColumn(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), new ColumnGenerator() { //$NON-NLS-1$
 
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
+					@Override
+					public Object generateCell(Table source, Object itemId, Object columnId) {
 
-				if (reviews.containsKey(itemId)) {
-					Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR);
+						if (reviews.containsKey(itemId)) {
+							Embedded embedded = new Embedded("", ImageConstants.IMAGE_ERROR); //$NON-NLS-1$
 
-					Review review = reviews.get((String) itemId).iterator().next();
-					// TODO: this can't be the right way to refresh?
-					if (review.cdoInvalid()) {
-						reviews.remove(itemId, review); // the review is no
-														// longer valid
-						embedded.setIcon(ImageConstants.IMAGE_OK);
-						embedded.setDescription("");
-					} else {
-						embedded.setDescription(review.getMessage());
+							Review review = reviews.get((String) itemId).iterator().next();
+							// TODO: this can't be the right way to refresh?
+							if (review.cdoInvalid()) {
+								reviews.remove(itemId, review); // the review is
+																// no
+																// longer valid
+								embedded.setIcon(ImageConstants.IMAGE_OK);
+								embedded.setDescription(""); //$NON-NLS-1$
+							} else {
+								embedded.setDescription(review.getMessage());
+							}
+
+							return embedded;
+						} else
+							return new Embedded("", ImageConstants.IMAGE_OK); //$NON-NLS-1$
 					}
-
-					return embedded;
-				} else
-					return new Embedded("", ImageConstants.IMAGE_OK);
-			}
-		});
+				});
 
 		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
-		table.setColumnHeaders(new String[] { "Original", "Translation", "Problems" });
+		table.setColumnHeaders(new String[] {
+				Messages.getString("PropertiesEditor_ORIGINAL_COLUMN_HEADER"), Messages.getString("PropertiesEditor_TRANSLATED_COLUMN_HEADER"), Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
-		table.setColumnExpandRatio("Problems", 0.0f);
+		table.setColumnExpandRatio(Messages.getString("PropertiesEditor_PROBLEMS_COLUMN_HEADER"), 0.0f); //$NON-NLS-1$
 
 		table.setEditable(false);
 		table.setWriteThrough(false);
@@ -202,7 +202,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		table.addListener(this);
 
 		layout.addComponent(table);
-
 
 		layout.setExpandRatio(table, 2);
 		createEditorArea();
@@ -216,7 +215,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		grid.setSizeFull();
 		grid.setSpacing(true);
 		keyLabel = new Label();
-		keyLabel.setValue("No Selection");
+		keyLabel.setValue(Messages.getString("PropertiesEditor_NO_SELECTION_LABEL")); //$NON-NLS-1$
 		grid.addComponent(keyLabel, 0, 0, 1, 0);
 		grid.setColumnExpandRatio(0, 1.0f);
 		grid.setColumnExpandRatio(1, 1.0f);
@@ -229,19 +228,23 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 		translated = new TextArea();
 		translated.setRows(3);
+		translated.setInvalidCommitted(true);
 		translated.setWidth(100, TextArea.UNITS_PERCENTAGE);
 
-		translated.setNullRepresentation("");
+		translated.setNullRepresentation(""); //$NON-NLS-1$
 		translated.addListener((TextChangeListener) this);
 		translated.setWriteThrough(true);
 		translated.setImmediate(true);
+        translated.setTextChangeEventMode(TextChangeEventMode.LAZY);
+        translated.setTextChangeTimeout(500);
+
 		grid.addComponent(translated);
 
 		orignalComment = new TextArea();
 		orignalComment.setReadOnly(true);
 		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		orignalComment.setRows(3);
-		orignalComment.setNullRepresentation("");
+		orignalComment.setNullRepresentation(""); //$NON-NLS-1$
 		grid.addComponent(orignalComment);
 
 		translatedComment = new TextArea();
@@ -249,39 +252,25 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
 		translatedComment.setRows(3);
 
-		translatedComment.setNullRepresentation("");
-		translatedComment.addListener((TextChangeListener) this);
-		translatedComment.setInputPrompt("Comment");
+		translatedComment.setNullRepresentation(""); //$NON-NLS-1$
+		translatedComment.setInputPrompt(Messages.getString("PropertiesEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
 		translatedComment.setWriteThrough(true);
+		translatedComment.addListener((TextChangeListener) this);
 		grid.addComponent(translatedComment);
 
 		safeButton = new Button();
 		safeButton.setEnabled(false);
-		safeButton.setCaption("Save");
+		safeButton.setCaption(Messages.getString("PropertiesEditor_SAVE_BUTTON_CAPTION")); //$NON-NLS-1$
 		safeButton.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 
-				final int filledKeys = getFilledKeys(target);
-				try {
-
-					descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
-						@Override
-						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
-							object.setKeys(filledKeys);
-							object.updatePercentComplete();
-							return object;
-						}
-					});
-					setDirty(false);
-					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
-					propertyPersistence.saveProperties(descriptor, target);
-					layout.getWindow().showNotification("File saved", descriptor.getLocation().lastSegment());
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				setDirty(false);
+				PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
+				propertyPersistence.saveProperties(descriptor, target);
+				layout.getWindow().showNotification(
+						Messages.getString("PropertiesEditor_SAVED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
 
 			}
 		});
@@ -293,14 +282,13 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		layout.setExpandRatio(editorArea, 0);
 		buttonArea.addComponent(safeButton);
 
-
-		Button editTemplate = new Button("Edit Template");
+		Button editTemplate = new Button(Messages.getString("PropertiesEditor_EDIT_TEMPLATE_BUTTON_CAPTION")); //$NON-NLS-1$
 		editTemplate.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				BreadCrumb crumb = MainDashboard.getCurrent().getBreadcrumbs();
-				crumb.walkTo("?master");
+				crumb.walkTo("?master"); //$NON-NLS-1$
 
 			}
 		});
@@ -310,18 +298,9 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 
 	}
 
-	protected int getFilledKeys(PropertyFile target2) {
-		int counter = 0;
-		for (Property prop : target2.getProperties()) {
-			if (prop.getValue() != null && prop.getValue().length() > 0)
-				counter++;
-		}
-		return counter;
-	}
-
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(path.equals("?master"))
+		if (path.equals("?master")) //$NON-NLS-1$
 			return new PropertiesMasterEditor(descriptor.getMaster());
 		return null;
 	}
@@ -334,16 +313,22 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 	@Override
 	public void textChange(TextChangeEvent event) {
 		setDirty(true);
-		if (currentItem == null)
+		if (event.getComponent()!=translated || currentItem == null)
 			return;
+		
+		de.jutzig.jabylon.properties.Property copy = EcoreUtil.copy(currentItem.getTargetProperty());
+		copy.setValue(event.getText());
+		applyValidation(copy);
+	}
+
+	protected void applyValidation(de.jutzig.jabylon.properties.Property property) {
+		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), property);
 		reviews.removeAll(currentItem.getKey());
-		translated.setComponentError(null);
-		currentItem.getTargetProperty().setValue(event.getText()); // apply
-																	// current
-																	// value
-																	// first
-		Collection<Review> reviewList = reviewService.review(descriptor, currentItem.getSourceProperty(), currentItem.getTargetProperty());
-		if (!reviewList.isEmpty()) {
+		if (reviewList.isEmpty()) {
+			if(translated.getComponentError()!=null)
+				translated.setComponentError(null);
+		}
+		else{
 			reviews.putAll((String) currentItem.getKey(), reviewList);
 			List<ErrorMessage> errors = new ArrayList<ErrorMessage>(reviewList.size());
 			for (Review review : reviewList) {
@@ -353,8 +338,6 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			CompositeErrorMessage message = new CompositeErrorMessage(errors);
 			translated.setComponentError(message);
 		}
-		table.refreshRowCache();
-
 	}
 
 	public void setDirty(boolean dirty) {
@@ -381,7 +364,7 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
-		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()),this);
+		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()), this);
 		currentItem.getSourceProperty();
 
 		keyLabel.setValue(currentItem.getKey());
@@ -391,21 +374,20 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 		translatedComment.setPropertyDataSource(currentItem.getTargetComment());
 		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
 
-		translated.setComponentError(null);
+		applyValidation(currentItem.getTargetProperty());
 	}
 
 	@Override
 	public void append(String suggestion) {
 		setDirty(true);
 		String value = (String) translated.getValue();
-		if(value==null)
+		if (value == null)
 			translated.setValue(suggestion);
-		else
-		{
-			if(value.endsWith(" "))
-				translated.setValue(value+suggestion);
+		else {
+			if (value.endsWith(" ")) //$NON-NLS-1$
+				translated.setValue(value + suggestion);
 			else
-				translated.setValue(value+" "+suggestion);
+				translated.setValue(value + " " + suggestion); //$NON-NLS-1$
 		}
 
 	}

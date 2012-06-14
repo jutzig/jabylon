@@ -8,6 +8,6 @@
 		<groupId>de.jutzig.jabylon</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 		<artifactId>jabylon-parent</artifactId>
-		<relativePath>../releng/parent</relativePath>
+		<relativePath>../releng/parent/pom.xml</relativePath>
 	</parent>
 </project>

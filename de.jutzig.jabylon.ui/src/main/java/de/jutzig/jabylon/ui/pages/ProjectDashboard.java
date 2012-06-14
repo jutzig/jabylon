@@ -8,9 +8,9 @@ import org.eclipse.emf.cdo.CDOObject;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
@@ -51,7 +51,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		mainLayout.addComponent(createVersionSelection());
 
 		Section section = new Section();
-		section.setCaption("Available Locales");
+		section.setCaption(Messages.getString("ProjectDashboard_AVAILABLE_LOCALES_SECTION_TITLE"));
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		section.addComponent(layout);
@@ -63,11 +63,11 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 	}
 
 	private Component createVersionSelection() {
-		ComboBox versionSelector = new ComboBox("Version");
+		ComboBox versionSelector = new ComboBox(Messages.getString("ProjectDashboard_VERSION_SELECTION_COMBO_CAPTION"));
 		versionSelector.setTextInputAllowed(false);
 		versionSelector.setNewItemsAllowed(false);
 		versionSelector.setImmediate(true);
-		versionSelector.setItemCaptionPropertyId("branch");
+		versionSelector.setItemCaptionPropertyId("branch"); //$NON-NLS-1$
 		BeanItemContainer<ProjectVersion> container = new BeanItemContainer<ProjectVersion>(ProjectVersion.class);
 		container.addItem(project.getMaster());
 		for (ProjectVersion version : project.getVersions()) {
@@ -89,7 +89,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 					if (project.getMaster() == version)
 						MainDashboard.getCurrent().getBreadcrumbs().goBack();
 					else
-						MainDashboard.getCurrent().getBreadcrumbs().walkTo("?" + version.getBranch());
+						MainDashboard.getCurrent().getBreadcrumbs().walkTo("?" + version.getBranch()); //$NON-NLS-1$
 				}
 
 			}
@@ -153,12 +153,12 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 //		});
 //		parent.addComponent(commit);
 		
-		Button editTemplate = new Button("Edit Template");
+		Button editTemplate = new Button(Messages.getString("ProjectDashboard_EDIT_TEMPLATE_BUTTON"));
 		editTemplate.addListener(new ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				MainDashboard.getCurrent().getBreadcrumbs().walkTo("?master");
+				MainDashboard.getCurrent().getBreadcrumbs().walkTo("?master"); //$NON-NLS-1$
 				
 			}
 		});
@@ -174,7 +174,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public CrumbTrail walkTo(String path) {
-		if(path.equals("?master"))
+		if(path.equals("?master")) //$NON-NLS-1$
 		{
 			PropertyFileDescriptor descriptor = project.getMaster().getMaster().getDescriptors().get(0);
 			return new PropertiesMasterEditor(descriptor);
@@ -184,7 +184,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), version);
 		}
 		Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, path);
-		if (path.startsWith("?")) {
+		if (path.startsWith("?")) { //$NON-NLS-1$
 			version = getProjectVersion(project, path.substring(1));
 			if(mainLayout!=null)
 				mainLayout.removeAllComponents();

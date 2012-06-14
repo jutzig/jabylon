@@ -17,10 +17,10 @@ import de.jutzig.jabylon.properties.PropertyFile;
 @SuppressWarnings("serial")
 public class PropertyPairContainer extends IndexedContainer{
 
-	private static final String SOURCE_ID = "source.id";
-	private static final String TARGET_ID = "target.id";
-	private static final String SOURCE_COMMENT  = "source.comment";
-	private static final String TARGET_COMMENT  = "target.comment";
+	private static final String SOURCE_ID = "source.id"; //$NON-NLS-1$
+	private static final String TARGET_ID = "target.id"; //$NON-NLS-1$
+	private static final String SOURCE_COMMENT  = "source.comment"; //$NON-NLS-1$
+	private static final String TARGET_COMMENT  = "target.comment"; //$NON-NLS-1$
 	private static final List<String> IDS;
 	private Set<String> items; 
 	static {
@@ -122,12 +122,12 @@ public class PropertyPairContainer extends IndexedContainer{
 
 	@Override
 	public Item addItem(Object itemId) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException("Cannot add new items to this container");
+		throw new UnsupportedOperationException("Cannot add new items to this container"); //$NON-NLS-1$
 	}
 
 	@Override
 	public Object addItem() throws UnsupportedOperationException {
-		throw new UnsupportedOperationException("Cannot add new items to this container");
+		throw new UnsupportedOperationException("Cannot add new items to this container"); //$NON-NLS-1$
 	}
 
 	@Override

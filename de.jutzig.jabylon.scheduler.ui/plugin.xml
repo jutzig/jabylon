@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.jutzig.jabylon.ui.configTab">
+      <tab
+            name="Jobs"
+            precedence="2"
+            tabID="de.jutzig.jabylon.scheduler.ui.job.config">
+      </tab>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.ui.config">
+      <configSection
+            id="de.jutzig.jabylon.scheduler.ui.job.config.section"
+            objectClass="de.jutzig.jabylon.properties.Workspace"
+            section="de.jutzig.jabylon.scheduler.ui.internal.JobConfigSection"
+            tab="de.jutzig.jabylon.scheduler.ui.job.config">
+         <permission
+               requires="GLOBAL_EDIT_PROJECTS">
+         </permission>
+      </configSection>
+   </extension>
+
+</plugin>

@@ -52,7 +52,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 	@Override
 	public void init() {
 		// mainWindow initialization omitted
-		setTheme("jabylon");
+		setTheme("jabylon"); //$NON-NLS-1$
 		workspace = getOrInitializeWorkspace();
 		getContext().addTransactionListener(this);
 		application.set(this);
@@ -66,11 +66,11 @@ public class MainDashboard extends Application implements TransactionListener, C
 		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
 		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
 
-		return userManagement.findUserByName("Anonymous");
+		return userManagement.findUserByName("Anonymous"); //$NON-NLS-1$
 	}
 
 	private void buildMainLayout() {
-		setMainWindow(new Window("Jabylon"));
+		setMainWindow(new Window(Messages.getString("MainDashboard_APPLICATION_NAME"))); //$NON-NLS-1$
 
 		mainLayout = new VerticalLayout();
 		mainLayout.setSizeFull();
@@ -100,8 +100,8 @@ public class MainDashboard extends Application implements TransactionListener, C
 	private Component createHeader() {
 
 		HorizontalLayout nav = new HorizontalLayout();
-		nav.setHeight("30px");
-		nav.setWidth("100%");
+		nav.setHeight("30px"); //$NON-NLS-1$
+		nav.setWidth("100%"); //$NON-NLS-1$
 		// nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
 		nav.setSpacing(true);
 		// nav.setMargin(true, true, false, true);
@@ -182,6 +182,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public void transactionEnd(Application application, Object transactionData) {
+		MainDashboard.application.remove();
 	}
 
 	private Workspace getOrInitializeWorkspace() {
@@ -210,7 +211,7 @@ public class MainDashboard extends Application implements TransactionListener, C
 
 	@Override
 	public String getTrailCaption() {
-		return "Home";
+		return Messages.getString("MainDashboard_HOME"); //$NON-NLS-1$
 	}
 
 	public Workspace getWorkspace() {

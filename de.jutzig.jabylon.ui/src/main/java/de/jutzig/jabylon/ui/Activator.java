@@ -17,7 +17,7 @@ public class Activator extends Plugin {
 
 	private static BundleContext context;
 	private static Activator activator;
-	public static final String PLUGIN_ID = "de.jutzig.jabylon.ui";
+	public static final String PLUGIN_ID = "de.jutzig.jabylon.ui"; //$NON-NLS-1$
 	private ServiceReference<QueryService> queryServiceReference;
 	private QueryService queryService;
 
@@ -60,14 +60,14 @@ public class Activator extends Plugin {
 
 	public IConfigurationElement[] getReviewParticipants()
 	{
-		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.reviewParticipant");
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.reviewParticipant"); //$NON-NLS-1$
 		return elements;
 	}
 
 
 	public IConfigurationElement[] getTeamProviders()
 	{
-		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.teamProvider");
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.teamProvider"); //$NON-NLS-1$
 		return elements;
 	}
 
@@ -78,9 +78,9 @@ public class Activator extends Plugin {
 			if(element.getAttribute("name").equals(teamProvider))
 			{
 				try {
-					return (TeamProvider) element.createExecutableExtension("class");
+					return (TeamProvider) element.createExecutableExtension("class"); //$NON-NLS-1$
 				} catch (CoreException e) {
-					error("Failed to create instance for team provider "+teamProvider,e);
+					error("Failed to create instance for team provider "+teamProvider,e); //$NON-NLS-1$
 				}
 			}
 		}
@@ -89,7 +89,7 @@ public class Activator extends Plugin {
 
 	public IConfigurationElement[] getPropertyEditorTools()
 	{
-		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.propertyTools");
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.propertyTools"); //$NON-NLS-1$
 		return elements;
 	}
 

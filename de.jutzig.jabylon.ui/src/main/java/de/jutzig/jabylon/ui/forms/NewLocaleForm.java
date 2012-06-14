@@ -7,7 +7,6 @@ import java.util.Locale;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -16,19 +15,13 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.FormFieldFactory;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
-import de.jutzig.jabylon.cdo.connector.Modification;
-import de.jutzig.jabylon.cdo.connector.TransactionUtil;
-import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
-import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.beans.LocaleBean;
-import de.jutzig.jabylon.ui.breadcrumb.CrumbTrail;
 
 public class NewLocaleForm extends VerticalLayout {
 
@@ -57,16 +50,16 @@ public class NewLocaleForm extends VerticalLayout {
 
         		Field field = super.createField(item, propertyId, uiContext);
         		field.addValidator(new ProjectLocaleValidator());
-        		if(propertyId.equals("language"))
+        		if(propertyId.equals("language")) //$NON-NLS-1$
         			field.setRequired(true);
         		return field;
         	}
 		});
         // Determines which properties are shown, and in which order:
         List<String> properties = new ArrayList<String>(3);
-        properties.add("language");
-        properties.add("country");
-        properties.add("variant");
+        properties.add("language"); //$NON-NLS-1$
+        properties.add("country"); //$NON-NLS-1$
+        properties.add("variant"); //$NON-NLS-1$
         form.setVisibleItemProperties(properties);
 
         // Add form to layout
@@ -75,7 +68,7 @@ public class NewLocaleForm extends VerticalLayout {
         // The cancel / apply buttons
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.setSpacing(true);
-        Button discardChanges = new Button("Cancel",
+        Button discardChanges = new Button(Messages.getString("NewLocaleForm_CANCEL_BUTTON"),
                 new Button.ClickListener() {
                     public void buttonClick(ClickEvent event) {
                         form.discard();
@@ -85,7 +78,7 @@ public class NewLocaleForm extends VerticalLayout {
         buttons.addComponent(discardChanges);
         buttons.setComponentAlignment(discardChanges, Alignment.MIDDLE_LEFT);
 
-        Button apply = new Button("Create", new Button.ClickListener() {
+        Button apply = new Button(Messages.getString("NewLocaleForm_CREATE_LOCALE_BUTTON"), new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 try {
                 	if(!form.isValid())

@@ -8,8 +8,8 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
+import org.apache.tools.ant.types.selectors.SelectorUtils;
 
-import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 
 public class WorkspaceScanner {
@@ -21,9 +21,10 @@ public class WorkspaceScanner {
 
 	}
 
-	public void fullScan(PropertyFileAcceptor acceptor, ProjectVersion project, ScanConfiguration config) {
-		File baseDir = new File(project.absolutPath().toFileString()).getAbsoluteFile();
-		FileSet fs = createFileSet(baseDir, config);
+	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config) {
+		
+		FileSet fs = createFileSet(config);
+		fs.setDir(baseDir);
 		String masterLocale = config.getMasterLocale();
 		if (masterLocale != null && masterLocale.isEmpty())
 			masterLocale = null;
@@ -36,6 +37,43 @@ public class WorkspaceScanner {
 				}
 			}
 		}
+
+	}
+
+	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, File singleFile) {
+		Project antProject = new org.apache.tools.ant.Project();
+		FileSet fs = createFileSet(config);
+		String[] excludes = fs.mergeExcludes(antProject);
+		if(excludes!=null)
+		{
+			for (String exclude : excludes) {
+				if(SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && SelectorUtils.match(exclude, singleFile.getPath()))
+					return;
+			}			
+		}
+		String[] includes = fs.mergeIncludes(antProject);
+		if(includes==null)
+			return;
+		for (String include : includes) {
+			if(SelectorUtils.matchPatternStart(include, singleFile.getPath()) && SelectorUtils.match(include, singleFile.getPath()))
+			{
+				String masterLocale = config.getMasterLocale();
+				if (masterLocale != null && masterLocale.isEmpty())
+					masterLocale = null;
+				if (baseDir.exists()) {
+
+					if (matchesLocale(singleFile.getName(), masterLocale)) {
+						File file = new File(baseDir, singleFile.getName());
+						acceptor.newMatch(file);
+					}
+
+				}
+				break;
+			}
+		}
+		
+		
+
 
 	}
 
@@ -53,9 +91,8 @@ public class WorkspaceScanner {
 		return false;
 	}
 
-	private FileSet createFileSet(File baseDir, ScanConfiguration config) {
+	private FileSet createFileSet(ScanConfiguration config) {
 		FileSet fs = new FileSet();
-		fs.setDir(baseDir);
 		fs.setProject(new Project());
 		for (String exclude : config.getExcludes()) {
 			NameEntry entry = fs.createExclude();

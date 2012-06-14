@@ -15,6 +15,8 @@ public class SchedulerActivator implements BundleActivator {
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.scheduler";
 	
 	private static RepositoryConnector repositoryConnector; 
+	
+	private static SchedulerActivator INSTANCE;
 
 	static BundleContext getContext() {
 		return context;
@@ -30,6 +32,7 @@ public class SchedulerActivator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		SchedulerActivator.context = bundleContext;
+		INSTANCE = this;
 		connectorService = bundleContext.getServiceReference(RepositoryConnector.class);
 		repositoryConnector = bundleContext.getService(connectorService);
 		registerJobs();
@@ -46,6 +49,7 @@ public class SchedulerActivator implements BundleActivator {
 		repositoryConnector = null;
 		bundleContext.ungetService(connectorService);
 		connectorService = null;
+		INSTANCE = null;
 		
 	}
 
@@ -58,4 +62,12 @@ public class SchedulerActivator implements BundleActivator {
 		return repositoryConnector;
 	}
 	
+	public JobRegistry getJobRegistry() {
+		return jobRegistry;
+	}
+	
+	
+	public static SchedulerActivator getDefault() {
+		return INSTANCE;
+	}
 }

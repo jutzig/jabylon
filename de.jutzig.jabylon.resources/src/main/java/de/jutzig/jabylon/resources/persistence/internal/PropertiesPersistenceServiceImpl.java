@@ -20,6 +20,8 @@ import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.cdo.view.CDOAdapterPolicy;
 import org.eclipse.emf.cdo.view.CDOView;
@@ -240,7 +242,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	@Override
 	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
 		try {
-			queue.put(new PropertyTuple(descriptor, file, autoTranslate));
+			PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
+			queue.put(new PropertyTuple(adaptedDescriptor, file, autoTranslate));
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
 		}
@@ -274,11 +277,16 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	@Override
 	public void run() {
+		CDOTransaction transaction = null;
 		try {
 			while (true) {
 				try {
+					
 					PropertyTuple tuple = queue.take();
-					PropertyFileDescriptor descriptor = tuple.getDescriptor();
+					if(transaction==null)
+						transaction = workspace.cdoView().getSession().openTransaction();
+					
+					PropertyFileDescriptor descriptor = transaction.getObject(tuple.getDescriptor());
 					PropertyFile file = tuple.getFile();
 					URI path = descriptor.absolutPath();
 					Map<String, Object> options = createOptions(descriptor);
@@ -288,24 +296,41 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
 						resource.save(options);
+						descriptor.setKeys(resource.getSavedProperties());
+						descriptor.updatePercentComplete();
+						transaction.commit();
 						List<Notification> diff = differentiator.diff(file);
 						firePropertiesChanges(descriptor, diff,tuple.isAutoSync());
 					} else {
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
 						resource.save(options);
+						descriptor.setKeys(resource.getSavedProperties());
+						descriptor.updatePercentComplete();
+						transaction.commit();
 						firePropertiesAdded(descriptor,tuple.isAutoSync());
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 
 					e.printStackTrace();
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					//clean up the dirty transaction
+					transaction.close();
+					transaction = null;
 				}
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			// let thread end...
+		}
+		finally
+		{
+			if(transaction!=null)
+				transaction.close();
 		}
 
 	}

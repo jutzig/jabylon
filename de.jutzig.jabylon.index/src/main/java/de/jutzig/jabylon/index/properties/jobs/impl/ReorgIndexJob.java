@@ -53,12 +53,13 @@ public class ReorgIndexJob implements JobExecution {
 	public void run(Map<String, Object> jobContext) throws Exception {
 		IndexActivator.getDefault().log("Updating search index", IStatus.INFO);
 		IndexWriter writer = null;
+		CDOSession session = null;
 		boolean closed = false;
 		try {
 			writer = createIndexWriter();
 			writer.deleteAll();
 			RepositoryConnector connector = JobContextUtil.getRepositoryConnector(jobContext);
-			CDOSession session = connector.createSession();
+			session = connector.createSession();
 			CDOView view = session.openView();
 			CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 			Workspace workspace = (Workspace) resource.getContents().get(0);
@@ -76,6 +77,10 @@ public class ReorgIndexJob implements JobExecution {
 				writer.rollback();
 			throw e;
 		} finally {
+			if(session!=null)
+			{
+				session.close();
+			}
 			if (!closed && IndexWriter.isLocked(writer.getDirectory())) {
 				IndexWriter.unlock(writer.getDirectory());
 			}

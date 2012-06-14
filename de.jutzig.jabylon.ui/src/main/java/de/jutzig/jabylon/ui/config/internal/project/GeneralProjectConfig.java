@@ -10,7 +10,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,9 +29,9 @@ import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -44,7 +43,6 @@ import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.components.EditableTable;
 import de.jutzig.jabylon.ui.components.ProgressMonitorDialog;
 import de.jutzig.jabylon.ui.components.ResolvableProgressIndicator;
-import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
 import de.jutzig.jabylon.ui.container.EObjectItem;
 import de.jutzig.jabylon.ui.container.GenericEObjectContainer;
@@ -53,7 +51,6 @@ import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
 import de.jutzig.jabylon.ui.team.TeamProvider;
-import de.jutzig.jabylon.ui.util.PreferencesUtil;
 import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 /**
@@ -113,7 +110,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			@Override
 			protected void addPressed() {
 				ProjectVersion projectVersion = PropertiesFactory.eINSTANCE.createProjectVersion();
-				projectVersion.setBranch("<branch>");
+				projectVersion.setBranch(Messages.getString("GeneralProjectConfig_NEW_BRANCH_PROMPT"));
 				getDomainObject().getVersions().add(projectVersion);
 				table.setEditable(true);
 				versionTable.select(projectVersion);
@@ -160,8 +157,8 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				window.setModal(true);
 				window.setWidth(300, Window.UNITS_PIXELS);
 				window.setHeight(300, Window.UNITS_PIXELS);
-				window.setCaption("Add new Locale");
-				window.setName("Add new Locale");
+				window.setCaption(Messages.getString("GeneralProjectConfig_NEW_LOCALE_DIALOG_TITLE"));
+				window.setName("Add new Locale"); //$NON-NLS-1$
 				form.getWindow().addWindow(window);
 			}
 
@@ -232,7 +229,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			@Override
 			public Field createField(Item item, Object propertyId, Component uiContext) {
 				if (propertyId == PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE) {
-					NativeSelect select = new NativeSelect("File Type");
+					NativeSelect select = new NativeSelect(Messages.getString("GeneralProjectConfig_PROPERTY_TYPE_CHOICE_CAPTION"));
 					select.addItem(PropertyType.ENCODED_ISO);
 					select.addItem(PropertyType.UNICODE);
 					select.setNewItemsAllowed(false);
@@ -253,7 +250,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 		versionTable.setVisibleColumns(new Object[] { PropertiesPackage.Literals.PROJECT_VERSION__BRANCH });
 
-		versionTable.addGeneratedColumn("progress", new ColumnGenerator() {
+		versionTable.addGeneratedColumn(Messages.getString("GeneralProjectConfig_PROGRESS_COLUMN_CAPTION"), new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -261,29 +258,29 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			}
 		});
 
-		versionTable.addGeneratedColumn("scan", new ColumnGenerator() {
+		versionTable.addGeneratedColumn(Messages.getString("GeneralProjectConfig_SCAN_COLUMN_HEADER"), new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				final ProjectVersion version = (ProjectVersion) itemId;
-				NativeButton button = new NativeButton("scan");
+				NativeButton button = new NativeButton(Messages.getString("GeneralProjectConfig_SCAN_BUTTON_CAPTION"));
 				button.addListener(new ClickListener() {
 
 					@Override
 					public void buttonClick(ClickEvent event) {
 						version.fullScan(PreferencesUtil.getScanConfigForProject(getDomainObject()));
-						table.getWindow().showNotification("Scan complete");
+						table.getWindow().showNotification(Messages.getString("GeneralProjectConfig_SCAN_COMPLETE_NOTIFICATION"));
 					}
 				});
 				return button;
 			}
 		});
-		versionTable.addGeneratedColumn("checkout", new ColumnGenerator() {
+		versionTable.addGeneratedColumn(Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER"), new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				final ProjectVersion version = (ProjectVersion) itemId;
-				final NativeButton button = new NativeButton("checkout");
+				final NativeButton button = new NativeButton(Messages.getString("GeneralProjectConfig_CHECKOUT_BUTTON"));
 				File directory = new File(version.absolutPath().toFileString());
 				button.setEnabled(!directory.exists() && getDomainObject().eIsSet(PropertiesPackage.Literals.PROJECT__REPOSITORY_URI));
 				button.addListener(new ClickListener() {
@@ -292,7 +289,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 					public void buttonClick(ClickEvent event) {
 
 						ProgressMonitorDialog dialog = new ProgressMonitorDialog(table.getWindow());
-						dialog.setCaption("Checking out...");
+						dialog.setCaption(Messages.getString("GeneralProjectConfig_CHECKOUT_DIALOG_TITLE"));
 						final TeamProvider teamProvider = Activator.getDefault().getTeamProviderFor(getDomainObject());
 						dialog.run(true, new RunnableWithProgress() {
 
@@ -313,7 +310,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			}
 		});
 
-		versionTable.setColumnHeaders(new String[] { "Branch", "Completeness", "Scan", "Checkout" });
+		versionTable.setColumnHeaders(new String[] { Messages.getString("GeneralProjectConfig_BRANCH_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_COMPLETION_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_SCAN_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER") });
 
 	}
 
