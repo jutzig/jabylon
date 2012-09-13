@@ -11,19 +11,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>helios</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo</url>
-		</repository>
-		<repository>
-			<id>jabylon-extras</id>
-			<layout>p2</layout>
-			<url>http://svogt.github.com/jabylon/update-site/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -38,6 +25,14 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
+					<target>
+						<artifact>
+							<groupId>de.jutzig.jabylon</groupId>
+							<artifactId>jabylon-parent</artifactId>
+							<version>${project.version}</version>
+							<classifier>jabylon</classifier>
+						</artifact>
+					</target>
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -45,6 +40,7 @@
 							<arch>x86</arch>
 						</environment>
 					</environments>
+
 				</configuration>
 			</plugin>
 
