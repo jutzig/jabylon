@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="properties"
-    nsURI="http://jutzig.de/jabylon/properties" nsPrefix="prop">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="properties" nsURI="http://jutzig.de/jabylon/properties" nsPrefix="prop">
   <eClassifiers xsi:type="ecore:EClass" name="PropertyFile">
     <eOperations name="getProperty" eType="#//Property">
       <eParameters name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -97,6 +95,9 @@
     <eOperations name="relativePath" eType="#//URI"/>
     <eOperations name="absolutPath" eType="#//URI"/>
     <eOperations name="updatePercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="resolveChild" eType="#//Resolvable">
+      <eParameters name="path" eType="#//URI"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="PropertyType">

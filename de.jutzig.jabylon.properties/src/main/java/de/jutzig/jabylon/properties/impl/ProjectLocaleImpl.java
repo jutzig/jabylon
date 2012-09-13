@@ -39,43 +39,43 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  */
 public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	/**
-	 * The default value of the '{@link #getLocale() <em>Locale</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getLocale() <em>Locale</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLocale()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getLocale()
+     * @generated
+     * @ordered
+     */
 	protected static final Locale LOCALE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getPropertyCount() <em>Property Count</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getPropertyCount() <em>Property Count</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPropertyCount()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getPropertyCount()
+     * @generated
+     * @ordered
+     */
 	protected static final int PROPERTY_COUNT_EDEFAULT = 0;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ProjectLocaleImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return PropertiesPackage.Literals.PROJECT_LOCALE;
-	}
+        return PropertiesPackage.Literals.PROJECT_LOCALE;
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -96,50 +96,50 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Locale getLocale() {
-		return (Locale)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__LOCALE, PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE, true, true);
-	}
+        return (Locale)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__LOCALE, PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setLocale(Locale newLocale) {
-		eDynamicSet(PropertiesPackage.PROJECT_LOCALE__LOCALE, PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE, newLocale);
-	}
+        eDynamicSet(PropertiesPackage.PROJECT_LOCALE__LOCALE, PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE, newLocale);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EList<PropertyFileDescriptor> getDescriptors() {
-		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS, true, true);
-	}
+        return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public int getPropertyCount() {
-		return (Integer)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, true, true);
-	}
+        return (Integer)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setPropertyCount(int newPropertyCount) {
-		eDynamicSet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, newPropertyCount);
-	}
+        eDynamicSet(PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT, PropertiesPackage.Literals.PROJECT_LOCALE__PROPERTY_COUNT, newPropertyCount);
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -174,103 +174,108 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
-				return ((InternalEList<?>)getDescriptors()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+                return ((InternalEList<?>)getDescriptors()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				if (resolve) return getProjectVersion();
-				return basicGetProjectVersion();
-			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
-				return getLocale();
-			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
-				return getDescriptors();
-			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
-				return getPropertyCount();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
+                if (resolve) return getProjectVersion();
+                return basicGetProjectVersion();
+            case PropertiesPackage.PROJECT_LOCALE__LOCALE:
+                return getLocale();
+            case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+                return getDescriptors();
+            case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+                return getPropertyCount();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
-				setLocale((Locale)newValue);
-				return;
-			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
-				getDescriptors().clear();
-				getDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
-				return;
-			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
-				setPropertyCount((Integer)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_LOCALE__LOCALE:
+                setLocale((Locale)newValue);
+                return;
+            case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+                getDescriptors().clear();
+                getDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
+                return;
+            case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+                setPropertyCount((Integer)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
-				setLocale(LOCALE_EDEFAULT);
-				return;
-			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
-				getDescriptors().clear();
-				return;
-			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
-				setPropertyCount(PROPERTY_COUNT_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_LOCALE__LOCALE:
+                setLocale(LOCALE_EDEFAULT);
+                return;
+            case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+                getDescriptors().clear();
+                return;
+            case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+                setPropertyCount(PROPERTY_COUNT_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return basicGetProjectVersion() != null;
-			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
-				return LOCALE_EDEFAULT == null ? getLocale() != null : !LOCALE_EDEFAULT.equals(getLocale());
-			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
-				return !getDescriptors().isEmpty();
-			case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
-				return getPropertyCount() != PROPERTY_COUNT_EDEFAULT;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
+                return basicGetProjectVersion() != null;
+            case PropertiesPackage.PROJECT_LOCALE__LOCALE:
+                return LOCALE_EDEFAULT == null ? getLocale() != null : !LOCALE_EDEFAULT.equals(getLocale());
+            case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+                return !getDescriptors().isEmpty();
+            case PropertiesPackage.PROJECT_LOCALE__PROPERTY_COUNT:
+                return getPropertyCount() != PROPERTY_COUNT_EDEFAULT;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	@Override
 	public URI relativePath() {

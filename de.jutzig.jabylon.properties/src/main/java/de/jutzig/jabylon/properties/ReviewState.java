@@ -23,244 +23,250 @@ import org.eclipse.emf.common.util.Enumerator;
  */
 public enum ReviewState implements Enumerator {
 	/**
-	 * The '<em><b>OPEN</b></em>' literal object.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>OPEN</b></em>' literal object.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #OPEN_VALUE
-	 * @generated
-	 * @ordered
-	 */
+     * @see #OPEN_VALUE
+     * @generated
+     * @ordered
+     */
 	OPEN(0, "OPEN", "OPEN"),
 
 	/**
-	 * The '<em><b>RESOLVED</b></em>' literal object.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>RESOLVED</b></em>' literal object.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #RESOLVED_VALUE
-	 * @generated
-	 * @ordered
-	 */
+     * @see #RESOLVED_VALUE
+     * @generated
+     * @ordered
+     */
 	RESOLVED(1, "RESOLVED", "RESOLVED"),
 
 	/**
-	 * The '<em><b>INVALID</b></em>' literal object.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>INVALID</b></em>' literal object.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #INVALID_VALUE
-	 * @generated
-	 * @ordered
-	 */
+     * @see #INVALID_VALUE
+     * @generated
+     * @ordered
+     */
 	INVALID(2, "INVALID", "INVALID"),
 
 	/**
-	 * The '<em><b>REOPENED</b></em>' literal object.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>REOPENED</b></em>' literal object.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #REOPENED_VALUE
-	 * @generated
-	 * @ordered
-	 */
+     * @see #REOPENED_VALUE
+     * @generated
+     * @ordered
+     */
 	REOPENED(3, "REOPENED", "REOPENED");
 
 	/**
-	 * The '<em><b>OPEN</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>OPEN</b></em>' literal value.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>OPEN</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #OPEN
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
+     * @see #OPEN
+     * @model
+     * @generated
+     * @ordered
+     */
 	public static final int OPEN_VALUE = 0;
 
 	/**
-	 * The '<em><b>RESOLVED</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>RESOLVED</b></em>' literal value.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>RESOLVED</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #RESOLVED
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
+     * @see #RESOLVED
+     * @model
+     * @generated
+     * @ordered
+     */
 	public static final int RESOLVED_VALUE = 1;
 
 	/**
-	 * The '<em><b>INVALID</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>INVALID</b></em>' literal value.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>INVALID</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #INVALID
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
+     * @see #INVALID
+     * @model
+     * @generated
+     * @ordered
+     */
 	public static final int INVALID_VALUE = 2;
 
 	/**
-	 * The '<em><b>REOPENED</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+     * The '<em><b>REOPENED</b></em>' literal value.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>REOPENED</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #REOPENED
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
+     * @see #REOPENED
+     * @model
+     * @generated
+     * @ordered
+     */
 	public static final int REOPENED_VALUE = 3;
 
 	/**
-	 * An array of all the '<em><b>Review State</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
+     * An array of all the '<em><b>Review State</b></em>' enumerators.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private static final ReviewState[] VALUES_ARRAY =
-		new ReviewState[] {
-			OPEN,
-			RESOLVED,
-			INVALID,
-			REOPENED,
-		};
+		new ReviewState[]
+        {
+            OPEN,
+            RESOLVED,
+            INVALID,
+            REOPENED,
+        };
 
 	/**
-	 * A public read-only list of all the '<em><b>Review State</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
+     * A public read-only list of all the '<em><b>Review State</b></em>' enumerators.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final List<ReviewState> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Review State</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
+     * Returns the '<em><b>Review State</b></em>' literal with the specified literal value.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static ReviewState get(String literal) {
-		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ReviewState result = VALUES_ARRAY[i];
-			if (result.toString().equals(literal)) {
-				return result;
-			}
-		}
-		return null;
-	}
+        for (int i = 0; i < VALUES_ARRAY.length; ++i)
+        {
+            ReviewState result = VALUES_ARRAY[i];
+            if (result.toString().equals(literal))
+            {
+                return result;
+            }
+        }
+        return null;
+    }
 
 	/**
-	 * Returns the '<em><b>Review State</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
+     * Returns the '<em><b>Review State</b></em>' literal with the specified name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static ReviewState getByName(String name) {
-		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-			ReviewState result = VALUES_ARRAY[i];
-			if (result.getName().equals(name)) {
-				return result;
-			}
-		}
-		return null;
-	}
+        for (int i = 0; i < VALUES_ARRAY.length; ++i)
+        {
+            ReviewState result = VALUES_ARRAY[i];
+            if (result.getName().equals(name))
+            {
+                return result;
+            }
+        }
+        return null;
+    }
 
 	/**
-	 * Returns the '<em><b>Review State</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
+     * Returns the '<em><b>Review State</b></em>' literal with the specified integer value.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static ReviewState get(int value) {
-		switch (value) {
-			case OPEN_VALUE: return OPEN;
-			case RESOLVED_VALUE: return RESOLVED;
-			case INVALID_VALUE: return INVALID;
-			case REOPENED_VALUE: return REOPENED;
-		}
-		return null;
-	}
+        switch (value)
+        {
+            case OPEN_VALUE: return OPEN;
+            case RESOLVED_VALUE: return RESOLVED;
+            case INVALID_VALUE: return INVALID;
+            case REOPENED_VALUE: return REOPENED;
+        }
+        return null;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
+     * Only this class can construct instances.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private ReviewState(int value, String name, String literal) {
-		this.value = value;
-		this.name = name;
-		this.literal = literal;
-	}
+        this.value = value;
+        this.name = name;
+        this.literal = literal;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public int getValue() {
-	  return value;
-	}
+      return value;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getName() {
-	  return name;
-	}
+      return name;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getLiteral() {
-	  return literal;
-	}
+      return literal;
+    }
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
+     * Returns the literal value of the enumerator, which is its string representation.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		return literal;
-	}
+        return literal;
+    }
 	
 } //ReviewState

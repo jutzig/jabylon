@@ -7,10 +7,8 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.jutzig.jabylon.users.tests,
- de.jutzig.jabylon.users,
+Export-Package: de.jutzig.jabylon.users,
  de.jutzig.jabylon.users.impl,
- de.jutzig.jabylon.users.tests,
  de.jutzig.jabylon.users.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,

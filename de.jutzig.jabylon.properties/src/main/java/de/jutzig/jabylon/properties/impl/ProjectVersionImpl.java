@@ -26,6 +26,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
@@ -48,36 +49,36 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  */
 public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion {
 	/**
-	 * The default value of the '{@link #getBranch() <em>Branch</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getBranch() <em>Branch</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getBranch()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getBranch()
+     * @generated
+     * @ordered
+     */
 	protected static final String BRANCH_EDEFAULT = "master";
 
 
 	private static final Pattern LOCALE_PATTERN = Pattern.compile(".+?((_\\w\\w){1,3})\\..+");
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ProjectVersionImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return PropertiesPackage.Literals.PROJECT_VERSION;
-	}
+        return PropertiesPackage.Literals.PROJECT_VERSION;
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -89,60 +90,60 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getBranch() {
-		return (String)eDynamicGet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, true, true);
-	}
+        return (String)eDynamicGet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setBranch(String newBranch) {
-		eDynamicSet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, newBranch);
-	}
+        eDynamicSet(PropertiesPackage.PROJECT_VERSION__BRANCH, PropertiesPackage.Literals.PROJECT_VERSION__BRANCH, newBranch);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EList<ProjectLocale> getLocales() {
-		return (EList<ProjectLocale>)eDynamicGet(PropertiesPackage.PROJECT_VERSION__LOCALES, PropertiesPackage.Literals.PROJECT_VERSION__LOCALES, true, true);
-	}
+        return (EList<ProjectLocale>)eDynamicGet(PropertiesPackage.PROJECT_VERSION__LOCALES, PropertiesPackage.Literals.PROJECT_VERSION__LOCALES, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProjectLocale getMaster() {
-		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, true, true);
-	}
+        return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, true, true);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public NotificationChain basicSetMaster(ProjectLocale newMaster, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROJECT_VERSION__MASTER, msgs);
-		return msgs;
-	}
+        msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROJECT_VERSION__MASTER, msgs);
+        return msgs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setMaster(ProjectLocale newMaster) {
-		eDynamicSet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, newMaster);
-	}
+        eDynamicSet(PropertiesPackage.PROJECT_VERSION__MASTER, PropertiesPackage.Literals.PROJECT_VERSION__MASTER, newMaster);
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -184,7 +185,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 			}
 		}
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -202,104 +203,109 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				return ((InternalEList<?>)getLocales()).basicRemove(otherEnd, msgs);
-			case PropertiesPackage.PROJECT_VERSION__MASTER:
-				return basicSetMaster(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_VERSION__LOCALES:
+                return ((InternalEList<?>)getLocales()).basicRemove(otherEnd, msgs);
+            case PropertiesPackage.PROJECT_VERSION__MASTER:
+                return basicSetMaster(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROJECT:
-				return getProject();
-			case PropertiesPackage.PROJECT_VERSION__BRANCH:
-				return getBranch();
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				return getLocales();
-			case PropertiesPackage.PROJECT_VERSION__MASTER:
-				return getMaster();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_VERSION__PROJECT:
+                return getProject();
+            case PropertiesPackage.PROJECT_VERSION__BRANCH:
+                return getBranch();
+            case PropertiesPackage.PROJECT_VERSION__LOCALES:
+                return getLocales();
+            case PropertiesPackage.PROJECT_VERSION__MASTER:
+                return getMaster();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__BRANCH:
-				setBranch((String)newValue);
-				return;
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				getLocales().clear();
-				getLocales().addAll((Collection<? extends ProjectLocale>)newValue);
-				return;
-			case PropertiesPackage.PROJECT_VERSION__MASTER:
-				setMaster((ProjectLocale)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_VERSION__BRANCH:
+                setBranch((String)newValue);
+                return;
+            case PropertiesPackage.PROJECT_VERSION__LOCALES:
+                getLocales().clear();
+                getLocales().addAll((Collection<? extends ProjectLocale>)newValue);
+                return;
+            case PropertiesPackage.PROJECT_VERSION__MASTER:
+                setMaster((ProjectLocale)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__BRANCH:
-				setBranch(BRANCH_EDEFAULT);
-				return;
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				getLocales().clear();
-				return;
-			case PropertiesPackage.PROJECT_VERSION__MASTER:
-				setMaster((ProjectLocale)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_VERSION__BRANCH:
+                setBranch(BRANCH_EDEFAULT);
+                return;
+            case PropertiesPackage.PROJECT_VERSION__LOCALES:
+                getLocales().clear();
+                return;
+            case PropertiesPackage.PROJECT_VERSION__MASTER:
+                setMaster((ProjectLocale)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__PROJECT:
-				return getProject() != null;
-			case PropertiesPackage.PROJECT_VERSION__BRANCH:
-				return BRANCH_EDEFAULT == null ? getBranch() != null : !BRANCH_EDEFAULT.equals(getBranch());
-			case PropertiesPackage.PROJECT_VERSION__LOCALES:
-				return !getLocales().isEmpty();
-			case PropertiesPackage.PROJECT_VERSION__MASTER:
-				return getMaster() != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROJECT_VERSION__PROJECT:
+                return getProject() != null;
+            case PropertiesPackage.PROJECT_VERSION__BRANCH:
+                return BRANCH_EDEFAULT == null ? getBranch() != null : !BRANCH_EDEFAULT.equals(getBranch());
+            case PropertiesPackage.PROJECT_VERSION__LOCALES:
+                return !getLocales().isEmpty();
+            case PropertiesPackage.PROJECT_VERSION__MASTER:
+                return getMaster() != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 
 	class FileAcceptor implements PropertyFileAcceptor
@@ -407,6 +413,27 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 	@Override
 	public URI relativePath() {
 		return URI.createHierarchicalURI(new String[] {getBranch()}, null, null);
+	}
+
+	@Override
+	public Resolvable resolveChild(URI path)
+	{
+	    if(path.segmentCount()==0 || relativePath().equals(path))
+	        return this;
+	    String localeSegment = path.segment(0);
+	    if(localeSegment.equals("template"))
+	        return getMaster();
+	    Locale locale = (Locale)PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeSegment);
+	    ProjectLocale projectLocale = getProjectLocale(locale);
+	    if(locale==null)
+	        return null;
+	    if(path.segmentCount()==1)
+	        return projectLocale;
+        String[] segments = path.segments();
+        String[] remainder = new String[segments.length-1];
+        System.arraycopy(segments, 1, remainder, 0, remainder.length);
+        URI shorterURI = URI.createHierarchicalURI(remainder, null, null);
+        return projectLocale.resolveChild(shorterURI);
 	}
 
 } //ProjectVersionImpl

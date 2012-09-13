@@ -5,7 +5,7 @@
 	<artifactId>jabylon</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-SNAPHOT</version>
-	
+
 	<modules>
 		<module>../parent</module>
 		<module>../../de.jutzig.jabylon.auto.translate</module>
@@ -15,6 +15,7 @@
 		<module>../../de.jutzig.jabylon.index</module>
 		<module>../../de.jutzig.jabylon.properties</module>
 		<module>../../de.jutzig.jabylon.resources</module>
+        <module>../../de.jutzig.jabylon.rest.api</module>
 		<module>../../de.jutzig.jabylon.review.standard</module>
 		<module>../../de.jutzig.jabylon.scheduler</module>
 		<module>../../de.jutzig.jabylon.scheduler.ui</module>
