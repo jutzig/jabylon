@@ -34,214 +34,214 @@ import org.eclipse.emf.common.util.URI;
  */
 public interface Project extends Resolvable {
 	/**
-     * Returns the value of the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Name()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Name()
+	 * @model
+	 * @generated
+	 */
 	String getName();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getName <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
 	void setName(String value);
 
 	/**
-     * Returns the value of the '<em><b>Workspace</b></em>' container reference.
-     * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.Workspace#getProjects <em>Projects</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Workspace</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.Workspace#getProjects <em>Projects</em>}'.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Workspace</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Workspace</em>' container reference.
-     * @see #setWorkspace(Workspace)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Workspace()
-     * @see de.jutzig.jabylon.properties.Workspace#getProjects
-     * @model opposite="projects" resolveProxies="false" transient="false"
-     * @generated
-     */
+	 * @return the value of the '<em>Workspace</em>' container reference.
+	 * @see #setWorkspace(Workspace)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Workspace()
+	 * @see de.jutzig.jabylon.properties.Workspace#getProjects
+	 * @model opposite="projects" resolveProxies="false" transient="false"
+	 * @generated
+	 */
 	Workspace getWorkspace();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}' container reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}' container reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Workspace</em>' container reference.
-     * @see #getWorkspace()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Workspace</em>' container reference.
+	 * @see #getWorkspace()
+	 * @generated
+	 */
 	void setWorkspace(Workspace value);
 
 	/**
-     * Returns the value of the '<em><b>Versions</b></em>' containment reference list.
-     * The list contents are of type {@link de.jutzig.jabylon.properties.ProjectVersion}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Versions</b></em>' containment reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.ProjectVersion}.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Versions</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Versions</em>' containment reference list.
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Versions()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Versions</em>' containment reference list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Versions()
+	 * @model containment="true"
+	 * @generated
+	 */
 	EList<ProjectVersion> getVersions();
 
 	/**
-     * Returns the value of the '<em><b>Master</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Master</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Master</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Master</em>' containment reference.
-     * @see #setMaster(ProjectVersion)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Master()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Master</em>' containment reference.
+	 * @see #setMaster(ProjectVersion)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Master()
+	 * @model containment="true"
+	 * @generated
+	 */
 	ProjectVersion getMaster();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Master</em>' containment reference.
-     * @see #getMaster()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Master</em>' containment reference.
+	 * @see #getMaster()
+	 * @generated
+	 */
 	void setMaster(ProjectVersion value);
 
 	/**
-     * Returns the value of the '<em><b>Repository URI</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Repository URI</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Repository URI</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Repository URI</em>' attribute.
-     * @see #setRepositoryURI(URI)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_RepositoryURI()
-     * @model dataType="de.jutzig.jabylon.properties.URI"
-     * @generated
-     */
+	 * @return the value of the '<em>Repository URI</em>' attribute.
+	 * @see #setRepositoryURI(URI)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_RepositoryURI()
+	 * @model dataType="de.jutzig.jabylon.properties.URI"
+	 * @generated
+	 */
 	URI getRepositoryURI();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Repository URI</em>' attribute.
-     * @see #getRepositoryURI()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Repository URI</em>' attribute.
+	 * @see #getRepositoryURI()
+	 * @generated
+	 */
 	void setRepositoryURI(URI value);
 
 	/**
-     * Returns the value of the '<em><b>Property Type</b></em>' attribute.
-     * The literals are from the enumeration {@link de.jutzig.jabylon.properties.PropertyType}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Property Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link de.jutzig.jabylon.properties.PropertyType}.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Property Type</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Property Type</em>' attribute.
-     * @see de.jutzig.jabylon.properties.PropertyType
-     * @see #setPropertyType(PropertyType)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_PropertyType()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Property Type</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @see #setPropertyType(PropertyType)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_PropertyType()
+	 * @model
+	 * @generated
+	 */
 	PropertyType getPropertyType();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getPropertyType <em>Property Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Property Type</em>' attribute.
-     * @see de.jutzig.jabylon.properties.PropertyType
-     * @see #getPropertyType()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Property Type</em>' attribute.
+	 * @see de.jutzig.jabylon.properties.PropertyType
+	 * @see #getPropertyType()
+	 * @generated
+	 */
 	void setPropertyType(PropertyType value);
 
 	/**
-     * Returns the value of the '<em><b>Team Provider</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Team Provider</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Team Provider</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Team Provider</em>' attribute.
-     * @see #setTeamProvider(String)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_TeamProvider()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Team Provider</em>' attribute.
+	 * @see #setTeamProvider(String)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_TeamProvider()
+	 * @model
+	 * @generated
+	 */
 	String getTeamProvider();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Team Provider</em>' attribute.
-     * @see #getTeamProvider()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Team Provider</em>' attribute.
+	 * @see #getTeamProvider()
+	 * @generated
+	 */
 	void setTeamProvider(String value);
 
 	/**
-     * Returns the value of the '<em><b>Terminology</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Terminology</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Terminology</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Terminology</em>' attribute.
-     * @see #setTerminology(boolean)
-     * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Terminology()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Terminology</em>' attribute.
+	 * @see #setTerminology(boolean)
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getProject_Terminology()
+	 * @model
+	 * @generated
+	 */
 	boolean isTerminology();
 
 	/**
-     * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#isTerminology <em>Terminology</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Project#isTerminology <em>Terminology</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Terminology</em>' attribute.
-     * @see #isTerminology()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Terminology</em>' attribute.
+	 * @see #isTerminology()
+	 * @generated
+	 */
 	void setTerminology(boolean value);
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @model
-     * @generated
-     */
+	 * @model
+	 * @generated
+	 */
 	void fullScan(ScanConfiguration configuration);
 
 } // Project

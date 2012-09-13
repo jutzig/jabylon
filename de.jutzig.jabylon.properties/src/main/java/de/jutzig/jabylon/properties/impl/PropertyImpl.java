@@ -29,198 +29,194 @@ import de.jutzig.jabylon.properties.Property;
  */
 public class PropertyImpl extends CDOObjectImpl implements Property {
 	/**
-     * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getKey()
-     * @generated
-     * @ordered
-     */
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String KEY_EDEFAULT = null;
 
 	/**
-     * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
+	 * @see #getValue()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String VALUE_EDEFAULT = null;
 
 	/**
-     * The default value of the '{@link #getComment() <em>Comment</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getComment() <em>Comment</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getComment()
-     * @generated
-     * @ordered
-     */
+	 * @see #getComment()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String COMMENT_EDEFAULT = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected PropertyImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.PROPERTY;
-    }
+		return PropertiesPackage.Literals.PROPERTY;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected int eStaticFeatureCount() {
-        return 0;
-    }
+		return 0;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getKey() {
-        return (String)eDynamicGet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, true, true);
-    }
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, true, true);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setKey(String newKey) {
-        eDynamicSet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, newKey);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY__KEY, PropertiesPackage.Literals.PROPERTY__KEY, newKey);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getValue() {
-        return (String)eDynamicGet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, true, true);
-    }
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, true, true);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setValue(String newValue) {
-        eDynamicSet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, newValue);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY__VALUE, PropertiesPackage.Literals.PROPERTY__VALUE, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getComment() {
-        return (String)eDynamicGet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, true, true);
-    }
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, true, true);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setComment(String newComment) {
-        eDynamicSet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, newComment);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, newComment);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID)
-        {
-            case PropertiesPackage.PROPERTY__KEY:
-                return getKey();
-            case PropertiesPackage.PROPERTY__VALUE:
-                return getValue();
-            case PropertiesPackage.PROPERTY__COMMENT:
-                return getComment();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY__KEY:
+				return getKey();
+			case PropertiesPackage.PROPERTY__VALUE:
+				return getValue();
+			case PropertiesPackage.PROPERTY__COMMENT:
+				return getComment();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID)
-        {
-            case PropertiesPackage.PROPERTY__KEY:
-                setKey((String)newValue);
-                return;
-            case PropertiesPackage.PROPERTY__VALUE:
-                setValue((String)newValue);
-                return;
-            case PropertiesPackage.PROPERTY__COMMENT:
-                setComment((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY__KEY:
+				setKey((String)newValue);
+				return;
+			case PropertiesPackage.PROPERTY__VALUE:
+				setValue((String)newValue);
+				return;
+			case PropertiesPackage.PROPERTY__COMMENT:
+				setComment((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID)
-        {
-            case PropertiesPackage.PROPERTY__KEY:
-                setKey(KEY_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY__VALUE:
-                setValue(VALUE_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY__COMMENT:
-                setComment(COMMENT_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY__KEY:
+				setKey(KEY_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY__VALUE:
+				setValue(VALUE_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY__COMMENT:
+				setComment(COMMENT_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID)
-        {
-            case PropertiesPackage.PROPERTY__KEY:
-                return KEY_EDEFAULT == null ? getKey() != null : !KEY_EDEFAULT.equals(getKey());
-            case PropertiesPackage.PROPERTY__VALUE:
-                return VALUE_EDEFAULT == null ? getValue() != null : !VALUE_EDEFAULT.equals(getValue());
-            case PropertiesPackage.PROPERTY__COMMENT:
-                return COMMENT_EDEFAULT == null ? getComment() != null : !COMMENT_EDEFAULT.equals(getComment());
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY__KEY:
+				return KEY_EDEFAULT == null ? getKey() != null : !KEY_EDEFAULT.equals(getKey());
+			case PropertiesPackage.PROPERTY__VALUE:
+				return VALUE_EDEFAULT == null ? getValue() != null : !VALUE_EDEFAULT.equals(getValue());
+			case PropertiesPackage.PROPERTY__COMMENT:
+				return COMMENT_EDEFAULT == null ? getComment() != null : !COMMENT_EDEFAULT.equals(getComment());
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //PropertyImpl

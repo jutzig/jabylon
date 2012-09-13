@@ -36,61 +36,61 @@ import de.jutzig.jabylon.properties.Workspace;
  */
 public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	/**
-     * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getRoot()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRoot()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final URI ROOT_EDEFAULT = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected WorkspaceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.WORKSPACE;
-    }
+		return PropertiesPackage.Literals.WORKSPACE;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public URI getRoot() {
-        return (URI)eDynamicGet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, true, true);
-    }
+		return (URI)eDynamicGet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, true, true);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setRoot(URI newRoot) {
-        eDynamicSet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, newRoot);
-    }
+		eDynamicSet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, newRoot);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	public EList<Project> getProjects() {
-        return (EList<Project>)eDynamicGet(PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.Literals.WORKSPACE__PROJECTS, true, true);
-    }
+		return (EList<Project>)eDynamicGet(PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.Literals.WORKSPACE__PROJECTS, true, true);
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -107,109 +107,103 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getProjects()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getProjects()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                return ((InternalEList<?>)getProjects()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				return ((InternalEList<?>)getProjects()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                return getRoot();
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                return getProjects();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				return getRoot();
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				return getProjects();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                setRoot((URI)newValue);
-                return;
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                getProjects().clear();
-                getProjects().addAll((Collection<? extends Project>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				setRoot((URI)newValue);
+				return;
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				getProjects().clear();
+				getProjects().addAll((Collection<? extends Project>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                setRoot(ROOT_EDEFAULT);
-                return;
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                getProjects().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				setRoot(ROOT_EDEFAULT);
+				return;
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				getProjects().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID)
-        {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
-            case PropertiesPackage.WORKSPACE__PROJECTS:
-                return !getProjects().isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
+			case PropertiesPackage.WORKSPACE__PROJECTS:
+				return !getProjects().isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 	@Override
 	public Project getProject(String name) {

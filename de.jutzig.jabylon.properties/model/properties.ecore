@@ -25,6 +25,9 @@
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="loadProperties" eType="#//PropertyFile"/>
     <eOperations name="computeLocation"/>
+    <eOperations name="loadProperties" eType="#//PropertyFile">
+      <eParameters name="in" eType="#//InputStream"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"
@@ -143,4 +146,5 @@
     <eLiterals name="INVALID" value="2"/>
     <eLiterals name="REOPENED" value="3"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="InputStream" instanceClassName="java.io.InputStream"/>
 </ecore:EPackage>

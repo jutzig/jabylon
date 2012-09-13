@@ -40,15 +40,15 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	public static final String OPTION_FILEMODE = "file.mode";
 
 	/**
-     * Creates an instance of the resource.
-     * <!-- begin-user-doc -->
+	 * Creates an instance of the resource.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param uri the URI of the new resource.
-     * @generated
-     */
+	 * @param uri the URI of the new resource.
+	 * @generated
+	 */
 	public PropertiesResourceImpl(URI uri) {
-        super(uri);
-    }
+		super(uri);
+	}
 
 
 	@Override
