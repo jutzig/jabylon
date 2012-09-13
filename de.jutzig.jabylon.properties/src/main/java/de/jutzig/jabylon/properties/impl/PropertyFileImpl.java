@@ -8,8 +8,8 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import java.util.Map;
+
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -36,43 +36,43 @@ import de.jutzig.jabylon.properties.PropertyFile;
  */
 public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected PropertyFileImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return PropertiesPackage.Literals.PROPERTY_FILE;
-	}
+        return PropertiesPackage.Literals.PROPERTY_FILE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected int eStaticFeatureCount() {
-		return 0;
-	}
+        return 0;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EList<Property> getProperties() {
-		return (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
-	}
+        return (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -102,77 +102,82 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
+                return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				return getProperties();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
+                return getProperties();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends Property>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
+                getProperties().clear();
+                getProperties().addAll((Collection<? extends Property>)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				getProperties().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
+                getProperties().clear();
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
-				return !getProperties().isEmpty();
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID)
+        {
+            case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
+                return !getProperties().isEmpty();
+        }
+        return super.eIsSet(featureID);
+    }
 
 } //PropertyFileImpl
