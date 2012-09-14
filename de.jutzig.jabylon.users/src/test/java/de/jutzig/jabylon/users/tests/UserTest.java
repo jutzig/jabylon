@@ -6,6 +6,8 @@
  */
 package de.jutzig.jabylon.users.tests;
 
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UsersFactory;
 
@@ -101,12 +103,39 @@ public class UserTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.users.User#getAllPermissions()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetAllPermissions() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertEquals(0, getFixture().getAllPermissions().size());
+	}
+	
+	public void testGetAllPermissionsWithPermissions() {
+		Permission userPermission = UsersFactory.eINSTANCE.createPermission();
+		getFixture().getPermissions().add(userPermission);
+		assertEquals(1, getFixture().getAllPermissions().size());
+		assertSame(userPermission, getFixture().getAllPermissions().get(0));
 	}
 
+	public void testGetAllPermissionsWithRolePermissions() {
+		Role role = UsersFactory.eINSTANCE.createRole();
+		getFixture().getRoles().add(role);
+		Permission rolePermission = UsersFactory.eINSTANCE.createPermission();
+		role.getPermissions().add(rolePermission);
+		assertEquals(1, getFixture().getAllPermissions().size());
+		assertSame(rolePermission, getFixture().getAllPermissions().get(0));
+	}
+	
+
+	public void testGetAllPermissionsMixed() {
+		Role role = UsersFactory.eINSTANCE.createRole();
+		getFixture().getRoles().add(role);
+		Permission userPermission = UsersFactory.eINSTANCE.createPermission();
+		Permission rolePermission = UsersFactory.eINSTANCE.createPermission();
+		role.getPermissions().add(rolePermission);
+		getFixture().getPermissions().add(userPermission);
+		assertEquals(2, getFixture().getAllPermissions().size());
+		assertSame(userPermission, getFixture().getAllPermissions().get(0));
+		assertSame(rolePermission, getFixture().getAllPermissions().get(1));
+	}
+	
 } //UserTest

@@ -6,6 +6,9 @@
  */
 package de.jutzig.jabylon.users.tests;
 
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
+import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersFactory;
 
@@ -103,12 +106,20 @@ public class UserManagementTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.users.UserManagement#findUserByName(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindUserByName__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		User user = UsersFactory.eINSTANCE.createUser();
+		user.setName("test");
+		User user2 = UsersFactory.eINSTANCE.createUser();
+		user2.setName("test2");
+		getFixture().getUsers().add(user);
+		getFixture().getUsers().add(user2);
+		
+		assertNull(getFixture().findUserByName(null));
+		assertNull(getFixture().findUserByName("foo"));
+		assertSame(user,getFixture().findUserByName("test"));
+		assertSame(user2,getFixture().findUserByName("test2"));
 	}
 
 	/**
@@ -116,12 +127,20 @@ public class UserManagementTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.users.UserManagement#findPermissionByName(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindPermissionByName__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		Permission object1 = UsersFactory.eINSTANCE.createPermission();
+		object1.setName("object1");
+		Permission object2 = UsersFactory.eINSTANCE.createPermission();
+		object2.setName("object2");
+		getFixture().getPermissions().add(object1);
+		getFixture().getPermissions().add(object2);
+		
+		assertNull(getFixture().findPermissionByName(null));
+		assertNull(getFixture().findPermissionByName("foo"));
+		assertSame(object1,getFixture().findPermissionByName("object1"));
+		assertSame(object2,getFixture().findPermissionByName("object2"));
 	}
 
 	/**
@@ -129,12 +148,20 @@ public class UserManagementTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.users.UserManagement#findRoleByName(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindRoleByName__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		Role object1 = UsersFactory.eINSTANCE.createRole();
+		object1.setName("object1");
+		Role object2 = UsersFactory.eINSTANCE.createRole();
+		object2.setName("object2");
+		getFixture().getRoles().add(object1);
+		getFixture().getRoles().add(object2);
+		
+		assertNull(getFixture().findRoleByName(null));
+		assertNull(getFixture().findRoleByName("foo"));
+		assertSame(object1,getFixture().findRoleByName("object1"));
+		assertSame(object2,getFixture().findRoleByName("object2"));
 	}
 
 } //UserManagementTest

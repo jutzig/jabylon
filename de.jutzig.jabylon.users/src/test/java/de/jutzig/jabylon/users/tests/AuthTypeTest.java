@@ -89,5 +89,9 @@ public class AuthTypeTest extends TestCase {
 	protected void tearDown() throws Exception {
 		setFixture(null);
 	}
+	
+	public void testDummy(){
+		//prevent error for missing test
+	}
 
 } //AuthTypeTest

@@ -89,5 +89,10 @@ public class PermissionTest extends TestCase {
 	protected void tearDown() throws Exception {
 		setFixture(null);
 	}
+	
+	public void testDummy()
+	{
+		//prevent failure due to missing test
+	}
 
 } //PermissionTest
