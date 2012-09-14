@@ -6,9 +6,16 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
-import de.jutzig.jabylon.properties.Resolvable;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import junit.framework.TestCase;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.junit.Ignore;
+
+import de.jutzig.jabylon.properties.Resolvable;
 
 /**
  * <!-- begin-user-doc -->
@@ -70,25 +77,34 @@ public abstract class ResolvableTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.Resolvable#fullPath()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFullPath() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertEquals("no parent, so relative path equals full path",getFixture().relativePath(), getFixture().fullPath());
 	}
 
+	
+	public void testFullPathWithParent() {
+		Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
+		when(parent.fullPath()).thenReturn(URI.createURI("foo"));
+		((InternalEObject)getFixture()).eBasicSetContainer((InternalEObject) parent, 0, null);
+		URI expected = URI.createURI("foo");
+		expected = expected.appendSegments(getFixture().relativePath().segments());
+		assertEquals(expected, getFixture().fullPath());
+	}
+	
 	/**
 	 * Tests the '{@link de.jutzig.jabylon.properties.Resolvable#relativePath() <em>Relative Path</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.Resolvable#relativePath()
-	 * @generated
+	 * @generated NOT
 	 */
-	public void testRelativePath() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+	public abstract void testRelativePath();
+	
+	public void testRelativePathNullSafe()
+	{
+		assertNull(getFixture().relativePath());
 	}
 
 	/**
@@ -98,6 +114,7 @@ public abstract class ResolvableTest extends TestCase {
 	 * @see de.jutzig.jabylon.properties.Resolvable#absolutPath()
 	 * @generated
 	 */
+	@Ignore
 	public void testAbsolutPath() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -111,6 +128,7 @@ public abstract class ResolvableTest extends TestCase {
 	 * @see de.jutzig.jabylon.properties.Resolvable#updatePercentComplete()
 	 * @generated
 	 */
+	@Ignore
 	public void testUpdatePercentComplete() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT

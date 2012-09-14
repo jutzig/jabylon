@@ -106,7 +106,7 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 				return resolvable.fullPath().appendSegments(relativePath().segments());
 			}
 		}
-		return URI.createURI("");
+		return relativePath();
 	}
 
 	/**

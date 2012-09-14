@@ -6,6 +6,10 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import org.eclipse.emf.common.util.URI;
+import org.junit.Ignore;
+
+import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 
@@ -89,14 +93,26 @@ public class ProjectVersionTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProject()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetProject() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertNull(getFixture().getProject());
+		Project project = PropertiesFactory.eINSTANCE.createProject();
+		project.getVersions().add(getFixture());
+	}
+	
+	public void testGetProjectChildVersion() {
+		Project project = PropertiesFactory.eINSTANCE.createProject();
+		project.getVersions().add(getFixture());
+		assertSame(project,getFixture().getProject());
 	}
 
+	public void testGetProjectMasterVersion() {
+		Project project = PropertiesFactory.eINSTANCE.createProject();
+		project.setMaster(getFixture());
+		assertSame(project,getFixture().getProject());
+	}
+	
 	/**
 	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -104,6 +120,7 @@ public class ProjectVersionTest extends ResolvableTest {
 	 * @see de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration)
 	 * @generated
 	 */
+	@Ignore
 	public void testFullScan__ScanConfiguration() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -121,6 +138,19 @@ public class ProjectVersionTest extends ResolvableTest {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
+	}
+	
+	@Override
+	public void testRelativePath() {
+		URI expected = URI.createHierarchicalURI(new String[] {"test"}, null, null);
+		getFixture().setBranch("test");
+		assertEquals(expected, getFixture().relativePath());
+	}
+	
+	@Override
+	public void testRelativePathNullSafe() {
+		URI expected = URI.createHierarchicalURI(new String[] {"master"}, null, null);
+		assertEquals("if no branch is set, it is 'master'",expected, getFixture().relativePath());
 	}
 
 } //ProjectVersionTest

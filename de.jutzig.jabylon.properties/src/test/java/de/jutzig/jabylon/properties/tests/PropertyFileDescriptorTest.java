@@ -6,17 +6,23 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
+
 import java.util.Locale;
 
-import org.eclipse.emf.common.util.URI;
-
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import de.jutzig.jabylon.properties.Project;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.junit.Ignore;
+
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 
 /**
  * <!-- begin-user-doc -->
@@ -121,12 +127,13 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#loadProperties()
 	 * @generated
 	 */
+	@Ignore
 	public void testLoadProperties() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
 	}
-
+	
 	/**
 	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#computeLocation() <em>Compute Location</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -161,6 +168,23 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 		assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
 	}
 
+	@Override
+	public void testRelativePath() {
+		URI uri = URI.createFileURI("foo");
+		getFixture().setLocation(uri);
+		assertSame(uri, getFixture().relativePath());
+	}
+	
+	public void testFullPathWithParent() {
+		Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
+		getFixture().setLocation(URI.createURI("/bar/blubb"));
+		when(parent.fullPath()).thenReturn(URI.createURI("foo"));
+		((InternalEObject)getFixture()).eBasicSetContainer((InternalEObject) parent, 0, null);
+		URI expected = URI.createURI("foo");
+		expected = expected.appendSegments(getFixture().relativePath().segments());
+		assertEquals(expected, getFixture().fullPath());
+	}
+	
 //	/**
 //	 * Tests the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getPropertyFile() <em>Property File</em>}' feature getter.
 //	 * <!-- begin-user-doc -->

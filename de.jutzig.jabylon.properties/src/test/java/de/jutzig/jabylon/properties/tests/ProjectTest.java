@@ -6,14 +6,25 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.properties.impl.PropertiesFactoryImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,12 +97,30 @@ public class ProjectTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.Project#fullScan(de.jutzig.jabylon.properties.ScanConfiguration)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFullScan__ScanConfiguration() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		getFixture().fullScan(PropertiesFactory.eINSTANCE.createScanConfiguration());
+		//must not raise an exception
+	}
+	
+	public void testFullScanWithMaster() {
+		ProjectVersion master = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
+		ScanConfiguration scanConfiguration = PropertiesFactory.eINSTANCE.createScanConfiguration();
+		getFixture().setMaster(master);
+		getFixture().fullScan(scanConfiguration);
+		verify(master).fullScan(scanConfiguration);
+	}
+	
+	public void testFullScanWithVersions() {
+		ProjectVersion v1 = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
+		ProjectVersion v2 = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
+		ScanConfiguration scanConfiguration = PropertiesFactory.eINSTANCE.createScanConfiguration();
+		getFixture().getVersions().add(v1);
+		getFixture().getVersions().add(v2);
+		getFixture().fullScan(scanConfiguration);
+		verify(v1).fullScan(scanConfiguration);
+		verify(v2).fullScan(scanConfiguration);
 	}
 
 	/**
@@ -107,6 +136,23 @@ public class ProjectTest extends ResolvableTest {
 		workspace.getProjects().add(getFixture());
 		getFixture().setName("test2");
 //		assertEquals(URI.createFileURI("test/test2"), getFixture().getBase());
+	}
+	
+	@Override
+	public void testRelativePath() {
+		URI expected = URI.createHierarchicalURI(new String[] {"test"}, null, null);
+		getFixture().setName("test");
+		assertEquals(expected, getFixture().relativePath());
+	}
+	
+	public void testFullPathWithParent() {
+		getFixture().setName("project");
+		Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
+		when(parent.fullPath()).thenReturn(URI.createURI("foo"));
+		((InternalEObject)getFixture()).eBasicSetContainer((InternalEObject) parent, 0, null);
+		URI expected = URI.createURI("foo");
+		expected = expected.appendSegments(getFixture().relativePath().segments());
+		assertEquals(expected, getFixture().fullPath());
 	}
 
 //	/**

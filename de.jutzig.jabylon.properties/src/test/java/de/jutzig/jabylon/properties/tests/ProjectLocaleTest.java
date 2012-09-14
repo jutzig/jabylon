@@ -6,7 +6,12 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import java.util.Locale;
+
+import org.eclipse.emf.common.util.URI;
+
 import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 
 import junit.textui.TestRunner;
@@ -101,12 +106,37 @@ public class ProjectLocaleTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ProjectLocale#isMaster()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testIsMaster() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertFalse(getFixture().isMaster());
+	}
+	
+	public void testIsMasterSlaveLocale() {
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		version.getLocales().add(getFixture());
+		assertFalse(getFixture().isMaster());
+	}
+	
+	
+	public void testIsMasterMasterLocale() {
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		version.setMaster(getFixture());
+		assertFalse(getFixture().isMaster());
+	}
+	
+	@Override
+	public void testRelativePath() {
+		URI expected = URI.createURI("");
+		getFixture().setLocale(new Locale("pl","PL"));
+		assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
+	}
+	
+	@Override
+	public void testRelativePathNullSafe() {
+		URI expected = URI.createURI("");
+		getFixture().setLocale(new Locale("pl","PL"));
+		assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
 	}
 
 } //ProjectLocaleTest

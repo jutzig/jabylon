@@ -6,6 +6,8 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import org.eclipse.emf.common.util.URI;
+
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Workspace;
 
@@ -74,9 +76,15 @@ public class WorkspaceTest extends ResolvableTest {
 	}
 	
 
-	public void testDummy()
-	{
-		//prevent warning for missing tests
+	@Override
+	public void testRelativePath() {
+		assertEquals(URI.createHierarchicalURI(new String[] {""}, null, null), getFixture().relativePath());
+		
+	}
+	
+	@Override
+	public void testRelativePathNullSafe() {
+		assertEquals("Workspace always has an empty relative path",URI.createHierarchicalURI(new String[] {""}, null, null), getFixture().relativePath());
 	}
 	
 
