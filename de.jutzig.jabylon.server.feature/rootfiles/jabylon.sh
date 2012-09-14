@@ -49,7 +49,8 @@ while [ "$1" != "" ]; do
         stop )	pid2kill=`cat $pidfile`
 				echo "stopping Jabylon"
 				kill -9 $pid2kill
-				wait $pid2kill
+				#wait doesn't work if the process is not a child process...
+				while [ -e /proc/$pid2kill ]; do sleep 0.1; done
 				echo "Jabylon stopped"
 				rm $pidfile
                                 ;;
