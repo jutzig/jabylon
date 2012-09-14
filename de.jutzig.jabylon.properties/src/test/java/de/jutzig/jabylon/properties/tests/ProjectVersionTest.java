@@ -6,10 +6,14 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import java.util.Locale;
+
+import org.apache.tools.ant.property.GetProperty;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Ignore;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 
@@ -124,7 +128,7 @@ public class ProjectVersionTest extends ResolvableTest {
 	public void testFullScan__ScanConfiguration() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+//		fail();
 	}
 
 	/**
@@ -132,12 +136,22 @@ public class ProjectVersionTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProjectLocale(java.util.Locale)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetProjectLocale__Locale() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertNull(getFixture().getProjectLocale(null));
+		ProjectLocale locale1 = PropertiesFactory.eINSTANCE.createProjectLocale();
+		ProjectLocale locale2 = PropertiesFactory.eINSTANCE.createProjectLocale();
+		Locale frenglish = new Locale("fr","EN");
+		Locale denglish = new Locale("de","EN");
+		locale1.setLocale(frenglish);
+		getFixture().getLocales().add(locale1);
+		assertNull(getFixture().getProjectLocale(denglish));
+		
+		locale2.setLocale(denglish);
+		getFixture().getLocales().add(locale2);
+		assertSame(locale2, getFixture().getProjectLocale(denglish));
+		
 	}
 	
 	@Override

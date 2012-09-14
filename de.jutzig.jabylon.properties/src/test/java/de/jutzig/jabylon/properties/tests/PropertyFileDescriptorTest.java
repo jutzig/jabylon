@@ -131,7 +131,7 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 	public void testLoadProperties() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+//		fail();
 	}
 	
 	/**

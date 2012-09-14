@@ -93,12 +93,20 @@ public class ProjectLocaleTest extends ResolvableTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetProjectVersion() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		assertNull(getFixture().getProjectVersion());
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		version.setMaster(getFixture());
+		assertSame(version,getFixture().getProjectVersion());
+	}
+	
+	public void testGetProjectVersionSlaveLocale() {
+		assertNull(getFixture().getProjectVersion());
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		version.getLocales().add(getFixture());
+		assertSame(version,getFixture().getProjectVersion());
 	}
 
 	/**
@@ -122,7 +130,7 @@ public class ProjectLocaleTest extends ResolvableTest {
 	public void testIsMasterMasterLocale() {
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
 		version.setMaster(getFixture());
-		assertFalse(getFixture().isMaster());
+		assertTrue(getFixture().isMaster());
 	}
 	
 	@Override
