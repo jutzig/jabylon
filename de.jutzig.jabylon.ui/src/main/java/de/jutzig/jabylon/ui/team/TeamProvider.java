@@ -1,7 +1,7 @@
 package de.jutzig.jabylon.ui.team;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -10,9 +10,16 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 public interface TeamProvider {
 
-	Iterable<File> update(ProjectVersion project, IProgressMonitor monitor) throws IOException;
+	/**
+	 * update the given ProjectVersion and return a list of files that have been modified due to the update operation
+	 * @param project
+	 * @param monitor
+	 * @return
+	 * @throws IOException
+	 */
+	Collection<String> update(ProjectVersion project, IProgressMonitor monitor) throws IOException;
 	
-	Iterable<File> update(PropertyFileDescriptor descriptor, IProgressMonitor monitor) throws IOException;
+	Collection<String> update(PropertyFileDescriptor descriptor, IProgressMonitor monitor) throws IOException;
 	
 	void checkout(ProjectVersion project, IProgressMonitor monitor) throws IOException;
 	

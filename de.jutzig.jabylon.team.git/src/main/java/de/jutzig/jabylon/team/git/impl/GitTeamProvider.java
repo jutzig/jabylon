@@ -2,7 +2,9 @@ package de.jutzig.jabylon.team.git.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -12,7 +14,10 @@ import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.DiffCommand;
+import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeCommand;
+import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -26,10 +31,16 @@ import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.FetchResult;
+import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.util.PreferencesUtil;
@@ -58,14 +69,77 @@ public class GitTeamProvider implements TeamProvider {
 	
 
 	@Override
-	public Iterable<File> update(ProjectVersion project,
+	public Collection<String> update(ProjectVersion project,
 			IProgressMonitor monitor) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		SubMonitor subMon = SubMonitor.convert(monitor,100);
+		Repository repository = createRepository(project);
+		Git git = Git.wrap(repository);
+		FetchCommand fetchCommand = git.fetch();
+		List<String> updatedFiles = new ArrayList<String>();
+		String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
+		refspecString = MessageFormat.format(refspecString, project.getBranch());
+		RefSpec spec = new RefSpec(refspecString);
+		fetchCommand.setRefSpecs(spec);
+		try {
+			subMon.subTask("Fetching from remote");
+			fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
+			FetchResult result = fetchCommand.call();
+			ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getBranch()+"^{tree}");
+			
+			DiffCommand diff = git.diff();
+			subMon.subTask("Caculating Diff");
+			diff.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(20)));
+			diff.setOldTree(new FileTreeIterator(repository));
+			CanonicalTreeParser p = new CanonicalTreeParser();
+			ObjectReader reader = repository.newObjectReader();
+			try {
+				p.reset(reader, remoteHead);
+			} finally {
+				reader.release();
+			}
+			diff.setNewTree(p);
+			
+			diff.setOutputStream(System.out);
+			List<DiffEntry> diffs = diff.call();
+			for (DiffEntry diffEntry : diffs) {
+				updatedFiles.add(diffEntry.getNewPath());
+				System.out.println(diffEntry);
+			}
+			if(!updatedFiles.isEmpty())
+			{
+				ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getBranch()+"^{commit}");
+				MergeCommand merge = git.merge();
+				
+				
+				merge.include(lastCommitID);
+				MergeResult mergeResult = merge.call();
+				System.out.println(mergeResult.getMergeStatus());
+			}
+		} catch (JGitInternalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidRemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GitAPIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			monitor.done();
+		}
+		return updatedFiles;
 	}
 
+	private File toFile(DiffEntry diffEntry, Repository repository) {
+		return new File(repository.getWorkTree(),diffEntry.getNewPath());
+	}
+
+
+
+
 	@Override
-	public Iterable<File> update(PropertyFileDescriptor descriptor,
+	public Collection<String> update(PropertyFileDescriptor descriptor,
 			IProgressMonitor monitor) throws IOException {
 		// TODO Auto-generated method stub
 		return null;

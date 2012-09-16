@@ -6,11 +6,13 @@ package de.jutzig.jabylon.ui.config.internal.project;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.osgi.service.prefs.Preferences;
@@ -100,12 +102,6 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	}
 
 	private Component createVersionTable() {
-//		final Section section = new Section();
-//		section.setTitle("Versions");
-//		section.setSizeFull();
-//		VerticalLayout layout = section.getBody();
-//		layout.setSpacing(true);
-//		layout.setSizeFull();
 		table = new EditableTable(true) {
 			@Override
 			protected void addPressed() {
@@ -130,7 +126,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				}
 			}
 		};
-		
+
 		versionTable = table.getTable();
 		versionTable.setImmediate(true);
 		versionTable.addListener(this);
@@ -138,16 +134,16 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		versionTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		versionTable.setSelectable(true);
 
-//		layout.addComponent(table);
-//		layout.setExpandRatio(table, 1);
+		// layout.addComponent(table);
+		// layout.setExpandRatio(table, 1);
 		return table;
 	}
 
 	private Component createLocalesTable() {
-//		final Section section = new Section();
-//		section.setTitle("Locales");
-//		VerticalLayout layout = section.getBody();
-//		layout.setSpacing(true);
+		// final Section section = new Section();
+		// section.setTitle("Locales");
+		// VerticalLayout layout = section.getBody();
+		// layout.setSpacing(true);
 
 		final EditableTable table = new EditableTable() {
 			@Override
@@ -180,7 +176,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 		localeTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		localeTable.setMultiSelect(true);
 		localeTable.setSelectable(true);
-//		layout.addComponent(table);
+		// layout.addComponent(table);
 
 		return table;
 	}
@@ -309,8 +305,55 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				return button;
 			}
 		});
+		
+		versionTable.addGeneratedColumn("Update", new ColumnGenerator() {
 
-		versionTable.setColumnHeaders(new String[] { Messages.getString("GeneralProjectConfig_BRANCH_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_COMPLETION_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_SCAN_COLUMN_HEADER"), Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER") });
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				final ProjectVersion version = (ProjectVersion) itemId;
+				final NativeButton button = new NativeButton("Update");
+				File directory = new File(version.absolutPath().toFileString());
+				button.setEnabled(getDomainObject().eIsSet(PropertiesPackage.Literals.PROJECT__REPOSITORY_URI));
+				button.addListener(new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+
+						ProgressMonitorDialog dialog = new ProgressMonitorDialog(table.getWindow());
+						dialog.setCaption("Update");
+						final TeamProvider teamProvider = Activator.getDefault().getTeamProviderFor(getDomainObject());
+						dialog.run(true, new RunnableWithProgress() {
+
+							@Override
+							public void run(IProgressMonitor monitor) {
+								try {
+									SubMonitor subMonitor = SubMonitor.convert(monitor,"Updating",100);
+									Collection<String> updates = teamProvider.update(version, subMonitor.newChild(80));
+									subMonitor.setWorkRemaining(updates.size());
+									subMonitor.subTask("Processing updates");
+									for (String updatedFile : updates) {
+										version.partialScan(PreferencesUtil.getScanConfigForProject(version.getProject()), updatedFile);
+										subMonitor.worked(1);
+									}
+									
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}finally{
+									monitor.done();
+								}
+							}
+						});
+					}
+				});
+				return button;
+			}
+		});
+
+		versionTable.setColumnHeaders(new String[] { Messages.getString("GeneralProjectConfig_BRANCH_COLUMN_HEADER"),
+				Messages.getString("GeneralProjectConfig_COMPLETION_COLUMN_HEADER"),
+				Messages.getString("GeneralProjectConfig_SCAN_COLUMN_HEADER"),
+				Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER"), "Update" });
 
 	}
 

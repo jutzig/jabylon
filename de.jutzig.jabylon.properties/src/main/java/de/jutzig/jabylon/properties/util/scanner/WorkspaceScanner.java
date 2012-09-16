@@ -47,7 +47,7 @@ public class WorkspaceScanner {
 		if(excludes!=null)
 		{
 			for (String exclude : excludes) {
-				if(SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && SelectorUtils.match(exclude, singleFile.getPath()))
+				if(/*SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && */ SelectorUtils.match(exclude, singleFile.getPath()))
 					return;
 			}			
 		}
@@ -55,7 +55,10 @@ public class WorkspaceScanner {
 		if(includes==null)
 			return;
 		for (String include : includes) {
-			if(SelectorUtils.matchPatternStart(include, singleFile.getPath()) && SelectorUtils.match(include, singleFile.getPath()))
+			//TODO: matchPatternStart fails for:
+			// **/*.properties
+			// /home/joe/workspaces/translator/work/workspace/jabylon-testing/master/testfiles/folder/child2/Messages2_de.properties
+			if(/*SelectorUtils.matchPatternStart(include, singleFile.getPath()) && */ SelectorUtils.match(include, singleFile.getPath()))
 			{
 				String masterLocale = config.getMasterLocale();
 				if (masterLocale != null && masterLocale.isEmpty())
@@ -63,8 +66,7 @@ public class WorkspaceScanner {
 				if (baseDir.exists()) {
 
 					if (matchesLocale(singleFile.getName(), masterLocale)) {
-						File file = new File(baseDir, singleFile.getName());
-						acceptor.newMatch(file);
+						acceptor.newMatch(singleFile);
 					}
 
 				}

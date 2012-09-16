@@ -175,7 +175,7 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		File singleFile = new File(baseDir,relativeFilePath);
-		scanner.partialScan(new FileAcceptor(), baseDir, configuration, singleFile);
+		scanner.partialScan(new FileAcceptor(true), baseDir, configuration, singleFile);
 //		getMaster().setProjectVersion(this);
 		if(getMaster()!=null)
 			getMaster().updatePercentComplete();
@@ -305,21 +305,30 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 
 	class FileAcceptor implements PropertyFileAcceptor
 	{
+		
+		private boolean partial;
 
-
-
+		public FileAcceptor()
+		{
+			this(false);
+		}
+		
+		public FileAcceptor(boolean partial)
+		{
+			this.partial = partial;
+		}
+		
 		@Override
 		public void newMatch(File file) {
-			PropertyFileDescriptor descriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+			
 			URI location = URI.createFileURI(file.getAbsolutePath());
 			location = location.deresolve(absolutPath()); //get rid of the version
 			location = URI.createHierarchicalURI(location.scheme(),location.authority(),location.device(),location.segmentsList().subList(1, location.segmentCount()).toArray(new String[location.segmentCount()-1]),location.query(),location.fragment());
-			descriptor.setLocation(location);
 			if(getMaster()==null)
-			{
-
+			{				
 				setMaster(PropertiesFactory.eINSTANCE.createProjectLocale());
 			}
+			PropertyFileDescriptor descriptor = getOrCreateDescriptor(getMaster(), location);
 			getMaster().getDescriptors().add(descriptor);
 
 			//load file to initialize statistics;
@@ -344,21 +353,37 @@ public class ProjectVersionImpl extends ResolvableImpl implements ProjectVersion
 				Matcher matcher = pattern.matcher(child);
 				if(matcher.matches())
 				{
-					PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-					URI childURI = location.trimSegments(1).appendSegment(child);
-					fileDescriptor.setLocation(childURI);
 					Locale locale = createVariant(matcher.group(1).substring(1));
-					fileDescriptor.setVariant(locale);
-					fileDescriptor.setMaster(descriptor);
 					ProjectLocale projectLocale = getOrCreateProjectLocale(locale);
-					projectLocale.getDescriptors().add(fileDescriptor);
+					URI childURI = location.trimSegments(1).appendSegment(child);
+					PropertyFileDescriptor fileDescriptor = getOrCreateDescriptor(projectLocale, childURI);
+					fileDescriptor.setMaster(descriptor);
 
 					//load file to initialize statistics;
 					PropertyFile translatedFile = fileDescriptor.loadProperties();
 					fileDescriptor.setKeys(translatedFile.getProperties().size());
+
 //					fileDescriptor.updatePercentComplete();
 				}
 			}
+		}
+
+		private PropertyFileDescriptor getOrCreateDescriptor(ProjectLocale projectLocale, URI childURI) {
+			if(partial)
+			{
+				EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
+				for (PropertyFileDescriptor descriptor : descriptors) {
+					if(childURI.equals(descriptor.getLocation()))
+					{
+						return descriptor;
+					}
+				}				
+			}
+			PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+			fileDescriptor.setLocation(childURI);
+			fileDescriptor.setVariant(projectLocale.getLocale());
+			projectLocale.getDescriptors().add(fileDescriptor);
+			return fileDescriptor;
 		}
 
 		private String getLocaleString(File file) {
