@@ -180,7 +180,7 @@ public class GitTeamProvider implements TeamProvider {
 		clone.setNoCheckout(false);
 		clone.setCloneAllBranches(true);
 		clone.setDirectory(repoDir);
-
+		
 		URI uri = project.getProject().getRepositoryURI();
 
 		clone.setCredentialsProvider(createCredentialsProvider(project.getProject()));
@@ -206,13 +206,21 @@ public class GitTeamProvider implements TeamProvider {
 		CommitCommand commit = git.commit();
 		commit.setAuthor("Jabylon", "jabylon@example.org");
 		commit.setMessage("Auto sync up by Jabylon");
+		for (String path : changedFiles) {
+			commit.setOnly(path);
+		}
 //		commit.setOnly(only)
 		try {
 			commit.call();
 			PushCommand push = git.push();
-			push.setCredentialsProvider(createCredentialsProvider(project.getProject()));
-			push.setPushAll();
+			push.setCredentialsProvider(createCredentialsProvider(project.getProject()));			
+			String refSpecString = "refs/heads/{0}:refs/heads/{0}";
+			refSpecString = MessageFormat.format(refSpecString, project.getBranch());
+			RefSpec spec = new RefSpec(refSpecString);
+			push.setRefSpecs(spec); 
+//			push.setPushAll();
 			push.call();
+
 			
 		} catch (NoHeadException e) {
 			// TODO Auto-generated catch block
@@ -245,6 +253,7 @@ public class GitTeamProvider implements TeamProvider {
 		try {
 			diffCommand.setOutputStream(System.out);
 			List<DiffEntry> result = diffCommand.call();
+			//TODO: delete won't work
 			for (DiffEntry diffEntry : result) {
 				if(diffEntry.getChangeType()==ChangeType.ADD)
 				{

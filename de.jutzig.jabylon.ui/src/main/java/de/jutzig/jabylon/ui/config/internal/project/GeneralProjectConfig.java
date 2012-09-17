@@ -350,11 +350,48 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				return button;
 			}
 		});
+		
+		
+		versionTable.addGeneratedColumn("Commit", new ColumnGenerator() {
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				final ProjectVersion version = (ProjectVersion) itemId;
+				final NativeButton button = new NativeButton("Commit");
+				File directory = new File(version.absolutPath().toFileString());
+				button.setEnabled(getDomainObject().eIsSet(PropertiesPackage.Literals.PROJECT__REPOSITORY_URI));
+				button.addListener(new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+
+						ProgressMonitorDialog dialog = new ProgressMonitorDialog(table.getWindow());
+						dialog.setCaption("Commit");
+						final TeamProvider teamProvider = Activator.getDefault().getTeamProviderFor(getDomainObject());
+						dialog.run(true, new RunnableWithProgress() {
+
+							@Override
+							public void run(IProgressMonitor monitor) {
+								try {
+									teamProvider.commit(version, monitor);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}finally{
+									monitor.done();
+								}
+							}
+						});
+					}
+				});
+				return button;
+			}
+		});
 
 		versionTable.setColumnHeaders(new String[] { Messages.getString("GeneralProjectConfig_BRANCH_COLUMN_HEADER"),
 				Messages.getString("GeneralProjectConfig_COMPLETION_COLUMN_HEADER"),
 				Messages.getString("GeneralProjectConfig_SCAN_COLUMN_HEADER"),
-				Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER"), "Update" });
+				Messages.getString("GeneralProjectConfig_CHECKOUT_COLUMN_HEADER"), "Update", "Commit" });
 
 	}
 
