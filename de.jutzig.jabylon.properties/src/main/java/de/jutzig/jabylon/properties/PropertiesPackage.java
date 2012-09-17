@@ -721,6 +721,52 @@ public interface PropertiesPackage extends EPackage {
 	int COMMENT_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileDiffImpl <em>Property File Diff</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.PropertyFileDiffImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyFileDiff()
+	 * @generated
+	 */
+	int PROPERTY_FILE_DIFF = 11;
+
+	/**
+	 * The feature id for the '<em><b>New Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DIFF__NEW_PATH = 0;
+
+	/**
+	 * The feature id for the '<em><b>Old Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DIFF__OLD_PATH = 1;
+
+	/**
+	 * The feature id for the '<em><b>Kind</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DIFF__KIND = 2;
+
+	/**
+	 * The number of structural features of the '<em>Property File Diff</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DIFF_FEATURE_COUNT = 3;
+
+	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -728,7 +774,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
 	 * @generated
 	 */
-	int PROPERTY_TYPE = 11;
+	int PROPERTY_TYPE = 12;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.Severity <em>Severity</em>}' enum.
@@ -738,7 +784,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
 	 * @generated
 	 */
-	int SEVERITY = 12;
+	int SEVERITY = 13;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.ReviewState <em>Review State</em>}' enum.
@@ -748,7 +794,17 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
 	 * @generated
 	 */
-	int REVIEW_STATE = 13;
+	int REVIEW_STATE = 14;
+
+	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.DiffKind <em>Diff Kind</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.DiffKind
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getDiffKind()
+	 * @generated
+	 */
+	int DIFF_KIND = 15;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -758,7 +814,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 14;
+	int LOCALE = 16;
 
 
 	/**
@@ -769,7 +825,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 15;
+	int URI = 17;
 
 
 	/**
@@ -780,7 +836,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getInputStream()
 	 * @generated
 	 */
-	int INPUT_STREAM = 16;
+	int INPUT_STREAM = 18;
 
 
 	/**
@@ -1389,6 +1445,49 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getComment_Message();
 
 	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.PropertyFileDiff <em>Property File Diff</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Property File Diff</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDiff
+	 * @generated
+	 */
+	EClass getPropertyFileDiff();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDiff#getNewPath <em>New Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>New Path</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDiff#getNewPath()
+	 * @see #getPropertyFileDiff()
+	 * @generated
+	 */
+	EAttribute getPropertyFileDiff_NewPath();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDiff#getOldPath <em>Old Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Path</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDiff#getOldPath()
+	 * @see #getPropertyFileDiff()
+	 * @generated
+	 */
+	EAttribute getPropertyFileDiff_OldPath();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFileDiff#getKind <em>Kind</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Kind</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDiff#getKind()
+	 * @see #getPropertyFileDiff()
+	 * @generated
+	 */
+	EAttribute getPropertyFileDiff_Kind();
+
+	/**
 	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1417,6 +1516,16 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getReviewState();
+
+	/**
+	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.DiffKind <em>Diff Kind</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Diff Kind</em>'.
+	 * @see de.jutzig.jabylon.properties.DiffKind
+	 * @generated
+	 */
+	EEnum getDiffKind();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.Locale <em>Locale</em>}'.
@@ -1944,6 +2053,40 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute COMMENT__MESSAGE = eINSTANCE.getComment_Message();
 
 		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileDiffImpl <em>Property File Diff</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.PropertyFileDiffImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyFileDiff()
+		 * @generated
+		 */
+		EClass PROPERTY_FILE_DIFF = eINSTANCE.getPropertyFileDiff();
+
+		/**
+		 * The meta object literal for the '<em><b>New Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_FILE_DIFF__NEW_PATH = eINSTANCE.getPropertyFileDiff_NewPath();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_FILE_DIFF__OLD_PATH = eINSTANCE.getPropertyFileDiff_OldPath();
+
+		/**
+		 * The meta object literal for the '<em><b>Kind</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_FILE_DIFF__KIND = eINSTANCE.getPropertyFileDiff_Kind();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1972,6 +2115,16 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum REVIEW_STATE = eINSTANCE.getReviewState();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.DiffKind <em>Diff Kind</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.DiffKind
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getDiffKind()
+		 * @generated
+		 */
+		EEnum DIFF_KIND = eINSTANCE.getDiffKind();
 
 		/**
 		 * The meta object literal for the '<em>Locale</em>' data type.

@@ -116,6 +116,15 @@ public interface PropertiesFactory extends EFactory {
 	Comment createComment();
 
 	/**
+	 * Returns a new object of class '<em>Property File Diff</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Property File Diff</em>'.
+	 * @generated
+	 */
+	PropertyFileDiff createPropertyFileDiff();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

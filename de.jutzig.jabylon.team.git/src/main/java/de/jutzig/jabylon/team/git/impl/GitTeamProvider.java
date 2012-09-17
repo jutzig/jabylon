@@ -44,10 +44,12 @@ import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.util.PreferencesUtil;
+import de.jutzig.jabylon.properties.DiffKind;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.team.git.impl.util.ProgressMonitorWrapper;
 import de.jutzig.jabylon.ui.team.TeamProvider;
@@ -69,13 +71,13 @@ public class GitTeamProvider implements TeamProvider {
 	
 
 	@Override
-	public Collection<String> update(ProjectVersion project,
+	public Collection<PropertyFileDiff> update(ProjectVersion project,
 			IProgressMonitor monitor) throws IOException {
 		SubMonitor subMon = SubMonitor.convert(monitor,100);
 		Repository repository = createRepository(project);
 		Git git = Git.wrap(repository);
 		FetchCommand fetchCommand = git.fetch();
-		List<String> updatedFiles = new ArrayList<String>();
+		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
 		String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
 		refspecString = MessageFormat.format(refspecString, project.getBranch());
 		RefSpec spec = new RefSpec(refspecString);
@@ -102,7 +104,7 @@ public class GitTeamProvider implements TeamProvider {
 			diff.setOutputStream(System.out);
 			List<DiffEntry> diffs = diff.call();
 			for (DiffEntry diffEntry : diffs) {
-				updatedFiles.add(diffEntry.getNewPath());
+				updatedFiles.add(convertDiffEntry(diffEntry));
 				System.out.println(diffEntry);
 			}
 			if(!updatedFiles.isEmpty())
@@ -131,15 +133,36 @@ public class GitTeamProvider implements TeamProvider {
 		return updatedFiles;
 	}
 
-	private File toFile(DiffEntry diffEntry, Repository repository) {
-		return new File(repository.getWorkTree(),diffEntry.getNewPath());
+	private PropertyFileDiff convertDiffEntry(DiffEntry diffEntry) {
+		PropertyFileDiff diff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
+		diff.setOldPath(diffEntry.getOldPath());
+		diff.setNewPath(diffEntry.getNewPath());
+		DiffKind kind = DiffKind.MODIFY;
+		switch(diffEntry.getChangeType())
+		{
+			case ADD:
+				kind = DiffKind.ADD;
+				break;
+			case COPY:
+				kind = DiffKind.COPY;
+				break;
+			case DELETE:
+				kind = DiffKind.REMOVE;
+				break;
+			case MODIFY:
+				kind = DiffKind.MODIFY;
+				break;
+			case RENAME:
+				kind = DiffKind.MOVE;
+				break;
+		}
+		diff.setKind(kind);
+		return diff;
 	}
 
 
-
-
 	@Override
-	public Collection<String> update(PropertyFileDescriptor descriptor,
+	public Collection<PropertyFileDiff> update(PropertyFileDescriptor descriptor,
 			IProgressMonitor monitor) throws IOException {
 		// TODO Auto-generated method stub
 		return null;

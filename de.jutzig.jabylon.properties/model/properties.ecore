@@ -67,7 +67,7 @@
     </eOperations>
     <eOperations name="partialScan">
       <eParameters name="configuration" eType="#//ScanConfiguration"/>
-      <eParameters name="relativeFilePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="fileDiff" eType="#//PropertyFileDiff"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
         changeable="false" volatile="true" transient="true" derived="true" resolveProxies="false"/>
@@ -147,4 +147,16 @@
     <eLiterals name="REOPENED" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="InputStream" instanceClassName="java.io.InputStream"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDiff">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//DiffKind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DiffKind">
+    <eLiterals name="ADD" literal="ADD"/>
+    <eLiterals name="REMOVE" value="1"/>
+    <eLiterals name="MODIFY" value="2"/>
+    <eLiterals name="COPY" value="3"/>
+    <eLiterals name="MOVE" value="4"/>
+  </eClassifiers>
 </ecore:EPackage>

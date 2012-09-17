@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 
 public interface TeamProvider {
 
@@ -17,9 +18,9 @@ public interface TeamProvider {
 	 * @return
 	 * @throws IOException
 	 */
-	Collection<String> update(ProjectVersion project, IProgressMonitor monitor) throws IOException;
+	Collection<PropertyFileDiff> update(ProjectVersion project, IProgressMonitor monitor) throws IOException;
 	
-	Collection<String> update(PropertyFileDescriptor descriptor, IProgressMonitor monitor) throws IOException;
+	Collection<PropertyFileDiff> update(PropertyFileDescriptor descriptor, IProgressMonitor monitor) throws IOException;
 	
 	void checkout(ProjectVersion project, IProgressMonitor monitor) throws IOException;
 	

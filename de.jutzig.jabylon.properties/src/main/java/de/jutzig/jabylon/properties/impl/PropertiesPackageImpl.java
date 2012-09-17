@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.jutzig.jabylon.properties.Comment;
+import de.jutzig.jabylon.properties.DiffKind;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -29,6 +30,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Review;
@@ -126,6 +128,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass propertyFileDiffEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum propertyTypeEEnum = null;
 
 	/**
@@ -141,6 +150,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	private EEnum reviewStateEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum diffKindEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -755,6 +771,42 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getPropertyFileDiff() {
+		return propertyFileDiffEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyFileDiff_NewPath() {
+		return (EAttribute)propertyFileDiffEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyFileDiff_OldPath() {
+		return (EAttribute)propertyFileDiffEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyFileDiff_Kind() {
+		return (EAttribute)propertyFileDiffEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getPropertyType() {
 		return propertyTypeEEnum;
 	}
@@ -775,6 +827,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 */
 	public EEnum getReviewState() {
 		return reviewStateEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getDiffKind() {
+		return diffKindEEnum;
 	}
 
 	/**
@@ -899,10 +960,16 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(commentEClass, COMMENT__USER);
 		createEAttribute(commentEClass, COMMENT__MESSAGE);
 
+		propertyFileDiffEClass = createEClass(PROPERTY_FILE_DIFF);
+		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__NEW_PATH);
+		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__OLD_PATH);
+		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__KIND);
+
 		// Create enums
 		propertyTypeEEnum = createEEnum(PROPERTY_TYPE);
 		severityEEnum = createEEnum(SEVERITY);
 		reviewStateEEnum = createEEnum(REVIEW_STATE);
+		diffKindEEnum = createEEnum(DIFF_KIND);
 
 		// Create data types
 		localeEDataType = createEDataType(LOCALE);
@@ -1010,7 +1077,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		op = addEOperation(projectVersionEClass, null, "partialScan", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, ecorePackage.getEString(), "relativeFilePath", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getPropertyFileDiff(), "fileDiff", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectLocaleEClass, ProjectLocale.class, "ProjectLocale", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectLocale_ProjectVersion(), this.getProjectVersion(), null, "projectVersion", null, 0, 1, ProjectLocale.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -1060,6 +1127,11 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getComment_User(), ecorePackage.getEString(), "user", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getComment_Message(), ecorePackage.getEString(), "message", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(propertyFileDiffEClass, PropertyFileDiff.class, "PropertyFileDiff", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPropertyFileDiff_NewPath(), ecorePackage.getEString(), "newPath", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyFileDiff_OldPath(), ecorePackage.getEString(), "oldPath", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyFileDiff_Kind(), this.getDiffKind(), "kind", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize enums and add enum literals
 		initEEnum(propertyTypeEEnum, PropertyType.class, "PropertyType");
 		addEEnumLiteral(propertyTypeEEnum, PropertyType.ENCODED_ISO);
@@ -1075,6 +1147,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEEnumLiteral(reviewStateEEnum, ReviewState.RESOLVED);
 		addEEnumLiteral(reviewStateEEnum, ReviewState.INVALID);
 		addEEnumLiteral(reviewStateEEnum, ReviewState.REOPENED);
+
+		initEEnum(diffKindEEnum, DiffKind.class, "DiffKind");
+		addEEnumLiteral(diffKindEEnum, DiffKind.ADD);
+		addEEnumLiteral(diffKindEEnum, DiffKind.REMOVE);
+		addEEnumLiteral(diffKindEEnum, DiffKind.MODIFY);
+		addEEnumLiteral(diffKindEEnum, DiffKind.COPY);
+		addEEnumLiteral(diffKindEEnum, DiffKind.MOVE);
 
 		// Initialize data types
 		initEDataType(localeEDataType, Locale.class, "Locale", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

@@ -136,6 +136,6 @@ public interface ProjectVersion extends Resolvable {
 	 * @model
 	 * @generated
 	 */
-	void partialScan(ScanConfiguration configuration, String relativeFilePath);
+	void partialScan(ScanConfiguration configuration, PropertyFileDiff fileDiff);
 
 } // ProjectVersion

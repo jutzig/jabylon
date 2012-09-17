@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -148,6 +149,12 @@ public class PropertiesSwitch<T> extends Switch<T> {
 			case PropertiesPackage.COMMENT: {
 				Comment comment = (Comment)theEObject;
 				T result = caseComment(comment);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertiesPackage.PROPERTY_FILE_DIFF: {
+				PropertyFileDiff propertyFileDiff = (PropertyFileDiff)theEObject;
+				T result = casePropertyFileDiff(propertyFileDiff);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -317,6 +324,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseComment(Comment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Property File Diff</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Property File Diff</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePropertyFileDiff(PropertyFileDiff object) {
 		return null;
 	}
 

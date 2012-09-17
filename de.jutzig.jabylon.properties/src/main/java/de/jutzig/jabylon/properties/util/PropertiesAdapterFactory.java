@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -123,6 +124,10 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseComment(Comment object) {
 				return createCommentAdapter();
+			}
+			@Override
+			public Adapter casePropertyFileDiff(PropertyFileDiff object) {
+				return createPropertyFileDiffAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -295,6 +300,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCommentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.PropertyFileDiff <em>Property File Diff</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDiff
+	 * @generated
+	 */
+	public Adapter createPropertyFileDiffAdapter() {
 		return null;
 	}
 

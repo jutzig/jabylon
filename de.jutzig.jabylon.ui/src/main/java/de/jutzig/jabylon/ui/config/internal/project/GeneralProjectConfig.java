@@ -39,6 +39,7 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.ui.Activator;
@@ -328,10 +329,10 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 							public void run(IProgressMonitor monitor) {
 								try {
 									SubMonitor subMonitor = SubMonitor.convert(monitor,"Updating",100);
-									Collection<String> updates = teamProvider.update(version, subMonitor.newChild(80));
+									Collection<PropertyFileDiff> updates = teamProvider.update(version, subMonitor.newChild(80));
 									subMonitor.setWorkRemaining(updates.size());
 									subMonitor.subTask("Processing updates");
-									for (String updatedFile : updates) {
+									for (PropertyFileDiff updatedFile : updates) {
 										version.partialScan(PreferencesUtil.getScanConfigForProject(version.getProject()), updatedFile);
 										subMonitor.worked(1);
 									}

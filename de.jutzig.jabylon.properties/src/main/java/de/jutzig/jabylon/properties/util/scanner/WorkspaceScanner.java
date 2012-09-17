@@ -73,12 +73,15 @@ public class WorkspaceScanner {
 				break;
 			}
 		}
-		
-		
-
-
 	}
 
+	
+	public boolean partialScan(File baseDir, ScanConfiguration config, File singleFile) {
+		SingleFileAcceptor acceptor = new SingleFileAcceptor();
+		partialScan(acceptor, baseDir, config, singleFile);
+		return acceptor.isMatch();
+	}
+	
 	private boolean matchesLocale(String f, String masterLocale) {
 
 		if (masterLocale == null)

@@ -24,20 +24,17 @@ import de.jutzig.jabylon.properties.Workspace;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getPercentComplete
- * <em>Percent Complete</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getPercentComplete <em>Percent Complete</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable {
 	/**
-	 * The default value of the '{@link #getPercentComplete()
-	 * <em>Percent Complete</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getPercentComplete() <em>Percent Complete</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @see #getPercentComplete()
 	 * @generated
 	 * @ordered
@@ -46,7 +43,6 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ResolvableImpl() {
@@ -55,7 +51,6 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -65,7 +60,6 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -75,22 +69,18 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int getPercentComplete() {
-		return (Integer) eDynamicGet(PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE,
-				PropertiesPackage.Literals.RESOLVABLE__PERCENT_COMPLETE, true, true);
+		return (Integer)eDynamicGet(PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE, PropertiesPackage.Literals.RESOLVABLE__PERCENT_COMPLETE, true, true);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setPercentComplete(int newPercentComplete) {
-		eDynamicSet(PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE, PropertiesPackage.Literals.RESOLVABLE__PERCENT_COMPLETE,
-				newPercentComplete);
+		eDynamicSet(PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE, PropertiesPackage.Literals.RESOLVABLE__PERCENT_COMPLETE, newPercentComplete);
 	}
 
 	/**
@@ -202,58 +192,54 @@ A:		for (EObject eObject : contents) {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
-			return getPercentComplete();
+			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
+				return getPercentComplete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
-			setPercentComplete((Integer) newValue);
-			return;
+			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
+				setPercentComplete((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
-			setPercentComplete(PERCENT_COMPLETE_EDEFAULT);
-			return;
+			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
+				setPercentComplete(PERCENT_COMPLETE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
-			return getPercentComplete() != PERCENT_COMPLETE_EDEFAULT;
+			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
+				return getPercentComplete() != PERCENT_COMPLETE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

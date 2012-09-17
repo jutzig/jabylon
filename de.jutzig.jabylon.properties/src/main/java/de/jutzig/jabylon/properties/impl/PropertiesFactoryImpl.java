@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import de.jutzig.jabylon.properties.*;
 import java.io.InputStream;
 import java.util.Locale;
 
@@ -87,6 +88,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.SCAN_CONFIGURATION: return (EObject)createScanConfiguration();
 			case PropertiesPackage.REVIEW: return (EObject)createReview();
 			case PropertiesPackage.COMMENT: return (EObject)createComment();
+			case PropertiesPackage.PROPERTY_FILE_DIFF: return (EObject)createPropertyFileDiff();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -106,6 +108,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 				return createSeverityFromString(eDataType, initialValue);
 			case PropertiesPackage.REVIEW_STATE:
 				return createReviewStateFromString(eDataType, initialValue);
+			case PropertiesPackage.DIFF_KIND:
+				return createDiffKindFromString(eDataType, initialValue);
 			case PropertiesPackage.LOCALE:
 				return createLocaleFromString(eDataType, initialValue);
 			case PropertiesPackage.URI:
@@ -131,6 +135,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 				return convertSeverityToString(eDataType, instanceValue);
 			case PropertiesPackage.REVIEW_STATE:
 				return convertReviewStateToString(eDataType, instanceValue);
+			case PropertiesPackage.DIFF_KIND:
+				return convertDiffKindToString(eDataType, instanceValue);
 			case PropertiesPackage.LOCALE:
 				return convertLocaleToString(eDataType, instanceValue);
 			case PropertiesPackage.URI:
@@ -247,6 +253,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public PropertyFileDiff createPropertyFileDiff() {
+		PropertyFileDiffImpl propertyFileDiff = new PropertyFileDiffImpl();
+		return propertyFileDiff;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PropertyType createPropertyTypeFromString(EDataType eDataType, String initialValue) {
 		PropertyType result = PropertyType.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -299,6 +315,26 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	 * @generated
 	 */
 	public String convertReviewStateToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DiffKind createDiffKindFromString(EDataType eDataType, String initialValue) {
+		DiffKind result = DiffKind.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDiffKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
