@@ -1,0 +1,82 @@
+package de.jutzig.jabylon.rest.api.json;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.eclipse.emf.common.util.URI;
+import org.junit.Before;
+import org.junit.Test;
+
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Property;
+import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+
+public class JSONEmitterTest {
+	
+	private JSONEmitter fixture;
+	
+	@Before
+	public void setup()
+	{
+		fixture = new JSONEmitter();
+	}
+
+	@Test
+	public void testSerializePropertyFile() {
+		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setComment("comment1");
+		property.setKey("key1");
+		property.setValue("value1");
+		file.getProperties().add(property);
+		
+		Property property2 = PropertiesFactory.eINSTANCE.createProperty();
+		property2.setComment("comment2");
+		property2.setKey("key2");
+		property2.setValue("value2");
+		file.getProperties().add(property2);
+		
+		StringBuilder result = new StringBuilder();
+		getFixture().serialize(file, result, 2);
+		String expected = "{\"properties\":[{\"key\":\"key1\",\"value\":\"value1\",\"comment\":\"comment1\"},{\"key\":\"key2\",\"value\":\"value2\",\"comment\":\"comment2\"}]}";
+		assertEquals(expected, result.toString());
+	}
+	
+	/**
+	 * http://github.com/jutzig/jabylon/issues/issue/38
+	 */
+	@Test
+	public void testSerializeWithEmptyProperties(){
+		String expected = "{}";
+		PropertyFileDescriptor spyDescriptor = mock(PropertyFileDescriptor.class);
+		when(spyDescriptor.eClass()).thenReturn(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR);
+		when(spyDescriptor.loadProperties()).thenReturn(PropertiesFactory.eINSTANCE.createPropertyFile());
+		StringBuilder result = new StringBuilder();
+		getFixture().serialize(spyDescriptor, result, 2);
+		assertEquals(expected, result.toString());
+		
+	}
+	
+	@Test
+	public void testSerializeWithFilledLocationAndEmptyProperties(){
+		String expected = "{\"location\":\"test/uri\"}";
+		PropertyFileDescriptor spyDescriptor = mock(PropertyFileDescriptor.class);
+		when(spyDescriptor.eGet(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION)).thenReturn(URI.createURI("test/uri"));
+		when(spyDescriptor.eIsSet(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION)).thenReturn(true);
+		when(spyDescriptor.eClass()).thenReturn(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR);
+		when(spyDescriptor.loadProperties()).thenReturn(PropertiesFactory.eINSTANCE.createPropertyFile());
+		StringBuilder result = new StringBuilder();
+		getFixture().serialize(spyDescriptor, result, 2);
+		assertEquals(expected, result.toString());
+		
+	}
+	
+	public JSONEmitter getFixture() {
+		return fixture;
+	}
+
+}

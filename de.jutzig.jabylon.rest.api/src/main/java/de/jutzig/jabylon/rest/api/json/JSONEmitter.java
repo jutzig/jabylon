@@ -41,6 +41,7 @@ public class JSONEmitter
     private void writeAttributes(EObject object, StringBuilder result, int depth)
     {
         EList<EStructuralFeature> eAllAttributes = object.eClass().getEAllStructuralFeatures();
+        boolean didWriteSeparator = false;
         for (EStructuralFeature eAttribute : eAllAttributes)
         {
             if (eAttribute.isTransient())
@@ -64,11 +65,13 @@ public class JSONEmitter
             if (eAttribute.isMany())
             {
                 writeMany(object, eAttribute, result, depth);
+                didWriteSeparator = true;
                 result.append(",");
             }
             else
             {
                 writeSingle(object, eAttribute, result, depth);
+                didWriteSeparator = true;
                 result.append(",");
             }
         }
@@ -77,12 +80,15 @@ public class JSONEmitter
         {
             PropertyFileDescriptor descriptor = (PropertyFileDescriptor)object;
             PropertyFile properties = descriptor.loadProperties();
-            result.append("propertyFile:");
-            writeObject(properties, result, depth-1);
-
+            if(!properties.getProperties().isEmpty())
+            {
+            	didWriteSeparator = false;
+            	result.append("\"propertyFile\":");
+            	writeObject(properties, result, depth-1);            	
+            }
         }
 
-        else if (!eAllAttributes.isEmpty())
+        if (didWriteSeparator)
             result.setLength(result.length() - 1);
 
     }
