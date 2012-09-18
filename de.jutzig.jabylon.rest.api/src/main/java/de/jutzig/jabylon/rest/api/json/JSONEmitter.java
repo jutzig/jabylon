@@ -76,10 +76,11 @@ public class JSONEmitter
             }
         }
 
-        if (object instanceof PropertyFileDescriptor)
+        if (object instanceof PropertyFileDescriptor && depth>1)
         {
             PropertyFileDescriptor descriptor = (PropertyFileDescriptor)object;
             PropertyFile properties = descriptor.loadProperties();
+            
             if(!properties.getProperties().isEmpty())
             {
             	didWriteSeparator = false;

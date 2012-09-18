@@ -1,7 +1,6 @@
 package de.jutzig.jabylon.rest.api.json;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +45,59 @@ public class JSONEmitterTest {
 		assertEquals(expected, result.toString());
 	}
 	
+	@Test
+	public void testSerializePropertyFileDescriptorWithDepth1AndURI() {
+		
+		PropertyFileDescriptor spyDescriptor = mock(PropertyFileDescriptor.class);
+		when(spyDescriptor.eGet(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION)).thenReturn(URI.createURI("test/uri"));
+		when(spyDescriptor.eIsSet(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION)).thenReturn(true);
+		when(spyDescriptor.eClass()).thenReturn(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR);
+		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+		when(spyDescriptor.loadProperties()).thenReturn(file);
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setComment("comment1");
+		property.setKey("key1");
+		property.setValue("value1");
+		file.getProperties().add(property);
+		
+		Property property2 = PropertiesFactory.eINSTANCE.createProperty();
+		property2.setComment("comment2");
+		property2.setKey("key2");
+		property2.setValue("value2");
+		file.getProperties().add(property2);
+		
+		StringBuilder result = new StringBuilder();
+		getFixture().serialize(spyDescriptor, result, 1);
+		String expected = "{\"location\":\"test/uri\"}";
+		assertEquals(expected, result.toString());
+	}
+	
+	@Test
+	public void testSerializePropertyFileDescriptorWithDepth1() {
+		
+		PropertyFileDescriptor spyDescriptor = mock(PropertyFileDescriptor.class);
+		when(spyDescriptor.eClass()).thenReturn(PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR);
+		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+		when(spyDescriptor.loadProperties()).thenReturn(file);
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setComment("comment1");
+		property.setKey("key1");
+		property.setValue("value1");
+		file.getProperties().add(property);
+		
+		Property property2 = PropertiesFactory.eINSTANCE.createProperty();
+		property2.setComment("comment2");
+		property2.setKey("key2");
+		property2.setValue("value2");
+		file.getProperties().add(property2);
+		
+		StringBuilder result = new StringBuilder();
+		getFixture().serialize(spyDescriptor, result, 1);
+		String expected = "{}";
+		assertEquals(expected, result.toString());
+	}
+
+
 	/**
 	 * http://github.com/jutzig/jabylon/issues/issue/38
 	 */
@@ -74,6 +126,7 @@ public class JSONEmitterTest {
 		assertEquals(expected, result.toString());
 		
 	}
+	
 	
 	public JSONEmitter getFixture() {
 		return fixture;
