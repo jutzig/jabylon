@@ -6,11 +6,9 @@ package de.jutzig.jabylon.review.standard.internal;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
@@ -128,7 +126,7 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 	private PropertyFileDescriptor getTerminology(PropertyFileDescriptor descriptor)
 	{
 		Locale locale = descriptor.getProjectLocale().getLocale();
-		Workspace workspace = descriptor.getProjectLocale().getProjectVersion().getProject().getWorkspace();
+		Workspace workspace = descriptor.getProjectLocale().getParent().getParent().getParent();
 		ProjectVersion terminology = workspace.getTerminology();
 		if(terminology==null)
 			return null;

@@ -107,8 +107,8 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 			@Override
 			protected void addPressed() {
 				ProjectVersion projectVersion = PropertiesFactory.eINSTANCE.createProjectVersion();
-				projectVersion.setBranch(Messages.getString("GeneralProjectConfig_NEW_BRANCH_PROMPT"));
-				getDomainObject().getVersions().add(projectVersion);
+				projectVersion.setName(Messages.getString("GeneralProjectConfig_NEW_BRANCH_PROMPT"));
+				getDomainObject().getChildren().add(projectVersion);
 				table.setEditable(true);
 				versionTable.select(projectVersion);
 
@@ -119,10 +119,10 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				Object value = versionTable.getValue();
 				if (value instanceof Set) {
 					Set selection = (Set) value;
-					getDomainObject().getVersions().removeAll(selection);
+					getDomainObject().getChildren().removeAll(selection);
 				} else if (value instanceof ProjectVersion) {
 					ProjectVersion locale = (ProjectVersion) value;
-					getDomainObject().getVersions().remove(locale);
+					getDomainObject().getChildren().remove(locale);
 
 				}
 			}
@@ -164,10 +164,10 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				Object value = localeTable.getValue();
 				if (value instanceof Set) {
 					Set selection = (Set) value;
-					version.getLocales().removeAll(selection);
+					version.getChildren().removeAll(selection);
 				} else if (value instanceof ProjectLocale) {
 					ProjectLocale locale = (ProjectLocale) value;
-					version.getLocales().remove(locale);
+					version.getChildren().remove(locale);
 
 				}
 			}
@@ -192,14 +192,14 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	@Override
 	public void commit(Preferences config) {
 		form.commit();
-		String newName = version.getProject().getName();
+		String newName = version.getParent().getName();
 		if (!newName.equals(projectName)) {
 			renameProject(projectName, newName);
 		}
 	}
 
 	private void renameProject(String oldName, String newName) {
-		URI uri = version.getProject().getWorkspace().absolutPath();
+		URI uri = version.getParent().getParent().absolutPath();
 		File workspaceDir = new File(uri.toFileString());
 		File projectDirectory = new File(workspaceDir, oldName);
 		projectDirectory.renameTo(new File(workspaceDir, newName));
@@ -215,9 +215,9 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	 */
 	@Override
 	protected void init(Preferences config) {
-		Project object = getDomainObject();
+		final Project object = getDomainObject();
 		projectName = object.getName();
-		version = object.getMaster();
+//		version = object.getChildren().get(0);
 		EObjectItem item = new EObjectItem(object);
 		form.setItemDataSource(item);
 
@@ -240,12 +240,12 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				return field;
 			}
 		});
-		form.setVisibleItemProperties(new Object[] { PropertiesPackage.Literals.PROJECT__NAME,
+		form.setVisibleItemProperties(new Object[] { PropertiesPackage.Literals.RESOLVABLE__NAME,
 				PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE });
 
 		versionTable.setContainerDataSource(new ProjectVersionContainer(getDomainObject()));
 
-		versionTable.setVisibleColumns(new Object[] { PropertiesPackage.Literals.PROJECT_VERSION__BRANCH });
+		versionTable.setVisibleColumns(new Object[] { PropertiesPackage.Literals.RESOLVABLE__NAME });
 
 		versionTable.addGeneratedColumn(Messages.getString("GeneralProjectConfig_PROGRESS_COLUMN_CAPTION"), new ColumnGenerator() {
 
@@ -333,7 +333,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 									subMonitor.setWorkRemaining(updates.size());
 									subMonitor.subTask("Processing updates");
 									for (PropertyFileDiff updatedFile : updates) {
-										version.partialScan(PreferencesUtil.getScanConfigForProject(version.getProject()), updatedFile);
+										version.partialScan(PreferencesUtil.getScanConfigForProject(object), updatedFile);
 										subMonitor.worked(1);
 									}
 									
@@ -415,21 +415,20 @@ class ProjectVersionContainer extends GenericEObjectContainer<ProjectVersion> {
 	private Project project;
 
 	public ProjectVersionContainer(Project parent) {
-		super(parent, PropertiesPackage.Literals.PROJECT__VERSIONS);
+		super(parent, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		this.project = parent;
 	}
 
 	@Override
 	protected List<ProjectVersion> getAllItemIds() {
 		List<ProjectVersion> versions = new ArrayList<ProjectVersion>();
-		versions.add(project.getMaster());
-		versions.addAll(project.getVersions());
+		versions.addAll(project.getChildren());
 		return versions;
 	}
 
 	@Override
 	public boolean containsId(Object itemId) {
-		return project.getMaster() == itemId || project.getVersions().contains(itemId);
+		return project.getChildren().contains(itemId);
 	}
 
 	@Override

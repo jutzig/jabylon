@@ -61,7 +61,7 @@ public class TranslationCleanupJob implements JobExecution {
 	}
 
 	private void cleanup(Workspace workspace) {
-		EList<Project> projects = workspace.getProjects();
+		EList<Project> projects = workspace.getChildren();
 		for (Project project : projects) {
 			cleanup(project);
 		}
@@ -69,16 +69,14 @@ public class TranslationCleanupJob implements JobExecution {
 	}
 
 	private void cleanup(Project project) {
-		ProjectVersion master = project.getMaster();
-		cleanup(master);
-		for (ProjectVersion version : project.getVersions()) {
+		for (ProjectVersion version : project.getChildren()) {
 			cleanup(version);
 		}
 		
 	}
 
 	private void cleanup(ProjectVersion version) {
-		for (ProjectLocale locale : version.getLocales()) {
+		for (ProjectLocale locale : version.getChildren()) {
 			cleanup(locale);
 		}
 		

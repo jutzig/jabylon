@@ -11,11 +11,15 @@ import java.io.File;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
+import java.util.Collection;
+import org.eclipse.emf.common.notify.NotificationChain;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -25,12 +29,15 @@ import de.jutzig.jabylon.properties.Workspace;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getPercentComplete <em>Percent Complete</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getParent <em>Parent</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ResolvableImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable {
+public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> extends CDOObjectImpl implements Resolvable<P, C> {
 	/**
 	 * The default value of the '{@link #getPercentComplete() <em>Percent Complete</em>}' attribute.
 	 * <!-- begin-user-doc --> <!--
@@ -40,6 +47,16 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 	 * @ordered
 	 */
 	protected static final int PERCENT_COMPLETE_EDEFAULT = 0;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -81,6 +98,63 @@ public abstract class ResolvableImpl extends CDOObjectImpl implements Resolvable
 	 */
 	public void setPercentComplete(int newPercentComplete) {
 		eDynamicSet(PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE, PropertiesPackage.Literals.RESOLVABLE__PERCENT_COMPLETE, newPercentComplete);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<C> getChildren() {
+		return (EList<C>)eDynamicGet(PropertiesPackage.RESOLVABLE__CHILDREN, PropertiesPackage.Literals.RESOLVABLE__CHILDREN, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public P getParent() {
+		return (P)eDynamicGet(PropertiesPackage.RESOLVABLE__PARENT, PropertiesPackage.Literals.RESOLVABLE__PARENT, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetParent(P newParent, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newParent, PropertiesPackage.RESOLVABLE__PARENT, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setParent(P newParent) {
+		eDynamicSet(PropertiesPackage.RESOLVABLE__PARENT, PropertiesPackage.Literals.RESOLVABLE__PARENT, newParent);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return (String)eDynamicGet(PropertiesPackage.RESOLVABLE__NAME, PropertiesPackage.Literals.RESOLVABLE__NAME, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		eDynamicSet(PropertiesPackage.RESOLVABLE__NAME, PropertiesPackage.Literals.RESOLVABLE__NAME, newName);
 	}
 
 	/**
@@ -188,6 +262,77 @@ A:		for (EObject eObject : contents) {
 		return null;
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public URI absoluteFilePath() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public C getChild(String name) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildren()).basicAdd(otherEnd, msgs);
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetParent((P)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				return basicSetParent(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+		switch (eContainerFeatureID()) {
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				return eInternalContainer().eInverseRemove(this, PropertiesPackage.RESOLVABLE__CHILDREN, Resolvable.class, msgs);
+		}
+		return super.eBasicRemoveFromContainerFeature(msgs);
+	}
+
 	public abstract int internalUpdatePercentComplete();
 
 	/**
@@ -199,6 +344,12 @@ A:		for (EObject eObject : contents) {
 		switch (featureID) {
 			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
 				return getPercentComplete();
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				return getChildren();
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				return getParent();
+			case PropertiesPackage.RESOLVABLE__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -207,11 +358,22 @@ A:		for (EObject eObject : contents) {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
 				setPercentComplete((Integer)newValue);
+				return;
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				getChildren().clear();
+				getChildren().addAll((Collection<? extends C>)newValue);
+				return;
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				setParent((P)newValue);
+				return;
+			case PropertiesPackage.RESOLVABLE__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -227,6 +389,15 @@ A:		for (EObject eObject : contents) {
 			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
 				setPercentComplete(PERCENT_COMPLETE_EDEFAULT);
 				return;
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				getChildren().clear();
+				return;
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				setParent((P)null);
+				return;
+			case PropertiesPackage.RESOLVABLE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -240,6 +411,12 @@ A:		for (EObject eObject : contents) {
 		switch (featureID) {
 			case PropertiesPackage.RESOLVABLE__PERCENT_COMPLETE:
 				return getPercentComplete() != PERCENT_COMPLETE_EDEFAULT;
+			case PropertiesPackage.RESOLVABLE__CHILDREN:
+				return !getChildren().isEmpty();
+			case PropertiesPackage.RESOLVABLE__PARENT:
+				return getParent() != null;
+			case PropertiesPackage.RESOLVABLE__NAME:
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
 		}
 		return super.eIsSet(featureID);
 	}

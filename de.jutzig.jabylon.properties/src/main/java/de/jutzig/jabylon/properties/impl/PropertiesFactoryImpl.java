@@ -89,6 +89,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.REVIEW: return (EObject)createReview();
 			case PropertiesPackage.COMMENT: return (EObject)createComment();
 			case PropertiesPackage.PROPERTY_FILE_DIFF: return (EObject)createPropertyFileDiff();
+			case PropertiesPackage.RESOURCE_FOLDER: return (EObject)createResourceFolder();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -256,6 +257,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	public PropertyFileDiff createPropertyFileDiff() {
 		PropertyFileDiffImpl propertyFileDiff = new PropertyFileDiffImpl();
 		return propertyFileDiff;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ResourceFolder createResourceFolder() {
+		ResourceFolderImpl resourceFolder = new ResourceFolderImpl();
+		return resourceFolder;
 	}
 
 	/**

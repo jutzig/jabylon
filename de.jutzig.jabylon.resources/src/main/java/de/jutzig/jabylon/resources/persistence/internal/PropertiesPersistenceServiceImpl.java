@@ -337,10 +337,10 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
 		Map<String, Object> options = new HashMap<String, Object>();
-		if (descriptor.getProjectLocale() != null && descriptor.getProjectLocale().getProjectVersion() != null
-				&& descriptor.getProjectLocale().getProjectVersion().getProject() != null) {
-			ProjectVersion version = descriptor.getProjectLocale().getProjectVersion();
-			Project project = version.getProject();
+		if (descriptor.getProjectLocale() != null && descriptor.getProjectLocale().getParent() != null
+				&& descriptor.getProjectLocale().getParent().getParent() != null) {
+			ProjectVersion version = descriptor.getProjectLocale().getParent();
+			Project project = version.getParent();
 			PropertyType propertyType = project.getPropertyType();
 			options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);
 		}

@@ -138,7 +138,7 @@ public class AutoTranslator implements PropertiesListener {
 	private PropertyFileDescriptor getMatchingLocale(PropertyFileDescriptor master, ProjectLocale targetLocale) {
 		if(master==null)
 			return null;
-		ProjectVersion version = master.getProjectLocale().getProjectVersion();
+		ProjectVersion version = master.getProjectLocale().getParent();
 		ProjectLocale projectLocale = version.getProjectLocale(targetLocale.getLocale());
 		if(projectLocale==null)
 			return null;

@@ -155,13 +155,40 @@ public interface PropertiesPackage extends EPackage {
 	int RESOLVABLE__PERCENT_COMPLETE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOLVABLE__CHILDREN = 1;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOLVABLE__PARENT = 2;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOLVABLE__NAME = 3;
+
+	/**
 	 * The number of structural features of the '<em>Resolvable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RESOLVABLE_FEATURE_COUNT = 1;
+	int RESOLVABLE_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl <em>Property File Descriptor</em>}' class.
@@ -181,6 +208,33 @@ public interface PropertiesPackage extends EPackage {
 	 * @ordered
 	 */
 	int PROPERTY_FILE_DESCRIPTOR__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
+
+	/**
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__CHILDREN = RESOLVABLE__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__PARENT = RESOLVABLE__PARENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__NAME = RESOLVABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Variant</b></em>' attribute.
@@ -255,13 +309,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = RESOLVABLE_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Derived Descriptors</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS = RESOLVABLE_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Property File Descriptor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 8;
+	int PROPERTY_FILE_DESCRIPTOR_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
@@ -283,40 +346,31 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__CHILDREN = RESOLVABLE__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__PARENT = RESOLVABLE__PARENT;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__NAME = RESOLVABLE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Workspace</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT__WORKSPACE = RESOLVABLE_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Versions</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT__VERSIONS = RESOLVABLE_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Master</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROJECT__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROJECT__NAME = RESOLVABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Repository URI</b></em>' attribute.
@@ -325,7 +379,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__REPOSITORY_URI = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROJECT__REPOSITORY_URI = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Property Type</b></em>' attribute.
@@ -334,7 +388,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__PROPERTY_TYPE = RESOLVABLE_FEATURE_COUNT + 5;
+	int PROJECT__PROPERTY_TYPE = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Team Provider</b></em>' attribute.
@@ -343,7 +397,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__TEAM_PROVIDER = RESOLVABLE_FEATURE_COUNT + 6;
+	int PROJECT__TEAM_PROVIDER = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Terminology</b></em>' attribute.
@@ -352,7 +406,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT__TERMINOLOGY = RESOLVABLE_FEATURE_COUNT + 7;
+	int PROJECT__TERMINOLOGY = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Project</em>' class.
@@ -361,7 +415,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 8;
+	int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -383,40 +437,40 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_VERSION__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
-	 * The feature id for the '<em><b>Project</b></em>' reference.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__PROJECT = RESOLVABLE_FEATURE_COUNT + 0;
+	int PROJECT_VERSION__CHILDREN = RESOLVABLE__CHILDREN;
 
 	/**
-	 * The feature id for the '<em><b>Branch</b></em>' attribute.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__BRANCH = RESOLVABLE_FEATURE_COUNT + 1;
+	int PROJECT_VERSION__PARENT = RESOLVABLE__PARENT;
 
 	/**
-	 * The feature id for the '<em><b>Locales</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__LOCALES = RESOLVABLE_FEATURE_COUNT + 2;
+	int PROJECT_VERSION__NAME = RESOLVABLE__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Master</b></em>' containment reference.
+	 * The feature id for the '<em><b>Template</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION__MASTER = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROJECT_VERSION__TEMPLATE = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Project Version</em>' class.
@@ -425,7 +479,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
@@ -447,13 +501,31 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT_LOCALE__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
-	 * The feature id for the '<em><b>Project Version</b></em>' reference.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__PROJECT_VERSION = RESOLVABLE_FEATURE_COUNT + 0;
+	int PROJECT_LOCALE__CHILDREN = RESOLVABLE__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_LOCALE__PARENT = RESOLVABLE__PARENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_LOCALE__NAME = RESOLVABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Locale</b></em>' attribute.
@@ -462,16 +534,16 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__LOCALE = RESOLVABLE_FEATURE_COUNT + 1;
+	int PROJECT_LOCALE__LOCALE = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Descriptors</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Descriptors</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__DESCRIPTORS = RESOLVABLE_FEATURE_COUNT + 2;
+	int PROJECT_LOCALE__DESCRIPTORS = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Property Count</b></em>' attribute.
@@ -480,7 +552,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE__PROPERTY_COUNT = RESOLVABLE_FEATURE_COUNT + 3;
+	int PROJECT_LOCALE__PROPERTY_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Project Locale</em>' class.
@@ -489,7 +561,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROJECT_LOCALE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
+	int PROJECT_LOCALE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl <em>Workspace</em>}' class.
@@ -511,6 +583,33 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
 
 	/**
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKSPACE__CHILDREN = RESOLVABLE__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKSPACE__PARENT = RESOLVABLE__PARENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKSPACE__NAME = RESOLVABLE__NAME;
+
+	/**
 	 * The feature id for the '<em><b>Root</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -520,22 +619,13 @@ public interface PropertiesPackage extends EPackage {
 	int WORKSPACE__ROOT = RESOLVABLE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Projects</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORKSPACE__PROJECTS = RESOLVABLE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Workspace</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKSPACE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
+	int WORKSPACE_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ScanConfigurationImpl <em>Scan Configuration</em>}' class.
@@ -767,6 +857,61 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DIFF_FEATURE_COUNT = 3;
 
 	/**
+	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.ResourceFolderImpl <em>Resource Folder</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.jutzig.jabylon.properties.impl.ResourceFolderImpl
+	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getResourceFolder()
+	 * @generated
+	 */
+	int RESOURCE_FOLDER = 12;
+
+	/**
+	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_FOLDER__PERCENT_COMPLETE = RESOLVABLE__PERCENT_COMPLETE;
+
+	/**
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_FOLDER__CHILDREN = RESOLVABLE__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_FOLDER__PARENT = RESOLVABLE__PARENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_FOLDER__NAME = RESOLVABLE__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Resource Folder</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_FOLDER_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -774,7 +919,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
 	 * @generated
 	 */
-	int PROPERTY_TYPE = 12;
+	int PROPERTY_TYPE = 13;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.Severity <em>Severity</em>}' enum.
@@ -784,7 +929,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
 	 * @generated
 	 */
-	int SEVERITY = 13;
+	int SEVERITY = 14;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.ReviewState <em>Review State</em>}' enum.
@@ -794,7 +939,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
 	 * @generated
 	 */
-	int REVIEW_STATE = 14;
+	int REVIEW_STATE = 15;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.DiffKind <em>Diff Kind</em>}' enum.
@@ -804,7 +949,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getDiffKind()
 	 * @generated
 	 */
-	int DIFF_KIND = 15;
+	int DIFF_KIND = 16;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -814,7 +959,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 16;
+	int LOCALE = 17;
 
 
 	/**
@@ -825,7 +970,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 17;
+	int URI = 18;
 
 
 	/**
@@ -836,7 +981,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getInputStream()
 	 * @generated
 	 */
-	int INPUT_STREAM = 18;
+	int INPUT_STREAM = 19;
 
 
 	/**
@@ -1002,6 +1147,17 @@ public interface PropertiesPackage extends EPackage {
 	EReference getPropertyFileDescriptor_LastModification();
 
 	/**
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Derived Descriptors</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors()
+	 * @see #getPropertyFileDescriptor()
+	 * @generated
+	 */
+	EReference getPropertyFileDescriptor_DerivedDescriptors();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Project <em>Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1010,50 +1166,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getProject();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getName()
-	 * @see #getProject()
-	 * @generated
-	 */
-	EAttribute getProject_Name();
-
-	/**
-	 * Returns the meta object for the container reference '{@link de.jutzig.jabylon.properties.Project#getWorkspace <em>Workspace</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Workspace</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getWorkspace()
-	 * @see #getProject()
-	 * @generated
-	 */
-	EReference getProject_Workspace();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Project#getVersions <em>Versions</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Versions</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getVersions()
-	 * @see #getProject()
-	 * @generated
-	 */
-	EReference getProject_Versions();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.Project#getMaster <em>Master</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Master</em>'.
-	 * @see de.jutzig.jabylon.properties.Project#getMaster()
-	 * @see #getProject()
-	 * @generated
-	 */
-	EReference getProject_Master();
 
 	/**
 	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Project#getRepositoryURI <em>Repository URI</em>}'.
@@ -1110,48 +1222,15 @@ public interface PropertiesPackage extends EPackage {
 	EClass getProjectVersion();
 
 	/**
-	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject <em>Project</em>}'.
+	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getTemplate <em>Template</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Project</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProject()
+	 * @return the meta object for the reference '<em>Template</em>'.
+	 * @see de.jutzig.jabylon.properties.ProjectVersion#getTemplate()
 	 * @see #getProjectVersion()
 	 * @generated
 	 */
-	EReference getProjectVersion_Project();
-
-	/**
-	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectVersion#getBranch <em>Branch</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Branch</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getBranch()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EAttribute getProjectVersion_Branch();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.ProjectVersion#getLocales <em>Locales</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Locales</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getLocales()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EReference getProjectVersion_Locales();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link de.jutzig.jabylon.properties.ProjectVersion#getMaster <em>Master</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Master</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getMaster()
-	 * @see #getProjectVersion()
-	 * @generated
-	 */
-	EReference getProjectVersion_Master();
+	EReference getProjectVersion_Template();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ProjectLocale <em>Project Locale</em>}'.
@@ -1162,17 +1241,6 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getProjectLocale();
-
-	/**
-	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion <em>Project Version</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Project Version</em>'.
-	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion()
-	 * @see #getProjectLocale()
-	 * @generated
-	 */
-	EReference getProjectLocale_ProjectVersion();
 
 	/**
 	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.ProjectLocale#getLocale <em>Locale</em>}'.
@@ -1186,10 +1254,10 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getProjectLocale_Locale();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}'.
+	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Descriptors</em>'.
+	 * @return the meta object for the reference list '<em>Descriptors</em>'.
 	 * @see de.jutzig.jabylon.properties.ProjectLocale#getDescriptors()
 	 * @see #getProjectLocale()
 	 * @generated
@@ -1229,17 +1297,6 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getWorkspace_Root();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Workspace#getProjects <em>Projects</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Projects</em>'.
-	 * @see de.jutzig.jabylon.properties.Workspace#getProjects()
-	 * @see #getWorkspace()
-	 * @generated
-	 */
-	EReference getWorkspace_Projects();
-
-	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Resolvable <em>Resolvable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1259,6 +1316,39 @@ public interface PropertiesPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getResolvable_PercentComplete();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link de.jutzig.jabylon.properties.Resolvable#getChildren <em>Children</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Children</em>'.
+	 * @see de.jutzig.jabylon.properties.Resolvable#getChildren()
+	 * @see #getResolvable()
+	 * @generated
+	 */
+	EReference getResolvable_Children();
+
+	/**
+	 * Returns the meta object for the container reference '{@link de.jutzig.jabylon.properties.Resolvable#getParent <em>Parent</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Parent</em>'.
+	 * @see de.jutzig.jabylon.properties.Resolvable#getParent()
+	 * @see #getResolvable()
+	 * @generated
+	 */
+	EReference getResolvable_Parent();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.Resolvable#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see de.jutzig.jabylon.properties.Resolvable#getName()
+	 * @see #getResolvable()
+	 * @generated
+	 */
+	EAttribute getResolvable_Name();
 
 	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ScanConfiguration <em>Scan Configuration</em>}'.
@@ -1488,6 +1578,16 @@ public interface PropertiesPackage extends EPackage {
 	EAttribute getPropertyFileDiff_Kind();
 
 	/**
+	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.ResourceFolder <em>Resource Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Resource Folder</em>'.
+	 * @see de.jutzig.jabylon.properties.ResourceFolder
+	 * @generated
+	 */
+	EClass getResourceFolder();
+
+	/**
 	 * Returns the meta object for enum '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1709,6 +1809,14 @@ public interface PropertiesPackage extends EPackage {
 		EReference PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = eINSTANCE.getPropertyFileDescriptor_LastModification();
 
 		/**
+		 * The meta object literal for the '<em><b>Derived Descriptors</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS = eINSTANCE.getPropertyFileDescriptor_DerivedDescriptors();
+
+		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectImpl <em>Project</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1717,38 +1825,6 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EClass PROJECT = eINSTANCE.getProject();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT__NAME = eINSTANCE.getProject_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Workspace</b></em>' container reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT__WORKSPACE = eINSTANCE.getProject_Workspace();
-
-		/**
-		 * The meta object literal for the '<em><b>Versions</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT__VERSIONS = eINSTANCE.getProject_Versions();
-
-		/**
-		 * The meta object literal for the '<em><b>Master</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT__MASTER = eINSTANCE.getProject_Master();
 
 		/**
 		 * The meta object literal for the '<em><b>Repository URI</b></em>' attribute feature.
@@ -1793,36 +1869,12 @@ public interface PropertiesPackage extends EPackage {
 		EClass PROJECT_VERSION = eINSTANCE.getProjectVersion();
 
 		/**
-		 * The meta object literal for the '<em><b>Project</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Template</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PROJECT_VERSION__PROJECT = eINSTANCE.getProjectVersion_Project();
-
-		/**
-		 * The meta object literal for the '<em><b>Branch</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PROJECT_VERSION__BRANCH = eINSTANCE.getProjectVersion_Branch();
-
-		/**
-		 * The meta object literal for the '<em><b>Locales</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT_VERSION__LOCALES = eINSTANCE.getProjectVersion_Locales();
-
-		/**
-		 * The meta object literal for the '<em><b>Master</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT_VERSION__MASTER = eINSTANCE.getProjectVersion_Master();
+		EReference PROJECT_VERSION__TEMPLATE = eINSTANCE.getProjectVersion_Template();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
@@ -1835,14 +1887,6 @@ public interface PropertiesPackage extends EPackage {
 		EClass PROJECT_LOCALE = eINSTANCE.getProjectLocale();
 
 		/**
-		 * The meta object literal for the '<em><b>Project Version</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROJECT_LOCALE__PROJECT_VERSION = eINSTANCE.getProjectLocale_ProjectVersion();
-
-		/**
 		 * The meta object literal for the '<em><b>Locale</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1851,7 +1895,7 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute PROJECT_LOCALE__LOCALE = eINSTANCE.getProjectLocale_Locale();
 
 		/**
-		 * The meta object literal for the '<em><b>Descriptors</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Descriptors</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1885,14 +1929,6 @@ public interface PropertiesPackage extends EPackage {
 		EAttribute WORKSPACE__ROOT = eINSTANCE.getWorkspace_Root();
 
 		/**
-		 * The meta object literal for the '<em><b>Projects</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference WORKSPACE__PROJECTS = eINSTANCE.getWorkspace_Projects();
-
-		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ResolvableImpl <em>Resolvable</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1909,6 +1945,30 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute RESOLVABLE__PERCENT_COMPLETE = eINSTANCE.getResolvable_PercentComplete();
+
+		/**
+		 * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RESOLVABLE__CHILDREN = eINSTANCE.getResolvable_Children();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RESOLVABLE__PARENT = eINSTANCE.getResolvable_Parent();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RESOLVABLE__NAME = eINSTANCE.getResolvable_Name();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ScanConfigurationImpl <em>Scan Configuration</em>}' class.
@@ -2085,6 +2145,16 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROPERTY_FILE_DIFF__KIND = eINSTANCE.getPropertyFileDiff_Kind();
+
+		/**
+		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.ResourceFolderImpl <em>Resource Folder</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.jutzig.jabylon.properties.impl.ResourceFolderImpl
+		 * @see de.jutzig.jabylon.properties.impl.PropertiesPackageImpl#getResourceFolder()
+		 * @generated
+		 */
+		EClass RESOURCE_FOLDER = eINSTANCE.getResourceFolder();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.PropertyType <em>Property Type</em>}' enum.

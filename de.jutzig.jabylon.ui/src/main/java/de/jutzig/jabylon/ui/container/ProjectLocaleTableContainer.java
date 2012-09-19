@@ -39,47 +39,47 @@ import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
-public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<ProjectLocale, LocaleProperty, Item> implements Container.ItemSetChangeNotifier, Container.Sortable {
+public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<ProjectLocale, LocaleProperty, Item> implements
+		Container.ItemSetChangeNotifier, Container.Sortable {
 
-	
 	private ProjectVersion project;
 	private Map<ProjectLocale, ProjectLocaleRow> itemCache;
 	private List<ProjectLocale> sortableList;
-	
-	public static enum LocaleProperty{
-		
-		FLAG(Resource.class),LOCALE(Button.class),SUMMARY(String.class),PROGRESS(Label.class);
+
+	public static enum LocaleProperty {
+
+		FLAG(Resource.class), LOCALE(Button.class), SUMMARY(String.class), PROGRESS(Label.class);
 		private Class<?> type;
-		
+
 		private LocaleProperty(Class<?> type) {
 			this.type = type;
 		}
 	}
-	
-	
+
 	public ProjectLocaleTableContainer(final ProjectVersion project) {
 		this.project = project;
 		itemCache = new HashMap<ProjectLocale, ProjectLocaleRow>();
 		project.eAdapters().add(new WeakReferenceAdapter(new AdapterImpl() {
 			@Override
 			public void notifyChanged(Notification msg) {
-				if(msg.getFeature()==PropertiesPackage.Literals.PROJECT_VERSION__LOCALES)
-				{
-					//TODO: can probably do this more fine grained
+				if (msg.getFeature() == PropertiesPackage.Literals.RESOLVABLE__CHILDREN) {
+					// TODO: can probably do this more fine grained
 					project.cdoReload();
 					itemCache.clear();
-					sortableList = new ArrayList<ProjectLocale>(project.getLocales());
+					sortableList = new ArrayList<ProjectLocale>(project.getChildren());
 					fireItemSetChange();
 				}
-					
+
 			}
 		}));
-		sortableList = new ArrayList<ProjectLocale>(project.getLocales());
+		sortableList = new ArrayList<ProjectLocale>(project.getChildren());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.vaadin.data.Container#getContainerPropertyIds()
 	 */
 	@Override
@@ -87,52 +87,59 @@ public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<Proje
 		return EnumSet.allOf(LocaleProperty.class);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see com.vaadin.data.Container#getContainerProperty(java.lang.Object, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vaadin.data.Container#getContainerProperty(java.lang.Object,
+	 * java.lang.Object)
 	 */
 	@Override
 	public Property getContainerProperty(Object itemId, Object propertyId) {
 		return getItem(itemId).getItemProperty(propertyId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.vaadin.data.Container#getType(java.lang.Object)
 	 */
 	@Override
 	public Class<?> getType(Object propertyId) {
-		LocaleProperty property = (LocaleProperty)propertyId;
+		LocaleProperty property = (LocaleProperty) propertyId;
 		return property.type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.vaadin.data.Container#size()
 	 */
 	@Override
 	public int size() {
-		return project.getLocales().size();
+		return project.getChildren().size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.vaadin.data.Container#containsId(java.lang.Object)
 	 */
 	@Override
 	public boolean containsId(Object itemId) {
-		return project.getLocales().contains(itemId);
+		return project.getChildren().contains(itemId);
 	}
 
 	@Override
 	protected Item getUnfilteredItem(Object itemId) {
-		ProjectLocale locale = (ProjectLocale)itemId;
+		ProjectLocale locale = (ProjectLocale) itemId;
 		ProjectLocaleRow row = itemCache.get(itemId);
-		if(row == null)
-		{
+		if (row == null) {
 			row = new ProjectLocaleRow(locale);
 			itemCache.put(locale, row);
 		}
 		return row;
 	}
-	
+
 	@Override
 	protected List<ProjectLocale> getAllItemIds() {
 		return sortableList;
@@ -141,7 +148,7 @@ public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<Proje
 	@Override
 	public void sort(Object[] propertyId, boolean[] ascending) {
 		sortContainer(propertyId, ascending);
-		
+
 	}
 
 	@Override
@@ -151,11 +158,8 @@ public class ProjectLocaleTableContainer extends AbstractInMemoryContainer<Proje
 
 }
 
+class ProjectLocaleRow implements Item {
 
-class ProjectLocaleRow implements Item
-{
-
-	
 	private Property flag;
 	private Property locale;
 	private Property summary;
@@ -166,9 +170,10 @@ class ProjectLocaleRow implements Item
 		super();
 		this.projectLocale = locale;
 	}
+
 	@Override
 	public Property getItemProperty(Object id) {
-		LocaleProperty property = (LocaleProperty)id;
+		LocaleProperty property = (LocaleProperty) id;
 		switch (property) {
 		case FLAG:
 			return getFlag();
@@ -184,35 +189,38 @@ class ProjectLocaleRow implements Item
 		}
 		return null;
 	}
+
 	@Override
 	public Collection<?> getItemPropertyIds() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public boolean addItemProperty(Object id, Property property) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public boolean removeItemProperty(Object id) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public Property getFlag() {
-		if(flag==null)
-		{
+		if (flag == null) {
 			flag = new GenericProperty<Resource>(Resource.class, LocaleUtil.getIconForLocale(projectLocale));
 		}
 		return flag;
 	}
-	
+
 	public Property getLocale() {
-		if(locale==null)
-		{
+		if (locale == null) {
 			Locale userLocale = Locale.getDefault();
-			if(MainDashboard.getCurrent()!=null) //doesn't work like that if triggered from another thread (EMF notification)
+			if (MainDashboard.getCurrent() != null) // doesn't work like that if
+													// triggered from another
+													// thread (EMF notification)
 			{
 				userLocale = MainDashboard.getCurrent().getLocale();
 			}
@@ -220,69 +228,57 @@ class ProjectLocaleRow implements Item
 			Button button = new SortableButton(displayName);
 			button.setStyleName(Reindeer.BUTTON_LINK);
 			button.addListener(new ClickListener() {
-				
+
 				@Override
 				public void buttonClick(ClickEvent event) {
-					
-					ProjectVersion projectVersion = projectLocale.getProjectVersion();
-					Project project = projectVersion.getProject();
-					if(projectVersion==projectVersion.getProject().getMaster())
-					{
-						MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName(),projectLocale.getLocale().toString());
-					}
-					else
-					{
-						String version = "?"+projectVersion.getBranch();
-						MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName(),version,projectLocale.getLocale().toString());						
-					}
-					
+
+					ProjectVersion projectVersion = projectLocale.getParent();
+					Project project = projectVersion.getParent();
+
+					String version = "?" + projectVersion.getName();
+					MainDashboard.getCurrent().getBreadcrumbs().setPath(project.getName(), version, projectLocale.getLocale().toString());
+
 				}
 			});
 			locale = new GenericProperty<Button>(Button.class, button);
 		}
 		return locale;
 	}
-	
+
 	public Property getProgress() {
-		if(progress==null)
-		{
-			progress = new GenericProperty<ResolvableProgressIndicator>(ResolvableProgressIndicator.class,new ResolvableProgressIndicator(projectLocale));
+		if (progress == null) {
+			progress = new GenericProperty<ResolvableProgressIndicator>(ResolvableProgressIndicator.class, new ResolvableProgressIndicator(
+					projectLocale));
 		}
 		return progress;
 	}
-	
+
 	public Property getSummary() {
-		
-		if(summary==null)
-		{
+
+		if (summary == null) {
 			summary = new GenericProperty<String>(String.class, buildSummary(projectLocale));
 		}
 		return summary;
 	}
-	
+
 	private String buildSummary(ProjectLocale locale) {
 
-		//TODO: how can this happen?
-		if(projectLocale==null || projectLocale.getProjectVersion()==null || projectLocale.getProjectVersion().getMaster()==null)
+		// TODO: how can this happen?
+		if (projectLocale == null || projectLocale.getParent() == null || projectLocale.getParent().getTemplate() == null)
 			return "";
-		int totalKeys = projectLocale.getProjectVersion().getMaster().getPropertyCount();
+		int totalKeys = projectLocale.getParent().getTemplate().getPropertyCount();
 		int actualKeys = locale.getPropertyCount();
-		if(actualKeys==totalKeys)
-		{
+		if (actualKeys == totalKeys) {
 			return "Complete";
-		}
-		else if(actualKeys<totalKeys)
-		{
+		} else if (actualKeys < totalKeys) {
 
 			String message = "{0} out of {1} strings need attention";
-			message = MessageFormat.format(message, totalKeys-actualKeys,totalKeys);
+			message = MessageFormat.format(message, totalKeys - actualKeys, totalKeys);
 			return message;
-		}
-		else
-		{
+		} else {
 
 			String message = "Warning: Contains {0} keys more than the template language";
-			message = MessageFormat.format(message, actualKeys-totalKeys);
+			message = MessageFormat.format(message, actualKeys - totalKeys);
 			return message;
 		}
 

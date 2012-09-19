@@ -67,9 +67,9 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 				Project project = PropertiesFactory.eINSTANCE.createProject();
 				project.setName("<enter name>");
 				ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-				version.setBranch("master");
-				project.setMaster(version);
-				getDomainObject().getProjects().add(project);
+				version.setName("master");
+				project.getChildren().add(version);
+				getDomainObject().getChildren().add(project);
 				table.setEditable(true);
 				projectTable.select(project);
 				
@@ -80,11 +80,11 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 				Object value = projectTable.getValue();
 				if (value instanceof Set) {
 					Set selection = (Set)value;
-					getDomainObject().getProjects().removeAll(selection);
+					getDomainObject().getChildren().removeAll(selection);
 				}
 				else if (value instanceof Project) {
 					Project project = (Project) value;
-					getDomainObject().getProjects().remove(project);
+					getDomainObject().getChildren().remove(project);
 					
 				}
 			}
@@ -103,14 +103,15 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 				Workspace workspace = getDomainObject();
 				Project project = PropertiesFactory.eINSTANCE.createProject();
 				project.setTerminology(true);
-				workspace.getProjects().add(project);
+				workspace.getChildren().add(project);
 				project.setName("Terminology");
 				ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-				version.setBranch("master");
-				project.setMaster(version);
+				version.setName("master");
+				project.getChildren().add(version);
 				
 				ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
-				version.setMaster(locale);
+				version.setTemplate(locale);
+				version.getChildren().add(locale);
 				URI path = version.absolutPath();
 				File folder = new File(path.toFileString());
 				folder.mkdirs();
@@ -143,9 +144,9 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 	 */
 	@Override
 	protected void init(Preferences config) {
-		projectTable.setContainerDataSource(new GenericEObjectContainer<Project>(getDomainObject(), PropertiesPackage.Literals.WORKSPACE__PROJECTS));
-		projectTable.setVisibleColumns(new Object[]{PropertiesPackage.Literals.PROJECT__NAME});
-		projectTable.setColumnHeader(PropertiesPackage.Literals.PROJECT__NAME, "Projects");
+		projectTable.setContainerDataSource(new GenericEObjectContainer<Project>(getDomainObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN));
+		projectTable.setVisibleColumns(new Object[]{PropertiesPackage.Literals.RESOLVABLE__NAME});
+		projectTable.setColumnHeader(PropertiesPackage.Literals.RESOLVABLE__NAME, "Projects");
 		projectTable.addGeneratedColumn("progress", new ColumnGenerator() {
 			
 			@Override

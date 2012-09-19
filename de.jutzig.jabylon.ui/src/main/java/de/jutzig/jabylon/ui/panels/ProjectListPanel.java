@@ -33,7 +33,7 @@ public class ProjectListPanel extends GridLayout implements ClickListener {
 
 	private void createContents() {
 		Workspace workspace = MainDashboard.getCurrent().getWorkspace();
-		EList<Project> projects = workspace.getProjects();
+		EList<Project> projects = workspace.getChildren();
 		setColumns(1);
 		setRows(projects.size()+1);
 		buildHeader();

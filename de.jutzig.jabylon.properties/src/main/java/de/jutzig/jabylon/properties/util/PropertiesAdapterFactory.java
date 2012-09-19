@@ -110,7 +110,7 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 				return createWorkspaceAdapter();
 			}
 			@Override
-			public Adapter caseResolvable(Resolvable object) {
+			public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> Adapter caseResolvable(Resolvable<P, C> object) {
 				return createResolvableAdapter();
 			}
 			@Override
@@ -128,6 +128,10 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter casePropertyFileDiff(PropertyFileDiff object) {
 				return createPropertyFileDiffAdapter();
+			}
+			@Override
+			public Adapter caseResourceFolder(ResourceFolder object) {
+				return createResourceFolderAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -314,6 +318,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPropertyFileDiffAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ResourceFolder <em>Resource Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.ResourceFolder
+	 * @generated
+	 */
+	public Adapter createResourceFolderAdapter() {
 		return null;
 	}
 

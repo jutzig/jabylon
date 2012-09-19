@@ -79,14 +79,14 @@ public class GitTeamProvider implements TeamProvider {
 		FetchCommand fetchCommand = git.fetch();
 		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
 		String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
-		refspecString = MessageFormat.format(refspecString, project.getBranch());
+		refspecString = MessageFormat.format(refspecString, project.getName());
 		RefSpec spec = new RefSpec(refspecString);
 		fetchCommand.setRefSpecs(spec);
 		try {
 			subMon.subTask("Fetching from remote");
 			fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
 			FetchResult result = fetchCommand.call();
-			ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getBranch()+"^{tree}");
+			ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getName()+"^{tree}");
 			
 			DiffCommand diff = git.diff();
 			subMon.subTask("Caculating Diff");
@@ -109,7 +109,7 @@ public class GitTeamProvider implements TeamProvider {
 			}
 			if(!updatedFiles.isEmpty())
 			{
-				ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getBranch()+"^{commit}");
+				ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getName()+"^{commit}");
 				MergeCommand merge = git.merge();
 				
 				
@@ -181,9 +181,9 @@ public class GitTeamProvider implements TeamProvider {
 		clone.setCloneAllBranches(true);
 		clone.setDirectory(repoDir);
 		
-		URI uri = project.getProject().getRepositoryURI();
+		URI uri = project.getParent().getRepositoryURI();
 
-		clone.setCredentialsProvider(createCredentialsProvider(project.getProject()));
+		clone.setCredentialsProvider(createCredentialsProvider(project.getParent()));
 		clone.setURI(stripUserInfo(uri).toString());
 		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
 
@@ -213,9 +213,9 @@ public class GitTeamProvider implements TeamProvider {
 		try {
 			commit.call();
 			PushCommand push = git.push();
-			push.setCredentialsProvider(createCredentialsProvider(project.getProject()));			
+			push.setCredentialsProvider(createCredentialsProvider(project.getParent()));			
 			String refSpecString = "refs/heads/{0}:refs/heads/{0}";
-			refSpecString = MessageFormat.format(refSpecString, project.getBranch());
+			refSpecString = MessageFormat.format(refSpecString, project.getParent());
 			RefSpec spec = new RefSpec(refSpecString);
 			push.setRefSpecs(spec); 
 //			push.setPushAll();
@@ -292,11 +292,11 @@ public class GitTeamProvider implements TeamProvider {
 		workspace.setRoot(URI.createFileURI(new File("target/test").getAbsolutePath()));
 		Project project = PropertiesFactory.eINSTANCE.createProject();
 		project.setName("jabylon3");
-		workspace.getProjects().add(project);
+		workspace.getChildren().add(project);
 		
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.setBranch("master");
-		project.setMaster(version);
+		version.setName("master");
+		project.getChildren().add(version);
 		
 		GitTeamProvider provider = new GitTeamProvider();
 		provider.commit(version, null);

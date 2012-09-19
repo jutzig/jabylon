@@ -30,12 +30,12 @@ public class PropertyFileAnalyzer {
 
 			Document doc = new Document();
 			ProjectLocale locale = descriptor.getProjectLocale();
-			ProjectVersion version = locale.getProjectVersion();
-			Project project = version.getProject();
+			ProjectVersion version = locale.getParent();
+			Project project = version.getParent();
 
 			Field projectField = new Field(QueryService.FIELD_PROJECT, project.getName(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(projectField);
-			Field versionField = new Field(QueryService.FIELD_VERSION, version.getBranch(), Store.YES, Index.NOT_ANALYZED);
+			Field versionField = new Field(QueryService.FIELD_VERSION, version.getName(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(versionField);
 			if(locale.isMaster())
 			{

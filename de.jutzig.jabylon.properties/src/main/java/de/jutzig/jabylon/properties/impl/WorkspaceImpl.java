@@ -28,13 +28,12 @@ import de.jutzig.jabylon.properties.Workspace;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl#getRoot <em>Root</em>}</li>
- *   <li>{@link de.jutzig.jabylon.properties.impl.WorkspaceImpl#getProjects <em>Projects</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class WorkspaceImpl extends ResolvableImpl implements Workspace {
+public class WorkspaceImpl extends ResolvableImpl<Workspace, Project> implements Workspace {
 	/**
 	 * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -85,54 +84,15 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	public EList<Project> getProjects() {
-		return (EList<Project>)eDynamicGet(PropertiesPackage.WORKSPACE__PROJECTS, PropertiesPackage.Literals.WORKSPACE__PROJECTS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public ProjectVersion getTerminology() {
-		EList<Project> projects = getProjects();
+		EList<Project> projects = getChildren();
 		for (Project project : projects) {
 			if(project.isTerminology())
-				return project.getMaster();
+				return project.getChildren().get(0);
 		}
 		return null;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getProjects()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				return ((InternalEList<?>)getProjects()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -145,8 +105,6 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 		switch (featureID) {
 			case PropertiesPackage.WORKSPACE__ROOT:
 				return getRoot();
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				return getProjects();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -163,10 +121,6 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 			case PropertiesPackage.WORKSPACE__ROOT:
 				setRoot((URI)newValue);
 				return;
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				getProjects().clear();
-				getProjects().addAll((Collection<? extends Project>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -182,9 +136,6 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 			case PropertiesPackage.WORKSPACE__ROOT:
 				setRoot(ROOT_EDEFAULT);
 				return;
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				getProjects().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -199,8 +150,6 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 		switch (featureID) {
 			case PropertiesPackage.WORKSPACE__ROOT:
 				return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
-			case PropertiesPackage.WORKSPACE__PROJECTS:
-				return !getProjects().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -209,7 +158,7 @@ public class WorkspaceImpl extends ResolvableImpl implements Workspace {
 	public Project getProject(String name) {
 		if(name==null)
 			return null;
-		EList<Project> projects = getProjects();
+		EList<Project> projects = getChildren();
 		for (Project project : projects) {
 			if(name.equals(project.getName()))
 				return project;

@@ -64,7 +64,7 @@ public class PropertyReviewService implements PropertiesListener {
 		if (descriptor.isMaster()) // TODO: or does the master language need to
 									// be checked too
 			return;
-		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
+		Project project = descriptor.getProjectLocale().getParent().getParent();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())
 			return;
@@ -143,7 +143,7 @@ public class PropertyReviewService implements PropertiesListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
-		Project project = descriptor.getProjectLocale().getProjectVersion().getProject();
+		Project project = descriptor.getProjectLocale().getParent().getParent();
 		List<ReviewParticipant> activeReviews = getActiveReviews(project);
 		if (activeReviews.isEmpty())
 			return;
@@ -221,7 +221,7 @@ public class PropertyReviewService implements PropertiesListener {
 
 	public Collection<Review> review(PropertyFileDescriptor descriptor, Property master, Property slave) {
 		List<Review> reviews = new ArrayList<Review>();
-		List<ReviewParticipant> participants = getActiveReviews(descriptor.getProjectLocale().getProjectVersion().getProject());
+		List<ReviewParticipant> participants = getActiveReviews(descriptor.getProjectLocale().getParent().getParent());
 		for (ReviewParticipant reviewParticipant : participants) {
 			Review review = reviewParticipant.review(descriptor, master, slave);
 			if (review != null)

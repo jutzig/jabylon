@@ -69,8 +69,8 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		versionSelector.setImmediate(true);
 		versionSelector.setItemCaptionPropertyId("branch"); //$NON-NLS-1$
 		BeanItemContainer<ProjectVersion> container = new BeanItemContainer<ProjectVersion>(ProjectVersion.class);
-		container.addItem(project.getMaster());
-		for (ProjectVersion version : project.getVersions()) {
+		
+		for (ProjectVersion version : project.getChildren()) {
 			container.addItem(version);
 		}
 		versionSelector.setContainerDataSource(container);
@@ -85,11 +85,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 				Object value = event.getProperty().getValue();
 				if (value instanceof ProjectVersion) {
 					version = (ProjectVersion) value;
-					//TODO: this isn't so great really
-					if (project.getMaster() == version)
-						MainDashboard.getCurrent().getBreadcrumbs().goBack();
-					else
-						MainDashboard.getCurrent().getBreadcrumbs().walkTo("?" + version.getBranch()); //$NON-NLS-1$
+					MainDashboard.getCurrent().getBreadcrumbs().walkTo("?" + version.getName()); //$NON-NLS-1$
 				}
 
 			}
@@ -98,15 +94,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 	}
 
 	private ProjectVersion getProjectVersion(Project project, String version) {
-		if (version == null || version.equals(project.getMaster().getBranch())) {
-			return project.getMaster();
-		}
-		for (ProjectVersion projectVersion : project.getVersions()) {
-			if (version.equals(projectVersion.getBranch()))
-				return projectVersion;
-
-		}
-		return null;
+		return project.getChild(version);
 	}
 
 	public ProjectDashboard(String projectName) {
@@ -130,28 +118,6 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 		parent.addComponent(table);
 		parent.setExpandRatio(table, 1);
 
-//		Button commit = new Button();
-//		commit.setCaption("Commit Changes");
-//		commit.setIcon(ImageConstants.IMAGE_PROJECT_COMMIT);
-//		commit.addListener(new ClickListener() {
-//
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//
-//				TeamProvider teamProvider = MainDashboard.getCurrent().getTeamProviderForURI(project.getRepositoryURI());
-//				if (teamProvider != null) {
-//					try {
-//						teamProvider.commit(version, new NullProgressMonitor());
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//
-//			}
-//
-//		});
-//		parent.addComponent(commit);
 		
 		Button editTemplate = new Button(Messages.getString("ProjectDashboard_EDIT_TEMPLATE_BUTTON"));
 		editTemplate.addListener(new ClickListener() {
@@ -176,7 +142,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 	public CrumbTrail walkTo(String path) {
 		if(path.equals("?master")) //$NON-NLS-1$
 		{
-			PropertyFileDescriptor descriptor = project.getMaster().getMaster().getDescriptors().get(0);
+			PropertyFileDescriptor descriptor = version.getTemplate().getDescriptors().get(0);
 			return new PropertiesMasterEditor(descriptor);
 		}
 		if(path.startsWith(SearchResultPage.SEARCH_ADDRESS))
@@ -198,9 +164,7 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 
 	@Override
 	public String getTrailCaption() {
-		if (project.getMaster() == version)
-			return project.getName();
-		return version.getBranch();
+		return project.getName();
 	}
 
 	@Override

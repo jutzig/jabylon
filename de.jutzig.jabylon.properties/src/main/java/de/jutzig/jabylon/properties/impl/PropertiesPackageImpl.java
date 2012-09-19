@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.jutzig.jabylon.properties.Comment;
@@ -33,6 +34,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ReviewState;
 import de.jutzig.jabylon.properties.ScanConfiguration;
@@ -129,6 +131,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	private EClass propertyFileDiffEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass resourceFolderEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -402,6 +411,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getPropertyFileDescriptor_DerivedDescriptors() {
+		return (EReference)propertyFileDescriptorEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProject() {
 		return projectEClass;
 	}
@@ -411,7 +429,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getProject_Name() {
+	public EAttribute getProject_RepositoryURI() {
 		return (EAttribute)projectEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -420,44 +438,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProject_Workspace() {
-		return (EReference)projectEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getProject_Versions() {
-		return (EReference)projectEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getProject_Master() {
-		return (EReference)projectEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getProject_RepositoryURI() {
-		return (EAttribute)projectEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getProject_PropertyType() {
-		return (EAttribute)projectEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -466,7 +448,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	public EAttribute getProject_TeamProvider() {
-		return (EAttribute)projectEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -475,7 +457,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	public EAttribute getProject_Terminology() {
-		return (EAttribute)projectEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -492,35 +474,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProjectVersion_Project() {
+	public EReference getProjectVersion_Template() {
 		return (EReference)projectVersionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getProjectVersion_Branch() {
-		return (EAttribute)projectVersionEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getProjectVersion_Locales() {
-		return (EReference)projectVersionEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getProjectVersion_Master() {
-		return (EReference)projectVersionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -537,17 +492,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProjectLocale_ProjectVersion() {
-		return (EReference)projectLocaleEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getProjectLocale_Locale() {
-		return (EAttribute)projectLocaleEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)projectLocaleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -556,7 +502,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	public EReference getProjectLocale_Descriptors() {
-		return (EReference)projectLocaleEClass.getEStructuralFeatures().get(2);
+		return (EReference)projectLocaleEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -565,7 +511,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
 	public EAttribute getProjectLocale_PropertyCount() {
-		return (EAttribute)projectLocaleEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)projectLocaleEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -591,15 +537,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getWorkspace_Projects() {
-		return (EReference)workspaceEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getResolvable() {
 		return resolvableEClass;
 	}
@@ -611,6 +548,33 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 */
 	public EAttribute getResolvable_PercentComplete() {
 		return (EAttribute)resolvableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getResolvable_Children() {
+		return (EReference)resolvableEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getResolvable_Parent() {
+		return (EReference)resolvableEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getResolvable_Name() {
+		return (EAttribute)resolvableEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -807,6 +771,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getResourceFolder() {
+		return resourceFolderEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getPropertyType() {
 		return propertyTypeEEnum;
 	}
@@ -910,35 +883,30 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEReference(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__REVIEWS);
 		createEAttribute(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED);
 		createEReference(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION);
+		createEReference(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS);
 
 		projectEClass = createEClass(PROJECT);
-		createEAttribute(projectEClass, PROJECT__NAME);
-		createEReference(projectEClass, PROJECT__WORKSPACE);
-		createEReference(projectEClass, PROJECT__VERSIONS);
-		createEReference(projectEClass, PROJECT__MASTER);
 		createEAttribute(projectEClass, PROJECT__REPOSITORY_URI);
 		createEAttribute(projectEClass, PROJECT__PROPERTY_TYPE);
 		createEAttribute(projectEClass, PROJECT__TEAM_PROVIDER);
 		createEAttribute(projectEClass, PROJECT__TERMINOLOGY);
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
-		createEReference(projectVersionEClass, PROJECT_VERSION__PROJECT);
-		createEAttribute(projectVersionEClass, PROJECT_VERSION__BRANCH);
-		createEReference(projectVersionEClass, PROJECT_VERSION__LOCALES);
-		createEReference(projectVersionEClass, PROJECT_VERSION__MASTER);
+		createEReference(projectVersionEClass, PROJECT_VERSION__TEMPLATE);
 
 		projectLocaleEClass = createEClass(PROJECT_LOCALE);
-		createEReference(projectLocaleEClass, PROJECT_LOCALE__PROJECT_VERSION);
 		createEAttribute(projectLocaleEClass, PROJECT_LOCALE__LOCALE);
 		createEReference(projectLocaleEClass, PROJECT_LOCALE__DESCRIPTORS);
 		createEAttribute(projectLocaleEClass, PROJECT_LOCALE__PROPERTY_COUNT);
 
 		workspaceEClass = createEClass(WORKSPACE);
 		createEAttribute(workspaceEClass, WORKSPACE__ROOT);
-		createEReference(workspaceEClass, WORKSPACE__PROJECTS);
 
 		resolvableEClass = createEClass(RESOLVABLE);
 		createEAttribute(resolvableEClass, RESOLVABLE__PERCENT_COMPLETE);
+		createEReference(resolvableEClass, RESOLVABLE__CHILDREN);
+		createEReference(resolvableEClass, RESOLVABLE__PARENT);
+		createEAttribute(resolvableEClass, RESOLVABLE__NAME);
 
 		scanConfigurationEClass = createEClass(SCAN_CONFIGURATION);
 		createEAttribute(scanConfigurationEClass, SCAN_CONFIGURATION__EXCLUDES);
@@ -964,6 +932,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__NEW_PATH);
 		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__OLD_PATH);
 		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__KIND);
+
+		resourceFolderEClass = createEClass(RESOURCE_FOLDER);
 
 		// Create enums
 		propertyTypeEEnum = createEEnum(PROPERTY_TYPE);
@@ -1001,15 +971,76 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		setNsURI(eNS_URI);
 
 		// Create type parameters
+		ETypeParameter resolvableEClass_P = addETypeParameter(resolvableEClass, "P");
+		ETypeParameter resolvableEClass_C = addETypeParameter(resolvableEClass, "C");
 
 		// Set bounds for type parameters
+		EGenericType g1 = createEGenericType(this.getResolvable());
+		EGenericType g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		resolvableEClass_P.getEBounds().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		resolvableEClass_C.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		propertyFileDescriptorEClass.getESuperTypes().add(this.getResolvable());
-		projectEClass.getESuperTypes().add(this.getResolvable());
-		projectVersionEClass.getESuperTypes().add(this.getResolvable());
-		projectLocaleEClass.getESuperTypes().add(this.getResolvable());
-		workspaceEClass.getESuperTypes().add(this.getResolvable());
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getResolvable());
+		g1.getETypeArguments().add(g2);
+		EGenericType g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g2 = createEGenericType(this.getPropertyFileDescriptor());
+		g1.getETypeArguments().add(g2);
+		propertyFileDescriptorEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getWorkspace());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getProjectVersion());
+		g1.getETypeArguments().add(g2);
+		projectEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getProject());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getProjectLocale());
+		g1.getETypeArguments().add(g2);
+		projectVersionEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getProjectVersion());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getResolvable());
+		g1.getETypeArguments().add(g2);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		projectLocaleEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getWorkspace());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getProject());
+		g1.getETypeArguments().add(g2);
+		workspaceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType(this.getResolvable());
+		g1.getETypeArguments().add(g2);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g2 = createEGenericType(this.getResolvable());
+		g1.getETypeArguments().add(g2);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		g3 = createEGenericType();
+		g2.getETypeArguments().add(g3);
+		resourceFolderEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(propertyFileEClass, PropertyFile.class, "PropertyFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1019,8 +1050,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEParameter(op, ecorePackage.getEString(), "key", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(propertyFileEClass, null, "asMap", 0, 1, IS_UNIQUE, IS_ORDERED);
-		EGenericType g1 = createEGenericType(ecorePackage.getEMap());
-		EGenericType g2 = createEGenericType(ecorePackage.getEString());
+		g1 = createEGenericType(ecorePackage.getEMap());
+		g2 = createEGenericType(ecorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getProperty());
 		g1.getETypeArguments().add(g2);
@@ -1034,12 +1065,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEClass(propertyFileDescriptorEClass, PropertyFileDescriptor.class, "PropertyFileDescriptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPropertyFileDescriptor_Variant(), this.getLocale(), "variant", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyFileDescriptor_Location(), this.getURI(), "location", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPropertyFileDescriptor_Master(), this.getPropertyFileDescriptor(), null, "master", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPropertyFileDescriptor_ProjectLocale(), this.getProjectLocale(), null, "projectLocale", null, 1, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPropertyFileDescriptor_Master(), this.getPropertyFileDescriptor(), this.getPropertyFileDescriptor_DerivedDescriptors(), "master", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPropertyFileDescriptor_ProjectLocale(), this.getProjectLocale(), this.getProjectLocale_Descriptors(), "projectLocale", null, 1, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyFileDescriptor_Keys(), ecorePackage.getEInt(), "keys", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPropertyFileDescriptor_Reviews(), this.getReview(), null, "reviews", null, 0, -1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyFileDescriptor_LastModified(), ecorePackage.getELong(), "lastModified", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPropertyFileDescriptor_LastModification(), this.getComment(), null, "lastModification", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPropertyFileDescriptor_DerivedDescriptors(), this.getPropertyFileDescriptor(), this.getPropertyFileDescriptor_Master(), "derivedDescriptors", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(propertyFileDescriptorEClass, ecorePackage.getEBoolean(), "isMaster", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1051,10 +1083,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEParameter(op, this.getInputStream(), "in", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProject_Name(), ecorePackage.getEString(), "name", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProject_Workspace(), this.getWorkspace(), this.getWorkspace_Projects(), "workspace", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProject_Versions(), this.getProjectVersion(), null, "versions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProject_Master(), this.getProjectVersion(), null, "master", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_RepositoryURI(), this.getURI(), "repositoryURI", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_PropertyType(), this.getPropertyType(), "propertyType", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_TeamProvider(), ecorePackage.getEString(), "teamProvider", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1064,10 +1092,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProjectVersion_Project(), this.getProject(), null, "project", null, 0, 1, ProjectVersion.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProjectVersion_Branch(), ecorePackage.getEString(), "branch", "master", 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProjectVersion_Locales(), this.getProjectLocale(), null, "locales", null, 0, -1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProjectVersion_Master(), this.getProjectLocale(), null, "master", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProjectVersion_Template(), this.getProjectLocale(), null, "template", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1080,21 +1105,24 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEParameter(op, this.getPropertyFileDiff(), "fileDiff", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(projectLocaleEClass, ProjectLocale.class, "ProjectLocale", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProjectLocale_ProjectVersion(), this.getProjectVersion(), null, "projectVersion", null, 0, 1, ProjectLocale.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProjectLocale_Locale(), this.getLocale(), "locale", null, 0, 1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProjectLocale_Descriptors(), this.getPropertyFileDescriptor(), null, "descriptors", null, 0, -1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProjectLocale_Descriptors(), this.getPropertyFileDescriptor(), this.getPropertyFileDescriptor_ProjectLocale(), "descriptors", null, 0, -1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProjectLocale_PropertyCount(), ecorePackage.getEInt(), "propertyCount", null, 0, 1, ProjectLocale.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(projectLocaleEClass, ecorePackage.getEBoolean(), "isMaster", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(workspaceEClass, Workspace.class, "Workspace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getWorkspace_Root(), this.getURI(), "root", null, 0, 1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getWorkspace_Projects(), this.getProject(), this.getProject_Workspace(), "projects", null, 0, -1, Workspace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(workspaceEClass, this.getProjectVersion(), "getTerminology", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(resolvableEClass, Resolvable.class, "Resolvable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getResolvable_PercentComplete(), ecorePackage.getEInt(), "percentComplete", null, 0, 1, Resolvable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(resolvableEClass_C);
+		initEReference(getResolvable_Children(), g1, this.getResolvable_Parent(), "children", null, 0, -1, Resolvable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(resolvableEClass_P);
+		initEReference(getResolvable_Parent(), g1, this.getResolvable_Children(), "parent", null, 0, 1, Resolvable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getResolvable_Name(), ecorePackage.getEString(), "name", null, 0, 1, Resolvable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(resolvableEClass, this.getURI(), "fullPath", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1104,8 +1132,21 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		addEOperation(resolvableEClass, ecorePackage.getEInt(), "updatePercentComplete", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = addEOperation(resolvableEClass, this.getResolvable(), "resolveChild", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(resolvableEClass, null, "resolveChild", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getURI(), "path", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getResolvable());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
+
+		addEOperation(resolvableEClass, this.getURI(), "absoluteFilePath", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(resolvableEClass, null, "getChild", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(resolvableEClass_C);
+		initEOperation(op, g1);
 
 		initEClass(scanConfigurationEClass, ScanConfiguration.class, "ScanConfiguration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScanConfiguration_Excludes(), ecorePackage.getEString(), "excludes", "** /.git\\n** /build.properties", 0, -1, ScanConfiguration.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -1131,6 +1172,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getPropertyFileDiff_NewPath(), ecorePackage.getEString(), "newPath", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyFileDiff_OldPath(), ecorePackage.getEString(), "oldPath", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPropertyFileDiff_Kind(), this.getDiffKind(), "kind", null, 0, 1, PropertyFileDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(resourceFolderEClass, ResourceFolder.class, "ResourceFolder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(propertyTypeEEnum, PropertyType.class, "PropertyType");
