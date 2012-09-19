@@ -337,13 +337,14 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
 	}
 
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	public ProjectLocale getProjectLocale() {
-		return (ProjectLocale)eContainer();
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
 	}
 
 	/**

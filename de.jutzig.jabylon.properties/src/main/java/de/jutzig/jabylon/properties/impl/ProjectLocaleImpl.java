@@ -76,25 +76,6 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT_LOCALE;
 	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public ProjectVersion getProjectVersion() {
-		return (ProjectVersion) eContainer();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public ProjectVersion basicGetProjectVersion() {
-		return (ProjectVersion) eContainer();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -147,7 +128,7 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 	 * @generated NOT
 	 */
 	public boolean isMaster() {
-		return getProjectVersion()!=null && getProjectVersion().getTemplate()==this;
+		return getParent()!=null && getParent().getTemplate()==this;
 	}
 
 
@@ -180,7 +161,7 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 		setPropertyCount(translatedProps);
 		if(!isMaster())
 		{
-			int totalProps = getProjectVersion().getTemplate().getPropertyCount();
+			int totalProps = getParent().getTemplate().getPropertyCount();
 			return  Math.min(100, (int) Math.floor(((translatedProps/(double)totalProps)*100)));					
 		}
 		else

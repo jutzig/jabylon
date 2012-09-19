@@ -94,6 +94,8 @@ public class ProjectDashboard implements CrumbTrail, ClickListener {
 	}
 
 	private ProjectVersion getProjectVersion(Project project, String version) {
+		if(version==null)
+			return project.getChildren().get(0);
 		return project.getChild(version);
 	}
 

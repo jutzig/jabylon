@@ -224,7 +224,8 @@ class ProjectLocaleRow implements Item {
 			{
 				userLocale = MainDashboard.getCurrent().getLocale();
 			}
-			String displayName = projectLocale.getLocale().getDisplayName(userLocale);
+				
+			String displayName = projectLocale.isMaster() ? "template" : projectLocale.getLocale().getDisplayName(userLocale);
 			Button button = new SortableButton(displayName);
 			button.setStyleName(Reindeer.BUTTON_LINK);
 			button.addListener(new ClickListener() {

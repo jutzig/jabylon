@@ -64,12 +64,12 @@ import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 public class GeneralProjectConfig extends AbstractConfigSection<Project> implements ValueChangeListener {
 
 	private Form form;
-	private ProjectVersion version;
 	private Table versionTable;
 	private EditableTable table;
 	private Table localeTable;
 	private Component slaveTable;
 	private String projectName;
+	private ProjectVersion version;
 
 	/*
 	 * (non-Javadoc)
@@ -192,14 +192,14 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 	@Override
 	public void commit(Preferences config) {
 		form.commit();
-		String newName = version.getParent().getName();
+		String newName = getDomainObject().getName();
 		if (!newName.equals(projectName)) {
 			renameProject(projectName, newName);
 		}
 	}
 
 	private void renameProject(String oldName, String newName) {
-		URI uri = version.getParent().getParent().absolutPath();
+		URI uri = getDomainObject().getParent().absolutPath();
 		File workspaceDir = new File(uri.toFileString());
 		File projectDirectory = new File(workspaceDir, oldName);
 		projectDirectory.renameTo(new File(workspaceDir, newName));
@@ -433,8 +433,7 @@ class ProjectVersionContainer extends GenericEObjectContainer<ProjectVersion> {
 
 	@Override
 	public int size() {
-		return super.size() + 1; // one more because we include the master
-									// version as well
+		return super.size();
 	}
 
 }

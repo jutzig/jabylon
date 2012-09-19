@@ -276,12 +276,14 @@ A:		for (EObject eObject : contents) {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public C getChild(String name) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		for (C child : getChildren()) {
+			if(child.getName().equals(name))
+				return child;
+		}
+		return null;
 	}
 
 	/**

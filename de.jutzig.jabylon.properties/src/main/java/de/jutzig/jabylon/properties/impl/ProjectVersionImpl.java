@@ -361,6 +361,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			}
 			PropertyFileDescriptor descriptor = createDescriptor(getTemplate(), location);
 			getTemplate().getDescriptors().add(descriptor);
+			//TODO: implement folder hierarchy!
+			getTemplate().getChildren().add(descriptor);
 
 			// load file to initialize statistics;
 			PropertyFile propertyFile = descriptor.loadProperties();
@@ -400,7 +402,9 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 			fileDescriptor.setLocation(childURI);
 			fileDescriptor.setVariant(projectLocale.getLocale());
+			//TODO: implement folder structure
 			projectLocale.getDescriptors().add(fileDescriptor);
+			projectLocale.getChildren().add(fileDescriptor);
 			return fileDescriptor;
 		}
 
