@@ -226,7 +226,6 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -297,20 +296,6 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 		return URI.createURI(getName(),false);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public int internalUpdatePercentComplete() {
-		if(getChildren().isEmpty())
-			return 100;
-		int complete = 0;
-		for (ProjectVersion version : getChildren()) {
-			complete += version.getPercentComplete();
-		}
-		return complete/getChildren().size();
-	}
 
 
 } //ProjectImpl

@@ -100,21 +100,15 @@ public class ProjectVersionTest extends ResolvableTest {
 	 * @generated NOT
 	 */
 	public void testGetProject() {
-		assertNull(getFixture().getProject());
+		assertNull(getFixture().getParent());
 		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.getVersions().add(getFixture());
+		project.getChildren().add(getFixture());
 	}
 	
 	public void testGetProjectChildVersion() {
 		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.getVersions().add(getFixture());
-		assertSame(project,getFixture().getProject());
-	}
-
-	public void testGetProjectMasterVersion() {
-		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.setMaster(getFixture());
-		assertSame(project,getFixture().getProject());
+		project.getChildren().add(getFixture());
+		assertSame(project,getFixture().getParent());
 	}
 	
 	/**
@@ -145,11 +139,11 @@ public class ProjectVersionTest extends ResolvableTest {
 		Locale frenglish = new Locale("fr","EN");
 		Locale denglish = new Locale("de","EN");
 		locale1.setLocale(frenglish);
-		getFixture().getLocales().add(locale1);
+		getFixture().getChildren().add(locale1);
 		assertNull(getFixture().getProjectLocale(denglish));
 		
 		locale2.setLocale(denglish);
-		getFixture().getLocales().add(locale2);
+		getFixture().getChildren().add(locale2);
 		assertSame(locale2, getFixture().getProjectLocale(denglish));
 		
 	}
@@ -157,7 +151,7 @@ public class ProjectVersionTest extends ResolvableTest {
 	@Override
 	public void testRelativePath() {
 		URI expected = URI.createHierarchicalURI(new String[] {"test"}, null, null);
-		getFixture().setBranch("test");
+		getFixture().setName("test");
 		assertEquals(expected, getFixture().relativePath());
 	}
 	

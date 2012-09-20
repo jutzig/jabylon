@@ -116,22 +116,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		}
 	}
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	@Override
-	public int internalUpdatePercentComplete() {
-		int totalComplete = 0;
-		for (ProjectLocale locale : getChildren()) {
-			totalComplete += locale.getPercentComplete();
-		}
-		if (getChildren().size() == 0)
-			return 100;
-		return (int) Math.floor(totalComplete / getChildren().size());
-	}
-
 	public ProjectLocale getProjectLocale(Locale locale) {
 		EList<ProjectLocale> locales = getChildren();
 		for (ProjectLocale projectLocale : locales) {

@@ -108,13 +108,14 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 		
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
 		ProjectLocale master = PropertiesFactory.eINSTANCE.createProjectLocale();
-		version.setMaster(master);
+		version.setTemplate(master);
+		
 		master.getDescriptors().add(getFixture());
 		assertTrue(getFixture().isMaster());
 		
 		
 		ProjectLocale slave = PropertiesFactory.eINSTANCE.createProjectLocale();
-		version.getLocales().add(slave);
+		version.getChildren().add(slave);
 		slave.getDescriptors().add(getFixture());
 		assertFalse(getFixture().isMaster());
 		

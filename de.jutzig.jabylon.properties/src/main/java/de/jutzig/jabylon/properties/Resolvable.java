@@ -6,6 +6,8 @@
  */
 package de.jutzig.jabylon.properties;
 
+import java.util.List;
+
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -168,6 +170,8 @@ public interface Resolvable<P extends Resolvable<?, ?>, C extends Resolvable<?, 
 	 * @generated
 	 */
     Resolvable<?, ?> resolveChild(URI path);
+    
+    Resolvable<?, ?> resolveChild(List<String> path);
 
 				/**
 	 * <!-- begin-user-doc -->
