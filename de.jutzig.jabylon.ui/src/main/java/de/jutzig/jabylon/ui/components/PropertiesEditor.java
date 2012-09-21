@@ -364,17 +364,19 @@ public class PropertiesEditor implements CrumbTrail, Table.ValueChangeListener, 
 			return;
 		Item theItem = propertyPairContainer.getItem(value);
 		currentItem = (PropertyPairItem) theItem;
-		propertyToolArea.selectionChanged(currentItem, reviews.get((String) currentItem.getKey()), this);
-		currentItem.getSourceProperty();
+		//a clone, so a change event won't mess the table selection
+		PropertyPairItem clone = new PropertyPairItem(currentItem.getSourceProperty(), currentItem.getTargetProperty());
+		propertyToolArea.selectionChanged(clone, reviews.get((String) clone.getKey()), this);
+		
 
-		keyLabel.setValue(currentItem.getKey());
-		translated.setPropertyDataSource(currentItem.getTarget());
-		orignal.setPropertyDataSource(currentItem.getSource());
+		keyLabel.setValue(clone.getKey());
+		translated.setPropertyDataSource(clone.getTarget());
+		orignal.setPropertyDataSource(clone.getSource());
 
-		translatedComment.setPropertyDataSource(currentItem.getTargetComment());
-		orignalComment.setPropertyDataSource(currentItem.getSourceComment());
+		translatedComment.setPropertyDataSource(clone.getTargetComment());
+		orignalComment.setPropertyDataSource(clone.getSourceComment());
 
-		applyValidation(currentItem.getTargetProperty());
+		applyValidation(clone.getTargetProperty());
 	}
 
 	@Override
