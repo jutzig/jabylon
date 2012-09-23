@@ -233,6 +233,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -247,10 +248,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 					msgs = ((InternalEObject)projectLocale).eInverseRemove(this, PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, ProjectLocale.class, msgs);
 				return basicSetProjectLocale((ProjectLocale)otherEnd, msgs);
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				PropertyFileDescriptor derivedDescriptors = basicGetDerivedDescriptors();
-				if (derivedDescriptors != null)
-					msgs = ((InternalEObject)derivedDescriptors).eInverseRemove(this, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertyFileDescriptor.class, msgs);
-				return basicSetDerivedDescriptors((PropertyFileDescriptor)otherEnd, msgs);
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDerivedDescriptors()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -304,7 +302,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
 				return ((InternalEList<?>)getReviews()).basicRemove(otherEnd, msgs);
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				return basicSetDerivedDescriptors(null, msgs);
+				return ((InternalEList<?>)getDerivedDescriptors()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -435,36 +433,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PropertyFileDescriptor getDerivedDescriptors() {
-		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PropertyFileDescriptor basicGetDerivedDescriptors() {
-		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, false, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetDerivedDescriptors(PropertyFileDescriptor newDerivedDescriptors, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newDerivedDescriptors, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setDerivedDescriptors(PropertyFileDescriptor newDerivedDescriptors) {
-		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, newDerivedDescriptors);
+	@SuppressWarnings("unchecked")
+	public EList<PropertyFileDescriptor> getDerivedDescriptors() {
+		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
 	}
 
 	/**
@@ -507,8 +478,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				return getLastModification();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				if (resolve) return getDerivedDescriptors();
-				return basicGetDerivedDescriptors();
+				return getDerivedDescriptors();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -548,7 +518,8 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 				setLastModification((Comment)newValue);
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				setDerivedDescriptors((PropertyFileDescriptor)newValue);
+				getDerivedDescriptors().clear();
+				getDerivedDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -587,7 +558,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 				setLastModification((Comment)null);
 				return;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				setDerivedDescriptors((PropertyFileDescriptor)null);
+				getDerivedDescriptors().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -618,7 +589,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				return getLastModification() != null;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-				return basicGetDerivedDescriptors() != null;
+				return !getDerivedDescriptors().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

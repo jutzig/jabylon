@@ -279,7 +279,8 @@ public interface PropertyFileDescriptor extends Resolvable<Resolvable<?, ?>, Pro
 	void setLastModification(Comment value);
 
 	/**
-	 * Returns the value of the '<em><b>Derived Descriptors</b></em>' reference.
+	 * Returns the value of the '<em><b>Derived Descriptors</b></em>' reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyFileDescriptor}.
 	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -287,23 +288,12 @@ public interface PropertyFileDescriptor extends Resolvable<Resolvable<?, ?>, Pro
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Derived Descriptors</em>' reference.
-	 * @see #setDerivedDescriptors(PropertyFileDescriptor)
+	 * @return the value of the '<em>Derived Descriptors</em>' reference list.
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_DerivedDescriptors()
 	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster
 	 * @model opposite="master"
 	 * @generated
 	 */
-	PropertyFileDescriptor getDerivedDescriptors();
-
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Derived Descriptors</em>' reference.
-	 * @see #getDerivedDescriptors()
-	 * @generated
-	 */
-	void setDerivedDescriptors(PropertyFileDescriptor value);
+	EList<PropertyFileDescriptor> getDerivedDescriptors();
 
 } // PropertyFileDescriptor

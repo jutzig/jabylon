@@ -309,7 +309,7 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = RESOLVABLE_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Derived Descriptors</b></em>' reference.
+	 * The feature id for the '<em><b>Derived Descriptors</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1147,10 +1147,10 @@ public interface PropertiesPackage extends EPackage {
 	EReference getPropertyFileDescriptor_LastModification();
 
 	/**
-	 * Returns the meta object for the reference '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}'.
+	 * Returns the meta object for the reference list '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Derived Descriptors</em>'.
+	 * @return the meta object for the reference list '<em>Derived Descriptors</em>'.
 	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors()
 	 * @see #getPropertyFileDescriptor()
 	 * @generated
@@ -1809,7 +1809,7 @@ public interface PropertiesPackage extends EPackage {
 		EReference PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION = eINSTANCE.getPropertyFileDescriptor_LastModification();
 
 		/**
-		 * The meta object literal for the '<em><b>Derived Descriptors</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Derived Descriptors</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

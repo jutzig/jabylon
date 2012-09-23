@@ -40,8 +40,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastModified" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lastModification" eType="#//Comment"
         resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="derivedDescriptors" eType="#//PropertyFileDescriptor"
-        eOpposite="#//PropertyFileDescriptor/master"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="derivedDescriptors" upperBound="-1"
+        eType="#//PropertyFileDescriptor" eOpposite="#//PropertyFileDescriptor/master"/>
     <eGenericSuperTypes eClassifier="#//Resolvable">
       <eTypeArguments eClassifier="#//Resolvable">
         <eTypeArguments/>
