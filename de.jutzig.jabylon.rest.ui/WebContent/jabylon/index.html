@@ -3,15 +3,21 @@
 <head>
 <title>Jabylon</title>
 <!-- Bootstrap -->
-<link href="css/main.css" rel="stylesheet">
+<link href="../css/main.css" rel="stylesheet">
 </head>
 <body>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../js/main.js"></script>
 	<script type="text/javascript">
-	// Retrieve wine list when application starts
-	findAll(rootURL+'?depth=2');
+		/* var projectName = document.URL.substring(document.URL.lastIndexOf(/,0),document.URL.length);
+		// Retrieve list of project resources
+		project = lookup(projectName);
+		renderProject(project); */
+		
+				// Retrieve list of project resources
+		lookup();
+		
 	</script>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
@@ -46,15 +52,20 @@
 					</div>
 				</div>
 				<div class="span9">
+					<ul class="breadcrumb">
+						<li><a href="#">Jabylon</a> <span class="divider">/</span></li>
+						<li><a href="#">src</a> <span class="divider">/</span></li>
+						<li class="active">main</li>
+					</ul>
 					<table class="table table-striped table-hover">
 						<!-- <caption>Projects</caption> -->
 						<thead>
 							<tr>
-								<th>Project Name</th>
+								<th>Locale</th>
 								<th>Progress</th>
 							</tr>
 						</thead>
-						<tbody id="projects">
+						<tbody id="locales">
 						</tbody>
 					</table>
 				</div>

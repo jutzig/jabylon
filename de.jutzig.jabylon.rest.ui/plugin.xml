@@ -8,4 +8,21 @@
             base-name="/WebContent">
       </resource>
    </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.servlets">
+      <servlet
+            alias="/dynamic/*.jsp"
+            class="org.eclipse.equinox.jsp.jasper.registry.JSPFactory"
+            httpcontextId="jsp">
+      </servlet>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.http.registry.httpcontexts">
+      <httpcontext
+            id="jsp">
+         <resource-mapping
+               path="/WebContent/jsp">
+         </resource-mapping>
+      </httpcontext>
+   </extension>
 </plugin>

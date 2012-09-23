@@ -1,10 +1,9 @@
 // The root URL for the RESTful services
-var rootURL = "http://localhost:8080/jabylon/api?depth=2";
+var rootURL = "http://localhost:8080/jabylon/api/";
 
 var currentWine;
 
-// Retrieve wine list when application starts
-findAll();
+
 
 // Nothing to delete in initial application state
 $('#btnDelete').hide();
@@ -65,15 +64,17 @@ function newWine() {
 	renderDetails(currentWine); // Display empty form
 }
 
-function findAll() {
+function findAll(url) {
 	console.log('findAll');
 	$.ajax({
 		type : 'GET',
-		url : rootURL,
+		url : url,
 		dataType : "json", // data type of response
 		success : renderList
 	});
 }
+
+
 
 function findByName(searchKey) {
 	console.log('findByName: ' + searchKey);
@@ -155,11 +156,13 @@ function renderList(data) {
 	// object (not an 'array of one')
 //	var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 	var list = data.children;
-	$('#projects li').remove();
+	$('#projects tr').remove();
 	$.each(list, function(index, project) {
 		$('#projects').append(
-				'<li><a href="#" data-identity="' + project.name + '">' + project.name
-						+ '</a></li>');
+				'<tr><td><a href="./'+project.name+'/index.html">'+ project.name + '</a><p>Summary stuff...</p></td>'
+				+ '<td><div class="progress"><div class="bar bar-success" style="width: '+project.percentComplete+'%;"></div></div></td></tr>');
+//				'<li><a href="#" data-identity="' + project.name + '">' + project.name
+//						+ '</a></li>');
 	});
 }
 
@@ -186,5 +189,31 @@ function formToJSON() {
 		"year" : $('#year').val(),
 		"picture" : currentWine.picture,
 		"description" : $('#description').val()
+	});
+}
+
+
+
+function lookup() {
+//	var uri = rootURL+path;
+//	console.log('lookup '+uri);
+	$.ajax({
+		type : 'GET',
+		url : 'http://localhost:8080/jabylon/api/jabylon/master?depth=2',
+		dataType : "json", // data type of response
+		success : renderProject
+	});
+}
+
+function renderProject(data) {
+	var list = data.children;
+	$('#locales tr').remove();
+	$.each(list, function(index, locale) {
+		$('#locales').append(
+				//TODO: need server side solution to get the right name
+				'<tr><td><a href="./'+locale.locale+'/index.html">'+ locale.locale + '</a><p>Summary stuff...</p></td>'
+				+ '<td><div class="progress"><div class="bar bar-success" style="width: '+locale.percentComplete+'%;"></div></div></td></tr>');
+//				'<li><a href="#" data-identity="' + project.name + '">' + project.name
+//						+ '</a></li>');
 	});
 }

@@ -4,7 +4,9 @@ Bundle-Name: Static resouces
 Bundle-SymbolicName: de.jutzig.jabylon.rest.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Require-Bundle: org.eclipse.equinox.http.registry
+Require-Bundle: org.eclipse.equinox.http.registry,
+ org.eclipse.equinox.jsp.jasper;bundle-version="1.0.300",
+ org.eclipse.equinox.jsp.jasper.registry;bundle-version="1.0.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: de.jutzig.jabylon.rest.ui.Activator
 Import-Package: org.osgi.framework;version="1.6.0",

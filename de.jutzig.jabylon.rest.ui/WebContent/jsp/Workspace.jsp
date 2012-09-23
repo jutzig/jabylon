@@ -1,17 +1,19 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../static/css/main.css" rel="stylesheet">
 <title>Jabylon</title>
-<!-- Bootstrap -->
-<link href="css/main.css" rel="stylesheet">
 </head>
 <body>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
-	// Retrieve wine list when application starts
-	findAll(rootURL+'?depth=2');
+		// Retrieve wine list when application starts
+		findAll(rootURL + '?depth=2');
 	</script>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
@@ -62,4 +64,3 @@
 		</div>
 	</div>
 </body>
-</html>
