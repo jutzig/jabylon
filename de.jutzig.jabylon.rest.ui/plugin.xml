@@ -7,22 +7,31 @@
             alias="/static"
             base-name="/WebContent">
       </resource>
-   </extension>
-   <extension
-         point="org.eclipse.equinox.http.registry.servlets">
-      <servlet
-            alias="/dynamic/*.jsp"
-            class="org.eclipse.equinox.jsp.jasper.registry.JSPFactory"
-            httpcontextId="jsp">
-      </servlet>
+      <resource
+            alias="/"
+            base-name="/WebContent">
+      </resource>
    </extension>
    <extension
          point="org.eclipse.equinox.http.registry.httpcontexts">
       <httpcontext
-            id="jsp">
-         <resource-mapping
-               path="/WebContent/jsp">
-         </resource-mapping>
+            id="wicket">
       </httpcontext>
+   </extension>
+	<extension
+         point="org.eclipse.equinox.http.registry.filters">
+      <filter
+            alias="/wicket"
+            class="org.apache.wicket.protocol.http.WicketFilter"
+            httpcontextId="wicket">
+         <init-param
+               name="applicationClassName"
+               value="de.jutzig.jabylon.rest.ui.wicket.JabylonApplication">
+         </init-param>
+         <init-param
+               name="filterMappingUrlPattern"
+               value="/wicket/*">
+         </init-param>
+      </filter>
    </extension>
 </plugin>
