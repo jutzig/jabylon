@@ -6,24 +6,22 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.UrlResourceReference;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
-import de.jutzig.jabylon.rest.ui.wicket.BasicPage;
+import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePage;
 
 
 public class ProjectView
-    extends BasicPage
+    extends BasicResolvablePage<Project>
 {
     public ProjectView(PageParameters params)
     {
@@ -33,7 +31,8 @@ public class ProjectView
         {
             segments.add(namedPair.getValue());
         }
-        Project project = Activator.getDefault().getRepositoryLookup().lookup(segments);
+        final Project project = Activator.getDefault().getRepositoryLookup().lookup(segments);
+        setDomainObject(project);
         ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(project, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
         final DataView<ProjectVersion> dataView = new DataView<ProjectVersion>("projectVersions", provider) {
 
@@ -41,14 +40,11 @@ public class ProjectView
             @Override
             protected void populateItem(Item<ProjectVersion> item)
             {
-                ProjectVersion project = item.getModelObject();
-                UrlResourceReference reference = new UrlResourceReference(Url.parse(project.getName()));
-                reference.setContextRelative(true);
-                ResourceLink<?> link = new ResourceLink<String>("link",reference);
-                link.add(new Label("id", project.getName()));
+                ProjectVersion version = item.getModelObject();
+                ExternalLink link = new ExternalLink("link", project.getName()+"/"+version.getName(), version.getName());
                 item.add(link);
                 Label label = new Label("progress", "");
-                label.add(new AttributeModifier("style", "width: "+project.getPercentComplete()));
+                label.add(new AttributeModifier("style", "width: "+version.getPercentComplete()));
                 item.add(label);
 
             }
