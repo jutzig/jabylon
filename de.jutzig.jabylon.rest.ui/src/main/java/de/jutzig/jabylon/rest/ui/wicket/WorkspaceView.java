@@ -1,49 +1,48 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.resource.UrlResourceReference;
+
+import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.rest.ui.Activator;
+import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class WorkspaceView extends BasicPage {
 	public WorkspaceView() {
 		// add(new Label("message", "Hello World!"));
-		List<String> projects = new ArrayList<String>();
-		projects.add("Jabylon");
-		projects.add("Jenkins");
-		projects.add("JBoss AS");
-		final DataView<String> dataView = new DataView<String>("projects", new ListDataProvider<String>(projects)) {
+	    Workspace workspace = Activator.getDefault().getRepositoryLookup().lookup("");
 
-			/**
-			 * 
-			 */
+		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(workspace, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+		final DataView<Project> dataView = new DataView<Project>("projects", provider) {
+
 			private static final long serialVersionUID = 6913939295181516945L;
+            @Override
+            protected void populateItem(Item<Project> item)
+            {
+                Project project = item.getModelObject();
+                ResourceLink<?> link = new ResourceLink<String>("link",new UrlResourceReference(Url.parse("workspace/"+project.getName())));
+                link.add(new Label("id", project.getName()));
+                item.add(link);
+                Label label = new Label("progress", "");
+                label.add(new AttributeModifier("style", "width: "+project.getPercentComplete()));
+                item.add(label);
 
-			@Override
-			protected void populateItem(Item<String> item) {
-				final String project = (String) item.getModelObject();
-				item.add(new Label("id", project));
-				Label label = new Label("progress", "");
-				label.add(new AttributeModifier("style", "width: "+new Random().nextInt(100)));
-				item.add(label);
-//				style="width: '+project.percentComplete+'%;">
-			}
+            }
 		};
-
-//		dataView.setItemsPerPage(10);
-
 		add(dataView);
 	}
 }
