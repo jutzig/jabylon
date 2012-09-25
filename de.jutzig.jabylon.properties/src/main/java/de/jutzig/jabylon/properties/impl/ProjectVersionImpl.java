@@ -385,11 +385,36 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		private PropertyFileDescriptor createDescriptor(ProjectLocale projectLocale, URI childURI) {
 			PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 			fileDescriptor.setLocation(childURI);
+			fileDescriptor.setName(childURI.lastSegment());
 			fileDescriptor.setVariant(projectLocale.getLocale());
 			//TODO: implement folder structure
 			projectLocale.getDescriptors().add(fileDescriptor);
-			projectLocale.getChildren().add(fileDescriptor);
+			Resolvable<?, Resolvable<?, ?>> parent = getOrCreateParent(projectLocale, childURI);
+			parent.getChildren().add(fileDescriptor);
 			return fileDescriptor;
+		}
+
+		private Resolvable<?, Resolvable<?, ?>> getOrCreateParent(ProjectLocale projectLocale, URI childURI) {
+			Resolvable<?, Resolvable<?, ?>> currentParent = projectLocale;
+			String[] segments = childURI.segments();
+			for(int i = 0;i<segments.length-1;i++)
+			{
+				currentParent = getOrCreate(currentParent,segments[i]);
+			}
+			return currentParent;
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		private Resolvable<?, Resolvable<?, ?>> getOrCreate(Resolvable<?, Resolvable<?, ?>> currentParent, String child) {
+			Resolvable<?, Resolvable<?, ?>> childObject = (Resolvable<?, Resolvable<?, ?>>) currentParent.getChild(child);
+			if(childObject==null)
+			{
+				childObject = PropertiesFactory.eINSTANCE.createResourceFolder();
+				childObject.setName(child);
+				EList children = currentParent.getChildren();
+				children.add(childObject);
+			}
+			return childObject;
 		}
 
 		private Pattern buildPatternFrom(String fileName) {

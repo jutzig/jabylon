@@ -13,6 +13,7 @@ import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
@@ -20,10 +21,10 @@ import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePage;
 
 
-public class ProjectView
-    extends BasicResolvablePage<Project>
+public class ProjectVersionView
+    extends BasicResolvablePage<ProjectVersion>
 {
-    public ProjectView(PageParameters params)
+    public ProjectVersionView(PageParameters params)
     {
         List<NamedPair> named = params.getAllNamed();
         List<String> segments = new ArrayList<String>(named.size());
@@ -31,24 +32,26 @@ public class ProjectView
         {
             segments.add(namedPair.getValue());
         }
-        final Project project = Activator.getDefault().getRepositoryLookup().lookup(segments);
-        setDomainObject(project);
-        ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(project, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-        final DataView<ProjectVersion> dataView = new DataView<ProjectVersion>("projectVersions", provider) {
+        final ProjectVersion projectVersion = Activator.getDefault().getRepositoryLookup().lookup(segments);
+        setDomainObject(projectVersion);
+        ComplexEObjectListDataProvider<ProjectLocale> provider = new ComplexEObjectListDataProvider<ProjectLocale>(projectVersion, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+        final DataView<ProjectLocale> dataView = new DataView<ProjectLocale>("projectLocales", provider) {
 
-            private static final long serialVersionUID = 6913939295181516945L;
-            @Override
-            protected void populateItem(Item<ProjectVersion> item)
+			private static final long serialVersionUID = -3530355534807668227L;
+
+			@Override
+            protected void populateItem(Item<ProjectLocale> item)
             {
-                ProjectVersion version = item.getModelObject();
-                ExternalLink link = new ExternalLink("link", project.getName()+"/"+version.getName(), version.getName());
+            	ProjectLocale locale = item.getModelObject();
+            	String language = locale.getLocale() == null ? "Template" : locale.getLocale().getDisplayName();
+                ExternalLink link = new ExternalLink("link", projectVersion.getName()+"/"+locale.getName(), language);
                 item.add(link);
                 Label label = new Label("progress", "");
-                label.add(new AttributeModifier("style", "width: "+version.getPercentComplete()+"%"));
+                label.add(new AttributeModifier("style", "width: "+locale.getPercentComplete()+"%"));
                 item.add(label);
-
             }
         };
+//        dataView.setItemsPerPage(10);
         add(dataView);
 
     }

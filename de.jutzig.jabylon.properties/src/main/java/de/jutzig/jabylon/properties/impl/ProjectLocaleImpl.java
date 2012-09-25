@@ -268,4 +268,12 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 		return URI.createURI(""); //locales are just virtual,  not in the FS
 	}
 
+	
+	@Override
+	public String getName() {
+		Locale locale = getLocale();
+		if(locale==null)
+			return "template";
+		return locale.toString();
+	}
 } //ProjectLocaleImpl

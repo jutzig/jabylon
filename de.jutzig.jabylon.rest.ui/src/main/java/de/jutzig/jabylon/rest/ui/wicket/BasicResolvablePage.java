@@ -55,11 +55,17 @@ public class BasicResolvablePage<T extends Resolvable<?, ?>> extends BasicPage {
 			protected void populateItem(Item<EObjectModel<Resolvable<?, ?>>> item) {
 				Resolvable<?, ?> element = item.getModel().getObject().getObject();
 				//TODO: use EMF switch to determine label
-				String name = element.getName();
-				if(name==null)
-					name="Home";
-				ExternalLink link = new ExternalLink("link", element.fullPath().path(), name);
-//				link.setContextRelative(true);
+				ExternalLink link; 
+				
+				if(element.getParent()==null)
+				{
+					link = new ExternalLink("link", "/", "Home");
+				}
+				else
+				{
+					link = new ExternalLink("link", element.getParent().getName()+"/"+element.getName(), element.getName());
+				}
+				link.setContextRelative(true);
 				if(item.getModel().getObject()==parents.get(parents.size()-1))
 				{
 					//sets the last crumb to 'active'

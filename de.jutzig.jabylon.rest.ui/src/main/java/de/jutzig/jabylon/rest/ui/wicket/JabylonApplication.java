@@ -7,6 +7,9 @@ import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.rest.ui.wicket.project.ProjectLocaleView;
+import de.jutzig.jabylon.rest.ui.wicket.project.ProjectVersionView;
 import de.jutzig.jabylon.rest.ui.wicket.project.ProjectView;
 
 /**
@@ -29,8 +32,8 @@ public class JabylonApplication extends WebApplication {
 	    super.init();
 //	    mountPage("/workspace", WorkspaceView.class);
 	    mountPage("/workspace/${project}", ProjectView.class);
-	    mountPage("/workspace/${project}/${version}", TestView.class);
-//	    mountPage("/workspace/${project}/${version}/${locale}", TestView.class);
+	    mountPage("/workspace/${project}/${version}", ProjectVersionView.class);
+	    mountPage("/workspace/${project}/${version}/${locale}", ProjectLocaleView.class);
 //	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
 	}
 

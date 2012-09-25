@@ -39,7 +39,7 @@ public class WorkspaceView extends BasicResolvablePage<Workspace> {
                 ExternalLink link = new ExternalLink("link", "workspace/"+project.getName(), project.getName());
                 item.add(link);
                 Label label = new Label("progress", "");
-                label.add(new AttributeModifier("style", "width: "+project.getPercentComplete()));
+                label.add(new AttributeModifier("style", "width: "+project.getPercentComplete()+"%"));
                 item.add(label);
 
             }

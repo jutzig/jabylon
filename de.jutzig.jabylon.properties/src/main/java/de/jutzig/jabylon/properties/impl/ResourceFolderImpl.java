@@ -6,6 +6,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -35,6 +36,11 @@ public class ResourceFolderImpl extends ResolvableImpl<Resolvable<?, ?>, Resolva
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.RESOURCE_FOLDER;
+	}
+
+	@Override
+	public URI relativePath() {
+		return URI.createURI(getName());
 	}
 
 } //ResourceFolderImpl

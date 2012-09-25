@@ -164,7 +164,15 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 		while (parent != null) {
 			if (parent instanceof Resolvable) {
 				Resolvable resolvable = (Resolvable) parent;
-				return resolvable.fullPath().appendSegments(relativePath().segments());
+				URI path = relativePath();
+				if(path!=null)
+				{
+					URI fullParentPath = resolvable.fullPath();
+					if(fullParentPath!=null)
+						return fullParentPath.appendSegments(path.segments());
+					return relativePath();
+				}
+				return resolvable.fullPath();
 			}
 		}
 		return relativePath();
