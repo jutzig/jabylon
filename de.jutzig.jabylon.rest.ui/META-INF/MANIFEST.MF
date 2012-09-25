@@ -11,11 +11,15 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  de.jutzig.jabylon.properties;bundle-version="1.0.0",
  de.jutzig.jabylon.cdo.connector;bundle-version="1.0.0",
  org.eclipse.emf.cdo;bundle-version="4.0.1",
- org.eclipse.emf.cdo.net4j;bundle-version="4.0.1"
+ org.eclipse.emf.cdo.net4j;bundle-version="4.0.1",
+ de.jutzig.jabylon.cdo.server;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: de.jutzig.jabylon.rest.ui.Activator
-Import-Package: org.osgi.framework;version="1.6.0",
+Import-Package: com.google.common.base;version="1.0.0",
+ org.osgi.framework;version="1.6.0",
  org.osgi.service.http;version="1.2.1",
  org.osgi.util.tracker;version="1.5.0",
  org.slf4j;version="1.6.1"
-Export-Package: de.jutzig.jabylon.rest.ui.wicket
+Export-Package: de.jutzig.jabylon.rest.ui.wicket,
+ de.jutzig.jabylon.rest.ui.wicket.project
+Bundle-ActivationPolicy: lazy

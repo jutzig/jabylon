@@ -6,6 +6,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
+import de.jutzig.jabylon.rest.ui.model.RepositoryLookupImpl;
 
 public class Activator implements BundleActivator {
 
@@ -13,7 +15,8 @@ public class Activator implements BundleActivator {
 	private BundleContext context;
 	private RepositoryConnector repositoryConnector;
 	private ServiceTracker<RepositoryConnector, RepositoryConnector> repositoryTracker;
-	
+	private RepositoryLookupImpl lookup;
+
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		INSTANCE = this;
@@ -23,14 +26,17 @@ public class Activator implements BundleActivator {
 			@Override
 			public RepositoryConnector addingService(ServiceReference<RepositoryConnector> reference) {
 				repositoryConnector = context.getService(reference);
+				lookup = new RepositoryLookupImpl(repositoryConnector);
 				return repositoryConnector;
 			}
 
 			@Override
 			public void removedService(ServiceReference<RepositoryConnector> reference, RepositoryConnector service) {
 				context.ungetService(reference);
+				lookup.dispose();
+				lookup = null;
 				repositoryConnector = null;
-				
+
 			}
 		});
 		repositoryTracker.open();
@@ -40,16 +46,25 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		repositoryTracker.close();
 		INSTANCE = null;
+		if(lookup!=null)
+		{
+		    lookup.dispose();
+		    lookup = null;
+		}
 		this.context = null;
 	}
-	
+
 	public static Activator getDefault()
 	{
 		return INSTANCE;
 	}
-	
+
 	public RepositoryConnector getRepositoryConnector() {
 		return repositoryConnector;
 	}
 
+	public RepositoryLookup getRepositoryLookup()
+    {
+        return lookup;
+    }
 }
