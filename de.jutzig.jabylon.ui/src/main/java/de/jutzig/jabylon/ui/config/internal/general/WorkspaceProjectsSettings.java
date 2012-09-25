@@ -70,6 +70,9 @@ public class WorkspaceProjectsSettings extends AbstractConfigSection<Workspace> 
 				version.setName("master");
 				project.getChildren().add(version);
 				getDomainObject().getChildren().add(project);
+				ProjectLocale template = PropertiesFactory.eINSTANCE.createProjectLocale();
+				version.getChildren().add(template);
+				version.setTemplate(template);
 				table.setEditable(true);
 				projectTable.select(project);
 				
