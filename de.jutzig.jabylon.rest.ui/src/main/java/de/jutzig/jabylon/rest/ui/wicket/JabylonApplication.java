@@ -31,9 +31,9 @@ public class JabylonApplication extends WebApplication {
 	{
 	    super.init();
 //	    mountPage("/workspace", WorkspaceView.class);
-	    mountPage("/workspace/${project}", ProjectView.class);
-	    mountPage("/workspace/${project}/${version}", ProjectVersionView.class);
-	    mountPage("/workspace/${project}/${version}/${locale}", ProjectLocaleView.class);
+	    mountPage("/workspace/${project}/", ProjectView.class);
+	    mountPage("/workspace/${project}/${version}/", ProjectVersionView.class);
+	    mountPage("/workspace/${project}/${version}/${locale}/", ProjectLocaleView.class);
 //	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
 	}
 

@@ -44,7 +44,7 @@ public class ProjectVersionView
             {
             	ProjectLocale locale = item.getModelObject();
             	String language = locale.getLocale() == null ? "Template" : locale.getLocale().getDisplayName();
-                ExternalLink link = new ExternalLink("link", projectVersion.getName()+"/"+locale.getName(), language);
+                ExternalLink link = new ExternalLink("link", locale.getName()+"/", language);
                 item.add(link);
                 Label label = new Label("progress", "");
                 label.add(new AttributeModifier("style", "width: "+locale.getPercentComplete()+"%"));

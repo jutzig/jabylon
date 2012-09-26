@@ -44,7 +44,7 @@ public class ProjectLocaleView
             protected void populateItem(Item<Resolvable<?, ?>> item)
             {
 				Resolvable<?, ?> resource = item.getModelObject();
-                ExternalLink link = new ExternalLink("link", projectLocale.getName()+"/"+resource.getName(), resource.getName());
+                ExternalLink link = new ExternalLink("link", resource.getName()+"/", resource.getName());
                 item.add(link);
                 Label label = new Label("progress", "");
                 label.add(new AttributeModifier("style", "width: "+resource.getPercentComplete()+"%"));

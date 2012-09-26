@@ -41,7 +41,7 @@ public class ProjectView
             protected void populateItem(Item<ProjectVersion> item)
             {
                 ProjectVersion version = item.getModelObject();
-                ExternalLink link = new ExternalLink("link", project.getName()+"/"+version.getName(), version.getName());
+                ExternalLink link = new ExternalLink("link", version.getName()+"/", version.getName());
                 item.add(link);
                 Label label = new Label("progress", "");
                 label.add(new AttributeModifier("style", "width: "+version.getPercentComplete()+"%"));
