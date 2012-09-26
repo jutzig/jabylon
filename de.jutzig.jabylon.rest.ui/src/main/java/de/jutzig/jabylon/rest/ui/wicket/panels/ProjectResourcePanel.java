@@ -27,7 +27,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 
 	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
-		super("ProjectResourcePanel", object, parameters);
+		super("content", object, parameters);
 	}
 
 	@Override
