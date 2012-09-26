@@ -6,6 +6,7 @@ package de.jutzig.jabylon.rest.ui.wicket;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -15,23 +16,21 @@ import org.apache.wicket.util.string.StringValue;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class BasicPage extends WebPage {
+public class BasicPanel<T>extends GenericPanel<T> {
 
 	
-	public BasicPage() {
-		super();
-	}
+	private transient PageParameters pageParameters;
 
-	public BasicPage(IModel<?> model) {
-		super(model);
-	}
-
-	public BasicPage(PageParameters parameters) {
-		super(parameters);
+	public BasicPanel(String id, IModel<T> model, PageParameters parameters) {
+		super(id,model);
+		this.pageParameters = parameters;
 	}
 	
-	
+	public PageParameters getPageParameters() {
+		return pageParameters;
+	}
 
+	
 	@Override
 	public void renderHead(IHeaderResponse response) {
 

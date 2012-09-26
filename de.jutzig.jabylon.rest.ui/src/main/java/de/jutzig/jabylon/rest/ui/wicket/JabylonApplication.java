@@ -5,13 +5,6 @@ package de.jutzig.jabylon.rest.ui.wicket;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import de.jutzig.jabylon.properties.ProjectLocale;
-import de.jutzig.jabylon.rest.ui.wicket.project.ProjectLocaleView;
-import de.jutzig.jabylon.rest.ui.wicket.project.ProjectResourcePage;
-import de.jutzig.jabylon.rest.ui.wicket.project.ProjectVersionView;
-import de.jutzig.jabylon.rest.ui.wicket.project.ProjectView;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -24,7 +17,7 @@ public class JabylonApplication extends WebApplication {
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		return WorkspaceView.class;
+		return WelcomePage.class;
 	}
 
 	@Override
@@ -39,17 +32,8 @@ public class JabylonApplication extends WebApplication {
 	    
 //	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
 	    
-	    mountPage("/workspace/${segment}",ProjectResourcePage.class);
+	    mountPage("/workspace/${segment}",ResourcePage.class);
 	}
 
-	public class TestView extends ProjectView{
-
-	    public TestView(PageParameters params)
-	    {
-	        super(params);
-	        // TODO Auto-generated constructor stub
-	    }
-
-	}
 
 }

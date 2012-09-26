@@ -1,4 +1,7 @@
-package de.jutzig.jabylon.rest.ui.wicket;
+/**
+ * 
+ */
+package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,45 +12,32 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
-public class BasicResolvablePage<T extends Resolvable<?, ?>> extends BasicPage {
+/**
+ * @author Johannes Utzig (jutzig.dev@googlemail.com)
+ *
+ */
+public class BreadcrumbPanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 
-	private transient T domainObject;
-
-	public BasicResolvablePage() {
-		super();
+	public BreadcrumbPanel(Resolvable<?, ?> object, PageParameters parameters) {
+		super("breadcrumb-panel", object, parameters);
 	}
-
-	public BasicResolvablePage(IModel<?> model) {
-		super(model);
-	}
-
-	public BasicResolvablePage(PageParameters parameters) {
-		super(parameters);
-	}
-
-	public void setDomainObject(T domainObject) {
-		this.domainObject = domainObject;
-	}
-
-	public T getDomainObject() {
-		return domainObject;
-	}
-
+	
 	@Override
 	protected void onBeforeRender() {
 
 		populateBreadcrumbs();
 		super.onBeforeRender();
 	}
+	
 
 	private void populateBreadcrumbs() {
-		final List<EObjectModel<Resolvable<?, ?>>> parents = buildParentList(getDomainObject());
+		final List<EObjectModel<Resolvable<?, ?>>> parents = buildParentList(getModelObject());
 		ListDataProvider<EObjectModel<Resolvable<?, ?>>> provider = new ListDataProvider<EObjectModel<Resolvable<?, ?>>>(parents);
 
 		final boolean endsOnSlash = urlEndsOnSlash();
@@ -96,7 +86,7 @@ public class BasicResolvablePage<T extends Resolvable<?, ?>> extends BasicPage {
 
 	}
 
-	private List<EObjectModel<Resolvable<?, ?>>> buildParentList(T domainObject) {
+	private List<EObjectModel<Resolvable<?, ?>>> buildParentList(Resolvable<?, ?> domainObject) {
 		Resolvable<?, ?> current = domainObject;
 		List<EObjectModel<Resolvable<?, ?>>> elements = new ArrayList<EObjectModel<Resolvable<?, ?>>>();
 		while (current != null) {
