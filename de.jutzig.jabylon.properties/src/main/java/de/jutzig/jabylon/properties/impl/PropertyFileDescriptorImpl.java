@@ -596,7 +596,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 
 	@Override
 	public URI relativePath() {
-		return getLocation();
+		return URI.createURI(getName());
 	}
 
 } //PropertyFileDescriptorImpl
