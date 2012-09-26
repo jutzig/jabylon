@@ -47,36 +47,46 @@ public class BasicResolvablePage<T extends Resolvable<?, ?>> extends BasicPage {
 	}
 
 	private void populateBreadcrumbs() {
-		final List<EObjectModel<Resolvable<?, ?>>>  parents = buildParentList(getDomainObject());
-		ListDataProvider<EObjectModel<Resolvable<?, ?>>> provider = new ListDataProvider<EObjectModel<Resolvable<?,?>>>(parents);
+		final List<EObjectModel<Resolvable<?, ?>>> parents = buildParentList(getDomainObject());
+		ListDataProvider<EObjectModel<Resolvable<?, ?>>> provider = new ListDataProvider<EObjectModel<Resolvable<?, ?>>>(parents);
 
-		DataView<EObjectModel<Resolvable<?, ?>>> view = new DataView<EObjectModel<Resolvable<?,?>>>("crumbs",provider) {
+		final boolean endsOnSlash = urlEndsOnSlash();
+		
+		DataView<EObjectModel<Resolvable<?, ?>>> view = new DataView<EObjectModel<Resolvable<?, ?>>>("crumbs", provider) {
 			@Override
 			protected void populateItem(Item<EObjectModel<Resolvable<?, ?>>> item) {
 				Resolvable<?, ?> element = item.getModel().getObject().getObject();
-				//TODO: use EMF switch to determine label
+				// TODO: use EMF switch to determine label
 				ExternalLink link;
 				int index = parents.indexOf(item.getModel().getObject());
 				int stepsUp = (parents.size() - index) - 1;
-				StringBuilder path = new StringBuilder();
-				for (int i=0; i<stepsUp; i++)
-                {
-                    path.append("../");
-                }
-				if(element.getParent()==null)
-				{
-				    path.append("../"); //one more to skip the 'workspace' part
-					link = new ExternalLink("link", path.toString(), "Home");
 
+				StringBuilder path = new StringBuilder();
+				if(!endsOnSlash && stepsUp==1)
+				{
+					//then this is the current '.'
+					path.append(".");
 				}
 				else
 				{
+					if(!endsOnSlash)
+						stepsUp--;
+					for (int i = 0; i < stepsUp; i++) {
+						path.append("../");
+					}					
+				}
+
+				if (element.getParent() == null) {
+					// path.append("../"); //one more to skip the 'workspace'
+					// part
+					link = new ExternalLink("link", path.toString(), "Home");
+
+				} else {
 					link = new ExternalLink("link", path.toString(), element.getName());
 				}
-//				link.setContextRelative(true);
-				if(index==parents.size()-1)
-				{
-					//sets the last crumb to 'active'
+				// link.setContextRelative(true);
+				if (index == parents.size() - 1) {
+					// sets the last crumb to 'active'
 					link.add(new AttributeModifier("class", "active"));
 				}
 				item.add(link);
@@ -89,9 +99,8 @@ public class BasicResolvablePage<T extends Resolvable<?, ?>> extends BasicPage {
 	private List<EObjectModel<Resolvable<?, ?>>> buildParentList(T domainObject) {
 		Resolvable<?, ?> current = domainObject;
 		List<EObjectModel<Resolvable<?, ?>>> elements = new ArrayList<EObjectModel<Resolvable<?, ?>>>();
-		while(current!=null)
-		{
-			elements.add(new EObjectModel<Resolvable<?,?>>(current));
+		while (current != null) {
+			elements.add(new EObjectModel<Resolvable<?, ?>>(current));
 			current = current.getParent();
 		}
 		Collections.reverse(elements);
