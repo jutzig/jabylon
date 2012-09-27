@@ -25,6 +25,7 @@ import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
@@ -90,7 +91,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated NOT
 	 */
 	public Project getProject() {
@@ -99,7 +100,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
@@ -114,9 +115,56 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 				descriptor.updatePercentComplete();
 			}
 		}
+
+		createMissingDescriptorEntries();
 	}
 
-	public ProjectLocale getProjectLocale(Locale locale) {
+	private void createMissingDescriptorEntries()
+    {
+	    ProjectLocale template = this.getTemplate();
+	    for (ProjectLocale locale : getChildren())
+        {
+            if(locale==template)
+                continue;
+            createMissingChildren(template,locale, locale);
+        }
+
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant)
+    {
+        for (Resolvable<?, ?> child : template.getChildren())
+        {
+            Resolvable<?, ?> localeChild = locale.getChild(child.getName());
+            if(localeChild==null)
+            {
+                if (child instanceof PropertyFileDescriptor)
+                {
+                    PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor)child;
+                    PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+                    localeDescriptor.setMaster(templateDescriptor);
+                    localeDescriptor.setVariant(variant.getLocale());
+                    localeDescriptor.computeLocation();
+                    localeDescriptor.setProjectLocale(variant);
+                    localeChild = localeDescriptor;
+
+                }
+                else if (child instanceof ResourceFolder)
+                {
+                    ResourceFolder folder = (ResourceFolder)child;
+                    ResourceFolder localeFolder = PropertiesFactory.eINSTANCE.createResourceFolder();
+                    localeFolder.setName(folder.getName());
+                    localeChild = localeFolder;
+                }
+                locale.getChildren().add(localeChild);
+            }
+            createMissingChildren(child, localeChild, variant);
+        }
+
+    }
+
+    public ProjectLocale getProjectLocale(Locale locale) {
 		EList<ProjectLocale> locales = getChildren();
 		for (ProjectLocale projectLocale : locales) {
 			if (locale.equals(projectLocale.getLocale()))
@@ -127,7 +175,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated NOT
 	 */
 	public void partialScan(ScanConfiguration configuration, PropertyFileDiff fileDiff) {
@@ -136,7 +184,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		File singleFile = new File(baseDir, fileDiff.getNewPath());
-		if(fileDiff.getKind()==DiffKind.REMOVE) 
+		if(fileDiff.getKind()==DiffKind.REMOVE)
 			//in case of a remove, the new path doesn't exist anymore
 			singleFile = new File(baseDir, fileDiff.getOldPath());
 		if(!scanner.partialScan(baseDir, configuration, singleFile))
@@ -308,7 +356,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * example: "messages_de_DE.properties" returns "de_DE"
-	 * 
+	 *
 	 * @param fileName
 	 * @return the locale string in the filename or an empty string if there is
 	 *         non

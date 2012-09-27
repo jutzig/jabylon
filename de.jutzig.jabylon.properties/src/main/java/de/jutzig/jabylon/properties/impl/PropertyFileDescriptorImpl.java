@@ -189,7 +189,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		}
 		return (PropertyFile) resource.getContents().get(0);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -269,20 +269,21 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		if(extension!=null)
 		{
 			filename = filename.substring(0,filename.length()-extension.length()-1);
-			
+
 			//if the master has a locale as well (i.e. messages_en_EN.properties) we must remove the suffix
 			Locale masterLocale = getMaster().getVariant();
 			if(masterLocale!=null)
 			{
 				filename = filename.substring(0, filename.length() - (masterLocale.toString().length()+1));
 			}
-			
+
 			filename += "_";
 			filename += locale.toString();
 			filename += ".";
 			filename += extension;
 		}
 		setLocation(location.trimSegments(1).appendSegment(filename));
+		setName(filename);
 	}
 
 

@@ -49,7 +49,7 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
@@ -103,6 +103,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						if (object instanceof ProjectLocale) {
 							ProjectLocale locale = (ProjectLocale) object;
 							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+							//FIXME: delete obsolete resource folders and derived locale descriptors
 							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
 								firePropertiesDeleted(propertyFileDescriptor, false);
 
@@ -228,7 +229,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
 	 * de.jutzig.jabylon.properties.PropertyFile)
@@ -252,7 +253,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * addPropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -265,7 +266,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * removePropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -281,11 +282,11 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		try {
 			while (true) {
 				try {
-					
+
 					PropertyTuple tuple = queue.take();
 					if(transaction==null)
 						transaction = workspace.cdoView().getSession().openTransaction();
-					
+
 					PropertyFileDescriptor descriptor = transaction.getObject(tuple.getDescriptor());
 					PropertyFile file = tuple.getFile();
 					URI path = descriptor.absolutPath();
@@ -308,6 +309,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						descriptor.setKeys(resource.getSavedProperties());
 						descriptor.updatePercentComplete();
 						transaction.commit();
+						//FIXME: create resource folders and handle derived locales
 						firePropertiesAdded(descriptor,tuple.isAutoSync());
 					}
 				} catch (IOException e) {
@@ -394,7 +396,7 @@ class PropertyTuple {
 	public PropertyFile getFile() {
 		return file;
 	}
-	
+
 	public boolean isAutoSync() {
 		return autoSync;
 	}
