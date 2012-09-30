@@ -3,20 +3,16 @@
 <head>
 
 <wicket:head>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript">
 	<!--
 		function doSize() {
-
 			var width = $(window).width();
-			var heigth = $(window).height();
-			var table = document.getElementById("table-frame");
-			table.style.height = (heigth * 0.6) + "px";
-			table.style.width = (width * 0.7) + "px";
+			var properties = document.getElementById("property-container");
+			properties.style.width = (width * 0.6) + "px";
 		}
-		$(document).ready(doSize);
+		jQuery(document).ready(doSize);
 		$(window).resize(doSize);
-​
-
 	//-->
 	</script>
 </wicket:head>
@@ -24,15 +20,11 @@
 </head>
 <body>
 	<wicket:panel>
-
-
-		<form wicket:id="form">
-			<div id="table-frame" style="overflow-x: hidden; overflow-y: auto;">
-
-				<table wicket:id="table" id="table"
-					class="table table-striped table-hover dataview  table-bordered table-condensed"></table>
+		<div id="property-container">
+			<div wicket:id="properties" id="properties">
+				<div wicket:id="editor" style="width: 100%"></div>
 			</div>
-		</form>
+		</div>
 	</wicket:panel>
 </body>
 </html>

@@ -2,6 +2,8 @@ package de.jutzig.jabylon.rest.ui.model;
 
 import java.io.Serializable;
 
+import org.apache.wicket.model.IModel;
+
 import de.jutzig.jabylon.properties.Property;
 
 public class PropertyPair implements Serializable{
@@ -35,6 +37,20 @@ public class PropertyPair implements Serializable{
 		if(getTranslation()==null)
 			return "";
 		return getTranslation().getValue();
+	}
+	
+	public String getOriginalComment()
+	{
+		if(getTemplate()==null)
+			return "";
+		return getTemplate().getComment();
+	}
+	
+	public String getTranslatedComment()
+	{
+		if(getTranslation()==null)
+			return "";
+		return getTranslation().getComment();
 	}
 	
 }

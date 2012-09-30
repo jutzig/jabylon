@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
@@ -13,12 +12,14 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.Filte
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilteredPropertyColumn;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.eclipse.emf.common.util.EList;
 
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -33,37 +34,54 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object);
-		FilterForm<String> form=new FilterForm<String>("form",provider);
-		List<IColumn<PropertyPair, EClassSortState>> columns = new ArrayList<IColumn<PropertyPair, EClassSortState>>();
-		columns.add(new TextFilteredPropertyColumn<PropertyPair, String, EClassSortState>(Model.of("Original"), "original"));
-		columns.add(new TextFilteredPropertyColumn<PropertyPair, String, EClassSortState>(Model.of("Translated"), "translated"));
-		AjaxFallbackDefaultDataTable<PropertyPair, EClassSortState> table = new AjaxFallbackDefaultDataTable<PropertyPair, EClassSortState>("table", columns, provider, 50){
+		ListView<PropertyPair> properties = new ListView<PropertyPair>("properties",provider.createContents()) {
 			@Override
-			protected Item<PropertyPair> newRowItem(String id, int index, IModel<PropertyPair> model) {
-				Item<PropertyPair> rowItem = super.newRowItem(id, index, model);
-				//TODO: better do this with javascript
-				PropertyPair pair = rowItem.getModel().getObject();
-				if(pair.getOriginal().isEmpty() || pair.getTranslated().isEmpty())
-					rowItem.add(new AttributeModifier("class", "error"));
-				return rowItem;
+			protected void populateItem(ListItem<PropertyPair> item) {
+				SinglePropertyEditor editor = new SinglePropertyEditor("editor", item.getModel());
+				item.add(editor);
+				
 			}
 		};
-		form.add(table);
-		add(form);
+//		FilterForm<String> form=new FilterForm<String>("form",provider);
+//		List<IColumn<PropertyPair, EClassSortState>> columns = new ArrayList<IColumn<PropertyPair, EClassSortState>>();
+//		columns.add(new TextFilteredPropertyColumn<PropertyPair, String, EClassSortState>(Model.of("Original"), "original"));
+//		columns.add(new TextFilteredPropertyColumn<PropertyPair, String, EClassSortState>(Model.of("Translated"), "translated"));
+//		AjaxFallbackDefaultDataTable<PropertyPair, EClassSortState> table = new AjaxFallbackDefaultDataTable<PropertyPair, EClassSortState>("table", columns, provider, 50){
+//			@Override
+//			protected Item<PropertyPair> newRowItem(String id, int index, IModel<PropertyPair> model) {
+//				Item<PropertyPair> rowItem = super.newRowItem(id, index, model);
+//				//TODO: better do this with javascript
+//				PropertyPair pair = rowItem.getModel().getObject();
+//				if(pair.getOriginal().isEmpty() || pair.getTranslated().isEmpty())
+//					rowItem.add(new AttributeModifier("class", "error"));
+//				return rowItem;
+//			}
+//		};
+//		form.add(table);
+//		add(form);
+		
+		add(properties);
 
+	}
+	
+	@Override
+	public void renderHead(HtmlHeaderContainer container) {
+		// TODO Auto-generated method stub
+		super.renderHead(container);
+		
 	}
 
 }
 
 class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClassSortState> implements IFilterStateLocator<String> {
 
-	private EObjectModel<PropertyFileDescriptor> model;
+	private CompoundPropertyModel<PropertyFileDescriptor> model;
 	private transient List<PropertyPair> contents;
 	private String filterState;
 
 	public PropertyPairDataProvider(PropertyFileDescriptor descriptor) {
 		super();
-		this.model = new EObjectModel<PropertyFileDescriptor>(descriptor);
+		model = new CompoundPropertyModel<PropertyFileDescriptor>(new EObjectModel<PropertyFileDescriptor>(descriptor));
 	}
 
 	@Override
@@ -79,13 +97,16 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		return contents;
 	}
 
-	private List<PropertyPair> createContents() {
+	protected List<PropertyPair> createContents() {
 		PropertyFileDescriptor descriptor = model.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
 		Map<String, Property> translated = descriptor.loadProperties().asMap();
 		PropertyFile templateFile = master.loadProperties();
+		
 		List<PropertyPair> contents = new ArrayList<PropertyPair>();
 		for (Property property : templateFile.getProperties()) {
+//			IModel<String> bind = model.bind(property.getKey());
+//			bind.set
 			contents.add(new PropertyPair(property, translated.remove(property.getKey())));
 		}
 		for (Property property : translated.values()) {

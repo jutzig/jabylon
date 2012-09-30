@@ -5,6 +5,7 @@ package de.jutzig.jabylon.rest.ui.wicket;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
@@ -37,7 +38,7 @@ public class BasicPanel<T>extends GenericPanel<T> {
 //		Bootstrap.renderHead(response);
 		
 		response.render(CssHeaderItem.forUrl("css/main.css"));
-//		response.render(JavaScriptHeaderItem.forUrl("/js/main.js"));
+//		response.render(JavaScriptHeaderItem.forUrl("bootstrap/js/bootstrap.js"));
 	}
 
 	protected boolean urlEndsOnSlash()
