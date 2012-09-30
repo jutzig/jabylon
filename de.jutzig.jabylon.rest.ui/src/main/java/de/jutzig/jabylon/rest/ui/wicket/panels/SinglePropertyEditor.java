@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -20,9 +21,12 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 	public SinglePropertyEditor(String id, IModel<PropertyPair> model) {
 		super(id, model);
 		PropertyPair pair = model.getObject();
+		
 		add(new Label("key",pair.getTemplate().getKey()));
 		TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(model, "original"));
 		add(textArea);
+		if(pair.getTemplate()==null)
+			add(new AttributeAppender("class", "control-group error"));
 		
 		textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(model, "originalComment"));
 		add(textArea);
@@ -32,6 +36,9 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(model, "translated"));
 		add(textArea);
+		if(pair.getTranslation()==null)
+			add(new AttributeAppender("class", "control-group warning"));
 	}
+
 
 }
