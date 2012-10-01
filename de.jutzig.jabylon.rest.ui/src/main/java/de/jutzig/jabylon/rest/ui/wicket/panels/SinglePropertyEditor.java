@@ -21,8 +21,8 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 	public SinglePropertyEditor(String id, IModel<PropertyPair> model) {
 		super(id, model);
 		PropertyPair pair = model.getObject();
-		
-		add(new Label("key",pair.getTemplate().getKey()));
+		String key = pair.getTemplate()==null ? pair.getTranslation().getKey() : pair.getTemplate().getKey();
+		add(new Label("key",key));
 		TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(model, "original"));
 		add(textArea);
 		if(pair.getTemplate()==null)

@@ -23,13 +23,14 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 
 	@Override
 	protected void onBeforeRender() {
-		addOrReplace(new BreadcrumbPanel(getModel(),getPageParameters()));
-		if (getModel() instanceof PropertyFileDescriptor) {
-			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) getModel();
+		T object = getModelObject();
+		addOrReplace(new BreadcrumbPanel(object,getPageParameters()));
+		if (object instanceof PropertyFileDescriptor) {
+			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
 			addOrReplace(new PropertyEditorPanel(descriptor,getPageParameters()));	
 		}
 		else
-			addOrReplace(new ProjectResourcePanel(getModel(),getPageParameters()));
+			addOrReplace(new ProjectResourcePanel(object,getPageParameters()));
 		super.onBeforeRender();
 	}
 }
