@@ -21,7 +21,7 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 
 	public GenericPage(PageParameters parameters) {
 		super(parameters);
-		model = new EObjectModel<T>(resolveModel(parameters));;
+		model = new EObjectModel<T>(resolveModel(parameters));
 	}
 	
 	private final T resolveModel(PageParameters params) {
@@ -48,6 +48,12 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 	public IModel<T> getModel()
 	{
 		return model;
+	}
+	
+	@Override
+	protected void onBeforeRender() {
+		setStatelessHint(true);
+		super.onBeforeRender();
 	}
 	
 }
