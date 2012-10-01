@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,9 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.Item;
@@ -22,6 +26,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
@@ -33,13 +40,16 @@ import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.ResourcePage;
 
 public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescriptor> {
 
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
-
-		PropertyPairDataProvider provider = new PropertyPairDataProvider(object);
+		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("MISSING"));
+		addLinkList(mode);
+		
+		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
 		List<PropertyPair> contents = provider.createContents();
 
 		Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
@@ -49,14 +59,23 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				IModel<List<? extends PropertyPair>> model = getModel();
 				List<? extends PropertyPair> list = model.getObject();
 				PropertyPersistenceService service = Activator.getDefault().getPropertyPersistenceService();
-				PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+				PropertyFileDescriptor descriptor = PropertyEditorPanel.this.getModelObject();
+				PropertyFile file = descriptor.loadProperties();
+				Map<String, Property> map = file.asMap();
 
 				for (PropertyPair pair : list) {
-					file.getProperties().add(pair.getTranslation());
+					Property translation = pair.getTranslation();
+					if (map.containsKey(translation.getKey())) {
+						Property property = map.get(translation.getKey());
+						property.setComment(translation.getComment());
+						property.setValue(translation.getValue());
+					} else
+						file.getProperties().add(translation);
 				}
-				service.saveProperties(PropertyEditorPanel.this.getModelObject(), file);
+				service.saveProperties(descriptor, file);
+				getSession().info("Saved successfully");
 				try {
-					//give it some time to store the values
+					// give it some time to store the values
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -79,6 +98,22 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		form.add(properties);
 	}
 
+	private void addLinkList(final PropertyListMode currentMode) {
+		List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
+		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
+			@Override
+			protected void populateItem(ListItem<PropertyListMode> item) {
+				
+				String mode = item.getModelObject().name().toLowerCase();
+				item.add(new ExternalLink("link", "?mode="+mode, "Show "+mode));
+				if(item.getModelObject()==currentMode)
+					item.add(new AttributeModifier("class", "active"));
+			}
+		};
+		add(mode);
+		
+	}
+
 	@Override
 	public void renderHead(HtmlHeaderContainer container) {
 		// TODO Auto-generated method stub
@@ -93,10 +128,12 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 	private CompoundPropertyModel<PropertyFileDescriptor> model;
 	private transient List<PropertyPair> contents;
 	private String filterState;
+	private PropertyListMode mode;
 
-	public PropertyPairDataProvider(PropertyFileDescriptor descriptor) {
+	public PropertyPairDataProvider(PropertyFileDescriptor descriptor, PropertyListMode mode) {
 		super();
 		model = new CompoundPropertyModel<PropertyFileDescriptor>(new EObjectModel<PropertyFileDescriptor>(descriptor));
+		this.mode = mode;
 	}
 
 	@Override
@@ -122,10 +159,14 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		for (Property property : templateFile.getProperties()) {
 			// IModel<String> bind = model.bind(property.getKey());
 			// bind.set
-			contents.add(new PropertyPair(property, translated.remove(property.getKey())));
+			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()));
+			if(mode.apply(pair))
+				contents.add(pair);
 		}
 		for (Property property : translated.values()) {
-			contents.add(new PropertyPair(null, property));
+			PropertyPair pair = new PropertyPair(null, property);
+			if(mode.apply(pair))
+				contents.add(pair);
 		}
 		return contents;
 	}
@@ -151,4 +192,35 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		return filterState;
 	}
 
+}
+
+enum PropertyListMode implements Predicate<PropertyPair> {
+
+	ALL {
+		@Override
+		public boolean apply(PropertyPair pair) {
+			return true;
+		}
+	},
+	MISSING
+
+	{
+		@Override
+		public boolean apply(PropertyPair pair) {
+			return pair.getOriginal()==null || pair.getTranslated()==null || pair.getOriginal().isEmpty() || pair.getTranslated().isEmpty();
+		}
+	},
+	FUZZY {
+		@Override
+		public boolean apply(PropertyPair pair) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	};
+
+	public static PropertyListMode getByName(String name) {
+		if (name == null || name.isEmpty())
+			return MISSING;
+		return valueOf(name.toUpperCase());
+	}
 }
