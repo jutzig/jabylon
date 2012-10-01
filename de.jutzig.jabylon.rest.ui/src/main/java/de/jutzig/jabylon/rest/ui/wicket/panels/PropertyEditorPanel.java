@@ -43,7 +43,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
 		List<PropertyPair> contents = provider.createContents();
 
-		Form<List<? extends PropertyPair>> form = new StatelessForm<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
+		Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
