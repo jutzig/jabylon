@@ -6,6 +6,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
+import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 import de.jutzig.jabylon.rest.ui.model.RepositoryLookupImpl;
 
@@ -16,6 +17,8 @@ public class Activator implements BundleActivator {
 	private RepositoryConnector repositoryConnector;
 	private ServiceTracker<RepositoryConnector, RepositoryConnector> repositoryTracker;
 	private RepositoryLookupImpl lookup;
+	private ServiceTracker<PropertyPersistenceService, PropertyPersistenceService> propertyPersistenceTracker;
+
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
@@ -40,11 +43,15 @@ public class Activator implements BundleActivator {
 			}
 		});
 		repositoryTracker.open();
+		
+		propertyPersistenceTracker = new ServiceTracker<PropertyPersistenceService, PropertyPersistenceService>(context, PropertyPersistenceService.class, null);
+		propertyPersistenceTracker.open();
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		repositoryTracker.close();
+		propertyPersistenceTracker.close();
 		INSTANCE = null;
 		if(lookup!=null)
 		{
@@ -67,4 +74,9 @@ public class Activator implements BundleActivator {
     {
         return lookup;
     }
+	
+	public PropertyPersistenceService getPropertyPersistenceService()
+	{
+		return propertyPersistenceTracker.getService();
+	}
 }

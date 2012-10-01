@@ -21,10 +21,14 @@
 <body>
 	<wicket:panel>
 		<div id="property-container">
-			<div wicket:id="properties" id="properties">
-				<div wicket:id="editor" style="width: 100%"></div>
-			</div>
+			<form wicket:id="properties-form">
+				<div wicket:id="properties" id="properties">
+					<div wicket:id="editor" style="width: 100%"></div>
+				</div>
+				<button class="btn btn-primary" wicket:id="properties-submit">Submit</button>
+			</form>
 		</div>
+
 	</wicket:panel>
 </body>
 </html>

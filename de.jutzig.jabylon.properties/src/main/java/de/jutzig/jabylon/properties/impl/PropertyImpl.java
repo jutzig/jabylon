@@ -6,6 +6,8 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import java.io.Serializable;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
@@ -25,9 +27,9 @@ import de.jutzig.jabylon.properties.Property;
  * </ul>
  * </p>
  *
- * @generated
+ * @generated NOPE
  */
-public class PropertyImpl extends CDOObjectImpl implements Property {
+public class PropertyImpl extends CDOObjectImpl implements Property, Serializable {
 	/**
 	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->

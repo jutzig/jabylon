@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.wicket.model.IModel;
 
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 
 public class PropertyPair implements Serializable{
@@ -39,11 +40,25 @@ public class PropertyPair implements Serializable{
 		return getTranslation().getValue();
 	}
 	
+	public void setTranslated(String translated)
+	{
+		getOrCreateTranslation().setValue(translated);
+	}
+	
 	public String getOriginalComment()
 	{
 		if(getTemplate()==null)
 			return "";
 		return getTemplate().getComment();
+	}
+	
+	public void setOriginalComment(String comment){
+		//TODO: should this be implemented?
+	}
+	
+	public void setOriginal(String comment)
+	{
+		//TODO: should this be implemented?		
 	}
 	
 	public String getTranslatedComment()
@@ -53,4 +68,22 @@ public class PropertyPair implements Serializable{
 		return getTranslation().getComment();
 	}
 	
+	public void setTranslatedComment(String comment)
+	{
+		getOrCreateTranslation().setComment(comment);
+	}
+	
+	
+	
+	public Property getOrCreateTranslation()
+	{
+		Property property = getTranslation();
+		if(property==null)
+		{
+			property = PropertiesFactory.eINSTANCE.createProperty();
+			property.setKey(getTemplate().getKey());
+			this.translation = property;
+		}
+		return property;
+	}
 }
