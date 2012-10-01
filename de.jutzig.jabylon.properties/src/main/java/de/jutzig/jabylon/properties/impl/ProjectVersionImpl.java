@@ -36,10 +36,11 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTemplate <em>Template</em>}</li>
+ * <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTemplate
+ * <em>Template</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> implements ProjectVersion {
@@ -47,6 +48,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ProjectVersionImpl() {
@@ -55,6 +57,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -63,26 +66,28 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ProjectLocale getTemplate() {
-		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE, PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, true, true);
+		return (ProjectLocale) eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE,
+				PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, true, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ProjectLocale basicGetTemplate() {
-		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE, PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, false, true);
+		return (ProjectLocale) eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE,
+				PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, false, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setTemplate(ProjectLocale newTemplate) {
@@ -91,7 +96,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated NOT
 	 */
 	public Project getProject() {
@@ -100,7 +105,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
@@ -119,52 +124,74 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		createMissingDescriptorEntries();
 	}
 
-	private void createMissingDescriptorEntries()
-    {
-	    ProjectLocale template = this.getTemplate();
-	    for (ProjectLocale locale : getChildren())
-        {
-            if(locale==template)
-                continue;
-            createMissingChildren(template,locale, locale);
-        }
+	private void createMissingDescriptorEntries() {
+		ProjectLocale template = this.getTemplate();
+		for (ProjectLocale locale : getChildren()) {
+			if (locale == template)
+				continue;
+			createMissingChildren(template, locale, locale);
+		}
 
-    }
+	}
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant)
-    {
-        for (Resolvable<?, ?> child : template.getChildren())
-        {
-            Resolvable<?, ?> localeChild = locale.getChild(child.getName());
-            if(localeChild==null)
-            {
-                if (child instanceof PropertyFileDescriptor)
-                {
-                    PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor)child;
-                    PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-                    localeDescriptor.setMaster(templateDescriptor);
-                    localeDescriptor.setVariant(variant.getLocale());
-                    localeDescriptor.computeLocation();
-                    localeDescriptor.setProjectLocale(variant);
-                    localeChild = localeDescriptor;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant) {
+		//TODO: this algorithm isn't very efficient unfortunately
+		for (Resolvable<?, ?> child : template.getChildren()) {
+			String name = child.getName();
+			if (child instanceof PropertyFileDescriptor) {
+				// for properties we need the locale specific name
+				PropertyFileDescriptor descriptor = (PropertyFileDescriptor)child;
+				name = computeLocaleResourceLocation(variant.getLocale(), descriptor.getLocation(), descriptor.getVariant()).lastSegment();
+			}
+			Resolvable<?, ?> localeChild = locale.getChild(name);
+			if (localeChild == null) {
+				if (child instanceof PropertyFileDescriptor) {
+					PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor) child;
+					PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+					localeDescriptor.setMaster(templateDescriptor);
+					localeDescriptor.setVariant(variant.getLocale());
+					localeDescriptor.computeLocation();
+					localeDescriptor.setProjectLocale(variant);
+					localeChild = localeDescriptor;
 
-                }
-                else if (child instanceof ResourceFolder)
-                {
-                    ResourceFolder folder = (ResourceFolder)child;
-                    ResourceFolder localeFolder = PropertiesFactory.eINSTANCE.createResourceFolder();
-                    localeFolder.setName(folder.getName());
-                    localeChild = localeFolder;
-                }
-                locale.getChildren().add(localeChild);
-            }
-            createMissingChildren(child, localeChild, variant);
-        }
+				} else if (child instanceof ResourceFolder) {
+					ResourceFolder folder = (ResourceFolder) child;
+					ResourceFolder localeFolder = PropertiesFactory.eINSTANCE.createResourceFolder();
+					localeFolder.setName(folder.getName());
+					localeChild = localeFolder;
+				}
+				locale.getChildren().add(localeChild);
+			}
+			createMissingChildren(child, localeChild, variant);
+		}
 
-    }
+	}
 
-    public ProjectLocale getProjectLocale(Locale locale) {
+	private URI computeLocaleResourceLocation(Locale locale, URI location, Locale masterLocale) {
+
+		String filename = location.lastSegment();
+		String extension = location.fileExtension();
+
+		if (extension != null) {
+			filename = filename.substring(0, filename.length() - extension.length() - 1);
+
+			// if the master has a locale as well (i.e.
+			// messages_en_EN.properties) we must remove the suffix
+			if (masterLocale != null) {
+				filename = filename.substring(0, filename.length() - (masterLocale.toString().length() + 1));
+			}
+
+			filename += "_";
+			filename += locale.toString();
+			filename += ".";
+			filename += extension;
+		}
+		return location.trimSegments(1).appendSegment(filename);
+
+	}
+
+	public ProjectLocale getProjectLocale(Locale locale) {
 		EList<ProjectLocale> locales = getChildren();
 		for (ProjectLocale projectLocale : locales) {
 			if (locale.equals(projectLocale.getLocale()))
@@ -175,23 +202,24 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * 
 	 * @generated NOT
 	 */
 	public void partialScan(ScanConfiguration configuration, PropertyFileDiff fileDiff) {
-		//TODO: MOVE and COPY can be handled better
-		//TODO: this can only handle updates in master locale so far. translated files won't make it through the scanner
+		// TODO: MOVE and COPY can be handled better
+		// TODO: this can only handle updates in master locale so far.
+		// translated files won't make it through the scanner
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		File singleFile = new File(baseDir, fileDiff.getNewPath());
-		if(fileDiff.getKind()==DiffKind.REMOVE)
-			//in case of a remove, the new path doesn't exist anymore
+		if (fileDiff.getKind() == DiffKind.REMOVE)
+			// in case of a remove, the new path doesn't exist anymore
 			singleFile = new File(baseDir, fileDiff.getOldPath());
-		if(!scanner.partialScan(baseDir, configuration, singleFile))
-			return; //no match -> no work
+		if (!scanner.partialScan(baseDir, configuration, singleFile))
+			return; // no match -> no work
 		switch (fileDiff.getKind()) {
 		case MOVE: {
-			deleteDescriptor(URI.createURI("/"+fileDiff.getOldPath()));
+			deleteDescriptor(URI.createURI("/" + fileDiff.getOldPath()));
 		}
 		case COPY:
 		case ADD: {
@@ -206,75 +234,75 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			break;
 		}
 		case MODIFY: {
-			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/"+fileDiff.getNewPath()));
-			if(descriptor!=null)
-			{
+			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
+			if (descriptor != null) {
 				PropertyFile properties = descriptor.loadProperties();
 				descriptor.setKeys(properties.getProperties().size());
 			}
 			break;
 		}
 		case REMOVE: {
-			deleteDescriptor(URI.createURI("/"+fileDiff.getOldPath()));
+			deleteDescriptor(URI.createURI("/" + fileDiff.getOldPath()));
 		}
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-				if (resolve) return getTemplate();
-				return basicGetTemplate();
+		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+			if (resolve)
+				return getTemplate();
+			return basicGetTemplate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-				setTemplate((ProjectLocale)newValue);
-				return;
+		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+			setTemplate((ProjectLocale) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-				setTemplate((ProjectLocale)null);
-				return;
+		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+			setTemplate((ProjectLocale) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-				return basicGetTemplate() != null;
+		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+			return basicGetTemplate() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -282,16 +310,13 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	private void deleteDescriptor(URI uri) {
 
 		PropertyFileDescriptor descriptor = findDescriptor(uri);
-		if (descriptor != null)
-		{
-			if(descriptor.isMaster())
-			{
+		if (descriptor != null) {
+			if (descriptor.isMaster()) {
 				EList<ProjectLocale> locales = getChildren();
 				OUTER: for (ProjectLocale projectLocale : locales) {
 					EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
 					for (PropertyFileDescriptor variant : descriptors) {
-						if(variant.getMaster()==descriptor)
-						{
+						if (variant.getMaster() == descriptor) {
 							projectLocale.getDescriptors().remove(variant);
 							continue OUTER;
 						}
@@ -356,7 +381,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * example: "messages_de_DE.properties" returns "de_DE"
-	 *
+	 * 
 	 * @param fileName
 	 * @return the locale string in the filename or an empty string if there is
 	 *         non
@@ -393,7 +418,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			}
 			PropertyFileDescriptor descriptor = createDescriptor(getTemplate(), location);
 			getTemplate().getDescriptors().add(descriptor);
-
 
 			// load file to initialize statistics;
 			PropertyFile propertyFile = descriptor.loadProperties();
@@ -435,7 +459,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			fileDescriptor.setLocation(childURI);
 			fileDescriptor.setName(childURI.lastSegment());
 			fileDescriptor.setVariant(projectLocale.getLocale());
-			//TODO: implement folder structure
+			// TODO: implement folder structure
 			projectLocale.getDescriptors().add(fileDescriptor);
 			Resolvable<?, Resolvable<?, ?>> parent = getOrCreateParent(projectLocale, childURI);
 			parent.getChildren().add(fileDescriptor);
@@ -445,9 +469,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		private Resolvable<?, Resolvable<?, ?>> getOrCreateParent(ProjectLocale projectLocale, URI childURI) {
 			Resolvable<?, Resolvable<?, ?>> currentParent = projectLocale;
 			String[] segments = childURI.segments();
-			for(int i = 0;i<segments.length-1;i++)
-			{
-				currentParent = getOrCreate(currentParent,segments[i]);
+			for (int i = 0; i < segments.length - 1; i++) {
+				currentParent = getOrCreate(currentParent, segments[i]);
 			}
 			return currentParent;
 		}
@@ -455,8 +478,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private Resolvable<?, Resolvable<?, ?>> getOrCreate(Resolvable<?, Resolvable<?, ?>> currentParent, String child) {
 			Resolvable<?, Resolvable<?, ?>> childObject = (Resolvable<?, Resolvable<?, ?>>) currentParent.getChild(child);
-			if(childObject==null)
-			{
+			if (childObject == null) {
 				childObject = PropertiesFactory.eINSTANCE.createResourceFolder();
 				childObject.setName(child);
 				EList children = currentParent.getChildren();
