@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
@@ -12,6 +13,7 @@ import org.apache.wicket.util.string.StringValue;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import de.jutzig.jabylon.rest.ui.wicket.panels.ProjectResourcePanel;
 
 public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
@@ -21,6 +23,8 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 
 	public GenericPage(PageParameters parameters) {
 		super(parameters);
+		CustomFeedbackPanel feedbackPanel = new CustomFeedbackPanel("feedbackPanel");
+		add(feedbackPanel);
 		model = new EObjectModel<T>(resolveModel(parameters));
 	}
 	
@@ -52,6 +56,7 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 	
 	@Override
 	protected void onBeforeRender() {
+
 		setStatelessHint(true);
 		super.onBeforeRender();
 	}

@@ -67,7 +67,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				getSession().info("Saved successfully");
 				try {
 					// give it some time to store the values
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
