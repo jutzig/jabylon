@@ -49,6 +49,13 @@ public class ProjectResourcePanel
             protected void populateItem(Item<Resolvable< ? , ? >> item)
             {
                 Resolvable< ? , ? > resolvable = item.getModelObject();
+                if (resolvable instanceof ProjectLocale) {
+                	//hide the template language by default
+					ProjectLocale locale = (ProjectLocale) resolvable;
+					if(locale.isMaster())
+						item.setVisible(false);
+					
+				}
                 StringBuilder linkTarget = new StringBuilder();
                 String name = buildLinkTarget(resolvable, linkTarget, endsOnSlash);
 
