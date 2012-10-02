@@ -13,6 +13,7 @@ import org.apache.wicket.util.string.StringValue;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.navbar.NavbarPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import de.jutzig.jabylon.rest.ui.wicket.panels.ProjectResourcePanel;
 
@@ -26,6 +27,7 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 		CustomFeedbackPanel feedbackPanel = new CustomFeedbackPanel("feedbackPanel");
 		add(feedbackPanel);
 		model = new EObjectModel<T>(resolveModel(parameters));
+		add(new NavbarPanel<Resolvable<?,?>>("navbar", model.getObject(), parameters));
 	}
 	
 	private final T resolveModel(PageParameters params) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="navbarItem" name="Navbar Item" schema="schema/navbarItem.exsd"/>
    <extension
          point="org.eclipse.equinox.http.registry.resources">
       <resource
@@ -32,6 +33,25 @@
                name="filterMappingUrlPattern"
                value="/wicket/*">
          </init-param>
+         <init-param
+               name="configuration"
+               value="deployment">
+         </init-param>
       </filter>
    </extension>
+ <extension
+       point="de.jutzig.jabylon.rest.ui.navbarItem">
+    <item
+          panel="de.jutzig.jabylon.rest.ui.navbar.SettingsPanel$SettingsPanelFactory">
+    </item>
+    <item
+          panel="de.jutzig.jabylon.rest.ui.navbar.LoginPanel$LoginPanelFactory">
+    </item>
+    <item
+          panel="de.jutzig.jabylon.rest.ui.navbar.HelpPanel$HelpPanelFactory">
+    </item>
+    <item
+          panel="de.jutzig.jabylon.rest.ui.navbar.SearchPanel$SearchPanelFactory">
+    </item>
+ </extension>
 </plugin>
