@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.rest.ui.navbar;
 
+import java.io.Serializable;
+
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -30,13 +32,13 @@ public class LoginPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel
 	public LoginPanel(String id, T object, PageParameters parameters) {
 		super(id, object, parameters);
 		Session theSession = getSession();
-		
+
 		if (theSession instanceof CDOAuthenticatedSession) {
 			final CDOAuthenticatedSession session = (CDOAuthenticatedSession) theSession;
 			User user = session.getUser();
 			if (user != null) {
 				LogoutLink link = new LogoutLink("link");
-				link.add(new Label("link-label", "Logout "+user.getName()));
+				link.add(new Label("link-label", "Logout " + user.getName()));
 				add(link);
 				return;
 			}
@@ -47,7 +49,9 @@ public class LoginPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel
 
 	}
 
-	public static class LoginPanelFactory implements PanelFactory {
+	public static class LoginPanelFactory implements PanelFactory, Serializable {
+
+		private static final long serialVersionUID = 1L;
 
 		@SuppressWarnings("rawtypes")
 		@Override
@@ -63,8 +67,7 @@ public class LoginPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel
 	}
 }
 
-class LogoutLink extends StatelessLink<String>
-{
+class LogoutLink extends StatelessLink<String> {
 
 	/**
 	 * 
@@ -86,7 +89,7 @@ class LogoutLink extends StatelessLink<String>
 			link.add(new Label("link-label", "Login"));
 			parent.addOrReplace(link);
 		}
-		
+
 	}
-	
+
 }

@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.rest.ui.navbar;
 
+import java.io.Serializable;
+
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -23,7 +25,7 @@ public class SearchPanel<T extends Resolvable<?, ?>> extends BasicResolvablePane
 		super(id, object, parameters);
 	}
 
-	public static class SearchPanelFactory implements PanelFactory
+	public static class SearchPanelFactory implements PanelFactory, Serializable
 	{
 
 		@SuppressWarnings("rawtypes")

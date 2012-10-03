@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension-point id="navbarItem" name="Navbar Item" schema="schema/navbarItem.exsd"/>
+   <extension-point id="config" name="Configuration Extensions" schema="schema/config.exsd"/>
+   <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension
          point="org.eclipse.equinox.http.registry.resources">
       <resource
@@ -42,7 +44,7 @@
  <extension
        point="de.jutzig.jabylon.rest.ui.navbarItem">
     <item
-          panel="de.jutzig.jabylon.rest.ui.navbar.SettingsPanel$SettingsPanelFactory">
+          panel="de.jutzig.jabylon.rest.ui.navbar.SettingsNavBarPanel$SettingsPanelFactory">
     </item>
     <item
           panel="de.jutzig.jabylon.rest.ui.navbar.LoginPanel$LoginPanelFactory">
@@ -53,5 +55,32 @@
     <item
           panel="de.jutzig.jabylon.rest.ui.navbar.SearchPanel$SearchPanelFactory">
     </item>
+ </extension>
+ <extension
+       point="de.jutzig.jabylon.rest.ui.configTab">
+    <tab
+          name="General"
+          tabID="general">
+    </tab>
+    <tab
+          name="Scanning"
+          tabID="scanning">
+    </tab>
+    <tab
+          name="Checks"
+          tabID="checks">
+    </tab>
+    <tab
+          name="Team"
+          tabID="team">
+    </tab>
+ </extension>
+ <extension
+       point="de.jutzig.jabylon.rest.ui.config">
+    <section
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralProjectConfig"
+          tab="de.jutzig.jabylon.rest.ui.project">
+    </section>
  </extension>
 </plugin>

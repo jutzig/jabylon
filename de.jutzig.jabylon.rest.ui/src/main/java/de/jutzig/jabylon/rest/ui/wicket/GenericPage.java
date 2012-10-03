@@ -60,4 +60,10 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 		super.onBeforeRender();
 	}
 	
+	@Override
+	public void detachModels() {
+		super.detachModels();
+		model.detach();
+	}
+	
 }

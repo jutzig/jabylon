@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.rest.ui.navbar;
 
+import java.io.Serializable;
+
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -24,8 +26,10 @@ public class HelpPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<
 		add(new ExternalLink("link","#help","Help"));
 	}
 
-	public static class HelpPanelFactory implements PanelFactory
+	public static class HelpPanelFactory implements PanelFactory, Serializable
 	{
+
+		private static final long serialVersionUID = 1L;
 
 		@SuppressWarnings("rawtypes")
 		@Override
