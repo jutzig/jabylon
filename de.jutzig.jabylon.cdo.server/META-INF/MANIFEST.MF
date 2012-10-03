@@ -4,7 +4,6 @@ Bundle-Name: Server
 Bundle-SymbolicName: de.jutzig.jabylon.cdo.server
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.jutzig.jabylon.cdo.server.Activator
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.eclipse.emf.cdo;bundle-version="4.0.1",
