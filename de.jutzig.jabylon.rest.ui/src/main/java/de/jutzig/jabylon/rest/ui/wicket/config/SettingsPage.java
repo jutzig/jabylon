@@ -12,13 +12,13 @@ import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class WorkspaceSettings extends GenericPage<Workspace> {
+public class SettingsPage extends GenericPage<Workspace> {
 
 	private static final long serialVersionUID = 1L;
 	
-	public WorkspaceSettings(PageParameters parameters) {
+	public SettingsPage(PageParameters parameters) {
 		super(parameters);
-		add(new WorkspaceProjectSettingsPanel("content", getModelObject(), getPageParameters()));
+		add(new SettingsPanel("content", getModelObject(), getPageParameters()));
 	}
 
 

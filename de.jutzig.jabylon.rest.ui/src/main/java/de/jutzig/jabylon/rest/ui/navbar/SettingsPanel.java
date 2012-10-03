@@ -3,13 +3,14 @@
  */
 package de.jutzig.jabylon.rest.ui.navbar;
 
-import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -21,7 +22,7 @@ public class SettingsPanel<T extends Resolvable<?, ?>> extends BasicResolvablePa
 
 	public SettingsPanel(String id, T object, PageParameters parameters) {
 		super(id, object, parameters);
-		add(new ExternalLink("link","#settings","Settings"));
+		add(new BookmarkablePageLink<String>("link",SettingsPage.class,parameters));
 	}
 
 	public static class SettingsPanelFactory implements PanelFactory

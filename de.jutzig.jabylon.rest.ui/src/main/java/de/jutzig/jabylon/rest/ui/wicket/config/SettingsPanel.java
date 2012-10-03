@@ -16,11 +16,11 @@ import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class WorkspaceProjectSettingsPanel extends BasicResolvablePanel<Workspace> {
+public class SettingsPanel extends BasicResolvablePanel<Workspace> {
 
 	private static final long serialVersionUID = -5358263608301930488L;
 
-	public WorkspaceProjectSettingsPanel(String id, Workspace object, PageParameters parameters) {
+	public SettingsPanel(String id, Workspace object, PageParameters parameters) {
 		super(id, object, parameters);
 		
 		ListView<Project> project = new ListView<Project>("projects",getModelObject().getChildren()) {
