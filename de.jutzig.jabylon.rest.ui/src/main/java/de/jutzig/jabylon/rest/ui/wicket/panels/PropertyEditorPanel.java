@@ -37,7 +37,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
-		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("MISSING"));
+		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
 		addLinkList(mode);
 		
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
