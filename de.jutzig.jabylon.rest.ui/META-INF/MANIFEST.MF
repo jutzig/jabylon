@@ -34,5 +34,6 @@ Export-Package: de.jutzig.jabylon.rest.ui,
  de.jutzig.jabylon.rest.ui.security,
  de.jutzig.jabylon.rest.ui.wicket,
  de.jutzig.jabylon.rest.ui.wicket.components,
+ de.jutzig.jabylon.rest.ui.wicket.config,
  de.jutzig.jabylon.rest.ui.wicket.panels
 Bundle-ActivationPolicy: lazy

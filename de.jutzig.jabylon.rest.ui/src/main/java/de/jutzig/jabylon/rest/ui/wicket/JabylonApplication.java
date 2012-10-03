@@ -11,6 +11,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
+import de.jutzig.jabylon.rest.ui.wicket.config.WorkspaceSettings;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -38,6 +39,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	    
 //	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
 	    mountPage("/login",LoginPage.class);
+	    mountPage("/settings/workspace",WorkspaceSettings.class);
 	    mountPage("/workspace/${segment}",ResourcePage.class);
 	}
 

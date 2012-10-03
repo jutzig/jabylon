@@ -21,7 +21,8 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     implements IDataProvider<R>
 {
 
-    private String featureName;
+	private static final long serialVersionUID = 1L;
+	private String featureName;
 
 
     public ComplexEObjectListDataProvider(CDOObject object, EStructuralFeature feature)
