@@ -23,7 +23,7 @@
          point="org.eclipse.equinox.http.registry.filters">
       <filter
             alias="/wicket"
-            class="org.apache.wicket.protocol.http.WicketFilter"
+            class="de.jutzig.jabylon.rest.ui.JabylonFilter"
             httpcontextId="wicket">
          <init-param
                name="applicationClassName"
