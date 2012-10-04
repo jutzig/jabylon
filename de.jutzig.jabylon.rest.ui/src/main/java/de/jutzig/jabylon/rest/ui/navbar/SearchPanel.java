@@ -5,7 +5,8 @@ package de.jutzig.jabylon.rest.ui.navbar;
 
 import java.io.Serializable;
 
-import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -23,6 +24,10 @@ public class SearchPanel<T extends Resolvable<?, ?>> extends BasicResolvablePane
 
 	public SearchPanel(String id, T object, PageParameters parameters) {
 		super(id, object, parameters);
+		TextField<Void> field = new TextField<Void>("searchfield");
+		String placeholder = object == null || object.getName()==null ? "Search" : "Search "+object.getName();
+		field.add(new AttributeModifier("placeholder", placeholder));
+		add(field);
 	}
 
 	public static class SearchPanelFactory implements PanelFactory, Serializable

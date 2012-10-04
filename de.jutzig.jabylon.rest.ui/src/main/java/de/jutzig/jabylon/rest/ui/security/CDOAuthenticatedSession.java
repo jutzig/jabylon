@@ -84,6 +84,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 			
 			return true;
 		} catch (LoginException e) {
+			e.printStackTrace();
 //			error("Login Failed: "+e.getMessage());
 		}
 		return false;
