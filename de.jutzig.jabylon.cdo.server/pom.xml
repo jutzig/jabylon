@@ -15,57 +15,46 @@
         <dependency>
             <artifactId>common</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>cdo</artifactId>
             <groupId>org.eclipse.emf</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>server</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>db</artifactId>
             <groupId>org.eclipse.net4j</groupId>
-            <version>4.0.0</version>
         </dependency>
         <dependency>
             <artifactId>jvm</artifactId>
             <groupId>org.eclipse.net4j</groupId>
-            <version>4.0.0</version>
         </dependency>
         <dependency>
             <artifactId>db</artifactId>
             <groupId>org.eclipse.emf.cdo.server</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse.emf.cdo.server</groupId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <artifactId>derby</artifactId>
             <groupId>org.eclipse.net4j.db</groupId>
-            <version>4.0.0</version>
         </dependency>
         <dependency>
             <artifactId>derby</artifactId>
             <groupId>org.apache</groupId>
-            <version>10.5.1</version>
         </dependency>
         <dependency>
             <artifactId>properties</artifactId>

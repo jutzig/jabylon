@@ -1,14 +1,18 @@
 Manifest-Version: 1.0
+Built-By: utzig
+Build-Jdk: 1.6.0_22
+Bundle-Version: 1.0.0.SNAPSHOT
+Tool: Bnd-1.15.0
+Bundle-Name: auto.translate
+Bnd-LastModified: 1349356279920
+Created-By: Apache Maven Bundle Plugin
 Bundle-ManifestVersion: 2
-Bundle-Name: Translate
 Bundle-SymbolicName: de.jutzig.jabylon.auto.translate
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: de.jutzig.jabylon.resources;bundle-version="1.0.0",
- org.eclipse.emf.cdo;bundle-version="4.0.1",
- de.jutzig.jabylon.properties;bundle-version="1.0.0",
- org.apache.lucene;bundle-version="2.9.1",
- org.apache.lucene.analysis;bundle-version="2.9.1",
- org.apache.lucene.core;bundle-version="2.9.1",
- de.jutzig.jabylon.index;bundle-version="1.0.0"
-Service-Component: OSGI-INF/translator.xml
+Import-Package: de.jutzig.jabylon.index.properties,de.jutzig.jabylon.p
+ roperties,de.jutzig.jabylon.resources.changes,de.jutzig.jabylon.resou
+ rces.persistence,org.apache.lucene.analysis,org.apache.lucene.analysi
+ s.standard,org.apache.lucene.document,org.apache.lucene.index,org.apa
+ che.lucene.queryParser,org.apache.lucene.search,org.apache.lucene.uti
+ l,org.eclipse.emf.cdo.view,org.eclipse.emf.common.notify,org.eclipse.
+ emf.common.util,org.eclipse.emf.ecore
+
