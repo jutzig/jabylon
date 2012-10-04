@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
 Export-Package: de.jutzig.jabylon.rest.api;uses:="javax.servlet,org.ec
- lipse.emf.common.util,org.eclipse.emf.cdo.view,de.jutzig.jabylon.cdo.
+ lipse.emf.cdo.view,org.eclipse.emf.common.util,de.jutzig.jabylon.cdo.
  connector,org.eclipse.emf.cdo.eresource,de.jutzig.jabylon.resources.p
  ersistence,de.jutzig.jabylon.properties,org.osgi.service.http,org.ecl
  ipse.emf.ecore,javax.servlet.http,de.jutzig.jabylon.rest.api.json,org
  .eclipse.emf.cdo.util",de.jutzig.jabylon.rest.api.json;uses:="org.ecl
  ipse.emf.ecore,org.eclipse.emf.common.util,de.jutzig.jabylon.properti
  es"
-Built-By: utzig
-Build-Jdk: 1.6.0_22
+Built-By: joe
+Build-Jdk: 1.6.0_24
 Bundle-Version: 1.0.0.SNAPSHOT
 Tool: Bnd-1.15.0
 Bundle-Name: rest.api
-Bnd-LastModified: 1349364574910
+Bnd-LastModified: 1349382751145
 Created-By: Apache Maven Bundle Plugin
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: de.jutzig.jabylon.rest.api

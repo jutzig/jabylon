@@ -11,6 +11,23 @@
         <relativePath>../releng/parent/pom.xml</relativePath>
     </parent>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<configuration>
+					<instructions>
+						<Service-Component>
+							OSGI-INF/persistence.xml
+						</Service-Component>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

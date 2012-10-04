@@ -28,5 +28,9 @@
 	        <version>${project.version}</version>
 	        <type>bundle</type>
 	    </dependency>
+	    <dependency>
+	    	<groupId>org.eclipse.emf</groupId>
+	    	<artifactId>common</artifactId>
+	    </dependency>
 	</dependencies>
 </project>

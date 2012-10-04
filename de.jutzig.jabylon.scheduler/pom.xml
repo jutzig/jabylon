@@ -1,157 +1,64 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>de.jutzig.jabylon.scheduler</artifactId>
-    <packaging>bundle</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>scheduler</artifactId>
+	<packaging>bundle</packaging>
 
-    <parent>
-        <groupId>de.jutzig.jabylon</groupId>
-        <version>1.0.0-SNAPSHOT</version>
-        <artifactId>jabylon-parent</artifactId>
-        <relativePath>../releng/parent/pom.xml</relativePath>
-    </parent>
+	<parent>
+		<groupId>de.jutzig.jabylon</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+		<artifactId>jabylon-parent</artifactId>
+		<relativePath>../releng/parent/pom.xml</relativePath>
+	</parent>
 
-    <properties>
-        <bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
-        <bundle.namespace>${project.groupId}</bundle.namespace>
-        <swt.variant>unknown</swt.variant>
-    </properties>
+	<properties>
+		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
+		<bundle.namespace>${project.groupId}</bundle.namespace>
+		<swt.variant>unknown</swt.variant>
+	</properties>
 
-    <build>
-        <resources>
-            <resource>
-                <targetPath>icons</targetPath>
-                <directory>icons</directory>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.4</version>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<instructions>
+						<Bundle-Activator>de.jutzig.jabylon.scheduler.SchedulerActivator</Bundle-Activator>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
-                    <include>plugin.xml</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <configuration>
-                        <skip>false</skip>
-                        <pde>true</pde>
-                        <buildcommands>
-                            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-                            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
-                            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
-                        </buildcommands>
-                        <projectnatures>
-                            <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-                            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-                            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-                            <projectnature>org.eclipse.jem.beaninfo.BeanInfoNature</projectnature>
-                        </projectnatures>
-                        <classpathContainers>
-                            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-                            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
-                        </classpathContainers>
-                    </configuration>
-
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.4</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <manifestLocation>META-INF</manifestLocation>
-                    <instructions>
-                        <Include-Resource>target/classes</Include-Resource>
-                        <Bundle-SymbolicName>${bundle.symbolicName};singleton:=true
-                        </Bundle-SymbolicName>
-                        <Bundle-Version>${project.version}</Bundle-Version>
-                        <Import-Package>
-                            org.osgi.framework
-                        </Import-Package>
-
-                        <!-- <Import-Package> !EDU.oswego.cs.dl.util.concurrent,
-                            !bsh, !org.apache.avalon.framework.logger, !org.eclipse.osgi.service.systembundle,
-                            !org.eclipse.swt.ole.win32, !com.sun.java.swing.plaf.windows, !com.werken.xpath,
-                            !javax.jms, !org.jivesoftware.smackx.debugger, !sun.security.action, !net.sf.ehcache,
-                            !javax.microedition.io, * </Import-Package> -->
-                        <Bundle-Activator>de.jutzig.jabylon.scheduler.SchedulerActivator</Bundle-Activator>
-                        <Embed-Dependency>
-                            *;scope=compile|runtime|provided;inline=false;
-                        </Embed-Dependency>
-
-                        <Embed-Directory>target/dependency
-                        </Embed-Directory>
-                        <Embed-StripGroup>true</Embed-StripGroup>
-                    </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin
-                </artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
-                    <show>public</show>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.8.0.v20120529-1548</version>
-        </dependency>
-<!--         <dependency>
-            <groupId>javax.security</groupId>
-            <artifactId>jaas</artifactId>
-            <version>1.0.01</version>
-        </dependency> -->
-        <dependency>
-            <groupId>org.eclipse.jetty.orbit</groupId>
-            <artifactId>javax.security.auth.message</artifactId>
-            <version>1.0.0.v201108011116</version>
-            <type>orbit</type>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>cdo.connector</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId> 
+			<version>1.0.01</version> </dependency> -->
+		<!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId> 
+			<version>1.0.0.v201108011116</version> <type>orbit</type> </dependency> -->
+	</dependencies>
 </project>

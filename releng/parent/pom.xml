@@ -1,271 +1,286 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>jabylon-parent</artifactId>
-    <packaging>pom</packaging>
-    <groupId>de.jutzig.jabylon</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jabylon-parent</artifactId>
+	<packaging>pom</packaging>
+	<groupId>de.jutzig.jabylon</groupId>
+	<version>1.0.0-SNAPSHOT</version>
 
-    <!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
-        <artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
-        </parent> -->
+	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> 
+		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath> 
+		</parent> -->
 
-    <properties>
-        <bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
-        <bundle.namespace>${project.groupId}</bundle.namespace>
-        <swt.variant>unknown</swt.variant>
-    </properties>
+	<properties>
+		<singleton></singleton>
+		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
+		<bundle.namespace>${project.groupId}</bundle.namespace>
+		<swt.variant>unknown</swt.variant>
+	</properties>
 
-    <build>
-        <resources>
-            <resource>
-                <targetPath>icons</targetPath>
-                <directory>icons</directory>
+	<build>
+		<resources>
+			<resource>
+				<targetPath>icons</targetPath>
+				<directory>icons</directory>
+			</resource>
+			<resource>
+				<targetPath>schemas</targetPath>
+				<directory>schemas</directory>
+			</resource>
+			<resource>
+				<targetPath>OSGI-INF</targetPath>
+				<directory>OSGI-INF</directory>
+			</resource>
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>plugin.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<configuration>
+						<skip>false</skip>
+						<pde>true</pde>
+						<buildcommands>
+							<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+							<buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+							<buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+						</buildcommands>
+						<projectnatures>
+							<projectnature>org.eclipse.pde.PluginNature</projectnature>
+							<projectnature>org.eclipse.jdt.core.javanature</projectnature>
+						</projectnatures>
+						<classpathContainers>
+							<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+							<classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
+						</classpathContainers>
+					</configuration>
 
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
-                    <include>plugin.xml</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <configuration>
-                        <skip>false</skip>
-                        <pde>true</pde>
-                        <buildcommands>
-                            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-                            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
-                            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
-                        </buildcommands>
-                        <projectnatures>
-                            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-                            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-                        </projectnatures>
-                        <classpathContainers>
-                            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-                            <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
-                        </classpathContainers>
-                    </configuration>
+				</configuration>
+			</plugin>
 
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.4</version>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<instructions>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+					</instructions>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions> 
+				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal> 
+				</goals> </execution> </executions> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.4</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <manifestLocation>META-INF</manifestLocation>
-                </configuration>
-            </plugin>
-            <!-- <plugin> <artifactId>maven-dependency-plugin </artifactId>
-                <executions> <execution> <id>copy-dependencies</id> <phase>package</phase>
-                <goals> <goal>copy-dependencies</goal> </goals> </execution> </executions>
-                </plugin> -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
+		</plugins>
+	</build>
 
-        </plugins>
-    </build>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- equinox -->
-            <dependency>
-                <groupId>org.eclipse.equinox</groupId>
-                <artifactId>common</artifactId>
-                <version>3.6.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.equinox</groupId>
-                <artifactId>preferences</artifactId>
-                <version>3.4.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.equinox</groupId>
-                <artifactId>security</artifactId>
-                <version>1.1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.osgi</groupId>
-                <artifactId>services</artifactId>
-                <version>3.3.0</version>
-            </dependency>
-
-
-            <!-- CDO -->
-            <dependency>
-                <artifactId>common</artifactId>
-                <groupId>org.eclipse.emf.cdo</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>cdo</artifactId>
-                <groupId>org.eclipse.emf</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>server</artifactId>
-                <groupId>org.eclipse.emf.cdo</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>net4j</artifactId>
-                <groupId>org.eclipse.emf.cdo</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>net4j</artifactId>
-                <groupId>org.eclipse</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>db</artifactId>
-                <groupId>org.eclipse.net4j</groupId>
-                <version>4.0.0</version>
-            </dependency>
-            <dependency>
-                <artifactId>jvm</artifactId>
-                <groupId>org.eclipse.net4j</groupId>
-                <version>4.0.0</version>
-            </dependency>
-            <dependency>
-                <artifactId>db</artifactId>
-                <groupId>org.eclipse.emf.cdo.server</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>net4j</artifactId>
-                <groupId>org.eclipse.emf.cdo.server</groupId>
-                <version>4.0.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>derby</artifactId>
-                <groupId>org.eclipse.net4j.db</groupId>
-                <version>4.0.0</version>
-            </dependency>
+	<dependencyManagement>
+		<dependencies>
+			<!-- equinox -->
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>osgi</artifactId>
+				<version>3.7.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>common</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>preferences</artifactId>
+				<version>3.4.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>security</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>services</artifactId>
+				<version>3.3.0</version>
+			</dependency>
 
 
-            <!-- derby -->
-            <dependency>
-                <artifactId>derby</artifactId>
-                <groupId>org.apache</groupId>
-                <version>10.5.1</version>
-            </dependency>
-
-            <!-- lucene -->
-            <dependency>
-                <artifactId>core</artifactId>
-                <groupId>org.apache.lucene</groupId>
-                <version>2.9.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>misc</artifactId>
-                <groupId>org.apache.lucene</groupId>
-                <version>2.9.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>queries</artifactId>
-                <groupId>org.apache.lucene</groupId>
-                <version>2.9.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>analysis</artifactId>
-                <groupId>org.apache.lucene</groupId>
-                <version>2.9.1</version>
-            </dependency>
-            <dependency>
-                <artifactId>lucene</artifactId>
-                <groupId>org.apache</groupId>
-                <version>2.9.1</version>
-            </dependency>
-
-            <!-- EMF -->
-            <dependency>
-                <groupId>org.eclipse.emf</groupId>
-                <artifactId>common</artifactId>
-                <version>2.7.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.emf</groupId>
-                <artifactId>ecore</artifactId>
-                <version>2.7.0</version>
-            </dependency>
-
-            <!-- misc -->
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>servlet</artifactId>
-                <version>2.5.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>13.0.1</version>
-            </dependency>
+			<!-- CDO -->
+			<dependency>
+				<artifactId>common</artifactId>
+				<groupId>org.eclipse.emf.cdo</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>cdo</artifactId>
+				<groupId>org.eclipse.emf</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>server</artifactId>
+				<groupId>org.eclipse.emf.cdo</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>net4j</artifactId>
+				<groupId>org.eclipse.emf.cdo</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>net4j</artifactId>
+				<groupId>org.eclipse</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>db</artifactId>
+				<groupId>org.eclipse.net4j</groupId>
+				<version>4.0.0</version>
+			</dependency>
+			<dependency>
+				<artifactId>jvm</artifactId>
+				<groupId>org.eclipse.net4j</groupId>
+				<version>4.0.0</version>
+			</dependency>
+			<dependency>
+				<artifactId>db</artifactId>
+				<groupId>org.eclipse.emf.cdo.server</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>net4j</artifactId>
+				<groupId>org.eclipse.emf.cdo.server</groupId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>derby</artifactId>
+				<groupId>org.eclipse.net4j.db</groupId>
+				<version>4.0.0</version>
+			</dependency>
 
 
-            <!-- wicket -->
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-core</artifactId>
-                <version>6.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-extensions</artifactId>
-                <version>6.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-auth-roles</artifactId>
-                <version>6.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-request</artifactId>
-                <version>6.0.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+			<!-- derby -->
+			<dependency>
+				<artifactId>derby</artifactId>
+				<groupId>org.apache</groupId>
+				<version>10.5.1</version>
+			</dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+			<!-- lucene -->
+			<dependency>
+				<artifactId>core</artifactId>
+				<groupId>org.apache.lucene</groupId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>misc</artifactId>
+				<groupId>org.apache.lucene</groupId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>queries</artifactId>
+				<groupId>org.apache.lucene</groupId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>analysis</artifactId>
+				<groupId>org.apache.lucene</groupId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>lucene</artifactId>
+				<groupId>org.apache</groupId>
+				<version>2.9.1</version>
+			</dependency>
+
+			<!-- EMF -->
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>common</artifactId>
+				<version>2.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>ecore</artifactId>
+				<version>2.7.0</version>
+			</dependency>
+
+			<!-- misc -->
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>servlet</artifactId>
+				<version>2.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>13.0.1</version>
+			</dependency>
+
+
+			<!-- wicket -->
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-core</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-extensions</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-auth-roles</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-request</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

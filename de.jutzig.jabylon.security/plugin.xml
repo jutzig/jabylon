@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
->
+<plugin>
    <extension-point id="permission" name="Permission" schema="schema/permission.exsd"/>
    <extension-point id="role" name="Role" schema="schema/role.exsd"/>
    <extension

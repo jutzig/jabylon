@@ -1,95 +1,111 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>rest.ui</artifactId>
-    <packaging>bundle</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>rest.ui</artifactId>
+	<packaging>bundle</packaging>
 
-    <parent>
-        <artifactId>jabylon-parent</artifactId>
-        <groupId>de.jutzig.jabylon</groupId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<artifactId>jabylon-parent</artifactId>
+		<groupId>de.jutzig.jabylon</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>cdo.server</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>cdo.connector</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>properties</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>users</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>resources</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>security</artifactId>
-            <version>${project.version}</version>
-            <type>bundle</type>
-        </dependency>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
+						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-extensions</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-auth-roles</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-request</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>preferences</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.osgi</groupId>
-            <artifactId>services</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>servlet</artifactId>
-        </dependency>
-        <!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId>
-            <version>1.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId> <version>1.13</version> </dependency>
-            <dependency> <groupId>de.agilecoders.wicket</groupId> <artifactId>bootstrap</artifactId>
-            <version>0.6.2</version> </dependency> -->
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>cdo.server</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>cdo.connector</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>properties</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>users</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>resources</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>security</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-auth-roles</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-request</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>preferences</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>servlet</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
+			<version>1.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-core</artifactId> <version>1.13</version> </dependency> 
+			<dependency> <groupId>de.agilecoders.wicket</groupId> <artifactId>bootstrap</artifactId> 
+			<version>0.6.2</version> </dependency> -->
+	</dependencies>
 
 
 </project>
