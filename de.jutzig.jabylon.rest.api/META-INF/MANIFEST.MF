@@ -1,14 +1,25 @@
 Manifest-Version: 1.0
+Export-Package: de.jutzig.jabylon.rest.api;uses:="javax.servlet,org.ec
+ lipse.emf.common.util,org.eclipse.emf.cdo.view,de.jutzig.jabylon.cdo.
+ connector,org.eclipse.emf.cdo.eresource,de.jutzig.jabylon.resources.p
+ ersistence,de.jutzig.jabylon.properties,org.osgi.service.http,org.ecl
+ ipse.emf.ecore,javax.servlet.http,de.jutzig.jabylon.rest.api.json,org
+ .eclipse.emf.cdo.util",de.jutzig.jabylon.rest.api.json;uses:="org.ecl
+ ipse.emf.ecore,org.eclipse.emf.common.util,de.jutzig.jabylon.properti
+ es"
+Built-By: utzig
+Build-Jdk: 1.6.0_22
+Bundle-Version: 1.0.0.SNAPSHOT
+Tool: Bnd-1.15.0
+Bundle-Name: rest.api
+Bnd-LastModified: 1349364574910
+Created-By: Apache Maven Bundle Plugin
 Bundle-ManifestVersion: 2
-Bundle-Name: Rest Api
 Bundle-SymbolicName: de.jutzig.jabylon.rest.api
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: de.jutzig.jabylon.properties;bundle-version="1.0.0",
- de.jutzig.jabylon.cdo.connector;bundle-version="1.0.0",
- de.jutzig.jabylon.cdo.server;bundle-version="1.0.0",
- org.eclipse.emf.cdo;bundle-version="4.0.1",
- de.jutzig.jabylon.resources;bundle-version="1.0.0",
- javax.servlet;bundle-version="2.5.0"
-Import-Package: org.osgi.service.http;version="1.2.1"
-Service-Component: OSGI-INF/api-component.xml
+Import-Package: de.jutzig.jabylon.cdo.connector,de.jutzig.jabylon.prop
+ erties,de.jutzig.jabylon.resources.persistence,javax.servlet;version=
+ "[2.5,3)",javax.servlet.http;version="[2.5,3)",org.eclipse.emf.cdo.er
+ esource;version="[4.0,5)",org.eclipse.emf.cdo.util;version="[4.0,5)",
+ org.eclipse.emf.cdo.view;version="[4.0,5)",org.eclipse.emf.common.uti
+ l,org.eclipse.emf.ecore,org.osgi.service.http;version="[1.2,2)"
+
