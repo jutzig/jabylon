@@ -7,22 +7,20 @@
 package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
-import de.jutzig.jabylon.properties.ProjectVersion;
-import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.properties.Resolvable;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
