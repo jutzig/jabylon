@@ -17,6 +17,8 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
     implements IModel<R>
 {
 
+    private static final long serialVersionUID = 1L;
+
     private Supplier<T> modelSupplier;
     private CDOID id;
 
@@ -44,16 +46,18 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
     }
 
-    private static final class LookupFunction<T> implements Serializable, Function<CDOID, T>
+    private static final class LookupFunction<X> implements Serializable, Function<CDOID, X>
     {
 
         /** field <code>serialVersionUID</code> */
         private static final long serialVersionUID = -7243181664341900603L;
 
+        @SuppressWarnings("unchecked")
         @Override
-        public T apply(CDOID from)
+        public X apply(CDOID from)
         {
-            return Activator.getDefault().getRepositoryLookup().lookup(from);
+            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().lookup(from);
+            return (X)cdoObject;
         }
 
     }

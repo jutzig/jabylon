@@ -37,8 +37,8 @@ public class RepositoryLookupImpl
     @Override
     public <T extends Resolvable< ? , ? >> T lookup(String path)
     {
-        return lookup(URI.createURI(path));
-
+        Resolvable< ? , ? > resolvable = lookup(URI.createURI(path));
+        return (T)resolvable;
     }
 
 
@@ -57,10 +57,12 @@ public class RepositoryLookupImpl
 
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends Resolvable< ? , ? >> T lookup(List<String> path)
     {
-        return lookup(URI.createHierarchicalURI(path.toArray(new String[]{}), null, null));
+        Resolvable< ? , ? > lookup = lookup(URI.createHierarchicalURI(path.toArray(new String[]{}), null, null));
+        return (T)lookup;
     }
 
     @Override
