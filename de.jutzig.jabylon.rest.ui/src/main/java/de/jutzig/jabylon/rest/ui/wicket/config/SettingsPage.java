@@ -6,7 +6,6 @@ package de.jutzig.jabylon.rest.ui.wicket.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -14,6 +13,7 @@ import org.eclipse.core.runtime.RegistryFactory;
 
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
+import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 
 
 /**
@@ -27,8 +27,7 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
 		
-		AjaxTabbedPanel<ITab> tabContainer = new AjaxTabbedPanel<ITab>("tabls", loadTabExtensions());
-//		BootstrapAjaxTabbedPanel<ITab> tabContainer = new Bootstr<ITab>("tabs", loadTabExtensions());
+		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", loadTabExtensions());
 		add(tabContainer);
 		tabContainer.setOutputMarkupId(true);
 	}
