@@ -57,7 +57,7 @@
 						</projectnatures>
 						<classpathContainers>
 							<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-							<classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer>
+							<!-- <classpathContainer>org.eclipse.pde.core.requiredPlugins</classpathContainer> -->
 						</classpathContainers>
 					</configuration>
 
