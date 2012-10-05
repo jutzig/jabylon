@@ -17,6 +17,7 @@ public class ConfigTab implements ITab {
 	public ConfigTab(String title, List<ConfigSection<?>> sections) {
 		this.title = title;
 		this.sections = sections;
+		
 	}
 	
 	@Override
@@ -27,12 +28,13 @@ public class ConfigTab implements ITab {
 	@Override
 	public WebMarkupContainer getPanel(String containerId) {	
 		
-		return new ConfigTabPanel(containerId, sections, null);
+		ConfigTabPanel<Void> panel = new ConfigTabPanel(containerId, sections, null);
+		return panel;
 	}
 
 	@Override
 	public boolean isVisible() {
-		return true;
+		return sections!=null && !sections.isEmpty();
 	}
 
 }

@@ -1,20 +1,28 @@
 package de.jutzig.jabylon.common.util.config;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 import de.jutzig.jabylon.users.User;
 
 public class DynamicConfigUtil {
 
-	private static List<IConfigurationElement> configSections;
-	private static List<IConfigurationElement> configTabs;
+	private static Supplier<List<IConfigurationElement>> configSections;
+	private static Supplier<List<IConfigurationElement>> configTabs;
 
+	
+	static{
+		configTabs = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.configTab"))));
+		configSections = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.config"))));
+	}
+	
 	private DynamicConfigUtil() {
 		// hide utility constructor
 	}
@@ -62,39 +70,45 @@ public class DynamicConfigUtil {
 	}
 
 	public static List<IConfigurationElement> getConfigSections() {
-		if (configSections == null) {
-			configSections = new ArrayList<IConfigurationElement>();
-			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.config");
-			for (IConfigurationElement iConfigurationElement : elements) {
-				configSections.add(iConfigurationElement);
-			}
-		}
-		return configSections;
+		return configSections.get();
 	}
 
 	public static List<IConfigurationElement> getConfigTabs() {
-		if (configTabs == null) {
-			configTabs = new ArrayList<IConfigurationElement>();
-			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.configTab");
-			for (IConfigurationElement iConfigurationElement : elements) {
-				configTabs.add(iConfigurationElement);
-			}
-			Collections.sort(configTabs, new Comparator<IConfigurationElement>() {
+//		if (configTabs == null) {
+//			configTabs = new ArrayList<IConfigurationElement>();
+//			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.configTab");
+//			for (IConfigurationElement iConfigurationElement : elements) {
+//				configTabs.add(iConfigurationElement);
+//			}
+//			Collections.sort(configTabs, new Comparator<IConfigurationElement>() {
+//
+//				@Override
+//				public int compare(IConfigurationElement element1, IConfigurationElement element2) {
+//					int precedence1 = 0;
+//					int precedence2 = 0;
+//					String pre1 = element1.getAttribute("precedence");
+//					String pre2 = element2.getAttribute("precedence");
+//					if (pre1 != null && !pre1.isEmpty())
+//						precedence1 = Integer.valueOf(pre1);
+//					if (pre2 != null && !pre2.isEmpty())
+//						precedence2 = Integer.valueOf(pre2);
+//					return precedence2 - precedence1;
+//				}
+//			});
+//		}
+		return configTabs.get();
+	}
+}
 
-				@Override
-				public int compare(IConfigurationElement element1, IConfigurationElement element2) {
-					int precedence1 = 0;
-					int precedence2 = 0;
-					String pre1 = element1.getAttribute("precedence");
-					String pre2 = element2.getAttribute("precedence");
-					if (pre1 != null && !pre1.isEmpty())
-						precedence1 = Integer.valueOf(pre1);
-					if (pre2 != null && !pre2.isEmpty())
-						precedence2 = Integer.valueOf(pre2);
-					return precedence2 - precedence1;
-				}
-			});
+class IConfigurationElementLoader implements Function<String, List<IConfigurationElement>>
+{
+	public List<IConfigurationElement> apply(String extensionPoint)
+	{
+		List<IConfigurationElement> result = new ArrayList<IConfigurationElement>();
+		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint);
+		for (IConfigurationElement iConfigurationElement : elements) {
+			result.add(iConfigurationElement);
 		}
-		return configTabs;
+		return result;
 	}
 }

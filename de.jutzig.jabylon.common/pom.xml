@@ -32,5 +32,9 @@
 	    	<groupId>org.eclipse.emf</groupId>
 	    	<artifactId>common</artifactId>
 	    </dependency>
+	    <dependency>
+	    	<groupId>com.google.guava</groupId>
+	    	<artifactId>guava</artifactId>
+	    </dependency>
 	</dependencies>
 </project>

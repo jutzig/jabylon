@@ -63,6 +63,12 @@
 			<version>${project.version}</version>
 			<type>bundle</type>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.wicket</groupId>

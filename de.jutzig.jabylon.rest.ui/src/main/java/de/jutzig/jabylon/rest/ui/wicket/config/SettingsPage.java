@@ -4,13 +4,18 @@
 package de.jutzig.jabylon.rest.ui.wicket.config;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
+import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
@@ -27,7 +32,9 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
 		
-		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", loadTabExtensions());
+		List<ITab> extensions = loadTabExtensions();
+		
+		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", extensions);
 		add(tabContainer);
 		tabContainer.setOutputMarkupId(true);
 	}
@@ -175,24 +182,22 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 	// return result;
 	// }
 	//
-	// private Map<String, IConfigurationElement>
-	// computeVisibleTabs(List<IConfigurationElement> configSections) {
-	// // linked hashmap to retain the precendence order
-	// Map<String, IConfigurationElement> tabs = new LinkedHashMap<String,
-	// IConfigurationElement>();
-	// List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
-	// for (IConfigurationElement tab : tabList) {
-	// tabs.put(tab.getAttribute("tabID"), tab);
-	// }
-	// Set<String> neededTabs = new HashSet<String>();
-	// for (IConfigurationElement element : configSections) {
-	// neededTabs.add(element.getAttribute("tab"));
-	// }
-	// tabs.keySet().retainAll(neededTabs);
-	//
-	// return tabs;
-	//
-	// }
+	private Map<String, IConfigurationElement> computeVisibleTabs(List<IConfigurationElement> configSections) {
+		// linked hashmap to retain the precendence order
+		Map<String, IConfigurationElement> tabs = new LinkedHashMap<String, IConfigurationElement>();
+		List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
+		for (IConfigurationElement tab : tabList) {
+			tabs.put(tab.getAttribute("tabID"), tab);
+		}
+		Set<String> neededTabs = new HashSet<String>();
+		for (IConfigurationElement element : configSections) {
+			neededTabs.add(element.getAttribute("tab"));
+		}
+		tabs.keySet().retainAll(neededTabs);
+
+		return tabs;
+
+	}
 	//
 	// @Override
 	// public boolean isDirty() {
