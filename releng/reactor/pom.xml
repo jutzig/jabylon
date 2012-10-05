@@ -17,8 +17,8 @@
 		<module>../../de.jutzig.jabylon.resources</module>
         <module>../../de.jutzig.jabylon.rest.api</module>
 		<!-- <module>../../de.jutzig.jabylon.review.standard</module> -->
-<!-- 		<module>../../de.jutzig.jabylon.scheduler</module>
-		<module>../../de.jutzig.jabylon.scheduler.ui</module> -->
+ 		<module>../../de.jutzig.jabylon.scheduler</module>
+<!--		<module>../../de.jutzig.jabylon.scheduler.ui</module> -->
 		<module>../../de.jutzig.jabylon.security</module>
 <!-- 		<module>../../de.jutzig.jabylon.team.git</module>
 		<module>../../de.jutzig.jabylon.ui</module> -->
