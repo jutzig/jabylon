@@ -8,7 +8,7 @@ import org.osgi.service.prefs.Preferences;
 
 public interface ConfigSection<T> extends Serializable{
 	
-	WebMarkupContainer createContents();
+	WebMarkupContainer createContents(String id, IModel<T> input);
 	
 	void init(IModel<T> input, Preferences config);
 	

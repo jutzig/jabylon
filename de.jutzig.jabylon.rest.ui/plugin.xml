@@ -78,9 +78,16 @@
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
     <section
+          name="General Workspace Settings"
+          objectClass="de.jutzig.jabylon.properties.Workspace"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralWorkspaceConfig"
+          tab="general">
+    </section>
+    <section
+          name="General Project Settings"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralProjectConfig"
-          tab="de.jutzig.jabylon.rest.ui.project">
+          tab="general">
     </section>
  </extension>
 </plugin>
