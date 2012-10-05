@@ -12,11 +12,13 @@ public class ConfigTab implements ITab {
 	private static final long serialVersionUID = 1L;
 	private String title;
 	private List<ConfigSection<?>> sections;
+	private IModel<?> model;
 
 	
-	public ConfigTab(String title, List<ConfigSection<?>> sections) {
+	public ConfigTab(String title, List<ConfigSection<?>> sections, IModel<?> model) {
 		this.title = title;
 		this.sections = sections;
+		this.model = model;
 		
 	}
 	
@@ -28,7 +30,7 @@ public class ConfigTab implements ITab {
 	@Override
 	public WebMarkupContainer getPanel(String containerId) {	
 		
-		ConfigTabPanel<Void> panel = new ConfigTabPanel(containerId, sections, null);
+		ConfigTabPanel<Void> panel = new ConfigTabPanel(containerId, sections, model);
 		return panel;
 	}
 

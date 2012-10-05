@@ -12,13 +12,18 @@ import java.util.Set;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
+import de.jutzig.jabylon.users.User;
 
 
 /**
@@ -39,18 +44,44 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 		tabContainer.setOutputMarkupId(true);
 	}
 
-	private List<ITab> loadTabExtensions() {
-		List<ITab> extensions = new ArrayList<ITab>();
-		IConfigurationElement[] configurationElements = RegistryFactory.getRegistry().getConfigurationElementsFor(
-				"de.jutzig.jabylon.rest.ui.configTab");
 
-		for (IConfigurationElement element : configurationElements) {
 
-			String name = element.getAttribute("name");
-			extensions.add(new ConfigTab(name, new ArrayList<ConfigSection<?>>()));
-
+	private User getUser() {
+		User user = null;
+		if (getSession() instanceof CDOAuthenticatedSession) {
+			CDOAuthenticatedSession session = (CDOAuthenticatedSession) getSession();
+			user = session.getUser();
 		}
+		return user;
+	}
 
+	private List<ITab> loadTabExtensions() {
+	
+		List<IConfigurationElement> configurationElements = DynamicConfigUtil.getConfigTabs();
+		ListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);		
+		
+		List<IConfigurationElement> elements = DynamicConfigUtil.getApplicableElements(getModelObject(), getUser());
+		for (IConfigurationElement element : elements) {
+			String id = element.getAttribute("tab");
+			ConfigSection<?> extension;
+			try {
+				extension = (ConfigSection<?>) element.createExecutableExtension("section");
+				sections.put(id, extension);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		List<ITab> extensions = new ArrayList<ITab>();
+		
+		for (IConfigurationElement element : configurationElements) {
+			String name = element.getAttribute("name");
+			String id = element.getAttribute("tabID");
+			extensions.add(new ConfigTab(name, sections.removeAll(id),getModel()));
+		}
+		if(!sections.isEmpty())
+			//TODO: logging
+			System.out.println("unmapped elements left");
 		return extensions;
 	}
 
