@@ -85,14 +85,17 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		else
 			hrefBuilder.append(endsOnSlash ? resolvable.getName() : resolvable.getParent().getName() + "/" + resolvable.getName());
 
-		// squash more children, if there's only one
 		Resolvable<?, ?> folder = (Resolvable<?, ?>) resolvable;
-		while (folder.getChildren().size() == 1) {
-			folder = folder.getChildren().get(0);
-			hrefBuilder.append("/");
-			hrefBuilder.append(folder.getName());
-			name.append("/");
-			name.append(labelSwitch.doSwitch(folder));
+		if(folder instanceof ResourceFolder)
+		{
+			// if it is a folder, squash more children, if there is only one
+			while (folder.getChildren().size() == 1) {
+				folder = folder.getChildren().get(0);
+				hrefBuilder.append("/");
+				hrefBuilder.append(folder.getName());
+				name.append("/");
+				name.append(labelSwitch.doSwitch(folder));
+			}			
 		}
 		LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
 		return target;
