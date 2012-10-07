@@ -89,5 +89,11 @@
           section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralProjectConfig"
           tab="general">
     </section>
+    <section
+          name="Scanning"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.ScanningConfigSection$ScanningConfig"
+          tab="scanning">
+    </section>
  </extension>
 </plugin>
