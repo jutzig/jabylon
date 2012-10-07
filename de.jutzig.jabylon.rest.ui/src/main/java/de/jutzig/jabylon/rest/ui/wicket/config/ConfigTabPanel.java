@@ -13,9 +13,13 @@ import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.view.CDOView;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
+import de.jutzig.jabylon.common.util.DelegatingPreferences;
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
@@ -25,6 +29,7 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 
 	public ConfigTabPanel(String id, final List<ConfigSection<T>> sections, final IModel<T> model) {
 		super(id, model);
+		final Preferences preferences = new DelegatingPreferences(PreferencesUtil.scopeFor(getModelObject()));
 		Form<T> form = new Form<T>("form", model) {
 			@Override
 			protected void onSubmit() {
@@ -35,8 +40,13 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 					CDOTransaction transaction = (CDOTransaction) cdoView;
 					try {
 						transaction.commit();
+						preferences.flush();
 						getSession().success("Saved successfully");
 					} catch (CommitException e) {
+						// TODO Auto-generated catch block
+						getSession().error(e.getMessage());
+						e.printStackTrace();
+					} catch (BackingStoreException e) {
 						// TODO Auto-generated catch block
 						getSession().error(e.getMessage());
 						e.printStackTrace();
@@ -51,11 +61,12 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 				super.onSubmit();
 			}
 		};
+		
 		ListView<ConfigSection<T>> view = new ListView<ConfigSection<T>>("sections", sections) {
 			@Override
 			protected void populateItem(ListItem<ConfigSection<T>> arg0) {
 				ConfigSection<T> object = arg0.getModelObject();
-				WebMarkupContainer container = object.createContents("content", model);
+				WebMarkupContainer container = object.createContents("content", model, preferences);
 				arg0.add(container);
 			}
 		};

@@ -12,20 +12,15 @@ public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Workspace> input) {
-		return new WorkspaceConfigSection(id, input);
+	public WebMarkupContainer createContents(String id, IModel<Workspace> input, Preferences prefs) {
+		return new WorkspaceConfigSection(id, input, prefs);
 	}
 
 	@Override
-	public void commit(Preferences config) {
+	public void commit(IModel<Workspace> input, Preferences config) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	protected void init(Preferences config) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

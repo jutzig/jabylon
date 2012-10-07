@@ -19,20 +19,16 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Project> input) {
+	public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences prefs) {
 		return new ProjectConfigSection(id, input);
-	}
-	
-	@Override
-	public void commit(Preferences config) {
-		// TODO Auto-generated method stub
-		//TODO: rename project on filesystem
-		
 	}
 
 	@Override
-	protected void init(Preferences config) {
+	public void commit(IModel<Project> input, Preferences config) {
 		// TODO Auto-generated method stub
+		// TODO rename on filesystem 
 		
 	}
+	
+
 }

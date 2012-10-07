@@ -17,14 +17,6 @@ public abstract class AbstractConfigSection<T> implements ConfigSection<T>{
 	
 	private IModel<T> model;
 
-	@Override
-	public void init(IModel<T> input, Preferences config) {
-		model = input;
-		init(config);
-	}
-
-	protected abstract void init(Preferences config);
-
 	
 	public T getDomainObject() {
 		if(model==null)
