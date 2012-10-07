@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.common.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -16,9 +18,11 @@ import org.osgi.service.prefs.Preferences;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class DelegatingPreferences implements Preferences {
+public class DelegatingPreferences implements Preferences, Serializable {
 
-	private Preferences delegate;
+	private static final long serialVersionUID = -2100265681534715500L;
+	private transient Preferences delegate;
+	private String absolutePath;
 	private boolean dirty;
 	private List<DelegatingPreferences> children;
 	private Map<String, Object> values;
@@ -26,6 +30,7 @@ public class DelegatingPreferences implements Preferences {
 	public DelegatingPreferences(Preferences delegate) {
 		super();
 		this.delegate = delegate;
+		absolutePath = delegate.absolutePath();
 		children = new ArrayList<DelegatingPreferences>();
 		values = new HashMap<String, Object>();
 	}
@@ -38,7 +43,7 @@ public class DelegatingPreferences implements Preferences {
 	public String get(String key, String def) {
 		if(values.containsKey(key))
 			return (String) values.get(key);
-		return delegate.get(key, def);
+		return getDelegate().get(key, def);
 	}
 
 	public void remove(String key) {
@@ -47,90 +52,90 @@ public class DelegatingPreferences implements Preferences {
 	}
 
 	public void clear() throws BackingStoreException {
-		delegate.clear();
+		getDelegate().clear();
 		dirty = true;
 	}
 
 	public void putInt(String key, int value) {
-		delegate.putInt(key, value);
+		getDelegate().putInt(key, value);
 		dirty = true;
 	}
 
 	public int getInt(String key, int def) {
 		if(values.containsKey(key))
 			return (Integer) values.get(key);
-		return delegate.getInt(key, def);
+		return getDelegate().getInt(key, def);
 	}
 
 	public void putLong(String key, long value) {
-		delegate.putLong(key, value);
+		getDelegate().putLong(key, value);
 		dirty = true;
 	}
 
 	public long getLong(String key, long def) {
 		if(values.containsKey(key))
 			return (Long) values.get(key);
-		return delegate.getLong(key, def);
+		return getDelegate().getLong(key, def);
 	}
 
 	public void putBoolean(String key, boolean value) {
-		delegate.putBoolean(key, value);
+		getDelegate().putBoolean(key, value);
 		dirty = true;
 	}
 
 	public boolean getBoolean(String key, boolean def) {
 		if(values.containsKey(key))
 			return (Boolean) values.get(key);
-		return delegate.getBoolean(key, def);
+		return getDelegate().getBoolean(key, def);
 	}
 
 	public void putFloat(String key, float value) {
-		delegate.putFloat(key, value);
+		getDelegate().putFloat(key, value);
 		dirty = true;
 	}
 
 	public float getFloat(String key, float def) {
 		if(values.containsKey(key))
 			return (Float) values.get(key);
-		return delegate.getFloat(key, def);
+		return getDelegate().getFloat(key, def);
 	}
 
 	public void putDouble(String key, double value) {
-		delegate.putDouble(key, value);
+		getDelegate().putDouble(key, value);
 		dirty = true;
 	}
 
 	public double getDouble(String key, double def) {
 		if(values.containsKey(key))
 			return (Double) values.get(key);
-		return delegate.getDouble(key, def);
+		return getDelegate().getDouble(key, def);
 	}
 
 	public void putByteArray(String key, byte[] value) {
 		
-		delegate.putByteArray(key, value);
+		getDelegate().putByteArray(key, value);
 		dirty = true;
 	}
 
 	public byte[] getByteArray(String key, byte[] def) {
 		if(values.containsKey(key))
 			return (byte[]) values.get(key);
-		return delegate.getByteArray(key, def);
+		return getDelegate().getByteArray(key, def);
 	}
 
 	public String[] keys() throws BackingStoreException {
 		Set<String> keys = new HashSet<String>(values.keySet());
-		keys.addAll(Arrays.asList(delegate.keys()));
+		keys.addAll(Arrays.asList(getDelegate().keys()));
 		return keys.toArray(new String[keys.size()]);
 	}
 
 	public String[] childrenNames() throws BackingStoreException {
 		
-		return delegate.childrenNames();
+		return getDelegate().childrenNames();
 	}
 
 	public Preferences parent() {
-		return delegate.parent();
+		return getDelegate().parent();
 	}
 
 	public Preferences node(String pathName) {
@@ -142,26 +147,26 @@ public class DelegatingPreferences implements Preferences {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		DelegatingPreferences child = new DelegatingPreferences(delegate.node(pathName));
+		DelegatingPreferences child = new DelegatingPreferences(getDelegate().node(pathName));
 		children.add(child);
 		return child;
 	}
 
 	public boolean nodeExists(String pathName) throws BackingStoreException {
-		return delegate.nodeExists(pathName);
+		return getDelegate().nodeExists(pathName);
 	}
 
 	public void removeNode() throws BackingStoreException {
 		dirty = true;
-		delegate.removeNode();
+		getDelegate().removeNode();
 	}
 
 	public String name() {
-		return delegate.name();
+		return getDelegate().name();
 	}
 
 	public String absolutePath() {
-		return delegate.absolutePath();
+		return getDelegate().absolutePath();
 	}
 
 	public void flush() throws BackingStoreException {
@@ -171,12 +176,12 @@ public class DelegatingPreferences implements Preferences {
 		for (DelegatingPreferences child : children) {
 			child.flush();
 		}
-		delegate.flush();
+		getDelegate().flush();
 		dirty = false;
 	}
 
 	public void sync() throws BackingStoreException {
-		delegate.sync();
+		getDelegate().sync();
 	}
 
 	public boolean isDirty() {
@@ -192,22 +197,30 @@ public class DelegatingPreferences implements Preferences {
 
 	protected void setValue(String key, Object value) {
 		if (value instanceof String)
-			delegate.put(key, (String) value);
+			getDelegate().put(key, (String) value);
 		else if (value instanceof Boolean)
-			delegate.putBoolean(key, (Boolean) value);
+			getDelegate().putBoolean(key, (Boolean) value);
 		else if (value instanceof byte[])
-			delegate.putByteArray(key, (byte[]) value);
+			getDelegate().putByteArray(key, (byte[]) value);
 		else if (value instanceof Double)
-			delegate.putDouble(key, (Double) value);
+			getDelegate().putDouble(key, (Double) value);
 		else if (value instanceof Float)
-			delegate.putFloat(key, (Float) value);
+			getDelegate().putFloat(key, (Float) value);
 		else if (value instanceof Integer)
-			delegate.putInt(key, (Integer) value);
+			getDelegate().putInt(key, (Integer) value);
 		else if (value instanceof Long)
-			delegate.putLong(key, (Long) value);
+			getDelegate().putLong(key, (Long) value);
 		else if(value==null)
-			delegate.put(key, null);
+			getDelegate().put(key, null);
 		else throw new IllegalArgumentException("Object type "+value+" not supported");
+	}
+
+	private Preferences getDelegate() {
+		if(delegate==null)
+		{
+			delegate = InstanceScope.INSTANCE.getNode(absolutePath);
+		}
+		return delegate;
 	}
 
 }
