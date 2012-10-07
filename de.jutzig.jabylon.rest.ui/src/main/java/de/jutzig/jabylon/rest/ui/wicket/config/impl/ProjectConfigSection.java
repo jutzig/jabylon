@@ -1,15 +1,13 @@
 package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 
 import de.jutzig.jabylon.properties.Project;
-import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
-import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 
 public class ProjectConfigSection extends GenericPanel<Project> {
 
@@ -17,6 +15,9 @@ public class ProjectConfigSection extends GenericPanel<Project> {
 
 	public ProjectConfigSection(String id, IModel<Project> model) {
 		super(id, model);
+		IModel<String> nameProperty = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.RESOLVABLE__NAME); 	
+		TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
+		add(field);
 //		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN); 
 //		ListView<ProjectVersion> project = new ListView<ProjectVersion>("children", provider) {
 //

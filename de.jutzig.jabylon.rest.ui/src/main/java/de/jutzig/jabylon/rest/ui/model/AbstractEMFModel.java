@@ -19,8 +19,8 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
     private static final long serialVersionUID = 1L;
 
-    private Supplier<T> modelSupplier;
-    private CDOID id;
+    protected Supplier<T> modelSupplier;
+    protected CDOID id;
 
     public AbstractEMFModel(T model)
     {
@@ -28,6 +28,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
         id=model.cdoID();
         this.modelSupplier = Suppliers.memoize(Suppliers.ofInstance(model));
     }
+    
 
     protected T getDomainObject()
     {

@@ -17,14 +17,20 @@ import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 
 
+	private static final long serialVersionUID = 1L;
+	
 	private EObjectModel<T> model;
 
 	public GenericPage(PageParameters parameters) {
 		super(parameters);
 		CustomFeedbackPanel feedbackPanel = new CustomFeedbackPanel("feedbackPanel");
 		add(feedbackPanel);
-		model = new EObjectModel<T>(resolveModel(parameters));
+		model = createModel(resolveModel(parameters));
 		add(new NavbarPanel<Resolvable<?,?>>("navbar", model.getObject(), parameters));
+	}
+
+	protected EObjectModel<T> createModel(T object) {
+		return new EObjectModel<T>(object);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,9 +46,13 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 			if (value.toString() != null && !value.toString().isEmpty())
 				segments.add(value.toString());
 		}
-		Resolvable< ? , ? > lookup = Activator.getDefault().getRepositoryLookup().lookup(segments);
+		Resolvable< ? , ? > lookup = doLookup(segments);
 		return (T)lookup;
 
+	}
+
+	protected Resolvable<?, ?> doLookup(List<String> segments) {
+		return Activator.getDefault().getRepositoryLookup().lookup(segments);
 	}
 
 

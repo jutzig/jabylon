@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.URI;
 
@@ -70,6 +71,14 @@ public class RepositoryLookupImpl
     {
         return (T)workspace.resolveChild(uri);
     }
+
+
+
+	@Override
+	public <T extends CDOObject> T lookupWithTransaction(CDOID id) {
+		CDOTransaction transaction = connector.openTransaction();
+		return (T) transaction.getObject(id);
+	}
 }
 
 

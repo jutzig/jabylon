@@ -26,6 +26,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 	@Override
 	public void commit(Preferences config) {
 		// TODO Auto-generated method stub
+		//TODO: rename project on filesystem
 		
 	}
 

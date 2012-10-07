@@ -18,6 +18,8 @@ public interface RepositoryLookup
     <T extends Resolvable<?, ?>> T lookup(URI uri);
 
     <T extends CDOObject> T lookup(CDOID id);
+    
+    <T extends CDOObject> T lookupWithTransaction(CDOID id);
 
 }
 

@@ -6,16 +6,19 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.eclipse.emf.cdo.CDOObject;
 
-public class ConfigTab implements ITab {
+import de.jutzig.jabylon.properties.Resolvable;
+
+public class ConfigTab <T extends Resolvable<?, ?>> implements ITab {
 
 	private static final long serialVersionUID = 1L;
 	private String title;
-	private List<ConfigSection<?>> sections;
-	private IModel<?> model;
+	private List<ConfigSection<T>> sections;
+	private IModel<T> model;
 
 	
-	public ConfigTab(String title, List<ConfigSection<?>> sections, IModel<?> model) {
+	public ConfigTab(String title, List<ConfigSection<T>> sections, IModel<T> model) {
 		this.title = title;
 		this.sections = sections;
 		this.model = model;
@@ -30,7 +33,7 @@ public class ConfigTab implements ITab {
 	@Override
 	public WebMarkupContainer getPanel(String containerId) {	
 		
-		ConfigTabPanel<Void> panel = new ConfigTabPanel(containerId, sections, model);
+		ConfigTabPanel panel = new ConfigTabPanel(containerId, sections, model);
 		return panel;
 	}
 

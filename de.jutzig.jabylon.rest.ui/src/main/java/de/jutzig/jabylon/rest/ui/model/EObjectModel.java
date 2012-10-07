@@ -1,6 +1,8 @@
 package de.jutzig.jabylon.rest.ui.model;
 
+import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 public class EObjectModel<T extends CDOObject> extends AbstractEMFModel<T, T> {
 
@@ -21,6 +23,11 @@ public class EObjectModel<T extends CDOObject> extends AbstractEMFModel<T, T> {
     public void setObject(T object)
     {
         setDomainObject(object);
+    }
+    
+    public <X> IModel<X> forProperty(EStructuralFeature feature)
+    {
+    	return new EObjectPropertyModel<X, T>(this, feature);
     }
 
 }

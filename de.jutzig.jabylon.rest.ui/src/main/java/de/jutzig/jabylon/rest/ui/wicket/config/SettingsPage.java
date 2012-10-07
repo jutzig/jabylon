@@ -20,6 +20,9 @@ import com.google.common.collect.ListMultimap;
 
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.rest.ui.Activator;
+import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
@@ -44,7 +47,11 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 		tabContainer.setOutputMarkupId(true);
 	}
 
-
+	@Override
+	protected EObjectModel<T> createModel(T object) {
+		return new WritableEObjectModel<T>(object);
+	}
+	
 
 	private User getUser() {
 		User user = null;
