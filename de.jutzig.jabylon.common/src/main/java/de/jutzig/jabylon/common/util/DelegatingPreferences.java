@@ -211,7 +211,7 @@ public class DelegatingPreferences implements Preferences, Serializable {
 		else if (value instanceof Long)
 			getDelegate().putLong(key, (Long) value);
 		else if(value==null)
-			getDelegate().put(key, null);
+			getDelegate().remove(key);
 		else throw new IllegalArgumentException("Object type "+value+" not supported");
 	}
 
