@@ -8,11 +8,11 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -24,8 +24,9 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 
 	public WorkspaceConfigSection(String id, IModel<Workspace> object) {
 		super(id, object);
-		
-		ListView<Project> project = new ListView<Project>("projects",getModelObject().getChildren()) {
+
+		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+		ListView<Project> project = new ListView<Project>("projects",provider) {
 
 			private static final long serialVersionUID = 1L;
 

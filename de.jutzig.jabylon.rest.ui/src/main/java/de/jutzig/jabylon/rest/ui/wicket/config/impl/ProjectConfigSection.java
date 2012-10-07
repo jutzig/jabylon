@@ -8,6 +8,8 @@ import org.apache.wicket.model.IModel;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 
 public class ProjectConfigSection extends GenericPanel<Project> {
 
@@ -15,7 +17,8 @@ public class ProjectConfigSection extends GenericPanel<Project> {
 
 	public ProjectConfigSection(String id, IModel<Project> model) {
 		super(id, model);
-		ListView<ProjectVersion> project = new ListView<ProjectVersion>("children", getModelObject().getChildren()) {
+		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN); 
+		ListView<ProjectVersion> project = new ListView<ProjectVersion>("children", provider) {
 
 			private static final long serialVersionUID = 1L;
 

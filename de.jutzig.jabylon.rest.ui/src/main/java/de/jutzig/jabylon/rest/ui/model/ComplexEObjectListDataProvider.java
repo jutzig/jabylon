@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
 public class ComplexEObjectListDataProvider<R extends CDOObject>
-    extends AbstractEMFModel<CDOObject, R>
+    extends AbstractEMFModel<CDOObject, List<R>>
     implements IDataProvider<R>
 {
 
@@ -53,26 +53,27 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     }
 
 
-    @Override
-    public R getObject()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
-    @Override
-    public void setObject(R object)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
 
     @Override
     public IModel<R> model(R object)
     {
         return new EObjectModel<R>(object);
     }
+
+	@Override
+	public void setObject(List<R> object) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<R> getObject() {
+		
+        CDOObject model = getDomainObject();
+        EStructuralFeature feature = model.eClass().getEStructuralFeature(featureName);
+        List<R> result = (List<R>)model.eGet(feature);
+		return result;
+	}
 
 }
