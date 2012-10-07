@@ -1,34 +1,30 @@
 <html xmlns:wicket="http://wicket.apache.org">
 
 <wicket:panel>
-
-	<div class="well" wicket:id="children">
-		<h4 wicket:id="name"></h4>
-		Project Description lorem ipsum dolor sit amet, consetetur sadipscing
-		elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-		magna aliquyam
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<button type="button" class="btn btn-primary">
-							<i class="icon-edit"></i> Edit
-						</button>
-					</td>
-					<td>
-						<button type="button" class="btn">
-							<i class="icon-download-alt"></i> Download
-						</button>
-					</td>
-					<td>
-						<button type="button" class="btn btn-danger">
-							<i class="icon-remove"></i> Remove
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="control-group">
+		<label class="control-label" for="inputName">Name</label>
+		<div class="controls">
+			<input type="text" id="inputName" placeholder="Project Name">
+		</div>
 	</div>
-
+	<div class="control-group">
+		<label class="control-label" for="inputType">Project Type</label>
+		<div class="controls">
+			<select id="inputType">
+				<option>Java Properties</option>
+				<option>Java Properties Unicode</option>
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="inputTeamProvider">Team Provider</label>
+		<div class="controls">
+			<select id="inputTeamProvider">
+				<option>None</option>
+				<option>Git</option>
+				<option>CVS</option>
+			</select>
+		</div>
+	</div>
 </wicket:panel>
 </html>

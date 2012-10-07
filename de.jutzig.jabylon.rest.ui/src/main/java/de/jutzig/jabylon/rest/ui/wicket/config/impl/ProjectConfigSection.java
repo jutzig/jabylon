@@ -17,17 +17,17 @@ public class ProjectConfigSection extends GenericPanel<Project> {
 
 	public ProjectConfigSection(String id, IModel<Project> model) {
 		super(id, model);
-		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN); 
-		ListView<ProjectVersion> project = new ListView<ProjectVersion>("children", provider) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(ListItem<ProjectVersion> item) {
-				item.add(new Label("name", item.getModelObject().getName()));
-			}
-		};
-		add(project);
+//		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN); 
+//		ListView<ProjectVersion> project = new ListView<ProjectVersion>("children", provider) {
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			protected void populateItem(ListItem<ProjectVersion> item) {
+//				item.add(new Label("name", item.getModelObject().getName()));
+//			}
+//		};
+//		add(project);
 	}
 
 }
