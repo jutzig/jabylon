@@ -74,6 +74,10 @@
           name="Team"
           tabID="team">
     </tab>
+    <tab
+          name="Versions"
+          tabID="versions">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -94,6 +98,12 @@
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.impl.ScanningConfigSection$ScanningConfig"
           tab="scanning">
+    </section>
+    <section
+          name="Versions"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.ProjectVersionsConfigSection$VersionsConfig"
+          tab="versions">
     </section>
  </extension>
 </plugin>
