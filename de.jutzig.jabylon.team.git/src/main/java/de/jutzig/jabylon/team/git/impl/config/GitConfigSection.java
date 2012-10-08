@@ -34,12 +34,5 @@ public class GitConfigSection extends AbstractConfigSection<Project>{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public boolean isVisible(IModel<Project> input, Preferences config) {
-//		return gitSelected(input);
-		return true;
-	}
-
 
 }
