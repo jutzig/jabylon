@@ -43,6 +43,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.osgi.service.prefs.Preferences;
 
+import de.jutzig.jabylon.common.team.TeamProvider;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.DiffKind;
 import de.jutzig.jabylon.properties.Project;
@@ -52,7 +53,6 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.team.git.impl.util.ProgressMonitorWrapper;
-import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class GitTeamProvider implements TeamProvider {
 

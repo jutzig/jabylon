@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.ui.team;
+package de.jutzig.jabylon.common.team;
 
 import java.io.IOException;
 import java.util.Collection;
