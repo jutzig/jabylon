@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
 
-import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
+import de.jutzig.jabylon.common.util.IConfigurationElementLoader;
 import de.jutzig.jabylon.users.User;
 
 public class DynamicConfigUtil {
@@ -97,18 +96,5 @@ public class DynamicConfigUtil {
 //			});
 //		}
 		return configTabs.get();
-	}
-}
-
-class IConfigurationElementLoader implements Function<String, List<IConfigurationElement>>
-{
-	public List<IConfigurationElement> apply(String extensionPoint)
-	{
-		List<IConfigurationElement> result = new ArrayList<IConfigurationElement>();
-		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint);
-		for (IConfigurationElement iConfigurationElement : elements) {
-			result.add(iConfigurationElement);
-		}
-		return result;
 	}
 }
