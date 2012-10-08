@@ -26,16 +26,6 @@ public class ScanningConfigSection extends GenericPanel<Project> {
 		PreferencesPropertyModel templateLocaleModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
 		add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
 	}
-	
-//	@Override
-//	protected void init(Preferences config) {
-//		PreferencesItem item = new PreferencesItem(config);
-//		item.addProperty(PreferencesUtil.SCAN_CONFIG_INCLUDE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__INCLUDE.getDefaultValueLiteral());
-//		item.addProperty(PreferencesUtil.SCAN_CONFIG_EXCLUDE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__EXCLUDE.getDefaultValueLiteral());
-//		item.addProperty(PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, String.class, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
-//		form.setItemDataSource(item);
-//
-//	}
 
 	public static class ScanningConfig extends AbstractConfigSection<Project> {
 
@@ -53,6 +43,4 @@ public class ScanningConfigSection extends GenericPanel<Project> {
 		}
 
 	}
-
-	
 }
