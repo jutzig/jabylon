@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.jutzig.jabylon.team.git</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<artifactId>team.git</artifactId>
+	<packaging>bundle</packaging>
 
 	<parent>
 		<groupId>de.jutzig.jabylon</groupId>
@@ -10,4 +10,35 @@
 		<artifactId>jabylon-parent</artifactId>
 		<relativePath>../releng/parent/pom.xml</relativePath>
 	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
+						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>properties</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+	</dependencies>
 </project>
