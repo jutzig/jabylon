@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension
-         point="de.jutzig.jabylon.ui.teamProvider">
+         point="de.jutzig.jabylon.common.teamProvider">
       <teamProvider
             class="de.jutzig.jabylon.team.git.impl.GitTeamProvider"
             description="Git Team Provider"
@@ -10,16 +10,20 @@
       </teamProvider>
    </extension>
    <extension
-         point="de.jutzig.jabylon.ui.config">
-      <configSection
-            id="de.jutzig.jabylon.team.git.config"
+         point="de.jutzig.jabylon.rest.ui.config">
+      <section
+            name="Git"
             objectClass="de.jutzig.jabylon.properties.Project"
             section="de.jutzig.jabylon.team.git.impl.config.GitConfigSection"
-            tab="repository">
-         <permission
-               requires="GLOBAL_EDIT_PROJECTS">
-         </permission>
-      </configSection>
+            tab="git">
+      </section>
+   </extension>
+   <extension
+         point="de.jutzig.jabylon.rest.ui.configTab">
+      <tab
+            name="Git"
+            tabID="git">
+      </tab>
    </extension>
 
 </plugin>
