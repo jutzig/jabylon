@@ -42,13 +42,9 @@ public class ConfigTab <T extends Resolvable<?, ?>> implements ITab {
 
 	@Override
 	public boolean isVisible() {
-		if(sections==null)
+		if(sections==null || sections.isEmpty())
 			return false;
-		for (ConfigSection<T> section : sections) {
-			if(section.isVisible(model, preferences))
-				return true;
-		}
-		return false;
+		return true;
 	}
 
 }

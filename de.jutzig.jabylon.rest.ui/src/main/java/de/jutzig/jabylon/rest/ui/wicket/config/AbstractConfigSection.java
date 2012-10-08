@@ -36,8 +36,7 @@ public abstract class AbstractConfigSection<T> implements ConfigSection<T>{
 	}
 	
 	@Override
-	public boolean isVisible(IModel<T> input, Preferences config) {
+	public boolean hasFormComponents() {
 		return true;
-		
 	}
 }
