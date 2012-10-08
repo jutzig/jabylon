@@ -14,4 +14,6 @@ public interface ConfigSection<T> extends Serializable{
 	
 	void commit(IModel<T> input, Preferences config);
 	
+	boolean isVisible(IModel<T> input, Preferences config);
+	
 }

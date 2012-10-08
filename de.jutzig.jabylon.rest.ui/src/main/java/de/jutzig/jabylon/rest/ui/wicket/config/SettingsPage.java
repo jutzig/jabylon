@@ -14,10 +14,13 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.osgi.service.prefs.Preferences;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import de.jutzig.jabylon.common.util.DelegatingPreferences;
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
@@ -80,11 +83,13 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 			}
 		}
 		List<ITab> extensions = new ArrayList<ITab>();
-		
+		Preferences preferences = new DelegatingPreferences(PreferencesUtil.scopeFor(getModelObject()));
 		for (IConfigurationElement element : configurationElements) {
 			String name = element.getAttribute("name");
 			String id = element.getAttribute("tabID");
-			extensions.add(new ConfigTab(name, sections.removeAll(id),getModel()));
+			ConfigTab tab = new ConfigTab(name, sections.removeAll(id),getModel(), preferences);
+			if(tab.isVisible())
+				extensions.add(tab);
 		}
 		if(!sections.isEmpty())
 			//TODO: logging

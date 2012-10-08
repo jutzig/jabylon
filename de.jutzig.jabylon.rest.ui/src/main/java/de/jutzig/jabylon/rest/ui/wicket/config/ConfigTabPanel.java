@@ -27,9 +27,8 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 	
 	private static final long serialVersionUID = 1L;
 
-	public ConfigTabPanel(String id, final List<ConfigSection<T>> sections, final IModel<T> model) {
-		super(id, model);
-		final Preferences preferences = new DelegatingPreferences(PreferencesUtil.scopeFor(getModelObject()));
+	public ConfigTabPanel(String id, final List<ConfigSection<T>> sections, final IModel<T> model, final Preferences preferences) {
+		super(id, model);;
 		Form<T> form = new Form<T>("form", model) {
 			@Override
 			protected void onSubmit() {
