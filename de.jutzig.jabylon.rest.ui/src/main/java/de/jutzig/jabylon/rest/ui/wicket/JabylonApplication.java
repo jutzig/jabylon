@@ -3,12 +3,18 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket;
 
+import java.util.Locale;
+
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
+import org.eclipse.emf.common.util.URI;
 
+import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
@@ -31,6 +37,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	protected void init()
 	{
 	    super.init();
+	    
 //	    mountPage("/workspace", WorkspaceView.class);
 	    
 //	    mountPage("/workspace/${project}/", ProjectView.class);
@@ -43,6 +50,14 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	    mountPage("/workspace",ResourcePage.class);
 	}
 
+	
+	protected IConverterLocator newConverterLocator() {
+	    ConverterLocator converterLocator = new ConverterLocator();
+	    converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
+	    converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
+	    return converterLocator;
+	}
+	
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return CDOAuthenticatedSession.class;
