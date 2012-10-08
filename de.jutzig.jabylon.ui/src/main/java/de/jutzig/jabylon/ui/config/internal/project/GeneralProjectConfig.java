@@ -33,6 +33,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Window;
 
+import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.common.team.TeamProvider;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
@@ -54,7 +55,6 @@ import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer;
 import de.jutzig.jabylon.ui.container.ProjectLocaleTableContainer.LocaleProperty;
 import de.jutzig.jabylon.ui.forms.NewLocaleForm;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
-import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
