@@ -32,7 +32,6 @@
 						<goals>
 							<goal>scr</goal>
 						</goals>
-						<phase>generate-resources</phase>
 						<configuration>
 							<outputDirectory>.</outputDirectory>
 						</configuration>
@@ -45,33 +44,39 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>preferences</artifactId>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>properties</artifactId>
 			<version>${project.version}</version>
 			<type>bundle</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>users</artifactId>
 			<version>${project.version}</version>
 			<type>bundle</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>common</artifactId>
-		</dependency>
+			<scope>provided</scope>
+		</dependency>	
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.scr.annotations</artifactId>
 			<version>1.7.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

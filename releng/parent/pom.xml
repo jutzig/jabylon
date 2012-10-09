@@ -115,11 +115,13 @@
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>common</artifactId>
 				<version>3.6.0</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>preferences</artifactId>
 				<version>3.4.2</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
@@ -131,7 +133,18 @@
 				<artifactId>services</artifactId>
 				<version>3.3.0</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>registry</artifactId>
+				<version>3.5.101</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>runtime</artifactId>
+				<version>3.7.0</version>
+				<scope>provided</scope>
+			</dependency>			
 
 			<!-- CDO -->
 			<dependency>
