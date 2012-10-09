@@ -60,7 +60,6 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
             CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().lookup(from);
             return (X)cdoObject;
         }
-
     }
 }
 
