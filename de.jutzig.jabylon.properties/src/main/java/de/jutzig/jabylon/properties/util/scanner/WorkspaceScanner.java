@@ -9,6 +9,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.selectors.SelectorUtils;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import de.jutzig.jabylon.properties.ScanConfiguration;
 
@@ -21,23 +23,29 @@ public class WorkspaceScanner {
 
 	}
 
-	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config) {
+	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, IProgressMonitor monitor) {
 		
 		FileSet fs = createFileSet(config);
 		fs.setDir(baseDir);
+		SubMonitor subMon = SubMonitor.convert(monitor, "Scanning", 100);
 		String masterLocale = config.getMasterLocale();
 		if (masterLocale != null && masterLocale.isEmpty())
 			masterLocale = null;
 		if (baseDir.exists()) {
 			DirectoryScanner ds = fs.getDirectoryScanner(new org.apache.tools.ant.Project());
-			for (String f : ds.getIncludedFiles()) {
+			subMon.worked(10);
+			String[] files = ds.getIncludedFiles();
+			subMon.setWorkRemaining(files.length);
+			for (String f : files) {
 				if (matchesLocale(f, masterLocale)) {
 					File file = new File(baseDir, f);
+					subMon.subTask(f);
 					acceptor.newMatch(file);
+					subMon.worked(1);
 				}
 			}
 		}
-
+		monitor.done();
 	}
 
 	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, File singleFile) {

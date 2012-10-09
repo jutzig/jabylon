@@ -175,7 +175,7 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 	 */
 	public void fullScan(ScanConfiguration configuration) {
 		for (ProjectVersion version : getChildren()) {
-			version.fullScan(configuration);
+			version.fullScan(configuration, null);
 		}
 	}
 

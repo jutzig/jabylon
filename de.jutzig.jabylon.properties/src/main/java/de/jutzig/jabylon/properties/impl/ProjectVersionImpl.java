@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -109,27 +111,36 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	 * @generated NOT
 	 */
 	public void fullScan(ScanConfiguration configuration) {
+		fullScan(configuration, null);
+	}
+	
+	public void fullScan(ScanConfiguration configuration, IProgressMonitor monitor) {
 		getChildren().clear();
 		setTemplate(null);
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
-		scanner.fullScan(new FileAcceptor(), baseDir, configuration);
-
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
+		scanner.fullScan(new FileAcceptor(), baseDir, configuration, subMonitor.newChild(50));
+		
 		for (ProjectLocale projectLocale : getChildren()) {
 			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
 				descriptor.updatePercentComplete();
 			}
 		}
 
-		createMissingDescriptorEntries();
+		createMissingDescriptorEntries(subMonitor.newChild(50));
 	}
 
-	private void createMissingDescriptorEntries() {
+	private void createMissingDescriptorEntries(IProgressMonitor monitor) {
+		EList<ProjectLocale> children = getChildren();
+		monitor.beginTask("Adding missing localized resources", children.size()-1);
 		ProjectLocale template = this.getTemplate();
-		for (ProjectLocale locale : getChildren()) {
+		for (ProjectLocale locale : children) {
 			if (locale == template)
 				continue;
+			monitor.subTask(locale.getLocale().toString());
 			createMissingChildren(template, locale, locale);
+			monitor.worked(1);
 		}
 
 	}

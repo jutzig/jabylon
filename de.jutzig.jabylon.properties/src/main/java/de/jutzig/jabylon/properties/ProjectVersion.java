@@ -8,6 +8,8 @@ package de.jutzig.jabylon.properties;
 
 import java.util.Locale;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Project Version</b></em>'.
@@ -58,6 +60,9 @@ public interface ProjectVersion extends Resolvable<Project, ProjectLocale> {
 	 * @generated
 	 */
 	void fullScan(ScanConfiguration configuration);
+	
+
+	void fullScan(ScanConfiguration configuration, IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -30,7 +30,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, PropertiesFactory.eINSTANCE.createScanConfiguration());
+		}, baseDir, PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
 		int index = 0;
 		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals("messages2.properties", filenames.get(index++));
@@ -55,7 +55,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, configuration);
+		}, baseDir, configuration, null);
 		int index = 0;
 		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals("messages2.properties", filenames.get(index++));
@@ -80,7 +80,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, configuration);
+		}, baseDir, configuration, null);
 		assertEquals(1, filenames.size());
 		int index = 0;
 		assertEquals("messages_en_CA.properties", filenames.get(index++));
