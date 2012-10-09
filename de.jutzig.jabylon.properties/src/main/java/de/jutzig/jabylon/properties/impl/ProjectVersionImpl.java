@@ -138,7 +138,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		for (ProjectLocale locale : children) {
 			if (locale == template)
 				continue;
-			monitor.subTask("Add missing entries for "+locale.getLocale().toString());
+			if(locale!=null && locale.getLocale()!=null)
+				monitor.subTask("Add missing entries for "+locale.getLocale().getDisplayName());
 			createMissingChildren(template, locale, locale);
 			monitor.worked(1);
 		}
