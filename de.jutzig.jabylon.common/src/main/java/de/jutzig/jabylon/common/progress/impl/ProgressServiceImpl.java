@@ -1,15 +1,17 @@
 package de.jutzig.jabylon.common.progress.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import de.jutzig.jabylon.common.progress.ProgressService;
 import de.jutzig.jabylon.common.progress.Progression;
@@ -21,19 +23,19 @@ public class ProgressServiceImpl implements ProgressService {
 
 	private AtomicLong id = new AtomicLong();
 	private ExecutorService pool = Executors.newFixedThreadPool(10);
-	private Map<Long, RunnableWrapper> jobs = new ConcurrentHashMap<Long, RunnableWrapper>();
+	private Cache<Long, RunnableWrapper> jobs = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS).build();
 
 	@Override
 	public long schedule(RunnableWithProgress task) {
 		long currentID = id.getAndIncrement();
-		RunnableWrapper wrapper = new RunnableWrapper(task, new ProgressionImpl(), currentID);
+		RunnableWrapper wrapper = new RunnableWrapper(task, new ProgressionImpl());
 		jobs.put(currentID, wrapper);
 		return currentID;
 	}
 
 	@Override
 	public Progression progressionOf(long id) {
-		RunnableWrapper wrapper = jobs.get(id);
+		RunnableWrapper wrapper = jobs.getIfPresent(id);
 		if(wrapper!=null)
 			return (Progression) wrapper.getMonitor();
 		return null;
@@ -41,7 +43,7 @@ public class ProgressServiceImpl implements ProgressService {
 
 	@Override
 	public void cancel(long id) {
-		RunnableWrapper wrapper = jobs.get(id);
+		RunnableWrapper wrapper = jobs.getIfPresent(id);
 		if(wrapper!=null)
 			wrapper.getMonitor().setCanceled(true);
 
@@ -54,22 +56,18 @@ public class ProgressServiceImpl implements ProgressService {
 
 	}
 
-	void removeJob(long id) {
-		jobs.remove(id);
-	}
+
 
 	class RunnableWrapper implements Runnable {
 		private RunnableWithProgress progressRunnable;
 
 		private IProgressMonitor monitor;
 
-		private Long id;
 
-		public RunnableWrapper(RunnableWithProgress progressRunnable, IProgressMonitor monitor, Long id) {
+		public RunnableWrapper(RunnableWithProgress progressRunnable, IProgressMonitor monitor) {
 			super();
 			this.progressRunnable = progressRunnable;
 			this.monitor = monitor;
-			this.id = id;
 		}
 
 		@Override
@@ -77,7 +75,7 @@ public class ProgressServiceImpl implements ProgressService {
 			try {
 				progressRunnable.run(monitor);
 			} finally {
-				removeJob(id);
+				monitor.done();
 			}
 
 		}
