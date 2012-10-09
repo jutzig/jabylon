@@ -12,14 +12,20 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.cdo.view.CDOView;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.common.team.TeamProvider;
 import de.jutzig.jabylon.common.team.TeamProviderUtil;
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
@@ -33,8 +39,9 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 	public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
 		super(id, model);
-		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-		ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions",provider) {
+		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(),
+				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+		ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions", provider) {
 
 			private static final long serialVersionUID = 1L;
 			private ProgressionModel progressModel;
@@ -42,22 +49,22 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			@Override
 			protected void populateItem(ListItem<ProjectVersion> item) {
 				item.setOutputMarkupId(true);
-				item.add(new Label("name",item.getModelObject().getName()));
-				
-				progressModel = new ProgressionModel(-1);
-				final ProgressPanel progressPanel = new ProgressPanel("progress",progressModel);
-				item.add(progressPanel);
-				
-				item.add(createCheckoutAction(progressPanel,item.getModel()));
-				
-			}
+				item.add(new Label("name", item.getModelObject().getName()));
 
+				progressModel = new ProgressionModel(-1);
+				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
+				item.add(progressPanel);
+
+				item.add(createCheckoutAction(progressPanel, item.getModel()));
+				item.add(createRescanAction(progressPanel, item.getModel()));
+
+			}
 
 		};
 		project.setOutputMarkupId(true);
 		add(project);
 	}
-	
+
 	private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 		RunnableWithProgress runnable = new RunnableWithProgress() {
 
@@ -74,23 +81,63 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 					getSession().error(e.getMessage());
 					e.printStackTrace();
 				}
-				
+
 			}
 		};
-		return new ProgressShowingAjaxButton("checkout", progressPanel, runnable){
+		return new ProgressShowingAjaxButton("checkout", progressPanel, runnable) {
 
 			private static final long serialVersionUID = 1L;
 
 			public boolean isVisible() {
 				ProjectVersion version = model.getObject();
 				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-				if(provider==null)
+				if (provider == null)
 					return false;
 				File file = new File(version.absoluteFilePath().toFileString());
 				return (!file.isDirectory());
 			};
 		};
-		
+
+	}
+
+	private Component createRescanAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+		RunnableWithProgress runnable = new RunnableWithProgress() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void run(IProgressMonitor monitor) {
+				ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
+				ProjectVersion version = model.getObject();
+				SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
+				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+				version = transaction.getObject(version);
+				version.fullScan(scanConfiguration, subMonitor.newChild(50));
+				subMonitor.setTaskName("Database Sync");
+				try {
+					transaction.commit(subMonitor.newChild(50));
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally{
+					transaction.close();
+				}
+				monitor.done();
+			}
+		};
+		return new ProgressShowingAjaxButton("rescan", progressPanel, runnable) {
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isVisible() {
+				// ProjectVersion version = model.getObject();
+				// File file = new
+				// File(version.absoluteFilePath().toFileString());
+				// return (file.isDirectory());
+				return true;
+			};
+		};
+
 	}
 
 	public static class VersionsConfig extends AbstractConfigSection<Project> {
@@ -105,7 +152,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 		@Override
 		public void commit(IModel<Project> input, Preferences config) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
