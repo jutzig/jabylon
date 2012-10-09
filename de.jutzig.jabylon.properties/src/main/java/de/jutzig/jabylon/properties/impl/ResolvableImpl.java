@@ -249,12 +249,10 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public URI absoluteFilePath() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return absolutPath();
 	}
 
 	/**
