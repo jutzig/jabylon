@@ -1,11 +1,12 @@
 package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -14,6 +15,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
+import de.jutzig.jabylon.common.team.TeamProvider;
+import de.jutzig.jabylon.common.team.TeamProviderUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -21,6 +24,7 @@ import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressPanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
@@ -44,49 +48,49 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				final ProgressPanel progressPanel = new ProgressPanel("progress",progressModel);
 				item.add(progressPanel);
 				
-				
-				Button button = new AjaxButton("checkout") {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onSubmit(AjaxRequestTarget target, Form<?> form)  {
-						
-						progressPanel.start(target);
-						long id = Activator.getDefault().getProgressService().schedule(new RunnableWithProgress() {
-							
-							@Override
-							public void run(IProgressMonitor monitor) {
-								for(int i=0;i<100;i++)
-								{
-									monitor.beginTask("Processing", 100);
-									try {
-										Thread.sleep(1000);
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									monitor.worked(1);
-									monitor.subTask(i+"/100");
-								}
-								
-							}
-						});
-						progressModel.setTaskID(id);
-					}
-				};
-				button.setDefaultFormProcessing(false);
-				ProjectVersion version = item.getModelObject();
-//				File file = new File(version.absoluteFilePath().toFileString());
-//				
-//				button.setVisibilityAllowed(!file.exists());
-				
-				item.add(button);
-
+				item.add(createCheckoutAction(progressPanel,item.getModel()));
 				
 			}
+
+
 		};
 		project.setOutputMarkupId(true);
 		add(project);
+	}
+	
+	private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+		RunnableWithProgress runnable = new RunnableWithProgress() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void run(IProgressMonitor monitor) {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				try {
+					provider.checkout(version, monitor);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				}
+				
+			}
+		};
+		return new ProgressShowingAjaxButton("checkout", progressPanel, runnable){
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isVisible() {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				if(provider==null)
+					return false;
+				File file = new File(version.absoluteFilePath().toFileString());
+				return (!file.isDirectory());
+			};
+		};
+		
 	}
 
 	public static class VersionsConfig extends AbstractConfigSection<Project> {

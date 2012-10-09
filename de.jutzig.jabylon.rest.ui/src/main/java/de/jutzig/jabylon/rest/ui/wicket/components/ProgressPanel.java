@@ -1,16 +1,14 @@
 package de.jutzig.jabylon.rest.ui.wicket.components;
 
-import java.util.Random;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
 import de.jutzig.jabylon.common.progress.Progression;
@@ -18,10 +16,11 @@ import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 
 public class ProgressPanel extends Panel {
 
-	public ProgressPanel(String id, IModel<Progression> model) {
+	ProgressionModel model;
+	
+	public ProgressPanel(String id, ProgressionModel model) {
 		super(id, model);
-		AjaxSelfUpdatingTimerBehavior timerBehavior = new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1));
-		add(timerBehavior);
+		this.model = model;
 		WebComponent bar = new WebComponent("bar");
 		bar.add(new AttributeModifier("style", getWidthModel(model)));
 		add(bar);
@@ -94,6 +93,9 @@ public class ProgressPanel extends Panel {
 		}
 	}
 
+	public ProgressionModel getModel() {
+		return model;
+	}
 	/**
 	 * 
 	 */
