@@ -30,6 +30,7 @@ public class ProgressServiceImpl implements ProgressService {
 		long currentID = id.getAndIncrement();
 		RunnableWrapper wrapper = new RunnableWrapper(task, new ProgressionImpl());
 		jobs.put(currentID, wrapper);
+		pool.execute(wrapper);
 		return currentID;
 	}
 

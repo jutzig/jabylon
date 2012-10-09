@@ -27,6 +27,11 @@ public class ProgressionModel implements IModel<Progression> {
 		//nothing to do
 		
 	}
+	
+	public void setTaskID(long id)
+	{
+		this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
+	}
 
 	@Override
 	public Progression getObject() {
