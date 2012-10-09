@@ -2,6 +2,7 @@ package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -25,6 +26,7 @@ import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
@@ -57,12 +59,70 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
 				item.add(createRescanAction(progressPanel, item.getModel()));
+				item.add(createUpdateAction(progressPanel, item.getModel()));
+//				item.add(createCommitAction(progressPanel, item.getModel()));
 
 			}
 
 		};
 		project.setOutputMarkupId(true);
 		add(project);
+	}
+
+	protected Component createCommitAction(ProgressPanel progressPanel, IModel<ProjectVersion> model) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Component createUpdateAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+		RunnableWithProgress runnable = new RunnableWithProgress() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void run(IProgressMonitor monitor) {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+				try {
+					version = transaction.getObject(version);
+					SubMonitor subMonitor = SubMonitor.convert(monitor,"Updating",100);
+					Collection<PropertyFileDiff> updates = provider.update(version, subMonitor.newChild(50));
+					subMonitor.setWorkRemaining(updates.size()*2);
+					subMonitor.subTask("Processing updates");
+					for (PropertyFileDiff updatedFile : updates) {
+						version.partialScan(PreferencesUtil.getScanConfigForProject(getModelObject()), updatedFile);
+						subMonitor.worked(1);
+					}
+					subMonitor.setTaskName("Database Sync");
+					transaction.commit(subMonitor.newChild(updates.size()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally{
+					transaction.close();
+				}
+
+			}
+		};
+		return new ProgressShowingAjaxButton("update", progressPanel, runnable) {
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isVisible() {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				if (provider == null)
+					return false;
+				File file = new File(version.absoluteFilePath().toFileString());
+				return (file.isDirectory());
+			};
+		};
+
 	}
 
 	private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
