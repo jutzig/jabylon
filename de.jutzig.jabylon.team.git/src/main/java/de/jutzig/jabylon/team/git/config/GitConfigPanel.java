@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.team.git.impl.config;
+package de.jutzig.jabylon.team.git.config;
 
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -14,7 +14,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.model.PreferencesPropertyModel;
-import de.jutzig.jabylon.team.git.impl.GitConstants;
+import de.jutzig.jabylon.team.git.GitConstants;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

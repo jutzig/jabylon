@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.team.git.impl.util;
+package de.jutzig.jabylon.team.git.util;
 
 import java.text.MessageFormat;
 

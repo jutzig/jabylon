@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.team.git.impl;
+package de.jutzig.jabylon.team.git;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +52,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.team.git.impl.util.ProgressMonitorWrapper;
+import de.jutzig.jabylon.team.git.util.ProgressMonitorWrapper;
 
 public class GitTeamProvider implements TeamProvider {
 

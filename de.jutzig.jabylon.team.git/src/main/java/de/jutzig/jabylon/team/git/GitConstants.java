@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.team.git.impl;
+package de.jutzig.jabylon.team.git;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

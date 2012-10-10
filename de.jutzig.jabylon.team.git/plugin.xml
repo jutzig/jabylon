@@ -4,7 +4,7 @@
    <extension
          point="de.jutzig.jabylon.common.teamProvider">
       <teamProvider
-            class="de.jutzig.jabylon.team.git.impl.GitTeamProvider"
+            class="de.jutzig.jabylon.team.git.GitTeamProvider"
             description="Git Team Provider"
             name="Git">
       </teamProvider>
@@ -14,7 +14,7 @@
       <section
             name="Git"
             objectClass="de.jutzig.jabylon.properties.Project"
-            section="de.jutzig.jabylon.team.git.impl.config.GitConfigSection"
+            section="de.jutzig.jabylon.team.git.config.GitConfigSection"
             tab="git">
       </section>
    </extension>

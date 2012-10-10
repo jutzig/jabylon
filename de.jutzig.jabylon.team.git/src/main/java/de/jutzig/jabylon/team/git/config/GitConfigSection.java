@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.team.git.impl.config;
+package de.jutzig.jabylon.team.git.config;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
