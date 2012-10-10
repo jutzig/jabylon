@@ -12,8 +12,14 @@ import java.util.Set;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.prefs.Preferences;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -22,6 +28,8 @@ import com.google.common.collect.ListMultimap;
 import de.jutzig.jabylon.common.util.DelegatingPreferences;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
@@ -36,13 +44,46 @@ import de.jutzig.jabylon.users.User;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
+public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String QUERY_PARAM_CREATE = "create";
 
+	@SuppressWarnings("rawtypes")
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
-		
+		StringValue value = parameters.get(QUERY_PARAM_CREATE);
+		if(value!=null && !value.isEmpty())
+		{
+			EClassifier eClassifier = PropertiesPackage.eINSTANCE.getEClassifier(value.toString());
+			if (eClassifier instanceof EClass) {
+				EClass eclass = (EClass) eClassifier;
+				EObject eObject = PropertiesFactory.eINSTANCE.create(eclass);
+				if (eObject instanceof Resolvable<?,?>) {
+					Resolvable<?,?> newChild = (Resolvable<?,?>) eObject;
+					CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+					Resolvable<?, ?> parent = transaction.getObject(getModel().getObject());
+					List children = parent.getChildren();
+					newChild.setName("<New>");
+					children.add(newChild);
+					try {
+						transaction.commit();
+						newChild = getModel().getObject().cdoView().getObject(newChild);
+						setModel(createModel(newChild));
+					} catch (CommitException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						getSession().error(e.getMessage());
+					}finally{
+						transaction.close();
+						
+					}
+					
+				}
+				
+			}
+		}
 		List<ITab> extensions = loadTabExtensions();
 		
 		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", extensions);
@@ -51,8 +92,8 @@ public class SettingsPage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 	}
 
 	@Override
-	protected EObjectModel<T> createModel(T object) {
-		return new WritableEObjectModel<T>(object);
+	protected EObjectModel<Resolvable<?, ?>> createModel(Resolvable<?, ?> object) {
+		return new WritableEObjectModel<Resolvable<?, ?>>(object);
 	}
 	
 

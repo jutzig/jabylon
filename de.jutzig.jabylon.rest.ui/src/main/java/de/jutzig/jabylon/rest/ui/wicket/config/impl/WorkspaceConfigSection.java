@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -29,7 +30,7 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 
 	public WorkspaceConfigSection(String id, IModel<Workspace> object, Preferences prefs) {
 		super(id, object);
-
+		add(buildAddNewLink(object));
 		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		ListView<Project> project = new ListView<Project>("projects",provider) {
 
@@ -45,4 +46,9 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 		add(project);
 	}
 
+	private Component buildAddNewLink(IModel<Workspace> model) {
+		PageParameters params = new PageParameters();
+		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT.getName());
+		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
+	}
 }

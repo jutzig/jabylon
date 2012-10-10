@@ -28,6 +28,10 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 		model = createModel(resolveModel(parameters));
 		add(new NavbarPanel<Resolvable<?,?>>("navbar", model.getObject(), parameters));
 	}
+	
+	public void setModel(EObjectModel<T> model) {
+		this.model = model;
+	}
 
 	protected EObjectModel<T> createModel(T object) {
 		return new EObjectModel<T>(object);

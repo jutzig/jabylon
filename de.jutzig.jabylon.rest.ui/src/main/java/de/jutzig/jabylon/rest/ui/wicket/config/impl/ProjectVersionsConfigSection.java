@@ -13,11 +13,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
@@ -40,6 +42,7 @@ import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
@@ -47,6 +50,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 	public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
 		super(id, model);
+		add(buildAddNewLink(model));
 		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(),
 				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions", provider) {
@@ -76,6 +80,14 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 		};
 		project.setOutputMarkupId(true);
 		add(project);
+	}
+
+	private Component buildAddNewLink(IModel<Project> model) {
+		PageParameters params = new PageParameters();
+		Project project = model.getObject();
+		params.set(0, project.getName());
+		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
+		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
 	}
 
 	private IModel<String> createSummaryModel(final IModel<ProjectVersion> modelObject) {
