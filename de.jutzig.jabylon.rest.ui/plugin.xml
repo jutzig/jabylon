@@ -105,5 +105,11 @@
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ProjectVersionsConfigSection$VersionsConfig"
           tab="versions">
     </section>
+    <section
+          name="Version Settings"
+          objectClass="de.jutzig.jabylon.properties.ProjectVersion"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.VersionConfigSection$VersionConfig"
+          tab="general">
+    </section>
  </extension>
 </plugin>

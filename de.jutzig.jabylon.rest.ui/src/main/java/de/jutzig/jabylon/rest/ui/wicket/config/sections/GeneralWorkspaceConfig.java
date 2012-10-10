@@ -21,6 +21,11 @@ public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public boolean hasFormComponents() {
+		return false;
+	}
 
 
 }
