@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -16,12 +20,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.eclipse.emf.cdo.view.CDOView;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.common.team.TeamProvider;
 import de.jutzig.jabylon.common.team.TeamProviderUtil;
+import de.jutzig.jabylon.common.util.FileUtil;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -60,13 +64,53 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
 				item.add(createRescanAction(progressPanel, item.getModel()));
 				item.add(createUpdateAction(progressPanel, item.getModel()));
-//				item.add(createCommitAction(progressPanel, item.getModel()));
+				// item.add(createCommitAction(progressPanel, item.getModel()));
+				item.add(createDeleteAction(progressPanel, item.getModel()));
 
 			}
 
 		};
 		project.setOutputMarkupId(true);
 		add(project);
+	}
+
+	protected Component createDeleteAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+
+		Button button = new IndicatingAjaxButton("delete") {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+				// TODO Auto-generated method stub
+				super.onAfterSubmit(target, form);
+				super.onSubmit();
+				//FIXME: currently this submits every time, not just on 'ok'
+				if (true)
+					return;
+				ProjectVersion version = model.getObject();
+				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+				version = transaction.getObject(version);
+
+				try {
+					File directory = new File(version.absolutPath().toFileString());
+					FileUtil.delete(directory);
+					version.getParent().getChildren().remove(version);
+					transaction.commit();
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				} finally {
+					transaction.close();
+				}
+			}
+			
+
+		};
+		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
+		button.setDefaultFormProcessing(false);
+		return button;
 	}
 
 	protected Component createCommitAction(ProgressPanel progressPanel, IModel<ProjectVersion> model) {
@@ -86,9 +130,9 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
 				try {
 					version = transaction.getObject(version);
-					SubMonitor subMonitor = SubMonitor.convert(monitor,"Updating",100);
+					SubMonitor subMonitor = SubMonitor.convert(monitor, "Updating", 100);
 					Collection<PropertyFileDiff> updates = provider.update(version, subMonitor.newChild(50));
-					subMonitor.setWorkRemaining(updates.size()*2);
+					subMonitor.setWorkRemaining(updates.size() * 2);
 					subMonitor.subTask("Processing updates");
 					for (PropertyFileDiff updatedFile : updates) {
 						version.partialScan(PreferencesUtil.getScanConfigForProject(getModelObject()), updatedFile);
@@ -103,7 +147,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} finally{
+				} finally {
 					transaction.close();
 				}
 
@@ -179,7 +223,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}finally{
+				} finally {
 					transaction.close();
 				}
 				monitor.done();
