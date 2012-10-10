@@ -20,7 +20,6 @@
 					<instructions>
 						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
 						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
-						<Export-Package>de.jutzig.jabylon.rest.ui*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

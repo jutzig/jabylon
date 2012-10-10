@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.rest.ui.wicket.config.impl;
+package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
 import java.util.ArrayList;
 import java.util.List;

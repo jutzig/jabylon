@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.rest.ui.wicket.config.impl;
+package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;

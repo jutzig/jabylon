@@ -84,25 +84,25 @@
     <section
           name="General Workspace Settings"
           objectClass="de.jutzig.jabylon.properties.Workspace"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralWorkspaceConfig"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralWorkspaceConfig"
           tab="general">
     </section>
     <section
           name="General Project Settings"
           objectClass="de.jutzig.jabylon.properties.Project"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.GeneralProjectConfig"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralProjectConfig"
           tab="general">
     </section>
     <section
           name="Scanning"
           objectClass="de.jutzig.jabylon.properties.Project"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.ScanningConfigSection$ScanningConfig"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ScanningConfigSection$ScanningConfig"
           tab="scanning">
     </section>
     <section
           name="Versions"
           objectClass="de.jutzig.jabylon.properties.Project"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.impl.ProjectVersionsConfigSection$VersionsConfig"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ProjectVersionsConfigSection$VersionsConfig"
           tab="versions">
     </section>
  </extension>
