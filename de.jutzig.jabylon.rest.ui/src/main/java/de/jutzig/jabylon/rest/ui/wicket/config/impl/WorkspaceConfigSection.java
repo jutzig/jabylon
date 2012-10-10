@@ -4,16 +4,20 @@
 package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -33,6 +37,8 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 
 			@Override
 			protected void populateItem(ListItem<Project> item) {
+				
+				item.add(new ExternalLink("edit","workspace/"+item.getModelObject().getName()));
 				item.add(new Label("project-name",item.getModelObject().getName()));
 			}
 		};
