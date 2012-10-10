@@ -2,6 +2,7 @@ package de.jutzig.jabylon.rest.ui.wicket.config.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Collection;
 
 import org.apache.wicket.AttributeModifier;
@@ -15,6 +16,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -56,7 +58,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			protected void populateItem(ListItem<ProjectVersion> item) {
 				item.setOutputMarkupId(true);
 				item.add(new Label("name", item.getModelObject().getName()));
-
+				item.add(new Label("summary", createSummaryModel(item.getModel())));
 				progressModel = new ProgressionModel(-1);
 				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
 				item.add(progressPanel);
@@ -69,11 +71,26 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 			}
 
+
+
 		};
 		project.setOutputMarkupId(true);
 		add(project);
 	}
 
+	private IModel<String> createSummaryModel(final IModel<ProjectVersion> modelObject) {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			public String getObject() {
+				int size = modelObject.getObject().getChildren().size();
+				String message = "Translations available in {0} languages";
+				return MessageFormat.format(message, size);
+			};
+		};
+		
+	}
+	
 	protected Component createDeleteAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 
 		Button button = new IndicatingAjaxButton("delete") {
