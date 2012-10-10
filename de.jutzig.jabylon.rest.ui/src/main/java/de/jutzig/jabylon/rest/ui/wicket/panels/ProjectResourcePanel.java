@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.apache.wicket.AttributeModifier;
@@ -49,6 +50,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 			@Override
 			protected void populateItem(Item<Resolvable<?, ?>> item) {
 				Resolvable<?, ?> resolvable = item.getModelObject();
+				item.add(new Label("summary",new Summary().doSwitch(resolvable)));
 				if (resolvable instanceof ProjectLocale) {
 					// hide the template language by default
 					ProjectLocale locale = (ProjectLocale) resolvable;
@@ -147,6 +149,27 @@ class LabelSwitch extends PropertiesSwitch<String> {
 		return "Workspace";
 	}
 }
+
+class Summary extends PropertiesSwitch<String> {
+	@Override
+	public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
+		return object.getPercentComplete()+"% complete";
+	}
+
+	@Override
+	public String caseProjectLocale(ProjectLocale object) {
+		if(object.getParent()==null && object.getParent().getTemplate()==null)
+			return null;
+		ProjectLocale template = object.getParent().getTemplate();
+		int propertyCount = template.getPropertyCount();
+		int translatedCount = object.getPropertyCount();
+		String message = "{0} of {1} translated ({2}%)";
+		message = MessageFormat.format(message, translatedCount,propertyCount,object.getPercentComplete());
+		return message;
+	}
+
+}
+
 
 class ImageSwitch extends PropertiesSwitch<Item<?>> {
 
