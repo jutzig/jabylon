@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -16,6 +17,7 @@ import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PushCommand;
@@ -31,8 +33,10 @@ import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -178,7 +182,11 @@ public class GitTeamProvider implements TeamProvider {
 		CloneCommand clone = Git.cloneRepository();
 		clone.setBare(false);
 		clone.setNoCheckout(false);
-		clone.setCloneAllBranches(true);
+//		if(!"master".equals(project.getName()))
+			clone.setBranch("refs/heads/"+project.getName());
+//		clone.setCloneAllBranches(true);
+		clone.setBranchesToClone(Collections.singletonList("refs/heads/"+project.getName()));
+		
 		clone.setDirectory(repoDir);
 		
 		URI uri = project.getParent().getRepositoryURI();
@@ -187,7 +195,7 @@ public class GitTeamProvider implements TeamProvider {
 		clone.setURI(stripUserInfo(uri).toString());
 		clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
 
-		clone.call();  
+		clone.call(); 
 		subMon.done();
 		if(monitor!=null)
 			monitor.done();
