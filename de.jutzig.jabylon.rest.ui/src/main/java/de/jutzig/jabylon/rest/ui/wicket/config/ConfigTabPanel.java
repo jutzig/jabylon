@@ -23,6 +23,7 @@ import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.common.util.DelegatingPreferences;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.Resolvable;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 
@@ -41,6 +42,14 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 					CDOTransaction transaction = (CDOTransaction) cdoView;
 					try {
 						transaction.commit();
+						if (object instanceof Resolvable) {
+							Resolvable r = (Resolvable) object;
+							if(!r.getName().equals(preferences.name()))
+							{
+								//FIXME: must rename preferences properly
+//								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
+							}
+						}
 						preferences.flush();
 						getSession().success("Saved successfully");
 					} catch (CommitException e) {
