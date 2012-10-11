@@ -8,22 +8,33 @@
         <artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
         </parent> -->
 
+    <build>
+    	<plugins>
+    		<plugin>
+    			<groupId>org.apache.felix</groupId>
+    			<artifactId>maven-bundle-plugin</artifactId>
+    			<version>2.3.7</version>
+    			<configuration>
+    				<instructions>
+    					<Export-Package>de.jutzig.jabylon.properties.*</Export-Package>
+    				</instructions>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>ecore</artifactId>
-            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>cdo</artifactId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf.cdo</groupId>
             <artifactId>common</artifactId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
