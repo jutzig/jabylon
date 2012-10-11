@@ -14,23 +14,24 @@ public class ProgressShowingAjaxButton extends AjaxButton {
 	private static final long serialVersionUID = 1L;
 	private ProgressPanel panel;
 	private RunnableWithProgress runnable;
-	
+
 	public ProgressShowingAjaxButton(String id, ProgressPanel panel, RunnableWithProgress runnable) {
 		super(id);
 		this.panel = panel;
 		this.runnable = runnable;
 		setDefaultFormProcessing(false);
 	}
-	
+
 	@Override
 	protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 		super.onSubmit(target, form);
-		
-		panel.start(target);
+
+		panel.start(target, this);
+		setEnabled(false);
 		long id = Activator.getDefault().getProgressService().schedule(runnable);
 		panel.getModel().setTaskID(id);
 	}
-	
-	
+
+
 
 }

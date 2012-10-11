@@ -1,11 +1,11 @@
 package de.jutzig.jabylon.rest.ui.wicket.components;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -17,7 +17,7 @@ import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 public class ProgressPanel extends Panel {
 
 	ProgressionModel model;
-	
+
 	public ProgressPanel(String id, ProgressionModel model) {
 		super(id, model);
 		this.model = model;
@@ -42,7 +42,7 @@ public class ProgressPanel extends Panel {
 			}
 		};
 	}
-	
+
 	private IModel<String> getTaskNameModel(final IModel<Progression> model) {
 		return new AbstractReadOnlyModel<String>() {
 
@@ -54,7 +54,7 @@ public class ProgressPanel extends Panel {
 			}
 		};
 	}
-	
+
 	private IModel<String> getSubTaskModel(final IModel<Progression> model) {
 		return new AbstractReadOnlyModel<String>() {
 
@@ -67,7 +67,7 @@ public class ProgressPanel extends Panel {
 		};
 	}
 
-	public void start(AjaxRequestTarget target) {
+	public void start(AjaxRequestTarget target, final Component... additionalTargets) {
 
 		setVisible(true);
 
@@ -77,14 +77,24 @@ public class ProgressPanel extends Panel {
 
 			@Override
 			protected void onPostProcessTarget(AjaxRequestTarget target) {
+			    if(additionalTargets!=null)
+			    {
+			        for (int i = 0; i < additionalTargets.length; i++)
+                    {
+			            target.add(additionalTargets);
+                    }
+			    }
 				ProgressionModel model = (ProgressionModel) getDefaultModel();
 				Progression progression = model.getObject();
+
 				if (progression.isDone()) {
-					// stop the self update					
+					// stop the self update
 					stop(target);
 					ProgressPanel.this.setVisible(false);
+					onDone(target, additionalTargets);
 				}
 			}
+
 		});
 		if (getParent() != null) {
 			target.add(getParent());
@@ -93,11 +103,18 @@ public class ProgressPanel extends Panel {
 		}
 	}
 
+
+    protected void onDone(AjaxRequestTarget target, Component[] additionalTargets)
+    {
+
+
+    }
+
 	public ProgressionModel getModel() {
 		return model;
 	}
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2573454585436627297L;
 

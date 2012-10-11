@@ -64,7 +64,24 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				item.add(new Label("name", item.getModelObject().getName()));
 				item.add(new Label("summary", createSummaryModel(item.getModel())));
 				progressModel = new ProgressionModel(-1);
-				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
+				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel)
+				{
+				    @Override
+				    protected void onDone(AjaxRequestTarget target, Component[] additionalTargets)
+				    {
+				        if(additionalTargets!=null)
+				        {
+				            for (Component component : additionalTargets)
+                            {
+                                if (component instanceof Button)
+                                {
+                                    Button button = (Button)component;
+                                    button.setEnabled(true);
+                                }
+                            }
+				        }
+				    }
+				};
 				item.add(progressPanel);
 
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
@@ -100,9 +117,9 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				return MessageFormat.format(message, size);
 			};
 		};
-		
+
 	}
-	
+
 	protected Component createDeleteAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 
 		Button button = new IndicatingAjaxButton("delete") {
@@ -134,7 +151,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 					transaction.close();
 				}
 			}
-			
+
 
 		};
 		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
