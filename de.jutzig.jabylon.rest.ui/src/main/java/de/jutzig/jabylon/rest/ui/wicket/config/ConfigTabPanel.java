@@ -29,6 +29,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.model.AttachableModel;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 
@@ -74,7 +75,7 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 							//FIXME: must rename preferences properly
 //								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
 						}
-						setResponsePage(SettingsPage.class, createPageParameters(r));
+						setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
 					}
 					preferences.flush();
 					getSession().success("Saved successfully");
@@ -124,22 +125,6 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 		return false;
 	}
 	
-	private PageParameters createPageParameters(Resolvable r) {
-		PageParameters params = new PageParameters();
-		Deque<String> segments = new ArrayDeque<String>();
-		Resolvable<?, ?> part = r;
-		while(part!=null)
-		{
-			String name = part.getName();
-			if(name!=null)
-				segments.push(name);
-			part = part.getParent(); 
-		}
-		int count = 0;
-		for (String string : segments) {
-			params.set(count++, string);
-		}
-		return params;
-	}
+
 
 }

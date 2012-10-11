@@ -42,6 +42,7 @@ import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
@@ -122,12 +123,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 			@Override
 			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-				// TODO Auto-generated method stub
-				super.onAfterSubmit(target, form);
-				super.onSubmit();
-				//FIXME: currently this submits every time, not just on 'ok'
-				if (true)
-					return;
+
 				ProjectVersion version = model.getObject();
 				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
 				version = transaction.getObject(version);
@@ -135,8 +131,10 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				try {
 					File directory = new File(version.absolutPath().toFileString());
 					FileUtil.delete(directory);
-					version.getParent().getChildren().remove(version);
+					Project project = version.getParent();
+					project.getChildren().remove(version);
 					transaction.commit();
+					setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(project));
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					getSession().error(e.getMessage());
@@ -148,7 +146,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 
 		};
-		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
+//		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
 		button.setDefaultFormProcessing(false);
 		return button;
 	}
