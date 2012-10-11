@@ -6,8 +6,9 @@ import org.apache.wicket.markup.html.form.Form;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.rest.ui.Activator;
+import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 
-public class ProgressShowingAjaxButton extends AjaxButton {
+public class ProgressShowingAjaxButton extends AjaxButton implements ProgressCallback{
 
 
 
@@ -31,7 +32,17 @@ public class ProgressShowingAjaxButton extends AjaxButton {
 		long id = Activator.getDefault().getProgressService().schedule(runnable);
 		panel.getModel().setTaskID(id);
 	}
+	
+	@Override
+	public void progressStart(AjaxRequestTarget target, ProgressionModel model) {
+		target.add(this);
+		
+	}
 
+	@Override
+	public void progressDone(AjaxRequestTarget target, ProgressionModel model) {
+		setEnabled(true);
+	}
 
 
 }

@@ -16,7 +16,8 @@ import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 
 public class ProgressPanel extends Panel {
 
-	ProgressionModel model;
+	private ProgressionModel model;
+	private boolean started;
 
 	public ProgressPanel(String id, ProgressionModel model) {
 		super(id, model);
@@ -67,7 +68,7 @@ public class ProgressPanel extends Panel {
 		};
 	}
 
-	public void start(AjaxRequestTarget target, final Component... additionalTargets) {
+	public void start(AjaxRequestTarget target, final ProgressCallback callback) {
 
 		setVisible(true);
 
@@ -77,21 +78,21 @@ public class ProgressPanel extends Panel {
 
 			@Override
 			protected void onPostProcessTarget(AjaxRequestTarget target) {
-			    if(additionalTargets!=null)
-			    {
-			        for (int i = 0; i < additionalTargets.length; i++)
-                    {
-			            target.add(additionalTargets);
-                    }
-			    }
-				ProgressionModel model = (ProgressionModel) getDefaultModel();
+				if(!started && callback!=null)
+				{
+					callback.progressStart(target, getModel());
+					started = true;
+				}
+				ProgressionModel model = getModel();
+				callback.progressStart(target, model);
 				Progression progression = model.getObject();
 
 				if (progression.isDone()) {
 					// stop the self update
 					stop(target);
 					ProgressPanel.this.setVisible(false);
-					onDone(target, additionalTargets);
+					if(callback!=null)
+						callback.progressDone(target, getModel());
 				}
 			}
 
@@ -102,13 +103,6 @@ public class ProgressPanel extends Panel {
 			target.add(this);
 		}
 	}
-
-
-    protected void onDone(AjaxRequestTarget target, Component[] additionalTargets)
-    {
-
-
-    }
 
 	public ProgressionModel getModel() {
 		return model;

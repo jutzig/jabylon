@@ -64,24 +64,8 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				item.add(new Label("name", item.getModelObject().getName()));
 				item.add(new Label("summary", createSummaryModel(item.getModel())));
 				progressModel = new ProgressionModel(-1);
-				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel)
-				{
-				    @Override
-				    protected void onDone(AjaxRequestTarget target, Component[] additionalTargets)
-				    {
-				        if(additionalTargets!=null)
-				        {
-				            for (Component component : additionalTargets)
-                            {
-                                if (component instanceof Button)
-                                {
-                                    Button button = (Button)component;
-                                    button.setEnabled(true);
-                                }
-                            }
-				        }
-				    }
-				};
+				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
+				
 				item.add(progressPanel);
 
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
