@@ -13,6 +13,7 @@ import de.jutzig.jabylon.rest.ui.model.RepositoryLookupImpl;
 
 public class Activator implements BundleActivator {
 
+	public static final String BUNDLE_ID ="de.jutzig.jabylon.rest.ui";
 	private static Activator INSTANCE;
 	private BundleContext context;
 	private RepositoryConnector repositoryConnector;

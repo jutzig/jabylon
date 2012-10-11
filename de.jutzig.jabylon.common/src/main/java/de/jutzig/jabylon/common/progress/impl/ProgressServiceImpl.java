@@ -9,6 +9,8 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -62,10 +64,11 @@ public class ProgressServiceImpl implements ProgressService {
 	class RunnableWrapper implements Runnable {
 		private RunnableWithProgress progressRunnable;
 
-		private IProgressMonitor monitor;
+		private ProgressionImpl monitor;
+		
 
 
-		public RunnableWrapper(RunnableWithProgress progressRunnable, IProgressMonitor monitor) {
+		public RunnableWrapper(RunnableWithProgress progressRunnable, ProgressionImpl monitor) {
 			super();
 			this.progressRunnable = progressRunnable;
 			this.monitor = monitor;
@@ -74,8 +77,15 @@ public class ProgressServiceImpl implements ProgressService {
 		@Override
 		public void run() {
 			try {
-				progressRunnable.run(monitor);
-			} finally {
+				IStatus result = progressRunnable.run(monitor);
+				if(result==null)
+					result = Status.OK_STATUS;
+				monitor.setStatus(result);
+			} catch(Exception e)
+			{
+				monitor.setStatus(new Status(IStatus.ERROR, "de.jutzig.jabylon.common", null,e));
+			}
+			finally {
 				monitor.done();
 			}
 

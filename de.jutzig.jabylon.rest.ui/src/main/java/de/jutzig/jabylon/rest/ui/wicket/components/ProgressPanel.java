@@ -5,11 +5,13 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
+import org.eclipse.core.runtime.IStatus;
 
 import de.jutzig.jabylon.common.progress.Progression;
 import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
@@ -18,17 +20,24 @@ public class ProgressPanel extends Panel {
 
 	private ProgressionModel model;
 	private boolean started;
+	private CustomFeedbackPanel feedbackPanel;
+	private WebMarkupContainer container;
 
 	public ProgressPanel(String id, ProgressionModel model) {
 		super(id, model);
 		this.model = model;
+		feedbackPanel = new CustomFeedbackPanel("feedbackPanel");
+		add(feedbackPanel);
+		
+		container = new WebMarkupContainer("container");
+		add(container);
 		WebComponent bar = new WebComponent("bar");
 		bar.add(new AttributeModifier("style", getWidthModel(model)));
-		add(bar);
+		container.add(bar);
 		Label taskname = new Label("taskname", getTaskNameModel(model));
-		add(taskname);
+		container.add(taskname);
 		Label subtask = new Label("subtask", getSubTaskModel(model));
-		add(subtask);
+		container.add(subtask);
 		setVisible(false);
 	}
 
@@ -39,7 +48,7 @@ public class ProgressPanel extends Panel {
 
 			@Override
 			public String getObject() {
-				return "width: " + model.getObject().getCompletion()+"%;";
+				return "width: " + model.getObject().getCompletion() + "%;";
 			}
 		};
 	}
@@ -71,6 +80,7 @@ public class ProgressPanel extends Panel {
 	public void start(AjaxRequestTarget target, final ProgressCallback callback) {
 
 		setVisible(true);
+		container.setVisible(true);
 
 		add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 
@@ -78,8 +88,7 @@ public class ProgressPanel extends Panel {
 
 			@Override
 			protected void onPostProcessTarget(AjaxRequestTarget target) {
-				if(!started && callback!=null)
-				{
+				if (!started && callback != null) {
 					callback.progressStart(target, getModel());
 					started = true;
 				}
@@ -90,8 +99,13 @@ public class ProgressPanel extends Panel {
 				if (progression.isDone()) {
 					// stop the self update
 					stop(target);
-					ProgressPanel.this.setVisible(false);
-					if(callback!=null)
+					if (!progression.getStatus().isOK()) {
+						addFeedbackMessage(progression.getStatus());
+						container.setVisible(false);
+
+					} else
+						ProgressPanel.this.setVisible(false);
+					if (callback != null)
 						callback.progressDone(target, getModel());
 				}
 			}
@@ -104,9 +118,40 @@ public class ProgressPanel extends Panel {
 		}
 	}
 
+	protected void addFeedbackMessage(IStatus status) {
+		if (status == null)
+			return;
+		String message = status.getMessage();
+		if (status.getException() != null && status.getException().getMessage() != null) {
+			if (message == null || message.isEmpty())
+				message = status.getException().getMessage();
+			else
+				message += " : " + status.getException().getMessage();
+		}
+		if (message == null)
+			return;
+		switch (status.getSeverity()) {
+		case IStatus.INFO:
+			feedbackPanel.info(message);
+			break;
+		case IStatus.ERROR:
+			feedbackPanel.error(message);
+			break;
+		case IStatus.WARNING:
+			feedbackPanel.warn(message);
+			break;
+		case IStatus.OK:
+			feedbackPanel.success(message);
+			break;
+		default:
+			break;
+		}
+	}
+
 	public ProgressionModel getModel() {
 		return model;
 	}
+
 	/**
 	 *
 	 */

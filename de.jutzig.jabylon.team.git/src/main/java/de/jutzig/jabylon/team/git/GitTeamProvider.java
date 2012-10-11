@@ -17,7 +17,6 @@ import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PushCommand;
@@ -33,10 +32,9 @@ import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
-import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -48,6 +46,7 @@ import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.team.TeamProvider;
+import de.jutzig.jabylon.common.team.TeamProviderException;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.DiffKind;
 import de.jutzig.jabylon.properties.Project;
@@ -76,17 +75,17 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
 	public Collection<PropertyFileDiff> update(ProjectVersion project,
-			IProgressMonitor monitor) throws IOException {
+			IProgressMonitor monitor) throws TeamProviderException {
 		SubMonitor subMon = SubMonitor.convert(monitor,100);
+		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
+		try {
 		Repository repository = createRepository(project);
 		Git git = Git.wrap(repository);
 		FetchCommand fetchCommand = git.fetch();
-		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
 		String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
 		refspecString = MessageFormat.format(refspecString, project.getName());
 		RefSpec spec = new RefSpec(refspecString);
 		fetchCommand.setRefSpecs(spec);
-		try {
 			subMon.subTask("Fetching from remote");
 			fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
 			FetchResult result = fetchCommand.call();
@@ -122,14 +121,15 @@ public class GitTeamProvider implements TeamProvider {
 				System.out.println(mergeResult.getMergeStatus());
 			}
 		} catch (JGitInternalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (InvalidRemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (GitAPIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
+		} catch (AmbiguousObjectException e) {
+			throw new TeamProviderException(e);
+		} catch (IOException e) {
+			throw new TeamProviderException(e);
 		}
 		finally{
 			monitor.done();
@@ -167,14 +167,14 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
 	public Collection<PropertyFileDiff> update(PropertyFileDescriptor descriptor,
-			IProgressMonitor monitor) throws IOException {
+			IProgressMonitor monitor) throws TeamProviderException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void checkout(ProjectVersion project, IProgressMonitor monitor)
-			throws IOException {
+			throws TeamProviderException {
 		SubMonitor subMon = SubMonitor.convert(monitor,100);
 		subMon.setTaskName("Checking out");
 		subMon.worked(20);
@@ -204,7 +204,8 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
 	public void commit(ProjectVersion project, IProgressMonitor monitor)
-			throws IOException {
+			throws TeamProviderException {
+		try {
 		Repository repository = createRepository(project);
 		Git git = new Git(repository);
 //		AddCommand addCommand = git.add();
@@ -218,7 +219,6 @@ public class GitTeamProvider implements TeamProvider {
 			commit.setOnly(path);
 		}
 //		commit.setOnly(only)
-		try {
 			commit.call();
 			PushCommand push = git.push();
 			push.setCredentialsProvider(createCredentialsProvider(project.getParent()));			
@@ -231,34 +231,32 @@ public class GitTeamProvider implements TeamProvider {
 
 			
 		} catch (NoHeadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (NoMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (ConcurrentRefUpdateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (JGitInternalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (WrongRepositoryStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
 		} catch (InvalidRemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TeamProviderException(e);
+		} catch (IOException e) {
+			throw new TeamProviderException(e);
+		} catch (GitAPIException e) {
+			throw new TeamProviderException(e);
 		}
 	}
 
 
 
-	private List<String> addNewFiles(Git git) throws IOException {
+	private List<String> addNewFiles(Git git) throws IOException, GitAPIException {
 		DiffCommand diffCommand = git.diff();
 		AddCommand addCommand = git.add();
 		List<String> changedFiles = new ArrayList<String>();
 		List<String> newFiles = new ArrayList<String>();
-		try {
+		
 			diffCommand.setOutputStream(System.out);
 			List<DiffEntry> result = diffCommand.call();
 			//TODO: delete won't work
@@ -275,10 +273,7 @@ public class GitTeamProvider implements TeamProvider {
 			}
 			if(!newFiles.isEmpty())
 				addCommand.call();
-		} catch (GitAPIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		changedFiles.addAll(newFiles);
 		return changedFiles;
 		
@@ -289,7 +284,7 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
 	public void commit(PropertyFileDescriptor descriptor,
-			IProgressMonitor monitor) throws IOException {
+			IProgressMonitor monitor) throws TeamProviderException {
 		// TODO Auto-generated method stub
 		
 	}

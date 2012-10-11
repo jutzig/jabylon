@@ -24,6 +24,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
@@ -32,6 +34,7 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.common.team.TeamProvider;
+import de.jutzig.jabylon.common.team.TeamProviderException;
 import de.jutzig.jabylon.common.team.TeamProviderUtil;
 import de.jutzig.jabylon.common.util.FileUtil;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
@@ -156,7 +159,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void run(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor monitor) {
 				ProjectVersion version = model.getObject();
 				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
 				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
@@ -172,16 +175,14 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 					}
 					subMonitor.setTaskName("Database Sync");
 					transaction.commit(subMonitor.newChild(updates.size()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					getSession().error(e.getMessage());
-					e.printStackTrace();
+				} catch (TeamProviderException e) {
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Update failed",e);
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
 				} finally {
 					transaction.close();
 				}
+				return Status.OK_STATUS;
 
 			}
 		};
@@ -207,19 +208,17 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void run(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor monitor) {
 				ProjectVersion version = model.getObject();
 				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
 
 				SubMonitor subMonitor = SubMonitor.convert(monitor, "Committing", 100);
 				try {
 					provider.commit(version, subMonitor.newChild(100));
-				} catch (IOException e) {
-					//TODO logging
-					getSession().error(e.getMessage());
-					e.printStackTrace();
+				} catch (TeamProviderException e) {
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Commit Failed",e);
 				}
-			
+				return Status.OK_STATUS;
 			}
 		};
 		return new ProgressShowingAjaxButton("commit", progressPanel, runnable) {
@@ -244,17 +243,15 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void run(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor monitor) {
 				ProjectVersion version = model.getObject();
 				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
 				try {
 					provider.checkout(version, monitor);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					getSession().error(e.getMessage());
-					e.printStackTrace();
+				} catch (TeamProviderException e) {
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Checkout failed",e);
 				}
-
+				return Status.OK_STATUS;
 			}
 		};
 		return new ProgressShowingAjaxButton("checkout", progressPanel, runnable) {
@@ -279,7 +276,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void run(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor monitor) {
 				ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
 				ProjectVersion version = model.getObject();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
@@ -290,12 +287,12 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				try {
 					transaction.commit(subMonitor.newChild(50));
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
 				} finally {
 					transaction.close();
 				}
 				monitor.done();
+				return Status.OK_STATUS;
 			}
 		};
 		return new ProgressShowingAjaxButton("rescan", progressPanel, runnable) {

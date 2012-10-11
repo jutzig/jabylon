@@ -1,5 +1,7 @@
 package de.jutzig.jabylon.common.progress;
 
+import org.eclipse.core.runtime.IStatus;
+
 public interface Progression {
 	
 	String getTaskName();
@@ -9,5 +11,7 @@ public interface Progression {
 	int getCompletion();
 	
 	boolean isDone();
+	
+	IStatus getStatus();
 	
 }

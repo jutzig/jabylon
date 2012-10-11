@@ -1,6 +1,8 @@
 package de.jutzig.jabylon.common.progress.impl;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import de.jutzig.jabylon.common.progress.Progression;
 
@@ -13,6 +15,7 @@ public class ProgressionImpl implements Progression, IProgressMonitor {
 	private String subTask;
 	private int ticksDone;
 	boolean done;
+	private IStatus status = Status.OK_STATUS;
 	
 	@Override
 	public String getTaskName() {
@@ -84,6 +87,16 @@ public class ProgressionImpl implements Progression, IProgressMonitor {
 	@Override
 	public boolean isDone() {
 		return done;
+	}
+
+	public void setStatus(IStatus status) {
+		this.status = status;  
+		
+	}
+	
+	@Override
+	public IStatus getStatus() {
+		return status;
 	}
 	
 }
