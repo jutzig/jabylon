@@ -223,7 +223,7 @@ public class GitTeamProvider implements TeamProvider {
 			PushCommand push = git.push();
 			push.setCredentialsProvider(createCredentialsProvider(project.getParent()));			
 			String refSpecString = "refs/heads/{0}:refs/heads/{0}";
-			refSpecString = MessageFormat.format(refSpecString, project.getParent());
+			refSpecString = MessageFormat.format(refSpecString, project.getName());
 			RefSpec spec = new RefSpec(refSpecString);
 			push.setRefSpecs(spec); 
 //			push.setPushAll();
