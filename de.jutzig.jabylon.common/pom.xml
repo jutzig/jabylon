@@ -20,6 +20,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
+                        <Service-Component>OSGI-INF/serviceComponents.xml</Service-Component>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -66,7 +67,7 @@
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>common</artifactId>
 			<scope>provided</scope>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
