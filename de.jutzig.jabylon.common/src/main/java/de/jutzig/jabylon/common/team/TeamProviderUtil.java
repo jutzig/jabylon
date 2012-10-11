@@ -27,6 +27,8 @@ public class TeamProviderUtil {
 	}
 
 	public static TeamProvider getTeamProvider(String name) {
+		if(name==null)
+			return null;
 		for (IConfigurationElement element : providers.get()) {
 			String providerName = element.getAttribute("name");
 			if(name.equals(providerName))
