@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -69,18 +70,16 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				item.add(new Label("summary", createSummaryModel(item.getModel())));
 				progressModel = new ProgressionModel(-1);
 				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
-				
+
 				item.add(progressPanel);
 
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
 				item.add(createRescanAction(progressPanel, item.getModel()));
 				item.add(createUpdateAction(progressPanel, item.getModel()));
-				// item.add(createCommitAction(progressPanel, item.getModel()));
+				item.add(createCommitAction(progressPanel, item.getModel()));
 				item.add(createDeleteAction(progressPanel, item.getModel()));
 
 			}
-
-
 
 		};
 		project.setOutputMarkupId(true);
@@ -90,9 +89,8 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 	private Component buildAddNewLink(IModel<Project> model) {
 		PageParameters params = new PageParameters();
 		Project project = model.getObject();
-		if(project.cdoState()==CDOState.NEW || project.cdoState()==CDOState.TRANSIENT)
-		{
-//			it's a new project, we can't add anything yet
+		if (project.cdoState() == CDOState.NEW || project.cdoState() == CDOState.TRANSIENT) {
+			// it's a new project, we can't add anything yet
 			Button link = new Button("addNew");
 			link.setEnabled(false);
 			return link;
@@ -144,17 +142,13 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				}
 			}
 
-
 		};
-//		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
+		// button.add(new AttributeModifier("onclick",
+		// "return confirm('Are you sure you want to delete this version?');"));
 		button.setDefaultFormProcessing(false);
 		return button;
 	}
 
-	protected Component createCommitAction(ProgressPanel progressPanel, IModel<ProjectVersion> model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	protected Component createUpdateAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 		RunnableWithProgress runnable = new RunnableWithProgress() {
@@ -192,6 +186,43 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			}
 		};
 		return new ProgressShowingAjaxButton("update", progressPanel, runnable) {
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isVisible() {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				if (provider == null)
+					return false;
+				File file = new File(version.absoluteFilePath().toFileString());
+				return (file.isDirectory());
+			};
+		};
+
+	}
+
+	protected Component createCommitAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+		RunnableWithProgress runnable = new RunnableWithProgress() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void run(IProgressMonitor monitor) {
+				ProjectVersion version = model.getObject();
+				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+
+				SubMonitor subMonitor = SubMonitor.convert(monitor, "Committing", 100);
+				try {
+					provider.commit(version, subMonitor.newChild(100));
+				} catch (IOException e) {
+					//TODO logging
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				}
+			
+			}
+		};
+		return new ProgressShowingAjaxButton("commit", progressPanel, runnable) {
 
 			private static final long serialVersionUID = 1L;
 
