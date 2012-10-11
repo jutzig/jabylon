@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -13,6 +14,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.emf.cdo.CDOState;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.ProjectLocale;
@@ -50,6 +52,13 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 	}
 
 	private Component buildAddNewLink(IModel<ProjectVersion> model) {
+		if(model.getObject().cdoState()==CDOState.NEW || model.getObject().cdoState()==CDOState.TRANSIENT)
+		{
+//			it's a new object, we can't add anything yet
+			Button link = new Button("addNew");
+			link.setEnabled(false);
+			return link;
+		}
 		PageParameters params = new PageParameters();
 		params.set(0, model.getObject().getParent().getName());
 		params.set(1, model.getObject().getName());

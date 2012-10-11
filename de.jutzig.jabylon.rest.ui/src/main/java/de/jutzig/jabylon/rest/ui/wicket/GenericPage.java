@@ -11,6 +11,7 @@ import org.apache.wicket.util.string.StringValue;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.model.IEObjectModel;
 import de.jutzig.jabylon.rest.ui.navbar.NavbarPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 
@@ -19,7 +20,7 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 
 	private static final long serialVersionUID = 1L;
 	
-	private EObjectModel<T> model;
+	private IEObjectModel<T> model;
 
 	public GenericPage(PageParameters parameters) {
 		super(parameters);
@@ -29,11 +30,11 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 		add(new NavbarPanel<Resolvable<?,?>>("navbar", model.getObject(), parameters));
 	}
 	
-	public void setModel(EObjectModel<T> model) {
+	public void setModel(IEObjectModel<T> model) {
 		this.model = model;
 	}
 
-	protected EObjectModel<T> createModel(T object) {
+	protected IEObjectModel<T> createModel(T object) {
 		return new EObjectModel<T>(object);
 	}
 

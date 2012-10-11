@@ -14,14 +14,17 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.Preferences;
@@ -86,6 +89,13 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 	private Component buildAddNewLink(IModel<Project> model) {
 		PageParameters params = new PageParameters();
 		Project project = model.getObject();
+		if(project.cdoState()==CDOState.NEW || project.cdoState()==CDOState.TRANSIENT)
+		{
+//			it's a new project, we can't add anything yet
+			Button link = new Button("addNew");
+			link.setEnabled(false);
+			return link;
+		}
 		params.set(0, project.getName());
 		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
 		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);

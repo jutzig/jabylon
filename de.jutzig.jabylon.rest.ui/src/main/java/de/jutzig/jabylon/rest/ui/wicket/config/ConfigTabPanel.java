@@ -1,5 +1,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.config;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -11,6 +13,7 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
@@ -24,6 +27,8 @@ import de.jutzig.jabylon.common.util.DelegatingPreferences;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.rest.ui.model.AttachableModel;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 
@@ -36,40 +41,58 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 			@Override
 			protected void onSubmit() {
 				IModel<T> model = getModel();
-				T object = model.getObject();
-				CDOView cdoView = object.cdoView();
+				CDOObject object = model.getObject();
+				CDOView cdoView;
+				if (model instanceof AttachableModel) {
+					//it's a new object that needs attaching
+					AttachableModel<T> attachable = (AttachableModel<T>) model;
+					attachable.attach();
+					CDOObject parent = (CDOObject) attachable.getObject().eContainer();
+					cdoView = parent.cdoView();
+				}
+				else
+					cdoView = object.cdoView();
 				if (cdoView instanceof CDOTransaction) {
 					CDOTransaction transaction = (CDOTransaction) cdoView;
-					try {
-						transaction.commit();
-						if (object instanceof Resolvable) {
-							Resolvable r = (Resolvable) object;
-							if(!r.getName().equals(preferences.name()))
-							{
-								//FIXME: must rename preferences properly
-//								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
-							}
-						}
-						preferences.flush();
-						getSession().success("Saved successfully");
-					} catch (CommitException e) {
-						// TODO Auto-generated catch block
-						getSession().error(e.getMessage());
-						e.printStackTrace();
-					} catch (BackingStoreException e) {
-						// TODO Auto-generated catch block
-						getSession().error(e.getMessage());
-						e.printStackTrace();
-					}
-					finally{
-						transaction.close();
-					}
+					commit(preferences, object, transaction);
+					model.detach();
 				}
 				else
 					throw new IllegalStateException("not a transaction");
+				
 
 				super.onSubmit();
 			}
+
+			protected void commit(final Preferences preferences, CDOObject object, CDOTransaction transaction) {
+				try {
+					transaction.commit();
+					if (object instanceof Resolvable) {
+						Resolvable r = (Resolvable) object;
+						if(!r.getName().equals(preferences.name()))
+						{
+							//FIXME: must rename preferences properly
+//								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
+						}
+						setResponsePage(SettingsPage.class, createPageParameters(r));
+					}
+					preferences.flush();
+					getSession().success("Saved successfully");
+				} catch (CommitException e) {
+					// TODO Auto-generated catch block
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				} catch (BackingStoreException e) {
+					// TODO Auto-generated catch block
+					getSession().error(e.getMessage());
+					e.printStackTrace();
+				}
+				finally{
+					transaction.close();
+				}
+			}
+
+
 		};
 		
 		ListView<ConfigSection<T>> view = new ListView<ConfigSection<T>>("sections", sections) {
@@ -99,6 +122,24 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 				return true;
 		}
 		return false;
+	}
+	
+	private PageParameters createPageParameters(Resolvable r) {
+		PageParameters params = new PageParameters();
+		Deque<String> segments = new ArrayDeque<String>();
+		Resolvable<?, ?> part = r;
+		while(part!=null)
+		{
+			String name = part.getName();
+			if(name!=null)
+				segments.push(name);
+			part = part.getParent(); 
+		}
+		int count = 0;
+		for (String string : segments) {
+			params.set(count++, string);
+		}
+		return params;
 	}
 
 }

@@ -15,6 +15,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.ecore.EClass;
@@ -25,6 +26,7 @@ import org.osgi.service.prefs.Preferences;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import de.jutzig.jabylon.common.util.AttachablePreferences;
 import de.jutzig.jabylon.common.util.DelegatingPreferences;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
@@ -32,7 +34,8 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
-import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
+import de.jutzig.jabylon.rest.ui.model.IEObjectModel;
 import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
@@ -50,7 +53,7 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 	
 	public static final String QUERY_PARAM_CREATE = "create";
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
 		StringValue value = parameters.get(QUERY_PARAM_CREATE);
@@ -59,29 +62,31 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 			EClassifier eClassifier = PropertiesPackage.eINSTANCE.getEClassifier(value.toString());
 			if (eClassifier instanceof EClass) {
 				EClass eclass = (EClass) eClassifier;
-				EObject eObject = PropertiesFactory.eINSTANCE.create(eclass);
-				if (eObject instanceof Resolvable<?,?>) {
-					Resolvable<?,?> newChild = (Resolvable<?,?>) eObject;
-					CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-					Resolvable<?, ?> parent = transaction.getObject(getModel().getObject());
-					List children = parent.getChildren();
-					newChild.setName("<New>");
-					children.add(newChild);
-					try {
-						transaction.commit();
-						newChild = getModel().getObject().cdoView().getObject(newChild);
-						setModel(createModel(newChild));
-					} catch (CommitException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						getSession().error(e.getMessage());
-					}finally{
-						transaction.close();
-						
-					}
-					
-				}
-				
+				setModel(new AttachableWritableModel(eclass, getModel()));
+//				EObject eObject = PropertiesFactory.eINSTANCE.create(eclass);
+//				if (eObject instanceof Resolvable<?,?>) {
+//					Resolvable<?,?> newChild = (Resolvable<?,?>) eObject;
+//					
+//					CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+//					Resolvable<?, ?> parent = transaction.getObject(getModel().getObject());
+//					List children = parent.getChildren();
+//					newChild.setName("<New>");
+//					children.add(newChild);
+//					try {
+//						transaction.commit();
+//						newChild = getModel().getObject().cdoView().getObject(newChild);
+//						setModel(createModel(newChild));
+//					} catch (CommitException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//						getSession().error(e.getMessage());
+//					}finally{
+//						transaction.close();
+//						
+//					}
+//					
+//				}
+//				
 			}
 		}
 		List<ITab> extensions = loadTabExtensions();
@@ -92,7 +97,7 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 	}
 
 	@Override
-	protected EObjectModel<Resolvable<?, ?>> createModel(Resolvable<?, ?> object) {
+	protected IEObjectModel<Resolvable<?, ?>> createModel(Resolvable<?, ?> object) {
 		return new WritableEObjectModel<Resolvable<?, ?>>(object);
 	}
 	
@@ -124,7 +129,9 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 			}
 		}
 		List<ITab> extensions = new ArrayList<ITab>();
-		Preferences preferences = new DelegatingPreferences(PreferencesUtil.scopeFor(getModelObject()));
+		Resolvable<?, ?> modelObject = getModelObject();
+		boolean isNew = modelObject.cdoState()==CDOState.NEW || modelObject.cdoState()==CDOState.TRANSIENT;
+		Preferences preferences = isNew ? new AttachablePreferences() : new DelegatingPreferences(PreferencesUtil.scopeFor(modelObject));
 		for (IConfigurationElement element : configurationElements) {
 			String name = element.getAttribute("name");
 			String id = element.getAttribute("tabID");
