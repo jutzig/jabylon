@@ -59,7 +59,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 	public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
 		super(id, model);
 		add(buildAddNewLink(model));
-		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model.getObject(),
+		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model,
 				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions", provider) {
 

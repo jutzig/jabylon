@@ -40,7 +40,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 	@Override
 	protected void onBeforeRender() {
-		ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModelObject(),
+		ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModel(),
 				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		final boolean endsOnSlash = urlEndsOnSlash();
 		final DataView<Resolvable<?, ?>> dataView = new DataView<Resolvable<?, ?>>("children", provider) {

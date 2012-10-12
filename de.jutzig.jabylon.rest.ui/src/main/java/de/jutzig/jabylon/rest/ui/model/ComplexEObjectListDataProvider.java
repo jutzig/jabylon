@@ -17,17 +17,17 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
 public class ComplexEObjectListDataProvider<R extends CDOObject>
-    extends AbstractEMFModel<CDOObject, List<R>>
-    implements IDataProvider<R>
+    implements IDataProvider<R>, IModel<List<R>>
 {
 
 	private static final long serialVersionUID = 1L;
 	private String featureName;
+	private IModel<? extends CDOObject> model;
 
 
-    public ComplexEObjectListDataProvider(CDOObject object, EStructuralFeature feature)
+    public ComplexEObjectListDataProvider(IModel<? extends CDOObject> model, EStructuralFeature feature)
     {
-        super(object);
+    	this.model = model;
         featureName = feature.getName();
     }
 
@@ -35,9 +35,9 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     @Override
     public Iterator< ? extends R> iterator(long arg0, long arg1)
     {
-        CDOObject model = getDomainObject();
-        EStructuralFeature feature = model.eClass().getEStructuralFeature(featureName);
-        List<R> result = (List<R>)model.eGet(feature);
+        CDOObject parent = model.getObject();
+        EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
+        List<R> result = (List<R>)parent.eGet(feature);
         return result.subList((int)arg0, (int)arg1).iterator();
     }
 
@@ -46,9 +46,9 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     @Override
     public long size()
     {
-        CDOObject model = getDomainObject();
-        EStructuralFeature feature = model.eClass().getEStructuralFeature(featureName);
-        List<R> result = (List<R>)model.eGet(feature);
+    	CDOObject parent = model.getObject();;
+        EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
+        List<R> result = (List<R>)parent.eGet(feature);
         return result.size();
     }
 
@@ -61,19 +61,24 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     }
 
 	@Override
-	public void setObject(List<R> object) {
+	public void detach() {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public List<R> getObject() {
-		
-        CDOObject model = getDomainObject();
-        EStructuralFeature feature = model.eClass().getEStructuralFeature(featureName);
-        List<R> result = (List<R>)model.eGet(feature);
-		return result;
+        CDOObject parent = model.getObject();
+        EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
+        List<R> result = (List<R>)parent.eGet(feature);
+        return result;
+	}
+
+	@Override
+	public void setObject(List<R> object) {
+        CDOObject parent = model.getObject();
+        EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
+        parent.eSet(feature, object);
 	}
 
 }

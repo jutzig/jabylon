@@ -41,7 +41,7 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 	public WorkspaceConfigSection(String id, IModel<Workspace> object, Preferences prefs) {
 		super(id, object);
 		add(buildAddNewLink(object));
-		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		ListView<Project> project = new ListView<Project>("projects",provider) {
 
 			private static final long serialVersionUID = 1L;

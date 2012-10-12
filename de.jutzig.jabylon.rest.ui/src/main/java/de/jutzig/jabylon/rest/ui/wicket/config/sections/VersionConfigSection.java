@@ -3,9 +3,12 @@ package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 import java.util.Locale;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -19,6 +22,7 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -31,30 +35,54 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 
 	public VersionConfigSection(String id, IModel<ProjectVersion> model) {
 		super(id, model);
-		IModel<String> nameProperty = new EObjectPropertyModel<String, ProjectVersion>(model, PropertiesPackage.Literals.RESOLVABLE__NAME); 	
+		IModel<String> nameProperty = new EObjectPropertyModel<String, ProjectVersion>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
 		TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
 		add(field);
-		add(buildAddNewLink(getModel()));
-		ComplexEObjectListDataProvider<ProjectLocale> provider = new ComplexEObjectListDataProvider<ProjectLocale>(model.getObject(), PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-		ListView<ProjectLocale> locale = new ListView<ProjectLocale>("children",provider) {
+		// add(buildAddNewLink(getModel()));
+		final WebMarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
+		rowPanel.setOutputMarkupId(true);
+		add(rowPanel);
+
+		ComplexEObjectListDataProvider<ProjectLocale> provider = new ComplexEObjectListDataProvider<ProjectLocale>(model,
+				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+		final ListView<ProjectLocale> locale = new ListView<ProjectLocale>("children", provider) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<ProjectLocale> item) {
-				
+
+				if(!(item.getModelObject() instanceof ProjectLocale))
+				{
+					item.getModelObject().getParent().getChildren().remove(item.getModelObject());
+					return;
+				}
 				Locale locale = item.getModelObject().getLocale();
+				
 				String displayName = locale == null ? "Template" : locale.getDisplayName(getSession().getLocale());
-				item.add(new Label("name",displayName));
+				item.add(new Label("name", displayName));
 			}
 		};
-		add(locale);
+		rowPanel.add(locale);
+
+		AjaxSubmitLink addLink = new AjaxSubmitLink("addLocale") {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSubmit(AjaxRequestTarget target, Form form) {
+				locale.getModelObject().add(PropertiesFactory.eINSTANCE.createProjectLocale());
+				if (target != null)
+					target.add(rowPanel);
+			}
+		};
+		addLink.setDefaultFormProcessing(false);
+		rowPanel.add(addLink);
 	}
 
 	private Component buildAddNewLink(IModel<ProjectVersion> model) {
-		if(model.getObject().cdoState()==CDOState.NEW || model.getObject().cdoState()==CDOState.TRANSIENT)
-		{
-//			it's a new object, we can't add anything yet
+		if (model.getObject().cdoState() == CDOState.NEW || model.getObject().cdoState() == CDOState.TRANSIENT) {
+			// it's a new object, we can't add anything yet
 			Button link = new Button("addNew");
 			link.setEnabled(false);
 			return link;
@@ -78,10 +106,9 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 		@Override
 		public void commit(IModel<ProjectVersion> input, Preferences config) {
 			// TODO Auto-generated method stub
-			// TODO rename on filesystem 
-			
+			// TODO rename on filesystem
+
 		}
-		
 
 	}
 
