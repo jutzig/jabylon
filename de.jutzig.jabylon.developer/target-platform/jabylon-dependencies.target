@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="Jabylon" sequenceNumber="46">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.cvs.feature.group" version="1.3.100.v20110520-0800-7B78FHl9VF7BD7KBM4GP9C"/>
+<unit id="org.eclipse.jgit.feature.group" version="1.3.0.201202151440-r"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.7.1.R37x_v20110907-7M7W8i8eNV4WsRkue-4Vq4J6pCyW"/>
+<unit id="org.eclipse.jetty.sdk.feature.group" version="7.5.1.201109140245"/>
+<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.0.0.v20120214-1021"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.7.2.v20120130-0943"/>
+<unit id="org.eclipse.net4j.sdk.feature.group" version="4.0.0.v20111221-2122"/>
+<repository location="http://download.eclipse.org/releases/indigo/"/>
+</location>
+</locations>
+</target>
