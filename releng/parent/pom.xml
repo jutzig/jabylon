@@ -20,7 +20,7 @@
 	<repositories>
 		<repository>
 			<id>eclipse-indigo</id>
-			<url>http://esd4j.org/jabylon/</url>
+			<url>http://esd4j.org/jabylon/repository</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
