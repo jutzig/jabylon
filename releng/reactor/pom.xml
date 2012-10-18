@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.jutzig.jabylon</groupId>
-	<artifactId>jabylon</artifactId>
+	<artifactId>jabylon-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-SNAPHOT</version>
 
@@ -16,15 +16,16 @@
 		<module>../../de.jutzig.jabylon.properties</module>
 		<module>../../de.jutzig.jabylon.resources</module>
         <module>../../de.jutzig.jabylon.rest.api</module>
+        <module>../../de.jutzig.jabylon.rest.ui</module>
 		<!-- <module>../../de.jutzig.jabylon.review.standard</module> -->
  		<module>../../de.jutzig.jabylon.scheduler</module>
 <!--		<module>../../de.jutzig.jabylon.scheduler.ui</module> -->
 		<module>../../de.jutzig.jabylon.security</module>
-<!-- 		<module>../../de.jutzig.jabylon.team.git</module>
-		<module>../../de.jutzig.jabylon.ui</module> -->
+ 		<module>../../de.jutzig.jabylon.team.git</module>
+<!-- 		<module>../../de.jutzig.jabylon.ui</module> -->
 		<module>../../de.jutzig.jabylon.users</module>
-<!-- 		<module>../../de.jutzig.jabylon.vaadin.style</module>
-		<module>../../de.jutzig.jabylon.server.feature</module> -->
+<!-- 		<module>../../de.jutzig.jabylon.vaadin.style</module> -->
+		<!-- <module>../../de.jutzig.jabylon.server.feature</module> -->
 		<!-- <module>../product</module> -->
 	</modules>
 </project>

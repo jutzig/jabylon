@@ -47,5 +47,6 @@
         <groupId>de.jutzig.jabylon</groupId>
         <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../releng/parent</relativePath>
     </parent>
 </project>

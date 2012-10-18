@@ -38,6 +38,17 @@
 				</includes>
 			</resource>
 		</resources>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -279,6 +290,11 @@
 				<artifactId>wicket-request</artifactId>
 				<version>6.0.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-util</artifactId>
+				<version>6.0.0</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 

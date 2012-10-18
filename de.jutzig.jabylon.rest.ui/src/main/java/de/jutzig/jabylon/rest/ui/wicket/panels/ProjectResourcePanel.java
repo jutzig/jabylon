@@ -15,6 +15,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
 
@@ -236,7 +237,8 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
 		{
 			iconName = derriveCountry(locale);
 		}
-		UrlResourceReference ref = new UrlResourceReference(Url.parse("/VAADIN/themes/jabylon/img/flags/gif/"+iconName+".gif"));
+		
+		UrlResourceReference ref = new UrlResourceReference(Url.parse("/jabylon/img/flags/gif/"+iconName+".gif"));
 		return ref;
 	}
 

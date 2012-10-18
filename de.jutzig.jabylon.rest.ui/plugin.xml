@@ -5,35 +5,24 @@
    <extension-point id="config" name="Configuration Extensions" schema="schema/config.exsd"/>
    <extension-point id="configTab" name="Configuration Tabs" schema="schema/configTab.exsd"/>
    <extension
-         point="org.eclipse.equinox.http.registry.resources">
-      <resource
-            alias="/static"
-            base-name="/WebContent">
-      </resource>
-      <resource
-            alias="/"
-            base-name="/WebContent">
-      </resource>
-   </extension>
-   <extension
          point="org.eclipse.equinox.http.registry.httpcontexts">
       <httpcontext
-            id="wicket">
+            id="jabylon">
       </httpcontext>
    </extension>
 	<extension
          point="org.eclipse.equinox.http.registry.filters">
       <filter
-            alias="/wicket"
+            alias="/jabylon"
             class="de.jutzig.jabylon.rest.ui.JabylonFilter"
-            httpcontextId="wicket">
+            httpcontextId="jabylon">
          <init-param
                name="applicationClassName"
                value="de.jutzig.jabylon.rest.ui.wicket.JabylonApplication">
          </init-param>
          <init-param
                name="filterMappingUrlPattern"
-               value="/wicket/*">
+               value="/jabylon/*">
          </init-param>
          <init-param
                name="configuration"
@@ -111,5 +100,12 @@
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.VersionConfigSection$VersionConfig"
           tab="general">
     </section>
+ </extension>
+ <extension
+       point="org.eclipse.equinox.http.registry.resources">
+    <resource
+          alias="/jabylon"
+          base-name="WebContent">
+    </resource>
  </extension>
 </plugin>
