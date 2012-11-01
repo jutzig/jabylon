@@ -49,6 +49,9 @@
 
    <element name="section">
       <complexType>
+         <sequence minOccurs="0" maxOccurs="1">
+            <element ref="permission" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
@@ -86,6 +89,21 @@
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="java.lang.Object:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="permission">
+      <complexType>
+         <attribute name="requires" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="identifier" basedOn="de.jutzig.jabylon.security.permission/permission/@name"/>
                </appInfo>
             </annotation>
          </attribute>
