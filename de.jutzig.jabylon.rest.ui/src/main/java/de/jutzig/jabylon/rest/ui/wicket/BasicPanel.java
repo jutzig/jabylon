@@ -37,7 +37,7 @@ public class BasicPanel<T>extends GenericPanel<T> {
 
 //		Bootstrap.renderHead(response);
 		
-		response.render(CssHeaderItem.forUrl("css/main.css"));
+		response.render(CssHeaderItem.forUrl("/jabylon/css/main.css"));
 //		response.render(JavaScriptHeaderItem.forUrl("bootstrap/js/bootstrap.js"));
 	}
 
