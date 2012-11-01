@@ -35,6 +35,9 @@
 						<Service-Component>
 							OSGI-INF/main.xml
 						</Service-Component>
+						<Include-Resource>
+							{maven-resources},plugin.xml
+						</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
