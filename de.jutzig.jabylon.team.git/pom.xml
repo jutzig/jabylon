@@ -12,6 +12,14 @@
 	</parent>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.html</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -20,7 +28,9 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
-						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
+						<Include-Resource>
+							{maven-resources},plugin.xml
+						</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
