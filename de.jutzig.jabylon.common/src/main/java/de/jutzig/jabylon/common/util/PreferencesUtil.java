@@ -6,6 +6,7 @@ package de.jutzig.jabylon.common.util;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.ecore.EObject;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
@@ -54,6 +55,44 @@ public class PreferencesUtil {
 	public static Preferences workspaceScope()
 	{
 		return scopeFor(null);
+	}
+	
+	public static Preferences renamePreferenceNode(Preferences node, String newName)
+	{
+		Preferences parent = node.parent();
+		Preferences clone = parent.node(newName);
+		try {
+			copyChildPreferences(node, clone);
+			parent.removeNode();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return clone;
+	}
+
+	protected static void shallowClonePreferences(Preferences node, Preferences clone) {
+		try {
+			for (String key : node.childrenNames()) {
+				String value = node.get(key, "");
+				clone.put(key, value);
+				
+			}
+
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void copyChildPreferences(Preferences oldParent, Preferences newParent) throws BackingStoreException
+	{
+		for (String name : oldParent.childrenNames()) {
+			Preferences child = oldParent.node(name);
+			Preferences copy = newParent.node(name);
+			shallowClonePreferences(child, copy);
+			copyChildPreferences(child, copy);
+		}
 	}
 	
 	public static final ScanConfiguration getScanConfigForProject(Project project)

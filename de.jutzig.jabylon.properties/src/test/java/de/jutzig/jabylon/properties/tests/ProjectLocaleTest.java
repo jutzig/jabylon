@@ -96,18 +96,12 @@ public class ProjectLocaleTest extends ResolvableTest {
 	 * @generated NOT
 	 */
 	public void testGetProjectVersion() {
-		assertNull(getFixture().getProjectVersion());
+		assertNull(getFixture().getParent());
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.setMaster(getFixture());
-		assertSame(version,getFixture().getProjectVersion());
+		version.getChildren().add(getFixture());
+		assertSame(version,getFixture().getParent());
 	}
-	
-	public void testGetProjectVersionSlaveLocale() {
-		assertNull(getFixture().getProjectVersion());
-		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.getLocales().add(getFixture());
-		assertSame(version,getFixture().getProjectVersion());
-	}
+
 
 	/**
 	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectLocale#isMaster() <em>Is Master</em>}' operation.
@@ -122,14 +116,15 @@ public class ProjectLocaleTest extends ResolvableTest {
 	
 	public void testIsMasterSlaveLocale() {
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.getLocales().add(getFixture());
+		version.getChildren().add(getFixture());
 		assertFalse(getFixture().isMaster());
 	}
 	
 	
 	public void testIsMasterMasterLocale() {
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.setMaster(getFixture());
+		version.getChildren().add(getFixture());
+		version.setTemplate(getFixture());
 		assertTrue(getFixture().isMaster());
 	}
 	

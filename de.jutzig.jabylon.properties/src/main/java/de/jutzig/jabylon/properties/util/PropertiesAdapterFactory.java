@@ -6,7 +6,6 @@
  */
 package de.jutzig.jabylon.properties.util;
 
-import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -20,7 +19,9 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
@@ -110,7 +111,7 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 				return createWorkspaceAdapter();
 			}
 			@Override
-			public Adapter caseResolvable(Resolvable object) {
+			public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> Adapter caseResolvable(Resolvable<P, C> object) {
 				return createResolvableAdapter();
 			}
 			@Override
@@ -128,6 +129,10 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter casePropertyFileDiff(PropertyFileDiff object) {
 				return createPropertyFileDiffAdapter();
+			}
+			@Override
+			public Adapter caseResourceFolder(ResourceFolder object) {
+				return createResourceFolderAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -314,6 +319,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPropertyFileDiffAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.jutzig.jabylon.properties.ResourceFolder <em>Resource Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.jutzig.jabylon.properties.ResourceFolder
+	 * @generated
+	 */
+	public Adapter createResourceFolderAdapter() {
 		return null;
 	}
 

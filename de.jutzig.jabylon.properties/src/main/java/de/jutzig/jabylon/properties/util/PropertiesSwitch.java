@@ -6,7 +6,6 @@
  */
 package de.jutzig.jabylon.properties.util;
 
-import de.jutzig.jabylon.properties.*;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -19,7 +18,9 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
@@ -129,7 +130,7 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				return result;
 			}
 			case PropertiesPackage.RESOLVABLE: {
-				Resolvable resolvable = (Resolvable)theEObject;
+				Resolvable<?, ?> resolvable = (Resolvable<?, ?>)theEObject;
 				T result = caseResolvable(resolvable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -155,6 +156,13 @@ public class PropertiesSwitch<T> extends Switch<T> {
 			case PropertiesPackage.PROPERTY_FILE_DIFF: {
 				PropertyFileDiff propertyFileDiff = (PropertyFileDiff)theEObject;
 				T result = casePropertyFileDiff(propertyFileDiff);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertiesPackage.RESOURCE_FOLDER: {
+				ResourceFolder resourceFolder = (ResourceFolder)theEObject;
+				T result = caseResourceFolder(resourceFolder);
+				if (result == null) result = caseResolvable(resourceFolder);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -278,7 +286,7 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseResolvable(Resolvable object) {
+	public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> T caseResolvable(Resolvable<P, C> object) {
 		return null;
 	}
 
@@ -339,6 +347,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T casePropertyFileDiff(PropertyFileDiff object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Resource Folder</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Resource Folder</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseResourceFolder(ResourceFolder object) {
 		return null;
 	}
 

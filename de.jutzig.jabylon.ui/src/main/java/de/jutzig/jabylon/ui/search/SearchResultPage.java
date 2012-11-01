@@ -183,8 +183,8 @@ class ResultLuceneContainer extends LuceneContainer
 						//TODO: walk to
 						PropertyFileDescriptor descriptor = (PropertyFileDescriptor) event.getButton().getData();
 						ProjectLocale locale = descriptor.getProjectLocale();
-						String version = "?"+locale.getProjectVersion().getBranch(); //$NON-NLS-1$
-						String project = locale.getProjectVersion().getProject().getName();
+						String version = "?"+locale.getParent().getName(); //$NON-NLS-1$
+						String project = locale.getParent().getParent().getName();
 						if(locale.getLocale()!=null)
 						{
 							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,locale.getLocale().toString(),descriptor.relativePath().toString());							

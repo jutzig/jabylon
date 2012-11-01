@@ -125,6 +125,15 @@ public interface PropertiesFactory extends EFactory {
 	PropertyFileDiff createPropertyFileDiff();
 
 	/**
+	 * Returns a new object of class '<em>Resource Folder</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Resource Folder</em>'.
+	 * @generated
+	 */
+	ResourceFolder createResourceFolder();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

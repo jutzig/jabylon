@@ -11,9 +11,9 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.ui.Activator;
 import de.jutzig.jabylon.ui.styles.JabylonStyle;
-import de.jutzig.jabylon.ui.util.RunnableWithProgress;
 
 public class ProgressMonitorDialog extends Window implements IProgressMonitor,
 		ClickListener {

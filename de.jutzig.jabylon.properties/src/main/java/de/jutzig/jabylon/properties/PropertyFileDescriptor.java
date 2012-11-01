@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getReviews <em>Reviews</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModified <em>Last Modified</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getLastModification <em>Last Modification</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,7 +36,7 @@ import org.eclipse.emf.common.util.URI;
  * @model
  * @generated
  */
-public interface PropertyFileDescriptor extends Resolvable {
+public interface PropertyFileDescriptor extends Resolvable<Resolvable<?, ?>, PropertyFileDescriptor> {
 	/**
 	 * Returns the value of the '<em><b>Variant</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -129,6 +130,7 @@ public interface PropertyFileDescriptor extends Resolvable {
 
 	/**
 	 * Returns the value of the '<em><b>Master</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors <em>Derived Descriptors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Master</em>' reference isn't clear,
@@ -138,7 +140,8 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @return the value of the '<em>Master</em>' reference.
 	 * @see #setMaster(PropertyFileDescriptor)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_Master()
-	 * @model resolveProxies="false"
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getDerivedDescriptors
+	 * @model opposite="derivedDescriptors" resolveProxies="false"
 	 * @generated
 	 */
 	PropertyFileDescriptor getMaster();
@@ -155,6 +158,7 @@ public interface PropertyFileDescriptor extends Resolvable {
 
 	/**
 	 * Returns the value of the '<em><b>Project Locale</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.ProjectLocale#getDescriptors <em>Descriptors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Project Locale</em>' reference isn't clear,
@@ -164,7 +168,8 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @return the value of the '<em>Project Locale</em>' reference.
 	 * @see #setProjectLocale(ProjectLocale)
 	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_ProjectLocale()
-	 * @model resolveProxies="false" required="true"
+	 * @see de.jutzig.jabylon.properties.ProjectLocale#getDescriptors
+	 * @model opposite="descriptors" resolveProxies="false" required="true"
 	 * @generated
 	 */
 	ProjectLocale getProjectLocale();
@@ -272,5 +277,23 @@ public interface PropertyFileDescriptor extends Resolvable {
 	 * @generated
 	 */
 	void setLastModification(Comment value);
+
+	/**
+	 * Returns the value of the '<em><b>Derived Descriptors</b></em>' reference list.
+	 * The list contents are of type {@link de.jutzig.jabylon.properties.PropertyFileDescriptor}.
+	 * It is bidirectional and its opposite is '{@link de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster <em>Master</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Derived Descriptors</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Derived Descriptors</em>' reference list.
+	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getPropertyFileDescriptor_DerivedDescriptors()
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getMaster
+	 * @model opposite="master"
+	 * @generated
+	 */
+	EList<PropertyFileDescriptor> getDerivedDescriptors();
 
 } // PropertyFileDescriptor

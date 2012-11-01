@@ -1,0 +1,37 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+
+	<div class="well" wicket:id="projects">
+		<h4 wicket:id="project-name"></h4>
+		Project Description lorem ipsum dolor sit amet, consetetur sadipscing
+		elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+		magna aliquyam
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<button wicket:id="edit" type="button" class="btn btn-primary">
+							<i class="icon-edit"></i> Edit
+						</button>
+					</td>
+					<td>
+						<button type="button" class="btn">
+							<i class="icon-download-alt"></i> Download
+						</button>
+					</td>
+					<td>
+						<button type="button" class="btn btn-danger" wicket:id="delete">
+							<i class="icon-remove"></i> Delete
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<p>
+		<a wicket:id="addNew" href="#" class="btn btn-primary"><i
+			class="icon-align-left icon-plus"></i> Add new</a>
+	</p>
+</wicket:panel>
+</html>

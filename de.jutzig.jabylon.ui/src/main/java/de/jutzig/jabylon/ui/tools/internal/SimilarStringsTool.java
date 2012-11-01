@@ -135,7 +135,7 @@ public class SimilarStringsTool
 
     private PropertyFileDescriptor getSlave(PropertyFileDescriptor descriptor)
     {
-        ProjectVersion version = descriptor.getProjectLocale().getProjectVersion();
+        ProjectVersion version = descriptor.getProjectLocale().getParent();
         ProjectLocale locale = version.getProjectLocale(translation.getVariant());
         if(locale==null)
             return null;

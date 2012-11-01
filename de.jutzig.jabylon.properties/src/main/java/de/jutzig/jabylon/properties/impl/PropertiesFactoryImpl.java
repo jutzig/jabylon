@@ -6,7 +6,6 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import de.jutzig.jabylon.properties.*;
 import java.io.InputStream;
 import java.util.Locale;
 
@@ -19,6 +18,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import de.jutzig.jabylon.properties.Comment;
+import de.jutzig.jabylon.properties.DiffKind;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -27,7 +27,9 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.PropertyType;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ReviewState;
 import de.jutzig.jabylon.properties.ScanConfiguration;
@@ -89,6 +91,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.REVIEW: return (EObject)createReview();
 			case PropertiesPackage.COMMENT: return (EObject)createComment();
 			case PropertiesPackage.PROPERTY_FILE_DIFF: return (EObject)createPropertyFileDiff();
+			case PropertiesPackage.RESOURCE_FOLDER: return (EObject)createResourceFolder();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -256,6 +259,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	public PropertyFileDiff createPropertyFileDiff() {
 		PropertyFileDiffImpl propertyFileDiff = new PropertyFileDiffImpl();
 		return propertyFileDiff;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ResourceFolder createResourceFolder() {
+		ResourceFolderImpl resourceFolder = new ResourceFolderImpl();
+		return resourceFolder;
 	}
 
 	/**

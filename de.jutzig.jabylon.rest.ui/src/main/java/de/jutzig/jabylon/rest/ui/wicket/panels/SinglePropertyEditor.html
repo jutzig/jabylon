@@ -1,0 +1,31 @@
+<html  xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+	<div class="well" style="width: 100%">
+		<h6 wicket:id="key"></h6>
+		<table style="width: 100%">
+			<thead>
+				<tr>
+					<td>Template</td>
+					<td>Translation</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><textarea wicket:id="template" readonly="readonly" rows="3" style="width: 90%;" placeholder="Template"></textarea></td>
+					<td><textarea wicket:id="translation" required="required" rows="3" style="width: 90%" placeholder="Translation"></textarea></td>
+				</tr>
+				<tr>
+					<td><textarea wicket:id="template-comment" readonly="readonly"  style="width: 90%;" placeholder="Comment"></textarea></td>
+					<td><textarea wicket:id="translation-comment"  style="width: 90%" placeholder="Comment"></textarea></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- <hr
+		style="color: blue; background-color: blue; height: 4px; width: 80%; margin-left: 10%;" /> -->
+
+</wicket:panel>
+</html>

@@ -17,13 +17,6 @@
    </license>
 
    <plugin
-         id="de.jutzig.jabylon.cdo.connector"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.lucene.core"
          download-size="0"
          install-size="0"
@@ -52,13 +45,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.auto.translate"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.net4j.jvm"
          download-size="0"
          install-size="0"
@@ -67,20 +53,6 @@
 
    <plugin
          id="org.eclipse.net4j.db"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.vaadin.osgi.staticres"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.vaadin.osgi"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -122,13 +94,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.cdo.server"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.core.filesystem"
          download-size="0"
          install-size="0"
@@ -136,21 +101,7 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.jutzig.jabylon.resources"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -192,13 +143,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.team.git"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.jcraft.jsch"
          download-size="0"
          install-size="0"
@@ -210,13 +154,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="de.jutzig.jabylon.users"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.emf.cdo"
@@ -234,13 +171,6 @@
 
    <plugin
          id="org.apache.derby"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.jutzig.jabylon.properties"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -381,13 +311,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.index"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="ch.qos.logback.classic"
          download-size="0"
          install-size="0"
@@ -444,13 +367,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.security"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="javax.servlet"
          download-size="0"
          install-size="0"
@@ -459,14 +375,6 @@
 
    <plugin
          id="javax.transaction"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="de.jutzig.jabylon.vaadin.style"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -511,21 +419,7 @@
          unpack="false"/>
 
    <plugin
-         id="com.vaadin"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.google.collect"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.jutzig.jabylon.review.standard"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -540,13 +434,6 @@
 
    <plugin
          id="org.eclipse.jgit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.jutzig.jabylon.scheduler"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -589,6 +476,55 @@
          unpack="false"/>
 
    <plugin
+         id="org.apache.wicket.auth-roles"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.wicket.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.wicket.extensions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.wicket.request"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.wicket.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.cdo.connector"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.cdo.server"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="de.jutzig.jabylon.common"
          download-size="0"
          install-size="0"
@@ -596,7 +532,21 @@
          unpack="false"/>
 
    <plugin
-         id="de.jutzig.jabylon.scheduler.ui"
+         id="de.jutzig.jabylon.index"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.properties"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.resources"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -604,6 +554,34 @@
 
    <plugin
          id="de.jutzig.jabylon.rest.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.rest.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.security"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.team.git"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.jutzig.jabylon.users"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -10,13 +10,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -24,7 +21,6 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.properties.impl.PropertiesFactoryImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -104,10 +100,10 @@ public class ProjectTest extends ResolvableTest {
 		//must not raise an exception
 	}
 	
-	public void testFullScanWithMaster() {
+	public void testFullScanWithSingelVersion() {
 		ProjectVersion master = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
 		ScanConfiguration scanConfiguration = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		getFixture().setMaster(master);
+		getFixture().getChildren().add(master);
 		getFixture().fullScan(scanConfiguration);
 		verify(master).fullScan(scanConfiguration);
 	}
@@ -116,8 +112,8 @@ public class ProjectTest extends ResolvableTest {
 		ProjectVersion v1 = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
 		ProjectVersion v2 = mock(ProjectVersion.class,withSettings().extraInterfaces(InternalEObject.class));
 		ScanConfiguration scanConfiguration = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		getFixture().getVersions().add(v1);
-		getFixture().getVersions().add(v2);
+		getFixture().getChildren().add(v1);
+		getFixture().getChildren().add(v2);
 		getFixture().fullScan(scanConfiguration);
 		verify(v1).fullScan(scanConfiguration);
 		verify(v2).fullScan(scanConfiguration);
@@ -133,7 +129,7 @@ public class ProjectTest extends ResolvableTest {
 	public void testGetBase() {
 		Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
 		workspace.setRoot(URI.createFileURI("test"));
-		workspace.getProjects().add(getFixture());
+		workspace.getChildren().add(getFixture());
 		getFixture().setName("test2");
 //		assertEquals(URI.createFileURI("test/test2"), getFixture().getBase());
 	}

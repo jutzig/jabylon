@@ -60,19 +60,19 @@ public class QueryServiceImpl implements QueryService {
 			query.add(createProjectQuery(project),Occur.MUST);
 		} else if (scope instanceof ProjectVersion) {
 			ProjectVersion version = (ProjectVersion) scope;
-			query.add(createProjectQuery(version.getProject()), Occur.MUST);
+			query.add(createProjectQuery(version.getParent()), Occur.MUST);
 			query.add(createVersionQuery(version), Occur.MUST);
 
 		} else if (scope instanceof ProjectLocale) {
 			ProjectLocale locale = (ProjectLocale) scope;
-			query.add(createProjectQuery(locale.getProjectVersion().getProject()), Occur.MUST);
-			query.add(createVersionQuery(locale.getProjectVersion()), Occur.MUST);
+			query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
+			query.add(createVersionQuery(locale.getParent()), Occur.MUST);
 			query.add(createLocaleQuery(locale), Occur.MUST);
 		}
 		else if (scope instanceof PropertyFileDescriptor) {
 			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) scope;
-			query.add(createProjectQuery(descriptor.getProjectLocale().getProjectVersion().getProject()), Occur.MUST);
-			query.add(createVersionQuery(descriptor.getProjectLocale().getProjectVersion()), Occur.MUST);
+			query.add(createProjectQuery(descriptor.getProjectLocale().getParent().getParent()), Occur.MUST);
+			query.add(createVersionQuery(descriptor.getProjectLocale().getParent()), Occur.MUST);
 			query.add(createLocaleQuery(descriptor.getProjectLocale()), Occur.MUST);
 			query.add(createDescriptorQuery(descriptor), Occur.MUST);
 		}
@@ -91,7 +91,7 @@ public class QueryServiceImpl implements QueryService {
 	}
 
 	private TermQuery createVersionQuery(ProjectVersion version) {
-		return new TermQuery(new Term(FIELD_VERSION, version.getBranch()));
+		return new TermQuery(new Term(FIELD_VERSION, version.getName()));
 	}
 
 	private TermQuery createProjectQuery(Project project) {

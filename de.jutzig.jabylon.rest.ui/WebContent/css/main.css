@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+@IMPORT url("../bootstrap/css/bootstrap.min.css");
+body {
+	padding: 60px;
+}
+
+.navbar {
+	padding-left: 60px;
+}

@@ -9,9 +9,9 @@ import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import de.jutzig.jabylon.common.team.TeamProvider;
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.properties.Project;
-import de.jutzig.jabylon.ui.team.TeamProvider;
 
 public class Activator extends Plugin {
 

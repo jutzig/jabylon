@@ -31,6 +31,7 @@ import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
@@ -43,12 +44,14 @@ import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersFactory;
 
-public class Activator extends Plugin {
+public class Activator implements BundleActivator {
 
 	/**
 	 * The shared instance
 	 */
 	private static Activator plugin;
+	
+	private BundleContext context;
 
 	/**
 	 * The Plugin ID
@@ -80,8 +83,8 @@ public class Activator extends Plugin {
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
-		super.start(context);
 		plugin = this;
+		this.context = context;
 		startRepository();
 		CDOSession session = createSession();
 		CDOTransaction transaction = session.openTransaction();
@@ -260,7 +263,6 @@ public class Activator extends Plugin {
 
 		if (repository != null)
 			LifecycleUtil.deactivate(repository);
-		super.stop(context);
 	}
 
 	/**
@@ -303,10 +305,10 @@ public class Activator extends Plugin {
 		public void run() {
 			if(needsShutdown && plugin!=null)
 			{
-				BundleContext context = getBundle().getBundleContext();
+				
 				Bundle bundle = context.getBundle(0); //system bundle
 				try {
-					getBundle().stop();
+					context.getBundle().stop();
 					bundle.stop();
 				} catch (BundleException e) {
 					// TODO Auto-generated catch block

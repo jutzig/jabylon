@@ -27,6 +27,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
 
@@ -45,12 +46,13 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getReviews <em>Reviews</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLastModified <em>Last Modified</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getLastModification <em>Last Modification</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileDescriptorImpl#getDerivedDescriptors <em>Derived Descriptors</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class PropertyFileDescriptorImpl extends ResolvableImpl implements PropertyFileDescriptor {
+public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>, PropertyFileDescriptor> implements PropertyFileDescriptor {
 	/**
 	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -169,9 +171,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 
 		Map<String, Object> options = new HashMap<String, Object>();
-		if(getProjectLocale()!=null && getProjectLocale().getProjectVersion()!=null &&
-			getProjectLocale().getProjectVersion().getProject()!=null) {
-			options.put(PropertiesResourceImpl.OPTION_FILEMODE, getProjectLocale().getProjectVersion().getProject().getPropertyType());
+		if(getProjectLocale()!=null && getProjectLocale().getParent()!=null &&
+			getProjectLocale().getParent().getParent()!=null) {
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, getProjectLocale().getParent().getParent().getPropertyType());
 		}
 
 		try {
@@ -187,7 +189,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		}
 		return (PropertyFile) resource.getContents().get(0);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,9 +201,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 
 		Map<String, Object> options = new HashMap<String, Object>();
-		if(getProjectLocale()!=null && getProjectLocale().getProjectVersion()!=null &&
-			getProjectLocale().getProjectVersion().getProject()!=null) {
-			options.put(PropertiesResourceImpl.OPTION_FILEMODE, getProjectLocale().getProjectVersion().getProject().getPropertyType());
+		if(getProjectLocale()!=null && getProjectLocale().getParent()!=null &&
+			getProjectLocale().getParent().getParent()!=null) {
+			options.put(PropertiesResourceImpl.OPTION_FILEMODE, getProjectLocale().getParent().getParent().getPropertyType());
 		}
 
 		try {
@@ -229,6 +231,31 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				PropertyFileDescriptor master = getMaster();
+				if (master != null)
+					msgs = ((InternalEObject)master).eInverseRemove(this, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertyFileDescriptor.class, msgs);
+				return basicSetMaster((PropertyFileDescriptor)otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				ProjectLocale projectLocale = getProjectLocale();
+				if (projectLocale != null)
+					msgs = ((InternalEObject)projectLocale).eInverseRemove(this, PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, ProjectLocale.class, msgs);
+				return basicSetProjectLocale((ProjectLocale)otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDerivedDescriptors()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public void computeLocation() {
@@ -242,20 +269,21 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 		if(extension!=null)
 		{
 			filename = filename.substring(0,filename.length()-extension.length()-1);
-			
+
 			//if the master has a locale as well (i.e. messages_en_EN.properties) we must remove the suffix
 			Locale masterLocale = getMaster().getVariant();
 			if(masterLocale!=null)
 			{
 				filename = filename.substring(0, filename.length() - (masterLocale.toString().length()+1));
 			}
-			
+
 			filename += "_";
 			filename += locale.toString();
 			filename += ".";
 			filename += extension;
 		}
 		setLocation(location.trimSegments(1).appendSegment(filename));
+		setName(filename);
 	}
 
 
@@ -268,8 +296,14 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				return basicSetMaster(null, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				return basicSetProjectLocale(null, msgs);
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
 				return ((InternalEList<?>)getReviews()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return ((InternalEList<?>)getDerivedDescriptors()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -288,17 +322,38 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMaster(PropertyFileDescriptor newMaster) {
-		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
+	public NotificationChain basicSetMaster(PropertyFileDescriptor newMaster, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, msgs);
+		return msgs;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
+	 */
+	public void setMaster(PropertyFileDescriptor newMaster) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
 	 */
 	public ProjectLocale getProjectLocale() {
-		return (ProjectLocale)eContainer();
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetProjectLocale(ProjectLocale newProjectLocale, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newProjectLocale, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, msgs);
+		return msgs;
 	}
 
 	/**
@@ -377,6 +432,16 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<PropertyFileDescriptor> getDerivedDescriptors() {
+		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -413,6 +478,8 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return getLastModified();
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				return getLastModification();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return getDerivedDescriptors();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -451,6 +518,10 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				setLastModification((Comment)newValue);
 				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				getDerivedDescriptors().clear();
+				getDerivedDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -487,6 +558,9 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				setLastModification((Comment)null);
 				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				getDerivedDescriptors().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -515,13 +589,15 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl implements Proper
 				return getLastModified() != LAST_MODIFIED_EDEFAULT;
 			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
 				return getLastModification() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return !getDerivedDescriptors().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
 	@Override
 	public URI relativePath() {
-		return getLocation();
+		return URI.createURI(getName());
 	}
 
 } //PropertyFileDescriptorImpl

@@ -21,7 +21,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Locale" instanceClassName="java.util.Locale"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor" eSuperTypes="#//Resolvable">
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyFileDescriptor">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="loadProperties" eType="#//PropertyFile"/>
     <eOperations name="computeLocation"/>
@@ -31,34 +31,40 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"
-        resolveProxies="false"/>
+        resolveProxies="false" eOpposite="#//PropertyFileDescriptor/derivedDescriptors"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projectLocale" lowerBound="1"
-        eType="#//ProjectLocale" resolveProxies="false"/>
+        eType="#//ProjectLocale" resolveProxies="false" eOpposite="#//ProjectLocale/descriptors"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keys" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reviews" upperBound="-1"
         eType="#//Review" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastModified" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lastModification" eType="#//Comment"
         resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="derivedDescriptors" upperBound="-1"
+        eType="#//PropertyFileDescriptor" eOpposite="#//PropertyFileDescriptor/master"/>
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eTypeArguments>
+      <eTypeArguments eClassifier="#//PropertyFileDescriptor"/>
+    </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Project" eSuperTypes="#//Resolvable">
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
     <eOperations name="fullScan">
       <eParameters name="configuration" eType="#//ScanConfiguration"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="workspace" eType="#//Workspace"
-        resolveProxies="false" eOpposite="#//Workspace/projects"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="versions" upperBound="-1"
-        eType="#//ProjectVersion" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectVersion"
-        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="#//PropertyType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamProvider" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="terminology" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//Workspace"/>
+      <eTypeArguments eClassifier="#//ProjectVersion"/>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion" eSuperTypes="#//Resolvable">
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectVersion">
     <eOperations name="fullScan">
       <eParameters name="configuration" eType="#//ScanConfiguration"/>
     </eOperations>
@@ -69,39 +75,72 @@
       <eParameters name="configuration" eType="#//ScanConfiguration"/>
       <eParameters name="fileDiff" eType="#//PropertyFileDiff"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="project" eType="#//Project"
-        changeable="false" volatile="true" transient="true" derived="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="branch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="master"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="locales" upperBound="-1"
-        eType="#//ProjectLocale" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//ProjectLocale"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="template" eType="#//ProjectLocale"/>
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//Project"/>
+      <eTypeArguments eClassifier="#//ProjectLocale"/>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale" eSuperTypes="#//Resolvable">
+  <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="projectVersion" eType="#//ProjectVersion"
-        changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
-        eType="#//PropertyFileDescriptor" containment="true" resolveProxies="false"/>
+        eType="#//PropertyFileDescriptor" resolveProxies="false" eOpposite="#//PropertyFileDescriptor/projectLocale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//ProjectVersion"/>
+      <eTypeArguments eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Workspace" eSuperTypes="#//Resolvable">
+  <eClassifiers xsi:type="ecore:EClass" name="Workspace">
     <eOperations name="getTerminology" eType="#//ProjectVersion"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1"
-        eType="#//Project" containment="true" resolveProxies="false" eOpposite="#//Project/workspace"/>
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//Workspace"/>
+      <eTypeArguments eClassifier="#//Project"/>
+    </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Resolvable" abstract="true">
+    <eTypeParameters name="P">
+      <eBounds eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eBounds>
+    </eTypeParameters>
+    <eTypeParameters name="C">
+      <eBounds eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eBounds>
+    </eTypeParameters>
     <eOperations name="fullPath" eType="#//URI"/>
     <eOperations name="relativePath" eType="#//URI"/>
     <eOperations name="absolutPath" eType="#//URI"/>
     <eOperations name="updatePercentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eOperations name="resolveChild" eType="#//Resolvable">
+    <eOperations name="resolveChild">
+      <eGenericType eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eGenericType>
       <eParameters name="path" eType="#//URI"/>
     </eOperations>
+    <eOperations name="absoluteFilePath" eType="#//URI"/>
+    <eOperations name="getChild">
+      <eGenericType eTypeParameter="#//Resolvable/C"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        containment="true" eOpposite="#//Resolvable/parent">
+      <eGenericType eTypeParameter="#//Resolvable/C"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eOpposite="#//Resolvable/children">
+      <eGenericType eTypeParameter="#//Resolvable/P"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="PropertyType">
     <eLiterals name="ENCODED_ISO"/>
@@ -158,5 +197,17 @@
     <eLiterals name="MODIFY" value="2"/>
     <eLiterals name="COPY" value="3"/>
     <eLiterals name="MOVE" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceFolder">
+    <eGenericSuperTypes eClassifier="#//Resolvable">
+      <eTypeArguments eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eTypeArguments>
+      <eTypeArguments eClassifier="#//Resolvable">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
   </eClassifiers>
 </ecore:EPackage>

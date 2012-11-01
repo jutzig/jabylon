@@ -1,62 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.jutzig.jabylon.properties/src/main/java" editDirectory="/de.jutzig.jabylon.properties.edit/src/main/java" modelPluginID="de.jutzig.jabylon.properties" templateDirectory="" modelName="Properties" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl" testsDirectory="/de.jutzig.jabylon.properties/src/test/java" importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic" complianceLevel="6.0" copyrightFields="false">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.jutzig.jabylon.properties/src/main/java" editDirectory="/de.jutzig.jabylon.properties.edit/src/main/java"
+    modelPluginID="de.jutzig.jabylon.properties" templateDirectory="" modelName="Properties"
+    rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
+    testsDirectory="/de.jutzig.jabylon.properties/src/test/java" importerID="org.eclipse.emf.importer.ecore"
+    featureDelegation="Dynamic" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>properties.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
-  <genPackages prefix="Properties" basePackage="de.jutzig.jabylon" resource="Basic" disposableProviderFactory="true">
-    <ecorePackage href="properties.ecore#/"/>
-    <genDataTypes>
-      <ecoreDataType href="properties.ecore#//Locale"/>
-    </genDataTypes>
-    <genDataTypes>
-      <ecoreDataType href="properties.ecore#//URI"/>
-    </genDataTypes>
-    <genClasses>
-      <ecoreClass href="properties.ecore#//PropertyFile"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="properties.ecore#//PropertyFile/properties"/>
-      </genFeatures>
+  <genPackages prefix="Properties" basePackage="de.jutzig.jabylon" resource="Basic"
+      disposableProviderFactory="true" ecorePackage="properties.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//PropertyType">
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/ENCODED_ISO"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/UNICODE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//Severity">
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//Severity/INFO"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//Severity/WARNING"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//Severity/ERROR"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//ReviewState">
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//ReviewState/OPEN"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//ReviewState/RESOLVED"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//ReviewState/INVALID"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//ReviewState/REOPENED"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//DiffKind">
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//DiffKind/ADD"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//DiffKind/REMOVE"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//DiffKind/MODIFY"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//DiffKind/COPY"/>
+      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//DiffKind/MOVE"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="properties.ecore#//Locale"/>
+    <genDataTypes ecoreDataType="properties.ecore#//URI"/>
+    <genDataTypes ecoreDataType="properties.ecore#//InputStream"/>
+    <genClasses ecoreClass="properties.ecore#//PropertyFile">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFile/properties"/>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFile/getProperty">
+        <genParameters ecoreParameter="properties.ecore#//PropertyFile/getProperty/key"/>
+      </genOperations>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFile/asMap"/>
     </genClasses>
-    <genClasses>
-      <ecoreClass href="properties.ecore#//Property"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//Property/key"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//Property/value"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//Property/comment"/>
-      </genFeatures>
+    <genClasses ecoreClass="properties.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/comment"/>
     </genClasses>
-    <genClasses>
-      <ecoreClass href="properties.ecore#//PropertyFileDescriptor"/>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//PropertyFileDescriptor/variant"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//PropertyFileDescriptor/name"/>
-      </genFeatures>
-      <genFeatures property="None" notify="false" createChild="false">
-        <ecoreFeature xsi:type="ecore:EReference" href="properties.ecore#//PropertyFileDescriptor/bag"/>
-      </genFeatures>
-      <genFeatures property="Readonly" createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//PropertyFileDescriptor/master"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="properties.ecore#//PropertyFileDescriptor/propertyFile"/>
-      </genFeatures>
+    <genClasses ecoreClass="properties.ecore#//PropertyFileDescriptor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDescriptor/variant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDescriptor/location"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/master"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/projectLocale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDescriptor/keys"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/reviews"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDescriptor/lastModified"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/lastModification"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/derivedDescriptors"/>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/isMaster"/>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/loadProperties"/>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/computeLocation"/>
+      <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/loadProperties.1">
+        <genParameters ecoreParameter="properties.ecore#//PropertyFileDescriptor/loadProperties.1/in"/>
+      </genOperations>
     </genClasses>
-    <genClasses>
-      <ecoreClass href="properties.ecore#//PropertyBag"/>
-      <genFeatures property="None" children="true" createChild="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="properties.ecore#//PropertyBag/descriptors"/>
-      </genFeatures>
-      <genFeatures createChild="false">
-        <ecoreFeature xsi:type="ecore:EAttribute" href="properties.ecore#//PropertyBag/path"/>
-      </genFeatures>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true">
-        <ecoreFeature xsi:type="ecore:EReference" href="properties.ecore#//PropertyBag/master"/>
-      </genFeatures>
+    <genClasses ecoreClass="properties.ecore#//Project">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/repositoryURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/propertyType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/teamProvider"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/terminology"/>
+      <genOperations ecoreOperation="properties.ecore#//Project/fullScan">
+        <genParameters ecoreParameter="properties.ecore#//Project/fullScan/configuration"/>
+      </genOperations>
     </genClasses>
+    <genClasses ecoreClass="properties.ecore#//ProjectVersion">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ProjectVersion/template"/>
+      <genOperations ecoreOperation="properties.ecore#//ProjectVersion/fullScan">
+        <genParameters ecoreParameter="properties.ecore#//ProjectVersion/fullScan/configuration"/>
+      </genOperations>
+      <genOperations ecoreOperation="properties.ecore#//ProjectVersion/getProjectLocale">
+        <genParameters ecoreParameter="properties.ecore#//ProjectVersion/getProjectLocale/locale"/>
+      </genOperations>
+      <genOperations ecoreOperation="properties.ecore#//ProjectVersion/partialScan">
+        <genParameters ecoreParameter="properties.ecore#//ProjectVersion/partialScan/configuration"/>
+        <genParameters ecoreParameter="properties.ecore#//ProjectVersion/partialScan/fileDiff"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//ProjectLocale">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ProjectLocale/locale"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ProjectLocale/descriptors"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ProjectLocale/propertyCount"/>
+      <genOperations ecoreOperation="properties.ecore#//ProjectLocale/isMaster"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Workspace">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Workspace/root"/>
+      <genOperations ecoreOperation="properties.ecore#//Workspace/getTerminology"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="properties.ecore#//Resolvable">
+      <genTypeParameters ecoreTypeParameter="properties.ecore#//Resolvable/P"/>
+      <genTypeParameters ecoreTypeParameter="properties.ecore#//Resolvable/C"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Resolvable/percentComplete"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//Resolvable/children"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference properties.ecore#//Resolvable/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Resolvable/name"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/fullPath"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/relativePath"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/absolutPath"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/updatePercentComplete"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/resolveChild">
+        <genParameters ecoreParameter="properties.ecore#//Resolvable/resolveChild/path"/>
+      </genOperations>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/absoluteFilePath"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/getChild">
+        <genParameters ecoreParameter="properties.ecore#//Resolvable/getChild/name"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//ScanConfiguration">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ScanConfiguration/excludes"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ScanConfiguration/includes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ScanConfiguration/masterLocale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ScanConfiguration/include"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ScanConfiguration/exclude"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Review">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/user"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//Review/comments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/state"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/reviewType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/severity"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//Comment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/user"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/message"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//PropertyFileDiff">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/newPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/oldPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//ResourceFolder"/>
   </genPackages>
 </genmodel:GenModel>

@@ -20,6 +20,7 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Resolvable;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +29,6 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getProjectVersion <em>Project Version</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getLocale <em>Locale</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getDescriptors <em>Descriptors</em>}</li>
  *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectLocaleImpl#getPropertyCount <em>Property Count</em>}</li>
@@ -37,7 +37,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  *
  * @generated
  */
-public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
+public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable<?, ?>> implements ProjectLocale {
 	/**
 	 * The default value of the '{@link #getLocale() <em>Locale</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -76,25 +76,6 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.PROJECT_LOCALE;
 	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public ProjectVersion getProjectVersion() {
-		return (ProjectVersion) eContainer();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public ProjectVersion basicGetProjectVersion() {
-		return (ProjectVersion) eContainer();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -147,9 +128,24 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	 * @generated NOT
 	 */
 	public boolean isMaster() {
-		return getProjectVersion()!=null && getProjectVersion().getMaster()==this;
+		return getParent()!=null && getParent().getTemplate()==this;
 	}
 
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDescriptors()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -165,7 +161,7 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 		setPropertyCount(translatedProps);
 		if(!isMaster())
 		{
-			int totalProps = getProjectVersion().getMaster().getPropertyCount();
+			int totalProps = getParent().getTemplate().getPropertyCount();
 			return  Math.min(100, (int) Math.floor(((translatedProps/(double)totalProps)*100)));					
 		}
 		else
@@ -195,9 +191,6 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				if (resolve) return getProjectVersion();
-				return basicGetProjectVersion();
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				return getLocale();
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
@@ -260,8 +253,6 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case PropertiesPackage.PROJECT_LOCALE__PROJECT_VERSION:
-				return basicGetProjectVersion() != null;
 			case PropertiesPackage.PROJECT_LOCALE__LOCALE:
 				return LOCALE_EDEFAULT == null ? getLocale() != null : !LOCALE_EDEFAULT.equals(getLocale());
 			case PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS:
@@ -277,4 +268,12 @@ public class ProjectLocaleImpl extends ResolvableImpl implements ProjectLocale {
 		return URI.createURI(""); //locales are just virtual,  not in the FS
 	}
 
+	
+	@Override
+	public String getName() {
+		Locale locale = getLocale();
+		if(locale==null)
+			return "template";
+		return locale.toString();
+	}
 } //ProjectLocaleImpl

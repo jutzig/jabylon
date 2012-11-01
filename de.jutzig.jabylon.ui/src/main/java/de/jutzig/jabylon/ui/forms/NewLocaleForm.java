@@ -93,7 +93,7 @@ public class NewLocaleForm extends VerticalLayout {
                 	}
                     final ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
                     locale.setLocale(newLocale);
-                    project.getLocales().add(locale);     
+                    project.getChildren().add(locale);     
                 		
                 	getWindow().getParent().removeWindow(getWindow());
                     

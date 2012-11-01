@@ -141,7 +141,7 @@ public class TerminologyTool implements PropertyEditorTool {
 	private PropertyFileDescriptor getTerminology(PropertyFileDescriptor descriptor)
 	{
 		Locale locale = descriptor.getProjectLocale().getLocale();
-		Workspace workspace = descriptor.getProjectLocale().getProjectVersion().getProject().getWorkspace();
+		Workspace workspace = descriptor.getProjectLocale().getParent().getParent().getParent();
 		ProjectVersion terminology = workspace.getTerminology();
 		if(terminology==null)
 			return null;

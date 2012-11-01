@@ -320,6 +320,8 @@ public class BreadCrumbImpl extends CustomComponent implements ClickListener, Br
 			CDOObject domainObject = current.getDomainObject();
 			if (domainObject instanceof Resolvable) {
 				Resolvable resolvable = (Resolvable) domainObject;
+				if(resolvable.relativePath()==null)
+					return;
 				String segment = resolvable.relativePath().lastSegment();
 				if(segment!=null)
 				{

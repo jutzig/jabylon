@@ -65,7 +65,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	public ProjectLocaleDashboard(ProjectLocale locale) {
 
 		this.locale = locale;
-		this.project = locale.getProjectVersion().getProject();
+		this.project = locale.getParent().getParent();
 
 	}
 
@@ -151,7 +151,7 @@ public class ProjectLocaleDashboard implements CrumbTrail, ClickListener {
 	}
 
 	private Map<PropertyFileDescriptor, PropertyFileDescriptor> associate(ProjectLocale locale) {
-		ProjectLocale master = locale.getProjectVersion().getMaster();
+		ProjectLocale master = locale.getParent().getTemplate();
 		Map<PropertyFileDescriptor, PropertyFileDescriptor> result = new HashMap<PropertyFileDescriptor, PropertyFileDescriptor>();
 		for (PropertyFileDescriptor descriptor : master.getDescriptors()) {
 			result.put(descriptor, null);
@@ -299,7 +299,7 @@ class SaveToArchiveButton extends Link {
 
 		};
 
-		String name = locale.getProjectVersion().getProject().getName();
+		String name = locale.getParent().getParent().getName();
 		name += "_"; //$NON-NLS-1$
 		name += locale.getLocale().toString();
 		name += ".zip"; //$NON-NLS-1$
