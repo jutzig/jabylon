@@ -304,6 +304,7 @@
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
 				<version>0.1.44</version>
+				<type>bundle</type>
 			</dependency>
 
 
