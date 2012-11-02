@@ -59,7 +59,7 @@ public class PropertiesHelper {
 				if(comment.length()>0)
 					property.setComment(comment.toString());
 				String[] parts = split(propertyValue.toString());
-				if(parts[0]==null) //invalid property
+				if(parts == null || parts[0]==null) //invalid property
 					continue; //TODO: logging
 				property.setKey(parts[0]);
 				property.setValue(parts[1]);
