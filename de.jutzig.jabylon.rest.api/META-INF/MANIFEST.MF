@@ -14,7 +14,7 @@ Bundle-Name: rest.api
 Created-By: Apache Maven Bundle Plugin
 Build-Jdk: 1.6.0_24
 Bundle-Version: 1.0.0.SNAPSHOT
-Bnd-LastModified: 1350560389707
+Bnd-LastModified: 1351849435350
 Bundle-ManifestVersion: 2
 Import-Package: de.jutzig.jabylon.cdo.connector;version="[1.0,2)",de.j
  utzig.jabylon.properties;version="[1.0,2)",de.jutzig.jabylon.resource

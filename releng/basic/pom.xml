@@ -24,7 +24,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
- 				<executions>
+				<executions>
 					<execution>
 						<id>distribution</id>
 						<phase>package</phase>
@@ -32,7 +32,7 @@
 							<goal>single</goal>
 						</goals>
 					</execution>
-				</executions> 
+				</executions>
 				<configuration>
 					<descriptor>src/main/assembly/distribution.xml</descriptor>
 				</configuration>
@@ -321,26 +321,18 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>slf4j</artifactId>
-			<version>0.9.27</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>core</artifactId>
-			<version>0.9.27</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>classic</artifactId>
-			<version>0.9.27</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>api</artifactId>
+			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
 
@@ -489,6 +481,13 @@
 			<artifactId>users</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>de.jutzig.jabylon</groupId>
+			<artifactId>logback.config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

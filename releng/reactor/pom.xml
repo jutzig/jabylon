@@ -25,7 +25,7 @@
 <!-- 		<module>../../de.jutzig.jabylon.ui</module> -->
 		<module>../../de.jutzig.jabylon.users</module>
 		<module>../basic</module>
-<!-- 		<module>../../de.jutzig.jabylon.vaadin.style</module> -->
+		<module>../../de.jutzig.jabylon.logback.config</module>
 		<!-- <module>../../de.jutzig.jabylon.server.feature</module> -->
 		<!-- <module>../product</module> -->
 	</modules>

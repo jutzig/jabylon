@@ -83,6 +83,7 @@ public class ProgressServiceImpl implements ProgressService {
 				monitor.setStatus(result);
 			} catch(Exception e)
 			{
+				//FIXME: log
 				monitor.setStatus(new Status(IStatus.ERROR, "de.jutzig.jabylon.common", null,e));
 			}
 			finally {

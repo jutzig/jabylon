@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
@@ -19,6 +22,7 @@ public class PropertiesHelper {
 	
 	
 	private boolean unicodeEscaping;
+	final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 	
 	public PropertiesHelper() {
 		this(true);
@@ -60,7 +64,10 @@ public class PropertiesHelper {
 					property.setComment(comment.toString());
 				String[] parts = split(propertyValue.toString());
 				if(parts == null || parts[0]==null) //invalid property
-					continue; //TODO: logging
+				{
+					logger.error("Invalid line in property file: \"{}\". Skipping", propertyValue);
+					continue;
+				}
 				property.setKey(parts[0]);
 				property.setValue(parts[1]);
 				return property;

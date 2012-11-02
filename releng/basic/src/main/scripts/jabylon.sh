@@ -10,6 +10,8 @@ DATA="workspace"
 PORT="8080"
 HOST="0.0.0.0"
 
+VMARGS="${VMARGS} -Djabylon.log=${DATA}/log";
+
 usage()
 {
     echo "Usage: jabylon [start|stop|console] workspace"
