@@ -181,7 +181,12 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 	 * 
 	 * @generated NOT
 	 */
-	public abstract URI relativePath();
+	@Override
+	public URI relativePath() {
+		if(getName()==null)
+			return null;
+		return URI.createURI(getName(),false);
+	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->

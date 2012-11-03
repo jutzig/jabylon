@@ -45,7 +45,8 @@ public class WorkspaceScanner {
 				}
 			}
 		}
-		monitor.done();
+		if(monitor!=null)
+			monitor.done();
 	}
 
 	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, File singleFile) {

@@ -352,11 +352,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	}
 
 	@Override
-	public URI relativePath() {
-		return URI.createHierarchicalURI(new String[] { getName() }, null, null);
-	}
-
-	@Override
 	public Resolvable resolveChild(URI path) {
 		if (path.segmentCount() == 0 || relativePath().equals(path))
 			return this;

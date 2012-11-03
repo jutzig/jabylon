@@ -109,7 +109,7 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
 		ProjectLocale master = PropertiesFactory.eINSTANCE.createProjectLocale();
 		version.setTemplate(master);
-		
+		version.getChildren().add(master);
 		master.getDescriptors().add(getFixture());
 		assertTrue(getFixture().isMaster());
 		
@@ -168,17 +168,10 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 		getFixture().computeLocation();
 		assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
 	}
-
-	@Override
-	public void testRelativePath() {
-		URI uri = URI.createFileURI("foo");
-		getFixture().setLocation(uri);
-		assertSame(uri, getFixture().relativePath());
-	}
 	
 	public void testFullPathWithParent() {
 		Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
-		getFixture().setLocation(URI.createURI("/bar/blubb"));
+		getFixture().setName("blubb");
 		when(parent.fullPath()).thenReturn(URI.createURI("foo"));
 		((InternalEObject)getFixture()).eBasicSetContainer((InternalEObject) parent, 0, null);
 		URI expected = URI.createURI("foo");

@@ -595,9 +595,4 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		return super.eIsSet(featureID);
 	}
 
-	@Override
-	public URI relativePath() {
-		return URI.createURI(getName());
-	}
-
 } //PropertyFileDescriptorImpl

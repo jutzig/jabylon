@@ -6,16 +6,22 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
+
 import java.util.Locale;
 
 import org.apache.tools.ant.property.GetProperty;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.junit.Ignore;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.Resolvable;
 
 import junit.textui.TestRunner;
 
@@ -155,10 +161,6 @@ public class ProjectVersionTest extends ResolvableTest {
 		assertEquals(expected, getFixture().relativePath());
 	}
 	
-	@Override
-	public void testRelativePathNullSafe() {
-		URI expected = URI.createHierarchicalURI(new String[] {"master"}, null, null);
-		assertEquals("if no branch is set, it is 'master'",expected, getFixture().relativePath());
-	}
+
 
 } //ProjectVersionTest

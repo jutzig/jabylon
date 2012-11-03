@@ -105,7 +105,7 @@ public class ProjectTest extends ResolvableTest {
 		ScanConfiguration scanConfiguration = PropertiesFactory.eINSTANCE.createScanConfiguration();
 		getFixture().getChildren().add(master);
 		getFixture().fullScan(scanConfiguration);
-		verify(master).fullScan(scanConfiguration);
+		verify(master).fullScan(scanConfiguration, null);
 	}
 	
 	public void testFullScanWithVersions() {
@@ -115,8 +115,8 @@ public class ProjectTest extends ResolvableTest {
 		getFixture().getChildren().add(v1);
 		getFixture().getChildren().add(v2);
 		getFixture().fullScan(scanConfiguration);
-		verify(v1).fullScan(scanConfiguration);
-		verify(v2).fullScan(scanConfiguration);
+		verify(v1).fullScan(scanConfiguration, null);
+		verify(v2).fullScan(scanConfiguration, null);
 	}
 
 	/**

@@ -85,6 +85,7 @@ public abstract class ResolvableTest extends TestCase {
 
 	
 	public void testFullPathWithParent() {
+		getFixture().setName("name");
 		Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
 		when(parent.fullPath()).thenReturn(URI.createURI("foo"));
 		((InternalEObject)getFixture()).eBasicSetContainer((InternalEObject) parent, 0, null);
@@ -100,8 +101,14 @@ public abstract class ResolvableTest extends TestCase {
 	 * @see de.jutzig.jabylon.properties.Resolvable#relativePath()
 	 * @generated NOT
 	 */
-	public abstract void testRelativePath();
+	public void testRelativePath()
+	{
+		URI uri = URI.createURI("foo");
+		getFixture().setName("foo");
+		assertSame(uri, getFixture().relativePath());
+	}
 	
+
 	public void testRelativePathNullSafe()
 	{
 		assertNull(getFixture().relativePath());

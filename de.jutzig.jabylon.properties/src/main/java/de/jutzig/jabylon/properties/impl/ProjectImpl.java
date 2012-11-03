@@ -283,12 +283,6 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 		return super.eIsSet(featureID);
 	}
 
-	@Override
-	public URI relativePath() {
-		if(getName()==null)
-			return null;
-		return URI.createURI(getName(),false);
-	}
 
 
 

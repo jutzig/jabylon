@@ -38,9 +38,5 @@ public class ResourceFolderImpl extends ResolvableImpl<Resolvable<?, ?>, Resolva
 		return PropertiesPackage.Literals.RESOURCE_FOLDER;
 	}
 
-	@Override
-	public URI relativePath() {
-		return URI.createURI(getName());
-	}
 
 } //ResourceFolderImpl

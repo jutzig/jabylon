@@ -6,9 +6,15 @@
  */
 package de.jutzig.jabylon.properties.tests;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
+
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 
 import junit.framework.TestCase;
@@ -78,14 +84,17 @@ public class WorkspaceTest extends ResolvableTest {
 
 	@Override
 	public void testRelativePath() {
-		assertEquals(URI.createHierarchicalURI(new String[] {""}, null, null), getFixture().relativePath());
+		assertNull(getFixture().relativePath());
 		
 	}
 	
 	@Override
 	public void testRelativePathNullSafe() {
-		assertEquals("Workspace always has an empty relative path",URI.createHierarchicalURI(new String[] {""}, null, null), getFixture().relativePath());
+		assertNull(getFixture().relativePath());
 	}
 	
+	public void testFullPathWithParent() {
+		assertNull(getFixture().fullPath());
+	}
 
 } //WorkspaceTest
