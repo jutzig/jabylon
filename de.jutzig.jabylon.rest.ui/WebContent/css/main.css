@@ -8,6 +8,11 @@ body {
 	padding-left: 60px;
 }
 
+/** to ensure that disabled toolbar links are in the right position*/
+.nav > li > span > em {
+    display: block;
+    padding: 10px 15px;
+}
 
 /** sort icons */
 table.table thead .sorting,
