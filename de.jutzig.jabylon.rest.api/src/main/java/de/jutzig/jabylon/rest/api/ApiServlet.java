@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
@@ -49,7 +51,7 @@ public class ApiServlet extends HttpServlet
 	private static final long serialVersionUID = -1167994739560620821L;
 	private Workspace workspace;
 	private PropertyPersistenceService persistence;
-	
+	private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 	
 	public ApiServlet(Workspace workspace, PropertyPersistenceService persistence) {
 		this.workspace = workspace;
@@ -76,6 +78,7 @@ public class ApiServlet extends HttpServlet
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		logger.info("API request to {}",req.getPathInfo());
 		Resolvable child = getObject(req.getPathInfo(), resp);
 		if (child == null) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + req.getPathInfo() + " does not exist");
@@ -151,8 +154,8 @@ public class ApiServlet extends HttpServlet
 					});
 					persistence.saveProperties(fileDescriptor, properties, false);
 				} catch (CommitException e) {
-					
-					e.printStackTrace();
+					logger.error("Failed to commit put request to "+req.getPathInfo(),e);
+					resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Commit failed");					
 				}
 				
 				
