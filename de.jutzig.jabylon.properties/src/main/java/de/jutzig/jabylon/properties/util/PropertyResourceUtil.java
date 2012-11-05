@@ -61,21 +61,30 @@ public class PropertyResourceUtil {
 			//if it is not the template language, create a new derived descriptor
 			if(!locale.isMaster())
 			{
-				PropertyFileDescriptor translatedDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-				translatedDescriptor.setVariant(locale.getLocale());
 				URI derivedLocation = computeLocaleResourceLocation(locale.getLocale(),descriptor.getLocation(),descriptor.getVariant());
+				
+				PropertyFileDescriptor translatedDescriptor = (PropertyFileDescriptor) parent.getChild(derivedLocation.lastSegment());
+				if(translatedDescriptor==null)
+				{
+					translatedDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+					locale.getDescriptors().add(translatedDescriptor);
+					parent.getChildren().add(translatedDescriptor);
+					
+				}
+				translatedDescriptor.setVariant(locale.getLocale());
 				translatedDescriptor.setLocation(derivedLocation);
 				translatedDescriptor.setName(derivedLocation.lastSegment());
 				translatedDescriptor.setMaster(descriptor);
-				parent.getChildren().add(translatedDescriptor);
-				locale.getDescriptors().add(translatedDescriptor);
 			}
 			//otherwise add it to the template language
 			else
 			{
-				version.getTemplate().getChildren().add(descriptor);
-				descriptor.setName(descriptor.getLocation().lastSegment());
-				version.getTemplate().getDescriptors().add(descriptor);
+				if(parent.getChild(descriptor.getName())==null)
+				{
+					parent.getChildren().add(descriptor);
+					descriptor.setName(descriptor.getLocation().lastSegment());
+					version.getTemplate().getDescriptors().add(descriptor);					
+				}
 			}
 		}
 		
