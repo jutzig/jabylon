@@ -52,13 +52,14 @@ public class PropertyResourceUtil {
 				if(child==null)
 				{
 					child = PropertiesFactory.eINSTANCE.createResourceFolder();
+					child.setName(descriptorPart[i]);
 					parent.getChildren().add(child);
 				}
 				parent = child;
 			}
 			
-			//if it is the template language, create a new derived descriptor
-			if(locale.isMaster())
+			//if it is not the template language, create a new derived descriptor
+			if(!locale.isMaster())
 			{
 				PropertyFileDescriptor translatedDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
 				translatedDescriptor.setVariant(locale.getLocale());
