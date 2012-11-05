@@ -13,7 +13,7 @@ public class TestServlet {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		URL url = new URL("http://localhost:8080/jabylon/api/petproject/master/template/bar/test.properties");
+		URL url = new URL("http://localhost:8080/jabylon/api/jabylon/master/template/bar/foo/test.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("PUT");

@@ -28,11 +28,13 @@ import org.slf4j.LoggerFactory;
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.api.json.JSONEmitter;
 
@@ -138,18 +140,19 @@ public class ApiServlet extends HttpServlet
 				ProjectLocale projectLocale = (ProjectLocale) locale;
 				if(!projectLocale.isMaster())
 					throw new UnsupportedOperationException("currently only template locale files can be uploaded");
-				final PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-				fileDescriptor.setLocation(URI.createHierarchicalURI(descriptorPart, null, null));
-				PropertyFile properties = fileDescriptor.loadProperties(req.getInputStream());
-				fileDescriptor.setKeys(properties.getProperties().size());
-				
-				try {
-					TransactionUtil.commit(projectLocale, new Modification<ProjectLocale, ProjectLocale>() {
-						@Override
-						public ProjectLocale apply(ProjectLocale object) {
 
-							object.getDescriptors().add(fileDescriptor);
-							return object;
+				final PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+				PropertyFile properties = fileDescriptor.loadProperties(req.getInputStream());
+				fileDescriptor.setLocation(URI.createHierarchicalURI(descriptorPart, null, null));
+				fileDescriptor.setName(fileDescriptor.getLocation().lastSegment());
+				fileDescriptor.setKeys(properties.getProperties().size());
+				try {
+					TransactionUtil.commit(projectLocale.getParent(), new Modification<ProjectVersion, ProjectVersion>() {
+						@Override
+						public ProjectVersion apply(ProjectVersion version) {
+
+							PropertyResourceUtil.addNewTemplateDescriptor(fileDescriptor, version);
+							return version;
 						}
 					});
 					persistence.saveProperties(fileDescriptor, properties, false);
@@ -162,6 +165,8 @@ public class ApiServlet extends HttpServlet
 			}
 		}
 	}
+
+
 
 	private void updateFile(PropertyFileDescriptor descriptor, ServletInputStream inputStream) {
 		PropertyFile propertyFile = descriptor.loadProperties(inputStream);
