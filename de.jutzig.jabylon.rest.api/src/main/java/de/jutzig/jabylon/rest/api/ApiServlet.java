@@ -50,6 +50,7 @@ public class ApiServlet extends HttpServlet
 	private Workspace workspace;
 	private PropertyPersistenceService persistence;
 	
+	
 	public ApiServlet(Workspace workspace, PropertyPersistenceService persistence) {
 		this.workspace = workspace;
 		this.persistence = persistence;
@@ -150,7 +151,7 @@ public class ApiServlet extends HttpServlet
 					});
 					persistence.saveProperties(fileDescriptor, properties, false);
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
