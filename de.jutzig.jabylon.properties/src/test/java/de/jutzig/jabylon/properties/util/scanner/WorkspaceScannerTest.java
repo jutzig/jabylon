@@ -69,7 +69,7 @@ public class WorkspaceScannerTest {
 		File baseDir = new File("src/test/resources/project/master");
 		ScanConfiguration configuration = PropertiesFactory.eINSTANCE.createScanConfiguration();
 		configuration.setMasterLocale("en_CA");
-		
+
 
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		final List<String> filenames = new ArrayList<String>();
@@ -89,7 +89,7 @@ public class WorkspaceScannerTest {
 	@Test
 	public void testPartialScan() throws Exception {
 
-		
+
 		File baseDir = new File("src/test/resources/project/master");
 
 		WorkspaceScanner scanner = new WorkspaceScanner();
@@ -103,12 +103,12 @@ public class WorkspaceScannerTest {
 			}
 		}, baseDir, PropertiesFactory.eINSTANCE.createScanConfiguration(), new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
 		int index = 0;
-		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals(1, filenames.size());
-		
-	
+		assertEquals("messages.properties", filenames.get(index++));
+
+
 	}
-	
+
 	@Test
 	public void testPartialScanWithComplicatedInclude()
 	{
@@ -126,10 +126,10 @@ public class WorkspaceScannerTest {
 			}
 		}, baseDir, scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
 		int index = 0;
-		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals(1, filenames.size());
+		assertEquals("messages.properties", filenames.get(index++));
 	}
-	
+
 	@Test
 	public void testPartialScanWithExclude()
 	{
