@@ -24,7 +24,7 @@ public class WorkspaceScanner {
 	}
 
 	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, IProgressMonitor monitor) {
-		
+
 		FileSet fs = createFileSet(config);
 		fs.setDir(baseDir);
 		SubMonitor subMon = SubMonitor.convert(monitor, "Scanning", 100);
@@ -56,9 +56,9 @@ public class WorkspaceScanner {
 		if(excludes!=null)
 		{
 			for (String exclude : excludes) {
-				if(/*SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && */ SelectorUtils.match(exclude, singleFile.getPath()))
+				if(/*SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && */ SelectorUtils.match(normalizePattern(exclude), singleFile.getPath()))
 					return;
-			}			
+			}
 		}
 		String[] includes = fs.mergeIncludes(antProject);
 		if(includes==null)
@@ -67,7 +67,7 @@ public class WorkspaceScanner {
 			//TODO: matchPatternStart fails for:
 			// **/*.properties
 			// /home/joe/workspaces/translator/work/workspace/jabylon-testing/master/testfiles/folder/child2/Messages2_de.properties
-			if(/*SelectorUtils.matchPatternStart(include, singleFile.getPath()) && */ SelectorUtils.match(include, singleFile.getPath()))
+			if(/*SelectorUtils.matchPatternStart(include, singleFile.getPath()) && */ SelectorUtils.match(normalizePattern(include), singleFile.getPath()))
 			{
 				String masterLocale = config.getMasterLocale();
 				if (masterLocale != null && masterLocale.isEmpty())
@@ -84,13 +84,13 @@ public class WorkspaceScanner {
 		}
 	}
 
-	
+
 	public boolean partialScan(File baseDir, ScanConfiguration config, File singleFile) {
 		SingleFileAcceptor acceptor = new SingleFileAcceptor();
 		partialScan(acceptor, baseDir, config, singleFile);
 		return acceptor.isMatch();
 	}
-	
+
 	private boolean matchesLocale(String f, String masterLocale) {
 
 		if (masterLocale == null)
@@ -118,6 +118,10 @@ public class WorkspaceScanner {
 		}
 		return fs;
 
+	}
+
+	private static String normalizePattern(String p) {
+		return p.replace('/', File.separatorChar).replace('\\', File.separatorChar);
 	}
 
 }
