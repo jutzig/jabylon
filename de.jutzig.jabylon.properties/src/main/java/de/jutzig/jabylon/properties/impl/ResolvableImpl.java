@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
@@ -58,6 +60,8 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+	
+	private static final Logger logger = LoggerFactory.getLogger(ResolvableImpl.class);
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -246,7 +250,13 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 		if (pathSegments.isEmpty())
 			return this;
 		for (C child : getChildren()) {
-			if (child.getName().equals(pathSegments.get(0)))
+			String name = child.getName();
+			if(name==null)
+			{
+				logger.error("found child with 'null' name during resolve at "+fullPath());
+				continue;
+			}
+			if (name.equals(pathSegments.get(0)))
 				return child.resolveChild(pathSegments.subList(1, pathSegments.size()));
 		}
 		return null;
@@ -267,7 +277,13 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 	 */
 	public C getChild(String name) {
 		for (C child : getChildren()) {
-			if (child.getName().equals(name))
+			String childName = child.getName();
+			if(childName==null)
+			{
+				logger.error("found child with 'null' name during resolve at "+fullPath());
+				continue;
+			}
+			if (childName.equals(name))
 				return child;
 		}
 		return null;

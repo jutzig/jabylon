@@ -29,6 +29,7 @@ import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.ScanConfiguration;
+import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
 
@@ -128,82 +129,10 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			}
 		}
 
-		createMissingDescriptorEntries(subMonitor.newChild(50));
+		PropertyResourceUtil.createMissingDescriptorEntries(this,subMonitor.newChild(50));
 	}
 
-	private void createMissingDescriptorEntries(IProgressMonitor monitor) {
-		EList<ProjectLocale> children = getChildren();
-		monitor.beginTask("Adding missing localized resources", children.size()-1);
-		ProjectLocale template = this.getTemplate();
-		for (ProjectLocale locale : children) {
-			if (locale == template)
-				continue;
-			if(locale!=null && locale.getLocale()!=null)
-				monitor.subTask("Add missing entries for "+locale.getLocale().getDisplayName());
-			createMissingChildren(template, locale, locale);
-			monitor.worked(1);
-		}
-		monitor.subTask("");
-		monitor.done();
 
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant) {
-		//TODO: this algorithm isn't very efficient unfortunately
-		for (Resolvable<?, ?> child : template.getChildren()) {
-			String name = child.getName();
-			if (child instanceof PropertyFileDescriptor) {
-				// for properties we need the locale specific name
-				PropertyFileDescriptor descriptor = (PropertyFileDescriptor)child;
-				name = computeLocaleResourceLocation(variant.getLocale(), descriptor.getLocation(), descriptor.getVariant()).lastSegment();
-			}
-			Resolvable<?, ?> localeChild = locale.getChild(name);
-			if (localeChild == null) {
-				if (child instanceof PropertyFileDescriptor) {
-					PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor) child;
-					PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-					localeDescriptor.setMaster(templateDescriptor);
-					localeDescriptor.setVariant(variant.getLocale());
-					localeDescriptor.computeLocation();
-					localeDescriptor.setProjectLocale(variant);
-					localeChild = localeDescriptor;
-
-				} else if (child instanceof ResourceFolder) {
-					ResourceFolder folder = (ResourceFolder) child;
-					ResourceFolder localeFolder = PropertiesFactory.eINSTANCE.createResourceFolder();
-					localeFolder.setName(folder.getName());
-					localeChild = localeFolder;
-				}
-				locale.getChildren().add(localeChild);
-			}
-			createMissingChildren(child, localeChild, variant);
-		}
-
-	}
-
-	private URI computeLocaleResourceLocation(Locale locale, URI location, Locale masterLocale) {
-
-		String filename = location.lastSegment();
-		String extension = location.fileExtension();
-
-		if (extension != null) {
-			filename = filename.substring(0, filename.length() - extension.length() - 1);
-
-			// if the master has a locale as well (i.e.
-			// messages_en_EN.properties) we must remove the suffix
-			if (masterLocale != null) {
-				filename = filename.substring(0, filename.length() - (masterLocale.toString().length() + 1));
-			}
-
-			filename += "_";
-			filename += locale.toString();
-			filename += ".";
-			filename += extension;
-		}
-		return location.trimSegments(1).appendSegment(filename);
-
-	}
 
 	public ProjectLocale getProjectLocale(Locale locale) {
 		EList<ProjectLocale> locales = getChildren();

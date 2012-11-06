@@ -11,6 +11,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -22,15 +23,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
+import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.api.json.JSONEmitter;
 
@@ -49,6 +56,7 @@ public class ApiServlet extends HttpServlet
 	private static final long serialVersionUID = -1167994739560620821L;
 	private Workspace workspace;
 	private PropertyPersistenceService persistence;
+	private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 	
 	public ApiServlet(Workspace workspace, PropertyPersistenceService persistence) {
 		this.workspace = workspace;
@@ -75,7 +83,8 @@ public class ApiServlet extends HttpServlet
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Resolvable child = getObject(req.getPathInfo(), resp);
+		logger.info("API request to {}",req.getPathInfo());
+		Resolvable child = getObject(req.getPathInfo());
 		if (child == null) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + req.getPathInfo() + " does not exist");
 			return;
@@ -98,7 +107,7 @@ public class ApiServlet extends HttpServlet
 		resp.getOutputStream().close();
 	}
 
-	protected Resolvable getObject(String path, HttpServletResponse resp) throws IOException {
+	protected Resolvable getObject(String path) throws IOException {
 		String info = path;
 		if(info==null)
 			info = "";
@@ -110,53 +119,143 @@ public class ApiServlet extends HttpServlet
 	@Override
 	protected void doPut(final HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		Resolvable child = getObject(req.getPathInfo(), resp);
+		Resolvable child = getObject(req.getPathInfo());
 		if (child instanceof PropertyFileDescriptor) {
 			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) child;
 			updateFile(descriptor,req.getInputStream());
 		}
 		else
 		{
+			
 			URI uri = URI.createURI(req.getPathInfo());
 			String[] segmentArray = uri.segments();
-			//split between the project/version/locale portion and the rest
-			String[] projectPart = new String[3];
-			final String[] descriptorPart = new String[segmentArray.length-projectPart.length];
-			System.arraycopy(segmentArray, 0, projectPart, 0, projectPart.length);
-			System.arraycopy(segmentArray, projectPart.length, descriptorPart, 0, descriptorPart.length);
-			URI projectURI = URI.createHierarchicalURI(projectPart, null, null);
-			Resolvable locale = getObject(projectURI.path(), resp);
-			if (locale == null) {
-				resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + projectURI.path() + " does not exist");
-				return;
-			}
-			if (locale instanceof ProjectLocale) {
-				ProjectLocale projectLocale = (ProjectLocale) locale;
-				if(!projectLocale.isMaster())
-					throw new UnsupportedOperationException("currently only template locale files can be uploaded");
-				final PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-				fileDescriptor.setLocation(URI.createHierarchicalURI(descriptorPart, null, null));
-				PropertyFile properties = fileDescriptor.loadProperties(req.getInputStream());
-				fileDescriptor.setKeys(properties.getProperties().size());
-				
-				try {
-					TransactionUtil.commit(projectLocale, new Modification<ProjectLocale, ProjectLocale>() {
-						@Override
-						public ProjectLocale apply(ProjectLocale object) {
+			if(segmentArray.length==1)
+				putProject(req, uri, resp);
+			else if(segmentArray.length==2)
+				putVersion(req, uri, resp);
+			else if(segmentArray.length==3)
+				putLocale(req, uri, resp);
+			else
+				putPropertyFile(req, uri, resp);
+		}
+	}
 
-							object.getDescriptors().add(fileDescriptor);
+
+	private void putPropertyFile(HttpServletRequest req, URI uri, HttpServletResponse resp) throws IOException {
+		//split between the project/version/locale portion and the rest
+		String[] segmentArray = uri.segments();
+		String[] projectPart = new String[3];
+		final String[] descriptorPart = new String[segmentArray.length-projectPart.length];
+		System.arraycopy(segmentArray, 0, projectPart, 0, projectPart.length);
+		System.arraycopy(segmentArray, projectPart.length, descriptorPart, 0, descriptorPart.length);
+		URI projectURI = URI.createHierarchicalURI(projectPart, null, null);
+		Resolvable locale = getObject(projectURI.path());
+		if (locale == null) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + projectURI.path() + " does not exist");
+			return;
+		}
+		if (locale instanceof ProjectLocale) {
+			ProjectLocale projectLocale = (ProjectLocale) locale;
+			if(!projectLocale.isMaster())
+				throw new UnsupportedOperationException("currently only template locale files can be uploaded");
+
+			final PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+			PropertyFile properties = fileDescriptor.loadProperties(req.getInputStream());
+			fileDescriptor.setLocation(URI.createHierarchicalURI(descriptorPart, null, null));
+			fileDescriptor.setName(fileDescriptor.getLocation().lastSegment());
+			fileDescriptor.setKeys(properties.getProperties().size());
+			try {
+				TransactionUtil.commit(projectLocale.getParent(), new Modification<ProjectVersion, ProjectVersion>() {
+					@Override
+					public ProjectVersion apply(ProjectVersion version) {
+
+						PropertyResourceUtil.addNewTemplateDescriptor(fileDescriptor, version);
+						return version;
+					}
+				});
+				persistence.saveProperties(fileDescriptor, properties, false);
+			} catch (CommitException e) {
+				logger.error("Failed to commit put request to "+req.getPathInfo(),e);
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Commit failed");					
+			}
+		}
+		
+	}
+
+	private void putLocale(HttpServletRequest req, final URI uri, HttpServletResponse resp) throws IOException {
+		URI truncated = uri.trimSegments(1);
+		Resolvable object = getObject(truncated.path());
+		if (object instanceof ProjectVersion) {
+			ProjectVersion version = (ProjectVersion) object;
+			if(version.getChild(uri.lastSegment())==null)
+			{
+				try {
+					TransactionUtil.commit(version, new Modification<ProjectVersion, ProjectVersion>() {
+						@Override
+						public ProjectVersion apply(ProjectVersion object) {
+							ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
+							locale.setName(uri.lastSegment());
+							locale.setLocale((Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, uri.lastSegment()));
+							object.getChildren().add(locale);
 							return object;
 						}
 					});
-					persistence.saveProperties(fileDescriptor, properties, false);
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
+					logger.error("Commit failed",e);
+				}				
 			}
 		}
+		else
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Version " + truncated.path() + " does not exist");
+	}
+
+	private void putVersion(HttpServletRequest req, final URI uri, HttpServletResponse resp) throws IOException {
+		URI truncated = uri.trimSegments(1);
+		Resolvable object = getObject(truncated.path());
+		if (object instanceof Project) {
+			Project project = (Project) object;
+			if(project.getChild(uri.lastSegment())==null)
+			{
+				try {
+					TransactionUtil.commit(project, new Modification<Project, Project>() {
+						@Override
+						public Project apply(Project object) {
+							ProjectVersion child = PropertiesFactory.eINSTANCE.createProjectVersion();
+							ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
+							child.getChildren().add(locale);
+							child.setTemplate(locale);
+							child.setName(uri.lastSegment());
+							object.getChildren().add(child);
+							return object;
+						}
+					});
+				} catch (CommitException e) {
+					logger.error("Commit failed",e);
+				}				
+			}
+		}
+		else
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Project " + truncated.path() + " does not exist");
+		
+	}
+
+	private void putProject(HttpServletRequest req, final URI uri, HttpServletResponse resp) throws IOException {
+		//TODO: evaluate JSON stream for settings
+		try {
+			TransactionUtil.commit(workspace, new Modification<Workspace, Workspace>() {
+				@Override
+				public Workspace apply(Workspace object) {
+					Project child = PropertiesFactory.eINSTANCE.createProject();
+					child.setName(uri.lastSegment());
+					object.getChildren().add(child);
+					return object;
+				}
+			});
+		} catch (CommitException e) {
+			logger.error("Commit failed",e);
+		}		
+		
+		
 	}
 
 	private void updateFile(PropertyFileDescriptor descriptor, ServletInputStream inputStream) {

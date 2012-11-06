@@ -3,17 +3,61 @@ package de.jutzig.jabylon.rest.api;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 public class TestServlet {
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		URL url = new URL("http://localhost:8080/jabylon/api/petproject/master/template/bar/test.properties");
+//		postProject();
+//		postProjectVersion();
+//		postProjectLocale();
+		postProperty();
+	}
+
+	private static void postProject() throws Exception {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject");
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		PrintStream printStream = new PrintStream(httpCon.getOutputStream());
+		printStream.close();
+		System.out.println(httpCon.getResponseCode());
+		System.out.println(httpCon.getResponseMessage());
+		
+	}
+	
+	private static void postProjectVersion() throws Exception {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master");
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		PrintStream printStream = new PrintStream(httpCon.getOutputStream());
+		printStream.close();
+		System.out.println(httpCon.getResponseCode());
+		System.out.println(httpCon.getResponseMessage());
+	}
+	
+	private static void postProjectLocale() throws Exception {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/de_FR");
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		PrintStream printStream = new PrintStream(httpCon.getOutputStream());
+		printStream.close();
+		System.out.println(httpCon.getResponseCode());
+		System.out.println(httpCon.getResponseMessage());
+		
+	}
+
+	private static void postProperty() throws IOException {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/template/bar/foo/test.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("PUT");
@@ -25,6 +69,7 @@ public class TestServlet {
 		printStream.close();
 		System.out.println(httpCon.getResponseCode());
 		System.out.println(httpCon.getResponseMessage());
+		
 	}
 
 }
