@@ -6,8 +6,8 @@
 	<groupId>de.jutzig.jabylon</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> 
-		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath> 
+	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
+		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
 		</parent> -->
 
 	<properties>
@@ -15,6 +15,7 @@
 		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
 		<bundle.namespace>${project.groupId}</bundle.namespace>
 		<swt.variant>unknown</swt.variant>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<repositories>
@@ -128,8 +129,8 @@
 					</instructions>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions> 
-				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal> 
+			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions>
+				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal>
 				</goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -319,7 +320,7 @@
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<!-- need version with qualifier here, to disambiguate from non-bundle 
+				<!-- need version with qualifier here, to disambiguate from non-bundle
 					artifact in central -->
 				<version>0.1.41-v201101211617</version>
 			</dependency>
