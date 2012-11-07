@@ -4,4 +4,5 @@
    <service>
       <provide interface="de.jutzig.jabylon.cdo.connector.RepositoryConnector"/>
    </service>
+   <reference cardinality="1..1" interface="org.eclipse.net4j.acceptor.IAcceptor" name="IAcceptor" policy="static"/>
 </scr:component>

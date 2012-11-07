@@ -23,6 +23,7 @@ import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.net4j.acceptor.IAcceptor;
 import org.eclipse.net4j.db.DBUtil;
 import org.eclipse.net4j.jvm.IJVMAcceptor;
 import org.eclipse.net4j.jvm.IJVMConnector;
@@ -242,11 +243,15 @@ public class Activator implements BundleActivator {
 		System.out.println("Starting Repository");
 		// initialize acceptor
 		if (acceptor == null)
+		{
 			acceptor = JVMUtil.getAcceptor(container, "default");
+			
+		}
 
 		if (repository == null) {
 			repository = createRepository();
 			CDOServerUtil.addRepository(container, repository);
+			context.registerService(IAcceptor.class, acceptor, null);
 		}
 
 	}
