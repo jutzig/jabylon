@@ -193,10 +193,11 @@ public class ApiServlet extends HttpServlet
 					TransactionUtil.commit(version, new Modification<ProjectVersion, ProjectVersion>() {
 						@Override
 						public ProjectVersion apply(ProjectVersion object) {
+							
 							ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
 							locale.setName(uri.lastSegment());
 							locale.setLocale((Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, uri.lastSegment()));
-							object.getChildren().add(locale);
+							PropertyResourceUtil.addNewLocale(locale, object);
 							return object;
 						}
 					});

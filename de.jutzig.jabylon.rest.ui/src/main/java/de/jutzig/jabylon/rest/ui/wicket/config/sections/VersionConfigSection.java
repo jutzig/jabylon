@@ -31,6 +31,7 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
 import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -125,7 +126,8 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 				ProjectLocale newLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
 				Locale locale = new Locale(languageField.getModelObject(),countryField.getModelObject(),variantField.getModelObject());
 				newLocale.setLocale(locale);
-				provider.getObject().add(newLocale);
+				
+				PropertyResourceUtil.addNewLocale(newLocale, getModelObject());
 				if (target != null)
 					target.add(rowPanel);
 			}

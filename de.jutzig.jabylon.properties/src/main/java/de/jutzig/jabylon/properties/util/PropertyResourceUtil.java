@@ -90,6 +90,14 @@ public class PropertyResourceUtil {
 		
 	}
 
+	
+	
+	public static void addNewLocale(ProjectLocale locale, ProjectVersion version){
+		ProjectLocale template = version.getTemplate();
+		version.getChildren().add(locale);
+		createMissingChildren(template, locale, locale);
+	}
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant) {

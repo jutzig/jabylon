@@ -18,7 +18,8 @@ public class TestServlet {
 //		postProject();
 //		postProjectVersion();
 //		postProjectLocale();
-		postProperty();
+//		postProperty();
+		postNewProjectLocale("de_CH");
 	}
 
 	private static void postProject() throws Exception {
@@ -56,6 +57,20 @@ public class TestServlet {
 		
 	}
 
+	
+	
+	private static void postNewProjectLocale(String locale) throws Exception {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/"+locale);
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		PrintStream printStream = new PrintStream(httpCon.getOutputStream());
+		printStream.close();
+		System.out.println(httpCon.getResponseCode());
+		System.out.println(httpCon.getResponseMessage());
+		
+	}
+	
 	private static void postProperty() throws IOException {
 		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/template/bar/foo/test.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
