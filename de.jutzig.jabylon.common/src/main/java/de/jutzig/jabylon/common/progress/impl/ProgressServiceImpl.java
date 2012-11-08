@@ -11,6 +11,8 @@ import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -26,7 +28,8 @@ public class ProgressServiceImpl implements ProgressService {
 	private AtomicLong id = new AtomicLong();
 	private ExecutorService pool = Executors.newFixedThreadPool(10);
 	private Cache<Long, RunnableWrapper> jobs = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS).build();
-
+	private static final Logger logger = LoggerFactory.getLogger(ProgressService.class);
+	
 	@Override
 	public long schedule(RunnableWithProgress task) {
 		long currentID = id.getAndIncrement();
@@ -83,7 +86,7 @@ public class ProgressServiceImpl implements ProgressService {
 				monitor.setStatus(result);
 			} catch(Exception e)
 			{
-				//FIXME: log
+				logger.error("Runnable failed: "+progressRunnable,e);
 				monitor.setStatus(new Status(IStatus.ERROR, "de.jutzig.jabylon.common", null,e));
 			}
 			finally {
