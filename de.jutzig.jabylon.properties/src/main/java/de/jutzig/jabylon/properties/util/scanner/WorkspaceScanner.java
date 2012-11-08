@@ -1,8 +1,6 @@
 package de.jutzig.jabylon.properties.util.scanner;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
@@ -13,17 +11,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
 import de.jutzig.jabylon.properties.ScanConfiguration;
+import de.jutzig.jabylon.properties.types.PropertyScanner;
 
 public class WorkspaceScanner {
-
-	private static final Pattern LOCALE_PATTERN = Pattern.compile(".+?((_\\w\\w){1,3})\\..+");
-
+	
 	public WorkspaceScanner() {
 		// FileSet fs = Util.createFileSet(dir,includes,excludes);
 
 	}
 
-	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, IProgressMonitor monitor) {
+	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, IProgressMonitor monitor) {
 
 		FileSet fs = createFileSet(config);
 		fs.setDir(baseDir);
@@ -37,8 +34,8 @@ public class WorkspaceScanner {
 			String[] files = ds.getIncludedFiles();
 			subMon.setWorkRemaining(files.length);
 			for (String f : files) {
-				if (matchesLocale(f, masterLocale)) {
-					File file = new File(baseDir, f);
+				File file = new File(baseDir, f);
+				if(scanner.isTemplate(file, config)) {
 					subMon.subTask(f);
 					acceptor.newMatch(file);
 					subMon.worked(1);
@@ -49,14 +46,14 @@ public class WorkspaceScanner {
 			monitor.done();
 	}
 
-	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, ScanConfiguration config, File singleFile) {
+	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
 		Project antProject = new org.apache.tools.ant.Project();
 		FileSet fs = createFileSet(config);
 		String[] excludes = fs.mergeExcludes(antProject);
 		if(excludes!=null)
 		{
 			for (String exclude : excludes) {
-				if(/*SelectorUtils.matchPatternStart(exclude, singleFile.getPath()) && */ SelectorUtils.match(normalizePattern(exclude), singleFile.getPath()))
+				if(SelectorUtils.match(normalizePattern(exclude), singleFile.getPath()))
 					return;
 			}
 		}
@@ -64,17 +61,11 @@ public class WorkspaceScanner {
 		if(includes==null)
 			return;
 		for (String include : includes) {
-			//TODO: matchPatternStart fails for:
-			// **/*.properties
-			// /home/joe/workspaces/translator/work/workspace/jabylon-testing/master/testfiles/folder/child2/Messages2_de.properties
-			if(/*SelectorUtils.matchPatternStart(include, singleFile.getPath()) && */ SelectorUtils.match(normalizePattern(include), singleFile.getPath()))
+			if(SelectorUtils.match(normalizePattern(include), singleFile.getPath()))
 			{
-				String masterLocale = config.getMasterLocale();
-				if (masterLocale != null && masterLocale.isEmpty())
-					masterLocale = null;
 				if (baseDir.exists()) {
 
-					if (matchesLocale(singleFile.getName(), masterLocale)) {
+					if(scanner.isTemplate(singleFile, config)) {
 						acceptor.newMatch(singleFile);
 					}
 
@@ -85,25 +76,12 @@ public class WorkspaceScanner {
 	}
 
 
-	public boolean partialScan(File baseDir, ScanConfiguration config, File singleFile) {
+	public boolean partialScan(File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
 		SingleFileAcceptor acceptor = new SingleFileAcceptor();
-		partialScan(acceptor, baseDir, config, singleFile);
+		partialScan(acceptor, baseDir, scanner, config, singleFile);
 		return acceptor.isMatch();
 	}
 
-	private boolean matchesLocale(String f, String masterLocale) {
-
-		if (masterLocale == null)
-			return !LOCALE_PATTERN.matcher(f).matches();
-
-		Matcher matcher = LOCALE_PATTERN.matcher(f);
-		if (matcher.matches()) {
-			String locale = matcher.group(1);
-			locale = locale.substring(1);
-			return locale.equals(masterLocale);
-		}
-		return false;
-	}
 
 	private FileSet createFileSet(ScanConfiguration config) {
 		FileSet fs = new FileSet();

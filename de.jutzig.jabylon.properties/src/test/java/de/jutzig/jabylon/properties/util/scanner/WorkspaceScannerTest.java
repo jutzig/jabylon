@@ -14,6 +14,7 @@ import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.properties.types.impl.JavaPropertyScanner;
 
 public class WorkspaceScannerTest {
 
@@ -30,7 +31,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
+		}, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
 		int index = 0;
 		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals("messages2.properties", filenames.get(index++));
@@ -55,7 +56,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, configuration, null);
+		}, baseDir, new JavaPropertyScanner(), configuration, null);
 		int index = 0;
 		assertEquals("messages.properties", filenames.get(index++));
 		assertEquals("messages2.properties", filenames.get(index++));
@@ -80,7 +81,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, configuration, null);
+		}, baseDir, new JavaPropertyScanner(), configuration, null);
 		assertEquals(1, filenames.size());
 		int index = 0;
 		assertEquals("messages_en_CA.properties", filenames.get(index++));
@@ -101,7 +102,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, PropertiesFactory.eINSTANCE.createScanConfiguration(), new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+		}, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
 		int index = 0;
 		assertEquals(1, filenames.size());
 		assertEquals("messages.properties", filenames.get(index++));
@@ -124,7 +125,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+		}, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
 		int index = 0;
 		assertEquals(1, filenames.size());
 		assertEquals("messages.properties", filenames.get(index++));
@@ -146,7 +147,7 @@ public class WorkspaceScannerTest {
 				filenames.add(file.getName());
 
 			}
-		}, baseDir, scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+		}, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
 		assertEquals(0, filenames.size());
 	}
 

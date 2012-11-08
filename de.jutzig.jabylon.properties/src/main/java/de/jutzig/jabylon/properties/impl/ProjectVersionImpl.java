@@ -8,8 +8,9 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -27,8 +28,8 @@ import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Resolvable;
-import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.ScanConfiguration;
+import de.jutzig.jabylon.properties.types.PropertyScanner;
 import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
 import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
@@ -47,7 +48,6 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * @generated
  */
 public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> implements ProjectVersion {
-	private static final Pattern LOCALE_PATTERN = Pattern.compile(".+?((_\\w\\w){1,3})\\..+");
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -114,25 +114,24 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	public void fullScan(ScanConfiguration configuration) {
 		fullScan(configuration, null);
 	}
-	
+
 	public void fullScan(ScanConfiguration configuration, IProgressMonitor monitor) {
 		getChildren().clear();
 		setTemplate(null);
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
-		scanner.fullScan(new FileAcceptor(), baseDir, configuration, subMonitor.newChild(50));
-		
+		PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
+		scanner.fullScan(new FileAcceptor(propertyScanner,configuration), baseDir, propertyScanner, configuration, subMonitor.newChild(50));
+
 		for (ProjectLocale projectLocale : getChildren()) {
 			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
 				descriptor.updatePercentComplete();
 			}
 		}
 
-		PropertyResourceUtil.createMissingDescriptorEntries(this,subMonitor.newChild(50));
+		PropertyResourceUtil.createMissingDescriptorEntries(this, subMonitor.newChild(50));
 	}
-
-
 
 	public ProjectLocale getProjectLocale(Locale locale) {
 		EList<ProjectLocale> locales = getChildren();
@@ -152,13 +151,14 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		// TODO: MOVE and COPY can be handled better
 		// TODO: this can only handle updates in master locale so far.
 		// translated files won't make it through the scanner
+		PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		File singleFile = new File(baseDir, fileDiff.getNewPath());
 		if (fileDiff.getKind() == DiffKind.REMOVE)
 			// in case of a remove, the new path doesn't exist anymore
 			singleFile = new File(baseDir, fileDiff.getOldPath());
-		if (!scanner.partialScan(baseDir, configuration, singleFile))
+		if (!scanner.partialScan(baseDir, propertyScanner, configuration, singleFile))
 			return; // no match -> no work
 		switch (fileDiff.getKind()) {
 		case MOVE: {
@@ -167,11 +167,13 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		case COPY:
 		case ADD: {
 
-			scanner.partialScan(new FileAcceptor(), baseDir, configuration, singleFile);
-
+			
+			scanner.partialScan(new FileAcceptor(propertyScanner, configuration), baseDir, propertyScanner, configuration, singleFile);
+			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
+			PropertyResourceUtil.addNewTemplateDescriptor(descriptor, this);
 			for (ProjectLocale projectLocale : getChildren()) {
-				for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
-					descriptor.updatePercentComplete();
+				for (PropertyFileDescriptor localizedDescriptor : projectLocale.getDescriptors()) {
+					localizedDescriptor.updatePercentComplete();
 				}
 			}
 			break;
@@ -253,21 +255,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	private void deleteDescriptor(URI uri) {
 
 		PropertyFileDescriptor descriptor = findDescriptor(uri);
-		if (descriptor != null) {
-			if (descriptor.isMaster()) {
-				EList<ProjectLocale> locales = getChildren();
-				OUTER: for (ProjectLocale projectLocale : locales) {
-					EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-					for (PropertyFileDescriptor variant : descriptors) {
-						if (variant.getMaster() == descriptor) {
-							projectLocale.getDescriptors().remove(variant);
-							continue OUTER;
-						}
-					}
-				}
-			}
-			descriptor.getProjectLocale().getDescriptors().remove(descriptor);
-		}
+		PropertyResourceUtil.removeDescriptor(descriptor);
 	}
 
 	public ProjectLocale getOrCreateProjectLocale(Locale locale) {
@@ -304,8 +292,10 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	}
 
 	protected PropertyFileDescriptor findDescriptor(URI path) {
-		String localeString = getLocaleString(path.lastSegment());
-		ProjectLocale locale = localeString.isEmpty() ? getTemplate() : getProjectLocale(createVariant(localeString));
+		PropertyScanner scanner = PropertyResourceUtil.createScanner(this);
+		Locale variant = scanner.getLocale(new File(path.toFileString()));
+		
+		ProjectLocale locale = variant==null ? getTemplate() : getProjectLocale(variant);
 		if (locale == null)
 			return null;
 		EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
@@ -317,19 +307,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		return null;
 	}
 
-	/**
-	 * example: "messages_de_DE.properties" returns "de_DE"
-	 * 
-	 * @param fileName
-	 * @return the locale string in the filename or an empty string if there is
-	 *         non
-	 */
-	private String getLocaleString(String fileName) {
-		Matcher matcher = LOCALE_PATTERN.matcher(fileName);
-		if (matcher.matches())
-			return matcher.group(1);
-		return "";
-	}
 
 	private Locale createVariant(String localeString) {
 		return (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeString);
@@ -337,18 +314,20 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	class FileAcceptor implements PropertyFileAcceptor {
 
-		public FileAcceptor() {
+		private PropertyScanner scanner;
+		private ScanConfiguration config;
+		private URI versionPath; 
+		
+		public FileAcceptor(PropertyScanner scanner, ScanConfiguration config) {
+			this.scanner = scanner;
+			this.config = config;
+			versionPath = absolutPath();
 		}
 
 		@Override
 		public void newMatch(File file) {
 
-			URI location = URI.createFileURI(file.getAbsolutePath());
-			location = location.deresolve(absolutPath()); // get rid of the
-															// version
-			location = URI.createHierarchicalURI(location.scheme(), location.authority(), location.device(), location.segmentsList()
-					.subList(1, location.segmentCount()).toArray(new String[location.segmentCount() - 1]), location.query(),
-					location.fragment());
+			URI location = calculateLocation(file);
 			if (getTemplate() == null) {
 				setTemplate(PropertiesFactory.eINSTANCE.createProjectLocale());
 				getTemplate().setName("template");
@@ -362,34 +341,35 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			descriptor.setKeys(propertyFile.getProperties().size());
 			descriptor.updatePercentComplete();
 
-			String localeString = getLocaleString(file.getName());
-			if (!localeString.isEmpty()) {
-				Locale locale = createVariant(localeString.substring(1));
+			Locale locale = scanner.getLocale(file);
+			if (locale!=null) {
 				descriptor.setVariant(locale);
 			}
 
-			Pattern pattern = buildPatternFrom(file.getName().replace(localeString, ""));
-			File folder = file.getParentFile();
-			String[] childNames = folder.list();
-			for (String child : childNames) {
-				if (child.equals(file.getName()))
-					continue;
-				Matcher matcher = pattern.matcher(child);
-				if (matcher.matches()) {
-					Locale locale = createVariant(matcher.group(1).substring(1));
-					ProjectLocale projectLocale = getOrCreateProjectLocale(locale);
-					URI childURI = location.trimSegments(1).appendSegment(child);
-					PropertyFileDescriptor fileDescriptor = createDescriptor(projectLocale, childURI);
-					fileDescriptor.setMaster(descriptor);
+			Map<Locale, File> translations = scanner.findTranslations(file, config);
+			Set<Entry<Locale, File>> set = translations.entrySet();
+			for (Entry<Locale, File> entry : set) {
+				ProjectLocale projectLocale = getOrCreateProjectLocale(entry.getKey());
+				URI childURI = calculateLocation(entry.getValue());
+				PropertyFileDescriptor fileDescriptor = createDescriptor(projectLocale, childURI);
+				fileDescriptor.setMaster(descriptor);
 
-					// load file to initialize statistics;
-					PropertyFile translatedFile = fileDescriptor.loadProperties();
-					int size = translatedFile.getProperties().size();
-					fileDescriptor.setKeys(size);
-
-					// fileDescriptor.updatePercentComplete();
-				}
+				// load file to initialize statistics;
+				PropertyFile translatedFile = fileDescriptor.loadProperties();
+				int size = translatedFile.getProperties().size();
+				fileDescriptor.setKeys(size);
 			}
+
+		}
+
+		protected URI calculateLocation(File file) {
+			URI location = URI.createFileURI(file.getAbsolutePath());
+			location = location.deresolve(versionPath); // get rid of the
+															// version
+			location = URI.createHierarchicalURI(location.scheme(), location.authority(), location.device(), location.segmentsList()
+					.subList(1, location.segmentCount()).toArray(new String[location.segmentCount() - 1]), location.query(),
+					location.fragment());
+			return location;
 		}
 
 		private PropertyFileDescriptor createDescriptor(ProjectLocale projectLocale, URI childURI) {
@@ -397,7 +377,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			fileDescriptor.setLocation(childURI);
 			fileDescriptor.setName(childURI.lastSegment());
 			fileDescriptor.setVariant(projectLocale.getLocale());
-			// TODO: implement folder structure
 			projectLocale.getDescriptors().add(fileDescriptor);
 			Resolvable<?, Resolvable<?, ?>> parent = getOrCreateParent(projectLocale, childURI);
 			parent.getChildren().add(fileDescriptor);
@@ -424,16 +403,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			}
 			return childObject;
 		}
-
-		private Pattern buildPatternFrom(String fileName) {
-			int separator = fileName.lastIndexOf(".");
-			String prefix = fileName.substring(0, separator);
-			String suffix = fileName.substring(separator);
-			return Pattern.compile(Pattern.quote(prefix) + "((_\\w\\w){1,3})" + Pattern.quote(suffix)); // messages.properties
-																										// =>
-																										// messages_de_DE.properties
-		}
-
 	}
 
 } // ProjectVersionImpl
