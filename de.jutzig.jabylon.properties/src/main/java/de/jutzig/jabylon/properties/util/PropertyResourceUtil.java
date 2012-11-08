@@ -276,7 +276,7 @@ public class PropertyResourceUtil {
 		while(currentParent instanceof ResourceFolder)
 		{
 			if(currentParent.getChildren().size()<=1)
-				currentParent = (ResourceFolder) currentParent.getParent();
+				currentParent = currentParent.getParent();
 			else
 				break;
 		}
