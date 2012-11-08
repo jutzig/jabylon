@@ -24,7 +24,8 @@ public class JavaPropertyScanner implements PropertyScanner {
 
 	@Override
 	public boolean isTranslation(File propertyFile, ScanConfiguration config) {
-		return matchesLocale(propertyFile.getName(), config.getMasterLocale());
+		Locale locale = getLocale(propertyFile);
+		return locale!=null && !locale.toString().equals(config.getMasterLocale());
 	}
 
 	@Override

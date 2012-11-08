@@ -18,8 +18,9 @@ public class TestServlet {
 //		postProject();
 //		postProjectVersion();
 //		postProjectLocale();
-//		postProperty();
-		postNewProjectLocale("de_CH");
+//		postNewProjectLocale("de_CH");
+		postProperty();
+//		postTranslatedProperty();
 	}
 
 	private static void postProject() throws Exception {
@@ -72,7 +73,7 @@ public class TestServlet {
 	}
 	
 	private static void postProperty() throws IOException {
-		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/template/bar/foo/test.properties");
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/foobbbbbbarrrr/test.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("PUT");
@@ -86,5 +87,22 @@ public class TestServlet {
 		System.out.println(httpCon.getResponseMessage());
 		
 	}
+	
+	private static void postTranslatedProperty() throws IOException {
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/neu/test2_ch_DE.properties");
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		PrintStream printStream = new PrintStream(httpCon.getOutputStream());
+		printStream.println("anderer_key = übersetzt");
+		printStream.println("foo = übersetzt");
+		printStream.println("lala = übersetzt");
+		printStream.println("narf = übersetzt");
+		printStream.close();
+		System.out.println(httpCon.getResponseCode());
+		System.out.println(httpCon.getResponseMessage());
+		
+	}
+	
 
 }

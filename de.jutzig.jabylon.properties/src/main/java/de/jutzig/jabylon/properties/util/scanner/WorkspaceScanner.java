@@ -65,9 +65,9 @@ public class WorkspaceScanner {
 			{
 				if (baseDir.exists()) {
 
-					if(scanner.isTemplate(singleFile, config)) {
+//					if(scanner.isTemplate(singleFile, config)) {
 						acceptor.newMatch(singleFile);
-					}
+//					}
 
 				}
 				break;

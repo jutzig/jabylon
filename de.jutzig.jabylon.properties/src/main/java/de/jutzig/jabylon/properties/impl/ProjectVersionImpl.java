@@ -8,9 +8,6 @@ package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -31,7 +28,8 @@ import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.types.PropertyScanner;
 import de.jutzig.jabylon.properties.util.PropertyResourceUtil;
-import de.jutzig.jabylon.properties.util.scanner.PropertyFileAcceptor;
+import de.jutzig.jabylon.properties.util.scanner.FullScanFileAcceptor;
+import de.jutzig.jabylon.properties.util.scanner.PartialScanFileAcceptor;
 import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
 
 /**
@@ -122,7 +120,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
 		PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
-		scanner.fullScan(new FileAcceptor(propertyScanner,configuration), baseDir, propertyScanner, configuration, subMonitor.newChild(50));
+		scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner,configuration), baseDir, propertyScanner, configuration, subMonitor.newChild(50));
 
 		for (ProjectLocale projectLocale : getChildren()) {
 			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
@@ -168,14 +166,14 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		case ADD: {
 
 			
-			scanner.partialScan(new FileAcceptor(propertyScanner, configuration), baseDir, propertyScanner, configuration, singleFile);
-			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
-			PropertyResourceUtil.addNewTemplateDescriptor(descriptor, this);
-			for (ProjectLocale projectLocale : getChildren()) {
-				for (PropertyFileDescriptor localizedDescriptor : projectLocale.getDescriptors()) {
-					localizedDescriptor.updatePercentComplete();
-				}
-			}
+			scanner.partialScan(new PartialScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration, singleFile);
+//			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
+//			PropertyResourceUtil.addNewTemplateDescriptor(descriptor, this);
+//			for (ProjectLocale projectLocale : getChildren()) {
+//				for (PropertyFileDescriptor localizedDescriptor : projectLocale.getDescriptors()) {
+//					localizedDescriptor.updatePercentComplete();
+//				}
+//			}
 			break;
 		}
 		case MODIFY: {
@@ -255,18 +253,10 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	private void deleteDescriptor(URI uri) {
 
 		PropertyFileDescriptor descriptor = findDescriptor(uri);
-		PropertyResourceUtil.removeDescriptor(descriptor);
+		if(descriptor!=null)
+			PropertyResourceUtil.removeDescriptor(descriptor);
 	}
 
-	public ProjectLocale getOrCreateProjectLocale(Locale locale) {
-		ProjectLocale projectLocale = getProjectLocale(locale);
-		if (projectLocale == null) {
-			projectLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
-			projectLocale.setLocale(locale);
-			getChildren().add(projectLocale);
-		}
-		return projectLocale;
-	}
 
 	@Override
 	public Resolvable resolveChild(URI path) {
@@ -310,99 +300,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	private Locale createVariant(String localeString) {
 		return (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeString);
-	}
-
-	class FileAcceptor implements PropertyFileAcceptor {
-
-		private PropertyScanner scanner;
-		private ScanConfiguration config;
-		private URI versionPath; 
-		
-		public FileAcceptor(PropertyScanner scanner, ScanConfiguration config) {
-			this.scanner = scanner;
-			this.config = config;
-			versionPath = absolutPath();
-		}
-
-		@Override
-		public void newMatch(File file) {
-
-			URI location = calculateLocation(file);
-			if (getTemplate() == null) {
-				setTemplate(PropertiesFactory.eINSTANCE.createProjectLocale());
-				getTemplate().setName("template");
-				getChildren().add(getTemplate());
-			}
-			PropertyFileDescriptor descriptor = createDescriptor(getTemplate(), location);
-			getTemplate().getDescriptors().add(descriptor);
-
-			// load file to initialize statistics;
-			PropertyFile propertyFile = descriptor.loadProperties();
-			descriptor.setKeys(propertyFile.getProperties().size());
-			descriptor.updatePercentComplete();
-
-			Locale locale = scanner.getLocale(file);
-			if (locale!=null) {
-				descriptor.setVariant(locale);
-			}
-
-			Map<Locale, File> translations = scanner.findTranslations(file, config);
-			Set<Entry<Locale, File>> set = translations.entrySet();
-			for (Entry<Locale, File> entry : set) {
-				ProjectLocale projectLocale = getOrCreateProjectLocale(entry.getKey());
-				URI childURI = calculateLocation(entry.getValue());
-				PropertyFileDescriptor fileDescriptor = createDescriptor(projectLocale, childURI);
-				fileDescriptor.setMaster(descriptor);
-
-				// load file to initialize statistics;
-				PropertyFile translatedFile = fileDescriptor.loadProperties();
-				int size = translatedFile.getProperties().size();
-				fileDescriptor.setKeys(size);
-			}
-
-		}
-
-		protected URI calculateLocation(File file) {
-			URI location = URI.createFileURI(file.getAbsolutePath());
-			location = location.deresolve(versionPath); // get rid of the
-															// version
-			location = URI.createHierarchicalURI(location.scheme(), location.authority(), location.device(), location.segmentsList()
-					.subList(1, location.segmentCount()).toArray(new String[location.segmentCount() - 1]), location.query(),
-					location.fragment());
-			return location;
-		}
-
-		private PropertyFileDescriptor createDescriptor(ProjectLocale projectLocale, URI childURI) {
-			PropertyFileDescriptor fileDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-			fileDescriptor.setLocation(childURI);
-			fileDescriptor.setName(childURI.lastSegment());
-			fileDescriptor.setVariant(projectLocale.getLocale());
-			projectLocale.getDescriptors().add(fileDescriptor);
-			Resolvable<?, Resolvable<?, ?>> parent = getOrCreateParent(projectLocale, childURI);
-			parent.getChildren().add(fileDescriptor);
-			return fileDescriptor;
-		}
-
-		private Resolvable<?, Resolvable<?, ?>> getOrCreateParent(ProjectLocale projectLocale, URI childURI) {
-			Resolvable<?, Resolvable<?, ?>> currentParent = projectLocale;
-			String[] segments = childURI.segments();
-			for (int i = 0; i < segments.length - 1; i++) {
-				currentParent = getOrCreate(currentParent, segments[i]);
-			}
-			return currentParent;
-		}
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		private Resolvable<?, Resolvable<?, ?>> getOrCreate(Resolvable<?, Resolvable<?, ?>> currentParent, String child) {
-			Resolvable<?, Resolvable<?, ?>> childObject = (Resolvable<?, Resolvable<?, ?>>) currentParent.getChild(child);
-			if (childObject == null) {
-				childObject = PropertiesFactory.eINSTANCE.createResourceFolder();
-				childObject.setName(child);
-				EList children = currentParent.getChildren();
-				children.add(childObject);
-			}
-			return childObject;
-		}
 	}
 
 } // ProjectVersionImpl
