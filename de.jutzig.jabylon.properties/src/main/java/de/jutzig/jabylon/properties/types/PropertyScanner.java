@@ -16,6 +16,8 @@ public interface PropertyScanner {
 	
 	Map<Locale, File> findTranslations(File template, ScanConfiguration config);
 	
+	File computeTranslationPath(File template, Locale templateLocale, Locale translationLocale);
+	
 	Locale getLocale(File propertyFile);
 	
 }

@@ -38,7 +38,8 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void newTranslationMatch(File file) {
 		File template = getPropertyScanner().findTemplate(file, getScanConfig());
-		if(template==null)
+		//don't do anything if the template doesn't exist yet
+		if(template==null || !template.isFile())
 			return;
 		
 		Locale locale = getPropertyScanner().getLocale(file);
@@ -50,8 +51,6 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
 		if(descriptor==null)
 		{
 			descriptor = createDescriptor(projectLocale, location);
-			descriptor.setVariant(locale);
-			projectLocale.getDescriptors().add(descriptor);			
 		}
 		
 		// load file to initialize statistics;
@@ -62,11 +61,7 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
 			PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor) resolvable;
 			descriptor.setMaster(templateDescriptor);
 		}
-		descriptor.updatePercentComplete();
-
-		Resolvable parent = PropertyResourceUtil.getOrCreateFolder(projectLocale, location.trimSegments(1).segments());
-		parent.getChildren().add(descriptor);
-		
+		descriptor.updatePercentComplete();		
 	}
 
 	private void newTemplateMatch(File file) {
@@ -97,10 +92,7 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
 			PropertyFileDescriptor fileDescriptor = createDescriptor(projectLocale, childURI);
 			fileDescriptor.setMaster(descriptor);
 
-			// load file to initialize statistics;
-			PropertyFile translatedFile = fileDescriptor.loadProperties();
-			int size = translatedFile.getProperties().size();
-			fileDescriptor.setKeys(size);
+
 		}
 		PropertyResourceUtil.addNewTemplateDescriptor(descriptor, getProjectVersion());
 	}

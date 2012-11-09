@@ -104,4 +104,13 @@ public class JavaPropertyScanner implements PropertyScanner {
 		return results;
 	}
 
+	@Override
+	public File computeTranslationPath(File template, Locale templateLocale, Locale translationLocale) {
+		Matcher matcher = LOCALE_PATTERN.matcher(template.getName());
+		if (!matcher.matches()) 
+			return null;
+		String newName = matcher.group(1) + "_" + translationLocale.toString() + matcher.group(3);
+		return new File(template.getParentFile(),newName);
+	}
+
 }

@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.properties.util;
 
+import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -12,6 +13,7 @@ import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.PropertyType;
 import de.jutzig.jabylon.properties.Resolvable;
@@ -83,7 +85,7 @@ public class PropertyResourceUtil {
 			// if it is not the template language, create a new derived
 			// descriptor
 			if (!locale.isMaster()) {
-				URI derivedLocation = computeLocaleResourceLocation(locale.getLocale(), descriptor.getLocation(), descriptor.getVariant());
+				URI derivedLocation = computeLocaleResourceLocation(locale.getLocale(), version, descriptor.getLocation());
 
 				PropertyFileDescriptor translatedDescriptor = (PropertyFileDescriptor) parent.getChild(derivedLocation.lastSegment());
 				if (translatedDescriptor == null) {
@@ -96,6 +98,14 @@ public class PropertyResourceUtil {
 				translatedDescriptor.setLocation(derivedLocation);
 				translatedDescriptor.setName(derivedLocation.lastSegment());
 				translatedDescriptor.setMaster(descriptor);
+				if(new File(translatedDescriptor.absoluteFilePath().toFileString()).isFile())
+				{
+					// load file to initialize statistics;
+					PropertyFile translatedFile = translatedDescriptor.loadProperties();
+					int size = translatedFile.getProperties().size();
+					translatedDescriptor.setKeys(size);				
+					translatedDescriptor.updatePercentComplete();
+				}
 			}
 			// otherwise add it to the template language
 			else {
@@ -152,7 +162,7 @@ public class PropertyResourceUtil {
 			if (child instanceof PropertyFileDescriptor) {
 				// for properties we need the locale specific name
 				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) child;
-				name = computeLocaleResourceLocation(variant.getLocale(), descriptor.getLocation(), descriptor.getVariant()).lastSegment();
+				name = computeLocaleResourceLocation(variant.getLocale(), variant.getParent(), descriptor.getLocation()).lastSegment();
 			}
 			Resolvable<?, ?> localeChild = locale.getChild(name);
 			if (localeChild == null) {
@@ -218,26 +228,14 @@ public class PropertyResourceUtil {
 
 	}
 
-	public static URI computeLocaleResourceLocation(Locale locale, URI location, Locale masterLocale) {
+	public static URI computeLocaleResourceLocation(Locale locale, ProjectVersion version, URI templateLocation) {
 
-		String filename = location.lastSegment();
-		String extension = location.fileExtension();
-
-		if (extension != null) {
-			filename = filename.substring(0, filename.length() - extension.length() - 1);
-
-			// if the master has a locale as well (i.e.
-			// messages_en_EN.properties) we must remove the suffix
-			if (masterLocale != null) {
-				filename = filename.substring(0, filename.length() - (masterLocale.toString().length() + 1));
-			}
-
-			filename += "_";
-			filename += locale.toString();
-			filename += ".";
-			filename += extension;
-		}
-		return location.trimSegments(1).appendSegment(filename);
+		PropertyScanner scanner = createScanner(version);
+		File path = scanner.computeTranslationPath(new File(templateLocation.toFileString()), version.getTemplate().getLocale(), locale);
+		
+		URI location = URI.createURI(path.getAbsolutePath());
+		location = location.deresolve(templateLocation); 
+		return location;
 
 	}
 

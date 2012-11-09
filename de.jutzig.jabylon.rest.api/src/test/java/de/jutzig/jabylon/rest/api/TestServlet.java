@@ -73,7 +73,7 @@ public class TestServlet {
 	}
 	
 	private static void postProperty() throws IOException {
-		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/foobbbbbbarrrr/test.properties");
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/folder/test11.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("PUT");
@@ -89,7 +89,7 @@ public class TestServlet {
 	}
 	
 	private static void postTranslatedProperty() throws IOException {
-		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/neu/test2_ch_DE.properties");
+		URL url = new URL("http://localhost:8080/jabylon/api/apiproject/master/folder/test11_zh.properties");
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setDoOutput(true);
 		httpCon.setRequestMethod("PUT");
