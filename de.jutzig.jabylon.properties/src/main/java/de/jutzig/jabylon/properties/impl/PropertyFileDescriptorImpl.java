@@ -20,6 +20,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.properties.Comment;
 import de.jutzig.jabylon.properties.ProjectLocale;
@@ -53,6 +55,9 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  * @generated
  */
 public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>, PropertyFileDescriptor> implements PropertyFileDescriptor {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PropertyFileDescriptorImpl.class); 
+	
 	/**
 	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -181,7 +186,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		} catch (FileNotFoundException e)
 		{
 			//The file does not exist, create a new one.
-			//TODO: log this
+			logger.warn("Tried to load non-existing property file", e);
 			return PropertiesFactory.eINSTANCE.createPropertyFile();
 		}
 		 catch (IOException e) {
