@@ -57,7 +57,9 @@ public class JavaPropertyScanner implements PropertyScanner {
 
 		Matcher matcher = LOCALE_PATTERN.matcher(f);
 		if (matcher.matches()) {
-			String actualLocale = matcher.group(1);
+			String actualLocale = matcher.group(2);
+			if(actualLocale==null || actualLocale.isEmpty())
+				return false;
 			actualLocale = actualLocale.substring(1);
 			return actualLocale.equals(desiredLocale);
 		}
