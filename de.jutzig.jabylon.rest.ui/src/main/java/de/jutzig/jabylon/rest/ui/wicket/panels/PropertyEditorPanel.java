@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.SubmitLink;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -19,6 +23,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.google.common.base.Predicate;
@@ -37,11 +42,72 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
+
 		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
 		addLinkList(mode);
-		
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
 		List<PropertyPair> contents = provider.createContents();
+		ListView<PropertyPair> properties = new ListView<PropertyPair>("row", contents) {
+			@Override
+			protected void populateItem(final ListItem<PropertyPair> item) {
+				item.setOutputMarkupId(true);
+				PropertyPair propertyPair = item.getModelObject();
+				decorateRowStatus(item, propertyPair);
+				String key = propertyPair.getTemplate().getKey();
+
+				final Label icon = new Label("icon");
+				icon.add(new AttributeModifier("class", "icon-chevron-right"));
+				icon.setOutputMarkupId(true);
+				item.add(icon);
+
+				final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
+				templatePanel.setVisible(false);
+				templatePanel.setOutputMarkupId(true);
+				item.add(templatePanel);
+				final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
+				translationPanel.setVisible(false);
+				translationPanel.setOutputMarkupId(true);
+				item.add(translationPanel);
+
+				final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
+
+				AjaxLink toggleLink = new AjaxLink("toggle") {
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+
+						target.add(item);
+						String iconName = translationLabel.isVisible() ? "icon-chevron-down" : "icon-chevron-right";
+						icon.add(new AttributeModifier("class", iconName));
+
+						translationLabel.setVisible(!translationLabel.isVisible());
+						templatePanel.setVisible(!templatePanel.isVisible());
+						translationPanel.setVisible(!translationPanel.isVisible());
+					}
+				};
+				item.add(toggleLink);
+				toggleLink.add(icon);
+
+				item.add(new Label("key-label", key));
+				item.add(translationLabel);
+
+				TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(propertyPair,
+						"original"));
+				templatePanel.add(textArea);
+
+				textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(propertyPair, "originalComment"));
+				templatePanel.add(textArea);
+
+				textArea = new TextArea<PropertyPair>("translation-comment", new PropertyModel<PropertyPair>(propertyPair,
+						"translatedComment"));
+				translationPanel.add(textArea);
+
+				textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
+				translationPanel.add(textArea);
+
+			}
+
+		};
+		properties.setOutputMarkupId(true);
 
 		Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
 			@Override
@@ -56,6 +122,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 				for (PropertyPair pair : list) {
 					Property translation = pair.getTranslation();
+					if(translation==null)
+						continue;
 					if (map.containsKey(translation.getKey())) {
 						Property property = map.get(translation.getKey());
 						property.setComment(translation.getComment());
@@ -76,17 +144,15 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		};
 
 		add(form);
-
-		ListView<PropertyPair> properties = new ListView<PropertyPair>("properties", contents) {
-			@Override
-			protected void populateItem(ListItem<PropertyPair> item) {
-				SinglePropertyEditor editor = new SinglePropertyEditor("editor", item.getModel());
-				item.add(editor);
-
-			}
-		};
 		form.add(new SubmitLink("properties-submit"));
 		form.add(properties);
+	}
+
+	private void decorateRowStatus(ListItem<PropertyPair> item, PropertyPair propertyPair) {
+		if (propertyPair.getOriginal() == null || propertyPair.getOriginal().isEmpty())
+			item.add(new AttributeModifier("class", "error"));
+		else if (propertyPair.getTranslated() == null || propertyPair.getTranslated().isEmpty())
+			item.add(new AttributeModifier("class", "error"));
 	}
 
 	private void addLinkList(final PropertyListMode currentMode) {
@@ -94,15 +160,15 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
 			@Override
 			protected void populateItem(ListItem<PropertyListMode> item) {
-				
+
 				String mode = item.getModelObject().name().toLowerCase();
-				item.add(new ExternalLink("link", "?mode="+mode, "Show "+mode));
-				if(item.getModelObject()==currentMode)
+				item.add(new ExternalLink("link", "?mode=" + mode, "Show " + mode));
+				if (item.getModelObject() == currentMode)
 					item.add(new AttributeModifier("class", "active"));
 			}
 		};
 		add(mode);
-		
+
 	}
 
 	@Override
@@ -151,12 +217,12 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 			// IModel<String> bind = model.bind(property.getKey());
 			// bind.set
 			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()));
-			if(mode.apply(pair))
+			if (mode.apply(pair))
 				contents.add(pair);
 		}
 		for (Property property : translated.values()) {
 			PropertyPair pair = new PropertyPair(null, property);
-			if(mode.apply(pair))
+			if (mode.apply(pair))
 				contents.add(pair);
 		}
 		return contents;
@@ -198,7 +264,8 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 	{
 		@Override
 		public boolean apply(PropertyPair pair) {
-			return pair.getOriginal()==null || pair.getTranslated()==null || pair.getOriginal().isEmpty() || pair.getTranslated().isEmpty();
+			return pair.getOriginal() == null || pair.getTranslated() == null || pair.getOriginal().isEmpty()
+					|| pair.getTranslated().isEmpty();
 		}
 	},
 	FUZZY {
