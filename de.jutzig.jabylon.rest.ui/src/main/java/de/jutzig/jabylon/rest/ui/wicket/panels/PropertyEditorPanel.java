@@ -7,15 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -23,8 +18,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 
@@ -40,6 +36,11 @@ import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescriptor> {
 
+	
+	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
+	
+	
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
 
@@ -47,69 +48,22 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		addLinkList(mode);
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
 		List<PropertyPair> contents = provider.createContents();
-		ListView<PropertyPair> properties = new ListView<PropertyPair>("row", contents) {
+		ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents) {
+
+			private static final long serialVersionUID = -7087485011138279358L;
+
 			@Override
 			protected void populateItem(final ListItem<PropertyPair> item) {
-				item.setOutputMarkupId(true);
-				PropertyPair propertyPair = item.getModelObject();
-				decorateRowStatus(item, propertyPair);
-				String key = propertyPair.getTemplate().getKey();
-
-				final Label icon = new Label("icon");
-				icon.add(new AttributeModifier("class", "icon-chevron-right"));
-				icon.setOutputMarkupId(true);
-				item.add(icon);
-
-				final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
-				templatePanel.setVisible(false);
-				templatePanel.setOutputMarkupId(true);
-				item.add(templatePanel);
-				final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
-				translationPanel.setVisible(false);
-				translationPanel.setOutputMarkupId(true);
-				item.add(translationPanel);
-
-				final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
-
-				AjaxLink toggleLink = new AjaxLink("toggle") {
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-
-						target.add(item);
-						String iconName = translationLabel.isVisible() ? "icon-chevron-down" : "icon-chevron-right";
-						icon.add(new AttributeModifier("class", iconName));
-
-						translationLabel.setVisible(!translationLabel.isVisible());
-						templatePanel.setVisible(!templatePanel.isVisible());
-						translationPanel.setVisible(!translationPanel.isVisible());
-					}
-				};
-				item.add(toggleLink);
-				toggleLink.add(icon);
-
-				item.add(new Label("key-label", key));
-				item.add(translationLabel);
-
-				TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(propertyPair,
-						"original"));
-				templatePanel.add(textArea);
-
-				textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(propertyPair, "originalComment"));
-				templatePanel.add(textArea);
-
-				textArea = new TextArea<PropertyPair>("translation-comment", new PropertyModel<PropertyPair>(propertyPair,
-						"translatedComment"));
-				translationPanel.add(textArea);
-
-				textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
-				translationPanel.add(textArea);
-
+				item.add(new SinglePropertyEditor("row", item.getModel()));
 			}
 
 		};
 		properties.setOutputMarkupId(true);
 
 		Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
+			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
@@ -134,11 +88,11 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				service.saveProperties(descriptor, file);
 				getSession().info("Saved successfully");
 				try {
+					//TODO: this is very unclean...
 					// give it some time to store the values
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("Interrupted while waiting for property persistence",e);
 				}
 			}
 		};
@@ -148,16 +102,14 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		form.add(properties);
 	}
 
-	private void decorateRowStatus(ListItem<PropertyPair> item, PropertyPair propertyPair) {
-		if (propertyPair.getOriginal() == null || propertyPair.getOriginal().isEmpty())
-			item.add(new AttributeModifier("class", "error"));
-		else if (propertyPair.getTranslated() == null || propertyPair.getTranslated().isEmpty())
-			item.add(new AttributeModifier("class", "error"));
-	}
+
 
 	private void addLinkList(final PropertyListMode currentMode) {
 		List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
+
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void populateItem(ListItem<PropertyListMode> item) {
 
@@ -182,6 +134,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClassSortState> implements IFilterStateLocator<String> {
 
+	private static final long serialVersionUID = 1L;
 	private CompoundPropertyModel<PropertyFileDescriptor> model;
 	private transient List<PropertyPair> contents;
 	private String filterState;

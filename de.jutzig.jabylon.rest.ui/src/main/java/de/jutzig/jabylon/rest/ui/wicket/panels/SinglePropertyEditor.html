@@ -1,8 +1,30 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
+	<td><a class="btn btn-small" wicket:id="toggle" href="#"><i
+			wicket:id="icon" class="icon-chevron-down"></i></a> <span
+		wicket:id="key-label">Key</span>
+		<div wicket:id="template-area" style="width: 100%; margin-right: 5px">
 
-	
-
-
+			<textarea wicket:id="template" rows="3" cols="3" readonly="readonly">this is the template</textarea>
+			<br />
+			<textarea wicket:id="template-comment" rows="3" cols="3"
+				readonly="readonly">this is the original comment</textarea>
+			<p>
+				<a class="btn btn-small">&lt; previous</a>
+			</p>
+		</div></td>
+	<td><span wicket:id="translation-label">this is the
+			translation</span>
+		<div wicket:id="translation-area"
+			style="width: 100%; margin-left: 5px">
+			<br />
+			<textarea wicket:id="translation" rows="3" cols="3">this is the translation</textarea>
+			<br />
+			<textarea wicket:id="translation-comment" rows="3" cols="3">this is the comment</textarea>
+			<p align="right">
+				<a class="btn btn-small">next &gt;</a>
+			</p>
+		</div></td>
+	<td><i class="icon-ok-circle"></i></td>
 </wicket:panel>
 </html>
