@@ -5,15 +5,19 @@
 </head>
 <body>
 	<wicket:panel>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
-				<a class="brand" href="#" wicket:id="jabylon">Jabylon</a>
-				<ul class="nav">
-					<wicket:container wicket:id="items">
-						<li class="divider-vertical"></li>
-						<li><wicket:container wicket:id="content"></wicket:container></li>
-					</wicket:container>
-				</ul>
+				<div class="container">
+					<a class="brand" href="#" wicket:id="jabylon">Jabylon</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<wicket:container wicket:id="items">
+								<li class="divider-vertical"></li>
+								<li><wicket:container wicket:id="content"></wicket:container></li>
+							</wicket:container>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:panel>

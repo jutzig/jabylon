@@ -6,27 +6,9 @@
 </head>
 <body>
 	<wicket:extend>
-		<div class="row">
-			<div class="span12">
-				<div class="row">
-					<div class="span3">
-						<div class="well well-large">
-							<h4>Activity Stream</h4>
-							<span class="label label-info">Info</span>
-							<p>Nicole updated /x/y/props</p>
-							<span class="label label-info">Info</span>
-							<p>Joe reviewed /x/y/props</p>
-						</div>
-					</div>
-					<div class="span9">
-						<div wicket:id="breadcrumb-panel"></div>
-						<div wicket:id="content"></div>
-						<wicket:child />
-					</div>
-
-				</div>
-			</div>
-		</div>
+		<div class="container" wicket:id="breadcrumb-panel"></div>
+		<div class="container" wicket:id="content"></div>
+		<wicket:child />
 	</wicket:extend>
 </body>
 </html>

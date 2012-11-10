@@ -37,6 +37,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
 		super("content", object, parameters);
+		add(new Label("header", new LabelSwitch().doSwitch(object)));
 	}
 
 	@Override

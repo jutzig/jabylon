@@ -1,11 +1,12 @@
 @CHARSET "UTF-8";
 @IMPORT url("../bootstrap/css/bootstrap.min.css");
+@IMPORT url("../bootstrap/css/bootstrap-responsive.min.css");
 body {
 	padding: 60px;
 }
 
 .navbar {
-	padding-left: 60px;
+	/* padding-left: 60px; */
 }
 
 /** to ensure that disabled toolbar links are in the right position*/
