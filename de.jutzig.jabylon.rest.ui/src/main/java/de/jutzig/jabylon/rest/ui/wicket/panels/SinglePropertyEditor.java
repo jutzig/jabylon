@@ -4,17 +4,16 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 
@@ -24,17 +23,27 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
  */
 public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
+	private static final long serialVersionUID = 1L;
+
 	public SinglePropertyEditor(String id, IModel<PropertyPair> model) {
 		super(id, model);
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
-		decorateRowStatus(this, propertyPair);
+		IStatus status = calculateRowStatus(propertyPair);
 		String key = propertyPair.getTemplate().getKey();
 
 		final Label icon = new Label("icon");
 		icon.add(new AttributeModifier("class", "icon-chevron-right"));
 		icon.setOutputMarkupId(true);
 		add(icon);
+
+		Label statusIcon = new Label("status-icon");
+		add(statusIcon);
+		statusIcon.add(new AttributeModifier("class", status.isOK() ? "icon-ok-circle" : "icon-warning-sign"));
+		if(status.getSeverity()==IStatus.WARNING)
+			add(new AttributeModifier("class", "warning"));
+		else if(status.getSeverity()==IStatus.ERROR)
+			add(new AttributeModifier("class", "error"));
 
 		final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
 		templatePanel.setVisible(false);
@@ -48,6 +57,9 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 
 		AjaxLink toggleLink = new AjaxLink("toggle") {
+			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 
@@ -81,11 +93,13 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		translationPanel.add(textArea);
 	}
 
-	private void decorateRowStatus(Component component, PropertyPair propertyPair) {
+	private IStatus calculateRowStatus(PropertyPair propertyPair) {
+		
 		if (propertyPair.getOriginal() == null || propertyPair.getOriginal().isEmpty())
-			component.add(new AttributeModifier("class", "error"));
+			return new Status(IStatus.ERROR, "de.jutzig.jabylon.rest.ui", "");
 		else if (propertyPair.getTranslated() == null || propertyPair.getTranslated().isEmpty())
-			component.add(new AttributeModifier("class", "error"));
+			return new Status(IStatus.ERROR, "de.jutzig.jabylon.rest.ui", "");
+		return Status.OK_STATUS;
 	}
 
 }
