@@ -27,6 +27,18 @@ public class Activator implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		INSTANCE = this;
 		this.context = context;
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				startTrackers();
+			}
+		},"UI Service Tracker").start();
+
+	}
+
+	
+	private void startTrackers() {
 		repositoryTracker = new ServiceTracker<RepositoryConnector, RepositoryConnector>(context, RepositoryConnector.class, new ServiceTrackerAdapter<RepositoryConnector>() {
 
 			@Override
@@ -52,8 +64,8 @@ public class Activator implements BundleActivator {
 		
 		progressServiceTracker = new ServiceTracker<ProgressService, ProgressService>(context, ProgressService.class, null);
 		progressServiceTracker.open();
+		
 	}
-
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		repositoryTracker.close();

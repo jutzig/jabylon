@@ -13,7 +13,9 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.eclipse.emf.common.util.URI;
 
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
@@ -30,7 +32,10 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		return WelcomePage.class;
+		RepositoryConnector connector = Activator.getDefault().getRepositoryConnector();
+		if(connector!=null)
+			return WelcomePage.class;
+		return StartupPage.class;
 	}
 
 	@Override
