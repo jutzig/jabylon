@@ -3,6 +3,7 @@ package de.jutzig.jabylon.rest.ui.navbar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,9 +47,6 @@ public class NavbarPanel<T extends Resolvable<?, ?>> extends BasicResolvablePane
 				items.add(entry.getKey());
 		}
 		
-		//revert order for right aligned items
-		Collections.reverse(rightAligned);
-		
 		ListView<PanelFactory> listView = new ListView<PanelFactory>("items", items) {
 
 			private static final long serialVersionUID = 1L;
@@ -78,7 +76,7 @@ public class NavbarPanel<T extends Resolvable<?, ?>> extends BasicResolvablePane
 
 
 	private Map<PanelFactory,Boolean> loadNavBarExtensions() {
-		Map<PanelFactory, Boolean> extensions = new HashMap<PanelFactory, Boolean>();
+		Map<PanelFactory, Boolean> extensions = new LinkedHashMap<PanelFactory, Boolean>();
 		IConfigurationElement[] configurationElements = RegistryFactory.getRegistry().getConfigurationElementsFor(
 				"de.jutzig.jabylon.rest.ui.navbarItem");
 
