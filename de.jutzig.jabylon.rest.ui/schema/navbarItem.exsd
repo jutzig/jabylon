@@ -59,6 +59,13 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="pullRight" type="boolean">
+            <annotation>
+               <documentation>
+                  if the navbar item should be pulled to the right of the menu (left is default)
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
