@@ -27,6 +27,9 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
+	
+	public static final String CONTEXT = "jabylon";
+	
 	/* (non-Javadoc)
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
