@@ -4,16 +4,9 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -30,20 +23,19 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 	private static final long serialVersionUID = 1L;
 	private boolean expanded;
-	private int itemIndex;
 
-	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded, int index) {
+
+	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded) {
 		super(id, model);
 		this.expanded = expanded;
-		this.itemIndex = index;
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
 		IStatus status = calculateRowStatus(propertyPair);
 		String key = propertyPair.getTemplate().getKey();
 
 		final Label icon = new Label("icon");
-		String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
-		icon.add(new AttributeModifier("class", iconName));
+//		String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
+//		icon.add(new AttributeModifier("class", iconName));
 		icon.setOutputMarkupId(true);
 		add(icon);
 
@@ -56,36 +48,21 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 			add(new AttributeModifier("class", "error"));
 
 		final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
-		templatePanel.setVisible(isExpanded());
+		templatePanel.add(new AttributeModifier("class", isExpanded() ? "collapse in" : "collapse"));
 		templatePanel.setOutputMarkupId(true);
 		add(templatePanel);
 		final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
-		translationPanel.setVisible(isExpanded());
+		translationPanel.add(new AttributeModifier("class", isExpanded() ? "collapse in" : "collapse"));
 		translationPanel.setOutputMarkupId(true);
 		add(translationPanel);
-
+		
 		final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
-		translationLabel.setVisible(!isExpanded());
+		WebMarkupContainer toggletButton = new WebMarkupContainer("toggle");
+		toggletButton.add(new AttributeModifier("data-target", "tbody tr#"+getMarkupId(true)+" div"));
+		add(toggletButton);
 
-		AjaxLink<?> toggleLink = new AjaxLink<Void>("toggle") {
-			
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-
-				setExpanded(!isExpanded());
-				target.add(SinglePropertyEditor.this);
-				String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
-				icon.add(new AttributeModifier("class", iconName));
-
-				translationLabel.setVisible(!isExpanded());
-				templatePanel.setVisible(isExpanded());
-				translationPanel.setVisible(isExpanded());
-			}
-		};
-		add(toggleLink);
-		toggleLink.add(icon);
+		
+		
 
 		add(new Label("key-label", key));
 		add(translationLabel);
@@ -104,64 +81,6 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		translationPanel.add(textArea);
 		
-		//navigation buttons
-		AjaxFallbackLink<Void> previous = new AjaxFallbackLink<Void>("previous") {
-
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("rawtypes")
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setExpanded(false);
-				MarkupContainer container = getParent().getParent().getParent().getParent();
-				if (container instanceof ListView<?>) {
-					ListView<?> listView = (ListView<?>) container;
-					Component component = listView.get(itemIndex-1);
-					if (component instanceof ListItem) {
-						ListItem item = (ListItem) component;
-						component = item.get(0);
-					}
-					if (component instanceof SinglePropertyEditor) {
-						SinglePropertyEditor prop = (SinglePropertyEditor) component;
-						prop.setExpanded(true);
-						target.add(prop);
-						target.add(SinglePropertyEditor.this);
-					}
-				}
-			}
-			
-		};
-		if(itemIndex<1)
-			previous.setEnabled(false);
-		templatePanel.add(previous);
-		
-		AjaxFallbackLink<Void> next = new AjaxFallbackLink<Void>("next") {
-
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("rawtypes")
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setExpanded(false);
-				MarkupContainer container = getParent().getParent().getParent().getParent();
-				if (container instanceof ListView<?>) {
-					ListView<?> listView = (ListView<?>) container;
-					Component component = listView.get(itemIndex+1);
-					if (component instanceof ListItem) {
-						ListItem item = (ListItem) component;
-						component = item.get(0);
-					}
-					if (component instanceof SinglePropertyEditor) {
-						SinglePropertyEditor prop = (SinglePropertyEditor) component;
-						prop.setExpanded(true);
-						target.add(prop);
-						target.add(SinglePropertyEditor.this);
-					}
-				}
-			}
-			
-		};
-		translationPanel.add(next);
 	}
 
 	private IStatus calculateRowStatus(PropertyPair propertyPair) {
@@ -174,10 +93,10 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 	}
 	
 	
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
-	}
-	
+//	public void setExpanded(boolean expanded) {
+//		this.expanded = expanded;
+//	}
+//	
 	public boolean isExpanded() {
 		return expanded;
 	}

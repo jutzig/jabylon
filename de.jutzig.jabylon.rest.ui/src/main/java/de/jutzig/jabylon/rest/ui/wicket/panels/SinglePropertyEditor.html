@@ -1,29 +1,29 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-	<td><a class="btn btn-small" wicket:id="toggle" href="#"><i
-			wicket:id="icon" class="icon-chevron-down"></i></a> <span
+	<td><button type="button" class="btn btn-small" wicket:id="toggle" data-toggle="collapse" data-parent="#tbody" data-target="tbody tr#id8a div"><i
+							class="icon-chevron-down"></i></button><span
 		wicket:id="key-label">Key</span>
-		<div wicket:id="template-area" style="width: 100%; margin-right: 5px">
+		<div wicket:id="template-area" style="width: 100%; margin-right: 5px"  class="collapse">
 
 			<textarea wicket:id="template" rows="3" cols="3" readonly="readonly" style="width: 95%;">this is the template</textarea>
 			<br />
 			<textarea wicket:id="template-comment" rows="3" style="width: 95%;"
 				readonly="readonly">this is the original comment</textarea>
-			<p>
+			<!-- <p>
 				<a class="btn btn-small" wicket:id="previous">&lt; previous</a>
-			</p>
+			</p> -->
 		</div></td>
 	<td><span wicket:id="translation-label">this is the
 			translation</span>
 		<div wicket:id="translation-area"
-			style="width: 100%; margin-left: 5px">
-			<br />
+			style="width: 100%; margin-left: 5px"  class="collapse">
+
 			<textarea wicket:id="translation" rows="3" cols="3" style="width: 95%;" placeholder="Translation">this is the translation</textarea>
 			<br />
 			<textarea wicket:id="translation-comment" rows="3" cols="3" style="width: 95%;" placeholder="Comment">this is the comment</textarea>
-			<p align="right">
+<!-- 			<p align="right">
 				<a class="btn btn-small" wicket:id="next">next &gt;</a>
-			</p>
+			</p> -->
 		</div></td>
 	<td><i wicket:id="status-icon" class="icon-ok-circle"></i></td>
 </wicket:panel>
