@@ -35,7 +35,8 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		String key = propertyPair.getTemplate().getKey();
 
 		final Label icon = new Label("icon");
-		icon.add(new AttributeModifier("class", "icon-chevron-right"));
+		String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
+		icon.add(new AttributeModifier("class", iconName));
 		icon.setOutputMarkupId(true);
 		add(icon);
 
