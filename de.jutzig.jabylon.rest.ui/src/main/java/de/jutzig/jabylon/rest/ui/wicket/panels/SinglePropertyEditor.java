@@ -4,11 +4,16 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -25,10 +30,12 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 	private static final long serialVersionUID = 1L;
 	private boolean expanded;
+	private int itemIndex;
 
-	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded) {
+	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded, int index) {
 		super(id, model);
 		this.expanded = expanded;
+		this.itemIndex = index;
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
 		IStatus status = calculateRowStatus(propertyPair);
@@ -96,6 +103,65 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		translationPanel.add(textArea);
+		
+		//navigation buttons
+		AjaxFallbackLink<Void> previous = new AjaxFallbackLink<Void>("previous") {
+
+			private static final long serialVersionUID = 1L;
+
+			@SuppressWarnings("rawtypes")
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setExpanded(false);
+				MarkupContainer container = getParent().getParent().getParent().getParent();
+				if (container instanceof ListView<?>) {
+					ListView<?> listView = (ListView<?>) container;
+					Component component = listView.get(itemIndex-1);
+					if (component instanceof ListItem) {
+						ListItem item = (ListItem) component;
+						component = item.get(0);
+					}
+					if (component instanceof SinglePropertyEditor) {
+						SinglePropertyEditor prop = (SinglePropertyEditor) component;
+						prop.setExpanded(true);
+						target.add(prop);
+						target.add(SinglePropertyEditor.this);
+					}
+				}
+			}
+			
+		};
+		if(itemIndex<1)
+			previous.setEnabled(false);
+		templatePanel.add(previous);
+		
+		AjaxFallbackLink<Void> next = new AjaxFallbackLink<Void>("next") {
+
+			private static final long serialVersionUID = 1L;
+
+			@SuppressWarnings("rawtypes")
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setExpanded(false);
+				MarkupContainer container = getParent().getParent().getParent().getParent();
+				if (container instanceof ListView<?>) {
+					ListView<?> listView = (ListView<?>) container;
+					Component component = listView.get(itemIndex+1);
+					if (component instanceof ListItem) {
+						ListItem item = (ListItem) component;
+						component = item.get(0);
+					}
+					if (component instanceof SinglePropertyEditor) {
+						SinglePropertyEditor prop = (SinglePropertyEditor) component;
+						prop.setExpanded(true);
+						target.add(prop);
+						target.add(SinglePropertyEditor.this);
+					}
+				}
+			}
+			
+		};
+		translationPanel.add(next);
 	}
 
 	private IStatus calculateRowStatus(PropertyPair propertyPair) {

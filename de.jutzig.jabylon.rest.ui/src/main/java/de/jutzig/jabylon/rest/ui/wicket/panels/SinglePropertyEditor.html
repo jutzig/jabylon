@@ -10,7 +10,7 @@
 			<textarea wicket:id="template-comment" rows="3" style="width: 95%;"
 				readonly="readonly">this is the original comment</textarea>
 			<p>
-				<a class="btn btn-small">&lt; previous</a>
+				<a class="btn btn-small" wicket:id="previous">&lt; previous</a>
 			</p>
 		</div></td>
 	<td><span wicket:id="translation-label">this is the
@@ -22,7 +22,7 @@
 			<br />
 			<textarea wicket:id="translation-comment" rows="3" cols="3" style="width: 95%;" placeholder="Comment">this is the comment</textarea>
 			<p align="right">
-				<a class="btn btn-small">next &gt;</a>
+				<a class="btn btn-small" wicket:id="next">next &gt;</a>
 			</p>
 		</div></td>
 	<td><i wicket:id="status-icon" class="icon-ok-circle"></i></td>

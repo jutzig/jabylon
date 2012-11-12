@@ -40,6 +40,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
 	private transient boolean firstExpandend = false;
+	private transient int counter;
 	
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
@@ -61,7 +62,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 					firstExpandend = true;
 					expand = true;
 				}
-				item.add(new SinglePropertyEditor("row", item.getModel(), expand));
+				item.add(new SinglePropertyEditor("row", item.getModel(), expand, counter));
+				counter++;
 			}
 
 		};
@@ -241,6 +243,9 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 		}
 	};
 
+	
+	public abstract boolean apply(PropertyPair pair);
+	
 	public static PropertyListMode getByName(String name) {
 		if (name == null || name.isEmpty())
 			return MISSING;
