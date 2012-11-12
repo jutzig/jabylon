@@ -24,9 +24,11 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 	private static final long serialVersionUID = 1L;
+	private boolean expanded;
 
-	public SinglePropertyEditor(String id, IModel<PropertyPair> model) {
+	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded) {
 		super(id, model);
+		this.expanded = expanded;
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
 		IStatus status = calculateRowStatus(propertyPair);
@@ -46,30 +48,32 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 			add(new AttributeModifier("class", "error"));
 
 		final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
-		templatePanel.setVisible(false);
+		templatePanel.setVisible(isExpanded());
 		templatePanel.setOutputMarkupId(true);
 		add(templatePanel);
 		final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
-		translationPanel.setVisible(false);
+		translationPanel.setVisible(isExpanded());
 		translationPanel.setOutputMarkupId(true);
 		add(translationPanel);
 
 		final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
+		translationLabel.setVisible(!isExpanded());
 
-		AjaxLink toggleLink = new AjaxLink("toggle") {
+		AjaxLink<?> toggleLink = new AjaxLink<Void>("toggle") {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 
+				setExpanded(!isExpanded());
 				target.add(SinglePropertyEditor.this);
-				String iconName = translationLabel.isVisible() ? "icon-chevron-down" : "icon-chevron-right";
+				String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
 				icon.add(new AttributeModifier("class", iconName));
 
-				translationLabel.setVisible(!translationLabel.isVisible());
-				templatePanel.setVisible(!templatePanel.isVisible());
-				translationPanel.setVisible(!translationPanel.isVisible());
+				translationLabel.setVisible(!isExpanded());
+				templatePanel.setVisible(isExpanded());
+				translationPanel.setVisible(isExpanded());
 			}
 		};
 		add(toggleLink);
@@ -100,6 +104,15 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		else if (propertyPair.getTranslated() == null || propertyPair.getTranslated().isEmpty())
 			return new Status(IStatus.ERROR, "de.jutzig.jabylon.rest.ui", "");
 		return Status.OK_STATUS;
+	}
+	
+	
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+	
+	public boolean isExpanded() {
+		return expanded;
 	}
 
 }
