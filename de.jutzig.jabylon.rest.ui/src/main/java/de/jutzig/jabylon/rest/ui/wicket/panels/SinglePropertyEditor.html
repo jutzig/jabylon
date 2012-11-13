@@ -1,4 +1,20 @@
 <html xmlns:wicket="http://wicket.apache.org">
+<wicket:head>
+	<script type="text/javascript">
+	<!--
+		function expandNextRow(rowID) {
+			$(rowID + ' > td > div').collapse('hide');
+			var next = $(rowID).next();
+			next.find('td > div').collapse('show');
+		}
+
+		function expandPreviousRow(rowID) {
+			$(rowID + ' > td > div').collapse('hide');
+			$(rowID).prev().find('td > div').collapse('show');
+		}
+	//-->
+	</script>
+</wicket:head>
 <wicket:panel>
 	<td><button type="button" class="btn btn-small" wicket:id="toggle"
 			data-toggle="collapse" data-parent="#tbody"
@@ -13,25 +29,23 @@
 			<br />
 			<textarea wicket:id="template-comment" rows="3" style="width: 95%;"
 				readonly="readonly">this is the original comment</textarea>
-				<p>
-			<button type="button" value="previous" wicket:id="previous"
-				onClick="$('#id8a > td > div').collapse('hide'); $('#id8a').prev().find('td > div').collapse('show'); return true;">previous
-			</button>
+			<p>
+				<button type="button" value="previous" wicket:id="previous"
+					onClick="expandPreviousRow('#ida');">previous</button>
 		</div></td>
-	<td><span wicket:id="translation-label">this is the
-			translation</span>
+	<td><span wicket:id="translation-label">this is the translation</span>
+		<br />
 		<div wicket:id="translation-area"
 			style="width: 100%; margin-left: 5px" class="collapse">
 
 			<textarea wicket:id="translation" rows="3" cols="3"
 				style="width: 95%;" placeholder="Translation">this is the translation</textarea>
 			<br />
-			<textarea wicket:id="translation-comment" rows="3" cols="3"
-				style="width: 95%;" placeholder="Comment">this is the comment</textarea>
-				<p>
-			<button type="button" value="next" wicket:id="next"
-				onClick="$('#id8a > td > div').collapse('hide'); $('#id8a ~ > td > div').collapse('show'); return true;">next
-			</button>
+			<textarea wicket:id="translation-comment" rows="3" cols="3" style="align: right; width: 95%;" placeholder="Comment">this is the comment</textarea>
+			<p align="right">
+				<button type="button" value="next" wicket:id="next"
+					onClick="expandNextRow('#ida');">next</button>
+			</p>
 		</div></td>
 	<td><i wicket:id="status-icon" class="icon-ok-circle"></i></td>
 </wicket:panel>

@@ -31,6 +31,21 @@ select {
 //-->
 </script>
 
+<script type="text/javascript">
+<!--
+	function expandNextRow(rowID) {
+		$(rowID + ' > td > div').collapse('hide');
+		var next = $(rowID).next();
+		next.find('td > div').collapse('show');
+	}
+
+	function expandPreviousRow(rowID) {
+		$(rowID + ' > td > div').collapse('hide');
+		$(rowID).prev().find('td > div').collapse('show');
+	}
+//-->
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript"
@@ -66,8 +81,7 @@ select {
 								name="repeater:0:row:template-area:template-comment"></textarea>
 							<p>
 								<button value="previous" name="button5"
-									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a').prev().find('td > div').collapse('show'); return true;">previous
-								</button>
+									onClick="expandPreviousRow('#id8a');">previous</button>
 							</p>
 						</div></td>
 					<td>
@@ -80,13 +94,14 @@ select {
 							<textarea rows="3" cols="3" style="width: 95%;"
 								placeholder="Comment"
 								name="repeater:0:row:translation-area:translation-comment"></textarea>
-							<p align="right"><p align="right">
+							<p align="right">
+							<p align="right">
 								<button value="next" name="button5"
-									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a ~ > td > div').collapse('show'); return true;">next
-								</button>
+									onClick="expandNextRow('#id8a')">next</button>
 
-							</p></p>
-							
+							</p>
+							</p>
+
 						</div>
 					</td>
 					<td><i class="icon-warning-sign"></i></td>
@@ -101,14 +116,49 @@ select {
 							id="foo">
 
 							<textarea rows="3" cols="3" readonly="readonly"
+								style="width: 95%;">total_anderer_value</textarea>
+							<br />
+							<textarea rows="3" style="width: 95%;" readonly="readonly"></textarea>
+							<p>
+								<button value="previous" name="button5"
+									onClick="expandPreviousRow('#id8f');">previous</button>
+
+							</p>
+
+						</div></td>
+					<td>
+						<div style="width: 100%; margin-left: 5px" class="collapse" id="bar">
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;" placeholder="Translation"></textarea>
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;" placeholder="Comment"></textarea>
+							<p align="right">
+								<button value="next" name="button5"
+									onClick="expandNextRow('#id8f')">next</button>
+
+							</p>
+						</div>
+					</td>
+					<td><i class="icon-warning-sign"></i></td>
+				</tr>
+
+
+				<tr id="abc">
+					<td><button type="button" class="btn" data-toggle="collapse"
+							data-parent="#tbody" data-target="tbody tr#abc div">
+							<i class="icon-chevron-down"></i>
+						</button> <span>anderer_key</span>
+						<div style="width: 100%; margin-right: 5px" class="collapse"
+							id="foo">
+
+							<textarea rows="3" cols="3" readonly="readonly"
 								style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
 							<br />
 							<textarea rows="3" style="width: 95%;" readonly="readonly"
 								name="repeater:0:row:template-area:template-comment"></textarea>
 							<p>
 								<button value="previous" name="button5"
-									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a').prev().find('td > div').collapse('show'); return true;">previous
-									</button>
+									onClick="expandPreviousRow('#abc');">previous</button>
 
 							</p>
 
@@ -126,8 +176,7 @@ select {
 								name="repeater:0:row:translation-area:translation-comment"></textarea>
 							<p align="right">
 								<button value="next" name="button5"
-									onClick="$('#id8f > td > div').collapse('hide'); $('#id8f ~ > td > div').collapse('show'); return true;">next
-									</button>
+									onClick="expandNextRow('#abc')">next</button>
 
 							</p>
 						</div>

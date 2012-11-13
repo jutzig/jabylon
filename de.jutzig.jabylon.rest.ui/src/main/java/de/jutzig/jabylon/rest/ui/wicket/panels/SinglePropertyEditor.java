@@ -85,12 +85,12 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		
 		//navigation links
 		WebMarkupContainer next = new WebMarkupContainer("next");
-		String nextJS = "$('#{0} > td > div').collapse('hide'); $('#{0}').next().find('td > div').collapse('show');";
+		String nextJS = "expandNextRow('#{0}');";
 		next.add(new AttributeModifier("onClick", nextJS.replace("{0}", getMarkupId())));
 		translationPanel.add(next);
 		
 		WebMarkupContainer previous = new WebMarkupContainer("previous");
-		String previousJS = "$('#{0} > td > div').collapse('hide'); $('#{0}').prev().find('td > div').collapse('show');";
+		String previousJS = "expandPreviousRow('#{0}');";
 		previous.add(new AttributeModifier("onClick", previousJS.replace("{0}", getMarkupId())));
 		templatePanel.add(previous);
 		
