@@ -15,6 +15,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 
 /**
@@ -33,7 +34,12 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
 		IStatus status = calculateRowStatus(propertyPair);
-		String key = propertyPair.getTemplate().getKey();
+		Property template = propertyPair.getTemplate();
+		String key = null;
+		if(template!=null)
+			key = propertyPair.getTemplate().getKey();
+		else
+			key = propertyPair.getTranslation().getKey();
 
 		final Label icon = new Label("icon");
 //		String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
