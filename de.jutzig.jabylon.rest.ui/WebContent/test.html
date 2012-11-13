@@ -68,7 +68,7 @@ select {
 		icon.toggleClass('icon-chevron-right');
 
 	}
-	
+
 	function toggleRowByID(rowID) {
 		var row = $(rowID);
 		var divs = row.find('td > div');
@@ -78,12 +78,24 @@ select {
 		icon.toggleClass('icon-chevron-right');
 	}
 
-	jQuery(document).ready(selectFuzzyRow);
 	function selectFuzzyRow() {
 		var tableRow = $('tr.error').first();
 		expandRow(tableRow);
 	}
-	
+
+	$(document).ready(function() {
+		/* $('#table').dataTable({"iDisplayLength" : 50}); */
+		
+		//this is to make an AJAX request whenever
+		$('textarea').focus(function() {
+			var textArea = $(this);
+			var tr = textArea.parents('tr');
+			var keyField = tr.find('td span');
+			requestAid(keyField.text());
+		});
+		
+		selectFuzzyRow();
+	});
 //-->
 </script>
 
@@ -109,7 +121,8 @@ select {
 			<tbody id="tbody">
 
 				<tr id="id8a" class="error">
-					<td><button type="button" class="btn btn-small" onclick="toggleRowByID('#id8a');">
+					<td><button type="button" class="btn btn-small"
+							onclick="toggleRowByID('#id8a');">
 							<i class="icon-chevron-right"></i>
 						</button> <span>anderer_key</span>
 						<div style="width: 100%; margin-right: 5px" class="collapse">
@@ -132,8 +145,7 @@ select {
 								name="repeater:0:row:translation-area:translation"></textarea>
 							<br />
 							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Comment"
-								name="repeater:0:row:translation-area:translation-comment"></textarea>
+								placeholder="Comment"></textarea>
 							<p align="right">
 							<p align="right">
 								<button value="next" name="button5"

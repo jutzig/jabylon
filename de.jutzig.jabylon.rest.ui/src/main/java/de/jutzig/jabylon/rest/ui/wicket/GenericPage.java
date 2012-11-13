@@ -3,6 +3,9 @@ package de.jutzig.jabylon.rest.ui.wicket;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.PriorityHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
@@ -39,6 +42,15 @@ public class GenericPage<T extends Resolvable<?, ?>> extends WebPage {
 			add(new NavbarPanel<Resolvable<?,?>>("navbar", model.getObject(), parameters));			
 		}
 	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forUrl("/jabylon/bootstrap/js/bootstrap.min.js")));
+		super.renderHead(response);
+	}
+	
+
 	
 	public void setModel(IEObjectModel<T> model) {
 		this.model = model;
