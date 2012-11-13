@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.text.MessageFormat;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -80,6 +82,17 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		translationPanel.add(textArea);
+		
+		//navigation links
+		WebMarkupContainer next = new WebMarkupContainer("next");
+		String nextJS = "$('#{0} > td > div').collapse('hide'); $('#{0}').next().find('td > div').collapse('show');";
+		next.add(new AttributeModifier("onClick", nextJS.replace("{0}", getMarkupId())));
+		translationPanel.add(next);
+		
+		WebMarkupContainer previous = new WebMarkupContainer("previous");
+		String previousJS = "$('#{0} > td > div').collapse('hide'); $('#{0}').prev().find('td > div').collapse('show');";
+		previous.add(new AttributeModifier("onClick", previousJS.replace("{0}", getMarkupId())));
+		templatePanel.add(previous);
 		
 	}
 

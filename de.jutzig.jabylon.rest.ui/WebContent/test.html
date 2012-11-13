@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/jabylon/css/main.css" />
+
+<style type="text/css">
+<!--
+select {
+	width: auto;
+}
+-->
+</style>
+
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript"
+	src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
+<script type="text/javascript"
+	src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
+<!-- <script type="text/javascript"
+		src="/jabylon/js/datatables/custom.sorting.js"></script> -->
+<script type="text/javascript">
+<!--
+	$(document).ready(function() {
+		$('#table').dataTable({
+			"iDisplayLength" : 50,
+			//TODO: remove this once sorted out why pagination breaks the expand logic
+			"bPaginate" : false
+		});
+	});
+//-->
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript"
+	src="/jabylon/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+
+		<table
+			class="table table-striped table-hover dataview table-condensed"
+			id="table">
+			<!-- <caption>Projects</caption> -->
+			<thead>
+				<tr>
+					<th width="45%">Key</th>
+					<th width="45%">Translation</th>
+					<th width="10%">Status</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+
+				<tr id="id8a" class="error">
+					<td><button type="button" class="btn" data-toggle="collapse"
+							data-parent="#tbody" data-target="tbody tr#id8a div">
+							<i class="icon-chevron-down"></i>
+						</button> <span>anderer_key</span>
+						<div style="width: 100%; margin-right: 5px" class="collapse">
+
+							<textarea rows="3" cols="3" readonly="readonly"
+								style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
+							<br />
+							<textarea rows="3" style="width: 95%;" readonly="readonly"
+								name="repeater:0:row:template-area:template-comment"></textarea>
+							<p>
+								<button value="previous" name="button5"
+									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a').prev().find('td > div').collapse('show'); return true;">previous
+								</button>
+							</p>
+						</div></td>
+					<td>
+						<div style="width: 100%; margin-left: 5px" class="collapse">
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;"
+								placeholder="Translation"
+								name="repeater:0:row:translation-area:translation"></textarea>
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;"
+								placeholder="Comment"
+								name="repeater:0:row:translation-area:translation-comment"></textarea>
+							<p align="right"><p align="right">
+								<button value="next" name="button5"
+									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a ~ > td > div').collapse('show'); return true;">next
+								</button>
+
+							</p></p>
+							
+						</div>
+					</td>
+					<td><i class="icon-warning-sign"></i></td>
+				</tr>
+
+				<tr id="id8f">
+					<td><button type="button" class="btn" data-toggle="collapse"
+							data-parent="#tbody" data-target="tbody tr#id8f div">
+							<i class="icon-chevron-down"></i>
+						</button> <span>anderer_key</span>
+						<div style="width: 100%; margin-right: 5px" class="collapse"
+							id="foo">
+
+							<textarea rows="3" cols="3" readonly="readonly"
+								style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
+							<br />
+							<textarea rows="3" style="width: 95%;" readonly="readonly"
+								name="repeater:0:row:template-area:template-comment"></textarea>
+							<p>
+								<button value="previous" name="button5"
+									onClick="$('#id8a > td > div').collapse('hide'); $('#id8a').prev().find('td > div').collapse('show'); return true;">previous
+									</button>
+
+							</p>
+
+						</div></td>
+					<td>
+						<div style="width: 100%; margin-left: 5px" class="collapse"
+							id="bar">
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;"
+								placeholder="Translation"
+								name="repeater:0:row:translation-area:translation"></textarea>
+							<br />
+							<textarea rows="3" cols="3" style="width: 95%;"
+								placeholder="Comment"
+								name="repeater:0:row:translation-area:translation-comment"></textarea>
+							<p align="right">
+								<button value="next" name="button5"
+									onClick="$('#id8f > td > div').collapse('hide'); $('#id8f ~ > td > div').collapse('show'); return true;">next
+									</button>
+
+							</p>
+						</div>
+					</td>
+					<td><i class="icon-warning-sign"></i></td>
+				</tr>
+
+				<tr id="id91" class="error">
+					<td><a class="btn btn-small" href="#" id="id88"><i
+							class="icon-chevron-right" id="id92"></i></a> <span>lala</span></td>
+					<td><span></span></td>
+					<td><i class="icon-warning-sign"></i></td>
+				</tr>
+
+				<tr id="id93" class="error">
+					<td><a class="btn btn-small" href="#" id="id89"><i
+							class="icon-chevron-right" id="id94"></i></a> <span>narf</span></td>
+					<td><span></span></td>
+					<td><i class="icon-warning-sign"></i></td>
+				</tr>
+
+			</tbody>
+		</table>
+
+	</div>
+
+
+
+</body>
+</html>
