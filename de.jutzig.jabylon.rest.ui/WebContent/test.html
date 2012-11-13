@@ -43,6 +43,13 @@ select {
 		$(rowID + ' > td > div').collapse('hide');
 		$(rowID).prev().find('td > div').collapse('show');
 	}
+	
+	jQuery(document).ready(selectFuzzyRow);
+	function selectFuzzyRow() {
+		var tableRow = $('tr.error').first();
+		var divs = tableRow.find('.collapse');
+		divs.collapse('show');
+	}
 //-->
 </script>
 
@@ -107,7 +114,7 @@ select {
 					<td><i class="icon-warning-sign"></i></td>
 				</tr>
 
-				<tr id="id8f">
+				<tr id="id8f" class="error">
 					<td><button type="button" class="btn" data-toggle="collapse"
 							data-parent="#tbody" data-target="tbody tr#id8f div">
 							<i class="icon-chevron-down"></i>

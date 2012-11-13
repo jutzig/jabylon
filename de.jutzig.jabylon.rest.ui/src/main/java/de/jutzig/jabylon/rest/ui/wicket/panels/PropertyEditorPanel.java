@@ -39,7 +39,6 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
-	private transient boolean firstExpandend = false;
 	
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
@@ -54,14 +53,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 			@Override
 			protected void populateItem(final ListItem<PropertyPair> item) {
-				//automatically expand the first property that needs work done
-				boolean expand = false;
-				if(!firstExpandend && isFuzzy(item.getModelObject()))
-				{
-					firstExpandend = true;
-					expand = true;
-				}
-				item.add(new SinglePropertyEditor("row", item.getModel(), expand));
+				item.add(new SinglePropertyEditor("row", item.getModel(), false));
 			}
 
 		};

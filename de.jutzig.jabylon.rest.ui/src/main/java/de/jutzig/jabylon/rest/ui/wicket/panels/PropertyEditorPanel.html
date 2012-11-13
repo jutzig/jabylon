@@ -40,6 +40,15 @@ select {
 		}
 		jQuery(document).ready(doSize);
 		$(window).resize(doSize);
+		
+		
+		// automatically expand the first row that has an error
+		jQuery(document).ready(selectFuzzyRow);
+		function selectFuzzyRow() {
+			var tableRow = $('tr.error').first();
+			var divs = tableRow.find('.collapse');
+			divs.collapse('show');
+		}
 	//-->
 	</script>
 </wicket:head>
