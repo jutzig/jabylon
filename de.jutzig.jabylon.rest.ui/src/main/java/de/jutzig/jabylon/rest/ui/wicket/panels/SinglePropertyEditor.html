@@ -3,23 +3,61 @@
 	<script type="text/javascript">
 	<!--
 		function expandNextRow(rowID) {
-			$(rowID + ' > td > div').collapse('hide');
-			var next = $(rowID).next();
-			next.find('td > div').collapse('show');
+			var row = $(rowID);
+			collapseRow(row);
+			expandRow(row.next());
 		}
 
 		function expandPreviousRow(rowID) {
-			$(rowID + ' > td > div').collapse('hide');
-			$(rowID).prev().find('td > div').collapse('show');
+			var row = $(rowID);
+			collapseRow(row);
+			expandRow(row.prev());
+		}
+
+		function expandRowByID(rowID) {
+			expandRow($(rowID));
+		}
+
+		function expandRow(row) {
+			var divs = row.find('td > div');
+			divs.collapse('show');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+		}
+
+		function collapseRowByID(rowID) {
+			collapseRow($(rowID));
+		}
+
+		function collapseRow(row) {
+			row.find('td > div').collapse('hide');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+
+		}
+
+		function toggleRowByID(rowID) {
+			var row = $(rowID);
+			var divs = row.find('td > div');
+			divs.collapse('toggle');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+		}
+
+		jQuery(document).ready(selectFuzzyRow);
+		function selectFuzzyRow() {
+			var tableRow = $('tr.error').first();
+			expandRow(tableRow);
 		}
 	//-->
 	</script>
 </wicket:head>
 <wicket:panel>
-	<td><button type="button" class="btn btn-small" wicket:id="toggle"
-			data-toggle="collapse" data-parent="#tbody"
-			data-target="tbody tr#id8a div">
-			<i class="icon-chevron-down"></i>
+	<td><button type="button" class="btn btn-small" wicket:id="toggle" onclick="toggleRowByID('#id');">
+			<i class="icon-chevron-right"></i>
 		</button> <span wicket:id="key-label">Key</span>
 		<div wicket:id="template-area" style="width: 100%; margin-right: 5px"
 			class="collapse">
@@ -33,15 +71,16 @@
 				<button type="button" value="previous" wicket:id="previous"
 					onClick="expandPreviousRow('#ida');">previous</button>
 		</div></td>
-	<td><span wicket:id="translation-label">this is the translation</span>
-		<br />
+	<td><span wicket:id="translation-label">this is the
+			translation</span> <br />
 		<div wicket:id="translation-area"
 			style="width: 100%; margin-left: 5px" class="collapse">
 
 			<textarea wicket:id="translation" rows="3" cols="3"
 				style="width: 95%;" placeholder="Translation">this is the translation</textarea>
 			<br />
-			<textarea wicket:id="translation-comment" rows="3" cols="3" style="align: right; width: 95%;" placeholder="Comment">this is the comment</textarea>
+			<textarea wicket:id="translation-comment" rows="3" cols="3"
+				style="align: right; width: 95%;" placeholder="Comment">this is the comment</textarea>
 			<p align="right">
 				<button type="button" value="next" wicket:id="next"
 					onClick="expandNextRow('#ida');">next</button>
