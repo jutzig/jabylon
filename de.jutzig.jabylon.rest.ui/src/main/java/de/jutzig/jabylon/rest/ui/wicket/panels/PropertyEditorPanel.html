@@ -26,7 +26,7 @@ select {
 			$('textarea').focus(function() {
 				var textArea = $(this);
 				var tr = textArea.parents('tr');
-				var keyField = tr.find('td span');
+				var keyField = tr.find('td span').first();
 				requestAid(keyField.text());
 			});
 
