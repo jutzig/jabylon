@@ -66,8 +66,6 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		
 		final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		WebMarkupContainer toggletButton = new WebMarkupContainer("toggle");
-//		toggletButton.add(new AttributeModifier("data-target", "tbody tr#"+getMarkupId(true)+" div"));
-		toggletButton.add(new AttributeModifier("onclick", "toggleRowByID('#id');".replace("id", getMarkupId())));
 		add(toggletButton);
 
 		
@@ -89,17 +87,6 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		translationPanel.add(textArea);
-		
-		//navigation links
-		WebMarkupContainer next = new WebMarkupContainer("next");
-		String nextJS = "expandNextRow('#{0}');";
-		next.add(new AttributeModifier("onClick", nextJS.replace("{0}", getMarkupId())));
-		translationPanel.add(next);
-		
-		WebMarkupContainer previous = new WebMarkupContainer("previous");
-		String previousJS = "expandPreviousRow('#{0}');";
-		previous.add(new AttributeModifier("onClick", previousJS.replace("{0}", getMarkupId())));
-		templatePanel.add(previous);
 		
 	}
 

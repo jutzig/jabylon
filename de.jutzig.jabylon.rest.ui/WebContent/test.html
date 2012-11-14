@@ -27,27 +27,33 @@ select {
 			//TODO: remove this once sorted out why pagination breaks the expand logic
 			"bPaginate" : false
 		});
+		
+		//toggle section with expand button
+		$('.expand-button').click(function() {
+			
+			var parent = $(this).parents('tr');
+			toggleRow(parent);
+		});
+		
+		$('.next-button').click(function() {
+			
+			var parent = $(this).parents('tr');
+			expandRow(parent.next());
+			collapseRow(parent);
+		});
+		
+		$('.previous-button').click(function() {
+			
+			var parent = $(this).parents('tr');
+			expandRow(parent.prev());
+			collapseRow(parent);
+		});
 	});
 //-->
 </script>
 
 <script type="text/javascript">
 <!--
-	function expandNextRow(rowID) {
-		var row = $(rowID);
-		collapseRow(row);
-		expandRow(row.next());
-	}
-
-	function expandPreviousRow(rowID) {
-		var row = $(rowID);
-		collapseRow(row);
-		expandRow(row.prev());
-	}
-
-	function expandRowByID(rowID) {
-		expandRow($(rowID));
-	}
 
 	function expandRow(row) {
 		var divs = row.find('td > div');
@@ -55,10 +61,6 @@ select {
 		var icon = row.find('button > i');
 		icon.toggleClass('icon-chevron-down');
 		icon.toggleClass('icon-chevron-right');
-	}
-
-	function collapseRowByID(rowID) {
-		collapseRow($(rowID));
 	}
 
 	function collapseRow(row) {
@@ -71,6 +73,10 @@ select {
 
 	function toggleRowByID(rowID) {
 		var row = $(rowID);
+		toggleRowByID(rowID);
+	}
+	
+	function toggleRow(row) {
 		var divs = row.find('td > div');
 		divs.collapse('toggle');
 		var icon = row.find('button > i');
@@ -121,8 +127,7 @@ select {
 			<tbody id="tbody">
 
 				<tr id="id8a" class="error">
-					<td><button type="button" class="btn btn-small"
-							onclick="toggleRowByID('#id8a');">
+					<td><button type="button" class="btn btn-small expand-button">
 							<i class="icon-chevron-right"></i>
 						</button> <span>anderer_key</span>
 						<div style="width: 100%; margin-right: 5px" class="collapse">
@@ -133,8 +138,7 @@ select {
 							<textarea rows="3" style="width: 95%;" readonly="readonly"
 								name="repeater:0:row:template-area:template-comment"></textarea>
 							<p>
-								<button value="previous" name="button5"
-									onClick="expandPreviousRow('#id8a');">previous</button>
+								<button value="previous" name="button5" class="previous-button">previous</button>
 							</p>
 						</div></td>
 					<td>
@@ -148,9 +152,7 @@ select {
 								placeholder="Comment"></textarea>
 							<p align="right">
 							<p align="right">
-								<button value="next" name="button5"
-									onClick="expandNextRow('#id8a')">next</button>
-
+								<button value="next" name="button5" class="next-button">next</button>
 							</p>
 							</p>
 
@@ -160,8 +162,7 @@ select {
 				</tr>
 
 				<tr id="id8f" class="error">
-					<td><button type="button" class="btn" data-toggle="collapse"
-							data-parent="#tbody" data-target="tbody tr#id8f div">
+					<td><button type="button" class="btn" data-toggle="collapse">
 							<i class="icon-chevron-down"></i>
 						</button> <span>anderer_key</span>
 						<div style="width: 100%; margin-right: 5px" class="collapse"

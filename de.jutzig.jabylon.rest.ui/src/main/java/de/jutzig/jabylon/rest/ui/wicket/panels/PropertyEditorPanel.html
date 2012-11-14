@@ -4,12 +4,12 @@
 
 <wicket:head>
 	<style type="text/css">
-	<!--
-		select {
-			width: auto;
-		}
-	-->
-	</style>
+<!--
+select {
+	width: auto;
+}
+-->
+</style>
 
 	<script type="text/javascript"
 		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
@@ -18,7 +18,9 @@
 	<script type="text/javascript">
 	<!--
 		$(document).ready(function() {
-			$('#table').dataTable({"iDisplayLength" : 50});
+			$('#table').dataTable({
+				"iDisplayLength" : 50
+			});
 
 			//this is to make an AJAX request whenever
 			$('textarea').focus(function() {
@@ -26,6 +28,27 @@
 				var tr = textArea.parents('tr');
 				var keyField = tr.find('td span');
 				requestAid(keyField.text());
+			});
+
+			//toggle section with expand button
+			$('.toggle-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				toggleRow(parent);
+			});
+
+			$('.next-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				expandRow(parent.next());
+				collapseRow(parent);
+			});
+
+			$('.previous-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				expandRow(parent.prev());
+				collapseRow(parent);
 			});
 
 			selectFuzzyRow();
@@ -36,22 +59,6 @@
 			var tableRow = $('tr.error').first();
 			expandRow(tableRow);
 		}
-		
-		function expandNextRow(rowID) {
-			var row = $(rowID);
-			collapseRow(row);
-			expandRow(row.next());
-		}
-
-		function expandPreviousRow(rowID) {
-			var row = $(rowID);
-			collapseRow(row);
-			expandRow(row.prev());
-		}
-
-		function expandRowByID(rowID) {
-			expandRow($(rowID));
-		}
 
 		function expandRow(row) {
 			var divs = row.find('td > div');
@@ -59,10 +66,6 @@
 			var icon = row.find('button > i');
 			icon.toggleClass('icon-chevron-down');
 			icon.toggleClass('icon-chevron-right');
-		}
-
-		function collapseRowByID(rowID) {
-			collapseRow($(rowID));
 		}
 
 		function collapseRow(row) {
@@ -73,8 +76,7 @@
 
 		}
 
-		function toggleRowByID(rowID) {
-			var row = $(rowID);
+		function toggleRow(row) {
 			var divs = row.find('td > div');
 			divs.collapse('toggle');
 			var icon = row.find('button > i');
