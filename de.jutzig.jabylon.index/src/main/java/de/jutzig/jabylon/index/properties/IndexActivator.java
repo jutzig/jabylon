@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 
@@ -25,6 +27,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
 	private static IndexActivator INSTANCE;
 	private FSDirectory directory;
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.index";
+	private static final Logger logger = LoggerFactory.getLogger(IndexActivator.class);
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -49,8 +52,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
 			try {
 				directory = FSDirectory.open(new File(ServerConstants.WORKING_DIR,"lucene"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Failed to open index directory",e);
 			}			
 		}
 		return directory;
@@ -58,23 +60,5 @@ public class IndexActivator extends Plugin implements BundleActivator {
 
 	public static IndexActivator getDefault() {
 		return INSTANCE;
-	}
-	
-	
-	public void log(IStatus status)
-	{
-		getLog().log(status);
-	}
-	
-	public void log(String message, Throwable cause)
-	{
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, cause);
-		log(status);
-	}
-	
-	public void log(String message, int severity)
-	{
-		IStatus status = new Status(severity, PLUGIN_ID, message);
-		log(status);
 	}
 }

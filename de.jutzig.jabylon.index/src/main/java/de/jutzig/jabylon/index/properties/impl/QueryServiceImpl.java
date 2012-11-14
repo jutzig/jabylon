@@ -21,6 +21,8 @@ import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.cdo.view.CDOView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
@@ -37,6 +39,9 @@ import de.jutzig.jabylon.properties.Workspace;
  */
 public class QueryServiceImpl implements QueryService {
 
+	
+	private static final Logger logger = LoggerFactory.getLogger(QueryServiceImpl.class);
+	
 	/*
 	 * (non-Javadoc)
 	 *
@@ -115,21 +120,10 @@ public class QueryServiceImpl implements QueryService {
 			return new SearchResult(searcher, result);
 
 		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error during search "+query,e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error during search "+query,e);
 		}
-//		finally{
-//			if(searcher!=null)
-//				try {
-//					searcher.close();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		}
 		return null;
 	}
 

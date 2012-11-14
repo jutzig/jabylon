@@ -6,7 +6,6 @@ package de.jutzig.jabylon.index.properties.jobs.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -16,12 +15,13 @@ import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDOSession;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
@@ -38,6 +38,9 @@ import de.jutzig.jabylon.scheduler.JobExecution;
  */
 public class ReorgIndexJob implements JobExecution {
 
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReorgIndexJob.class);
+	
 	/**
 	 * 
 	 */
@@ -51,7 +54,7 @@ public class ReorgIndexJob implements JobExecution {
 
 	@Override
 	public void run(Map<String, Object> jobContext) throws Exception {
-		IndexActivator.getDefault().log("Updating search index", IStatus.INFO);
+		logger.info("Updating search index");
 		IndexWriter writer = null;
 		CDOSession session = null;
 		boolean closed = false;
@@ -69,10 +72,12 @@ public class ReorgIndexJob implements JobExecution {
 			writer.close();
 			closed = true;
 		} catch (OutOfMemoryError error) {
+			logger.error("Out of memory during index reorg",error);
 			//As suggested by lucene documentation
 			writer.close();
 			closed = true;
 		} catch (Exception e) {
+			logger.error("Exception during index reorg. Rolling back",e);
 			if (writer != null)
 				writer.rollback();
 			throw e;
@@ -85,7 +90,7 @@ public class ReorgIndexJob implements JobExecution {
 				IndexWriter.unlock(writer.getDirectory());
 			}
 		}
-		IndexActivator.getDefault().log("Index updated successfully", IStatus.INFO);
+		logger.info("Index updated successfully");
 	}
 
 	private void indexWorkspace(Workspace workspace, IndexWriter writer) throws CorruptIndexException, IOException {
