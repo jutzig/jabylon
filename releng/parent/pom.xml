@@ -6,8 +6,8 @@
 	<groupId>de.jutzig.jabylon</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
-		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
+	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> 
+		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath> 
 		</parent> -->
 
 	<properties>
@@ -17,6 +17,39 @@
 		<swt.variant>unknown</swt.variant>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+
+	<profiles>
+		<profile>
+			<id>plugin</id>
+			<activation>
+				<file>
+					<exists>plugin.xml</exists>
+				</file>
+			</activation>
+			<properties>
+				<singelton>;singleton:=true</singelton>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>.</directory>
+						<includes>
+							<include>plugin.xml</include>
+						</includes>
+					</resource>
+					<resource>
+						<targetPath>icons</targetPath>
+						<directory>icons</directory>
+					</resource>
+					<resource>
+						<targetPath>schemas</targetPath>
+						<directory>schemas</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -34,22 +67,8 @@
 	<build>
 		<resources>
 			<resource>
-				<targetPath>icons</targetPath>
-				<directory>icons</directory>
-			</resource>
-			<resource>
-				<targetPath>schemas</targetPath>
-				<directory>schemas</directory>
-			</resource>
-			<resource>
 				<targetPath>OSGI-INF</targetPath>
 				<directory>OSGI-INF</directory>
-			</resource>
-			<resource>
-				<directory>.</directory>
-				<includes>
-					<include>plugin.xml</include>
-				</includes>
 			</resource>
 		</resources>
 
@@ -126,11 +145,12 @@
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
 					</instructions>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions>
-				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal>
+			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions> 
+				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal> 
 				</goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -320,7 +340,7 @@
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<!-- need version with qualifier here, to disambiguate from non-bundle
+				<!-- need version with qualifier here, to disambiguate from non-bundle 
 					artifact in central -->
 				<version>0.1.41-v201101211617</version>
 			</dependency>
