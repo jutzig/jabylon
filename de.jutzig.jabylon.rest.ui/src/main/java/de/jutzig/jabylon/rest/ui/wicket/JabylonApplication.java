@@ -12,6 +12,14 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Supplier;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -28,7 +36,14 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 public class JabylonApplication extends AuthenticatedWebApplication {
 
 	
+	public static final String PAGE_PATH_PROPERTY = "path";
+
 	public static final String CONTEXT = "jabylon";
+
+	@SuppressWarnings("rawtypes")
+	private ServiceTracker pageTracker;
+	
+	private static Logger logger = LoggerFactory.getLogger(JabylonApplication.class);
 	
 	/* (non-Javadoc)
 	 * @see org.apache.wicket.Application#getHomePage()
@@ -41,11 +56,57 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		return StartupPage.class;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void init()
 	{
 	    super.init();
-	    
+	    final BundleContext bundleContext = Activator.getDefault().getContext();
+
+	    pageTracker = new ServiceTracker(bundleContext, Supplier.class, new ServiceTrackerCustomizer() {
+
+			@Override
+			public Object addingService(ServiceReference ref) {
+	    		Supplier service = bundleContext.getService(ref);
+	    		Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+	    		if (pathObject instanceof String) {
+					String path = (String) pathObject;
+					Object pageClassObject = service.get();
+					if (pageClassObject instanceof Class) {
+						Class pageClass = (Class) pageClassObject;
+						logger.info("Mounting new page {} at {}",pageClass,path);
+						mountPage(path, pageClass);						
+					}
+					else
+					{
+						logger.warn("Ignored Supplier {} because it didn't supply a Class object '{}'",service,pageClassObject);
+					}
+					
+				}
+	    		else
+	    		{
+	    			logger.warn("Ignored Page {} because it was registered with invalid path property '{}'",service,pathObject);
+	    		}
+	    		return service;
+			}
+
+			@Override
+			public void modifiedService(ServiceReference arg0, Object arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void removedService(ServiceReference ref, Object service) {
+	    		Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+	    		if (pathObject instanceof String && service instanceof Supplier) {
+					String path = (String) pathObject;
+					unmount(path);						
+	    		}
+			}
+	    	
+		});
+	    pageTracker.open();
 //	    mountPage("/workspace", WorkspaceView.class);
 	    
 //	    mountPage("/workspace/${project}/", ProjectView.class);
@@ -58,6 +119,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	    mountPage("/workspace",ResourcePage.class);
 	}
 
+	
 	
 	protected IConverterLocator newConverterLocator() {
 	    ConverterLocator converterLocator = new ConverterLocator();

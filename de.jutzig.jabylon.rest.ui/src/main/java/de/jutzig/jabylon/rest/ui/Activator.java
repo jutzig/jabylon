@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.rest.ui;
 
+import org.apache.wicket.Page;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -101,5 +102,9 @@ public class Activator implements BundleActivator {
 	public PropertyPersistenceService getPropertyPersistenceService()
 	{
 		return propertyPersistenceTracker.getService();
+	}
+	
+	public BundleContext getContext() {
+		return context;
 	}
 }
