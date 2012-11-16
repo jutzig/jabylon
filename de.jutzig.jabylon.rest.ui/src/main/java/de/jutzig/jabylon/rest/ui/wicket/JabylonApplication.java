@@ -19,8 +19,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Supplier;
-
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
@@ -31,103 +29,95 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
-	
 	public static final String PAGE_PATH_PROPERTY = "path";
 
 	public static final String CONTEXT = "jabylon";
 
 	@SuppressWarnings("rawtypes")
 	private ServiceTracker pageTracker;
-	
+
 	private static Logger logger = LoggerFactory.getLogger(JabylonApplication.class);
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
 		RepositoryConnector connector = Activator.getDefault().getRepositoryConnector();
-		if(connector!=null)
+		if (connector != null)
 			return WelcomePage.class;
 		return StartupPage.class;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected void init()
-	{
-	    super.init();
-	    final BundleContext bundleContext = Activator.getDefault().getContext();
+	protected void init() {
+		super.init();
+		final BundleContext bundleContext = Activator.getDefault().getContext();
 
-	    pageTracker = new ServiceTracker(bundleContext, Supplier.class, new ServiceTrackerCustomizer() {
+		pageTracker = new ServiceTracker(bundleContext, Page.class, new ServiceTrackerCustomizer() {
 
 			@Override
 			public Object addingService(ServiceReference ref) {
-	    		Supplier service = bundleContext.getService(ref);
-	    		Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
-	    		if (pathObject instanceof String) {
+				Page service = (Page)bundleContext.getService(ref);
+				Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+				if (pathObject instanceof String) {
 					String path = (String) pathObject;
-					Object pageClassObject = service.get();
-					if (pageClassObject instanceof Class) {
-						Class pageClass = (Class) pageClassObject;
-						logger.info("Mounting new page {} at {}",pageClass,path);
-						mountPage(path, pageClass);						
-					}
-					else
-					{
-						logger.warn("Ignored Supplier {} because it didn't supply a Class object '{}'",service,pageClassObject);
-					}
-					
+					Class pageClass = (Class) service.getClass();
+					logger.info("Mounting new page {} at {}", pageClass, path);
+					mountPage(path, pageClass);
+
+				} else {
+					logger.warn("Ignored Page {} because it was registered with invalid path property '{}'", service, pathObject);
 				}
-	    		else
-	    		{
-	    			logger.warn("Ignored Page {} because it was registered with invalid path property '{}'",service,pathObject);
-	    		}
-	    		return service;
+				return service;
 			}
 
 			@Override
 			public void modifiedService(ServiceReference arg0, Object arg1) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void removedService(ServiceReference ref, Object service) {
-	    		Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
-	    		if (pathObject instanceof String && service instanceof Supplier) {
+				Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+				if (pathObject instanceof String) {
 					String path = (String) pathObject;
-					unmount(path);						
-	    		}
+					unmount(path);
+				}
 			}
-	    	
+
 		});
-	    pageTracker.open();
-//	    mountPage("/workspace", WorkspaceView.class);
-	    
-//	    mountPage("/workspace/${project}/", ProjectView.class);
-//	    mountPage("/workspace/${project}/${version}/", ProjectVersionView.class);
-//	    mountPage("/workspace/${project}/${version}/${locale}/", ProjectLocaleView.class);
-	    
-//	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
-	    mountPage("/login",LoginPage.class);
-	    mountPage("/settings/workspace",SettingsPage.class);
-	    mountPage("/workspace",ResourcePage.class);
+		pageTracker.open();
+		// mountPage("/workspace", WorkspaceView.class);
+
+		// mountPage("/workspace/${project}/", ProjectView.class);
+		// mountPage("/workspace/${project}/${version}/",
+		// ProjectVersionView.class);
+		// mountPage("/workspace/${project}/${version}/${locale}/",
+		// ProjectLocaleView.class);
+
+		// mountPage("/workspace/${project}/${version}/${locale}/${remainder}",
+		// ProjectView.class);
+		mountPage("/login", LoginPage.class);
+		mountPage("/settings/workspace", SettingsPage.class);
+		mountPage("/workspace", ResourcePage.class);
 	}
 
-	
-	
 	protected IConverterLocator newConverterLocator() {
-	    ConverterLocator converterLocator = new ConverterLocator();
-	    converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
-	    converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
-	    return converterLocator;
+		ConverterLocator converterLocator = new ConverterLocator();
+		converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
+		converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
+		return converterLocator;
 	}
-	
+
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return CDOAuthenticatedSession.class;
@@ -137,6 +127,5 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	protected Class<? extends WebPage> getSignInPageClass() {
 		return LoginPage.class;
 	}
-
 
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component name="de.jutzig.jabylon.cdo.connector.internal.RepositoryConnectorImpl" deactivate="close">
+        <implementation class="de.jutzig.jabylon.cdo.connector.internal.RepositoryConnectorImpl"/>
+        <service servicefactory="false">
+            <provide interface="de.jutzig.jabylon.cdo.connector.RepositoryConnector"/>
+        </service>
+        <property name="service.pid" value="de.jutzig.jabylon.cdo.connector.internal.RepositoryConnectorImpl"/>
+        <reference name="acceptor" interface="org.eclipse.net4j.acceptor.IAcceptor" cardinality="1..1" policy="static" bind="bindAcceptor" unbind="unbindAcceptor"/>
+    </scr:component>
+</components>

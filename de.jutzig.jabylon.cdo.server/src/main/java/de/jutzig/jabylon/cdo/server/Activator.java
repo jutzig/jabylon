@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
