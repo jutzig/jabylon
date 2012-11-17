@@ -34,6 +34,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
@@ -72,6 +74,8 @@ public class Activator implements BundleActivator {
 
 	private boolean needsShutdown;
 	
+	private static final Logger logger = LoggerFactory.getLogger(Activator.class);
+	
 	/**
 	 * The constructor
 	 */
@@ -85,19 +89,35 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		plugin = this;
 		this.context = context;
-		startRepository();
-		CDOSession session = createSession();
-		CDOTransaction transaction = session.openTransaction();
-		try {
-			initializeWorkspace(transaction);
-			initializeUserManagement(transaction);
-		} finally{
-			transaction.close();
-			session.close();
-		}
-		needsShutdown=true;
+		initialize();
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
 		
+	}
+
+	protected void initialize() throws CommitException {
+		Thread repoStarter = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				startRepository();
+				CDOSession session = createSession();
+				CDOTransaction transaction = session.openTransaction();
+				try {
+					initializeWorkspace(transaction);
+					initializeUserManagement(transaction);
+				} catch (CommitException e) {
+					logger.error("Failed to initialize repository",e);
+				} finally{
+					transaction.close();
+					session.close();
+				}
+				needsShutdown=true;
+			}
+		});
+		repoStarter.setName("Repository Initializer");
+		repoStarter.setDaemon(true);
+		repoStarter.start();
 	}
 
 	private void initializeUserManagement(CDOTransaction transaction) throws CommitException {
@@ -239,7 +259,7 @@ public class Activator implements BundleActivator {
 
 	private void startRepository() {
 		IPluginContainer container = IPluginContainer.INSTANCE;
-		System.out.println("Starting Repository");
+		logger.info("Starting Repository");
 		// initialize acceptor
 		if (acceptor == null)
 		{
@@ -251,6 +271,7 @@ public class Activator implements BundleActivator {
 			repository = createRepository();
 			CDOServerUtil.addRepository(container, repository);
 			context.registerService(IAcceptor.class, acceptor, null);
+			logger.info("Repository Started");
 		}
 
 	}
@@ -315,8 +336,7 @@ public class Activator implements BundleActivator {
 					context.getBundle().stop();
 					bundle.stop();
 				} catch (BundleException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("Shutdown failed",e);
 				}
 			}
 		}
