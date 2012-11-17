@@ -423,6 +423,21 @@
 				<version>6.0.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-ioc</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+
+
+
+
+
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+				<version>1_2</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.scr.annotations</artifactId>
 				<version>1.7.0</version>

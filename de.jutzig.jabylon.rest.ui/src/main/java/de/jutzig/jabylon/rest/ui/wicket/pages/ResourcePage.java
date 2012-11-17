@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.rest.ui.wicket;
+package de.jutzig.jabylon.rest.ui.wicket.pages;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -20,22 +20,27 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericPage<T> {
 
 	private static final long serialVersionUID = 1L;
 
+	
 	public ResourcePage(PageParameters parameters) {
 		super(parameters);
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	protected void onBeforeRender() {
+	protected void onBeforeRenderPage() {
 		T object = getModelObject();
-		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", (IModel<Resolvable<?, ?>>) getModel() ,getPageParameters());
-		addOrReplace(breadcrumbPanel);
 		if (object instanceof PropertyFileDescriptor) {
 			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
 			addOrReplace(new PropertyEditorPanel(descriptor,getPageParameters()));	
 		}
 		else
 			addOrReplace(new ProjectResourcePanel(object,getPageParameters()));
-		super.onBeforeRender();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void construct() {
+		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", (IModel<Resolvable<?, ?>>) getModel() ,getPageParameters());
+		add(breadcrumbPanel);
+	}
+	
 }

@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
-import de.jutzig.jabylon.rest.ui.wicket.WelcomePage;
+import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
 public class NavbarPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<T> {
 

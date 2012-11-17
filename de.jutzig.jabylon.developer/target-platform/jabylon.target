@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?>
-
-<target name="Jabylon" sequenceNumber="43">
+<?pde version="3.8"?><target name="Jabylon" sequenceNumber="55">
 <locations>
-<location path="/home/joe/Desktop/Downloads/apache-wicket-6.0.0-bin" type="Directory"/>
+<location path="/home/joe/.m2/repository/org/apache/wicket/wicket-ioc/6.0.0" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cvs.feature.group" version="1.3.100.v20110520-0800-7B78FHl9VF7BD7KBM4GP9C"/>
 <unit id="org.eclipse.jgit.feature.group" version="1.3.0.201202151440-r"/>
@@ -16,10 +14,12 @@
 <unit id="org.eclipse.xtext.sdk.feature.group" version="2.0.1.v201108020636"/>
 <repository location="http://download.eclipse.org/releases/indigo/"/>
 </location>
+<location path="/home/joe/.m2/repository/com/google/guava/guava/13.0.1" type="Directory"/>
+<location path="/home/joe/Desktop/Downloads/apache-wicket-6.0.0-bin" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.vaadin.vaadin.feature.group" version="1.0.0.BETA"/>
 <repository location="http://svogt.github.com/jabylon/update-site/"/>
 </location>
-<location path="/home/joe/.m2/repository/com/google/guava/guava/13.0.1" type="Directory"/>
+<location path="/home/joe/.m2/repository/org/apache/servicemix/bundles/org.apache.servicemix.bundles.javax-inject/1_2" type="Directory"/>
 </locations>
 </target>

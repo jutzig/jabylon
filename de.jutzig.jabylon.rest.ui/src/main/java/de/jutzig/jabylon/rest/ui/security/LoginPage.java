@@ -5,7 +5,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.properties.Resolvable;
-import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
+import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 
 public class LoginPage extends GenericPage<Resolvable<?, ?>> {
 

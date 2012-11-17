@@ -35,9 +35,9 @@ import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
 import de.jutzig.jabylon.rest.ui.model.IEObjectModel;
 import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
-import de.jutzig.jabylon.rest.ui.wicket.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
+import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import de.jutzig.jabylon.users.User;
 
@@ -57,8 +57,12 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
-		
-		StringValue value = parameters.get(QUERY_PARAM_CREATE);
+	}
+	
+	@Override
+	protected void construct() {
+		super.construct();
+		StringValue value = getPageParameters().get(QUERY_PARAM_CREATE);
 		if(value!=null && !value.isEmpty())
 		{
 			EClassifier eClassifier = PropertiesPackage.eINSTANCE.getEClassifier(value.toString());
@@ -72,7 +76,7 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", extensions);
 		add(tabContainer);
 		tabContainer.setOutputMarkupId(true);
-		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", getModel(),parameters);
+		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", getModel(),getPageParameters());
 		breadcrumbPanel.setRootLabel("Settings");
 		breadcrumbPanel.setRootURL("/"+JabylonApplication.CONTEXT+"/settings");
 		add(breadcrumbPanel);

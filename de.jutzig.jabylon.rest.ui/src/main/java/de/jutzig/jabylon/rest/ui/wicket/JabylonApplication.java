@@ -23,17 +23,20 @@ import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
+import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
+import de.jutzig.jabylon.rest.ui.util.PageProvider;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
+import de.jutzig.jabylon.rest.ui.wicket.injector.OSGiInjector;
+import de.jutzig.jabylon.rest.ui.wicket.pages.StartupPage;
+import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
-
-	public static final String PAGE_PATH_PROPERTY = "path";
 
 	public static final String CONTEXT = "jabylon";
 
@@ -49,7 +52,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		RepositoryConnector connector = Activator.getDefault().getRepositoryConnector();
+		RepositoryLookup connector = Activator.getDefault().getRepositoryLookup();
 		if (connector != null)
 			return WelcomePage.class;
 		return StartupPage.class;
@@ -59,17 +62,20 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	@Override
 	protected void init() {
 		super.init();
+		OSGiInjector injector = new OSGiInjector(this);
+		getBehaviorInstantiationListeners().add(injector);
+		getComponentInstantiationListeners().add(injector);
 		final BundleContext bundleContext = Activator.getDefault().getContext();
 
-		pageTracker = new ServiceTracker(bundleContext, Page.class, new ServiceTrackerCustomizer() {
+		pageTracker = new ServiceTracker(bundleContext, PageProvider.class, new ServiceTrackerCustomizer() {
 
 			@Override
 			public Object addingService(ServiceReference ref) {
-				Page service = (Page)bundleContext.getService(ref);
-				Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+				PageProvider service = (PageProvider)bundleContext.getService(ref);
+				Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
 				if (pathObject instanceof String) {
 					String path = (String) pathObject;
-					Class pageClass = (Class) service.getClass();
+					Class pageClass = service.getPageClass();
 					logger.info("Mounting new page {} at {}", pageClass, path);
 					mountPage(path, pageClass);
 
@@ -87,7 +93,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
 			@Override
 			public void removedService(ServiceReference ref, Object service) {
-				Object pathObject = ref.getProperty(PAGE_PATH_PROPERTY);
+				Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
 				if (pathObject instanceof String) {
 					String path = (String) pathObject;
 					unmount(path);
@@ -96,19 +102,10 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
 		});
 		pageTracker.open();
-		// mountPage("/workspace", WorkspaceView.class);
 
-		// mountPage("/workspace/${project}/", ProjectView.class);
-		// mountPage("/workspace/${project}/${version}/",
-		// ProjectVersionView.class);
-		// mountPage("/workspace/${project}/${version}/${locale}/",
-		// ProjectLocaleView.class);
-
-		// mountPage("/workspace/${project}/${version}/${locale}/${remainder}",
-		// ProjectView.class);
 		mountPage("/login", LoginPage.class);
 		mountPage("/settings/workspace", SettingsPage.class);
-		mountPage("/workspace", ResourcePage.class);
+//		mountPage("/workspace", ResourcePage.class);
 	}
 
 	protected IConverterLocator newConverterLocator() {
@@ -118,6 +115,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		return converterLocator;
 	}
 
+	
+	
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return CDOAuthenticatedSession.class;
