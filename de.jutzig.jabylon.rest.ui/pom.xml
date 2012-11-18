@@ -32,6 +32,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
+						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -138,11 +139,8 @@
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
-<!-- 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2.2</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
+			<version>2.2.2</version> </dependency> -->
 		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
 			<version>1.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
 			<artifactId>jersey-core</artifactId> <version>1.13</version> </dependency> 
