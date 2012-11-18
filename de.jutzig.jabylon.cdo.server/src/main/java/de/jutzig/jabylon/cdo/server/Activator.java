@@ -34,6 +34,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,7 +107,7 @@ public class Activator implements BundleActivator {
 				try {
 					initializeWorkspace(transaction);
 					initializeUserManagement(transaction);
-					context.registerService(IAcceptor.class, acceptor, null);
+					FrameworkUtil.getBundle(getClass()).getBundleContext().registerService(IAcceptor.class, acceptor, null);
 				} catch (CommitException e) {
 					logger.error("Failed to initialize repository",e);
 				} finally{
