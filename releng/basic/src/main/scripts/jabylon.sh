@@ -25,7 +25,6 @@ start()
 	fi
        	echo "Starting Jabylon"
     VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.host=${HOST}";
-    VMARGS="${VMARGS} -Djabylon.log=${DATA}/log";
     VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
     VMARGS="${VMARGS} -Dosgi.instance.area=${DATA}"       	
 	PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.2.0.jar"
@@ -61,8 +60,7 @@ while [ "$1" != "" ]; do
 				VMARGS="${VMARGS} -Dosgi.console=true -Declipse.consoleLog=true"
 			    echo "Starting Jabylon at port ${PORT}"
 			    VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.host=${HOST}";
-			    VMARGS="${VMARGS} -Djabylon.log=${DATA}/log";
-    				VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
+    			VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
 				PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.2.0.jar"
 				$PROGRAM
                                 ;;
