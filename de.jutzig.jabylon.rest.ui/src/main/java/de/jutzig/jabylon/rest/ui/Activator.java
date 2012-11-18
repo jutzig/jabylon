@@ -17,7 +17,6 @@ public class Activator implements BundleActivator {
 	private BundleContext context;
 	private ServiceTracker<RepositoryConnector, RepositoryConnector> repositoryConnectorTracker;
 	private ServiceTracker<RepositoryLookup, RepositoryLookup> lookupTracker;
-	private ServiceTracker<PropertyPersistenceService, PropertyPersistenceService> propertyPersistenceTracker;
 	private ServiceTracker<ProgressService, ProgressService> progressServiceTracker;
 
 
@@ -42,9 +41,6 @@ public class Activator implements BundleActivator {
 
 		lookupTracker = new ServiceTracker<RepositoryLookup, RepositoryLookup>(context, RepositoryLookup.class, null);
 		lookupTracker.open();
-				
-		propertyPersistenceTracker = new ServiceTracker<PropertyPersistenceService, PropertyPersistenceService>(context, PropertyPersistenceService.class, null);
-		propertyPersistenceTracker.open();
 		
 		progressServiceTracker = new ServiceTracker<ProgressService, ProgressService>(context, ProgressService.class, null);
 		progressServiceTracker.open();
@@ -54,7 +50,6 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 //		repositoryTracker.close();
 		lookupTracker.close();
-		propertyPersistenceTracker.close();
 		progressServiceTracker.close();
 		repositoryConnectorTracker.close();
 		INSTANCE = null;
@@ -79,10 +74,6 @@ public class Activator implements BundleActivator {
         return lookupTracker.getService();
     }
 	
-	public PropertyPersistenceService getPropertyPersistenceService()
-	{
-		return propertyPersistenceTracker.getService();
-	}
 	
 	public BundleContext getContext() {
 		return context;
