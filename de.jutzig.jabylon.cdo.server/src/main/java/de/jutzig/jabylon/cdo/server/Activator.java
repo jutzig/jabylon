@@ -106,6 +106,7 @@ public class Activator implements BundleActivator {
 				try {
 					initializeWorkspace(transaction);
 					initializeUserManagement(transaction);
+					context.registerService(IAcceptor.class, acceptor, null);
 				} catch (CommitException e) {
 					logger.error("Failed to initialize repository",e);
 				} finally{
@@ -270,7 +271,6 @@ public class Activator implements BundleActivator {
 		if (repository == null) {
 			repository = createRepository();
 			CDOServerUtil.addRepository(container, repository);
-			context.registerService(IAcceptor.class, acceptor, null);
 			logger.info("Repository Started");
 		}
 
