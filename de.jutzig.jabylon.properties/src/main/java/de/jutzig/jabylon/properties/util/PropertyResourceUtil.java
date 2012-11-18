@@ -76,7 +76,9 @@ public class PropertyResourceUtil {
 				Resolvable child = parent.getChild(descriptorPart[i]);
 				if (child == null) {
 					child = PropertiesFactory.eINSTANCE.createResourceFolder();
-					child.setName(descriptorPart[i]);
+					//get rid of encodings like %20 for space
+					String childName = URI.decode(descriptorPart[i]);
+					child.setName(childName);
 					parent.getChildren().add(child);
 				}
 				parent = child;

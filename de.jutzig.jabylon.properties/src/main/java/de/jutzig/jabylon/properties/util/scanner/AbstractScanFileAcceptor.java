@@ -57,7 +57,7 @@ public abstract class AbstractScanFileAcceptor implements PropertyFileAcceptor{
 		Resolvable<?, Resolvable<?, ?>> currentParent = projectLocale;
 		String[] segments = childURI.segments();
 		for (int i = 0; i < segments.length - 1; i++) {
-			currentParent = getOrCreate(currentParent, segments[i]);
+			currentParent = getOrCreate(currentParent, URI.decode(segments[i]));
 		}
 		return currentParent;
 	}
