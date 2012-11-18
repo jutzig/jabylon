@@ -27,6 +27,8 @@ import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 import de.jutzig.jabylon.common.team.TeamProvider;
@@ -51,6 +53,7 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(ProjectVersionsConfigSection.class);
 
 	public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
 		super(id, model);
@@ -134,9 +137,8 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 					transaction.commit();
 					setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(project));
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
+					logger.error("Commit failed",e);
 					getSession().error(e.getMessage());
-					e.printStackTrace();
 				} finally {
 					transaction.close();
 				}
@@ -173,8 +175,10 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 					subMonitor.setTaskName("Database Sync");
 					transaction.commit(subMonitor.newChild(updates.size()));
 				} catch (TeamProviderException e) {
+					logger.error("Update failed",e);
 					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Update failed",e);
 				} catch (CommitException e) {
+					logger.error("Failed to commit the transaction",e);
 					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
 				} finally {
 					transaction.close();
@@ -241,12 +245,24 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
 				try {
+					ProjectVersion version = model.getObject();
+					version = transaction.getObject(version);
+					TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
 					provider.checkout(version, monitor);
 				} catch (TeamProviderException e) {
+					logger.error("Checkout failed",e);
 					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Checkout failed",e);
+				}
+				finally{
+					try {
+						transaction.commit();
+					} catch (CommitException e) {
+						logger.error("Failed to commit the transaction",e);
+						return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
+					}
+					transaction.close();
 				}
 				return Status.OK_STATUS;
 			}
