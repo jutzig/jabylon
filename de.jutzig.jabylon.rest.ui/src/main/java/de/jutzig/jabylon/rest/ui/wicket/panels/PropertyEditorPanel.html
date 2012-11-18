@@ -15,6 +15,8 @@ select {
 		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
 	<script type="text/javascript"
 		src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
+	<script type="text/javascript"
+		src="/jabylon/js/openjs/shortcuts.js"></script>		
 	<script type="text/javascript">
 	<!--
 		$(document).ready(function() {
@@ -52,6 +54,20 @@ select {
 			});
 
 			selectFuzzyRow();
+			
+			//initialize keyboard shortcuts
+			shortcut.add("Ctrl+Alt+N",function() {
+				var tableRows = $('tr div.in').parents('tr');
+				var lastExpanded = tableRows.last()
+				expandRow(lastExpanded.next());
+				collapseRow(lastExpanded);
+			});
+			shortcut.add("Ctrl+Alt+P",function() {
+				var tableRows = $('tr div.in').parents('tr');
+				var lastExpanded = tableRows.last()
+				expandRow(lastExpanded.prev());
+				collapseRow(lastExpanded);
+			});
 		});
 
 		// automatically expand the first row that has an error
