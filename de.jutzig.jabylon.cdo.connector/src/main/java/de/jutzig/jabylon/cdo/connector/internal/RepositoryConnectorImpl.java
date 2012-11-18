@@ -47,6 +47,17 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
 
 	}
 
+	
+	public void bindAcceptor(IAcceptor acceptor)
+	{
+		this.acceptor = acceptor;
+	}
+	
+	public void unbindAcceptor(IAcceptor acceptor)
+	{
+		this.acceptor = null;
+	}
+	
 	/**
 	 * Getter for session including lazy initialization
 	 *
