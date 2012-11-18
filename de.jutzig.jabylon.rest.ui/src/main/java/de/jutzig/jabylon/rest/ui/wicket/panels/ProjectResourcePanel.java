@@ -15,7 +15,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
 
@@ -34,6 +33,8 @@ import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
 public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> {
+
+	private static final long serialVersionUID = 1L;
 
 	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
 		super("content", object, parameters);

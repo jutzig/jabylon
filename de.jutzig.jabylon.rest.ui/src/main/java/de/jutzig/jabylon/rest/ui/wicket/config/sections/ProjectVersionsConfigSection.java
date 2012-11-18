@@ -1,13 +1,10 @@
 package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Collection;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -21,7 +18,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -75,7 +71,8 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
 
 				item.add(progressPanel);
-
+				ProjectVersion projectVersion = item.getModelObject();
+				item.add(new ExternalLink("edit",projectVersion.getParent().getName() + "/" + projectVersion.getName()));
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
 				item.add(createRescanAction(progressPanel, item.getModel()));
 				item.add(createUpdateAction(progressPanel, item.getModel()));

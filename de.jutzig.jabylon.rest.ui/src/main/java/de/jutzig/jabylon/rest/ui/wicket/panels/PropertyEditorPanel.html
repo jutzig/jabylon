@@ -11,35 +11,78 @@ select {
 -->
 </style>
 
-
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript"
 		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
 	<script type="text/javascript"
 		src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
-	<!-- <script type="text/javascript"
-		src="/jabylon/js/datatables/custom.sorting.js"></script> -->
 	<script type="text/javascript">
 	<!--
 		$(document).ready(function() {
 			$('#table').dataTable({
-				"iDisplayLength" : 50,
-				//TODO: remove this once sorted out why pagination breaks the expand logic
-				"bPaginate": false
+				"iDisplayLength" : 50
 			});
-		});
-	//-->
-	</script>
 
-	<script type="text/javascript">
-	<!--
-		function doSize() {
-			var width = $(window).width();
-			var properties = document.getElementById("properties-form");
-			properties.style.width = (width * 0.7) + "px";
+			//this is to make an AJAX request whenever a textarea is selected
+			$('textarea').focus(function() {
+				var textArea = $(this);
+				var tr = textArea.parents('tr');
+				var keyField = tr.find('td span').first();
+				requestAid(keyField.text());
+			});
+
+			//toggle section with expand button
+			$('.toggle-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				toggleRow(parent);
+			});
+
+			$('.next-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				expandRow(parent.next());
+				collapseRow(parent);
+			});
+
+			$('.previous-button').click(function() {
+
+				var parent = $(this).parents('tr');
+				expandRow(parent.prev());
+				collapseRow(parent);
+			});
+
+			selectFuzzyRow();
+		});
+
+		// automatically expand the first row that has an error
+		function selectFuzzyRow() {
+			var tableRow = $('tr.error').first();
+			expandRow(tableRow);
 		}
-		jQuery(document).ready(doSize);
-		$(window).resize(doSize);
+
+		function expandRow(row) {
+			var divs = row.find('td > div');
+			divs.collapse('show');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+		}
+
+		function collapseRow(row) {
+			row.find('td > div').collapse('hide');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+
+		}
+
+		function toggleRow(row) {
+			var divs = row.find('td > div');
+			divs.collapse('toggle');
+			var icon = row.find('button > i');
+			icon.toggleClass('icon-chevron-down');
+			icon.toggleClass('icon-chevron-right');
+		}
 	//-->
 	</script>
 </wicket:head>
@@ -52,6 +95,7 @@ select {
 				href="#?mode=missing">Show Missing</a></li>
 		</ul>
 		<form wicket:id="properties-form" id="properties-form">
+			<span wicket:id="response">Key</span>
 			<table
 				class="table table-striped table-hover dataview table-condensed"
 				id="table">

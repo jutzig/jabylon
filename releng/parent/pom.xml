@@ -6,8 +6,8 @@
 	<groupId>de.jutzig.jabylon</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
-		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
+	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> 
+		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath> 
 		</parent> -->
 
 	<properties>
@@ -17,6 +17,39 @@
 		<swt.variant>unknown</swt.variant>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+
+	<profiles>
+		<profile>
+			<id>plugin</id>
+			<activation>
+				<file>
+					<exists>${basedir}/plugin.xml</exists>
+				</file>
+			</activation>
+			<properties>
+				<singleton>;singleton:=true</singleton>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>.</directory>
+						<includes>
+							<include>plugin.xml</include>
+						</includes>
+					</resource>
+					<resource>
+						<targetPath>icons</targetPath>
+						<directory>icons</directory>
+					</resource>
+					<resource>
+						<targetPath>schemas</targetPath>
+						<directory>schemas</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -34,22 +67,8 @@
 	<build>
 		<resources>
 			<resource>
-				<targetPath>icons</targetPath>
-				<directory>icons</directory>
-			</resource>
-			<resource>
-				<targetPath>schemas</targetPath>
-				<directory>schemas</directory>
-			</resource>
-			<resource>
-				<targetPath>OSGI-INF</targetPath>
 				<directory>OSGI-INF</directory>
-			</resource>
-			<resource>
-				<directory>.</directory>
-				<includes>
-					<include>plugin.xml</include>
-				</includes>
+				<targetPath>OSGI-INF</targetPath>
 			</resource>
 		</resources>
 
@@ -60,26 +79,34 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.5.1</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-scr-plugin</artifactId>
-					<version>1.8.0</version>
-					<executions>
-						<execution>
-							<id>generate-scr-scrdescriptor</id>
-							<goals>
-								<goal>scr</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>.</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.8.0</version>
+				<executions>
+					<execution>
+						<id>generate-components</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+						<inherited>true</inherited>
+						<!-- <configuration> <outputDirectory>${project.build.directory}/../</outputDirectory> 
+							</configuration> -->
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.8</version>
@@ -106,6 +133,21 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<rebuildBundle>true</rebuildBundle>
+					<instructions>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
@@ -116,31 +158,37 @@
 					</archive>
 				</configuration>
 			</plugin>
-
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.4</version>
-				<extensions>true</extensions>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy
+									file="${project.build.directory}/scr-plugin-generated/OSGI-INF/serviceComponents.xml"
+									toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
 				<configuration>
-					<manifestLocation>META-INF</manifestLocation>
-					<instructions>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-					</instructions>
+					<filesets>
+						<fileset>
+							<directory>OSGI-INF</directory>
+							<includes>
+								<include>serviceComponents.xml</include>
+							</includes>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <artifactId>maven-dependency-plugin </artifactId> <executions>
-				<execution> <id>copy-dependencies</id> <phase>package</phase> <goals> <goal>copy-dependencies</goal>
-				</goals> </execution> </executions> </plugin> -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 
@@ -320,7 +368,7 @@
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<!-- need version with qualifier here, to disambiguate from non-bundle
+				<!-- need version with qualifier here, to disambiguate from non-bundle 
 					artifact in central -->
 				<version>0.1.41-v201101211617</version>
 			</dependency>
@@ -373,6 +421,21 @@
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-util</artifactId>
 				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-ioc</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+
+
+
+
+
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+				<version>1_2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.felix</groupId>

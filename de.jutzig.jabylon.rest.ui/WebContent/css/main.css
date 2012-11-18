@@ -2,7 +2,7 @@
 @IMPORT url("../bootstrap/css/bootstrap.min.css");
 @IMPORT url("../bootstrap/css/bootstrap-responsive.min.css");
 body {
-	padding: 60px;
+	padding-top: 50px;
 }
 
 .navbar {
@@ -13,6 +13,19 @@ body {
 .nav > li > span > em {
     display: block;
     padding: 10px 15px;
+}
+
+/** buttons */
+.toggle-button {
+	
+}
+
+.next-button {
+	
+}
+
+.previous-button {
+	
 }
 
 /** sort icons */

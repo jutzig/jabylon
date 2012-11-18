@@ -12,56 +12,110 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
+import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
+import de.jutzig.jabylon.rest.ui.util.PageProvider;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
+import de.jutzig.jabylon.rest.ui.wicket.injector.OSGiInjector;
+import de.jutzig.jabylon.rest.ui.wicket.pages.StartupPage;
+import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
-	/* (non-Javadoc)
+	public static final String CONTEXT = "jabylon";
+
+	@SuppressWarnings("rawtypes")
+	private ServiceTracker pageTracker;
+
+	private static Logger logger = LoggerFactory.getLogger(JabylonApplication.class);
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		RepositoryConnector connector = Activator.getDefault().getRepositoryConnector();
-		if(connector!=null)
+		RepositoryLookup connector = Activator.getDefault().getRepositoryLookup();
+		if (connector != null)
 			return WelcomePage.class;
 		return StartupPage.class;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected void init()
-	{
-	    super.init();
-	    
-//	    mountPage("/workspace", WorkspaceView.class);
-	    
-//	    mountPage("/workspace/${project}/", ProjectView.class);
-//	    mountPage("/workspace/${project}/${version}/", ProjectVersionView.class);
-//	    mountPage("/workspace/${project}/${version}/${locale}/", ProjectLocaleView.class);
-	    
-//	    mountPage("/workspace/${project}/${version}/${locale}/${remainder}", ProjectView.class);
-	    mountPage("/login",LoginPage.class);
-	    mountPage("/settings/workspace",SettingsPage.class);
-	    mountPage("/workspace",ResourcePage.class);
+	protected void init() {
+		super.init();
+		OSGiInjector injector = new OSGiInjector(this);
+		getBehaviorInstantiationListeners().add(injector);
+		getComponentInstantiationListeners().add(injector);
+		final BundleContext bundleContext = Activator.getDefault().getContext();
+
+		pageTracker = new ServiceTracker(bundleContext, PageProvider.class, new ServiceTrackerCustomizer() {
+
+			@Override
+			public Object addingService(ServiceReference ref) {
+				PageProvider service = (PageProvider)bundleContext.getService(ref);
+				Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
+				if (pathObject instanceof String) {
+					String path = (String) pathObject;
+					Class pageClass = service.getPageClass();
+					logger.info("Mounting new page {} at {}", pageClass, path);
+					mountPage(path, pageClass);
+
+				} else {
+					logger.warn("Ignored Page {} because it was registered with invalid path property '{}'", service, pathObject);
+				}
+				return service;
+			}
+
+			@Override
+			public void modifiedService(ServiceReference arg0, Object arg1) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void removedService(ServiceReference ref, Object service) {
+				Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
+				if (pathObject instanceof String) {
+					String path = (String) pathObject;
+					unmount(path);
+				}
+			}
+
+		});
+		pageTracker.open();
+
+		mountPage("/login", LoginPage.class);
+		mountPage("/settings/workspace", SettingsPage.class);
+//		mountPage("/workspace", ResourcePage.class);
+	}
+
+	protected IConverterLocator newConverterLocator() {
+		ConverterLocator converterLocator = new ConverterLocator();
+		converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
+		converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
+		return converterLocator;
 	}
 
 	
-	protected IConverterLocator newConverterLocator() {
-	    ConverterLocator converterLocator = new ConverterLocator();
-	    converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
-	    converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
-	    return converterLocator;
-	}
 	
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
@@ -72,6 +126,5 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	protected Class<? extends WebPage> getSignInPageClass() {
 		return LoginPage.class;
 	}
-
 
 }

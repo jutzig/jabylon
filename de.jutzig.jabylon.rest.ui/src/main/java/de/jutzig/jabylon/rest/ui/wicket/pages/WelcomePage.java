@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.rest.ui.wicket;
+package de.jutzig.jabylon.rest.ui.wicket.pages;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 

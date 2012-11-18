@@ -23,7 +23,7 @@ public class HelpPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<
 
 	public HelpPanel(String id, T object, PageParameters parameters) {
 		super(id, object, parameters);
-		add(new ExternalLink("link","#help","Help"));
+		add(new ExternalLink("link","#help"));
 	}
 
 	public static class HelpPanelFactory implements PanelFactory, Serializable

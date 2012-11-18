@@ -6,19 +6,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.CallbackParameter;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +38,6 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
-import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
@@ -40,6 +49,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
 	
+	@Inject
+	private transient PropertyPersistenceService propertyPersistence; 
 	
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
@@ -54,7 +65,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 			@Override
 			protected void populateItem(final ListItem<PropertyPair> item) {
-				item.add(new SinglePropertyEditor("row", item.getModel()));
+				item.add(new SinglePropertyEditor("row", item.getModel(), false));
 			}
 
 		};
@@ -69,7 +80,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				super.onSubmit();
 				IModel<List<? extends PropertyPair>> model = getModel();
 				List<? extends PropertyPair> list = model.getObject();
-				PropertyPersistenceService service = Activator.getDefault().getPropertyPersistenceService();
+				
 				PropertyFileDescriptor descriptor = PropertyEditorPanel.this.getModelObject();
 				PropertyFile file = descriptor.loadProperties();
 				Map<String, Property> map = file.asMap();
@@ -85,7 +96,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 					} else
 						file.getProperties().add(translation);
 				}
-				service.saveProperties(descriptor, file);
+				propertyPersistence.saveProperties(descriptor, file);
 				getSession().info("Saved successfully");
 				try {
 					//TODO: this is very unclean...
@@ -100,10 +111,61 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		add(form);
 		form.add(new SubmitLink("properties-submit"));
 		form.add(properties);
+		//just for demo purposes. Remove once the translation tools are back in place
+		final Label responseLabel = new Label("response","");
+		responseLabel.setOutputMarkupId(true);
+		final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
+		    protected void respond(final AjaxRequestTarget target) {
+		        target.add(responseLabel);
+//		        target.add(PropertyEditorPanel.this);
+		        
+		        StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
+		        responseLabel.setDefaultModelObject(parameter.toString("none"));
+		    }
+		    
+			public CharSequence getCallbackFunction(String functionName, CallbackParameter... extraParameters)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append("function ");
+				sb.append(functionName);
+				sb.append(" (");
+				boolean first = true;
+				for (CallbackParameter curExtraParameter : extraParameters)
+				{
+					if (curExtraParameter.getFunctionParameterName() != null)
+					{
+						if (!first)
+							sb.append(',');
+						else
+							first = false;
+						sb.append(curExtraParameter.getFunctionParameterName());
+					}
+				}
+				sb.append(") {\n");
+				sb.append(getCallbackFunctionBody(extraParameters));
+				sb.append("}\n");
+				return sb;
+			}
+		    
+		    @Override
+		    public void renderHead(Component component, IHeaderResponse response) {
+		    	response.render(JavaScriptHeaderItem.forScript(getCallbackFunction("requestAid",CallbackParameter.explicit("key")), "requestAid"));
+		    	super.renderHead(component, response);
+		    }
+		    
+		};
+		
+		add(behave);
+		form.add(responseLabel);
 	}
 
 
-
+	private boolean isFuzzy(PropertyPair pair)
+	{
+		return PropertyListMode.MISSING.apply(pair);
+	}
+	
+	
 	private void addLinkList(final PropertyListMode currentMode) {
 		List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
@@ -120,13 +182,6 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 			}
 		};
 		add(mode);
-
-	}
-
-	@Override
-	public void renderHead(HtmlHeaderContainer container) {
-		// TODO Auto-generated method stub
-		super.renderHead(container);
 
 	}
 
@@ -229,6 +284,9 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 		}
 	};
 
+	
+	public abstract boolean apply(PropertyPair pair);
+	
 	public static PropertyListMode getByName(String name) {
 		if (name == null || name.isEmpty())
 			return MISSING;

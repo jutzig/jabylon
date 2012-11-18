@@ -29,14 +29,9 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
 						<Bundle-Activator>de.jutzig.jabylon.rest.ui.Activator</Bundle-Activator>
-						<Include-Resource>
-							{maven-resources},plugin.xml
-						</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -111,6 +106,10 @@
 			<artifactId>wicket-request</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-ioc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
@@ -130,6 +129,20 @@
 			<groupId>javax</groupId>
 			<artifactId>servlet</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+		</dependency>
+<!-- 		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+		</dependency> -->
 		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
 			<version>1.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
 			<artifactId>jersey-core</artifactId> <version>1.13</version> </dependency> 

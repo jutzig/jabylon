@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.common.notify.Notification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
@@ -28,6 +30,7 @@ import de.jutzig.jabylon.resources.changes.PropertiesListener;
 
 public class PropertyIndex extends Job implements PropertiesListener {
 
+	private static final Logger logger = LoggerFactory.getLogger(PropertyIndex.class);
 	BlockingQueue<DocumentTuple> writes;
 
 	public PropertyIndex() {
@@ -50,8 +53,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 			writes.put(new DocumentTuple(documents));
 			schedule();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Interrupted",e);
 		}
 
 	}
@@ -62,8 +64,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 			writes.put(new DocumentTuple(descriptor));
 			schedule();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Interrupted",e);
 		}
 
 	}
@@ -76,8 +77,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 			writes.put(new DocumentTuple(descriptor, documents));
 			schedule();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Interrupted",e);
 		}
 
 	}
@@ -118,24 +118,19 @@ public class PropertyIndex extends Job implements PropertiesListener {
 			writer.commit();
 
 		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception while indexing",e);
 		} catch (LockObtainFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception while indexing",e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception while indexing",e);
 		} finally {
 			try {
 				if (writer != null)
 					writer.close();
 			} catch (CorruptIndexException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception while closing index writer",e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception while closing index writer",e);
 			}
 		}
 

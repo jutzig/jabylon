@@ -3,9 +3,9 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.text.MessageFormat;
+
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -15,6 +15,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 
 /**
@@ -24,16 +25,25 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 	private static final long serialVersionUID = 1L;
+	private boolean expanded;
 
-	public SinglePropertyEditor(String id, IModel<PropertyPair> model) {
+
+	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded) {
 		super(id, model);
+		this.expanded = expanded;
 		setOutputMarkupId(true);
 		PropertyPair propertyPair = model.getObject();
 		IStatus status = calculateRowStatus(propertyPair);
-		String key = propertyPair.getTemplate().getKey();
+		Property template = propertyPair.getTemplate();
+		String key = null;
+		if(template!=null)
+			key = propertyPair.getTemplate().getKey();
+		else
+			key = propertyPair.getTranslation().getKey();
 
 		final Label icon = new Label("icon");
-		icon.add(new AttributeModifier("class", "icon-chevron-right"));
+//		String iconName = isExpanded() ? "icon-chevron-down" : "icon-chevron-right";
+//		icon.add(new AttributeModifier("class", iconName));
 		icon.setOutputMarkupId(true);
 		add(icon);
 
@@ -46,34 +56,20 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 			add(new AttributeModifier("class", "error"));
 
 		final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
-		templatePanel.setVisible(false);
+		templatePanel.add(new AttributeModifier("class", isExpanded() ? "collapse in" : "collapse"));
 		templatePanel.setOutputMarkupId(true);
 		add(templatePanel);
 		final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
-		translationPanel.setVisible(false);
+		translationPanel.add(new AttributeModifier("class", isExpanded() ? "collapse in" : "collapse"));
 		translationPanel.setOutputMarkupId(true);
 		add(translationPanel);
-
+		
 		final Label translationLabel = new Label("translation-label", new PropertyModel<PropertyPair>(propertyPair, "translated"));
+		WebMarkupContainer toggletButton = new WebMarkupContainer("toggle");
+		add(toggletButton);
 
-		AjaxLink toggleLink = new AjaxLink("toggle") {
-			
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-
-				target.add(SinglePropertyEditor.this);
-				String iconName = translationLabel.isVisible() ? "icon-chevron-down" : "icon-chevron-right";
-				icon.add(new AttributeModifier("class", iconName));
-
-				translationLabel.setVisible(!translationLabel.isVisible());
-				templatePanel.setVisible(!templatePanel.isVisible());
-				translationPanel.setVisible(!translationPanel.isVisible());
-			}
-		};
-		add(toggleLink);
-		toggleLink.add(icon);
+		
+		
 
 		add(new Label("key-label", key));
 		add(translationLabel);
@@ -91,6 +87,7 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(propertyPair, "translated"));
 		translationPanel.add(textArea);
+		
 	}
 
 	private IStatus calculateRowStatus(PropertyPair propertyPair) {
@@ -100,6 +97,15 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		else if (propertyPair.getTranslated() == null || propertyPair.getTranslated().isEmpty())
 			return new Status(IStatus.ERROR, "de.jutzig.jabylon.rest.ui", "");
 		return Status.OK_STATUS;
+	}
+	
+	
+//	public void setExpanded(boolean expanded) {
+//		this.expanded = expanded;
+//	}
+//	
+	public boolean isExpanded() {
+		return expanded;
 	}
 
 }

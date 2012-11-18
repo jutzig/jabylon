@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" deactivate="close" name="RepositoryConnector">
-   <implementation class="de.jutzig.jabylon.cdo.connector.internal.RepositoryConnectorImpl"/>
-   <service>
-      <provide interface="de.jutzig.jabylon.cdo.connector.RepositoryConnector"/>
-   </service>
-   <reference cardinality="1..1" interface="org.eclipse.net4j.acceptor.IAcceptor" name="IAcceptor" policy="static"/>
-</scr:component>
