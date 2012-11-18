@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -36,7 +38,6 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
-import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
@@ -47,6 +48,9 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
+	
+	@Inject
+	private transient PropertyPersistenceService propertyPersistence; 
 	
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
@@ -76,7 +80,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				super.onSubmit();
 				IModel<List<? extends PropertyPair>> model = getModel();
 				List<? extends PropertyPair> list = model.getObject();
-				PropertyPersistenceService service = Activator.getDefault().getPropertyPersistenceService();
+				
 				PropertyFileDescriptor descriptor = PropertyEditorPanel.this.getModelObject();
 				PropertyFile file = descriptor.loadProperties();
 				Map<String, Property> map = file.asMap();
@@ -92,7 +96,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 					} else
 						file.getProperties().add(translation);
 				}
-				service.saveProperties(descriptor, file);
+				propertyPersistence.saveProperties(descriptor, file);
 				getSession().info("Saved successfully");
 				try {
 					//TODO: this is very unclean...
