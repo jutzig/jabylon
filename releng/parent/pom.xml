@@ -65,7 +65,7 @@
 	</repositories>
 
 	<build>
-		<finalName>${groupId}.${artifactId}-${version}</finalName>
+		<finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
 		<resources>
 			<resource>
 				<directory>OSGI-INF</directory>
