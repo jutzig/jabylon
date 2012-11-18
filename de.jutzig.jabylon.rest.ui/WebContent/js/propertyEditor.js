@@ -1,4 +1,9 @@
+//to remember which row was last expanded (for next/previous)
+var lastExpanded;
+
 $(document).ready(function() {
+	
+	
 	$('#table').dataTable({
 		"iDisplayLength" : 50
 	});
@@ -36,26 +41,22 @@ $(document).ready(function() {
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
-		var tableRows = $('tr div.in').parents('tr');
-		var lastExpanded = tableRows.last();
-		collapseRow(lastExpanded);
-		var next = lastExpanded.next();
-		if(next.length==0)
-		{
-			next = $('tr div.collapse').parents('tr').last(); 
-		}
-		expandRow(next);
+	var next = lastExpanded.next();
+	if(next.length==0)
+	{
+		next = $('tr div.collapse').parents('tr').last(); 
+	}
+	collapseRow(lastExpanded);
+	expandRow(next);
 	});
+	
 	shortcut.add("Ctrl+Up", function() {
-		var tableRows = $('tr div.in').parents('tr');
-		var lastExpanded = tableRows.last();
-		collapseRow(lastExpanded);
-		var prev = lastExpanded.prev();
-		if(prev.length==0)
-		{
-			prev = $('tr div.collapse').parents('tr').first(); 
-		}
-		expandRow(prev);
+	var prev = lastExpanded.prev();
+	if (prev.length == 0) {
+		prev = $('tr div.collapse').parents('tr').first();
+	}
+	collapseRow(lastExpanded);
+	expandRow(prev);
 	});
 });
 
@@ -66,9 +67,10 @@ function selectFuzzyRow() {
 }
 
 function expandRow(row) {
+	lastExpanded = row;
 	var divs = row.find('td > div');
-	divs.collapse('show');
 	var icon = row.find('button > i');
+	divs.collapse('show');
 	icon.toggleClass('icon-chevron-down');
 	icon.toggleClass('icon-chevron-right');
 }
@@ -82,6 +84,7 @@ function collapseRow(row) {
 }
 
 function toggleRow(row) {
+	lastExpanded = row;
 	var divs = row.find('td > div');
 	divs.collapse('toggle');
 	var icon = row.find('button > i');
