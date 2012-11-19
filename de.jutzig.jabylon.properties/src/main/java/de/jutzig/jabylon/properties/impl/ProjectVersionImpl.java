@@ -120,7 +120,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
 		PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
-		scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner,configuration), baseDir, propertyScanner, configuration, subMonitor.newChild(50));
+		scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,
+				subMonitor.newChild(50));
 
 		for (ProjectLocale projectLocale : getChildren()) {
 			for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
@@ -152,10 +153,9 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
 		WorkspaceScanner scanner = new WorkspaceScanner();
 		File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
-		File singleFile = new File(baseDir, fileDiff.getNewPath());
-		if (fileDiff.getKind() == DiffKind.REMOVE)
-			// in case of a remove, the new path doesn't exist anymore
-			singleFile = new File(baseDir, fileDiff.getOldPath());
+		// in case of a remove, the new path doesn't exist anymore
+		String filePath = fileDiff.getKind() == DiffKind.REMOVE ? fileDiff.getOldPath() : fileDiff.getNewPath();
+		File singleFile = new File(baseDir, filePath);
 		if (!scanner.partialScan(baseDir, propertyScanner, configuration, singleFile))
 			return; // no match -> no work
 		switch (fileDiff.getKind()) {
@@ -165,15 +165,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		case COPY:
 		case ADD: {
 
-			
-			scanner.partialScan(new PartialScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration, singleFile);
-//			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
-//			PropertyResourceUtil.addNewTemplateDescriptor(descriptor, this);
-//			for (ProjectLocale projectLocale : getChildren()) {
-//				for (PropertyFileDescriptor localizedDescriptor : projectLocale.getDescriptors()) {
-//					localizedDescriptor.updatePercentComplete();
-//				}
-//			}
+			scanner.partialScan(new PartialScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,
+					singleFile);
 			break;
 		}
 		case MODIFY: {
@@ -253,10 +246,9 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	private void deleteDescriptor(URI uri) {
 
 		PropertyFileDescriptor descriptor = findDescriptor(uri);
-		if(descriptor!=null)
+		if (descriptor != null)
 			PropertyResourceUtil.removeDescriptor(descriptor);
 	}
-
 
 	@Override
 	public Resolvable resolveChild(URI path) {
@@ -284,8 +276,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	protected PropertyFileDescriptor findDescriptor(URI path) {
 		PropertyScanner scanner = PropertyResourceUtil.createScanner(this);
 		Locale variant = scanner.getLocale(new File(path.toFileString()));
-		
-		ProjectLocale locale = variant==null ? getTemplate() : getProjectLocale(variant);
+
+		ProjectLocale locale = variant == null ? getTemplate() : getProjectLocale(variant);
 		if (locale == null)
 			return null;
 		EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
@@ -296,7 +288,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		}
 		return null;
 	}
-
 
 	private Locale createVariant(String localeString) {
 		return (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, localeString);
