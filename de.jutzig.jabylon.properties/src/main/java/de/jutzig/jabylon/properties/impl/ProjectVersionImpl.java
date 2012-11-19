@@ -160,7 +160,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			return; // no match -> no work
 		switch (fileDiff.getKind()) {
 		case MOVE: {
-			deleteDescriptor(URI.createURI("/" + fileDiff.getOldPath()));
+			deleteDescriptor(makeURI(fileDiff.getOldPath()));
 		}
 		case COPY:
 		case ADD: {
@@ -170,7 +170,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			break;
 		}
 		case MODIFY: {
-			PropertyFileDescriptor descriptor = findDescriptor(URI.createURI("/" + fileDiff.getNewPath()));
+			PropertyFileDescriptor descriptor = findDescriptor(makeURI(fileDiff.getNewPath()));
 			if (descriptor != null) {
 				PropertyFile properties = descriptor.loadProperties();
 				descriptor.setKeys(properties.getProperties().size());
@@ -178,11 +178,26 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			break;
 		}
 		case REMOVE: {
-			deleteDescriptor(URI.createURI("/" + fileDiff.getOldPath()));
+			deleteDescriptor(makeURI(fileDiff.getOldPath()));
 		}
 		}
 	}
 
+	
+	/**
+	 * transforms a relative {@link PropertyFileDiff} path to a URI
+	 * @param diffPath
+	 * @return
+	 */
+	private URI makeURI(String diffPath)
+	{
+		//first normalize the path
+		String path = diffPath.replace('\\', '/');
+		if(diffPath.startsWith("/"))
+			return URI.createURI(diffPath);
+		return URI.createURI("/"+path);
+	}
+	
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 

@@ -250,8 +250,13 @@ public class PropertyResourceUtil {
 				derived.setProjectLocale(null);
 				Resolvable<?, ?> parent = derived.getParent();
 				if(parent!=null && parent.getChildren().size()==1 && parent instanceof ResourceFolder)
+				{
+					
 					deleteFolder((ResourceFolder) parent);
+				}
+				
 				EcoreUtil.remove(derived);
+				
 			}
 		}
 		else
@@ -274,15 +279,18 @@ public class PropertyResourceUtil {
 	@SuppressWarnings("rawtypes")
 	private static void deleteFolder(ResourceFolder folder) {
 		Resolvable currentParent = folder;
+		Resolvable lastParent = folder;
 		while(currentParent instanceof ResourceFolder)
 		{
 			if(currentParent.getChildren().size()<=1)
+			{
+				lastParent = currentParent;
 				currentParent = currentParent.getParent();
+			}
 			else
 				break;
 		}
-		EcoreUtil.remove(currentParent);
-
+		EcoreUtil.remove(lastParent);
 	}
 
 }
