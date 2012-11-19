@@ -36,8 +36,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>osgi</artifactId>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -58,9 +58,9 @@
 			<type>bundle</type>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId> 
+		<!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId>
 			<version>1.0.01</version> </dependency> -->
-		<!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId>
 			<version>1.0.0.v201108011116</version> <type>orbit</type> </dependency> -->
 	</dependencies>
 </project>

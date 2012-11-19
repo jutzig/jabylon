@@ -46,6 +46,12 @@
 			<version>${project.version}</version>
 			<type>bundle</type>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse</groupId>
+					<artifactId>osgi</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -89,7 +95,14 @@
 			<type>bundle</type>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
@@ -139,13 +152,6 @@
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
-			<version>2.2.2</version> </dependency> -->
-		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
-			<version>1.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-core</artifactId> <version>1.13</version> </dependency> 
-			<dependency> <groupId>de.agilecoders.wicket</groupId> <artifactId>bootstrap</artifactId> 
-			<version>0.6.2</version> </dependency> -->
 	</dependencies>
 
 

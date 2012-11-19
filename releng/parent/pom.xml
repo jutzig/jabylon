@@ -6,9 +6,8 @@
 	<groupId>de.jutzig.jabylon</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> 
-		<artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath> 
-		</parent> -->
+	<!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version> <artifactId>jabylon-parent</artifactId>
+		<relativePath>../releng/parent/pom.xml</relativePath> </parent> -->
 
 	<properties>
 		<singleton></singleton>
@@ -80,7 +79,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.5.1</version>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -134,8 +133,7 @@
 							<goal>scr</goal>
 						</goals>
 						<inherited>true</inherited>
-						<!-- <configuration> <outputDirectory>${project.build.directory}/../</outputDirectory> 
-							</configuration> -->
+						<!-- <configuration> <outputDirectory>${project.build.directory}/../</outputDirectory> </configuration> -->
 					</execution>
 				</executions>
 			</plugin>
@@ -215,9 +213,8 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<copy
-									file="${project.build.directory}/scr-plugin-generated/OSGI-INF/serviceComponents.xml"
-									toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr" />
+								<copy file="${project.build.directory}/scr-plugin-generated/OSGI-INF/serviceComponents.xml" toDir="${basedir}/OSGI-INF"
+									failonerror="false" overwrite="tr" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -249,11 +246,6 @@
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>app</artifactId>
 				<version>1.3.100</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>osgi</artifactId>
-				<version>3.7.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
@@ -347,7 +339,6 @@
 				<version>4.0.0</version>
 			</dependency>
 
-
 			<!-- derby -->
 			<dependency>
 				<artifactId>derby</artifactId>
@@ -418,8 +409,7 @@
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<!-- need version with qualifier here, to disambiguate from non-bundle 
-					artifact in central -->
+				<!-- need version with qualifier here, to disambiguate from non-bundle artifact in central -->
 				<version>0.1.41-v201101211617</version>
 			</dependency>
 
@@ -444,7 +434,6 @@
 				<artifactId>classic</artifactId>
 				<version>0.9.27</version>
 			</dependency>
-
 
 			<!-- wicket -->
 			<dependency>
@@ -477,11 +466,6 @@
 				<artifactId>wicket-ioc</artifactId>
 				<version>6.0.0</version>
 			</dependency>
-
-
-
-
-
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
@@ -491,6 +475,16 @@
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.scr.annotations</artifactId>
 				<version>1.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.core</artifactId>
+				<version>4.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>4.3.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

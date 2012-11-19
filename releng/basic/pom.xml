@@ -15,11 +15,11 @@
 
 	<build>
 		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
-				<version>2.5.1</version> <executions> <execution> <id>copy</id> <phase>prepare-package</phase> 
-				<goals> <goal>copy-dependencies</goal> </goals> <inherited>false</inherited> 
-				<configuration> <outputDirectory>target/result/plugins</outputDirectory> 
-				<excludeTransitive>true</excludeTransitive> <prependGroupId>true</prependGroupId> 
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId>
+				<version>2.5.1</version> <executions> <execution> <id>copy</id> <phase>prepare-package</phase>
+				<goals> <goal>copy-dependencies</goal> </goals> <inherited>false</inherited>
+				<configuration> <outputDirectory>target/result/plugins</outputDirectory>
+				<excludeTransitive>true</excludeTransitive> <prependGroupId>true</prependGroupId>
 				</configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -141,7 +141,7 @@
 
 
 
-		<!-- <dependency> <groupId>org.eclipse.core</groupId> <artifactId>filesystem</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.core</groupId> <artifactId>filesystem</artifactId>
 			</dependency> -->
 
 
@@ -150,7 +150,7 @@
 			<artifactId>common</artifactId>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.eclipse.core</groupId> <artifactId>net</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.core</groupId> <artifactId>net</artifactId>
 			</dependency> -->
 
 		<dependency>
@@ -209,19 +209,19 @@
 		</dependency>
 
 
-		<!-- <dependency> <groupId>org.eclipse.core.runtime.compatibility</groupId> 
+		<!-- <dependency> <groupId>org.eclipse.core.runtime.compatibility</groupId>
 			<artifactId>registry</artifactId> <version>3.5.0</version> </dependency> -->
 
-		<!-- <dependency> <groupId>org.eclipse.equinox.weaving</groupId> <artifactId>hook</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.equinox.weaving</groupId> <artifactId>hook</artifactId>
 			</dependency> -->
-		<!-- <dependency> <groupId>org.eclipse.team</groupId> <artifactId>core</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.team</groupId> <artifactId>core</artifactId>
 			</dependency> -->
 
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>registry</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>org.eclipse.ant</groupId> <artifactId>core</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.ant</groupId> <artifactId>core</artifactId>
 			</dependency> -->
 
 
@@ -263,7 +263,7 @@
 
 
 
-		<!-- <dependency> <groupId>org.eclipse.jsch</groupId> <artifactId>core</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.jsch</groupId> <artifactId>core</artifactId>
 			</dependency> -->
 
 
@@ -284,6 +284,7 @@
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>osgi</artifactId>
+			<version>3.7.2</version>
 		</dependency>
 
 
@@ -308,7 +309,7 @@
 
 
 
-		<!-- <dependency> <groupId>org.eclipse.equinox.transforms</groupId> <artifactId>hook</artifactId> 
+		<!-- <dependency> <groupId>org.eclipse.equinox.transforms</groupId> <artifactId>hook</artifactId>
 			</dependency> -->
 
 		<dependency>
@@ -336,7 +337,7 @@
 			<version>1.6.1</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>com.google</groupId> <artifactId>collect</artifactId> 
+		<!-- <dependency> <groupId>com.google</groupId> <artifactId>collect</artifactId>
 			</dependency> -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
