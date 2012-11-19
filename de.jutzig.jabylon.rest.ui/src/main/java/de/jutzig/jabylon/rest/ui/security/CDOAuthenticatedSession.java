@@ -18,19 +18,20 @@ import javax.security.auth.login.LoginException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Request;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.security.JabylonSecurityBundle;
-import de.jutzig.jabylon.users.Role;
+import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 
@@ -40,7 +41,11 @@ import de.jutzig.jabylon.users.UserManagement;
  */
 public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 
+	private static final long serialVersionUID = 1L;
+
 	private IModel<User> user;
+	
+	private static final Logger logger = LoggerFactory.getLogger(CDOAuthenticatedSession.class);
 	
 	private static final String JAAS_CONFIG_FILE = "META-INF/jaas.config"; //$NON-NLS-1$
 	
@@ -72,7 +77,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		});
 		try {
 			loginContext.login();
-			
+			logger.info("Login for user {} successfull",username);
 			//TODO: this could be handled without two lookups
 			CDOView view = Activator.getDefault().getRepositoryConnector().openView();
 			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
@@ -84,8 +89,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 			
 			return true;
 		} catch (LoginException e) {
-			e.printStackTrace();
-//			error("Login Failed: "+e.getMessage());
+			logger.error("Login for user "+username+" failed",e);
 		}
 		return false;
 	}
@@ -98,12 +102,13 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		// TODO Auto-generated method stub
 		if(isSignedIn())
 		{
-			EList<Role> roles = user.getObject().getRoles();
-			List<String> roleNames = new ArrayList<String>(roles.size());
-			for (Role role : roles) {
-				roleNames.add(role.getName());
+			//in our case permissions are wicket roles
+			EList<Permission> permissions = user.getObject().getAllPermissions();
+			List<String> roleNames = new ArrayList<String>(permissions.size());
+			for (Permission permission : permissions) {
+				roleNames.add(permission.getName());
 			}
-			return new Roles(roleNames.toArray(new String[roles.size()]));
+			return new Roles(roleNames.toArray(new String[permissions.size()]));
 		}
 		return null;
 	}

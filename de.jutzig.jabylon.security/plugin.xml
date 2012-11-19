@@ -35,6 +35,10 @@
             description="Edit users"
             name="EDIT_USERS">
       </permission>
+      <permission
+            description="base right to access any kind of configuration"
+            name="ACCESS_CONFIG">
+      </permission>
    </extension>
    <extension
          point="de.jutzig.jabylon.security.role">
@@ -46,6 +50,9 @@
          </permission_id>
          <permission_id
                id="EDIT_USERS">
+         </permission_id>
+         <permission_id
+               id="ACCESS_CONFIG">
          </permission_id>
       </role>
    </extension>

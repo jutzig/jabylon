@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
@@ -46,6 +47,7 @@ import de.jutzig.jabylon.users.User;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
+@AuthorizeInstantiation("ACCESS_CONFIG")
 public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
@@ -54,11 +56,11 @@ public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SettingsPage.class);
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SettingsPage(PageParameters parameters) {
 		super(parameters);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void construct() {
 		super.construct();
