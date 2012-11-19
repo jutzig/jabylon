@@ -203,40 +203,64 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 	}
 
-	protected Component createCommitAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
-		RunnableWithProgress runnable = new RunnableWithProgress() {
 
-			private static final long serialVersionUID = 1L;
+    protected Component createCommitAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model)
+    {
+        RunnableWithProgress runnable = new RunnableWithProgress()
+        {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public IStatus run(IProgressMonitor monitor) {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+            @Override
+            public IStatus run(IProgressMonitor monitor)
+            {
 
-				SubMonitor subMonitor = SubMonitor.convert(monitor, "Committing", 100);
-				try {
-					provider.commit(version, subMonitor.newChild(100));
-				} catch (TeamProviderException e) {
-					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Commit Failed",e);
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		return new ProgressShowingAjaxButton("commit", progressPanel, runnable) {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent()
+                                                                                .getTeamProvider());
+                CDOTransaction transaction = Activator.getDefault()
+                                                      .getRepositoryConnector()
+                                                      .openTransaction();
+                try
+                {
+                    version = transaction.getObject(version);
+                    SubMonitor subMonitor = SubMonitor.convert(monitor, "Committing", 100);
 
-			private static final long serialVersionUID = 1L;
+                    provider.commit(version, subMonitor.newChild(100));
 
-			public boolean isVisible() {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-				if (provider == null)
-					return false;
-				File file = new File(version.absoluteFilePath().toFileString());
-				return (file.isDirectory());
-			};
-		};
+                }
+                catch (TeamProviderException e)
+                {
+                    logger.error("Commit failed", e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Commit Failed", e);
+                }
 
-	}
+                finally
+                {
+                    transaction.close();
+                }
+
+                return Status.OK_STATUS;
+            }
+        };
+        return new ProgressShowingAjaxButton("commit", progressPanel, runnable)
+        {
+
+            private static final long serialVersionUID = 1L;
+
+
+            public boolean isVisible()
+            {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent()
+                                                                                .getTeamProvider());
+                if (provider == null)
+                    return false;
+                File file = new File(version.absoluteFilePath().toFileString());
+                return (file.isDirectory());
+            };
+        };
+
+    }
 
 	private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 		RunnableWithProgress runnable = new RunnableWithProgress() {
