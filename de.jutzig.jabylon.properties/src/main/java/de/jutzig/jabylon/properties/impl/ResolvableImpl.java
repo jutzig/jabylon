@@ -433,4 +433,14 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	public String toString() {
+		try {
+			return getName();
+		} catch (Exception e) {
+			logger.error("Exception during toString",e);
+			return super.toString();
+		}
+	}
+	
 } // ResolvableImpl
