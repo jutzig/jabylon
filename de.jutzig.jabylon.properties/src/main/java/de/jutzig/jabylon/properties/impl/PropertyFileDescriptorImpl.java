@@ -600,4 +600,16 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	public String toString() {
+		try {
+			if(getLocation()!=null)
+				return getLocation().toString();
+		} catch (Exception e) {
+			logger.error("Exception during toString",e);
+		}
+		return super.toString();
+	}
+	
+	
 } //PropertyFileDescriptorImpl
