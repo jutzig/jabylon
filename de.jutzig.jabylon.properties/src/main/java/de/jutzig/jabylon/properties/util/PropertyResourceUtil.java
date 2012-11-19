@@ -23,7 +23,7 @@ import de.jutzig.jabylon.properties.types.impl.JavaPropertyScanner;
 
 public class PropertyResourceUtil {
 
-	
+
 	public static PropertyScanner createScanner(ProjectVersion version)
 	{
 		//TODO: make this more dynamic to support property types as a service
@@ -38,7 +38,7 @@ public class PropertyResourceUtil {
 			throw new UnsupportedOperationException("unsupported property type: "+propertyType);
 		}
 	}
-	
+
 	public static void createMissingDescriptorEntries(ProjectVersion parent, IProgressMonitor monitor) {
 		EList<ProjectLocale> children = parent.getChildren();
 		monitor.beginTask("Adding missing localized resources", children.size() - 1);
@@ -60,7 +60,7 @@ public class PropertyResourceUtil {
 	 * adds a new descriptor to the version (i.e. it creates any missing folders
 	 * in all the locales) <strong>important:<strong> the feature
 	 * {@link PropertyFileDescriptor#getLocation()} must be set for this to work
-	 * 
+	 *
 	 * @param descriptor
 	 * @param version
 	 */
@@ -105,7 +105,7 @@ public class PropertyResourceUtil {
 					// load file to initialize statistics;
 					PropertyFile translatedFile = translatedDescriptor.loadProperties();
 					int size = translatedFile.getProperties().size();
-					translatedDescriptor.setKeys(size);				
+					translatedDescriptor.setKeys(size);
 					translatedDescriptor.updatePercentComplete();
 				}
 			}
@@ -164,7 +164,8 @@ public class PropertyResourceUtil {
 			if (child instanceof PropertyFileDescriptor) {
 				// for properties we need the locale specific name
 				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) child;
-				name = computeLocaleResourceLocation(variant.getLocale(), variant.getParent(), descriptor.getLocation()).lastSegment();
+				URI derivedLocation = computeLocaleResourceLocation(variant.getLocale(), variant.getParent(), descriptor.getLocation());
+				name = URI.decode(derivedLocation.lastSegment());
 			}
 			Resolvable<?, ?> localeChild = locale.getChild(name);
 			if (localeChild == null) {
@@ -234,9 +235,9 @@ public class PropertyResourceUtil {
 
 		PropertyScanner scanner = createScanner(version);
 		File path = scanner.computeTranslationPath(new File(templateLocation.toFileString()), version.getTemplate().getLocale(), locale);
-		
-		URI location = URI.createURI(path.getAbsolutePath());
-		location = location.deresolve(templateLocation); 
+
+		URI location = URI.createFileURI(path.getAbsolutePath());
+		location = location.deresolve(templateLocation);
 		return location;
 
 	}
@@ -267,7 +268,7 @@ public class PropertyResourceUtil {
 	/**
 	 * deletes a folder (and recursively all parents above) if there's only one child left in it
 	 * <p>
-	 * this is to clean up no longer needed folders when a descriptor is removed 
+	 * this is to clean up no longer needed folders when a descriptor is removed
 	 * @param parent
 	 */
 	@SuppressWarnings("rawtypes")
@@ -281,7 +282,7 @@ public class PropertyResourceUtil {
 				break;
 		}
 		EcoreUtil.remove(currentParent);
-		
+
 	}
 
 }
