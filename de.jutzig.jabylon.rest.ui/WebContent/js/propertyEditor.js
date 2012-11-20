@@ -3,7 +3,6 @@ var lastExpanded;
 
 $(document).ready(function() {
 
-
 	$('#table').dataTable({
 		"iDisplayLength" : 50
 	});
@@ -34,23 +33,38 @@ $(document).ready(function() {
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
-	var next = lastExpanded.next();
-	if(next.length==0)
-	{
-		next = $('tr div.collapse').parents('tr').last();
-	}
-	collapseRow(lastExpanded);
-	expandRow(next);
+		var next = lastExpanded.next();
+		if (next.length == 0) {
+			next = $('tr div.collapse').parents('tr').last();
+		}
+		collapseRow(lastExpanded);
+		expandRow(next);
 	});
 
 	shortcut.add("Ctrl+Up", function() {
-	var prev = lastExpanded.prev();
-	if (prev.length == 0) {
-		prev = $('tr div.collapse').parents('tr').first();
-	}
-	collapseRow(lastExpanded);
-	expandRow(prev);
+		var prev = lastExpanded.prev();
+		if (prev.length == 0) {
+			prev = $('tr div.collapse').parents('tr').first();
+		}
+		collapseRow(lastExpanded);
+		expandRow(prev);
 	});
+	
+	
+	//this disables the default submit behaviour and instead does a post to the wicket submit URL
+	// see https://github.com/jutzig/jabylon/issues/52
+	$('#properties-form').submit(function(event) {
+		event.preventDefault();
+		var table = $('#table').dataTable();
+		var sData = $('textarea', table.fnGetNodes()).serialize();
+		var form = $('#properties-form');
+		var url = form.attr('action');
+		$.post(url, sData);
+		location.reload();
+		return true;
+	});
+
+	
 });
 
 // automatically expand the first row that has an error
@@ -87,6 +101,6 @@ function toggleRow(row) {
 
 // toggle section with expand button
 function toggle(row) {
-        var parent = $(row).parents('tr');
-        toggleRow(parent);
+	var parent = $(row).parents('tr');
+	toggleRow(parent);
 }

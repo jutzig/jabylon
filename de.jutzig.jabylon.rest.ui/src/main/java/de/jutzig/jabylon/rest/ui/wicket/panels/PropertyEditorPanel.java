@@ -109,7 +109,19 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		};
 
 		add(form);
-		form.add(new SubmitLink("properties-submit"));
+		form.add(new SubmitLink("properties-submit")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected String getTriggerJavaScript() {
+				/* disables the default submit behaviour since we do that ourselfs in JS
+				 * https://github.com/jutzig/jabylon/issues/52
+				 * see propertyEditor.js
+				 */
+				return "";
+			}
+		});
 		form.add(properties);
 		//just for demo purposes. Remove once the translation tools are back in place
 		final Label responseLabel = new Label("response","");
@@ -117,7 +129,6 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
 		    protected void respond(final AjaxRequestTarget target) {
 		        target.add(responseLabel);
-//		        target.add(PropertyEditorPanel.this);
 		        
 		        StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
 		        responseLabel.setDefaultModelObject(parameter.toString("none"));
