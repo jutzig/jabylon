@@ -2,8 +2,8 @@
 var lastExpanded;
 
 $(document).ready(function() {
-	
-	
+
+
 	$('#table').dataTable({
 		"iDisplayLength" : 50
 	});
@@ -14,13 +14,6 @@ $(document).ready(function() {
 		var tr = textArea.parents('tr');
 		var keyField = tr.find('td span').first();
 		requestAid(keyField.text());
-	});
-
-	// toggle section with expand button
-	$('.toggle-button').click(function() {
-
-		var parent = $(this).parents('tr');
-		toggleRow(parent);
 	});
 
 	$('.next-button').click(function() {
@@ -44,12 +37,12 @@ $(document).ready(function() {
 	var next = lastExpanded.next();
 	if(next.length==0)
 	{
-		next = $('tr div.collapse').parents('tr').last(); 
+		next = $('tr div.collapse').parents('tr').last();
 	}
 	collapseRow(lastExpanded);
 	expandRow(next);
 	});
-	
+
 	shortcut.add("Ctrl+Up", function() {
 	var prev = lastExpanded.prev();
 	if (prev.length == 0) {
@@ -90,4 +83,10 @@ function toggleRow(row) {
 	var icon = row.find('button > i');
 	icon.toggleClass('icon-chevron-down');
 	icon.toggleClass('icon-chevron-right');
+}
+
+// toggle section with expand button
+function toggle(row) {
+        var parent = $(row).parents('tr');
+        toggleRow(parent);
 }
