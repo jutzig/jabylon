@@ -33,20 +33,22 @@ $(document).ready(function() {
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
-		var next = lastExpanded.next();
+		var current = lastExpanded;
+		var next = current.next();
 		if (next.length == 0) {
 			next = $('tr div.collapse').parents('tr').last();
 		}
-		collapseRow(lastExpanded);
+		collapseRow(current);
 		expandRow(next);
 	});
 
 	shortcut.add("Ctrl+Up", function() {
-		var prev = lastExpanded.prev();
+		var current = lastExpanded;
+		var prev = current.prev();
 		if (prev.length == 0) {
 			prev = $('tr div.collapse').parents('tr').first();
 		}
-		collapseRow(lastExpanded);
+		collapseRow(current);
 		expandRow(prev);
 	});
 	
@@ -78,15 +80,15 @@ function expandRow(row) {
 	var divs = row.find('td > div');
 	var icon = row.find('button > i');
 	divs.collapse('show');
-	icon.toggleClass('icon-chevron-down');
-	icon.toggleClass('icon-chevron-right');
+	icon.addClass('icon-chevron-down');
+	icon.removeClass('icon-chevron-right');
 }
 
 function collapseRow(row) {
 	row.find('td > div').collapse('hide');
 	var icon = row.find('button > i');
-	icon.toggleClass('icon-chevron-down');
-	icon.toggleClass('icon-chevron-right');
+	icon.removeClass('icon-chevron-down');
+	icon.addClass('icon-chevron-right');
 
 }
 
