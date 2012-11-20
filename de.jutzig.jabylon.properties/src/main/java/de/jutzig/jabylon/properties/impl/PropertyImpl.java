@@ -30,6 +30,9 @@ import de.jutzig.jabylon.properties.Property;
  * @generated NOPE
  */
 public class PropertyImpl extends CDOObjectImpl implements Property, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -221,4 +224,11 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	public String toString() {
+		return "Property ["+getKey() + " = " + getValue() + "] comment = " + getComment();
+	}
+
+	
+	
 } //PropertyImpl
