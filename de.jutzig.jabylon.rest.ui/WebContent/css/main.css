@@ -90,11 +90,7 @@ table.table {
 	max-width: none !important;
 }
 
-/* make progress label appear in the center of the bar */ 
-/* div.progress span {
-	position: absolute;
-	left: 0px;
-	text-align: center;
+/* make progress label in progress bars bold */ 
+div.progress div.bar {
 	font-weight: bold;
-	width: 100%;
-} */
+}
