@@ -1,18 +1,21 @@
 @CHARSET "UTF-8";
+
 @IMPORT url("../bootstrap/css/bootstrap.min.css");
+
 @IMPORT url("../bootstrap/css/bootstrap-responsive.min.css");
+
 body {
 	padding-top: 50px;
 }
 
-.navbar {
-	/* padding-left: 60px; */
+.navbar { /* padding-left: 60px; */
+	
 }
 
 /** to ensure that disabled toolbar links are in the right position*/
-.nav > li > span > em {
-    display: block;
-    padding: 10px 15px;
+.nav>li>span>em {
+	display: block;
+	padding: 10px 15px;
 }
 
 /** buttons */
@@ -29,30 +32,40 @@ body {
 }
 
 /** sort icons */
-table.table thead .sorting,
-table.table thead .sorting_asc,
-table.table thead .sorting_desc,
-table.table thead .sorting_asc_disabled,
-table.table thead .sorting_desc_disabled {
-    cursor: pointer;
-    *cursor: hand;
+table.table thead .sorting,table.table thead .sorting_asc,table.table thead .sorting_desc,table.table thead .sorting_asc_disabled,table.table thead .sorting_desc_disabled
+	{
+	cursor: pointer;
+	*cursor: hand;
 }
- 
 
- 
-table.table thead .sorting { background: url('../img/datatables/sort_both.png') no-repeat center right; }
-table.table thead .sorting_asc { background: url('../img/datatables/sort_asc.png') no-repeat center right; }
-table.table thead .sorting_desc { background: url('../img/datatables/sort_desc.png') no-repeat center right; }
- 
-table.table thead .sorting_asc_disabled { background: url('../img/datatables/sort_asc_disabled.png') no-repeat center right; }
-table.table thead .sorting_desc_disabled { background: url('../img/datatables/sort_desc_disabled.png') no-repeat center right;}
+table.table thead .sorting {
+	background: url('../img/datatables/sort_both.png') no-repeat center
+		right;
+}
+
+table.table thead .sorting_asc {
+	background: url('../img/datatables/sort_asc.png') no-repeat center right;
+}
+
+table.table thead .sorting_desc {
+	background: url('../img/datatables/sort_desc.png') no-repeat center
+		right;
+}
+
+table.table thead .sorting_asc_disabled {
+	background: url('../img/datatables/sort_asc_disabled.png') no-repeat
+		center right;
+}
+
+table.table thead .sorting_desc_disabled {
+	background: url('../img/datatables/sort_desc_disabled.png') no-repeat
+		center right;
+}
 /** sort icons */
-
 div.dataTables_length label {
 	float: left;
 	text-align: left;
 }
-
 
 div.dataTables_length select {
 	width: 75px;
@@ -76,3 +89,12 @@ table.table {
 	margin-bottom: 6px !important;
 	max-width: none !important;
 }
+
+/* make progress label appear in the center of the bar */ 
+/* div.progress span {
+	position: absolute;
+	left: 0px;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+} */

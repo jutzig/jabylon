@@ -14,11 +14,16 @@ select {
 		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
 	<script type="text/javascript"
 		src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
+	<script type="text/javascript" src="/jabylon/js/datatables/custom.sorting.js"></script>
 	<script type="text/javascript">
 	<!--
 		$(document).ready(function() {
 			$('#table').dataTable({
-				"iDisplayLength" : 10
+				"iDisplayLength" : 25,
+				"aoColumns": [
+                	null,
+                	{ "sType": "percent" }
+            	]
 			});
 		});
 	//-->
@@ -45,7 +50,7 @@ select {
 					<p wicket:id="summary">Summary stuff..</p></td>
 				<td style="width: 30%">
 					<div class="progress">
-						<div class="bar bar-success" wicket:id="progress"></div>
+						<div class="bar bar-success" wicket:id="progress">12%</div>
 					</div>
 				</td>
 			</tr>

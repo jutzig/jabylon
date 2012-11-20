@@ -22,6 +22,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Workspace;
@@ -53,7 +54,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 			@Override
 			protected void populateItem(Item<Resolvable<?, ?>> item) {
 				Resolvable<?, ?> resolvable = item.getModelObject();
-				item.add(new Label("summary",new Summary().doSwitch(resolvable)));
+				
 				if (resolvable instanceof ProjectLocale) {
 					// hide the template language by default
 					ProjectLocale locale = (ProjectLocale) resolvable;
@@ -66,10 +67,11 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 				ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
 				item.add(link);
-				Label progress = new Label("progress", "");
+				Label progress = new Label("progress", String.valueOf(resolvable.getPercentComplete())+"%");
 				progress.add(new AttributeModifier("style", "width: " + resolvable.getPercentComplete() + "%"));
 				item.add(progress);
 				new ImageSwitch(item).doSwitch(target.getEndPoint());
+				item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
 			}
 
 		};
@@ -169,6 +171,25 @@ class Summary extends PropertiesSwitch<String> {
 		String message = "{0} of {1} translated ({2}%)";
 		message = MessageFormat.format(message, translatedCount,propertyCount,object.getPercentComplete());
 		return message;
+	}
+	
+	@Override
+	public String casePropertyFileDescriptor(PropertyFileDescriptor object) {
+		int propertyCount = object.getKeys();
+		if(object.isMaster())
+		{
+			String message = "{0} keys";
+			message = MessageFormat.format(message, propertyCount);
+			return message; 
+		}
+		else
+		{
+			int templateCount = object.getMaster().getKeys();
+			String message = "{0} of {1} translated ({2}%)";
+			message = MessageFormat.format(message, propertyCount, templateCount, object.getPercentComplete());
+			return message;
+			
+		}
 	}
 
 }

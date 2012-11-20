@@ -1,6 +1,8 @@
 jQuery.extend( jQuery.fn.dataTableExt.oSort, {
     "percent-pre": function ( a ) {
-        var x = (a == "-") ? 0 : a.replace( /%/, "" );
+    	//customization to replace the html tags before sorting
+    	var x = a.replace( /<.*?>/g, "" );
+        x = (x == "-") ? 0 : x.replace( /%/, "" );
         return parseFloat( x );
     },
  
