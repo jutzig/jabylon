@@ -6,6 +6,7 @@ package de.jutzig.jabylon.rest.ui.navbar;
 import java.io.Serializable;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -29,14 +30,26 @@ public class SettingsNavBarPanel<T extends Resolvable<?, ?>> extends BasicResolv
 	public SettingsNavBarPanel(String id, T object, PageParameters parameters) {
 		super(id, object, parameters);
 		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,parameters);
-		User user = null;
-		Session session = getSession();
-		if (session instanceof CDOAuthenticatedSession) {
-			CDOAuthenticatedSession cdoSession = (CDOAuthenticatedSession) session;
-			user = cdoSession.getUser();
-		}
+
 		//TODO: this looks shitty with bootstrap currently
-		link.setEnabled(!DynamicConfigUtil.getApplicableElements(object, user).isEmpty());
+		if(AuthenticatedWebSession.get().isSignedIn())
+		{
+			User user = null;
+			Session session = getSession();
+			if (session instanceof CDOAuthenticatedSession) {
+				CDOAuthenticatedSession cdoSession = (CDOAuthenticatedSession) session;
+				user = cdoSession.getUser();
+			}
+			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object, user).isEmpty());
+		}
+		else
+		{
+			/*
+			 * if the user is not authenticated enable the link by default and trust 
+			 * in the intercept page of the authorization strategy
+			 */ 
+			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object).isEmpty());
+		}
 		add(link);
 	}
 

@@ -39,6 +39,20 @@ public class DynamicConfigUtil {
 		}
 		return applicable;
 	}
+	
+	public static List<IConfigurationElement> getApplicableElements(Object domainObject) {
+
+		List<IConfigurationElement> configSections = getConfigSections();
+		List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
+		for (IConfigurationElement child : configSections) {
+
+			if (isApplicable(child, domainObject)) {
+				applicable.add(child);
+			}
+
+		}
+		return applicable;
+	}
 
 	private static boolean hasPermissions(IConfigurationElement child, User user) {
 
