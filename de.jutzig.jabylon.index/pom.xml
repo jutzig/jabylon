@@ -11,9 +11,19 @@
         <relativePath>../releng/parent/pom.xml</relativePath>
     </parent>
     
-    <properties>
-    	<singleton>;singleton:=true</singleton>
-    </properties>
+    <build>
+    	<plugins>
+    		<plugin>
+    			<groupId>org.apache.felix</groupId>
+    			<artifactId>maven-bundle-plugin</artifactId>
+    			<configuration>
+    				<instructions>
+    					<Bundle-Activator>de.jutzig.jabylon.index.properties.IndexActivator</Bundle-Activator>
+    				</instructions>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </build>
 
     <dependencies>
         <dependency>

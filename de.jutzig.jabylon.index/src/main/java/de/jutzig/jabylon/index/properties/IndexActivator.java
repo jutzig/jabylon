@@ -8,9 +8,7 @@ import java.io.IOException;
 
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
@@ -43,6 +41,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
 			directory.close();
 		INSTANCE = null;
 		directory = null;
+		logger.info("Stopping Lucene Index");
 	}
 	
 	public Directory getOrCreateDirectory()
@@ -50,6 +49,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
 		if(directory==null)
 		{
 			try {
+				logger.info("Opening Lucene Index");
 				directory = FSDirectory.open(new File(ServerConstants.WORKING_DIR,"lucene"));
 			} catch (IOException e) {
 				logger.error("Failed to open index directory",e);

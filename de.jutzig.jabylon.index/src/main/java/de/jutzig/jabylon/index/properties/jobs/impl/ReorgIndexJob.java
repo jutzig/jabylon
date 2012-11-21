@@ -54,7 +54,8 @@ public class ReorgIndexJob implements JobExecution {
 
 	@Override
 	public void run(Map<String, Object> jobContext) throws Exception {
-		logger.info("Updating search index");
+		long time = System.currentTimeMillis();
+		logger.info("Reorg of search index started");
 		IndexWriter writer = null;
 		CDOSession session = null;
 		boolean closed = false;
@@ -90,7 +91,8 @@ public class ReorgIndexJob implements JobExecution {
 				IndexWriter.unlock(writer.getDirectory());
 			}
 		}
-		logger.info("Index updated successfully");
+		long duration = (System.currentTimeMillis() - time) / 1000;
+		logger.info("Search Index Reorg finished. Took {} seconds",duration);
 	}
 
 	private void indexWorkspace(Workspace workspace, IndexWriter writer) throws CorruptIndexException, IOException {

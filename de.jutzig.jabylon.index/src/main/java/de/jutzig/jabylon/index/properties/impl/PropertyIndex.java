@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -28,6 +30,8 @@ import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.changes.PropertiesListener;
 
+@Component
+@Service
 public class PropertyIndex extends Job implements PropertiesListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(PropertyIndex.class);

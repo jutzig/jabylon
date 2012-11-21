@@ -5,6 +5,8 @@ package de.jutzig.jabylon.index.properties.impl;
 
 import java.io.IOException;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
@@ -37,10 +39,13 @@ import de.jutzig.jabylon.properties.Workspace;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@Component
+@Service
 public class QueryServiceImpl implements QueryService {
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(QueryServiceImpl.class);
+
 	
 	/*
 	 * (non-Javadoc)
