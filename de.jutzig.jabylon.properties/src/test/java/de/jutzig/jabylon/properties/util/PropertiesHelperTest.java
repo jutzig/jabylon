@@ -70,6 +70,25 @@ public class PropertiesHelperTest {
 
 	}
 
+	/**
+	 * @see https://github.com/jutzig/jabylon/issues/55
+	 * @throws IOException
+	 */
+    @Test
+    public void testLoadPropertyWithUnicodeAndBOM() throws IOException{
+        BufferedReader reader = null;
+        try {
+            reader = loadFile("Buttons_en.seenls");
+            Property property = fixture.readProperty(reader);
+            assertEquals("DTM.CASCADE_SESSION_FRAMES_TEXT", property.getKey());
+            assertEquals("Cascade", property.getValue());
+            assertEquals("test", property.getComment());
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+
 	@Test
 	public void testReadPropertySingleCharComment() throws IOException {
 		BufferedReader reader = null;
@@ -80,12 +99,12 @@ public class PropertiesHelperTest {
 			assertEquals("<copyright>\n</copyright>\n\n$Id$",property.getComment());
 			assertEquals("pluginName",property.getKey());
 			assertEquals("Properties Model",property.getValue());
-			
+
 			property = fixture.readProperty(reader);
 			assertNull(property.getComment());
 			assertEquals("providerName",property.getKey());
 			assertEquals("www.example.org",property.getValue());
-			
+
 			assertNull(fixture.readProperty(reader));
 
 		} finally {
@@ -93,14 +112,14 @@ public class PropertiesHelperTest {
 				reader.close();
 		}
 	}
-	
-	
+
+
 	@Test
 	public void testReadUnicodePropertyWithUnicodeEscapes() throws IOException {
-		
+
 		fixture = new PropertiesHelper(false);
 		BufferedReader reader = new BufferedReader(new StringReader("äö\\u00DC = aaa"));
-		
+
 		try {
 			Property property = fixture.readProperty(reader);
 			assertEquals("even with escaping turned of, it must still parse the escaped strings","äöÜ",property.getKey());
@@ -174,6 +193,7 @@ public class PropertiesHelperTest {
 		assertEquals("#test\n#test\nkey = test\n", writer.toString());
 
 	}
+
 
 	private BufferedReader loadFile(String name) throws FileNotFoundException {
 		File file = new File(
