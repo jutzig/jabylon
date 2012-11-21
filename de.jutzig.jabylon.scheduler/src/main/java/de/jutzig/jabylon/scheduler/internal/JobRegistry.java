@@ -3,10 +3,12 @@
  */
 package de.jutzig.jabylon.scheduler.internal;
 
+import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Deactivate;
+import org.apache.felix.scr.annotations.Reference;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.Preferences;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -18,14 +20,17 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.common.util.PreferencesUtil;
-import de.jutzig.jabylon.scheduler.SchedulerActivator;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
+@Component(immediate=true,enabled=true)
 public class JobRegistry {
 
 	private Scheduler scheduler;
@@ -33,42 +38,67 @@ public class JobRegistry {
 	public static final String KEY_SCHEDULE = "cron";
 	public static final String KEY_JOBS = "jobs";
 
+	public static final String PLUGIN_ID = "de.jutzig.jabylon.scheduler";
+	private static final Logger logger = LoggerFactory.getLogger(JobRegistry.class);
+	
+	@Reference
+	private RepositoryConnector repositoryConnector;
+	
 	public JobRegistry() {
 
 	}
+	
+	public void bindRepositoryConnector(RepositoryConnector connector)
+	{
+		this.repositoryConnector = connector;
+	}
+	
+	public void unbindRepositoryConnector(RepositoryConnector connector)
+	{
+		this.repositoryConnector = null;
+	}
 
-	public void register() throws SchedulerException {
+	@Activate
+	public void activate() throws SchedulerException {
 
 		SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
 		scheduler = schedFact.getScheduler();
 		scheduler.start();
-
+		
 		Preferences root = PreferencesUtil.workspaceScope().node("jobs");
-		IConfigurationElement[] iConfigurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-				SchedulerActivator.PLUGIN_ID, KEY_JOBS);
+		IConfigurationElement[] iConfigurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(PLUGIN_ID, KEY_JOBS);
 		for (IConfigurationElement iConfigurationElement : iConfigurationElements) {
 			String jobID = iConfigurationElement.getAttribute("id");
 			Preferences node = root.node(jobID);
 			JobDetail detail = createJobDetails(iConfigurationElement);
 				
 			detail.getJobDataMap().put(JabylonJob.ELEMENT_KEY, iConfigurationElement);
-			detail.getJobDataMap().put(JabylonJob.CONNECTOR_KEY, SchedulerActivator.getRepositoryConnector());
-			scheduler.addJob(detail, true);
+			detail.getJobDataMap().put(JabylonJob.CONNECTOR_KEY, repositoryConnector);
+			try {
+				scheduler.addJob(detail, true);
+			} catch (SchedulerException e) {
+				logger.error("Failed to add job "+detail,e);
+				continue;
+			}
 			
 			String activeByDefault = iConfigurationElement.getAttribute("activeByDefault");
 			boolean defaultActive = Boolean.valueOf(activeByDefault);
 			boolean active = node.getBoolean(KEY_ACTIVE, defaultActive);
 			CronTrigger trigger = createSchedule(jobID, node, iConfigurationElement);
 			if (active) {
-				scheduler.scheduleJob(trigger);
+				try {
+					scheduler.scheduleJob(trigger);
+				} catch (SchedulerException e) {
+					logger.error("Failed to schedule job "+trigger,e);
+					continue;
+				}
 			}
 		}
 	}
 	
 	public void updateJobs() throws SchedulerException{
 		Preferences root = PreferencesUtil.workspaceScope().node(KEY_JOBS);
-		IConfigurationElement[] iConfigurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-				SchedulerActivator.PLUGIN_ID, "jobs");
+		IConfigurationElement[] iConfigurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(PLUGIN_ID, "jobs");
 		for (IConfigurationElement iConfigurationElement : iConfigurationElements) {
 			String jobID = iConfigurationElement.getAttribute("id");
 			Preferences node = root.node(jobID);
@@ -109,7 +139,8 @@ public class JobRegistry {
 				.withDescription(element.getAttribute("description")).storeDurably(true).build();
 	}
 
-	public void shutdown() throws SchedulerException {
+	@Deactivate
+	public void deactivate() throws SchedulerException {
 		scheduler.shutdown(true);
 	}
 

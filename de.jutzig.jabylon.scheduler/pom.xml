@@ -18,21 +18,32 @@
 	</properties>
 
 	<build>
+	
+		<resources>
+			<resource>
+				<directory></directory>
+				<includes>
+					<include>plugin.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.4</version>
-				<extensions>true</extensions>
 				<configuration>
-					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
-						<Bundle-Activator>de.jutzig.jabylon.scheduler.SchedulerActivator</Bundle-Activator>
+						<Embed-Dependency>quartz</Embed-Dependency>
+						<Embed-Directory>lib</Embed-Directory>
+						<Embed-StripVersion>true</Embed-StripVersion>
+						<Import-Package>!com.mchange.v2.c3p0,!javax.*,*</Import-Package>
+						<Bundle-ActivationPolicy>!</Bundle-ActivationPolicy>
 					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
 
 	<dependencies>
 		<dependency>
@@ -58,9 +69,13 @@
 			<type>bundle</type>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.scr.annotations</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId> 
 			<version>1.0.01</version> </dependency> -->
-		<!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId>
+		<!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId> 
 			<version>1.0.0.v201108011116</version> <type>orbit</type> </dependency> -->
 	</dependencies>
 </project>
