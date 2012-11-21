@@ -1,7 +1,16 @@
 //to remember which row was last expanded (for next/previous)
 var lastExpanded;
+//to remember what to do when tab-key is used
+var currentFocus;
 
 $(document).ready(function() {
+	$(":input").focus(function () {
+		if(this && this.tagName && this.tagName.toLowerCase() == "textarea") {
+			currentFocus = this;
+		} else {
+			currentFocus = null;
+		}
+	});
 
 	$('#table').dataTable({
 		"iDisplayLength" : 50
@@ -51,8 +60,30 @@ $(document).ready(function() {
 		collapseRow(current);
 		expandRow(prev);
 	});
-	
-	
+
+	shortcut.add("tab", function() {
+		var current = lastExpanded;
+		if(currentFocus==null) {
+			var textarea = current.find('textarea[placeholder~="Translation"]');
+			textarea.focus();
+			return;
+		}
+
+		var inputType = currentFocus.placeholder;
+		if (inputType && inputType == "Translation") {
+			current.find('textarea[placeholder~="Comment"]').focus();
+		} else if (inputType && inputType == "Comment") {
+			var next = current.next();
+			if (next.length == 0) {
+				next = $('tr div.collapse').parents('tr').last();
+			}
+			collapseRow(current);
+			expandRow(next);
+			next.find('textarea[placeholder~="Translation"]').focus();
+		}
+	});
+
+
 	//this disables the default submit behaviour and instead does a post to the wicket submit URL
 	// see https://github.com/jutzig/jabylon/issues/52
 	$('#properties-form').submit(function(event) {
@@ -66,7 +97,7 @@ $(document).ready(function() {
 		return true;
 	});
 
-	
+
 });
 
 // automatically expand the first row that has an error
