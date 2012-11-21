@@ -14,6 +14,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Deactivate;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.ReferencePolicy;
+import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.CDONotification;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
@@ -31,6 +38,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
@@ -49,26 +58,53 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- *
+ * 
  */
+@Component
+@Service(PropertyPersistenceService.class)
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
+	@Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, referenceInterface = PropertiesListener.class, bind="addPropertiesListener",unbind="removePropertiesListener")
 	private List<PropertiesListener> listeners;
 
 	private BlockingQueue<PropertyTuple> queue;
+	
+	private static Logger logger = LoggerFactory.getLogger(PropertiesPersistenceServiceImpl.class);
 
+	@Reference
+	private RepositoryConnector repositoryConnector;
+	
 	private Workspace workspace;
+
+	private Thread runner;
 
 	public PropertiesPersistenceServiceImpl() {
 		listeners = new CopyOnWriteArrayList<PropertiesListener>();
-		queue = new ArrayBlockingQueue<PropertyTuple>(50);
-		Thread t = new Thread(this, "Properties Persistence Service");
-		t.setDaemon(true);
-		t.start();
 
 	}
+	
+	@Activate
+	public void activate()
+	{
+		
+		queue = new ArrayBlockingQueue<PropertyTuple>(50);
+		runner = new Thread(this, "Properties Persistence Service");
+		runner.setDaemon(true);
+		runner.start();
+	}
+	
+	@Deactivate
+	public void deactivate()
+	{
+		listeners.clear();
+		queue = null;
+		runner.interrupt();
+		runner = null;
+	}
 
-	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
+	
+	public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
+		this.repositoryConnector = repositoryConnector;
 		CDOSession session = repositoryConnector.createSession();
 		session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
 
@@ -103,7 +139,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						if (object instanceof ProjectLocale) {
 							ProjectLocale locale = (ProjectLocale) object;
 							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
-							//FIXME: delete obsolete resource folders and derived locale descriptors
+							// FIXME: delete obsolete resource folders and
+							// derived locale descriptors
 							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
 								firePropertiesDeleted(propertyFileDescriptor, false);
 
@@ -202,10 +239,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 							try {
 								removeAdapter(workspace.cdoView().getObject(id));
 							} catch (ObjectNotFoundException e) {
-								// object doesn't exist anymore, so we're good
-								// TODO: log
+								logger.warn("REMOVE_MANY object ID not found: "+notification,e);
 							}
-
 						}
 					}
 					break;
@@ -218,7 +253,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		});
 	}
 
-	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
+	public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
+		this.repositoryConnector = null;
 		CDOView view = workspace.cdoView();
 		org.eclipse.emf.cdo.session.CDOSession session = view.getSession();
 		LifecycleUtil.deactivate(view);
@@ -229,7 +265,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
 	 * de.jutzig.jabylon.properties.PropertyFile)
@@ -253,7 +289,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * addPropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -266,7 +302,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
 	 * removePropertiesListener
 	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
@@ -281,10 +317,9 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		CDOTransaction transaction = null;
 		try {
 			while (true) {
+				PropertyTuple tuple = queue.take();
 				try {
-
-					PropertyTuple tuple = queue.take();
-					if(transaction==null)
+					if (transaction == null)
 						transaction = workspace.cdoView().getSession().openTransaction();
 
 					PropertyFileDescriptor descriptor = transaction.getObject(tuple.getDescriptor());
@@ -301,7 +336,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						descriptor.updatePercentComplete();
 						transaction.commit();
 						List<Notification> diff = differentiator.diff(file);
-						firePropertiesChanges(descriptor, diff,tuple.isAutoSync());
+						firePropertiesChanges(descriptor, diff, tuple.isAutoSync());
 					} else {
 						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
 						resource.getContents().add(file);
@@ -309,29 +344,23 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 						descriptor.setKeys(resource.getSavedProperties());
 						descriptor.updatePercentComplete();
 						transaction.commit();
-						//FIXME: create resource folders and handle derived locales
-						firePropertiesAdded(descriptor,tuple.isAutoSync());
+						// FIXME: create resource folders and handle derived
+						// locales
+						firePropertiesAdded(descriptor, tuple.isAutoSync());
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-
-					e.printStackTrace();
+					logger.error("Exception while processing "+tuple,e);
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					//clean up the dirty transaction
+					logger.error("failed to commit while processing "+tuple,e);
 					transaction.close();
 					transaction = null;
 				}
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Received Interrupt. Shutting down...");
 			// let thread end...
-		}
-		finally
-		{
-			if(transaction!=null)
+		} finally {
+			if (transaction != null)
 				transaction.close();
 		}
 
@@ -400,5 +429,12 @@ class PropertyTuple {
 	public boolean isAutoSync() {
 		return autoSync;
 	}
+
+	@Override
+	public String toString() {
+		return "PropertyTuple [descriptor=" + descriptor + ", file=" + file + ", autoSync=" + autoSync + "]";
+	}
+	
+	
 
 }
