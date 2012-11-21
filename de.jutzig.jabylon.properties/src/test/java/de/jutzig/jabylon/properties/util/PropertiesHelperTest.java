@@ -3,13 +3,18 @@ package de.jutzig.jabylon.properties.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.ObjectInputStream.GetField;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -78,7 +83,9 @@ public class PropertiesHelperTest {
     public void testLoadPropertyWithUnicodeAndBOM() throws IOException{
         BufferedReader reader = null;
         try {
-            reader = loadFile("Buttons_en.seenls");
+            InputStream stream = new BufferedInputStream(loadFileAsStream("Buttons_en.seenls"));
+            fixture.checkForBom(stream);
+            reader = new BufferedReader(new InputStreamReader(stream));
             Property property = fixture.readProperty(reader);
             assertEquals("DTM.CASCADE_SESSION_FRAMES_TEXT", property.getKey());
             assertEquals("Cascade", property.getValue());
@@ -200,5 +207,12 @@ public class PropertiesHelperTest {
 				"src/test/resources/project/master/de/jutzig/jabylon/properties/util/"
 						+ name);
 		return new BufferedReader(new FileReader(file));
+	}
+	
+	private InputStream loadFileAsStream(String name) throws FileNotFoundException {
+		File file = new File(
+				"src/test/resources/project/master/de/jutzig/jabylon/properties/util/"
+						+ name);
+		return new FileInputStream(file);
 	}
 }

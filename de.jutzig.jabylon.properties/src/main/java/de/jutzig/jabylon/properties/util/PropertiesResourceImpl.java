@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,7 +34,6 @@ import de.jutzig.jabylon.properties.PropertyType;
  */
 public class PropertiesResourceImpl extends ResourceImpl {
 
-
 	//TODO: this is a dirty hack...
 	private int savedProperties;
 
@@ -55,21 +55,29 @@ public class PropertiesResourceImpl extends ResourceImpl {
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
 		PropertiesHelper helper;
-		PropertyType type = getPropertyType(options);;
+		PropertyType type = getPropertyType(options);
+
 		if(type==PropertyType.ENCODED_ISO)
 			helper = new PropertiesHelper(true);
 		else
 			helper = new PropertiesHelper(false);
+		
+		InputStream in = inputStream;
+		if(!in.markSupported())
+			in = new BufferedInputStream(in);
+		//TODO: should we do anything with the bom? Set to Unicode?
+		helper.checkForBom(in);
+		
 		BufferedReader reader = null;
 		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
 		try {
 			if(type==PropertyType.ENCODED_ISO)
 			{
-				reader = new BufferedReader(new InputStreamReader(inputStream,"ISO-8859-1"));
+				reader = new BufferedReader(new InputStreamReader(in,"ISO-8859-1"));
 			}
 			if(type==PropertyType.UNICODE)
 			{
-				reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8")); //TODO: use encoding property
+				reader = new BufferedReader(new InputStreamReader(in,"UTF-8")); //TODO: use encoding property
 			}
 			Property p = null;
 			while((p = helper.readProperty(reader))!=null)

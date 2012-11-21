@@ -5,8 +5,10 @@ package de.jutzig.jabylon.properties.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 
+import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,8 @@ public class PropertiesHelper {
 	
 	
 	private boolean unicodeEscaping;
+	private static final int MAX_BOM_LENGTH = 4;
+
 	final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 	
 	public PropertiesHelper() {
@@ -148,4 +152,22 @@ public class PropertiesHelper {
 		writer.write('\n');
 	}
 
+	
+	/**
+	 * returns the BOM if available. If no BOM was found the stream is reset to its original state 
+	 * 
+	 * @param inputStream must support mark/rest, or an IllegalArgumentException is thrown
+	 * @return
+	 * @throws IOException, IllegalArgumentException
+	 */
+	public ByteOrderMark checkForBom(InputStream inputStream) throws IOException {
+		if(!inputStream.markSupported())
+			throw new IllegalArgumentException("InputStream must support mark/rest: "+inputStream);
+		inputStream.mark(MAX_BOM_LENGTH);
+		ByteOrderMark bom = ByteOrderMark.read(inputStream);
+		if(bom==null)
+			inputStream.reset();
+		return bom;
+	}
+	
 }
