@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -52,7 +53,10 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
 				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModelObject(), "content");
-				item.add(newPanel);
+				if(newPanel==null)
+					item.add(new Label("content","NONE"));
+				else
+					item.add(newPanel);
 			}
 		};
 		listView.setRenderBodyOnly(true);
@@ -65,7 +69,10 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
 				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModelObject(), "content");
-				item.add(newPanel);
+				if(newPanel==null)
+					item.add(new Label("content","NONE"));
+				else
+					item.add(newPanel);
 			}
 		};
 		rightListView.setRenderBodyOnly(true);
