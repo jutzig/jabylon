@@ -3,10 +3,6 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket;
 
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
@@ -19,7 +15,7 @@ import org.apache.wicket.util.string.StringValue;
  */
 public class BasicPanel<T>extends GenericPanel<T> {
 
-	
+	private static final long serialVersionUID = 1L;
 	private transient PageParameters pageParameters;
 
 	public BasicPanel(String id, IModel<T> model, PageParameters parameters) {
@@ -29,16 +25,6 @@ public class BasicPanel<T>extends GenericPanel<T> {
 	
 	public PageParameters getPageParameters() {
 		return pageParameters;
-	}
-
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-
-//		Bootstrap.renderHead(response);
-		
-		response.render(CssHeaderItem.forUrl("/jabylon/css/main.css"));
-//		response.render(JavaScriptHeaderItem.forUrl("bootstrap/js/bootstrap.js"));
 	}
 
 	protected boolean urlEndsOnSlash()

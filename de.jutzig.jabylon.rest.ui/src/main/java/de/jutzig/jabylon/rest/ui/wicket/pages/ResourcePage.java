@@ -16,7 +16,7 @@ import de.jutzig.jabylon.rest.ui.wicket.panels.PropertyEditorPanel;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class ResourcePage<T extends Resolvable<?, ?>> extends GenericPage<T> {
+public class ResourcePage<T extends Resolvable<?, ?>> extends GenericResolvablePage<T> {
 
 	private static final long serialVersionUID = 1L;
 

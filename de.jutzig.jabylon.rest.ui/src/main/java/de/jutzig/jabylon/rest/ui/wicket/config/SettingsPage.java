@@ -39,6 +39,7 @@ import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
+import de.jutzig.jabylon.rest.ui.wicket.pages.GenericResolvablePage;
 import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import de.jutzig.jabylon.users.User;
 
@@ -48,7 +49,7 @@ import de.jutzig.jabylon.users.User;
  * 
  */
 @AuthorizeInstantiation("ACCESS_CONFIG")
-public class SettingsPage extends GenericPage<Resolvable<?, ?>> {
+public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
 	

@@ -1,8 +1,6 @@
 package de.jutzig.jabylon.rest.ui.navbar;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +10,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -19,19 +18,18 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.jutzig.jabylon.properties.Resolvable;
-import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
-public class NavbarPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<T> {
+public class NavbarPanel<T> extends BasicPanel<T> {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LoggerFactory.getLogger(NavbarPanel.class);
 	
-	public NavbarPanel(String id, T object, PageParameters parameters) {
-		super(id, object, parameters);
+	public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
+		super(id, model, parameters);
 		add(new BookmarkablePageLink<String>("jabylon",WelcomePage.class));
 		Map<PanelFactory, Boolean> data = loadNavBarExtensions();
 
