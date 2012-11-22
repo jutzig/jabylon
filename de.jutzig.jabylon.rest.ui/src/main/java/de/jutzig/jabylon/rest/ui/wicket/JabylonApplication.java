@@ -5,9 +5,11 @@ package de.jutzig.jabylon.rest.ui.wicket;
 
 import java.util.Locale;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
+import org.apache.wicket.ThreadContext;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
@@ -97,7 +99,13 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 				Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
 				if (pathObject instanceof String) {
 					String path = (String) pathObject;
-					unmount(path);
+					Application application = ThreadContext.getApplication();
+					if (application != null)
+					{
+						//otherwise wicket will throw an exception unfortunately
+						//TODO: how can this be done cleanly?
+						unmount(path);
+					}
 				}
 			}
 
