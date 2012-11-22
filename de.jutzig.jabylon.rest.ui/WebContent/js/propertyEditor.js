@@ -4,6 +4,9 @@ var lastExpanded;
 var currentFocus;
 
 $(document).ready(function() {
+	
+	selectFuzzyRow();
+	
 	$(":input").focus(function () {
 		if(this && this.tagName && this.tagName.toLowerCase() == "textarea") {
 			currentFocus = this;
@@ -38,7 +41,7 @@ $(document).ready(function() {
 		collapseRow(parent);
 	});
 
-	selectFuzzyRow();
+	
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
@@ -81,6 +84,8 @@ $(document).ready(function() {
 			expandRow(next);
 			next.find('textarea[placeholder~="Translation"]').focus();
 		}
+		
+		
 	});
 
 
@@ -97,13 +102,17 @@ $(document).ready(function() {
 		return true;
 	});
 
-
+	
 });
 
 // automatically expand the first row that has an error
-function selectFuzzyRow() {
-	var tableRow = $('tr.error').first();
-	expandRow(tableRow);
+function selectFuzzyRow() 
+{
+	//TODO: for some reason this breaks without the timeout?
+	setTimeout(function(){
+		var tableRow = $('tr.error').first();
+		expandRow(tableRow);
+	}, 500);
 }
 
 function expandRow(row) {
