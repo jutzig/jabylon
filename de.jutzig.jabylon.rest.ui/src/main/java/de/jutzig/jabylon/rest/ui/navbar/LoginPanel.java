@@ -12,12 +12,12 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
-import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 import de.jutzig.jabylon.users.User;
 
@@ -25,11 +25,11 @@ import de.jutzig.jabylon.users.User;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class LoginPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<T> {
+public class LoginPanel<T> extends BasicPanel<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	public LoginPanel(String id, T object, PageParameters parameters) {
+	public LoginPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
 		Session theSession = getSession();
 
@@ -53,15 +53,11 @@ public class LoginPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel
 
 		private static final long serialVersionUID = 1L;
 
-		@SuppressWarnings("rawtypes")
 		@Override
-		public Panel createPanel(PageParameters params, Object input, String id) {
+		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
 
-			if (input instanceof Resolvable) {
-				Resolvable r = (Resolvable) input;
-				return new LoginPanel<Resolvable<?, ?>>(id, r, params);
-			}
-			return null;
+			return new LoginPanel<T>(id, input, params);
+
 		}
 
 	}

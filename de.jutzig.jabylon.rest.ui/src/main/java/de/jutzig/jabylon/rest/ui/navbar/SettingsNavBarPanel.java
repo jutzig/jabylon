@@ -9,12 +9,12 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
-import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
-import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.users.User;
@@ -23,11 +23,11 @@ import de.jutzig.jabylon.users.User;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class SettingsNavBarPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<T> {
+public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	public SettingsNavBarPanel(String id, T object, PageParameters parameters) {
+	public SettingsNavBarPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
 		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,parameters);
 
@@ -40,7 +40,7 @@ public class SettingsNavBarPanel<T extends Resolvable<?, ?>> extends BasicResolv
 				CDOAuthenticatedSession cdoSession = (CDOAuthenticatedSession) session;
 				user = cdoSession.getUser();
 			}
-			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object, user).isEmpty());
+			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object.getObject(), user).isEmpty());
 		}
 		else
 		{
@@ -58,15 +58,10 @@ public class SettingsNavBarPanel<T extends Resolvable<?, ?>> extends BasicResolv
 
 		private static final long serialVersionUID = 1L;
 
-		@SuppressWarnings("rawtypes")
 		@Override
-		public Panel createPanel(PageParameters params, Object input, String id) {
+		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
 
-			if (input instanceof Resolvable) {
-				Resolvable r = (Resolvable) input;
-				return new SettingsNavBarPanel<Resolvable<?,?>>(id, r, params);
-			}
-			return null;
+			return new SettingsNavBarPanel<T>(id, input, params);
 		}
 		
 	}

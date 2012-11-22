@@ -7,22 +7,22 @@ import java.io.Serializable;
 
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import de.jutzig.jabylon.properties.Resolvable;
-import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class HelpPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<T> {
+public class HelpPanel<T> extends BasicPanel<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	public HelpPanel(String id, T object, PageParameters parameters) {
-		super(id, object, parameters);
+	public HelpPanel(String id, IModel<T> model, PageParameters parameters) {
+		super(id, model, parameters);
 		add(new ExternalLink("link","#help"));
 	}
 
@@ -31,15 +31,10 @@ public class HelpPanel<T extends Resolvable<?, ?>> extends BasicResolvablePanel<
 
 		private static final long serialVersionUID = 1L;
 
-		@SuppressWarnings("rawtypes")
 		@Override
-		public Panel createPanel(PageParameters params, Object input, String id) {
+		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
 
-			if (input instanceof Resolvable) {
-				Resolvable r = (Resolvable) input;
-				return new HelpPanel<Resolvable<?,?>>(id, r, params);
-			}
-			return null;
+			return new HelpPanel<T>(id, input , params);
 		}
 		
 	}

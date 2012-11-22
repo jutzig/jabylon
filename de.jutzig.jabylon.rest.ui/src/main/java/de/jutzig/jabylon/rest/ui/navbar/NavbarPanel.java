@@ -52,7 +52,7 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
-				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModelObject(), "content");
+				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content");
 				if(newPanel==null)
 					item.add(new Label("content","NONE"));
 				else
@@ -68,7 +68,7 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
-				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModelObject(), "content");
+				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content");
 				if(newPanel==null)
 					item.add(new Label("content","NONE"));
 				else
