@@ -3,6 +3,8 @@
  */
 package de.jutzig.jabylon.common.resolver.impl;
 
+import java.util.List;
+
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
@@ -57,12 +59,15 @@ public class WorkspaceResolver implements URIResolver {
 	 */
 	@Override
 	public Object resolve(URI uri) {
-		// TODO Auto-generated method stub
-		if (uri.isEmpty())
+		if (uri.isEmpty() || uri.segmentCount()==0)
 			return workspace;
-		String firstSegment = uri.segment(1);
+		String firstSegment = uri.segment(0);
 		if ("workspace".equals(firstSegment))
-			return workspace.resolveChild(uri.deresolve(URI.createURI("workspace")));
+		{
+			List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
+			URI relativeURI = URI.createHierarchicalURI(list.toArray(new String[list.size()]), uri.query(), uri.fragment());
+			return workspace.resolveChild(relativeURI);
+		}
 		//TODO: support additional URI schemes
 		return null;
 //		else if ("userManagment".equals(firstSegment))
@@ -79,6 +84,8 @@ public class WorkspaceResolver implements URIResolver {
 	 */
 	@Override
 	public Object resolve(String path) {
+		if(path==null)
+			return workspace;
 		URI uri = URI.createURI(path, true);
 		return resolve(uri);
 	}
