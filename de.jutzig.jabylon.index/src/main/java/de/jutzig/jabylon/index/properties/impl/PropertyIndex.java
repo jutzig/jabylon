@@ -108,7 +108,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
 					writer.deleteDocuments(new Term(QueryService.FIELD_CDO_ID, builder.toString()));
 					break;
 				case REPLACE:
-					writer.deleteDocuments(new Term(QueryService.FIELD_URI, documentTuple.getDescriptor().fullPath().toString()));
+					writer.deleteDocuments(new Term(QueryService.FIELD_FULL_PATH, documentTuple.getDescriptor().fullPath().toString()));
 					for (Document document : documents) {
 						writer.addDocument(document);
 					}

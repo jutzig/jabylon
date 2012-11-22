@@ -6,6 +6,7 @@ package de.jutzig.jabylon.index.properties.impl;
 import java.io.IOException;
 
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -26,6 +27,7 @@ import org.eclipse.emf.cdo.view.CDOView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.index.properties.SearchResult;
@@ -46,6 +48,17 @@ public class QueryServiceImpl implements QueryService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(QueryServiceImpl.class);
 
+	@Reference
+	private URIResolver uriResolver;
+	
+	
+	public void bindUriResolver(URIResolver uriResolver) {
+		this.uriResolver = uriResolver;
+	}
+	
+	public void unbindUriResolver(URIResolver uriResolver) {
+		this.uriResolver = null;
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -54,9 +67,9 @@ public class QueryServiceImpl implements QueryService {
 	 * de.jutzig.jabylon.index.properties.QueryService#search(java.lang.String)
 	 */
 	@Override
-	public SearchResult search(String search, Object scope) {
+	public SearchResult search(String search, String scopeURI) {
 		search = search.toLowerCase();
-		Query q = constructQuery(scope, search);
+		Query q = constructQuery(uriResolver.resolve(scopeURI), search);
 		return search(q,1000);
 
 	}
@@ -110,7 +123,7 @@ public class QueryServiceImpl implements QueryService {
 	}
 
 	private TermQuery createDescriptorQuery(PropertyFileDescriptor descriptor) {
-		return new TermQuery(new Term(FIELD_URI, descriptor.fullPath().toString()));
+		return new TermQuery(new Term(FIELD_FULL_PATH, descriptor.fullPath().toString()));
 	}
 
 	@Override

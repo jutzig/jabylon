@@ -19,6 +19,7 @@ public interface QueryService {
 	String FIELD_VALUE = "value";
 	String FIELD_KEY = "key";
 	String FIELD_URI = "uri";
+	String FIELD_FULL_PATH = "path";
 	String FIELD_COMMENT = "comment";
 	String FIELD_LOCALE = "locale";
 	String FIELD_VERSION = "version";
@@ -27,7 +28,7 @@ public interface QueryService {
 	String MASTER = "master";
 
 
-	SearchResult search(String search, Object scope);
+	SearchResult search(String search, String scopeURI);
 
 	SearchResult search(Query query, int maxHits);
 

@@ -48,8 +48,10 @@ public class PropertyFileAnalyzer {
 				Field localeField = new Field(QueryService.FIELD_LOCALE, locale.getLocale().toString(), Store.YES, Index.NOT_ANALYZED);				
 				doc.add(localeField);
 			}
-			Field uriField = new Field(QueryService.FIELD_URI, descriptor.fullPath().toString(), Store.YES, Index.NOT_ANALYZED);
+			Field uriField = new Field(QueryService.FIELD_URI, descriptor.getLocation().toString(), Store.YES, Index.NOT_ANALYZED);
 			doc.add(uriField);
+			Field pathField = new Field(QueryService.FIELD_FULL_PATH, descriptor.fullPath().toString(), Store.YES, Index.NOT_ANALYZED);
+			doc.add(pathField);
 			CDOID cdoID = descriptor.cdoID();
 			StringBuilder builder = new StringBuilder();
 			CDOIDUtil.write(builder, cdoID);
