@@ -40,7 +40,7 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 				CDOAuthenticatedSession cdoSession = (CDOAuthenticatedSession) session;
 				user = cdoSession.getUser();
 			}
-			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object.getObject(), user).isEmpty());
+			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object, user).isEmpty());
 		}
 		else
 		{
