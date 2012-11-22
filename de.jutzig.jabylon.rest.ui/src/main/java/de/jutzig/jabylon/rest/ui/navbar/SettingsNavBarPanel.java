@@ -40,15 +40,17 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 				CDOAuthenticatedSession cdoSession = (CDOAuthenticatedSession) session;
 				user = cdoSession.getUser();
 			}
-			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object, user).isEmpty());
+			if(object!=null)
+				link.setEnabled(!DynamicConfigUtil.getApplicableElements(object.getObject(), user).isEmpty());
 		}
 		else
 		{
 			/*
 			 * if the user is not authenticated enable the link by default and trust 
 			 * in the intercept page of the authorization strategy
-			 */ 
-			link.setEnabled(!DynamicConfigUtil.getApplicableElements(object).isEmpty());
+			 */
+			if(object!=null)
+				link.setEnabled(!DynamicConfigUtil.getApplicableElements(object.getObject()).isEmpty());
 		}
 		add(link);
 	}

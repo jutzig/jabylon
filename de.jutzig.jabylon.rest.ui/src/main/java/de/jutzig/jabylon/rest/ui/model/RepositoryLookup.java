@@ -8,7 +8,8 @@ import org.eclipse.emf.common.util.URI;
 
 import de.jutzig.jabylon.properties.Resolvable;
 
-
+@Deprecated
+//TODO: replace this with URIResolver
 public interface RepositoryLookup
 {
     <T extends Resolvable<?, ?>> T lookup(String path);
