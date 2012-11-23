@@ -1175,6 +1175,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		initEClass(resourceFolderEClass, ResourceFolder.class, "ResourceFolder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		addEOperation(resourceFolderEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		// Initialize enums and add enum literals
 		initEEnum(propertyTypeEEnum, PropertyType.class, "PropertyType");
 		addEEnumLiteral(propertyTypeEEnum, PropertyType.ENCODED_ISO);

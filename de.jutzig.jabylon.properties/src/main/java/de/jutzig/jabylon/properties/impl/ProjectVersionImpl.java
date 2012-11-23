@@ -38,18 +38,16 @@ import de.jutzig.jabylon.properties.util.scanner.WorkspaceScanner;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTemplate
- * <em>Template</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.ProjectVersionImpl#getTemplate <em>Template</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> implements ProjectVersion {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ProjectVersionImpl() {
@@ -58,7 +56,6 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -68,27 +65,22 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ProjectLocale getTemplate() {
-		return (ProjectLocale) eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE,
-				PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, true, true);
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE, PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, true, true);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ProjectLocale basicGetTemplate() {
-		return (ProjectLocale) eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE,
-				PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, false, true);
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROJECT_VERSION__TEMPLATE, PropertiesPackage.Literals.PROJECT_VERSION__TEMPLATE, false, true);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setTemplate(ProjectLocale newTemplate) {
@@ -200,60 +192,55 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-			if (resolve)
-				return getTemplate();
-			return basicGetTemplate();
+			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+				if (resolve) return getTemplate();
+				return basicGetTemplate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-			setTemplate((ProjectLocale) newValue);
-			return;
+			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+				setTemplate((ProjectLocale)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-			setTemplate((ProjectLocale) null);
-			return;
+			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+				setTemplate((ProjectLocale)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
-			return basicGetTemplate() != null;
+			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
+				return basicGetTemplate() != null;
 		}
 		return super.eIsSet(featureID);
 	}

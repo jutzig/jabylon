@@ -2,9 +2,9 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 
+import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
@@ -36,6 +36,26 @@ public class ResourceFolderImpl extends ResolvableImpl<Resolvable<?, ?>, Resolva
 	@Override
 	protected EClass eStaticClass() {
 		return PropertiesPackage.Literals.RESOURCE_FOLDER;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public ProjectLocale getProjectLocale() {
+		@SuppressWarnings("rawtypes")
+		Resolvable parent = this;
+		while(parent!=null)
+		{
+			if (parent instanceof ProjectLocale) {
+				ProjectLocale locale = (ProjectLocale) parent;
+				return locale;
+				
+			}
+			parent = parent.getParent();
+		}
+		return null;
 	}
 
 

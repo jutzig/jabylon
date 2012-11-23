@@ -199,6 +199,7 @@
     <eLiterals name="MOVE" value="4"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResourceFolder">
+    <eOperations name="getProjectLocale" eType="#//ProjectLocale"/>
     <eGenericSuperTypes eClassifier="#//Resolvable">
       <eTypeArguments eClassifier="#//Resolvable">
         <eTypeArguments/>
