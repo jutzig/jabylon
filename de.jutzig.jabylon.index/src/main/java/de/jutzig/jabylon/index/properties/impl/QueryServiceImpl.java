@@ -11,6 +11,7 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -24,6 +25,7 @@ import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.cdo.view.CDOView;
+import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Workspace;
 
 /**
@@ -91,6 +94,14 @@ public class QueryServiceImpl implements QueryService {
 			query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
 			query.add(createVersionQuery(locale.getParent()), Occur.MUST);
 			query.add(createLocaleQuery(locale), Occur.MUST);
+		}
+		else if (scope instanceof ResourceFolder) {
+			ResourceFolder folder = (ResourceFolder) scope;
+			ProjectLocale locale = folder.getProjectLocale();
+			query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
+			query.add(createVersionQuery(locale.getParent()), Occur.MUST);
+			query.add(createLocaleQuery(locale), Occur.MUST);
+			query.add(new PrefixQuery(new Term(QueryService.FIELD_FULL_PATH,folder.fullPath().path())), Occur.MUST);
 		}
 		else if (scope instanceof PropertyFileDescriptor) {
 			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) scope;
