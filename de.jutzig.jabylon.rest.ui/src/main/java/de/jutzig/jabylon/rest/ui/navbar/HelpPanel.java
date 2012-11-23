@@ -23,7 +23,7 @@ public class HelpPanel<T> extends BasicPanel<T> {
 
 	public HelpPanel(String id, IModel<T> model, PageParameters parameters) {
 		super(id, model, parameters);
-		add(new ExternalLink("link","#help"));
+		add(new ExternalLink("link","#help")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static class HelpPanelFactory implements PanelFactory, Serializable

@@ -13,7 +13,7 @@ import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 public class Activator implements BundleActivator {
 
 	//TODO: use injector instead and get rid of all this utility trackers
-	public static final String BUNDLE_ID ="de.jutzig.jabylon.rest.ui";
+	public static final String BUNDLE_ID ="de.jutzig.jabylon.rest.ui"; //$NON-NLS-1$
 	private static Activator INSTANCE;
 	private BundleContext context;
 	private ServiceTracker<RepositoryConnector, RepositoryConnector> repositoryConnectorTracker;
@@ -31,7 +31,7 @@ public class Activator implements BundleActivator {
 			public void run() {
 				startTrackers();
 			}
-		},"UI Service Tracker").start();
+		},"UI Service Tracker").start(); //$NON-NLS-1$
 
 	}
 

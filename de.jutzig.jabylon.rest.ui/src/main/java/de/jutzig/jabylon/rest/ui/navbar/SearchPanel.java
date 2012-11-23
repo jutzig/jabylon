@@ -4,7 +4,6 @@
 package de.jutzig.jabylon.rest.ui.navbar;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.form.StatelessForm;
@@ -12,6 +11,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.URI;
@@ -31,7 +31,7 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 	public SearchPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
-		add(new SearchForm("form"));
+		add(new SearchForm("form")); //$NON-NLS-1$
 		setVersioned(false);
 	}
 
@@ -55,9 +55,9 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 		public SearchForm(String id) {
 			super(id);
-			TextField<String> field = new TextField<String>("searchfield", new PropertyModel<String>(this, "searchString"));
-			String placeholder = getPlaceholder(SearchPanel.this.getModel());
-			field.add(new AttributeModifier("placeholder", placeholder));
+			TextField<String> field = new TextField<String>("searchfield", new PropertyModel<String>(this, "searchString")); //$NON-NLS-1$ //$NON-NLS-2$
+			StringResourceModel placeholder = getPlaceholder(SearchPanel.this.getModel());
+			field.add(new AttributeModifier("placeholder", placeholder)); //$NON-NLS-1$
 			add(field);
 
 		}
@@ -79,18 +79,19 @@ public class SearchPanel<T> extends BasicPanel<T> {
 			this.searchString = searchString;
 		}
 		
-		private String getPlaceholder(IModel<T> model) {
+		private StringResourceModel getPlaceholder(IModel<T> model) {
+			
+			StringResourceModel plainModel = new StringResourceModel("SearchPanel.search.placeholder", null); //$NON-NLS-1$
 			if (model == null)
-				return "Search";
+				return plainModel;
 			T object = model.getObject();
 			if (object instanceof Resolvable<?, ?>) {
 				Resolvable<?, ?> r = (Resolvable<?, ?>) object;
 				if (r.getName() != null && !r.getName().isEmpty()) {
-					String message = "Search {0}";
-					return MessageFormat.format(message, r.getName());
+					return new StringResourceModel("SearchPanel.scoped.search.placeholder", null, r.getName()); //$NON-NLS-1$
 				}
 			}
-			return "Search";
+			return plainModel;
 		}
 	}
 }

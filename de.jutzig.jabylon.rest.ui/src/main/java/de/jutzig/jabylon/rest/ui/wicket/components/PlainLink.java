@@ -21,7 +21,7 @@ public class PlainLink extends Link<String> {
 			return builder;
 		for (String segment : segments) {
 			builder.append(segment);
-			builder.append("/");
+			builder.append("/"); //$NON-NLS-1$
 		}
 		builder.setLength(builder.length()-1);
 		return builder;

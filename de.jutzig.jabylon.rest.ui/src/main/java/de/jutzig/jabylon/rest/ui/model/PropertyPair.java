@@ -29,14 +29,14 @@ public class PropertyPair implements Serializable{
 	public String getOriginal()
 	{
 		if(getTemplate()==null)
-			return "";
+			return ""; //$NON-NLS-1$
 		return getTemplate().getValue();
 	}
 	
 	public String getTranslated()
 	{
 		if(getTranslation()==null)
-			return "";
+			return ""; //$NON-NLS-1$
 		return getTranslation().getValue();
 	}
 	
@@ -48,7 +48,7 @@ public class PropertyPair implements Serializable{
 	public String getOriginalComment()
 	{
 		if(getTemplate()==null)
-			return "";
+			return ""; //$NON-NLS-1$
 		return getTemplate().getComment();
 	}
 	
@@ -64,7 +64,7 @@ public class PropertyPair implements Serializable{
 	public String getTranslatedComment()
 	{
 		if(getTranslation()==null)
-			return "";
+			return ""; //$NON-NLS-1$
 		return getTranslation().getComment();
 	}
 	

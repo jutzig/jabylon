@@ -40,7 +40,7 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
-	public static final String CONTEXT = "jabylon";
+	public static final String CONTEXT = "jabylon"; //$NON-NLS-1$
 
 	@SuppressWarnings("rawtypes")
 	private ServiceTracker pageTracker;
@@ -79,11 +79,11 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 				if (pathObject instanceof String) {
 					String path = (String) pathObject;
 					Class pageClass = service.getPageClass();
-					logger.info("Mounting new page {} at {}", pageClass, path);
+					logger.info("Mounting new page {} at {}", pageClass, path); //$NON-NLS-1$
 					mountPage(path, pageClass);
 
 				} else {
-					logger.warn("Ignored Page {} because it was registered with invalid path property '{}'", service, pathObject);
+					logger.warn("Ignored Page {} because it was registered with invalid path property '{}'", service, pathObject); //$NON-NLS-1$
 				}
 				return service;
 			}
@@ -112,8 +112,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		});
 		pageTracker.open();
 
-		mountPage("/login", LoginPage.class);
-		mountPage("/settings/workspace", SettingsPage.class);
+		mountPage("/login", LoginPage.class); //$NON-NLS-1$
+		mountPage("/settings/workspace", SettingsPage.class); //$NON-NLS-1$
 //		mountPage("/workspace", ResourcePage.class);
 	}
 

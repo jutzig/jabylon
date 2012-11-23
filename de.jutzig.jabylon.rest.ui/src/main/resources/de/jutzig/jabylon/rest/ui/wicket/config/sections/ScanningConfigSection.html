@@ -1,0 +1,29 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+	
+	<div class="control-group">
+		<label class="control-label" for="inputIncludes"><wicket:message key="ScanningConfigSection.includes.label">Includes</wicket:message></label>
+		<div class="controls">
+			<textarea rows="3" cols="20" placeholder="**/*.properties"
+				id="inputIncludes" wicket:id="inputIncludes"></textarea>
+		</div>
+		<span class="help-block"><wicket:message key="ScanningConfigSection.includes.help">Seperate patterns by newline</wicket:message></span>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="inputExcludes"><wicket:message key="ScanningConfigSection.excludes.label">Excludes</wicket:message></label>
+		<div class="controls">
+			<textarea rows="3" cols="20" placeholder="**/build.properties"
+				id="inputExcludes" wicket:id="inputExcludes"></textarea>
+		</div>
+		<span class="help-block"><wicket:message key="ScanningConfigSection.excludes.help">Seperate patterns by newline</wicket:message></span>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label" for="inputTemplateLocale"><wicket:message key="ScanningConfigSection.template.locale.label">Template Locale</wicket:message></label>
+		<div class="controls">
+			<input type="text" id="inputTemplateLocale" wicket:id="inputTemplateLocale">
+		</div>
+	</div>
+</wicket:panel>
+</html>

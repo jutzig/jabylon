@@ -31,7 +31,7 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 	
 	public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
 		super(id, model, parameters);
-		add(new BookmarkablePageLink<String>("jabylon",WelcomePage.class));
+		add(new BookmarkablePageLink<String>("Jabylon",WelcomePage.class)); //$NON-NLS-1$
 		Map<PanelFactory, Boolean> data = loadNavBarExtensions();
 
 		List<PanelFactory> items = new ArrayList<PanelFactory>();
@@ -46,15 +46,15 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 				items.add(entry.getKey());
 		}
 		
-		ListView<PanelFactory> listView = new ListView<PanelFactory>("items", items) {
+		ListView<PanelFactory> listView = new ListView<PanelFactory>("items", items) { //$NON-NLS-1$
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
-				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content");
+				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content"); //$NON-NLS-1$
 				if(newPanel==null)
-					item.add(new Label("content","NONE"));
+					item.add(new Label("content","NONE")); //$NON-NLS-1$ //$NON-NLS-2$
 				else
 					item.add(newPanel);
 			}
@@ -62,15 +62,15 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 		listView.setRenderBodyOnly(true);
 		add(listView);
 		
-		ListView<PanelFactory> rightListView = new ListView<PanelFactory>("right-items", rightAligned) {
+		ListView<PanelFactory> rightListView = new ListView<PanelFactory>("right-items", rightAligned) { //$NON-NLS-1$
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<PanelFactory> item) {
-				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content");
+				Panel newPanel = item.getModelObject().createPanel(getPageParameters(), NavbarPanel.this.getModel(), "content"); //$NON-NLS-1$
 				if(newPanel==null)
-					item.add(new Label("content","NONE"));
+					item.add(new Label("content","NONE")); //$NON-NLS-1$ //$NON-NLS-2$
 				else
 					item.add(newPanel);
 			}
@@ -83,18 +83,18 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 	private Map<PanelFactory,Boolean> loadNavBarExtensions() {
 		Map<PanelFactory, Boolean> extensions = new LinkedHashMap<PanelFactory, Boolean>();
 		IConfigurationElement[] configurationElements = RegistryFactory.getRegistry().getConfigurationElementsFor(
-				"de.jutzig.jabylon.rest.ui.navbarItem");
+				"de.jutzig.jabylon.rest.ui.navbarItem"); //$NON-NLS-1$
 
 		for (IConfigurationElement element : configurationElements) {
 			try {
-				PanelFactory extension = (PanelFactory) element.createExecutableExtension("panel");
-				String pullRight = element.getAttribute("pullRight");
+				PanelFactory extension = (PanelFactory) element.createExecutableExtension("panel"); //$NON-NLS-1$
+				String pullRight = element.getAttribute("pullRight"); //$NON-NLS-1$
 				if(pullRight!=null && Boolean.valueOf(pullRight))
 					extensions.put(extension, true);
 				else
 					extensions.put(extension, false);
 			} catch (CoreException e) {
-				logger.error("Failed to load extension "+element,e);
+				logger.error("Failed to load extension "+element,e); //$NON-NLS-1$
 			}
 		}
 

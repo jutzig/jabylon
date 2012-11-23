@@ -12,17 +12,17 @@
 				<tr>
 					<td>
 						<button wicket:id="edit" type="button" class="btn btn-primary">
-							<i class="icon-edit"></i> Edit
+							<i class="icon-edit"></i> <wicket:message key="WorkspaceConfigSection.edit.action">Edit</wicket:message>
 						</button>
 					</td>
 					<td>
 						<button type="button" class="btn">
-							<i class="icon-download-alt"></i> Download
+							<i class="icon-download-alt"></i> <wicket:message key="WorkspaceConfigSection.download.action">Download</wicket:message>
 						</button>
 					</td>
 					<td>
 						<button type="button" class="btn btn-danger" wicket:id="delete">
-							<i class="icon-remove"></i> Delete
+							<i class="icon-remove"></i> <wicket:message key="WorkspaceConfigSection.delete.action">Delete</wicket:message>
 						</button>
 					</td>
 				</tr>
@@ -31,7 +31,7 @@
 	</div>
 	<p>
 		<a wicket:id="addNew" href="#" class="btn btn-primary"><i
-			class="icon-align-left icon-plus"></i> Add new</a>
+			class="icon-align-left icon-plus"></i> <wicket:message key="WorkspaceConfigSection.add.new.action">Add New</wicket:message></a>
 	</p>
 </wicket:panel>
 </html>

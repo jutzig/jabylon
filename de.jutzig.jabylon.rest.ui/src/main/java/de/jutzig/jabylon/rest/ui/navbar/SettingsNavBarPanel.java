@@ -29,7 +29,7 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 
 	public SettingsNavBarPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
-		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,parameters);
+		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,parameters); //$NON-NLS-1$
 
 		//TODO: this looks shitty with bootstrap currently
 		if(AuthenticatedWebSession.get().isSignedIn())

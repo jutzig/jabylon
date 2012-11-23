@@ -40,7 +40,7 @@ public class ProgressionModel implements IModel<Progression> {
 
 	@Override
 	public void setObject(Progression object) {
-		throw new UnsupportedOperationException("Readonly model");
+		throw new UnsupportedOperationException("Readonly model"); //$NON-NLS-1$
 		
 	}
     private static final class LookupFunction implements Serializable, Function<Long, Progression>

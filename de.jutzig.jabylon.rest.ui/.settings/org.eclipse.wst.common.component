@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/" source-path="/src/main/resources"/>
         <property name="context-root" value="de.jutzig.jabylon.rest.ui"/>
     </wb-module>
 </project-modules>

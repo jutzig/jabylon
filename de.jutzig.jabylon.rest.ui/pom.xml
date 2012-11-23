@@ -21,7 +21,11 @@
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*.html</include>
+					<include>**/*.properties</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 
@@ -73,7 +77,7 @@
 			<version>${project.version}</version>
 			<type>bundle</type>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>users</artifactId>

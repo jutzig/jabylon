@@ -26,17 +26,17 @@ public class ProgressPanel extends Panel {
 	public ProgressPanel(String id, ProgressionModel model) {
 		super(id, model);
 		this.model = model;
-		feedbackPanel = new CustomFeedbackPanel("feedbackPanel");
+		feedbackPanel = new CustomFeedbackPanel("feedbackPanel"); //$NON-NLS-1$
 		add(feedbackPanel);
 		
-		container = new WebMarkupContainer("container");
+		container = new WebMarkupContainer("container"); //$NON-NLS-1$
 		add(container);
-		WebComponent bar = new WebComponent("bar");
-		bar.add(new AttributeModifier("style", getWidthModel(model)));
+		WebComponent bar = new WebComponent("bar"); //$NON-NLS-1$
+		bar.add(new AttributeModifier("style", getWidthModel(model))); //$NON-NLS-1$
 		container.add(bar);
-		Label taskname = new Label("taskname", getTaskNameModel(model));
+		Label taskname = new Label("taskname", getTaskNameModel(model)); //$NON-NLS-1$
 		container.add(taskname);
-		Label subtask = new Label("subtask", getSubTaskModel(model));
+		Label subtask = new Label("subtask", getSubTaskModel(model)); //$NON-NLS-1$
 		container.add(subtask);
 		setVisible(false);
 	}
@@ -48,7 +48,7 @@ public class ProgressPanel extends Panel {
 
 			@Override
 			public String getObject() {
-				return "width: " + model.getObject().getCompletion() + "%;";
+				return "width: " + model.getObject().getCompletion() + "%;"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		};
 	}
@@ -126,7 +126,7 @@ public class ProgressPanel extends Panel {
 			if (message == null || message.isEmpty())
 				message = status.getException().getMessage();
 			else
-				message += " : " + status.getException().getMessage();
+				message += " : " + status.getException().getMessage(); //$NON-NLS-1$
 		}
 		if (message == null)
 			return;
