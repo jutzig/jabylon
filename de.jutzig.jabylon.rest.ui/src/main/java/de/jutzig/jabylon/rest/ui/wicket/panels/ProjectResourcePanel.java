@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
@@ -27,7 +28,9 @@ import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesSwitch;
+import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 /**
@@ -217,7 +220,7 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
 		item.add(markupContainer);
 		markupContainer.setVisible(false);
 		
-		Image image = new Image("regular-image", getIconForLocale(object.getLocale()));
+		Image image = new Image("regular-image", WicketUtil.getIconForLocale(object.getLocale()));
 		item.add(image);
 		return item;
 	}
@@ -245,52 +248,6 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
 		image.setVisible(false);
 		item.add(image);
 		return item;
-	}
-
-	public ResourceReference getIconForLocale(Locale locale)
-	{
-		if(locale==null)
-			return null;
-		String iconName = "";
-		if(locale.getCountry()!=null && locale.getCountry().length()>0)
-		{
-			iconName = locale.getCountry().toLowerCase();
-		}
-		else
-		{
-			iconName = derriveCountry(locale);
-		}
-		
-		UrlResourceReference ref = new UrlResourceReference(Url.parse("/jabylon/img/flags/gif/"+iconName+".gif"));
-		return ref;
-	}
-
-	private String derriveCountry(Locale locale) {
-		String language = locale.getLanguage();
-		if("da".equals(language)) //denmark
-			return "dk";
-		
-		else if("ja".equals(language)) //japanese
-			return "jp";
-		else if("uk".equals(language)) //ukraine
-			return "ua";
-		else if("eu".equals(language)) //basque
-			return null; //don't have this one yet
-		else if("he".equals(language)) //hebrew
-			return "il"; //isreal
-		else if("iw".equals(language)) //old hebrew code, still used in java
-			return "il"; //isreal		
-		else if("el".equals(language)) //greek
-			return "gr"; 
-		else if("ko".equals(language)) //korean
-			return "kr";
-		else if("te".equals(language)) //telegu
-			return "in"; //india
-		else if("ca".equals(language)) //catalan
-			return "catalonia"; //official language in andorra (AD), but also other places. Use catalonia for now 
-		else if("zh".equals(language))
-			return "cn";
-		return language.toLowerCase(); //this works in many cases, but is wrong in some
 	}
 	
 }

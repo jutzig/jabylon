@@ -1,5 +1,6 @@
 package de.jutzig.jabylon.rest.ui;
 
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;

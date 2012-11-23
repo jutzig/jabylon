@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -25,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.index.properties.SearchResult;
+import de.jutzig.jabylon.properties.ProjectVersion;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
 /**
@@ -76,9 +80,18 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 					link.add(new Label("title", uri.lastSegment()));
 					item.add(link);
 					projectLabel = MessageFormat.format(projectLabel, projectName, projectVersion);
-					item.add(new Label("project", projectLabel));
-					item.add(new Label("comment", document.get(QueryService.FIELD_COMMENT)));
 
+					BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("project-link", ResourcePage.class, createPageParams(projectName,projectVersion)); 
+					projectVersionLink.add(new Label("project", projectLabel));
+					item.add(projectVersionLink);
+					
+					item.add(new Label("comment", document.get(QueryService.FIELD_COMMENT)));
+					
+					
+					Locale locale = WicketUtil.getLocaleFromString(projectLocale);
+					String localeLabel = locale.getDisplayName(WicketUtil.getUserLocale());
+					item.add(new Label("language", localeLabel));
+					item.add(new Image("flag-icon", WicketUtil.getIconForLocale(locale)));
 				} catch (CorruptIndexException e) {
 					error(e.getMessage());
 					logger.error("Search failed", e);
@@ -95,6 +108,15 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 
 	public QueryService getQueryService() {
 		return queryService;
+	}
+	
+	protected PageParameters createPageParams(String... segments)
+	{
+		PageParameters params = new PageParameters();
+		for (int i = 0; i < segments.length; i++) {
+			params.set(i, segments[i]);
+		}
+		return params;
 	}
 
 }
