@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
@@ -81,14 +82,14 @@ public class SearchPanel<T> extends BasicPanel<T> {
 		
 		private StringResourceModel getPlaceholder(IModel<T> model) {
 			
-			StringResourceModel plainModel = new StringResourceModel("SearchPanel.search.placeholder", null); //$NON-NLS-1$
+			StringResourceModel plainModel = new StringResourceModel("SearchPanel.search.placeholder", SearchPanel.this, null); //$NON-NLS-1$
 			if (model == null)
 				return plainModel;
 			T object = model.getObject();
 			if (object instanceof Resolvable<?, ?>) {
 				Resolvable<?, ?> r = (Resolvable<?, ?>) object;
 				if (r.getName() != null && !r.getName().isEmpty()) {
-					return new StringResourceModel("SearchPanel.scoped.search.placeholder", null, r.getName()); //$NON-NLS-1$
+					return new StringResourceModel("SearchPanel.scoped.search.placeholder", SearchPanel.this, null,"",r.getName()); //$NON-NLS-1$
 				}
 			}
 			return plainModel;
