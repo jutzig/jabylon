@@ -31,7 +31,7 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 	
 	public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
 		super(id, model, parameters);
-		add(new BookmarkablePageLink<String>("Jabylon",WelcomePage.class)); //$NON-NLS-1$
+		add(new BookmarkablePageLink<String>("jabylon",WelcomePage.class)); //$NON-NLS-1$
 		Map<PanelFactory, Boolean> data = loadNavBarExtensions();
 
 		List<PanelFactory> items = new ArrayList<PanelFactory>();
