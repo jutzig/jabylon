@@ -55,9 +55,9 @@ import de.jutzig.jabylon.properties.util.PropertiesResourceImpl;
  * @generated
  */
 public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>, PropertyFileDescriptor> implements PropertyFileDescriptor {
-	
-	private static final Logger logger = LoggerFactory.getLogger(PropertyFileDescriptorImpl.class); 
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(PropertyFileDescriptorImpl.class);
+
 	/**
 	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -122,6 +122,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Locale getVariant() {
 		return (Locale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, true, true);
 	}
@@ -131,6 +132,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setVariant(Locale newVariant) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, newVariant);
 	}
@@ -140,6 +142,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public URI getLocation() {
 		return (URI)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, true, true);
 	}
@@ -149,6 +152,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLocation(URI newLocation) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, newLocation);
 	}
@@ -158,6 +162,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isMaster() {
 		ProjectLocale locale = getProjectLocale();
 		if(locale==null)
@@ -170,6 +175,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public PropertyFile loadProperties() {
 		URI path = absolutPath();
 
@@ -186,7 +192,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		} catch (FileNotFoundException e)
 		{
 			//The file does not exist, create a new one.
-			logger.debug("Tried to load non-existing property file", e);
+			logger.debug("Tried to load non-existing property file. Path: {}", path.toFileString());
 			return PropertiesFactory.eINSTANCE.createPropertyFile();
 		}
 		 catch (IOException e) {
@@ -200,6 +206,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public PropertyFile loadProperties(InputStream in) {
 		URI path = absolutPath();
 
@@ -263,6 +270,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void computeLocation() {
 		if(isMaster() || getMaster()==null)
 			return;
@@ -318,6 +326,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PropertyFileDescriptor getMaster() {
 		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, true, true);
 	}
@@ -337,6 +346,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMaster(PropertyFileDescriptor newMaster) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
 	}
@@ -347,6 +357,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ProjectLocale getProjectLocale() {
 		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
 	}
@@ -366,6 +377,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProjectLocale(ProjectLocale newProjectLocale) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, newProjectLocale);
 	}
@@ -375,6 +387,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getKeys() {
 		return (Integer)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, true, true);
 	}
@@ -384,6 +397,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setKeys(int newKeys) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, newKeys);
 	}
@@ -393,6 +407,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<Review> getReviews() {
 		return (EList<Review>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__REVIEWS, true, true);
@@ -403,6 +418,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public long getLastModified() {
 		return (Long)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, true, true);
 	}
@@ -412,6 +428,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLastModified(long newLastModified) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, newLastModified);
 	}
@@ -421,6 +438,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Comment getLastModification() {
 		return (Comment)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, true, true);
 	}
@@ -430,6 +448,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLastModification(Comment newLastModification) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, newLastModification);
 	}
@@ -439,6 +458,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<PropertyFileDescriptor> getDerivedDescriptors() {
 		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
@@ -610,6 +630,6 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		}
 		return super.toString();
 	}
-	
-	
+
+
 } //PropertyFileDescriptorImpl
