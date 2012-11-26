@@ -29,12 +29,23 @@ import de.jutzig.jabylon.properties.PropertyFile;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileImpl#getProperties <em>Properties</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.properties.impl.PropertyFileImpl#getLicenseHeader <em>License Header</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
+	/**
+	 * The default value of the '{@link #getLicenseHeader() <em>License Header</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLicenseHeader()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LICENSE_HEADER_EDEFAULT = null;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -72,6 +83,24 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	@SuppressWarnings("unchecked")
 	public EList<Property> getProperties() {
 		return (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLicenseHeader() {
+		return (String)eDynamicGet(PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER, PropertiesPackage.Literals.PROPERTY_FILE__LICENSE_HEADER, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLicenseHeader(String newLicenseHeader) {
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER, PropertiesPackage.Literals.PROPERTY_FILE__LICENSE_HEADER, newLicenseHeader);
 	}
 
 	/**
@@ -125,6 +154,8 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
 				return getProperties();
+			case PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER:
+				return getLicenseHeader();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -142,6 +173,9 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends Property>)newValue);
 				return;
+			case PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER:
+				setLicenseHeader((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -157,6 +191,9 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
 				getProperties().clear();
 				return;
+			case PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER:
+				setLicenseHeader(LICENSE_HEADER_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -171,6 +208,8 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY_FILE__PROPERTIES:
 				return !getProperties().isEmpty();
+			case PropertiesPackage.PROPERTY_FILE__LICENSE_HEADER:
+				return LICENSE_HEADER_EDEFAULT == null ? getLicenseHeader() != null : !LICENSE_HEADER_EDEFAULT.equals(getLicenseHeader());
 		}
 		return super.eIsSet(featureID);
 	}

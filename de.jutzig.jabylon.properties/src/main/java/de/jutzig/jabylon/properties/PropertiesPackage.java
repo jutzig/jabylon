@@ -91,13 +91,22 @@ public interface PropertiesPackage extends EPackage {
 	int PROPERTY_FILE__PROPERTIES = 0;
 
 	/**
+	 * The feature id for the '<em><b>License Header</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FILE__LICENSE_HEADER = 1;
+
+	/**
 	 * The number of structural features of the '<em>Property File</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_FILE_FEATURE_COUNT = 1;
+	int PROPERTY_FILE_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.properties.impl.PropertyImpl <em>Property</em>}' class.
@@ -1006,6 +1015,17 @@ public interface PropertiesPackage extends EPackage {
 	EReference getPropertyFile_Properties();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.properties.PropertyFile#getLicenseHeader <em>License Header</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>License Header</em>'.
+	 * @see de.jutzig.jabylon.properties.PropertyFile#getLicenseHeader()
+	 * @see #getPropertyFile()
+	 * @generated
+	 */
+	EAttribute getPropertyFile_LicenseHeader();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.properties.Property <em>Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1699,6 +1719,14 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROPERTY_FILE__PROPERTIES = eINSTANCE.getPropertyFile_Properties();
+
+		/**
+		 * The meta object literal for the '<em><b>License Header</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_FILE__LICENSE_HEADER = eINSTANCE.getPropertyFile_LicenseHeader();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.properties.impl.PropertyImpl <em>Property</em>}' class.

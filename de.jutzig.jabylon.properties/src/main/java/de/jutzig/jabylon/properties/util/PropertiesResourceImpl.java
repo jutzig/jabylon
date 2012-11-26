@@ -88,6 +88,7 @@ public class PropertiesResourceImpl extends ResourceImpl {
 			if(reader!=null)
 				reader.close();
 		}
+		file.setLicenseHeader(helper.getLicenseHeader());
 		getContents().add(file);
 	}
 
@@ -120,6 +121,7 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		try {
 			PropertiesHelper helper = new PropertiesHelper(escapeUnicode);
 			PropertyFile file = (PropertyFile) getContents().get(0);
+			helper.writeLicenseHeader(writer, file.getLicenseHeader());
 			Iterator<Property> it = file.getProperties().iterator();
 			while (it.hasNext()) {
 				Property property = (Property) it.next();

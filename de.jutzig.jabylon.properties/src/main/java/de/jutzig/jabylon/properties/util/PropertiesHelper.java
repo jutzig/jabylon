@@ -25,11 +25,16 @@ public class PropertiesHelper {
 	
 	private boolean unicodeEscaping;
 	private static final int MAX_BOM_LENGTH = 4;
+	/** the license header at the beginning of the file (if any)*/
+	private String licenseHeader;
+	/** keeps track if we alreadz checked for a license header*/
+	private boolean checkedForHeader;
 
 	final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 	
 	public PropertiesHelper() {
 		this(true);
+		checkedForHeader = false;
 	}
 	
 	public PropertiesHelper(boolean unicodeEscaping) {
@@ -47,7 +52,18 @@ public class PropertiesHelper {
 		{
 			line=line.trim();
 			if(line.length()==0)
-				continue;
+			{
+				if(!checkedForHeader)
+				{
+					licenseHeader = comment.toString();
+					comment.setLength(0);
+					checkedForHeader = true;
+				}
+				else {
+					continue;					
+				}
+					
+			}
 			if(isComment(line))
 			{
 				if(comment.length()>0) //there's already a comment, so now we have a new line
@@ -74,6 +90,7 @@ public class PropertiesHelper {
 				}
 				property.setKey(parts[0]);
 				property.setValue(parts[1]);
+				checkedForHeader = true;
 				return property;
 			}
 		}
@@ -168,6 +185,21 @@ public class PropertiesHelper {
 		if(bom==null)
 			inputStream.reset();
 		return bom;
+	}
+	
+	/**
+	 * 
+	 * @return the license header in the file or <code>null</code> if not available
+	 */
+	public String getLicenseHeader() {
+		return licenseHeader;
+	}
+	
+	public void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException {
+		if(licenseHeader==null || licenseHeader.isEmpty())
+			return;
+		writeComment(writer, licenseHeader);
+		writer.write('\n');
 	}
 	
 }

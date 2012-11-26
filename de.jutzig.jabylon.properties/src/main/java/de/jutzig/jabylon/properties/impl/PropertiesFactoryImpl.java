@@ -6,6 +6,7 @@
  */
 package de.jutzig.jabylon.properties.impl;
 
+import de.jutzig.jabylon.properties.*;
 import java.io.InputStream;
 import java.util.Locale;
 

@@ -91,7 +91,7 @@ public class PropertiesHelperTest {
 			Property property = fixture.readProperty(reader);
 			assertEquals("DTM.CASCADE_SESSION_FRAMES_TEXT", property.getKey());
 			assertEquals("Cascade", property.getValue());
-			assertEquals("test", property.getComment());
+			assertEquals("test", fixture.getLicenseHeader());
 		} finally {
 			if (reader != null)
 				reader.close();
