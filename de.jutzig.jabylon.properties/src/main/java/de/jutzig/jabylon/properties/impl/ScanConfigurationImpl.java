@@ -7,11 +7,15 @@
 package de.jutzig.jabylon.properties.impl;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.ScanConfiguration;
@@ -102,11 +106,27 @@ public class ScanConfigurationImpl extends CDOObjectImpl implements ScanConfigur
 		EList<String> excludes = new BasicEList<String>();
 		if(getExclude()!=null && getExclude().length()>0)
 		{
-			String[] split = getExclude().split("\n");
-			excludes.addAll(Arrays.asList(split));
+			excludes = splitString(getExclude());
 		}
 		return excludes;
 
+	}
+
+	private EList<String> splitString(String input) {
+		EList<String> splittedList = new BasicEList<String>();
+		String[] split;
+		if(input.indexOf("\n")!=-1)
+			split = input.split("\n");
+		else
+			split = input.split("\r");
+
+		splittedList.addAll(Lists.transform(Arrays.asList(split), new Function<String, String>() {
+			public String apply(String input) {
+				return input.trim();
+			}
+		}));
+
+		return splittedList;
 	}
 
 	/**
@@ -118,8 +138,7 @@ public class ScanConfigurationImpl extends CDOObjectImpl implements ScanConfigur
 		EList<String> includes = new BasicEList<String>();
 		if(getInclude()!=null)
 		{
-			String[] split = getInclude().split("\n");
-			includes.addAll(Arrays.asList(split));
+			includes = splitString(getInclude());
 		}
 		return includes;
 	}
