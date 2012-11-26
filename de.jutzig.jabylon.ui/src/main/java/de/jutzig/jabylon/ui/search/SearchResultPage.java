@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.search;
 
@@ -42,19 +42,19 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
  */
 public class SearchResultPage implements CrumbTrail{
 
-	
+
 	public static final String SEARCH_ADDRESS ="?search"; //$NON-NLS-1$
-	private Object scope;
+	private String scope;
 	private String searchString;
 	private Table table;
 	private SearchResult result;
-	
+
 	public SearchResultPage(String search, Object scope)
 	{
-		this.scope = scope;
+		this.scope = (String)scope;
 		this.searchString = search;
 	}
-	
+
 	@Override
 	public CrumbTrail walkTo(String path) {
 		return null;
@@ -91,7 +91,7 @@ public class SearchResultPage implements CrumbTrail{
 					}
 				}
 			}
-			
+
 			@Override
 			protected Object getPropertyValue(Object rowId, Object colId, Property property) {
 				if(property instanceof com.vaadin.ui.Field)
@@ -101,11 +101,11 @@ public class SearchResultPage implements CrumbTrail{
 		};
 		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 		table.setSelectable(true);
-		
+
 		search(searchString);
 		return table;
 	}
-	
+
 	public void search(String newSearch)
 	{
 		searchString = newSearch;
@@ -128,15 +128,15 @@ public class SearchResultPage implements CrumbTrail{
 		{
 			table.setContainerDataSource(new ResultLuceneContainer(result.getTopDocs(), result.getSearcher()));
 			table.setVisibleColumns(new Object[]{QueryService.FIELD_URI,QueryService.FIELD_KEY,QueryService.FIELD_VALUE});
-			
+
 			table.setColumnWidth(QueryService.FIELD_KEY, 150);
 			table.setSizeFull();
-			
+
 		}
 	}
 
-	
-	
+
+
 }
 
 
@@ -146,8 +146,8 @@ class ResultLuceneContainer extends LuceneContainer
 	public ResultLuceneContainer(TopDocs topDocs, IndexSearcher searcher) {
 		super(topDocs, searcher);
 	}
-	
-	
+
+
 	@Override
 	public Property getContainerProperty(Object itemId, Object propertyId) {
 		if(propertyId.equals(QueryService.FIELD_URI))
@@ -157,16 +157,16 @@ class ResultLuceneContainer extends LuceneContainer
 				Document document = getDoc(doc.doc);
 				Field field = document.getField(QueryService.FIELD_URI);
 				String cdoID = document.getField(QueryService.FIELD_CDO_ID).stringValue();
-				
+
 				URI uri = URI.createURI(field.stringValue());
 				Button button = new Button(uri.lastSegment());
 				button.setDescription(uri.toString());
 				button.setCaption(uri.lastSegment());
 				button.setStyleName(Reindeer.BUTTON_LINK);
 				CDOView view = MainDashboard.getCurrent().getWorkspace().cdoView();
-				
+
 				CDOID id = CDOIDUtil.read(cdoID);
-				
+
 				PropertyFileDescriptor descriptor = null;
 				try {
 					descriptor = (PropertyFileDescriptor) view.getObject(id);
@@ -177,7 +177,7 @@ class ResultLuceneContainer extends LuceneContainer
 				}
 				button.setData(descriptor);
 				button.addListener(new ClickListener() {
-					
+
 					@Override
 					public void buttonClick(ClickEvent event) {
 						//TODO: walk to
@@ -187,7 +187,7 @@ class ResultLuceneContainer extends LuceneContainer
 						String project = locale.getParent().getParent().getName();
 						if(locale.getLocale()!=null)
 						{
-							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,locale.getLocale().toString(),descriptor.relativePath().toString());							
+							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,locale.getLocale().toString(),descriptor.relativePath().toString());
 						}
 						else
 							MainDashboard.getCurrent().getBreadcrumbs().setPath(project,version,descriptor.relativePath().toString());
@@ -205,12 +205,12 @@ class ResultLuceneContainer extends LuceneContainer
 		}
 		return super.getContainerProperty(itemId, propertyId);
 	}
-	
+
 	@Override
 	public Class<?> getType(Object propertyId) {
 		if(propertyId.equals(QueryService.FIELD_URI))
 			return Button.class;
 		return super.getType(propertyId);
 	}
-	
+
 }
