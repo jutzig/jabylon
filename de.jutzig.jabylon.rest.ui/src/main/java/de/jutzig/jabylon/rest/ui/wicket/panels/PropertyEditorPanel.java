@@ -2,6 +2,7 @@ package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,18 +26,23 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.eclipse.emf.common.util.EList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
@@ -48,6 +54,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
+	IModel<Multimap<String, Review>> reviewModel;
 	
 	@Inject
 	private transient PropertyPersistenceService propertyPersistence; 
@@ -59,13 +66,26 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		addLinkList(mode);
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
 		List<PropertyPair> contents = provider.createContents();
+		reviewModel = new LoadableDetachableModel<Multimap<String,Review>>() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Multimap<String, Review> load() {
+				return buildReviewMap(getModelObject());
+			}
+		};
+		
 		ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents) {
 
 			private static final long serialVersionUID = -7087485011138279358L;
 
 			@Override
 			protected void populateItem(final ListItem<PropertyPair> item) {
-				item.add(new SinglePropertyEditor("row", item.getModel(), false));
+				IModel<PropertyPair> model = item.getModel();
+				String key = model.getObject().getKey();
+				Collection<Review> reviewList = reviewModel.getObject().get(key);
+				item.add(new SinglePropertyEditor("row", model, false, reviewList));
 			}
 
 		};
@@ -168,6 +188,16 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		
 		add(behave);
 		form.add(responseLabel);
+	}
+
+
+	private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
+		EList<Review> reviews = object.getReviews();
+		Multimap<String, Review> reviewMap = ArrayListMultimap.create(reviews.size(), 2);
+		for (Review review : reviews) {
+			reviewMap.put(review.getKey(), review);
+		}
+		return reviewMap;
 	}
 
 

@@ -58,7 +58,7 @@ public class ExistenceCheck implements ReviewParticipant {
 			}
 			review.setMessage(message);
 			review.setUser("Jabylon");
-			review.setReviewType("ExistenceCheck");
+			review.setReviewType("Missing Key");
 			review.setSeverity(Severity.ERROR);
 			return review;
 		}

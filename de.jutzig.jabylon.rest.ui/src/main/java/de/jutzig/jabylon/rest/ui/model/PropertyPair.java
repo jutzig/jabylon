@@ -86,4 +86,13 @@ public class PropertyPair implements Serializable{
 		}
 		return property;
 	}
+	
+	public String getKey()
+	{
+		if(template!=null)
+			return template.getKey();
+		if(translation!=null)
+			return translation.getKey();
+		return null;
+	}
 }

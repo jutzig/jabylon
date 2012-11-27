@@ -7,6 +7,9 @@ $(document).ready(function() {
 	
 	selectFuzzyRow();
 	
+	//show JS tooltip on badges
+	$('.label').tooltip();
+	
 	$(":input").focus(function () {
 		if(this && this.tagName && this.tagName.toLowerCase() == "textarea") {
 			currentFocus = this;

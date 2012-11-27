@@ -59,8 +59,8 @@ public class MessageFormatCheck implements ReviewParticipant {
 				Review review = PropertiesFactory.eINSTANCE.createReview();
 				String message = "Translation contains message format ''{0}'' which is not present in the template language";
 				review.setMessage(MessageFormat.format(message, pattern));
-				review.setUser("Message Format Check");
-				review.setReviewType("MessageFormatCheck");
+				review.setUser("Jabylon");
+				review.setReviewType("Message Format");
 				review.setSeverity(Severity.ERROR);
 				return review;
 			}
@@ -72,7 +72,7 @@ public class MessageFormatCheck implements ReviewParticipant {
 			review.setMessage(MessageFormat.format(message, masterPatterns.iterator().next()));
 			review.setUser("Jabylon");
 			review.setSeverity(Severity.ERROR);
-			review.setReviewType("MessageFormatCheck");
+			review.setReviewType("Message Format");
 			return review;
 		}
 		

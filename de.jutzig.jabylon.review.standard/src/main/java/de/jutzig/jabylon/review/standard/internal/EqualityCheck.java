@@ -40,7 +40,7 @@ public class EqualityCheck implements ReviewParticipant {
 			{
 				Review review = PropertiesFactory.eINSTANCE.createReview();
 				review.setMessage("Template and translated string are identical");
-				review.setReviewType("EqualityCheck");
+				review.setReviewType("Equality Check");
 				review.setSeverity(Severity.WARNING);
 				review.setUser("Jabylon");
 			}
