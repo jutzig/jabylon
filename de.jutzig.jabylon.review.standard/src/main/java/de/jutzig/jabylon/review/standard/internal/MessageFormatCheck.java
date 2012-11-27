@@ -8,19 +8,27 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+
+import de.jutzig.jabylon.common.review.ReviewParticipant;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.Severity;
-import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@Component
+@Service
 public class MessageFormatCheck implements ReviewParticipant {
 
+	
+	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="MessageFormatCheck")
+	private String ID;
 	
 	private static final Pattern PATTERN = Pattern.compile("(\\{\\d+.*?\\})");
 	

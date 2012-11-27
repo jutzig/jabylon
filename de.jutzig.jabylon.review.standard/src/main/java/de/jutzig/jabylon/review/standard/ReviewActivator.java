@@ -52,21 +52,4 @@ public class ReviewActivator extends Plugin implements BundleActivator {
 		}
 		return persistenceService;
 	}
-	
-	public void log(IStatus status)
-	{
-		getLog().log(status);
-	}
-	
-	public void log(String message, Throwable cause)
-	{
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, cause);
-		log(status);
-	}
-	
-	public void log(String message, int severity)
-	{
-		IStatus status = new Status(severity, PLUGIN_ID, message);
-		log(status);
-	}
 }

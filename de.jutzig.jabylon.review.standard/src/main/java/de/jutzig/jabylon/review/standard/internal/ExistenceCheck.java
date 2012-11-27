@@ -5,19 +5,28 @@ package de.jutzig.jabylon.review.standard.internal;
 
 import java.text.MessageFormat;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+
+import de.jutzig.jabylon.common.review.ReviewParticipant;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.Severity;
-import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
  * @author joe
  *
  */
+@Component
+@Service
 public class ExistenceCheck implements ReviewParticipant {
 
+	
+	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="ExistenceCheck")
+	private String ID;
+	
 	/**
 	 * 
 	 */
@@ -26,7 +35,7 @@ public class ExistenceCheck implements ReviewParticipant {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.ui.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
+	 * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
 	 */
 	@Override
 	public Review review(PropertyFileDescriptor descriptor, Property master,

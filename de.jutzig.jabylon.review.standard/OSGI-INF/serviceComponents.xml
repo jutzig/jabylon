@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component name="de.jutzig.jabylon.review.standard.internal.ExistenceCheck">
+        <implementation class="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"/>
+        <service servicefactory="false">
+            <provide interface="de.jutzig.jabylon.common.review.ReviewParticipant"/>
+        </service>
+        <property name="id" value="ExistenceCheck"/>
+        <property name="service.pid" value="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"/>
+    </scr:component>
+    <scr:component name="de.jutzig.jabylon.review.standard.internal.EqualityCheck">
+        <implementation class="de.jutzig.jabylon.review.standard.internal.EqualityCheck"/>
+        <service servicefactory="false">
+            <provide interface="de.jutzig.jabylon.common.review.ReviewParticipant"/>
+        </service>
+        <property name="id" value="EqualityCheck"/>
+        <property name="service.pid" value="de.jutzig.jabylon.review.standard.internal.EqualityCheck"/>
+    </scr:component>
+    <scr:component name="de.jutzig.jabylon.review.standard.internal.TerminologyCheck">
+        <implementation class="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"/>
+        <service servicefactory="false">
+            <provide interface="de.jutzig.jabylon.common.review.ReviewParticipant"/>
+            <provide interface="org.eclipse.emf.common.notify.Adapter$Internal"/>
+            <provide interface="org.eclipse.emf.common.notify.Adapter"/>
+        </service>
+        <property name="id" value="TerminologyCheck"/>
+        <property name="service.pid" value="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"/>
+    </scr:component>
+    <scr:component name="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck">
+        <implementation class="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"/>
+        <service servicefactory="false">
+            <provide interface="de.jutzig.jabylon.common.review.ReviewParticipant"/>
+        </service>
+        <property name="id" value="MessageFormatCheck"/>
+        <property name="service.pid" value="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"/>
+    </scr:component>
+</components>

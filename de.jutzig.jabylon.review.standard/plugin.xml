@@ -39,7 +39,7 @@
    <extension
          point="de.jutzig.jabylon.scheduler.jobs">
       <job
-            activeByDefault="true"
+            activeByDefault="false"
             class="de.jutzig.jabylon.review.standard.cleanup.TranslationCleanupJob"
             defaultSchedule="0 0 0 * * ?"
             description="Deletes translated strings that are missing in the template language"
