@@ -82,6 +82,8 @@ public class PropertiesHelper {
 				property = PropertiesFactory.eINSTANCE.createProperty();
 				if(comment.length()>0)
 					property.setComment(comment.toString());
+				if(propertyValue.length()==0)
+					continue;
 				String[] parts = split(propertyValue.toString());
 				if(parts == null || parts[0]==null) //invalid property
 				{
