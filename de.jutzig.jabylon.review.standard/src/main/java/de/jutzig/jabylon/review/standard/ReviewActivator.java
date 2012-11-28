@@ -1,11 +1,9 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.review.standard;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -21,12 +19,12 @@ public class ReviewActivator extends Plugin implements BundleActivator {
 	public static final String PLUGIN_ID = "de.jutzig.jabylon.review.standard";
 	private PropertyPersistenceService persistenceService;
 	private ServiceReference<PropertyPersistenceService> persistenceReference;
-	
+
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		INSTANCE = this;
-		
+
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class ReviewActivator extends Plugin implements BundleActivator {
 	public static ReviewActivator getDefault() {
 		return INSTANCE;
 	}
-	
+
 	public PropertyPersistenceService getPersistenceService()
 	{
 		if(persistenceService==null)
