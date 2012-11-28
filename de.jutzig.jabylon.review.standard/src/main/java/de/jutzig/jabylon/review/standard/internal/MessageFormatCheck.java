@@ -5,6 +5,7 @@ package de.jutzig.jabylon.review.standard.internal;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,17 +45,18 @@ public class MessageFormatCheck implements ReviewParticipant {
 		if(master==null || slave==null || master.getValue()==null || slave.getValue()==null)
 			return null;
 		Matcher masterMatcher = PATTERN.matcher(master.getValue());
-		HashSet<String> masterPatterns = new HashSet<String>();
+		Set<String> masterPatterns = new HashSet<String>();
 		while(masterMatcher.find())
 		{
 			masterPatterns.add(masterMatcher.group(1));
 		}
+		Set<String> mustHavePatterns = new HashSet<String>(masterPatterns);
 		
 		Matcher slaveMatcher = PATTERN.matcher(slave.getValue());
 		while(slaveMatcher.find())
 		{
 			String pattern = slaveMatcher.group(1);
-			if(!masterPatterns.remove(pattern))
+			if(!masterPatterns.contains(pattern))
 			{
 				Review review = PropertiesFactory.eINSTANCE.createReview();
 				String message = "Translation contains message format ''{0}'' which is not present in the template language";
@@ -64,12 +66,13 @@ public class MessageFormatCheck implements ReviewParticipant {
 				review.setSeverity(Severity.ERROR);
 				return review;
 			}
+			mustHavePatterns.remove(pattern);
 		}
-		if(!masterPatterns.isEmpty())
+		if(!mustHavePatterns.isEmpty())
 		{
 			Review review = PropertiesFactory.eINSTANCE.createReview();
 			String message = "The template language contains message format ''{0}'' which is not referenced in the translation";
-			review.setMessage(MessageFormat.format(message, masterPatterns.iterator().next()));
+			review.setMessage(MessageFormat.format(message, mustHavePatterns.iterator().next()));
 			review.setUser("Jabylon");
 			review.setSeverity(Severity.ERROR);
 			review.setReviewType("Message Format");
