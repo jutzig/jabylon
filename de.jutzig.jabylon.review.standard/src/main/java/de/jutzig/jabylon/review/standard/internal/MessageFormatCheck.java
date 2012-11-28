@@ -30,8 +30,8 @@ public class MessageFormatCheck implements ReviewParticipant {
 	
 	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="MessageFormatCheck")
 	private String ID;
-	
-	private static final Pattern PATTERN = Pattern.compile("(\\{\\d+.*?\\})");
+	/** as in {0} or {0,choice,0#days|1#day|1<days} */
+	private static final Pattern PATTERN = Pattern.compile("\\{(\\d+)(,.*?)?\\}");
 	
 	/**
 	 * 
@@ -48,14 +48,15 @@ public class MessageFormatCheck implements ReviewParticipant {
 		Set<String> masterPatterns = new HashSet<String>();
 		while(masterMatcher.find())
 		{
-			masterPatterns.add(masterMatcher.group(1));
+			masterPatterns.add("{"+masterMatcher.group(1)+"}");
 		}
 		Set<String> mustHavePatterns = new HashSet<String>(masterPatterns);
 		
 		Matcher slaveMatcher = PATTERN.matcher(slave.getValue());
 		while(slaveMatcher.find())
 		{
-			String pattern = slaveMatcher.group(1);
+			String patternNumber = slaveMatcher.group(1);
+			String pattern = "{"+patternNumber+"}";
 			if(!masterPatterns.contains(pattern))
 			{
 				Review review = PropertiesFactory.eINSTANCE.createReview();

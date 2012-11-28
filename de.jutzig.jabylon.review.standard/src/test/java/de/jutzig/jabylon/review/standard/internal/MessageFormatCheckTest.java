@@ -64,8 +64,26 @@ public class MessageFormatCheckTest extends AbstractReviewTest{
 		Property slave = createProperty("value", "{0} wert {0}");
 		assertNull(getFixture().review(null, master, slave));
 	}
+	/**
+	 * @see http://github.com/jutzig/jabylon/issues/issue/65
+	 */
+	@Test
+	public void testReviewChoiceFormat() {
+		
+		Property master = createProperty("key", "value {0,choice,0#days|1#day|1<days}");
+		Property slave = createProperty("value", "wert {0,choice,0#Tage|1#Tag|1<Tage}");
+		assertNull("this is ok, because the 0 argument is present in both cases",getFixture().review(null, master, slave));
+	}
+	
+	public void testReviewChoiceFormatWrongNumber() {
+		
+		Property master = createProperty("key", "value {0,choice,0#days|1#day|1<days}");
+		Property slave = createProperty("value", "wert {1,choice,0#Tage|1#Tag|1<Tage}");
+		assertNotNull("this is not ok, because the master uses 0 and the slave 1",getFixture().review(null, master, slave));
+	}
 	
 
+	
 	@Override
 	public ReviewParticipant createFixture() {
 		return new MessageFormatCheck();
