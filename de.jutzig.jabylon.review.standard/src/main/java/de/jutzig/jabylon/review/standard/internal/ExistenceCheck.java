@@ -41,21 +41,23 @@ public class ExistenceCheck implements ReviewParticipant {
 	public Review review(PropertyFileDescriptor descriptor, Property master,
 			Property slave) {
 		boolean masterExists = exists(master);
-		boolean slaveExists = exists(slave);
-		if(masterExists!=slaveExists)
+		//don't check anything if master exists. Missing translations are not worth a review
+		if(masterExists)
+			return null;
+		
+		if(master!=null)
+		{
+			// master exists, but has an empty value.
+			// it's alright if slave value is empty as well
+			if(!exists(slave))
+				return null;
+		}
+		
+		if(slave != null)
 		{
 			Review review = PropertiesFactory.eINSTANCE.createReview();
-			String message = "";
-			if(masterExists)
-			{
-				message = "The key ''{0}'' is missing in the translation";
-				message = MessageFormat.format(message, master.getKey());				
-			}
-			else
-			{
-				message = "The key ''{0}'' is missing in the template language";
-				message = MessageFormat.format(message, slave.getKey());				
-			}
+			String message = "The key ''{0}'' is missing in the template language";
+			message = MessageFormat.format(message, slave.getKey());				
 			review.setMessage(message);
 			review.setUser("Jabylon");
 			review.setReviewType("Missing Key");

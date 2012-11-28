@@ -3,7 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
-import java.util.ArrayList;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,6 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.Severity;
-import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 
 /**
@@ -37,13 +36,6 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 	static final String OK_LABEL = "OK";
 	private static final long serialVersionUID = 1L;
 	private boolean expanded;
-	private static List<IModel<Review>> OK_REVIEW;
-	
-	
-	static{
-		IModel<Review> noReviewModel = new NoReviewModel();
-		OK_REVIEW = Collections.singletonList(noReviewModel);
-	}
 
 	public SinglePropertyEditor(String id, IModel<PropertyPair> model, boolean expanded, Collection<Review> reviews) {
 		super(id, model);
@@ -107,11 +99,12 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 		else if (status.getSeverity() == IStatus.ERROR)
 			add(new AttributeModifier("class", "error"));
 		
-		ArrayList<IModel<Review>> reviewModel = createReviewListModel(reviewCollection);
+		Collection<Review> reviews = reviewCollection;
+		if(reviews==null || reviews.isEmpty())
+			reviews = createInMemoryReview(propertyPair);
 		
 		RepeatingView view = new RepeatingView("reviews");
-		for (IModel<Review> model : reviewModel) {
-			Review review = model.getObject();
+		for (Review review : reviews) {
 			Label label = new Label(view.newChildId(),review.getReviewType());
 			label.add(new AttributeAppender("class", getLabelClass(review)));
 			if(review.getMessage()!=null)
@@ -123,15 +116,19 @@ public class SinglePropertyEditor extends GenericPanel<PropertyPair> {
 
 	}
 
-	private ArrayList<IModel<Review>> createReviewListModel(Collection<Review> reviewCollection) {
-		if (reviewCollection == null || reviewCollection.isEmpty()) 
-			return new ArrayList<IModel<Review>>(OK_REVIEW);
-			
-		ArrayList<IModel<Review>> list = new ArrayList<IModel<Review>>(reviewCollection.size());
-		for (Review review : reviewCollection) {
-			list.add(new EObjectModel<Review>(review));
+	private List<Review> createInMemoryReview(PropertyPair pair) {
+		if(pair.getTranslated()==null || pair.getTranslated().isEmpty())
+		{
+			Review review = PropertiesFactory.eINSTANCE.createReview();
+			String message = "The key ''{0}'' is not yet translated";
+			review.setMessage(MessageFormat.format(message, pair.getKey()));
+			review.setReviewType("Missing Translation");
+			review.setSeverity(Severity.ERROR);
+			return Collections.singletonList(review);
 		}
-		return list;
+		Review review = PropertiesFactory.eINSTANCE.createReview();
+		review.setReviewType("OK");
+		return Collections.singletonList(review);
 	}
 
 	protected String getLabelClass(Review review) {
