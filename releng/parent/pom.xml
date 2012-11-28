@@ -486,6 +486,12 @@
 				<artifactId>org.osgi.compendium</artifactId>
 				<version>4.3.1</version>
 			</dependency>
+			<!-- GIT -->
+			<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit</artifactId>
+				<version>2.1.0.201209190230-r</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
