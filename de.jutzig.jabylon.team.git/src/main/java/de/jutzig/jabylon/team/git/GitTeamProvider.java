@@ -29,7 +29,6 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
@@ -168,7 +167,7 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
 	public void checkout(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
-		try {
+		
 			SubMonitor subMon = SubMonitor.convert(monitor, 100);
 			subMon.setTaskName("Checking out");
 			subMon.worked(20);
@@ -193,13 +192,7 @@ public class GitTeamProvider implements TeamProvider {
 			subMon.done();
 			if (monitor != null)
 				monitor.done();
-		} catch (TransportException e) {
-			throw new TeamProviderException(e);
-		} catch (InvalidRemoteException e) {
-			throw new TeamProviderException(e);
-		} catch (GitAPIException e) {
-			throw new TeamProviderException(e);
-		}
+		
 	}
 
 	@Override
