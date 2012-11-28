@@ -10,33 +10,6 @@
 
 <plugin>
    <extension
-         point="de.jutzig.jabylon.ui.reviewParticipant">
-      <particpant
-            class="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"
-            description="Checks if java message format patterns match in template and translation. E.g. if the template language contains &quot;{0}&quot;, then the translation must contain &quot;{0}&quot; as well"
-            id="de.jutzig.jabylon.review.standard.internal.MessageFormatCheck"
-            name="Message Format Check">
-      </particpant>
-      <particpant
-            class="de.jutzig.jabylon.review.standard.internal.EqualityCheck"
-            description="Warns if the template and the translated string are identical"
-            id="de.jutzig.jabylon.review.standard.internal.EqualityCheck"
-            name="Equality Check">
-      </particpant>
-      <particpant
-            class="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"
-            description="Checks if a property exists in both template and translation language"
-            id="de.jutzig.jabylon.review.standard.internal.ExistenceCheck"
-            name="Existence Check">
-      </particpant>
-      <particpant
-            class="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"
-            description="checks that terms from the terminology project are properly translated"
-            id="de.jutzig.jabylon.review.standard.internal.TerminologyCheck"
-            name="Terminology Check">
-      </particpant>
-   </extension>
-   <extension
          point="de.jutzig.jabylon.scheduler.jobs">
       <job
             activeByDefault="false"
