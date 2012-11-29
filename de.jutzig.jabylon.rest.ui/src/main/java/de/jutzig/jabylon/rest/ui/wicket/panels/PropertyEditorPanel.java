@@ -64,8 +64,6 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
 		addLinkList(mode);
-		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode);
-		List<PropertyPair> contents = provider.createContents();
 		reviewModel = new LoadableDetachableModel<Multimap<String,Review>>() {
 			
 			private static final long serialVersionUID = 1L;
@@ -75,6 +73,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				return buildReviewMap(getModelObject());
 			}
 		};
+		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode, reviewModel);
+		List<PropertyPair> contents = provider.createContents();
 		
 		ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents) {
 
@@ -199,12 +199,6 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		}
 		return reviewMap;
 	}
-
-
-	private boolean isFuzzy(PropertyPair pair)
-	{
-		return PropertyListMode.MISSING.apply(pair);
-	}
 	
 	
 	private void addLinkList(final PropertyListMode currentMode) {
@@ -235,11 +229,13 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 	private transient List<PropertyPair> contents;
 	private String filterState;
 	private PropertyListMode mode;
+	private IModel<Multimap<String, Review>> reviewModel;
 
-	public PropertyPairDataProvider(PropertyFileDescriptor descriptor, PropertyListMode mode) {
+	public PropertyPairDataProvider(PropertyFileDescriptor descriptor, PropertyListMode mode, IModel<Multimap<String, Review>> reviewModel) {
 		super();
 		model = new CompoundPropertyModel<PropertyFileDescriptor>(new EObjectModel<PropertyFileDescriptor>(descriptor));
 		this.mode = mode;
+		this.reviewModel = reviewModel;
 	}
 
 	@Override
@@ -257,6 +253,7 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 
 	protected List<PropertyPair> createContents() {
 		PropertyFileDescriptor descriptor = model.getObject();
+		Multimap<String, Review> reviews = reviewModel.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
 		Map<String, Property> translated = descriptor.loadProperties().asMap();
 		PropertyFile templateFile = master.loadProperties();
@@ -266,12 +263,13 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 			// IModel<String> bind = model.bind(property.getKey());
 			// bind.set
 			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()));
-			if (mode.apply(pair))
+			String key = pair.getKey();
+			if (mode.apply(pair,reviews.get(key)))
 				contents.add(pair);
 		}
 		for (Property property : translated.values()) {
 			PropertyPair pair = new PropertyPair(null, property);
-			if (mode.apply(pair))
+			if (mode.apply(pair,reviews.get(pair.getKey())))
 				contents.add(pair);
 		}
 		return contents;
@@ -304,7 +302,7 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 
 	ALL {
 		@Override
-		public boolean apply(PropertyPair pair) {
+		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
 			return true;
 		}
 	},
@@ -312,21 +310,26 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 
 	{
 		@Override
-		public boolean apply(PropertyPair pair) {
+		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
 			return pair.getOriginal() == null || pair.getTranslated() == null || pair.getOriginal().isEmpty()
 					|| pair.getTranslated().isEmpty();
 		}
 	},
 	FUZZY {
 		@Override
-		public boolean apply(PropertyPair pair) {
-			// TODO Auto-generated method stub
-			return false;
+		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
+			if(MISSING.apply(pair,reviews))
+				return true;
+			return reviews != null && !reviews.isEmpty();  
 		}
 	};
 
 	
-	public abstract boolean apply(PropertyPair pair);
+	public abstract boolean apply(PropertyPair pair, Collection<Review> reviews);
+	
+	public boolean apply(PropertyPair pair){
+		return apply(pair,null);
+	}
 	
 	public static PropertyListMode getByName(String name) {
 		if (name == null || name.isEmpty())
