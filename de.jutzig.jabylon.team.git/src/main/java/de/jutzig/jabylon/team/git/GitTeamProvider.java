@@ -212,7 +212,10 @@ public class GitTeamProvider implements TeamProvider {
 			if (changedFiles.isEmpty())
 				return;
 			CommitCommand commit = git.commit();
-			commit.setAuthor("Jabylon", "jabylon@example.org");
+			Preferences node = PreferencesUtil.scopeFor(project);
+			String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
+			String email = node.get(GitConstants.KEY_EMAIL, "jabylon@example.org");
+			commit.setAuthor(username, email);
 			commit.setMessage("Auto sync up by Jabylon");
 			for (String path : changedFiles) {
 				commit.setOnly(path);

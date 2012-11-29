@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.Preferences;
 
@@ -30,6 +31,7 @@ public class GitConfigPanel extends GenericPanel<Project> {
 		TextField<URI> uriField = new TextField<URI>("inputURI", repositoryURI);
 		uriField.setType(URI.class);
 		uriField.setConvertEmptyInputStringToNull(true);
+		uriField.setRequired(true);
 		add(uriField);
 		
 		PreferencesPropertyModel usernameModel = new PreferencesPropertyModel(config, GitConstants.KEY_USERNAME, "");
@@ -39,6 +41,12 @@ public class GitConfigPanel extends GenericPanel<Project> {
 		passwordTextField.setResetPassword(false);
 		passwordTextField.setRequired(false);
 		add(passwordTextField);
+		
+		PreferencesPropertyModel emailModel = new PreferencesPropertyModel(config, GitConstants.KEY_EMAIL, "jabylon@example.org");
+		TextField<String> emailField = new TextField<String>("inputEmail", emailModel);
+		emailField.setRequired(true);
+		emailField.add(EmailAddressValidator.getInstance());
+		add(emailField);
 	}
 
 	
