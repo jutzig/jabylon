@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
@@ -24,12 +23,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.net4j.acceptor.IAcceptor;
 import org.eclipse.net4j.db.DBUtil;
+import org.eclipse.net4j.db.h2.H2Adapter;
 import org.eclipse.net4j.jvm.IJVMAcceptor;
 import org.eclipse.net4j.jvm.IJVMConnector;
 import org.eclipse.net4j.jvm.JVMUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
+import org.h2.jdbcx.JdbcDataSource;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -305,22 +306,29 @@ public class Activator implements BundleActivator {
 	}
 
 	private IStore createStore() {
-		final String DATABASE_NAME = ServerConstants.WORKING_DIR + "/cdo/derby";
+		final String DATABASE_NAME = ServerConstants.WORKING_DIR + "/cdo/embedded/h2";
 		final String DATABASE_USER = "scott";
 		final String DATABASE_PASS = "tiger";
 
-		EmbeddedDataSource myDataSource = new EmbeddedDataSource();
-		// myDataSource.setUser(DATABASE_USER);
-		// myDataSource.setPassword(DATABASE_PASS);
-		// myDataSource.setAutoReconnect(true);
-		myDataSource.setDatabaseName(DATABASE_NAME);
-
-		myDataSource.setCreateDatabase("create");
+//		EmbeddedDataSource myDataSource = new EmbeddedDataSource();
+//		// myDataSource.setUser(DATABASE_USER);
+//		// myDataSource.setPassword(DATABASE_PASS);
+//		// myDataSource.setAutoReconnect(true);
+//		myDataSource.setDatabaseName(DATABASE_NAME);
+//
+		
+		JdbcDataSource dataSource = new JdbcDataSource();
+		dataSource.setURL("jdbc:h2:"+DATABASE_NAME);
+		
+//		myDataSource.setCreateDatabase("create");
 		// myDataSource.setPort(3306);
 		// myDataSource.setServerName("localhost");
 		IMappingStrategy mappingStrategy = CDODBUtil.createHorizontalMappingStrategy(false);
-		IDBStore store = CDODBUtil.createStore(mappingStrategy, DBUtil.getDBAdapter("derby-embedded"),
-				DBUtil.createConnectionProvider(myDataSource));
+//		IDBStore store = CDODBUtil.createStore(mappingStrategy, DBUtil.getDBAdapter("derby-embedded"),
+//				DBUtil.createConnectionProvider(myDataSource));
+		H2Adapter adapter = new H2Adapter();
+		IDBStore store = CDODBUtil.createStore(mappingStrategy, adapter,
+				DBUtil.createConnectionProvider(dataSource));
 		mappingStrategy.setStore(store);
 
 		return store;

@@ -71,8 +71,12 @@
 			<groupId>org.eclipse.emf.cdo.server</groupId>
 		</dependency>
 		<dependency>
-			<artifactId>derby</artifactId>
+			<artifactId>h2</artifactId>
 			<groupId>org.eclipse.net4j.db</groupId>
+		</dependency>
+		<dependency>
+			<artifactId>h2</artifactId>
+			<groupId>org</groupId>
 		</dependency>
 		<dependency>
 			<artifactId>derby</artifactId>

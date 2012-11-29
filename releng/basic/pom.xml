@@ -99,7 +99,7 @@
 
 		<dependency>
 			<groupId>org.eclipse.net4j.db</groupId>
-			<artifactId>derby</artifactId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>
@@ -187,8 +187,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache</groupId>
-			<artifactId>derby</artifactId>
+			<groupId>org</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>
