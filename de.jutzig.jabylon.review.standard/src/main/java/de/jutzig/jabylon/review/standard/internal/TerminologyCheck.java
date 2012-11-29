@@ -42,10 +42,6 @@ import de.jutzig.jabylon.properties.Workspace;
 @Component
 @Service
 public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
-
-	
-	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="TerminologyCheck")
-	private String ID;
 	
 	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 
@@ -153,5 +149,20 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 		if(descriptors.isEmpty())
 			return null;
 		return descriptors.get(0);
+	}
+
+	@Override
+	public String getID() {
+		return "TerminologyCheck";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Checks that words that appear in the Terminology project in the template are properly translated"; 
+	}
+
+	@Override
+	public String getName() {
+		return "Terminology Check";
 	}
 }

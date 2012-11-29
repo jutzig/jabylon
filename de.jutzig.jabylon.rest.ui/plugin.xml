@@ -69,6 +69,10 @@
           name="Versions"
           tabID="versions">
     </tab>
+    <tab
+          name="Checks"
+          tabID="checks">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -116,6 +120,12 @@
        <permission
              requires="GLOBAL_EDIT_PROJECTS">
        </permission>
+    </section>
+    <section
+          name="Translation Checks"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.TranslationChecksConfigSection$TranslationChecksConfig"
+          tab="checks">
     </section>
  </extension>
  <extension

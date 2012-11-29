@@ -2,12 +2,10 @@ package de.jutzig.jabylon.common.review.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.felix.scr.annotations.Component;
@@ -39,7 +37,7 @@ import de.jutzig.jabylon.resources.changes.PropertiesListener;
 public class PropertyReviewService implements PropertiesListener {
 	
 	@Reference(referenceInterface=ReviewParticipant.class,bind="addParticipant",unbind="removeParticipant",cardinality=ReferenceCardinality.MANDATORY_MULTIPLE)
-	private Map<String, ReviewParticipant> participants = new HashMap<String, ReviewParticipant>();
+	private List<ReviewParticipant> participants = Collections.synchronizedList(new ArrayList<ReviewParticipant>());
 
 	private static final Logger logger = LoggerFactory.getLogger(PropertyReviewService.class); 
 	
@@ -47,18 +45,16 @@ public class PropertyReviewService implements PropertiesListener {
 		
 	}
 	
-	protected void addParticipant(ReviewParticipant pariticpant, Map<String, String> properties)
+	protected void addParticipant(ReviewParticipant pariticpant)
 	{
-		String id = properties.get("id");
-		logger.info("Adding new review participant {} (ID: {})",pariticpant,id);
-		participants.put(id, pariticpant);
+		logger.info("Adding new review participant {} (ID: {})",pariticpant.getName(),pariticpant.getID());
+		participants.add(pariticpant);
 	}
 	
-	protected void removeParticipant(ReviewParticipant pariticpant, Map<String, String> properties)
+	protected void removeParticipant(ReviewParticipant pariticpant)
 	{
-		String id = properties.get("id");
-		logger.info("Deactivating review participant {} (ID: {})",pariticpant,id);
-		participants.remove(id);
+		logger.info("Deactivating review participant {} (ID: {})",pariticpant.getName(),pariticpant.getID());
+		participants.remove(pariticpant);
 	}
 
 	@Override
@@ -211,10 +207,9 @@ public class PropertyReviewService implements PropertiesListener {
 	private List<ReviewParticipant> getActiveReviews(Project project) {
 		List<ReviewParticipant> activeParticipants = new ArrayList<ReviewParticipant>();
 		Preferences node = PreferencesUtil.scopeFor(project).node(PreferencesUtil.NODE_CHECKS);
-		for (Entry<String, ReviewParticipant> entry : participants.entrySet()) {
-			//TODO: reactivate this condition once there is a config UI
-//			if (node.getBoolean(entry.getKey(), false))
-				activeParticipants.add(entry.getValue());
+		for (ReviewParticipant participant : participants) {
+			if (node.getBoolean(participant.getID(), false))
+				activeParticipants.add(participant);
 		}
 		return activeParticipants;
 	}

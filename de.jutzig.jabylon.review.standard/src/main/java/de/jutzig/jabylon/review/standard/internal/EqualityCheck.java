@@ -21,10 +21,6 @@ import de.jutzig.jabylon.properties.Severity;
 @Service
 public class EqualityCheck implements ReviewParticipant {
 
-
-	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="EqualityCheck")
-	private String ID;
-
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
 	 */
@@ -43,9 +39,25 @@ public class EqualityCheck implements ReviewParticipant {
 				review.setReviewType("Equality Check");
 				review.setSeverity(Severity.WARNING);
 				review.setUser("Jabylon");
+				return review;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public String getID() {
+		return "EqualityCheck";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Checks if the template and translation are identical (copy/paste)";
+	}
+
+	@Override
+	public String getName() {
+		return "Equality Check";
 	}
 
 }

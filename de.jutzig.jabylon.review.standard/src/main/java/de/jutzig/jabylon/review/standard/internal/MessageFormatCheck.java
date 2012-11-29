@@ -27,9 +27,6 @@ import de.jutzig.jabylon.properties.Severity;
 @Service
 public class MessageFormatCheck implements ReviewParticipant {
 
-	
-	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="MessageFormatCheck")
-	private String ID;
 	/** as in {0} or {0,choice,0#days|1#day|1<days} */
 	private static final Pattern PATTERN = Pattern.compile("\\{(\\d+)(,.*?)?\\}");
 	
@@ -81,6 +78,21 @@ public class MessageFormatCheck implements ReviewParticipant {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public String getID() {
+		return "MessageFormatCheck";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Checks if message format parameters ({0},{1},...) are consistent between template and translation";
+	}
+
+	@Override
+	public String getName() {
+		return "MessageFormat Check";
 	}
 
 //TODO: unit test for this:

@@ -22,10 +22,6 @@ import de.jutzig.jabylon.properties.Severity;
 @Component
 @Service
 public class ExistenceCheck implements ReviewParticipant {
-
-	
-	@org.apache.felix.scr.annotations.Property(name=PROPERTY_ID,value="ExistenceCheck")
-	private String ID;
 	
 	/**
 	 * 
@@ -75,6 +71,21 @@ public class ExistenceCheck implements ReviewParticipant {
 		if(property.getValue().trim().length()==0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String getID() {
+		return "ExistenceCheck";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Checks if there is any keys in the translated files that are not available in the template";
+	}
+
+	@Override
+	public String getName() {
+		return "Existence Check";
 	}
 
 }

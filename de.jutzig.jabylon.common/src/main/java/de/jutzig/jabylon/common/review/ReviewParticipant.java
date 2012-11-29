@@ -14,4 +14,10 @@ public interface ReviewParticipant {
 	
 	String PROPERTY_ID = "id";
 	
+	String getID();
+	
+	String getDescription();
+	
+	String getName();
+	
 }
