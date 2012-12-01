@@ -1,8 +1,14 @@
 package de.jutzig.jabylon.cdo.server;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -21,7 +27,10 @@ import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.net4j.acceptor.IAcceptor;
+import org.eclipse.net4j.db.DBException;
 import org.eclipse.net4j.db.DBUtil;
 import org.eclipse.net4j.db.h2.H2Adapter;
 import org.eclipse.net4j.jvm.IJVMAcceptor;
@@ -30,6 +39,7 @@ import org.eclipse.net4j.jvm.JVMUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
+import org.h2.jdbc.JdbcConnection;
 import org.h2.jdbcx.JdbcDataSource;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -54,7 +64,7 @@ public class Activator implements BundleActivator {
 	 * The shared instance
 	 */
 	private static Activator plugin;
-	
+
 	private BundleContext context;
 
 	/**
@@ -75,9 +85,10 @@ public class Activator implements BundleActivator {
 	private IRepository repository = null;
 
 	private boolean needsShutdown;
-	
-	private static final Logger logger = LoggerFactory.getLogger(Activator.class);
-	
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(Activator.class);
+
 	/**
 	 * The constructor
 	 */
@@ -93,12 +104,12 @@ public class Activator implements BundleActivator {
 		this.context = context;
 		initialize();
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
-		
+
 	}
 
 	protected void initialize() throws CommitException {
 		Thread repoStarter = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 
@@ -108,14 +119,15 @@ public class Activator implements BundleActivator {
 				try {
 					initializeWorkspace(transaction);
 					initializeUserManagement(transaction);
-					FrameworkUtil.getBundle(getClass()).getBundleContext().registerService(IAcceptor.class, acceptor, null);
+					FrameworkUtil.getBundle(getClass()).getBundleContext()
+							.registerService(IAcceptor.class, acceptor, null);
 				} catch (CommitException e) {
-					logger.error("Failed to initialize repository",e);
-				} finally{
+					logger.error("Failed to initialize repository", e);
+				} finally {
 					transaction.close();
 					session.close();
 				}
-				needsShutdown=true;
+				needsShutdown = true;
 			}
 		});
 		repoStarter.setName("Repository Initializer");
@@ -123,16 +135,19 @@ public class Activator implements BundleActivator {
 		repoStarter.start();
 	}
 
-	private void initializeUserManagement(CDOTransaction transaction) throws CommitException {
-		CDOResource resource = transaction.getOrCreateResource(ServerConstants.USERS_RESOURCE);
-		if(resource.getContents().isEmpty())
-		{
-			UserManagement userManagement = UsersFactory.eINSTANCE.createUserManagement();
+	private void initializeUserManagement(CDOTransaction transaction)
+			throws CommitException {
+		CDOResource resource = transaction
+				.getOrCreateResource(ServerConstants.USERS_RESOURCE);
+		if (resource.getContents().isEmpty()) {
+			UserManagement userManagement = UsersFactory.eINSTANCE
+					.createUserManagement();
 			userManagement.getUsers().add(getAdminUser());
 			userManagement.getUsers().add(getAnonymousUser());
 			resource.getContents().add(userManagement);
 		}
-		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+		UserManagement userManagement = (UserManagement) resource.getContents()
+				.get(0);
 
 		addAvailablePermissions(userManagement);
 		Role adminRole = addOrUpdateAdminRole(userManagement);
@@ -149,7 +164,6 @@ public class Activator implements BundleActivator {
 		else
 			return updateAdminRole(adminRole, userManagement);
 	}
-
 
 	private User getAnonymousUser() {
 		User anonymous = UsersFactory.eINSTANCE.createUser();
@@ -187,7 +201,8 @@ public class Activator implements BundleActivator {
 		return adminRole;
 	}
 
-	private void addAdminUserIfMissing(Role adminRole, UserManagement userManagement) {
+	private void addAdminUserIfMissing(Role adminRole,
+			UserManagement userManagement) {
 		EList<User> users = userManagement.getUsers();
 		for (User user : users) {
 			for (Role role : user.getRoles()) {
@@ -200,8 +215,9 @@ public class Activator implements BundleActivator {
 	}
 
 	private void addAvailablePermissions(UserManagement userManagement) {
-		IConfigurationElement[] permissions = RegistryFactory.getRegistry().getConfigurationElementsFor(
-				"de.jutzig.jabylon.security.permission");
+		IConfigurationElement[] permissions = RegistryFactory.getRegistry()
+				.getConfigurationElementsFor(
+						"de.jutzig.jabylon.security.permission");
 
 		EList<Permission> dbPermissions = userManagement.getPermissions();
 
@@ -218,7 +234,8 @@ public class Activator implements BundleActivator {
 		}
 	}
 
-	private boolean dbContainsPermission(EList<Permission> dbPermissions, String permissionName) {
+	private boolean dbContainsPermission(EList<Permission> dbPermissions,
+			String permissionName) {
 		for (Permission permission : dbPermissions) {
 			if (permission.getName().equals(permissionName))
 				return true;
@@ -226,10 +243,12 @@ public class Activator implements BundleActivator {
 		return false;
 	}
 
-	private void initializeWorkspace(CDOTransaction transaction) throws CommitException {
+	private void initializeWorkspace(CDOTransaction transaction)
+			throws CommitException {
 
 		if (!transaction.hasResource(ServerConstants.WORKSPACE_RESOURCE)) {
-			CDOResource resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
+			CDOResource resource = transaction
+					.createResource(ServerConstants.WORKSPACE_RESOURCE);
 			Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
 			URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
 			File root = new File(ServerConstants.WORKSPACE_DIR);
@@ -249,12 +268,14 @@ public class Activator implements BundleActivator {
 
 		IJVMConnector connector = JVMUtil.getConnector(container, "default");
 
-		CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
+		CDOSessionConfiguration config = CDONet4jUtil
+				.createSessionConfiguration();
 		config.setConnector(connector);
 		config.setRepositoryName(ServerConstants.REPOSITORY_NAME);
 
 		CDOSession session = config.openSession();
-		session.options().setCollectionLoadingPolicy(CDOUtil.createCollectionLoadingPolicy(0, 300));
+		session.options().setCollectionLoadingPolicy(
+				CDOUtil.createCollectionLoadingPolicy(0, 300));
 		session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
 
 		return session;
@@ -264,10 +285,9 @@ public class Activator implements BundleActivator {
 		IPluginContainer container = IPluginContainer.INSTANCE;
 		logger.info("Starting Repository");
 		// initialize acceptor
-		if (acceptor == null)
-		{
+		if (acceptor == null) {
 			acceptor = JVMUtil.getAcceptor(container, "default");
-			
+
 		}
 
 		if (repository == null) {
@@ -302,52 +322,108 @@ public class Activator implements BundleActivator {
 		// props.put(Props.PROP_SUPPORTING_REVISION_DELTAS, "false");
 		// props.put(Props.PROP_CURRENT_LRU_CAPACITY, "10000");
 		// props.put(Props.PROP_REVISED_LRU_CAPACITY, "10000");
-		return CDOServerUtil.createRepository(ServerConstants.REPOSITORY_NAME, createStore(), props);
+		return CDOServerUtil.createRepository(ServerConstants.REPOSITORY_NAME,
+				createStore(), props);
 	}
 
 	private IStore createStore() {
-		final String DATABASE_NAME = ServerConstants.WORKING_DIR + "/cdo/embedded/h2";
+		final String DATABASE_NAME = ServerConstants.WORKING_DIR
+				+ "/cdo/embedded/h2;DB_CLOSE_ON_EXIT=FALSE";
 		final String DATABASE_USER = "scott";
 		final String DATABASE_PASS = "tiger";
 
-//		EmbeddedDataSource myDataSource = new EmbeddedDataSource();
-//		// myDataSource.setUser(DATABASE_USER);
-//		// myDataSource.setPassword(DATABASE_PASS);
-//		// myDataSource.setAutoReconnect(true);
-//		myDataSource.setDatabaseName(DATABASE_NAME);
-//
-		
+		// EmbeddedDataSource myDataSource = new EmbeddedDataSource();
+		// // myDataSource.setUser(DATABASE_USER);
+		// // myDataSource.setPassword(DATABASE_PASS);
+		// // myDataSource.setAutoReconnect(true);
+		// myDataSource.setDatabaseName(DATABASE_NAME);
+		//
+
 		JdbcDataSource dataSource = new JdbcDataSource();
-		dataSource.setURL("jdbc:h2:"+DATABASE_NAME);
-		
-//		myDataSource.setCreateDatabase("create");
+		dataSource.setURL("jdbc:h2:" + DATABASE_NAME);
+
+		// myDataSource.setCreateDatabase("create");
 		// myDataSource.setPort(3306);
 		// myDataSource.setServerName("localhost");
-		IMappingStrategy mappingStrategy = CDODBUtil.createHorizontalMappingStrategy(false);
-//		IDBStore store = CDODBUtil.createStore(mappingStrategy, DBUtil.getDBAdapter("derby-embedded"),
-//				DBUtil.createConnectionProvider(myDataSource));
+		IMappingStrategy mappingStrategy = CDODBUtil
+				.createHorizontalMappingStrategy(false);
+		// IDBStore store = CDODBUtil.createStore(mappingStrategy,
+		// DBUtil.getDBAdapter("derby-embedded"),
+		// DBUtil.createConnectionProvider(myDataSource));
 		H2Adapter adapter = new H2Adapter();
+
+		
+		deleteStaleObjects(dataSource);
+		
 		IDBStore store = CDODBUtil.createStore(mappingStrategy, adapter,
 				DBUtil.createConnectionProvider(dataSource));
 		mappingStrategy.setStore(store);
 
 		return store;
 	}
-	
-	class ShutdownThread extends Thread{
-		@Override
-		public void run() {
-			if(needsShutdown && plugin!=null)
-			{
-				
-				Bundle bundle = context.getBundle(0); //system bundle
-				try {
-					context.getBundle().stop();
-					bundle.stop();
-				} catch (BundleException e) {
-					logger.error("Shutdown failed",e);
+
+	/**
+	 * this is only needed until CDO 4.2 which fixed this bug:
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=351068
+	 * @param dataSource
+	 */
+	private void deleteStaleObjects(DataSource dataSource) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			EList<EClassifier> classifiers = PropertiesPackage.eINSTANCE
+					.getEClassifiers();
+			for (EClassifier eClassifier : classifiers) {
+				if (eClassifier instanceof EClass) {
+					EClass eclass = (EClass) eClassifier;
+					if (eclass.isInterface() || eclass.isAbstract())
+						continue;
+					cleanupStaleObjects(eclass, connection);
 				}
 			}
+			if(!connection.getAutoCommit())
+				connection.commit();
+			logger.info("Database cleanup finished successfully");
+		} catch (DBException e) {
+			logger.error("Database cleanup failed",e);
+		} catch (SQLException e) {
+			logger.error("Database cleanup failed",e);
+		}
+		finally{
+			if(connection!=null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					logger.error("failed to close SQL connection after cleanup",e);
+				}
+		}
+
+	}
+
+	private void cleanupStaleObjects(EClass eclass, Connection connection) throws SQLException {
+		logger.info("Deleting stale {} objects", eclass.getName());
+		Statement statement = connection.createStatement();
+		statement.addBatch(MessageFormat.format("DELETE FROM CDO_OBJECTS WHERE CDO_ID IN (SELECT CDO_ID FROM {0} WHERE CDO_VERSION<0)", eclass.getName().toUpperCase()));
+		statement.addBatch(MessageFormat.format("DELETE FROM {0} WHERE CDO_VERSION<0;", eclass.getName().toUpperCase()));
+		int deleted = statement.executeBatch()[0];
+		logger.info("Deleted {} stale {}s ",deleted,eclass.getName());
+		statement.close();
+		
+	}
+
+	class ShutdownThread extends Thread {
+		@Override
+		public void run() {
+//			if (needsShutdown && plugin != null) {
+//
+//				Bundle bundle = context.getBundle(0); // system bundle
+//				try {
+//					context.getBundle().stop();
+//					bundle.stop();
+//				} catch (BundleException e) {
+//					logger.error("Shutdown failed", e);
+//				}
+//			}
 		}
 	}
 }
