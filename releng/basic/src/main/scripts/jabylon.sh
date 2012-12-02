@@ -27,7 +27,7 @@ start()
     VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.host=${HOST}";
     VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
     VMARGS="${VMARGS} -Dosgi.instance.area=${DATA}"       	
-	PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.2.0.jar"
+	PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar"
 	nohup ${PROGRAM} > wrapper.log 2>&1 &
 	PID=$!
 	echo $PID > "$pidfile"
@@ -61,7 +61,7 @@ while [ "$1" != "" ]; do
 			    echo "Starting Jabylon at port ${PORT}"
 			    VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.host=${HOST}";
     			VMARGS="${VMARGS} -Dorg.eclipse.equinox.http.jetty.http.port=${PORT}";
-				PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.2.0.jar"
+				PROGRAM="java ${VMARGS} -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar"
 				$PROGRAM
                                 ;;
         * )                     usage
