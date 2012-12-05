@@ -64,6 +64,8 @@ public class PunctuationCheck implements ReviewParticipant {
 	}
 
 	private void countHotChars(String value, short[] templateOccurrences) {
+		if(value==null)
+			return;
 		char[] chars = value.toCharArray();
 		for (char c : chars) {
 			switch (c) {
@@ -100,6 +102,8 @@ public class PunctuationCheck implements ReviewParticipant {
 	}
 	
 	private void subtractHotChars(String value, short[] templateOccurrences) {
+		if(value==null)
+			return;	
 		char[] chars = value.toCharArray();
 		for (char c : chars) {
 			switch (c) {
