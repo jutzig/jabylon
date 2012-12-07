@@ -9,7 +9,7 @@ body {
 }
 
 .navbar { /* padding-left: 60px; */
-	
+
 }
 
 /** to ensure that disabled toolbar links are in the right position*/
@@ -20,15 +20,15 @@ body {
 
 /** buttons */
 .toggle-button {
-	
+
 }
 
 .next-button {
-	
+
 }
 
 .previous-button {
-	
+
 }
 
 /** sort icons */
@@ -90,7 +90,32 @@ table.table {
 	max-width: none !important;
 }
 
-/* make progress label in progress bars bold */ 
+/* make progress label in progress bars bold */
 div.progress div.bar {
 	font-weight: bold;
+}
+
+form.jabylon-properties-form {
+    padding-bottom: 15%;
+}
+
+div.jabylon-properties-toolbar {
+
+    bottom: 0;
+    height: 15%;
+    left: 0;
+    position: fixed;
+    text-align: left;
+    width: 100%;
+    z-index: 1000;
+
+
+    background-color: #FFFFFF;
+    /* background-image: linear-gradient(to bottom, #222222, #111111);
+    background-repeat: repeat-x; */
+    border-color: #252525;
+
+    border-top-style: solid;
+    border-top-width: 2px
+
 }
