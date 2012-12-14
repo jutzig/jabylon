@@ -48,7 +48,7 @@ import de.jutzig.jabylon.rest.api.json.JSONEmitter;
  * TODO short description for ApiServlet.
  * <p>
  * Long description for ApiServlet.
- * 
+ *
  * @author utzig
  */
 public class ApiServlet extends HttpServlet
@@ -255,7 +255,7 @@ public class ApiServlet extends HttpServlet
 				int read = inputStream.read(buffer);
 				if (read > 0)
 					out.write(buffer, 0, read);
-				if (read < buffer.length)
+				if (read < 0)
 					break;
 			}
 		} finally {
