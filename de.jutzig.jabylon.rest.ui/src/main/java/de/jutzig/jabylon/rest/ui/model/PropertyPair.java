@@ -1,8 +1,7 @@
 package de.jutzig.jabylon.rest.ui.model;
 
 import java.io.Serializable;
-
-import org.apache.wicket.model.IModel;
+import java.util.Locale;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
@@ -11,11 +10,13 @@ public class PropertyPair implements Serializable{
 
 	private Property template;
 	private Property translation;
+	private Locale language;
 
-	public PropertyPair(Property template, Property translation) {
+	public PropertyPair(Property template, Property translation, Locale language) {
 		super();
 		this.template = template;
 		this.translation = translation;
+		this.language = language;
 	}
 
 	public Property getTemplate() {
@@ -94,5 +95,9 @@ public class PropertyPair implements Serializable{
 		if(translation!=null)
 			return translation.getKey();
 		return null;
+	}
+	
+	public Locale getLanguage() {
+		return language;
 	}
 }

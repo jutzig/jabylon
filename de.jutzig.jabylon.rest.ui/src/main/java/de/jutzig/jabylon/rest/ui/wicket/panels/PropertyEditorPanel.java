@@ -262,13 +262,13 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		for (Property property : templateFile.getProperties()) {
 			// IModel<String> bind = model.bind(property.getKey());
 			// bind.set
-			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()));
+			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()),descriptor.getVariant());
 			String key = pair.getKey();
 			if (mode.apply(pair,reviews.get(key)))
 				contents.add(pair);
 		}
 		for (Property property : translated.values()) {
-			PropertyPair pair = new PropertyPair(null, property);
+			PropertyPair pair = new PropertyPair(null, property,descriptor.getVariant());
 			if (mode.apply(pair,reviews.get(pair.getKey())))
 				contents.add(pair);
 		}
