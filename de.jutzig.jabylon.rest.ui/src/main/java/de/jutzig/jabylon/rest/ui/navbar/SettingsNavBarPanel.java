@@ -55,15 +55,15 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 		add(link);
 	}
 
-	public static class SettingsPanelFactory implements PanelFactory, Serializable
+	public static class SettingsPanelFactory implements PanelFactory<Object>, Serializable
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new SettingsNavBarPanel<T>(id, input, params);
+			return new SettingsNavBarPanel<Object>(id, input, params);
 		}
 		
 	}

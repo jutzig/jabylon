@@ -38,13 +38,13 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 
 
-	public static class SearchPanelFactory implements PanelFactory, Serializable {
+	public static class SearchPanelFactory implements PanelFactory<Object>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new SearchPanel<T>(id, input, params);
+			return new SearchPanel<Object>(id, input, params);
 
 		}
 
