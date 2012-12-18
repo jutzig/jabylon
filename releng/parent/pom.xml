@@ -177,6 +177,7 @@
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
 						<Include-Resource>{maven-resources}</Include-Resource>
+						<Import-Package>*;common=!;core=!;registry=!</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
