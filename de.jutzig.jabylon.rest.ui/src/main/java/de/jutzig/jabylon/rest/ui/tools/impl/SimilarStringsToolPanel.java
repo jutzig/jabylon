@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -93,7 +93,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 
         if(result==null)
             return Collections.emptyList();
-        Set<Similarity> resultList = new HashSet<SimilarStringsToolPanel.Similarity>();
+        Set<Similarity> resultList = new TreeSet<SimilarStringsToolPanel.Similarity>();
         TopDocs topDocs = result.getTopDocs();
         ScoreDoc[] doc = topDocs.scoreDocs;
         for (ScoreDoc scoreDoc : doc)
@@ -162,7 +162,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
     }
 
     
-    public static class Similarity implements Serializable
+    public static class Similarity implements Serializable, Comparable<Similarity>
     {
         
 		private static final long serialVersionUID = 1L;
@@ -238,6 +238,11 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 			} else if (!translation.equals(other.translation))
 				return false;
 			return true;
+		}
+
+		@Override
+		public int compareTo(Similarity o) {
+			return o.getSimilarity() - getSimilarity();
 		}
         
         
