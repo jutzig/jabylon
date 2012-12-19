@@ -6,15 +6,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.common.util.EList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.index.properties.QueryService;
@@ -56,21 +56,18 @@ public class ReviewToolPanel extends GenericPanel<PropertyPair> {
 
 			}
 		}
-		ListView<Review> listView = new ListView<Review>("reviews", matchingReviews) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(ListItem<Review> item) {
-				Review review = item.getModelObject();
-				Label label = new Label("status", review.getReviewType());
-				label.add(new AttributeAppender("class", getLabelClass(review)));
-				item.add(label);
-				item.add(new Label("message", review.getMessage()));
-				item.add(new Label("description", review.getReviewType()));
-			}
-		};
-		addOrReplace(listView);
+		
+		RepeatingView view = new RepeatingView("reviews");
+		for (Review review : matchingReviews) {
+			WebMarkupContainer c = new WebMarkupContainer(view.newChildId());
+			Label label = new Label("status", review.getReviewType());
+			label.add(new AttributeAppender("class", getLabelClass(review)));
+			c.add(label);
+			c.add(new Label("message", review.getMessage()));
+			c.add(new Label("description", review.getReviewType()));
+			view.add(c);
+		}
+		addOrReplace(view);
 	}
 
 	protected String getLabelClass(Review review) {
