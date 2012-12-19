@@ -10,8 +10,8 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -20,12 +20,9 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
-import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
-import org.eclipse.emf.cdo.view.CDOView;
-import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,7 +140,8 @@ public class QueryServiceImpl implements QueryService {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 		IndexSearcher searcher = null;
 		try {
-			searcher = new IndexSearcher(directory, true);
+			IndexReader reader = IndexReader.open(directory, true);
+			searcher = new IndexSearcher(reader);
 			TopDocs result = searcher.search(query, maxHits);
 
 			return new SearchResult(searcher, result);
@@ -157,12 +155,12 @@ public class QueryServiceImpl implements QueryService {
 	}
 
 	@Override
-	public PropertyFileDescriptor getDescriptor(Document doc, CDOView view) {
+	public PropertyFileDescriptor getDescriptor(Document doc) {
 		String cdoID = doc.get(FIELD_CDO_ID);
 		CDOID id = CDOIDUtil.read(cdoID);
-		CDOObject object = null;
+		Object object = null;
 		try {
-			object = view.getObject(id);
+			object = uriResolver.resolve(id);
 		} catch (ObjectNotFoundException e) {
 			return null;
 		}

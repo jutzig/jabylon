@@ -84,7 +84,7 @@ public class AutoTranslator implements PropertiesListener {
 						Document document = result.getSearcher().doc(doc.doc);
 						if(!document.get(QueryService.FIELD_VALUE).equals(masterProperty.getValue()))
 							continue;
-						PropertyFileDescriptor relatedMasterDescriptor = queryService.getDescriptor(document, descriptor.cdoView());
+						PropertyFileDescriptor relatedMasterDescriptor = queryService.getDescriptor(document);
 						PropertyFileDescriptor relatedDescriptor = getMatchingLocale(relatedMasterDescriptor,descriptor.getProjectLocale());
 						if(relatedDescriptor==null)
 							continue;
@@ -160,7 +160,7 @@ public class AutoTranslator implements PropertiesListener {
 	private Query constructQuery(String value) {
 		BooleanQuery query = new BooleanQuery();
 		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)),Occur.MUST);
-		QueryParser parser = new QueryParser(Version.LUCENE_29,QueryService.FIELD_VALUE,new StandardAnalyzer(Version.LUCENE_29));
+		QueryParser parser = new QueryParser(Version.LUCENE_35,QueryService.FIELD_VALUE,new StandardAnalyzer(Version.LUCENE_29));
 		Query mainQuery = null;
 		try {
 			mainQuery = parser.parse("\""+QueryParser.escape(value)+"\"");

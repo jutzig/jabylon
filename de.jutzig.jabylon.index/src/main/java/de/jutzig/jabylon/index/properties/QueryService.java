@@ -32,6 +32,6 @@ public interface QueryService {
 
 	SearchResult search(Query query, int maxHits);
 
-	PropertyFileDescriptor getDescriptor(Document doc, CDOView view);
+	PropertyFileDescriptor getDescriptor(Document doc);
 
 }

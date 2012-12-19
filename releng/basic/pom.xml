@@ -175,10 +175,6 @@
 			<groupId>org.apache.lucene</groupId>
 		</dependency>
 		<dependency>
-			<artifactId>analysis</artifactId>
-			<groupId>org.apache.lucene</groupId>
-		</dependency>
-		<dependency>
 			<artifactId>lucene</artifactId>
 			<groupId>org.apache</groupId>
 		</dependency>
