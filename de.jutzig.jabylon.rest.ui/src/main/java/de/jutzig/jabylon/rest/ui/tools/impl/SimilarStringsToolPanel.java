@@ -4,10 +4,13 @@
 package de.jutzig.jabylon.rest.ui.tools.impl;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -19,6 +22,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.util.Version;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -45,11 +49,17 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LoggerFactory.getLogger(SimilarStringsToolPanel.class);
 	@Inject
-	private QueryService queryService;
+	private transient QueryService queryService;
 	
 	public SimilarStringsToolPanel(String id, IModel<PropertyPair> model) {
-		super(id, model);
-		ListView<Similarity> list = new ListView<Similarity>("children") {
+		super(id, model);;
+
+	}
+	
+	@Override
+	protected void onBeforeRender() {
+		List<Similarity> result = doSearch(getModel());
+		ListView<Similarity> list = new ListView<Similarity>("children",result) {
 			
 			private static final long serialVersionUID = 1L;
 
@@ -58,26 +68,32 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 				Similarity similarity = item.getModelObject();
 				item.add(new Label("template",similarity.getOriginal()));
 				item.add(new Label("translation",similarity.getTranslation()));
+				item.add(new AttributeAppender("title", similarity.getFullPath()));
 				WebMarkupContainer progress = new WebMarkupContainer("similarity");
 				item.add(progress);
 				progress.add(new AttributeModifier("style", "width: " + similarity.getSimilarity() + "%"));
 				
 			}
 		};
-		add(list);
+		addOrReplace(list);
+		super.onBeforeRender();
 	}
+
 	
 	protected List<Similarity> doSearch(IModel<PropertyPair> model)
 	{
 
+		
 		PropertyPair pair = model.getObject();
-        FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(10, new StandardAnalyzer(Version.LUCENE_29));
+		if(pair==null || pair.getOriginal()==null)
+			return Collections.emptyList();
+        FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(10, new StandardAnalyzer(Version.LUCENE_35));
         query.addTerms(pair.getOriginal(), QueryService.FIELD_VALUE, 0.6f, 3);
         SearchResult result = queryService.search(query,20);
 
         if(result==null)
             return Collections.emptyList();
-        List<Similarity> resultList = new ArrayList<SimilarStringsToolPanel.Similarity>();
+        Set<Similarity> resultList = new HashSet<SimilarStringsToolPanel.Similarity>();
         TopDocs topDocs = result.getTopDocs();
         ScoreDoc[] doc = topDocs.scoreDocs;
         for (ScoreDoc scoreDoc : doc)
@@ -89,7 +105,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             {
                 Document document = result.getSearcher().doc(scoreDoc.doc);
                 
-                PropertyFileDescriptor descriptor = queryService.getDescriptor(document, pair.getTemplate().cdoView());
+                PropertyFileDescriptor descriptor = queryService.getDescriptor(document);
 
             if(descriptor==null)
                 continue;
@@ -99,14 +115,18 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             
             PropertyFile properties = slave.loadProperties();
             String key = document.get(QueryService.FIELD_KEY);
-//            if(slave==translation && pair.getKey().equals(key))
-//            	continue; //that means we found the current property as a similarity. Very helpful...
+            
+            if(slave.cdoID().equals(pair.getDescriptorID()) && pair.getKey().equals(key))
+            	continue; //that means we found the current property as a similarity. Very helpful...
             Property property = properties.getProperty(key);
+//            if(pair.getTranslated()!=null && pair.getTranslated().equals(property.getValue()))
+//            	//the translations are identical. That won't help
+//            	continue;
             
             if(property==null || property.getValue()==null)
                 continue;
             
-            Similarity similarity = new Similarity(document.get(QueryService.FIELD_VALUE), property.getValue(),(int)(scoreDoc.score*100));
+            Similarity similarity = new Similarity(document.get(QueryService.FIELD_VALUE), property.getValue(),(int)(scoreDoc.score*100), document.get(QueryService.FIELD_FULL_PATH));
             resultList.add(similarity);
             }
             catch (CorruptIndexException e)
@@ -127,7 +147,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
         {
         	logger.error("Failed to close searcher", e);
         }
-        return resultList;
+        return new ArrayList<SimilarStringsToolPanel.Similarity>(resultList);
 
 	}
 	
@@ -142,21 +162,23 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
     }
 
     
-    public static class Similarity
+    public static class Similarity implements Serializable
     {
-        private String original;
+        
+		private static final long serialVersionUID = 1L;
+		private String original;
         private String translation;
         private int similarity;
+		private String fullPath;
 
 
-
-
-        public Similarity(String original, String translation, int similartiy)
+        public Similarity(String original, String translation, int similartiy, String fullPath)
         {
             super();
             this.original = original;
             this.translation = translation;
             this.similarity = similartiy;
+            this.fullPath = fullPath;
         }
 
         public String getOriginal()
@@ -173,5 +195,51 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
         {
             return similarity;
         }
+        
+        public String getFullPath() {
+			return fullPath;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((fullPath == null) ? 0 : fullPath.hashCode());
+			result = prime * result + ((original == null) ? 0 : original.hashCode());
+			result = prime * result + similarity;
+			result = prime * result + ((translation == null) ? 0 : translation.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Similarity other = (Similarity) obj;
+			if (fullPath == null) {
+				if (other.fullPath != null)
+					return false;
+			} else if (!fullPath.equals(other.fullPath))
+				return false;
+			if (original == null) {
+				if (other.original != null)
+					return false;
+			} else if (!original.equals(other.original))
+				return false;
+			if (similarity != other.similarity)
+				return false;
+			if (translation == null) {
+				if (other.translation != null)
+					return false;
+			} else if (!translation.equals(other.translation))
+				return false;
+			return true;
+		}
+        
+        
     }
 }

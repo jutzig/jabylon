@@ -96,13 +96,13 @@ div.progress div.bar {
 }
 
 form.jabylon-properties-form {
-    padding-bottom: 15%;
+    padding-bottom: 150px;
 }
 
 div.jabylon-properties-toolbar {
 
     bottom: 0;
-    height: 15%;
+    height: 150px;
     left: 0;
     position: fixed;
     text-align: left;
@@ -118,4 +118,18 @@ div.jabylon-properties-toolbar {
     border-top-style: solid;
     border-top-width: 2px
 
+}
+
+table.jabylon-similar-strings {
+	overflow: auto;
+	height: 150px;
+}
+
+table.jabylon-similar-strings span{
+	font-size: small;
+}
+
+table.jabylon-similar-strings div.progress {
+    height: 10px;
+    margin-bottom: 0px;
 }

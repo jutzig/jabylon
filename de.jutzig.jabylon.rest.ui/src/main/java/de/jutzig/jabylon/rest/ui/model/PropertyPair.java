@@ -3,20 +3,25 @@ package de.jutzig.jabylon.rest.ui.model;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.eclipse.emf.cdo.common.id.CDOID;
+
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 
 public class PropertyPair implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Property template;
 	private Property translation;
 	private Locale language;
+	private CDOID descriptorID;
 
-	public PropertyPair(Property template, Property translation, Locale language) {
+	public PropertyPair(Property template, Property translation, Locale language, CDOID descriptorID) {
 		super();
 		this.template = template;
 		this.translation = translation;
 		this.language = language;
+		this.descriptorID = descriptorID;
 	}
 
 	public Property getTemplate() {
@@ -74,6 +79,9 @@ public class PropertyPair implements Serializable{
 		getOrCreateTranslation().setComment(comment);
 	}
 	
+	public CDOID getDescriptorID() {
+		return descriptorID;
+	}
 	
 	
 	public Property getOrCreateTranslation()

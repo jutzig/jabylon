@@ -143,15 +143,18 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 			}
 		});
 		form.add(properties);
-		//just for demo purposes. Remove once the translation tools are back in place
-		final Label responseLabel = new Label("response","");
-		responseLabel.setOutputMarkupId(true);
+		
+		final PropertiesEditorToolbar editorToolbar = new PropertiesEditorToolbar("properties-toolbar", getModel(), getPageParameters());
+		editorToolbar.setOutputMarkupId(true);
+		add(editorToolbar);
+		
+
 		final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
 		    protected void respond(final AjaxRequestTarget target) {
-		        target.add(responseLabel);
+		        target.add(editorToolbar);
 		        
 		        StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
-		        responseLabel.setDefaultModelObject(parameter.toString("none"));
+		        editorToolbar.setKey(parameter.toString(""));
 		    }
 		    
 			public CharSequence getCallbackFunction(String functionName, CallbackParameter... extraParameters)
@@ -187,7 +190,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		};
 		
 		add(behave);
-		form.add(responseLabel);
+		
 	}
 
 
@@ -262,13 +265,13 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		for (Property property : templateFile.getProperties()) {
 			// IModel<String> bind = model.bind(property.getKey());
 			// bind.set
-			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()),descriptor.getVariant());
+			PropertyPair pair = new PropertyPair(property, translated.remove(property.getKey()),descriptor.getVariant(), descriptor.cdoID());
 			String key = pair.getKey();
 			if (mode.apply(pair,reviews.get(key)))
 				contents.add(pair);
 		}
 		for (Property property : translated.values()) {
-			PropertyPair pair = new PropertyPair(null, property,descriptor.getVariant());
+			PropertyPair pair = new PropertyPair(null, property,descriptor.getVariant(), descriptor.cdoID());
 			if (mode.apply(pair,reviews.get(pair.getKey())))
 				contents.add(pair);
 		}
