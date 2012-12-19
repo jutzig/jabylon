@@ -10,4 +10,6 @@ public interface PropertyEditorTool extends PanelFactory<PropertyPair>, Serializ
 	
 	String getName();
 	
+	int getPrecedence();
+	
 }

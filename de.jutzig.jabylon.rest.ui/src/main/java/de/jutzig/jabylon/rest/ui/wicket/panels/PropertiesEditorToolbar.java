@@ -8,6 +8,8 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -73,6 +75,12 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 
     private List<PropertyToolTab> createExtensions() {
     	List<PropertyToolTab> extensions = new ArrayList<PropertyToolTab>(tools.size());
+    	Collections.sort(tools,new Comparator<PropertyEditorTool>() {
+    		@Override
+    		public int compare(PropertyEditorTool o1, PropertyEditorTool o2) {
+    			return o1.getPrecedence() - o2.getPrecedence();
+    		}
+    	});
     	for (PropertyEditorTool tool : tools) {
 			extensions.add(new PropertyToolTab(tool));
 		}

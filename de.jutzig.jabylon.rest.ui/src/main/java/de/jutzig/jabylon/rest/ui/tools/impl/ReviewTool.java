@@ -18,7 +18,7 @@ import de.jutzig.jabylon.rest.ui.tools.PropertyEditorTool;
  */
 @Component
 @Service(value=PropertyEditorTool.class)
-public class SimilarStringsTool implements PropertyEditorTool {
+public class ReviewTool implements PropertyEditorTool {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,17 +27,17 @@ public class SimilarStringsTool implements PropertyEditorTool {
 	 */
 	@Override
 	public Panel createPanel(PageParameters params, IModel<PropertyPair> input, String id) {
-		return new SimilarStringsToolPanel(id, input);
+		return new ReviewToolPanel(id, input);
 	}
 
 	@Override
 	public String getName() {
-		return "Similar Translations";
+		return "Reviews";
 	}
 
 	@Override
 	public int getPrecedence() {
-		return 90;
+		return 100;
 	}
 
 }
