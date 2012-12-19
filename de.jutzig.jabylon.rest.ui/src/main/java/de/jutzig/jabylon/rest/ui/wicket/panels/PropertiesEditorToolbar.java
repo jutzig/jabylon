@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -22,7 +24,7 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.tools.PropertyEditorTool;
 import de.jutzig.jabylon.rest.ui.tools.PropertyToolTab;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
-import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
 
 
 /**
@@ -44,7 +46,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     @Inject
     private List<PropertyEditorTool> tools;
 
-	private BootstrapTabbedPanel<PropertyToolTab> tabContainer;
+	private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
 
 	private List<PropertyToolTab> extensions;
     
@@ -59,7 +61,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     	if(!initialized)
     	{
     		extensions = createExtensions();
-    		tabContainer = new BootstrapTabbedPanel<PropertyToolTab>("tabs", extensions);
+    		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions);
     		add(tabContainer);
     		initialized = true;
     	}
@@ -89,7 +91,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 			PropertyFile masterFile = master.loadProperties();
 		 
 			PropertyPair pair = new PropertyPair(masterFile.getProperty(key),properties.getProperty(key), translation.getVariant(),translation.cdoID());
-			int selected = tabContainer.getSelectedTab();
+//			int selected = tabContainer.getSelectedTab();
 			for (PropertyToolTab tool : extensions) {
 				tool.setModel(Model.of(pair));
 			}
@@ -97,6 +99,14 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 		}
 		this.currentKey = key;
     }
+
+	public void respond(AjaxRequestTarget target) {
+		List<WebMarkupContainer> tabContents = tabContainer.getTabContents();
+		for (WebMarkupContainer webMarkupContainer : tabContents) {
+			target.add(webMarkupContainer);
+		}
+		
+	}
 
 }
 

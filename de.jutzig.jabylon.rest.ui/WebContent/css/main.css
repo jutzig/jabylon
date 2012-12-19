@@ -120,16 +120,16 @@ div.jabylon-properties-toolbar {
 
 }
 
-table.jabylon-similar-strings {
+table.jabylon-property-tool-table {
 	overflow: auto;
 	height: 150px;
 }
 
-table.jabylon-similar-strings span{
+table.jabylon-property-tool-table span{
 	font-size: small;
 }
 
-table.jabylon-similar-strings div.progress {
+table.jabylon-property-tool-table div.progress {
     height: 10px;
     margin-bottom: 0px;
 }

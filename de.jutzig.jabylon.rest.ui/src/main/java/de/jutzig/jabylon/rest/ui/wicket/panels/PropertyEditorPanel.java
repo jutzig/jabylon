@@ -151,7 +151,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 		final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
 		    protected void respond(final AjaxRequestTarget target) {
-		        target.add(editorToolbar);
+		    	editorToolbar.respond(target);
 		        
 		        StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
 		        editorToolbar.setKey(parameter.toString(""));
