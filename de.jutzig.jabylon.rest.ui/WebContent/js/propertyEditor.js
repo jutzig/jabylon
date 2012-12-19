@@ -19,7 +19,8 @@ $(document).ready(function() {
 	});
 
 	$('#table').dataTable({
-		"iDisplayLength" : 50
+		"iDisplayLength" : 50,
+		"bPaginate": false
 	});
 
 	// this is to make an AJAX request whenever a textarea is selected
