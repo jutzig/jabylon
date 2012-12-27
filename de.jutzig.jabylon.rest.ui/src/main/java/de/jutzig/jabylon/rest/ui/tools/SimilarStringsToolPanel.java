@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.rest.ui.tools.impl;
+package de.jutzig.jabylon.rest.ui.tools;
 
 import java.io.IOException;
 import java.io.Serializable;

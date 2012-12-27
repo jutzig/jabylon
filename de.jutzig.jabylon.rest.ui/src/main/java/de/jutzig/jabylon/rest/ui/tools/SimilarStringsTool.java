@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.jutzig.jabylon.rest.ui.tools.impl;
+package de.jutzig.jabylon.rest.ui.tools;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -10,7 +10,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
-import de.jutzig.jabylon.rest.ui.tools.PropertyEditorTool;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -18,7 +17,7 @@ import de.jutzig.jabylon.rest.ui.tools.PropertyEditorTool;
  */
 @Component
 @Service(value=PropertyEditorTool.class)
-public class ReviewTool implements PropertyEditorTool {
+public class SimilarStringsTool implements PropertyEditorTool {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,17 +26,17 @@ public class ReviewTool implements PropertyEditorTool {
 	 */
 	@Override
 	public Panel createPanel(PageParameters params, IModel<PropertyPair> input, String id) {
-		return new ReviewToolPanel(id, input);
+		return new SimilarStringsToolPanel(id, input);
 	}
 
 	@Override
 	public String getName() {
-		return "Reviews";
+		return "Similar Translations";
 	}
 
 	@Override
 	public int getPrecedence() {
-		return 100;
+		return 90;
 	}
 
 }

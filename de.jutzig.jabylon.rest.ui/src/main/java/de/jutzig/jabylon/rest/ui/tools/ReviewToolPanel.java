@@ -1,4 +1,4 @@
-package de.jutzig.jabylon.rest.ui.tools.impl;
+package de.jutzig.jabylon.rest.ui.tools;
 
 import java.util.ArrayList;
 import java.util.List;
