@@ -11,6 +11,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public interface PanelFactory {
-	<T> Panel createPanel(PageParameters params, IModel<T> input, String id);
+public interface PanelFactory <T>{
+	Panel createPanel(PageParameters params, IModel<T> input, String id);
 }

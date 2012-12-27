@@ -1,0 +1,17 @@
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+	<div class="tabbable tabs-left">
+		<!-- Only required for left/right tabs -->
+		<ul class="nav nav-tabs">
+			<li wicket:id="tab-handles">
+				<a wicket:id="link" href="#tab1" data-toggle="tab">Section 1</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane" id="tab1" wicket:id="tab-content">
+				<div wicket:id="content"></div>
+			</div>
+		</div>
+	</div>
+</wicket:panel>
+</html>

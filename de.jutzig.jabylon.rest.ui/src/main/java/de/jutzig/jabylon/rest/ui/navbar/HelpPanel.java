@@ -26,15 +26,15 @@ public class HelpPanel<T> extends BasicPanel<T> {
 		add(new ExternalLink("link","#help")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public static class HelpPanelFactory implements PanelFactory, Serializable
+	public static class HelpPanelFactory implements PanelFactory<Object>, Serializable
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new HelpPanel<T>(id, input , params);
+			return new HelpPanel<Object>(id, input , params);
 		}
 		
 	}

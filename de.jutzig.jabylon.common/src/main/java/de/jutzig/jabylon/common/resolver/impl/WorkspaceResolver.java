@@ -10,6 +10,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDOSession;
 import org.eclipse.emf.cdo.view.CDOView;
@@ -96,6 +97,11 @@ public class WorkspaceResolver implements URIResolver {
 
 	public void unbindRepositoryConnector(RepositoryConnector connector) {
 		this.repositoryConnector = null;
+	}
+
+	@Override
+	public Object resolve(CDOID id) {
+		return workspace.cdoView().getObject(id);
 	}
 
 }

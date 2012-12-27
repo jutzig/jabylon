@@ -49,14 +49,14 @@ public class LoginPanel<T> extends BasicPanel<T> {
 
 	}
 
-	public static class LoginPanelFactory implements PanelFactory, Serializable {
+	public static class LoginPanelFactory implements PanelFactory<Object>, Serializable {
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new LoginPanel<T>(id, input, params);
+			return new LoginPanel<Object>(id, input, params);
 
 		}
 

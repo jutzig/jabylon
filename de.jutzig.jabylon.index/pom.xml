@@ -71,10 +71,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>analysis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
 			<artifactId>core</artifactId>
 		</dependency>
 		<dependency>
@@ -85,7 +81,7 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>queries</artifactId>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>org.apache</groupId>
 			<artifactId>lucene</artifactId>
 		</dependency>

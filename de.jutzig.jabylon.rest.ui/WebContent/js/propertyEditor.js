@@ -3,6 +3,9 @@ var lastExpanded;
 //to remember what to do when tab-key is used
 var currentFocus;
 
+//keep track of the last selected key, to reduce load in 'requestAid'
+var lastSelectedKey;
+
 $(document).ready(function() {
 	
 	selectFuzzyRow();
@@ -19,7 +22,8 @@ $(document).ready(function() {
 	});
 
 	$('#table').dataTable({
-		"iDisplayLength" : 50
+		"iDisplayLength" : 50,
+		"bPaginate": false
 	});
 
 	// this is to make an AJAX request whenever a textarea is selected
@@ -27,7 +31,12 @@ $(document).ready(function() {
 		var textArea = $(this);
 		var tr = textArea.parents('tr');
 		var keyField = tr.find('td span').first();
-		requestAid(keyField.text());
+		var key = keyField.text();
+		if(lastSelectedKey!=key)
+		{
+			lastSelectedKey = key;
+			requestAid(key);			
+		}
 	});
 
 	$('.next-button').click(function() {
