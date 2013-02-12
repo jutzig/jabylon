@@ -7,12 +7,12 @@ var currentFocus;
 var lastSelectedKey;
 
 $(document).ready(function() {
-	
+
 	selectFuzzyRow();
-	
+
 	//show JS tooltip on badges
 	$('.label').tooltip();
-	
+
 	$(":input").focus(function () {
 		if(this && this.tagName && this.tagName.toLowerCase() == "textarea") {
 			currentFocus = this;
@@ -35,7 +35,7 @@ $(document).ready(function() {
 		if(lastSelectedKey!=key)
 		{
 			lastSelectedKey = key;
-			requestAid(key);			
+			requestAid(key);
 		}
 	});
 
@@ -53,7 +53,7 @@ $(document).ready(function() {
 		collapseRow(parent);
 	});
 
-	
+
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
@@ -96,8 +96,8 @@ $(document).ready(function() {
 			expandRow(next);
 			next.find('textarea[placeholder~="Translation"]').focus();
 		}
-		
-		
+
+
 	});
 
 
@@ -109,16 +109,17 @@ $(document).ready(function() {
 		var sData = $('textarea', table.fnGetNodes()).serialize();
 		var form = $('#properties-form');
 		var url = form.attr('action');
-		$.post(url, sData);
-		location.reload();
-		return true;
+		$.post(url, sData).done(function() {
+	       	location.reload();
+    		return true;
+        });;
 	});
 
-	
+
 });
 
 // automatically expand the first row that has an error
-function selectFuzzyRow() 
+function selectFuzzyRow()
 {
 	//TODO: for some reason this breaks without the timeout?
 	setTimeout(function(){
