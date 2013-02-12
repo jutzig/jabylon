@@ -18,7 +18,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilt
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -35,7 +34,6 @@ import org.eclipse.emf.common.util.EList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -299,44 +297,4 @@ class PropertyPairDataProvider extends SortableDataProvider<PropertyPair, EClass
 		return filterState;
 	}
 
-}
-
-enum PropertyListMode implements Predicate<PropertyPair> {
-
-	ALL {
-		@Override
-		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-			return true;
-		}
-	},
-	MISSING
-
-	{
-		@Override
-		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-			return pair.getOriginal() == null || pair.getTranslated() == null || pair.getOriginal().isEmpty()
-					|| pair.getTranslated().isEmpty();
-		}
-	},
-	FUZZY {
-		@Override
-		public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-			if(MISSING.apply(pair,reviews))
-				return true;
-			return reviews != null && !reviews.isEmpty();  
-		}
-	};
-
-	
-	public abstract boolean apply(PropertyPair pair, Collection<Review> reviews);
-	
-	public boolean apply(PropertyPair pair){
-		return apply(pair,null);
-	}
-	
-	public static PropertyListMode getByName(String name) {
-		if (name == null || name.isEmpty())
-			return MISSING;
-		return valueOf(name.toUpperCase());
-	}
 }

@@ -1,0 +1,64 @@
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+
+<wicket:head>
+	<style type="text/css">
+<!--
+select {
+	width: auto;
+}
+-->
+</style>
+
+	<script type="text/javascript"
+		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
+	<script type="text/javascript"
+		src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
+	<script type="text/javascript" src="/jabylon/js/openjs/shortcuts.js"></script>
+	<!-- <script type="text/javascript" src="/jabylon/js/propertyEditor.js"></script> -->
+</wicket:head>
+
+</head>
+<body>
+	<wicket:panel>
+		<div class="row">
+			<div class="span12">
+				<ul class="nav nav-pills">
+					<li wicket:id="view-mode"><a wicket:id="link"
+						href="#?mode=missing">Show Missing</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<form wicket:id="properties-form" id="properties-form"
+					class="jabylon-properties-form">
+
+					<h3 wicket:id="key-label">Key</h3>
+					<div class="row">
+						<div wicket:id="template-area" class="span6">
+							<textarea wicket:id="template" rows="3" cols="3"
+								readonly="readonly" style="width: 95%;">this is the template</textarea>
+							<br />
+							<textarea wicket:id="template-comment" rows="3"
+								style="width: 95%;" readonly="readonly">this is the original comment</textarea>
+							<p>
+								<button wicket:id="previous" type="submit" value="previous" class="submit-button">previous</button>
+						</div>
+						<div wicket:id="translation-area" class="span6">
+							<textarea wicket:id="translation" rows="3" cols="3"
+								style="width: 95%;" placeholder="Translation">this is the translation</textarea>
+							<br />
+							<textarea wicket:id="translation-comment" rows="3" cols="3"
+								style="align: right; width: 95%;" placeholder="Comment">this is the comment</textarea>
+							<p align="right">
+								<button wicket:id="next" type="submit" class="submit-button">next</button>
+							</p>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</wicket:panel>
+</body>
+</html>

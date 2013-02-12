@@ -3,8 +3,12 @@
  */
 package de.jutzig.jabylon.auto.translate.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -188,4 +192,13 @@ public class AutoTranslator implements PropertiesListener {
 		this.queryService = null;
 	}
 
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		Properties props = new Properties();
+		for(int i=0;i<10000;i++)
+		{
+			props.put("property"+i, "test"+i);
+		}
+		props.save(new FileOutputStream(new File("/home/joe/workspaces/jabylon/work/workspace/Jenkins/master/core/src/main/resources/jenkins/mvn/Messages.properties")), null);
+	}
 }
