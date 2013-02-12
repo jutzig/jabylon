@@ -109,8 +109,9 @@ $(document).ready(function() {
 		var sData = $('textarea', table.fnGetNodes()).serialize();
 		var form = $('#properties-form');
 		var url = form.attr('action');
+		var theLocation = location;
 		$.post(url, sData).done(function() {
-	       	location.reload();
+	       	theLocation.reload();
     		return true;
         });;
 	});
