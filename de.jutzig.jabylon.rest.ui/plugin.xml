@@ -13,7 +13,7 @@
 	<extension
          point="org.eclipse.equinox.http.registry.filters">
       <filter
-            alias="/jabylon"
+            alias="/"
             class="de.jutzig.jabylon.rest.ui.JabylonFilter"
             httpcontextId="jabylon">
          <init-param
@@ -22,7 +22,7 @@
          </init-param>
          <init-param
                name="filterMappingUrlPattern"
-               value="/jabylon/*">
+               value="/*">
          </init-param>
          <init-param
                name="configuration"
@@ -131,7 +131,7 @@
  <extension
        point="org.eclipse.equinox.http.registry.resources">
     <resource
-          alias="/jabylon"
+          alias="/"
           base-name="WebContent">
     </resource>
  </extension>

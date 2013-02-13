@@ -41,8 +41,6 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
-	public static final String CONTEXT = "jabylon"; //$NON-NLS-1$
-
 	@SuppressWarnings("rawtypes")
 	private ServiceTracker pageTracker;
 
@@ -117,7 +115,10 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		mountPage("/login", LoginPage.class); //$NON-NLS-1$
 		mountPage("/settings/workspace", SettingsPage.class); //$NON-NLS-1$
 //		mountPage("/workspace", ResourcePage.class);
+		
+		
 	}
+
 
 	protected IConverterLocator newConverterLocator() {
 		ConverterLocator converterLocator = new ConverterLocator();

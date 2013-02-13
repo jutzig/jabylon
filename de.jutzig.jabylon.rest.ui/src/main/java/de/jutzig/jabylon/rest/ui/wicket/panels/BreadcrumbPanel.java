@@ -18,8 +18,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
-import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -29,11 +29,11 @@ public class BreadcrumbPanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;
 	private String rootLabel = "Home";
-	private String rootURL = "/"+ JabylonApplication.CONTEXT;
+	private String rootURL;
 
 	public BreadcrumbPanel(String id, IModel<Resolvable<?, ?>> object, PageParameters parameters) {
 		super(id, object, parameters);
-		
+		setRootURL(WicketUtil.getContextPath());
 	}	
 	
 	@Override
@@ -55,7 +55,8 @@ public class BreadcrumbPanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 			protected void populateItem(Item<EObjectModel<Resolvable<?, ?>>> item) {
 				Resolvable<?, ?> element = item.getModel().getObject().getObject();
 				int index = parents.indexOf(item.getModel().getObject());
-				builder.append("/");
+				if(builder.length()>0 && builder.charAt(builder.length()-1)!='/')
+					builder.append("/");
 				//TODO: should workspace#getName return "workspace"?
 				if(element instanceof Workspace)
 					builder.append("workspace");
@@ -89,7 +90,12 @@ public class BreadcrumbPanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 	}
 	
 	public void setRootURL(String rootURL) {
-		this.rootURL  = rootURL;
+		String url = rootURL;
+		if(url==null)
+			url = "/";
+		if(!url.startsWith("/"))
+			url = "/" + url;
+		this.rootURL=url;
 	}
 	
 	public String getRootURL() {

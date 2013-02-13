@@ -21,7 +21,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -46,6 +45,8 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
+import de.jutzig.jabylon.rest.ui.util.GlobalResources;
+import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 /**
@@ -201,6 +202,15 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
 	}
 
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_SHORTCUTS));
+		response.render(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("js/propertyEditor.js")));
+		super.renderHead(response);
+	}
 
 	private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
 		EList<Review> reviews = object.getReviews();

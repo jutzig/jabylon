@@ -6,6 +6,8 @@ package de.jutzig.jabylon.rest.ui.wicket.panels;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -24,6 +26,8 @@ import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesSwitch;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.util.GlobalResources;
+import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
@@ -37,6 +41,14 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
 		super("content", object, parameters);
 		add(new Label("header", new LabelSwitch().doSwitch(object)));
+	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_DATATABLES_CUSTOMSORT));
+		super.renderHead(response);
 	}
 
 	@Override

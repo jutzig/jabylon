@@ -6,7 +6,6 @@ import java.util.Deque;
 import java.util.Locale;
 
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -63,9 +62,9 @@ public class WicketUtil {
 			iconName = derriveCountry(locale);
 		}
 		
-		String url = "{0}/img/flags/gif/{1}.gif";		
-		url = MessageFormat.format(url, WicketUtil.getContextPath(),iconName);
-		UrlResourceReference ref = new UrlResourceReference(Url.parse(url));
+		String url = "img/flags/gif/{0}.gif";		
+		url = MessageFormat.format(url ,iconName);
+		UrlResourceReference ref = new WebContextUrlResourceReference(url);
 		return ref;
 	}
 

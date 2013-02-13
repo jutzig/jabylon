@@ -36,6 +36,7 @@ import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
 import de.jutzig.jabylon.rest.ui.model.IEObjectModel;
 import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
@@ -81,7 +82,8 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 		tabContainer.setOutputMarkupId(true);
 		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", getModel(),getPageParameters());
 		breadcrumbPanel.setRootLabel("Settings");
-		breadcrumbPanel.setRootURL("/"+JabylonApplication.CONTEXT+"/settings");
+		
+		breadcrumbPanel.setRootURL(WicketUtil.getContextPath()+"/settings");
 		add(breadcrumbPanel);
 	}
 

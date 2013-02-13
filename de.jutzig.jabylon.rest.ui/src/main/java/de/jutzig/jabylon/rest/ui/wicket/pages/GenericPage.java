@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.rest.ui.navbar.NavbarPanel;
+import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.IAjaxFeedbackPage;
@@ -31,10 +32,10 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings()
-				.getJQueryReference())));
-		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forUrl("/jabylon/bootstrap/js/bootstrap.min.js")));
-		response.render(CssHeaderItem.forUrl("/jabylon/css/main.css"));
+		
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));	
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("bootstrap/js/bootstrap.min.js"))));
+		response.render(CssHeaderItem.forReference(new WebContextUrlResourceReference("css/main.css")));
 		super.renderHead(response);
 	}
 
