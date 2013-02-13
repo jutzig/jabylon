@@ -120,7 +120,7 @@ div.jabylon-properties-toolbar {
 
 }
 
-table.jabylon-property-tool-table {
+form.jabylon-properties-form table.jabylon-property-tool-table {
 	overflow: auto;
 	height: 150px;
 }

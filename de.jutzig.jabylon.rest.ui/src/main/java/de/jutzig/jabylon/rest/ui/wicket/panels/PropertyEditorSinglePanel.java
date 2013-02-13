@@ -244,6 +244,10 @@ public class PropertyEditorSinglePanel extends
         previousButton.setEnabled(previous!=null);
         translationPanel.add(nextButton);
         templatePanel.add(previousButton);
+
+
+        PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
+        add(tools);
     }
 
 
