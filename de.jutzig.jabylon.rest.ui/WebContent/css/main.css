@@ -18,6 +18,19 @@ body {
 	padding: 10px 15px;
 }
 
+/** Feedback */
+.feedbackPanel.ajax {
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	width: 100%;
+}
+.feedbackPanel.ajax .alert {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /** buttons */
 .toggle-button {
 

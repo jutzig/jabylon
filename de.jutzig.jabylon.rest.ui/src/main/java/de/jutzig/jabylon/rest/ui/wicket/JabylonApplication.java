@@ -29,6 +29,7 @@ import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.JabylonAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
 import de.jutzig.jabylon.rest.ui.util.PageProvider;
+import de.jutzig.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.injector.OSGiInjector;
 import de.jutzig.jabylon.rest.ui.wicket.pages.StartupPage;
@@ -36,7 +37,7 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
 
@@ -49,7 +50,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
@@ -68,6 +69,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		getBehaviorInstantiationListeners().add(injector);
 		getComponentInstantiationListeners().add(injector);
 		getSecuritySettings().setAuthorizationStrategy(new JabylonAuthorizationStrategy(this));
+		getAjaxRequestTargetListeners().add(new AjaxFeedbackListener());
 		final BundleContext bundleContext = Activator.getDefault().getContext();
 
 		pageTracker = new ServiceTracker(bundleContext, PageProvider.class, new ServiceTrackerCustomizer() {
@@ -124,8 +126,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		return converterLocator;
 	}
 
-	
-	
+
+
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return CDOAuthenticatedSession.class;
