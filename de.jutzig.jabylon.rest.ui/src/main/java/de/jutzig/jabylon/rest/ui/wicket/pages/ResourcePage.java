@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.pages;
 
@@ -12,6 +12,7 @@ import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import de.jutzig.jabylon.rest.ui.wicket.panels.ProjectResourcePanel;
 import de.jutzig.jabylon.rest.ui.wicket.panels.PropertyEditorPanel;
 import de.jutzig.jabylon.rest.ui.wicket.panels.PropertyEditorSinglePanel;
+import de.jutzig.jabylon.rest.ui.wicket.panels.PropertyListPanel;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -21,11 +22,11 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericResolvableP
 
 	private static final long serialVersionUID = 1L;
 
-	
+
 	public ResourcePage(PageParameters parameters) {
 		super(parameters);
 	}
-	
+
 	@Override
 	protected void onBeforeRenderPage() {
 		T object = getModelObject();
@@ -35,17 +36,22 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericResolvableP
 			if(getPageParameters().get("editor").toString("").equals("full"))
 				addOrReplace(new PropertyEditorPanel(descriptor,getPageParameters()));
 			else
-				addOrReplace(new PropertyEditorSinglePanel(descriptor,getPageParameters()));
+			{
+			    if(getPageParameters().get("key").isEmpty())
+			        addOrReplace(new PropertyListPanel(descriptor,getPageParameters()));
+			    else
+			        addOrReplace(new PropertyEditorSinglePanel(descriptor,getPageParameters()));
+			}
 		}
 		else
 			addOrReplace(new ProjectResourcePanel(object,getPageParameters()));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void construct() {
 		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", (IModel<Resolvable<?, ?>>) getModel() ,getPageParameters());
 		add(breadcrumbPanel);
 	}
-	
+
 }

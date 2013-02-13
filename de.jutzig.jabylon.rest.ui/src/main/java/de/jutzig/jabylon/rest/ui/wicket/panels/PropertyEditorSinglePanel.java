@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IFormSubmitter;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -165,25 +166,25 @@ public class PropertyEditorSinglePanel extends
 				}
 				if(hasChanged) {
 					propertyPersistence.saveProperties(descriptor, file);
-					getSession().info("Saved successfully");					
+					getSession().info("Saved successfully");
 				}
 				IFormSubmitter submitter = findSubmittingButton();
 				if (submitter instanceof Button) {
 					Button button = (Button) submitter;
 					if(button.getId().equals("next")) {
 						if(nextModel!=null && nextModel.getObject()!=null)
-							setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));						
+							setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));
 					}
 					else {
 						if(previousModel!=null && previousModel.getObject()!=null)
-							setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));						
+							setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
 					}
 				}
 			}
 
 
 
-	
+
 		};
 		add(pairForm);
 		Button nextButton = new Button("next");
@@ -236,8 +237,8 @@ public class PropertyEditorSinglePanel extends
 		translationPanel.add(nextButton);
 		templatePanel.add(previousButton);
 	}
-	
-	
+
+
 	private boolean hasChanged(Property prop1, Property prop2) {
 		if(prop1 == null)
 			return prop2 != null;
@@ -249,7 +250,7 @@ public class PropertyEditorSinglePanel extends
 			return true;
 		return false;
 	}
-	
+
 	private boolean safeEquals(String s1, String s2) {
 		if(s1==null)
 			return s2 == null;
@@ -279,8 +280,9 @@ public class PropertyEditorSinglePanel extends
 			protected void populateItem(ListItem<PropertyListMode> item) {
 
 				String mode = item.getModelObject().name().toLowerCase();
-				item.add(new ExternalLink("link", "?mode=" + mode, "Show "
-						+ mode));
+				BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).remove("mode").add("mode", mode));
+				link.setBody(Model.of("Show "+ mode));
+				item.add(link);
 				if (item.getModelObject() == currentMode)
 					item.add(new AttributeModifier("class", "active"));
 			}

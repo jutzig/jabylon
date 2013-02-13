@@ -20,6 +20,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -47,23 +48,32 @@ import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
+/**
+ *
+ * has been replaced with PropertyEditorSinglePanel and PropertyListPanel
+ * <p>
+ * Long description for PropertyEditorPanel.
+ *
+ * @author utzig
+ */
+@Deprecated
 public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescriptor> {
 
-	
+
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorPanel.class);
 	IModel<Multimap<String, Review>> reviewModel;
-	
+
 	@Inject
-	private transient PropertyPersistenceService propertyPersistence; 
-	
+	private transient PropertyPersistenceService propertyPersistence;
+
 	public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
 
 		PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
 		addLinkList(mode);
 		reviewModel = new LoadableDetachableModel<Multimap<String,Review>>() {
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -73,7 +83,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		};
 		PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode, reviewModel);
 		List<PropertyPair> contents = provider.createContents();
-		
+
 		ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents) {
 
 			private static final long serialVersionUID = -7087485011138279358L;
@@ -90,7 +100,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		properties.setOutputMarkupId(true);
 
 		Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -98,7 +108,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				super.onSubmit();
 				IModel<List<? extends PropertyPair>> model = getModel();
 				List<? extends PropertyPair> list = model.getObject();
-				
+
 				PropertyFileDescriptor descriptor = PropertyEditorPanel.this.getModelObject();
 				PropertyFile file = descriptor.loadProperties();
 				Map<String, Property> map = file.asMap();
@@ -141,20 +151,20 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 			}
 		});
 		form.add(properties);
-		
+
 		final PropertiesEditorToolbar editorToolbar = new PropertiesEditorToolbar("properties-toolbar", getModel(), getPageParameters());
 		editorToolbar.setOutputMarkupId(true);
 		add(editorToolbar);
-		
+
 
 		final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
 		    protected void respond(final AjaxRequestTarget target) {
 		    	editorToolbar.respond(target);
-		        
+
 		        StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
 		        editorToolbar.setKey(parameter.toString(""));
 		    }
-		    
+
 			public CharSequence getCallbackFunction(String functionName, CallbackParameter... extraParameters)
 			{
 				StringBuilder sb = new StringBuilder();
@@ -178,17 +188,17 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 				sb.append("}\n");
 				return sb;
 			}
-		    
+
 		    @Override
 		    public void renderHead(Component component, IHeaderResponse response) {
 		    	response.render(JavaScriptHeaderItem.forScript(getCallbackFunction("requestAid",CallbackParameter.explicit("key")), "requestAid"));
 		    	super.renderHead(component, response);
 		    }
-		    
+
 		};
-		
+
 		add(behave);
-		
+
 	}
 
 
@@ -200,8 +210,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 		}
 		return reviewMap;
 	}
-	
-	
+
+
 	private void addLinkList(final PropertyListMode currentMode) {
 		List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
@@ -211,8 +221,10 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 			@Override
 			protected void populateItem(ListItem<PropertyListMode> item) {
 
-				String mode = item.getModelObject().name().toLowerCase();
-				item.add(new ExternalLink("link", "?mode=" + mode, "Show " + mode));
+                String mode = item.getModelObject().name().toLowerCase();
+                BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).set("mode", mode));
+                link.setBody(Model.of("Show "+ mode));
+                item.add(link);
 				if (item.getModelObject() == currentMode)
 					item.add(new AttributeModifier("class", "active"));
 			}
