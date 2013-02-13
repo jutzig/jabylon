@@ -42,7 +42,7 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 	
 	public static PropertyListMode getByName(String name) {
 		if (name == null || name.isEmpty())
-			return MISSING;
+			return ALL;
 		return valueOf(name.toUpperCase());
 	}
 }

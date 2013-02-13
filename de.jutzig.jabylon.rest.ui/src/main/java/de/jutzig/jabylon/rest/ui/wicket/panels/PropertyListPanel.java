@@ -19,7 +19,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilt
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -63,7 +62,7 @@ public class PropertyListPanel
     public PropertyListPanel(PropertyFileDescriptor object, PageParameters parameters)
     {
         super("content", object, parameters);
-
+        		
         PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>()
@@ -219,7 +218,7 @@ public class PropertyListPanel
             protected void populateItem(ListItem<PropertyListMode> item)
             {
                 String mode = item.getModelObject().name().toLowerCase();
-                BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).remove("mode").add("mode", mode));
+                BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).set("mode", mode));
                 link.setBody(Model.of("Show "+ mode));
                 item.add(link);
                 if (item.getModelObject() == currentMode)
