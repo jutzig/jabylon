@@ -566,6 +566,13 @@
 				<artifactId>console</artifactId>
 				<version>1.0.0</version>
 			</dependency>
+			
+			<!-- OBR support -->
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.bundlerepository</artifactId>
+				<version>1.6.6</version>
+			</dependency>
 
 			<!-- jetty -->
 			<dependency>

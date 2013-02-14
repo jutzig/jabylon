@@ -288,6 +288,12 @@
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>console</artifactId>
 		</dependency>
+		
+		<!-- OBR support -->
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.bundlerepository</artifactId>
+		</dependency>
 
 		<!-- jetty -->
 		<dependency>
@@ -422,6 +428,11 @@
 		<dependency>
 			<groupId>de.jutzig.jabylon</groupId>
 			<artifactId>review.standard</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.jutzig.jabylon</groupId>
+			<artifactId>updatecenter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
