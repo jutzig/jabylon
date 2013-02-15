@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Jabylon" sequenceNumber="74">
+<?pde version="3.8"?><target name="Jabylon" sequenceNumber="79">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.vaadin.vaadin.feature.group" version="1.0.0.BETA"/>
@@ -28,5 +28,6 @@
 <unit id="org.eclipse.xtext.sdk.feature.group" version="2.3.1.v201208210947"/>
 <repository location="http://download.eclipse.org/releases/juno/"/>
 </location>
+<location path="${system_property:user.home}/.m2/repository/org/apache/felix/org.apache.felix.bundlerepository/1.6.6" type="Directory"/>
 </locations>
 </target>
