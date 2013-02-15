@@ -24,7 +24,7 @@ import de.jutzig.jabylon.properties.Severity;
 public class PunctuationCheck implements ReviewParticipant {
 
 
-	private static char[] hotchars = {'(',')','[',']','{','}','"'};
+	private static char[] hotchars = {'(',')','[',']','{','}','\'','"'};
 
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
@@ -87,11 +87,8 @@ public class PunctuationCheck implements ReviewParticipant {
 			case '}':
 				templateOccurrences[5]++;
 				break;
-			case '\'':
-				templateOccurrences[6]++;
-				break;
 			case '"':
-				templateOccurrences[7]++;
+				templateOccurrences[6]++;
 				break;
 
 			default:
@@ -125,11 +122,8 @@ public class PunctuationCheck implements ReviewParticipant {
 			case '}':
 				templateOccurrences[5]--;
 				break;
-			case '\'':
-				templateOccurrences[6]--;
-				break;
 			case '"':
-				templateOccurrences[7]--;
+				templateOccurrences[6]--;
 				break;
 
 			default:
