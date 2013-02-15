@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.review.standard.internal;
 
@@ -23,9 +23,9 @@ import de.jutzig.jabylon.properties.Severity;
 @Service
 public class PunctuationCheck implements ReviewParticipant {
 
-	
-	private static char[] hotchars = {'(',')','[',']','{','}','\'','"'};
-	
+
+	private static char[] hotchars = {'(',')','[',']','{','}','"'};
+
 	/* (non-Javadoc)
 	 * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
 	 */
@@ -33,7 +33,7 @@ public class PunctuationCheck implements ReviewParticipant {
 	public Review review(PropertyFileDescriptor descriptor, Property master, Property slave) {
 		if(master==null||slave==null||slave.getValue()==null||slave.getValue().isEmpty())
 			return null;
-		
+
 		short[] templateOccurrences = new short[hotchars.length];
 		String value = master.getValue();
 		String translation = slave.getValue();
@@ -59,8 +59,8 @@ public class PunctuationCheck implements ReviewParticipant {
 			}
 		}
 		return null;
-		
-		
+
+
 	}
 
 	private void countHotChars(String value, short[] templateOccurrences) {
@@ -98,12 +98,12 @@ public class PunctuationCheck implements ReviewParticipant {
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	private void subtractHotChars(String value, short[] templateOccurrences) {
 		if(value==null)
-			return;	
+			return;
 		char[] chars = value.toCharArray();
 		for (char c : chars) {
 			switch (c) {
@@ -136,7 +136,7 @@ public class PunctuationCheck implements ReviewParticipant {
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
