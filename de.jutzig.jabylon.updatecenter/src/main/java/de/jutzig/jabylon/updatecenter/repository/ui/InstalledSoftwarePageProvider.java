@@ -16,10 +16,10 @@ import de.jutzig.jabylon.rest.ui.util.PageProvider;
  */
 @Component
 @Service
-public class UpdatecenterPageProvider implements PageProvider {
+public class InstalledSoftwarePageProvider implements PageProvider {
 
 	
-	@Property(value="/system/plugins")
+	@Property(value="/system/bundles")
 	static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 	
 	/** 
@@ -34,7 +34,7 @@ public class UpdatecenterPageProvider implements PageProvider {
 	 */
 	@Override
 	public Class<? extends Page> getPageClass() {
-		return UpdatecenterPage.class;
+		return InstalledSoftwarePage.class;
 	}
 	
 	public void bindQueryService(RepositoryAdmin service) {

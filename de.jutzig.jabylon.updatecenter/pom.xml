@@ -88,7 +88,6 @@
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.bundlerepository</artifactId>
-			<version>1.6.6</version>
 		</dependency>
 		
 		<dependency>
@@ -99,6 +98,11 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rest.ui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
