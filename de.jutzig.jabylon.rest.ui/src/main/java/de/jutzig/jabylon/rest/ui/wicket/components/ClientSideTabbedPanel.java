@@ -16,35 +16,41 @@ import org.apache.wicket.model.Model;
 public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 
 	private List<T> tabs;
-	private List<WebMarkupContainer> tabContents; 
+	private List<WebMarkupContainer> tabContents;
 	private IModel<Integer> activeTab;
 
-	public ClientSideTabbedPanel(final String id, List<T> tabs) {
+	public ClientSideTabbedPanel(final String id, List<T> tabs, boolean vertical) {
 		super(id);
+		WebMarkupContainer tabbable = new WebMarkupContainer("tabbable");
+		
+		if (vertical)
+			tabbable.add(new AttributeAppender("class", " tabs-left"));
+		add(tabbable);
 		this.tabs = tabs;
-		ListView<T> listView = new ListView<T>("tab-handles",tabs) {
-			
+		ListView<T> listView = new ListView<T>("tab-handles", tabs) {
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final ListItem<T> item) {
 				int index = item.getIndex();
-				if(index==0)
+				if (index == 0)
 					item.add(new AttributeAppender("class", " active"));
-				item.add(new ExternalLink("link", Model.of("#"+id+index), item.getModelObject().getTitle()));
+				item.add(new ExternalLink("link", Model.of("#" + id + index),
+						item.getModelObject().getTitle()));
 			}
 		};
 		tabContents = new ArrayList<WebMarkupContainer>();
-		ListView<T> tabContent = new ListView<T>("tab-content",tabs) {
-			
+		ListView<T> tabContent = new ListView<T>("tab-content", tabs) {
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<T> item) {
 				int index = item.getIndex();
-				if(index==0)
+				if (index == 0)
 					item.add(new AttributeAppender("class", " active"));
-				item.setMarkupId(id+index);
+				item.setMarkupId(id + index);
 				Object object = item.getDefaultModelObject();
 				if (object instanceof ITab) {
 					ITab tab = (ITab) object;
@@ -55,8 +61,13 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 				}
 			}
 		};
-		add(tabContent);
-		add(listView);
+		tabbable.add(tabContent);
+		tabbable.add(listView);
+
+	}
+
+	public ClientSideTabbedPanel(final String id, List<T> tabs) {
+		this(id, tabs, false);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -64,6 +75,5 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 	public List<WebMarkupContainer> getTabContents() {
 		return tabContents;
 	}
-	
-}
 
+}

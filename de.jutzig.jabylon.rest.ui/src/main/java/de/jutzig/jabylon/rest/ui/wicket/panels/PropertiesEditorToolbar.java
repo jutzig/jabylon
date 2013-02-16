@@ -63,7 +63,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     	if(!initialized)
     	{
     		extensions = createExtensions();
-    		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions);
+    		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true);
     		add(tabContainer);
     		initialized = true;
     	}
