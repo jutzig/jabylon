@@ -274,6 +274,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 				BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).clearNamed().set("mode", mode));
 				link.setBody(Model.of("Show " + mode));
 				item.add(link);
+				link.add(new AttributeModifier("onclick", "return confirmAction()"));
 				if (item.getModelObject() == currentMode)
 					item.add(new AttributeModifier("class", "active"));
 			}
