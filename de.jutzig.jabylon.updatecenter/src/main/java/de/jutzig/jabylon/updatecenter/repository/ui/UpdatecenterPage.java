@@ -40,10 +40,10 @@ public class UpdatecenterPage extends GenericPage<Serializable> {
 
 	private List<ITab> createTabList() {
 		List<ITab> tabs = new ArrayList<ITab>();
-		ResourceFilter[] values = ResourceFilter.values();
-		for (ResourceFilter resourceFilter : values) {
-			tabs.add(new UpdatecenterTab(Model.of(resourceFilter.name()), resourceFilter));
-		}
+		tabs.add(new UpdatecenterTab(Model.of("Plugins"), ResourceFilter.PLUGIN));
+		tabs.add(new UpdatecenterTab(Model.of("All"), ResourceFilter.ALL));
+		tabs.add(new UpdatecenterTab(Model.of("Installed"), ResourceFilter.INSTALLED));
+
 		return tabs;
 	}
 

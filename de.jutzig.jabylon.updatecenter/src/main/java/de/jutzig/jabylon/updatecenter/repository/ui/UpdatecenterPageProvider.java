@@ -19,7 +19,7 @@ import de.jutzig.jabylon.rest.ui.util.PageProvider;
 public class UpdatecenterPageProvider implements PageProvider {
 
 	
-	@Property(value="/system/plugins")
+	@Property(value="/system")
 	static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 	
 	/** 

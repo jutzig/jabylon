@@ -21,7 +21,12 @@ public class UpdatecenterTab extends AbstractTab {
 
 	@Override
 	public WebMarkupContainer getPanel(String panelId) {
-		return new UpdatecenterTabContent(panelId, Model.of(filter), new PageParameters());
+		switch (filter) {
+		case INSTALLED:
+			return new InstalledSoftwareTab(panelId);
+		default:
+			return new UpdatecenterTabContent(panelId, Model.of(filter), new PageParameters());
+		}
 	}
 
 }

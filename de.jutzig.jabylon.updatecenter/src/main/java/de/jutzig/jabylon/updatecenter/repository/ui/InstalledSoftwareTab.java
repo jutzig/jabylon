@@ -23,7 +23,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.StringValue;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -35,7 +34,7 @@ import com.google.common.base.Function;
 
 import de.jutzig.jabylon.rest.ui.model.ComputableModel;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
-import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
+import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.updatecenter.repository.BundleState;
 import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
 
@@ -45,7 +44,7 @@ import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
  */
 //TODO: use different right for this
 @AuthorizeInstantiation("ACCESS_CONFIG")
-public class InstalledSoftwarePage extends GenericPage<String> {
+public class InstalledSoftwareTab extends BasicPanel<String> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,25 +60,11 @@ public class InstalledSoftwarePage extends GenericPage<String> {
 	@Inject
 	private transient OBRRepositoryService repositoryConnector;
 	
-	private static final Logger logger = LoggerFactory.getLogger(InstalledSoftwarePage.class);
+	private static final Logger logger = LoggerFactory.getLogger(InstalledSoftwareTab.class);
 	
-	public InstalledSoftwarePage(PageParameters parameters) {
-		super(parameters);
-		setStatelessHint(true);
-	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
-		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
-		super.renderHead(response);
-	}
-	
-	@Override
-	protected void construct() {
-		super.construct();
-//		List<Resource> resources = repositoryConnector.listInstalledBundles();
-
+	public InstalledSoftwareTab(String id) {
+		super(id, Model.of(""),new PageParameters());
+		
 		final Form<Void> form = new StatelessForm<Void>("form");
 		add(form);
 		
@@ -119,7 +104,7 @@ public class InstalledSoftwarePage extends GenericPage<String> {
 							target.add(this);
 							target.add(item);
 						}
-						BundleContext context = FrameworkUtil.getBundle(InstalledSoftwarePage.class).getBundleContext();
+						BundleContext context = FrameworkUtil.getBundle(InstalledSoftwareTab.class).getBundleContext();
 						Bundle bundle = context.getBundle(bundleId);
 						BundleState state = BundleState.fromState(bundle.getState());
 						if(STARTABLE_STATE.contains(state))
@@ -156,22 +141,16 @@ public class InstalledSoftwarePage extends GenericPage<String> {
 			}
 		};
 		form.add(resourceView);
-	}
 
-
-	@Override
-	protected IModel<String> createModel(PageParameters params) {
-		StringValue value = params.get("uri");
-		if(value.isEmpty())
-			return null;
-		return Model.of(value.toString());
+		
 	}
 	
 	@Override
-	public boolean isBookmarkable() {
-		return true;
+	public void renderHead(IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
+		super.renderHead(response);
 	}
-
 }
 
 class LoadBundlesFunction implements Function<Void, List<Bundle>>, Serializable {
