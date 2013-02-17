@@ -19,25 +19,27 @@
 	<wicket:extend>
 		<div class="row">
 			<div class="span12">
-				<table class="table table-striped table-hover" id="table">
-					<caption>Installed Software</caption>
-					<thead>
-						<tr>
-							<th>Bundle</th>
-							<th>Version</th>
-							<th>State</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr wicket:id="row">
-							<td><span wicket:id="name"></span></td>
-							<td><span wicket:id="version"></span></td>
-							<td><span wicket:id="state">OK</span></td>
-							<td><a wicket:id="action">start</a></td>
-						</tr>
-					</tbody>
-				</table>
+				<form wicket:id="form">
+					<table class="table table-striped table-hover" id="table">
+						<caption>Installed Software</caption>
+						<thead>
+							<tr>
+								<th>Bundle</th>
+								<th>Version</th>
+								<th>State</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr wicket:id="row">
+								<td><span wicket:id="name"></span></td>
+								<td><span wicket:id="version"></span></td>
+								<td><span wicket:id="state">OK</span></td>
+								<td><button type="submit" wicket:id="action">start/stop</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
 			</div>
 		</div>
 		<wicket:child />

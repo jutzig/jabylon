@@ -1,17 +1,23 @@
 package de.jutzig.jabylon.updatecenter.repository.ui;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -19,11 +25,15 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+
+import de.jutzig.jabylon.rest.ui.model.ComputableModel;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 import de.jutzig.jabylon.updatecenter.repository.BundleState;
@@ -37,12 +47,17 @@ import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
 @AuthorizeInstantiation("ACCESS_CONFIG")
 public class InstalledSoftwarePage extends GenericPage<String> {
 
-	private static final String PARAM_BUNDLE = "bundle";
-
-	private static final String PARAM_ACTION = "action";
-
 	private static final long serialVersionUID = 1L;
 
+	private static final EnumSet<BundleState> STOPPABLE_STATE = EnumSet.of(BundleState.ACTIVE,BundleState.STARTING);
+	private static final EnumSet<BundleState> STARTABLE_STATE = EnumSet.of(BundleState.RESOLVED);
+	private static final EnumSet<BundleState> CHANGEABLE_STATE; 
+	static {
+		EnumSet<BundleState> set = EnumSet.copyOf(STOPPABLE_STATE);
+		set.addAll(STARTABLE_STATE);
+		CHANGEABLE_STATE = set;
+	}
+	
 	@Inject
 	private transient OBRRepositoryService repositoryConnector;
 	
@@ -65,70 +80,82 @@ public class InstalledSoftwarePage extends GenericPage<String> {
 		super.construct();
 //		List<Resource> resources = repositoryConnector.listInstalledBundles();
 
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		final Form<Void> form = new StatelessForm<Void>("form");
+		add(form);
 		
-		List<Bundle> resources = Arrays.asList(bundle.getBundleContext().getBundles()); 
-		final long targetBundleId = getPageParameters().get(PARAM_BUNDLE).toLong(-1);
-		ListView<Bundle> resourceView = new ListView<Bundle>("row", resources) {
+
+		IModel<List<Bundle>> model = new ComputableModel<Void, List<Bundle>>(new LoadBundlesFunction(), null);
+		ListView<Bundle> resourceView = new ListView<Bundle>("row", model) {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<Bundle> item) {
+			protected void populateItem(final ListItem<Bundle> item) {
+				item.setOutputMarkupId(true);
 				Bundle resource = item.getModelObject();
-				
-				if(resource.getBundleId()==targetBundleId) {
-					if("start".equals(getPageParameters().get(PARAM_ACTION).toOptionalString())) {
-						logger.info("Starting bundle {}", resource.getSymbolicName());
-						try {
-							resource.start();
-						} catch (BundleException e) {
-							String message = "Failed to start bundle "+resource.getSymbolicName();
-							getSession().error(message);
-							logger.error(message,e);
-						}						
-					}
-					else if("stop".equals(getPageParameters().get(PARAM_ACTION).toOptionalString())) {
-						logger.info("Stoping bundle {}", resource.getSymbolicName());
-						try {
-							resource.stop();
-						} catch (BundleException e) {
-							String message = "Failed to stop bundle "+resource.getSymbolicName();
-							getSession().error(message);
-							logger.error(message,e);
-						} 						
-					}
-				}
-				
+				final long bundleId = resource.getBundleId();				
 				String name = resource.getSymbolicName();
 				item.add(new Label("name", name));
 				item.add(new Label("version", resource.getVersion().toString()));
 				int state = resource.getState();
 				BundleState bundleState = BundleState.fromState(state);
-				Label stateLabel = new Label("state",bundleState.name());
-				stateLabel.add(new AttributeAppender("class", "label label-"+bundleState.getLabelClass()));
+				ComputableModel<Long, String> labelClassModel = new ComputableModel<Long, String>(new ComputeBundleLabelClass(), bundleId);
+				ComputableModel<Long, String> labelNameModel = new ComputableModel<Long, String>(new ComputeStateFunction(), bundleId);
+				Label stateLabel = new Label("state",labelNameModel);
+				stateLabel.add(new AttributeAppender("class", labelClassModel));
 				item.add(stateLabel);
 				
+				final String action = bundleState == BundleState.RESOLVED ? "start" : "stop";
 				
+				//TODO; use AJAX buttons to refresh labels
+				Button button = new AjaxFallbackButton("action",Model.of(action),form) {
+					
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+						if(target!=null)
+						{
+							target.add(this);
+							target.add(item);
+						}
+						BundleContext context = FrameworkUtil.getBundle(InstalledSoftwarePage.class).getBundleContext();
+						Bundle bundle = context.getBundle(bundleId);
+						BundleState state = BundleState.fromState(bundle.getState());
+						if(STARTABLE_STATE.contains(state))
+						{
+							logger.info("Starting bundle {}", bundle.getSymbolicName());
+							try {
+								bundle.start();
+							} catch (BundleException e) {
+								String message = "Failed to start bundle "+bundle.getSymbolicName();
+								getSession().error(message);
+								logger.error(message,e);
+							}									
+						}
+						
+						else if(STOPPABLE_STATE.contains(state)) {
+							logger.info("Stoping bundle {}", bundle.getSymbolicName());
+							try {
+								bundle.stop();
+							} catch (BundleException e) {
+								String message = "Failed to stop bundle "+bundle.getSymbolicName();
+								getSession().error(message);
+								logger.error(message,e);
+							} 						
+						}
+						super.onSubmit(target, form);
+					}					
+				};
+				button.setDefaultFormProcessing(false);
+				button.add(new AttributeModifier("value", resource.getBundleId()));
+				button.add(new AttributeModifier("class", "btn btn-small"));
+				button.setEnabled(CHANGEABLE_STATE.contains(bundleState));
 				
-				String action = null;
-				if(bundleState==BundleState.ACTIVE)
-					action = "stop";
-				else if(bundleState==BundleState.RESOLVED)
-					action = "start";
-				PageParameters params = new PageParameters();
-				if(action!=null)
-				{
-					params.set(PARAM_ACTION, action);
-					params.set(PARAM_BUNDLE, resource.getBundleId());					
-				}
-				Link<Object> actionLink = new BookmarkablePageLink<Object>(PARAM_ACTION, getPageClass(),params);
-				actionLink.setBody(Model.of(action == null ? "start" : action));
-				actionLink.setEnabled(action!=null);
-				item.add(actionLink);
+				item.add(button);
 			}
 		};
-		add(resourceView);
+		form.add(resourceView);
 	}
 
 
@@ -145,4 +172,38 @@ public class InstalledSoftwarePage extends GenericPage<String> {
 		return true;
 	}
 
+}
+
+class LoadBundlesFunction implements Function<Void, List<Bundle>>, Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	public List<Bundle> apply(Void nothing) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		List<Bundle> resources = Arrays.asList(bundle.getBundleContext().getBundles());
+		return resources;
+	}
+}
+
+
+class ComputeStateFunction implements Function<Long, String>, Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	public String apply(Long value) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		Bundle target = bundle.getBundleContext().getBundle(value);
+		return BundleState.fromState(target.getState()).name();
+	}
+}
+
+class ComputeBundleLabelClass implements Function<Long, String>, Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	public String apply(Long value) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		Bundle target = bundle.getBundleContext().getBundle(value);
+		return "label label-"+BundleState.fromState(target.getState()).getLabelClass();
+	}
 }
