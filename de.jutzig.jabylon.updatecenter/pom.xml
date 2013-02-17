@@ -11,6 +11,10 @@
 		<relativePath>../releng/parent</relativePath>
 	</parent>
 
+	<name>Jabylon Update Center</name>
+	<description>Allows to manage, update, install, and uninstall Jabylon Plug-Ins</description>
+	
+	
 	<build>
 		<resources>
 			<resource>
