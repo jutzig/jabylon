@@ -66,7 +66,6 @@ public class UpdatecenterPage extends GenericPage<Serializable> {
 				item.add(new Label("name", name));
 				item.add(new Label("description", resource.getPresentationName()));
 				item.add(new Label("version", resource.getVersion().toString()));
-				;
 
 				String action = "install";
 

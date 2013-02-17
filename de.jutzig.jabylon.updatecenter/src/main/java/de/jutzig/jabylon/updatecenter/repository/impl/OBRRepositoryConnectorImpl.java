@@ -82,7 +82,21 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
 	private boolean applies(ResourceFilter filter, List<Bundle> bundles,
 			Resource resource) {
-		// TODO Auto-generated method stub
+		switch (filter) {
+		case ALL:
+			return true;
+		case PLUGIN:
+			String[] categories = resource.getCategories();
+			if(categories==null)
+				return false;
+			for (String string : categories) {
+				if("Jabylon-Plugin".equals(string))
+					return true;
+			}
+			return false;
+		default:
+			break;
+		}
 		return true;
 	}
 
