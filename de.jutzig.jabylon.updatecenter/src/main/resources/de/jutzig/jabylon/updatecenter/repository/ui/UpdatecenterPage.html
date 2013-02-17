@@ -4,40 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Jabylon</title>
 </head>
-<wicket:head>
-	<script type="text/javascript">
-	<!--
-		$(document).ready(function() {
-			$('#table').dataTable({
-				"iDisplayLength" : 50,
-			});
-		});
-	//-->
-	</script>
-</wicket:head>
 <body>
 	<wicket:extend>
 		<div class="row">
 			<div class="span12">
-				<table class="table table-striped table-hover" id="table">
-					<caption>Installed Software</caption>
-					<thead>
-						<tr>
-							<th>Plug-In</th>
-							<th>Description</th>
-							<th>Version</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr wicket:id="row">
-							<td><span wicket:id="name">Example</span></td>
-							<td><span wicket:id="description">This examples certain examples</span></td>
-							<td><span wicket:id="version">1.0.0</span></td>
-							<td><a wicket:id="action">install</a></td>
-						</tr>
-					</tbody>
-				</table>
+				<ul class="nav nav-tabs" wicket:id="tabs">
+				</ul>
 			</div>
 		</div>
 		<wicket:child />

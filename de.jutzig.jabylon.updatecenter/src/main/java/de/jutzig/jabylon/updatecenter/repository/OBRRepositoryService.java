@@ -11,6 +11,8 @@ public interface OBRRepositoryService {
 	
 	List<Resource> getAvailableResources(ResourceFilter filter);
 	
+	Resource[] findResources(String id);
+	
 	void install(String resourceId);
 	
 	void install(Resource... resource);

@@ -1,6 +1,8 @@
 package de.jutzig.jabylon.updatecenter.repository;
 
-public enum ResourceFilter {
+import java.io.Serializable;
+
+public enum ResourceFilter implements Serializable{
 
 	ALL, INSTALLED, UPDATEABLE, PLUGIN, INSTALLABLE;
 	

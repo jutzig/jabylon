@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.updatecenter.repository.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -127,6 +128,20 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 		{
 			resolver.deploy(0);
 		}		
+	}
+
+	@Override
+	public 	Resource[] findResources(String id) {
+//		String filter = "(&(SYMBOLIC_NAME={0})(VERSION={1}))";
+		String filter = "({0}={1})";
+		filter = MessageFormat.format(filter, Resource.ID,id);
+		try {
+			return admin.discoverResources(filter);
+		} catch (InvalidSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Resource[0];
 	}
 	
 }
