@@ -25,11 +25,14 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +42,7 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
+import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -69,6 +73,14 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 				item.add(new Label("template",similarity.getOriginal()));
 				item.add(new Label("translation",similarity.getTranslation()));
 				item.add(new AttributeAppender("title", similarity.getFullPath()));
+				PageParameters params = new PageParameters();
+				
+				URI uri = URI.createURI(similarity.getUri());
+				for(int i=0;i<uri.segmentCount();i++) {
+					params.set(i, uri.segment(i));
+				}
+				params.add("key", similarity.getKey());
+				item.add(new BookmarkablePageLink<Void>("link", ResourcePage.class, params));
 				WebMarkupContainer progress = new WebMarkupContainer("similarity");
 				item.add(progress);
 				progress.add(new AttributeModifier("style", "width: " + similarity.getSimilarity() + "%"));
@@ -126,7 +138,8 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             if(property==null || property.getValue()==null)
                 continue;
             
-            Similarity similarity = new Similarity(document.get(QueryService.FIELD_VALUE), property.getValue(),(int)(scoreDoc.score*100), document.get(QueryService.FIELD_FULL_PATH));
+            String uri = slave.getProjectLocale().getParent().getParent().getName() + "/" + slave.getProjectLocale().getParent().getName() + "/" + slave.getProjectLocale().getName()+ slave.getLocation().toString();
+            Similarity similarity = new Similarity(document.get(QueryService.FIELD_VALUE), property.getValue(),(int)(scoreDoc.score*100), document.get(QueryService.FIELD_FULL_PATH), uri, property.getKey());
             resultList.add(similarity);
             }
             catch (CorruptIndexException e)
@@ -170,17 +183,26 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
         private String translation;
         private int similarity;
 		private String fullPath;
+		private String uri;
+		private String key;
 
 
-        public Similarity(String original, String translation, int similartiy, String fullPath)
+        public Similarity(String original, String translation, int similartiy, String fullPath, String uri, String key)
         {
             super();
             this.original = original;
             this.translation = translation;
             this.similarity = similartiy;
             this.fullPath = fullPath;
+            this.uri = uri;
+            this.key = key;
         }
+        
 
+        public String getKey() {
+			return key;
+		}
+        
         public String getOriginal()
         {
             return original;
@@ -198,6 +220,10 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
         
         public String getFullPath() {
 			return fullPath;
+		}
+        
+        public String getUri() {
+			return uri;
 		}
 
 		@Override
