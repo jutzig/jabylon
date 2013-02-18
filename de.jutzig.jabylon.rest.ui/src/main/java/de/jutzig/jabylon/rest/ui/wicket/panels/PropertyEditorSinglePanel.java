@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -140,7 +141,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		buildComponentTree(previous, main, next);
 	}
 
-	private void buildComponentTree(PropertyPair previous, PropertyPair main, PropertyPair next) {
+	private void buildComponentTree(PropertyPair previous, final PropertyPair main, PropertyPair next) {
 
 		Form<Property> pairForm = new StatelessForm<Property>("properties-form", Model.of(main.getTranslation())) {
 
@@ -224,6 +225,16 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		translationPanel.add(textArea);
 
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(main, "translated"));
+		textArea.add(new AttributeModifier("lang", new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				// see http://www.ietf.org/rfc/bcp/bcp47.txt
+				return main.getLanguage().toString().replace('_', '-');
+			}
+		}));
+		textArea.add(new AttributeModifier("translate", "no"));
 		translationPanel.add(textArea);
 
 		previousButton.setEnabled(previous != null);
