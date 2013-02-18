@@ -61,10 +61,13 @@ public class PropertyFileAnalyzer {
 
 			Field comment = new Field(QueryService.FIELD_COMMENT, nullSafe(property.getComment()), Store.YES, Index.ANALYZED);
 			doc.add(comment);
-			Field key = new Field(QueryService.FIELD_KEY, nullSafe(property.getKey()), Store.YES, Index.ANALYZED);
+			Field key = new Field(QueryService.FIELD_KEY, nullSafe(property.getKey()), Store.YES, Index.NOT_ANALYZED);
 			doc.add(key);
 			Field value = new Field(QueryService.FIELD_VALUE, nullSafe(property.getValue()), Store.YES, Index.ANALYZED);
 			doc.add(value);
+			String templateLocation = descriptor.getMaster() == null ? "" : descriptor.getMaster().getLocation().toString();
+			Field templateLoc = new Field(QueryService.FIELD_TEMPLATE_LOCATION, templateLocation, Store.YES, Index.NOT_ANALYZED);
+			doc.add(templateLoc);
 			documents.add(doc);
 		}
 		return documents;
