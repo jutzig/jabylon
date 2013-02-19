@@ -14,7 +14,25 @@
 			<scope>compile</scope>
 			<useTransitiveDependencies>false</useTransitiveDependencies>
 			<useProjectArtifact>false</useProjectArtifact>
+			<excludes>
+				<exclude>org.apache.felix:org.apache.felix.bundlerepository</exclude>
+				<exclude>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject</exclude>
+				<exclude>org.eclipse.jgit:org.eclipse.jgit</exclude>
+			</excludes>			
 		</dependencySet>
+		<dependencySet>
+			<outputFileNameMapping>${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+			<outputDirectory>/plugins</outputDirectory>
+			<scope>compile</scope>
+			<useTransitiveDependencies>false</useTransitiveDependencies>
+			<useProjectArtifact>false</useProjectArtifact>
+			<includes>
+				<include>org.apache.felix:org.apache.felix.bundlerepository</include>
+				<include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject</include>
+				<include>org.eclipse.jgit:org.eclipse.jgit</include>
+			</includes>			
+		</dependencySet>		
+		
 	</dependencySets>
 	<fileSets>
 		<fileSet>
