@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 
+import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilt
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -44,6 +46,7 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.EClassSortState;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 
@@ -112,7 +115,19 @@ public class PropertyListPanel
         };
         properties.setOutputMarkupId(true);
         add(properties);
-
+        
+        String contextPath = WicketUtil.getContextPath();        
+        String href = contextPath + "/api"+ getModelObject().toURI().appendQuery("type=file");
+        ExternalLink link = new ExternalLink("download.link", href);
+        File file = new File(getModelObject().absoluteFilePath().toFileString());
+        boolean enabled = file.isFile();
+        link.setEnabled(enabled);
+        if(!enabled)
+        {
+        	link.add(new AttributeAppender("disabled", Model.of("disabled")));
+        	link.add(new AttributeAppender("class", Model.of("disabled")));
+        }
+        add(link);
     }
 
 
