@@ -41,7 +41,8 @@ public class UpdatecenterPage extends GenericPage<Serializable> {
 	private List<ITab> createTabList() {
 		List<ITab> tabs = new ArrayList<ITab>();
 		tabs.add(new UpdatecenterTab(Model.of("Plugins"), ResourceFilter.PLUGIN));
-		tabs.add(new UpdatecenterTab(Model.of("All"), ResourceFilter.ALL));
+		tabs.add(new UpdatecenterTab(Model.of("Update"), ResourceFilter.UPDATEABLE));
+		tabs.add(new UpdatecenterTab(Model.of("All"), ResourceFilter.INSTALLABLE));
 		tabs.add(new UpdatecenterTab(Model.of("Installed"), ResourceFilter.INSTALLED));
 
 		return tabs;
