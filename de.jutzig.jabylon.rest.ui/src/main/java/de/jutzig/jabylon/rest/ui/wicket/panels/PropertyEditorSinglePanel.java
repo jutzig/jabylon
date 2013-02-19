@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -40,6 +42,7 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
+import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> {
@@ -72,6 +75,13 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		};
 		createModels(getModel(), targetKey, mode);
 
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+	    response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_WARN_WHEN_DIRTY));
+	    super.renderHead(response);
 	}
 
 	private void createModels(IModel<PropertyFileDescriptor> model, String targetKey, PropertyListMode mode) {
