@@ -13,8 +13,8 @@
 
 	<name>Jabylon Update Center</name>
 	<description>Allows to manage, update, install, and uninstall Jabylon Plug-Ins</description>
-	
-	
+
+
 	<build>
 		<resources>
 			<resource>
@@ -32,6 +32,18 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
 
 	</build>
 
@@ -82,8 +94,8 @@
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.osgi.service.obr</artifactId>
@@ -93,12 +105,12 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.bundlerepository</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.scr.annotations</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rest.ui</artifactId>
