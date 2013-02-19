@@ -129,6 +129,7 @@
       <eParameters name="path" eType="#//URI"/>
     </eOperations>
     <eOperations name="absoluteFilePath" eType="#//URI"/>
+    <eOperations name="toURI" eType="#//URI"/>
     <eOperations name="getChild">
       <eGenericType eTypeParameter="#//Resolvable/C"/>
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

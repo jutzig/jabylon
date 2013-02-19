@@ -6,8 +6,6 @@
  */
 package de.jutzig.jabylon.properties;
 
-import java.io.Serializable;
-
 import org.eclipse.emf.cdo.CDOObject;
 
 /**
@@ -23,13 +21,13 @@ import org.eclipse.emf.cdo.CDOObject;
  *   <li>{@link de.jutzig.jabylon.properties.Property#getComment <em>Comment</em>}</li>
  * </ul>
  * </p>
- *
+ * @extends java.io.Serializable
  * @see de.jutzig.jabylon.properties.PropertiesPackage#getProperty()
  * @model
  * @extends CDOObject
  * @generated NOPE
  */
-public interface Property extends CDOObject, Serializable{
+public interface Property extends CDOObject, java.io.Serializable{
 	/**
 	 * Returns the value of the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->

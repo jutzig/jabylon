@@ -7,7 +7,6 @@
 package de.jutzig.jabylon.properties.impl;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;

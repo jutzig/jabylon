@@ -1154,6 +1154,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		addEOperation(resolvableEClass, this.getURI(), "absoluteFilePath", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(resolvableEClass, this.getURI(), "toURI", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(resolvableEClass, null, "getChild", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(resolvableEClass_C);

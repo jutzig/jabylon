@@ -7,7 +7,9 @@
 package de.jutzig.jabylon.properties.impl;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -268,6 +270,29 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
 	 */
 	public URI absoluteFilePath() {
 		return absolutPath();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@SuppressWarnings("rawtypes")
+	public URI toURI() {
+		EObject object = this;
+		Deque<String> segments = new ArrayDeque<String>(); 
+		while (object != null)
+		{
+			if (object instanceof Resolvable<?, ?>) {
+				Resolvable r = (Resolvable) object;
+				//TODO: this shouldn't be necessary. Make this more consistent
+				if(r.getName()!=null)
+					segments.push((r).getName());
+			}
+			object = object.eContainer();			
+		}
+		
+		return URI.createHierarchicalURI(null, null, null, segments.toArray(new String[segments.size()]),null,null);
 	}
 
 	/**
