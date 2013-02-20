@@ -20,6 +20,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
+import de.jutzig.jabylon.properties.util.SynchronizedEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,12 +78,14 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * synchronized list to allow access from multiple threads
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	public EList<Property> getProperties() {
-		return (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
+		EList<Property> properties = (EList<Property>)eDynamicGet(PropertiesPackage.PROPERTY_FILE__PROPERTIES, PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES, true, true);
+		return new SynchronizedEList<Property>(properties);
 	}
 
 	/**
