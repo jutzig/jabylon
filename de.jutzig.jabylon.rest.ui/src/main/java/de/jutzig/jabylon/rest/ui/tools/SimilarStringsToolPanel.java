@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -41,6 +42,7 @@ import de.jutzig.jabylon.index.properties.SearchResult;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
@@ -54,6 +56,8 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
 	private static Logger logger = LoggerFactory.getLogger(SimilarStringsToolPanel.class);
 	@Inject
 	private transient QueryService queryService;
+	@Inject
+	private transient PropertyPersistenceService persistenceService;
 	
 	public SimilarStringsToolPanel(String id, IModel<PropertyPair> model) {
 		super(id, model);;
@@ -125,7 +129,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             if(slave==null)
                 continue;
             
-            PropertyFile properties = slave.loadProperties();
+            PropertyFile properties = persistenceService.loadProperties(slave);
             String key = document.get(QueryService.FIELD_KEY);
             
             if(slave.cdoID().equals(pair.getDescriptorID()) && pair.getKey().equals(key))
@@ -149,7 +153,9 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             catch (IOException e)
             {
             	logger.error("Failed to find similar strings", e);
-            }
+			} catch (ExecutionException e) {
+				logger.error("Failed to find load properties", e);
+			}
 
         }
         try

@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,8 +91,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		PropertyFileDescriptor descriptor = model.getObject();
 		Multimap<String, Review> reviews = reviewModel.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
-		Map<String, Property> translated = descriptor.loadProperties().asMap();
-		PropertyFile templateFile = master.loadProperties();
+		Map<String, Property> translated = loadProperties(descriptor).asMap();
+		PropertyFile templateFile = loadProperties(master);
 
 		PropertyPair previous = null;
 		PropertyPair main = null;
@@ -101,7 +103,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			if (translation == null)
 				translation = PropertiesFactory.eINSTANCE.createProperty();
 			translation.setKey(property.getKey());
-			PropertyPair pair = new PropertyPair(property, translation, descriptor.getVariant(), descriptor.cdoID());
+			PropertyPair pair = new PropertyPair(EcoreUtil.copy(property), EcoreUtil.copy(translation), descriptor.getVariant(), descriptor.cdoID());
 			String key = pair.getKey();
 			if (mode.apply(pair, reviews.get(key))) {
 				if (main != null) {
@@ -121,7 +123,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		// the template
 		if (next == null) {
 			for (Property property : translated.values()) {
-				PropertyPair pair = new PropertyPair(null, property, descriptor.getVariant(), descriptor.cdoID());
+				PropertyPair pair = new PropertyPair(null, EcoreUtil.copy(property), descriptor.getVariant(), descriptor.cdoID());
 				if (mode.apply(pair, reviews.get(pair.getKey()))) {
 					if (main != null) {
 						// we already found a hit, this is to compute the next
@@ -151,6 +153,16 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		buildComponentTree(previous, main, next);
 	}
 
+	private PropertyFile loadProperties(PropertyFileDescriptor descriptor) {
+		try {
+			PropertyFile propertyFile = propertyPersistence.loadProperties(descriptor);
+			return propertyFile;
+		} catch (ExecutionException e) {
+			logger.error("Failed to load property file for "+descriptor,e);
+			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to load property file for "+descriptor);
+		}
+	}
+
 	private void buildComponentTree(PropertyPair previous, final PropertyPair main, PropertyPair next) {
 
 		Form<Property> pairForm = new StatelessForm<Property>("properties-form", Model.of(main.getTranslation())) {
@@ -160,7 +172,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			protected void onSubmit() {
 
 				PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
-				PropertyFile file = descriptor.loadProperties();
+				PropertyFile file = loadProperties(descriptor);
 				Map<String, Property> map = file.asMap();
 				boolean hasChanged = false;
 				Property translation = getModelObject();
