@@ -62,6 +62,8 @@ public class PropertyListPanel
     private static final long serialVersionUID = 1L;
     IModel<Multimap<String, Review>> reviewModel;
     static final String OK_LABEL = "OK";
+    
+    private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
 
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
@@ -85,7 +87,7 @@ public class PropertyListPanel
                 return buildReviewMap(getModelObject());
             }
         };
-        PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode, reviewModel);
+        PropertyPairListDataProvider provider = new PropertyPairListDataProvider(object, mode, reviewModel);
         List<PropertyPair> contents = provider.createContents();
 
         ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents)
@@ -249,8 +251,6 @@ public class PropertyListPanel
 
     }
 
-}
-
 
 class PropertyPairListDataProvider
     extends SortableDataProvider<PropertyPair, EClassSortState>
@@ -263,21 +263,15 @@ class PropertyPairListDataProvider
     private String filterState;
     private PropertyListMode mode;
     private IModel<Multimap<String, Review>> reviewModel;
-    private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
-    
-    private transient final PropertyPersistenceService persistenceService;
-
 
     public PropertyPairListDataProvider(PropertyFileDescriptor descriptor,
                                         PropertyListMode mode,
-                                        IModel<Multimap<String, Review>> reviewModel,
-                                        PropertyPersistenceService persistenceService)
+                                        IModel<Multimap<String, Review>> reviewModel)
     {
         super();
         model = new CompoundPropertyModel<PropertyFileDescriptor>(new EObjectModel<PropertyFileDescriptor>(descriptor));
         this.mode = mode;
         this.reviewModel = reviewModel;
-        this.persistenceService = persistenceService;
     }
 
 
@@ -332,7 +326,7 @@ class PropertyPairListDataProvider
 
     private PropertyFile loadProperties(PropertyFileDescriptor descriptor) {
     	try {
-			return persistenceService.loadProperties(descriptor);
+			return propertyPersistence.loadProperties(descriptor);
 		} catch (ExecutionException e) {
 			logger.error("Failed to load properties for "+descriptor);
 			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Failed to load properties for "+descriptor);
@@ -369,3 +363,7 @@ class PropertyPairListDataProvider
     }
 
 }
+    
+}
+
+

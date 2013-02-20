@@ -128,7 +128,7 @@ public class SimilarStringsToolPanel extends GenericPanel<PropertyPair> {
             PropertyFileDescriptor slave = getSlave(descriptor,pair.getLanguage());
             if(slave==null)
                 continue;
-            
+            //TODO: it would be better to get this from the index
             PropertyFile properties = persistenceService.loadProperties(slave);
             String key = document.get(QueryService.FIELD_KEY);
             
