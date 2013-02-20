@@ -15,6 +15,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IFormSubmitter;
 import org.apache.wicket.markup.html.form.StatelessForm;
@@ -55,6 +56,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	IModel<PropertyPair> previousModel;
 	IModel<PropertyPair> mainModel;
 	IModel<PropertyPair> nextModel;
+	IModel<Boolean> modified;
 
 	@Inject
 	private transient PropertyPersistenceService propertyPersistence;
@@ -88,6 +90,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 	private void createModels(IModel<PropertyFileDescriptor> model, String targetKey, PropertyListMode mode) {
 
+		modified = Model.of(Boolean.valueOf(false));
+		
 		PropertyFileDescriptor descriptor = model.getObject();
 		Multimap<String, Review> reviews = reviewModel.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
@@ -170,27 +174,26 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			private static final long serialVersionUID = 1L;
 
 			protected void onSubmit() {
-
+	
 				PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
 				PropertyFile file = loadProperties(descriptor);
 				Map<String, Property> map = file.asMap();
-				boolean hasChanged = false;
-				Property translation = getModelObject();
-				if (translation != null) {
-					if (map.containsKey(translation.getKey())) {
-						Property property = map.get(translation.getKey());
-						hasChanged = hasChanged(translation, property);
-						property.setComment(translation.getComment());
-						property.setValue(translation.getValue());
-					} else if (!isEmpty(translation.getValue())) {
-						hasChanged = true;
-						file.getProperties().add(translation);
+				if(modified.getObject()) {
+					Property translation = getModelObject();
+					if (translation != null) {
+						if (map.containsKey(translation.getKey())) {
+							Property property = map.get(translation.getKey());
+							property.setComment(translation.getComment());
+							property.setValue(translation.getValue());
+						} else if (!isEmpty(translation.getValue())) {
+							file.getProperties().add(translation);
+						}
 					}
-				}
-				if (hasChanged) {
+					
 					propertyPersistence.saveProperties(descriptor, file);
-					getSession().info("Saved successfully");
+					getSession().info("Saved successfully");					
 				}
+	
 				IFormSubmitter submitter = findSubmittingButton();
 				if (submitter instanceof Button) {
 					Button button = (Button) submitter;
@@ -209,6 +212,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			}
 
 		};
+		
+		//this will let us know if the user actually changed anything
+		CheckBox modifiedIndicator = new CheckBox("modify-indicator", modified);
+		modifiedIndicator.setDefaultModelObject(false);
+		pairForm.add(modifiedIndicator);
+		
 		add(pairForm);
 		Button nextButton = new Button("next");
 		Button previousButton = new Button("previous");
@@ -265,24 +274,6 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 		PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
 		add(tools);
-	}
-
-	private boolean hasChanged(Property prop1, Property prop2) {
-		if (prop1 == null)
-			return !(prop2 == null || prop2.getValue().isEmpty());
-		if (!safeEquals(prop1.getValue(), prop2.getValue()))
-			return true;
-		if (!safeEquals(prop1.getComment(), prop2.getComment()))
-			return true;
-		if (!safeEquals(prop1.getKey(), prop2.getKey()))
-			return true;
-		return false;
-	}
-
-	private boolean safeEquals(String s1, String s2) {
-		if (s1 == null)
-			return s2 == null || s2.isEmpty();
-		return s1.equals(s2);
 	}
 
 	private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
