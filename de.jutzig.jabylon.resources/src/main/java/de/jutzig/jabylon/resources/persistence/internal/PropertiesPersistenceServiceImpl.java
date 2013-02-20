@@ -85,6 +85,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	private Thread runner;
 	
 	private LoadingCache<CDOID, PropertyFile> cache;
+
+	private boolean active;
 	
 	
 
@@ -101,18 +103,35 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		runner = new Thread(this, "Properties Persistence Service");
 		runner.setDaemon(true);
 		runner.start();
+		active = true;
 	}
 	
 	@Deactivate
 	public void deactivate()
 	{
-		listeners.clear();
+		shutdownQueue();
+		listeners.clear();	
 		queue = null;
 		runner.interrupt();
 		runner = null;
 	}
 
 	
+	private void shutdownQueue() {
+		active = false;
+		int size = queue.size();
+		logger.info("Shutting down. Queuesize is {}",size);
+		while(queue.size()>0) {
+			logger.info("Shutting down. Remaining Queuesize is {}",queue.size());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				logger.info("Interrupted while draining queue. Exiting");
+			}
+		}
+		
+	}
+
 	public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
 		this.repositoryConnector = repositoryConnector;
 		CDOSession session = repositoryConnector.createSession();
@@ -289,6 +308,11 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	@Override
 	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
+		if(!active)
+		{
+			logger.error("Received save request while not active");
+			throw new IllegalStateException("The PropertiesPersistanceService is deactivated");
+		}
 		try {
 			PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
 			PropertyFile writeCopy = createCopy(file);
@@ -377,6 +401,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 			logger.warn("Received Interrupt. Shutting down...");
 			// let thread end...
 		} finally {
+			queue.clear();
 			if (transaction != null)
 				transaction.close();
 		}
