@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
 import de.jutzig.jabylon.properties.PropertiesFactory;
@@ -61,13 +62,13 @@ public class PropertiesResourceImpl extends ResourceImpl {
 			helper = new PropertiesHelper(true);
 		else
 			helper = new PropertiesHelper(false);
-		
+
 		InputStream in = inputStream;
 		if(!in.markSupported())
 			in = new BufferedInputStream(in);
 		//TODO: should we do anything with the bom? Set to Unicode?
 		helper.checkForBom(in);
-		
+
 		BufferedReader reader = null;
 		PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
 		try {
@@ -116,7 +117,11 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		else
 		{
 			escapeUnicode = false;
+			//see https://github.com/jutzig/jabylon/issues/5
+			//write BOMs in unicode mode
+			outputStream.write(ByteOrderMark.UTF_8.bytes());
 			writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
 		}
 		try {
 			PropertiesHelper helper = new PropertiesHelper(escapeUnicode);
