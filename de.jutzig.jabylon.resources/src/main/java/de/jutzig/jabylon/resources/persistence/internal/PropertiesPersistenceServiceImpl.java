@@ -401,7 +401,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 			logger.warn("Received Interrupt. Shutting down...");
 			// let thread end...
 		} finally {
-			queue.clear();
+			if(queue!=null)
+				queue.clear();
 			if (transaction != null)
 				transaction.close();
 		}
