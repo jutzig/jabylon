@@ -46,6 +46,7 @@ import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
+import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> {
@@ -85,6 +86,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	public void renderHead(IHeaderResponse response)
 	{
 	    response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_WARN_WHEN_DIRTY));
+	    response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_SHORTCUTS));
+	    response.render(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("js/singlePropertyEditor.js")));
 	    super.renderHead(response);
 	}
 
