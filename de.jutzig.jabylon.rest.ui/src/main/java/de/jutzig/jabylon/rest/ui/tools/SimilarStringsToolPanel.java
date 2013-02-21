@@ -112,7 +112,7 @@ public class SimilarStringsToolPanel
 
     protected List<Similarity> doSearch(IModel<PropertyPair> model)
     {
-
+    	long time = System.currentTimeMillis();
         PropertyPair pair = model.getObject();
         if (pair == null || pair.getOriginal() == null)
             return Collections.emptyList();
@@ -154,6 +154,7 @@ public class SimilarStringsToolPanel
         try
         {
             result.getSearcher().close();
+            logger.debug("Computing Similarities took {} ms",System.currentTimeMillis()-time);
         }
         catch (IOException e)
         {

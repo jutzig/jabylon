@@ -16,10 +16,16 @@ $(document).ready(function() {
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Left", function() {
+		//shift the focus to make sure we adjust the modified attribute
+		if(currentFocus!=null)
+			currentFocus.blur();
 		$("#previous").click();
 	});
 
 	shortcut.add("Ctrl+Right", function() {
+		//shift the focus to make sure we adjust the modified attribute
+		if(currentFocus!=null)
+			currentFocus.blur();
 		$("#next").click();
 	});
 	
@@ -60,26 +66,29 @@ $(document).ready(function() {
 	});
 
 	shortcut.add("tab", function() {
-		if(currentFocus==null) {
-			//no focus => use the first
-			currentFocus = $("#translation");
-		}
-		else if(currentFocus.id=="translation") {
-			currentFocus = $("#translation-comment");
-		}
-		else if(currentFocus.id=="translation-comment") {
-			currentFocus = $("#next");
-		}
-		else if(currentFocus.id=="next") {
-			currentFocus = $("#previous");
-		}
-		else if(currentFocus.id=="previous") {
-			currentFocus = $("#translation");
-		}
-		else {
-			currentFocus = $("#translation");
-		}
-		currentFocus.focus();	
+		traverseFocus();
 	});
-
 });
+
+function traverseFocus() {
+	if(currentFocus==null) {
+		//no focus => use the first
+		currentFocus = $("#translation");
+	}
+	else if(currentFocus.id=="translation") {
+		currentFocus = $("#translation-comment");
+	}
+	else if(currentFocus.id=="translation-comment") {
+		currentFocus = $("#next");
+	}
+	else if(currentFocus.id=="next") {
+		currentFocus = $("#previous");
+	}
+	else if(currentFocus.id=="previous") {
+		currentFocus = $("#translation");
+	}
+	else {
+		currentFocus = $("#translation");
+	}
+	currentFocus.focus();	
+}
