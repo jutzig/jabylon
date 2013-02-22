@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
@@ -28,10 +30,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -57,6 +62,8 @@ public class PropertyListPanel
     private static final long serialVersionUID = 1L;
     IModel<Multimap<String, Review>> reviewModel;
     static final String OK_LABEL = "OK";
+    
+    private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
 
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
@@ -80,7 +87,7 @@ public class PropertyListPanel
                 return buildReviewMap(getModelObject());
             }
         };
-        PropertyPairDataProvider provider = new PropertyPairDataProvider(object, mode, reviewModel);
+        PropertyPairListDataProvider provider = new PropertyPairListDataProvider(object, mode, reviewModel);
         List<PropertyPair> contents = provider.createContents();
 
         ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents)
@@ -244,8 +251,6 @@ public class PropertyListPanel
 
     }
 
-}
-
 
 class PropertyPairListDataProvider
     extends SortableDataProvider<PropertyPair, EClassSortState>
@@ -258,7 +263,6 @@ class PropertyPairListDataProvider
     private String filterState;
     private PropertyListMode mode;
     private IModel<Multimap<String, Review>> reviewModel;
-
 
     public PropertyPairListDataProvider(PropertyFileDescriptor descriptor,
                                         PropertyListMode mode,
@@ -294,8 +298,8 @@ class PropertyPairListDataProvider
         PropertyFileDescriptor descriptor = model.getObject();
         Multimap<String, Review> reviews = reviewModel.getObject();
         PropertyFileDescriptor master = descriptor.getMaster();
-        Map<String, Property> translated = descriptor.loadProperties().asMap();
-        PropertyFile templateFile = master.loadProperties();
+        Map<String, Property> translated = loadProperties(descriptor).asMap();
+        PropertyFile templateFile = loadProperties(master);;
 
         List<PropertyPair> contents = new ArrayList<PropertyPair>();
         for (Property property : templateFile.getProperties())
@@ -320,7 +324,17 @@ class PropertyPairListDataProvider
     }
 
 
-    @Override
+    private PropertyFile loadProperties(PropertyFileDescriptor descriptor) {
+    	try {
+			return propertyPersistence.loadProperties(descriptor);
+		} catch (ExecutionException e) {
+			logger.error("Failed to load properties for "+descriptor);
+			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Failed to load properties for "+descriptor);
+		}
+	}
+
+
+	@Override
     public long size()
     {
         return getList().size();
@@ -349,3 +363,7 @@ class PropertyPairListDataProvider
     }
 
 }
+    
+}
+
+

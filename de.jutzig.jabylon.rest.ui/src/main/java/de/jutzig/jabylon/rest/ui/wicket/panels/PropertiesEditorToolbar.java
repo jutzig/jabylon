@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -19,9 +20,12 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
+import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.tools.PropertyEditorTool;
 import de.jutzig.jabylon.rest.ui.tools.PropertyToolTab;
@@ -47,10 +51,14 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     
     @Inject
     private List<PropertyEditorTool> tools;
+    
+    private PropertyPersistenceService persistenceService;
 
 	private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
 
 	private List<PropertyToolTab> extensions;
+	
+	private static final Logger logger = LoggerFactory.getLogger(PropertiesEditorToolbar.class);
     
     
 
@@ -93,15 +101,20 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 		if(key!=null && !key.isEmpty() && !key.equals(currentKey))
 		{
 			PropertyFileDescriptor translation = getModel().getObject();
-			PropertyFile properties = translation.loadProperties();
-			properties.getProperty(key);
-			PropertyFileDescriptor master = translation.getMaster();
-			PropertyFile masterFile = master.loadProperties();
-		 
-			PropertyPair pair = new PropertyPair(masterFile.getProperty(key),properties.getProperty(key), translation.getVariant(),translation.cdoID());
+			PropertyFile properties;
+			try {
+				properties = persistenceService.loadProperties(translation);
+				properties.getProperty(key);
+				PropertyFileDescriptor master = translation.getMaster();
+				PropertyFile masterFile = persistenceService.loadProperties(master);
+				
+				PropertyPair pair = new PropertyPair(masterFile.getProperty(key),properties.getProperty(key), translation.getVariant(),translation.cdoID());
 //			int selected = tabContainer.getSelectedTab();
-			for (PropertyToolTab tool : extensions) {
-				tool.setModel(Model.of(pair));
+				for (PropertyToolTab tool : extensions) {
+					tool.setModel(Model.of(pair));
+				}
+			} catch (ExecutionException e) {
+				logger.error("Failed to load property file",e);
 			}
 			
 		}

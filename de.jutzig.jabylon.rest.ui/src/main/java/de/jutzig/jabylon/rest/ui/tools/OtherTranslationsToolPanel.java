@@ -5,9 +5,10 @@ package de.jutzig.jabylon.rest.ui.tools;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +38,8 @@ import org.slf4j.LoggerFactory;
 import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.index.properties.SearchResult;
+import de.jutzig.jabylon.properties.PropertiesFactory;
+import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
@@ -72,7 +75,7 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 			@Override
 			protected void populateItem(ListItem<MatchResult> item) {
 				MatchResult match = item.getModelObject();
-				item.add(new Label("locale", new Locale(match.getLocale()).getDisplayName(getLocale())));
+				item.add(new Label("locale", match.getLocale().getDisplayName(getLocale())));
 				item.add(new Label("translation", match.getValue()));
 				PageParameters params = new PageParameters();
 
@@ -83,7 +86,7 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 				params.add("key", OtherTranslationsToolPanel.this.getModel().getObject().getKey());
 				item.add(new BookmarkablePageLink<Void>("link", ResourcePage.class, params));
 				
-				Image image = new Image("flag", WicketUtil.getIconForLocale(new Locale(match.getLocale())));
+				Image image = new Image("flag", WicketUtil.getIconForLocale(match.getLocale()));
 				item.add(image);
 
 			}
@@ -93,7 +96,7 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 	}
 
 	protected List<MatchResult> doSearch(IModel<PropertyPair> model) {
-
+		long time = System.currentTimeMillis();
 		PropertyPair pair = model.getObject();
 		if (pair == null || pair.getOriginal() == null)
 			return Collections.emptyList();
@@ -109,12 +112,14 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 
 		// exclude all masters from the search
 		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT);
+		// exclude the current language
+		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, descriptor.getProjectLocale().getLocale().toString())), Occur.MUST_NOT);
 
 		SearchResult result = queryService.search(query, 50);
 
 		if (result == null)
 			return Collections.emptyList();
-		Collection<MatchResult> resultList = new ArrayList<OtherTranslationsToolPanel.MatchResult>();
+		List<MatchResult> resultSet = new ArrayList<OtherTranslationsToolPanel.MatchResult>();
 		TopDocs topDocs = result.getTopDocs();
 		ScoreDoc[] doc = topDocs.scoreDocs;
 		for (ScoreDoc scoreDoc : doc) {
@@ -126,10 +131,10 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 				if(foundDescriptor==null)
 					continue;
 
-				String uri = foundDescriptor.getProjectLocale().getParent().getParent().getName() + "/" + foundDescriptor.getProjectLocale().getParent().getName() + "/"
-						+ foundDescriptor.getProjectLocale().getName() + foundDescriptor.getLocation().toString();
-				MatchResult match = new MatchResult(document.get(QueryService.FIELD_VALUE), document.get(QueryService.FIELD_LOCALE), uri);
-				resultList.add(match);
+				String uri = foundDescriptor.toURI().toString();
+				Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, document.get(QueryService.FIELD_LOCALE));
+				MatchResult match = new MatchResult(document.get(QueryService.FIELD_VALUE), locale, uri);
+				resultSet.add(match);
 			} catch (CorruptIndexException e) {
 				logger.error("Failed to find other translations", e);
 			} catch (IOException e) {
@@ -139,10 +144,12 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 		}
 		try {
 			result.getSearcher().close();
+			logger.debug("Finding other translations took {} ms",System.currentTimeMillis()-time);
 		} catch (IOException e) {
 			logger.error("Failed to close searcher", e);
 		}
-		return new ArrayList<OtherTranslationsToolPanel.MatchResult>(resultList);
+		Collections.sort(resultSet, new MatchResultComparator(getLocale()));
+		return resultSet;
 
 	}
 
@@ -150,17 +157,17 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 
 		private static final long serialVersionUID = 1L;
 		private String uri;
-		private String locale;
+		private Locale locale;
 		private String value;
 
-		public MatchResult(String value, String locale, String uri) {
+		public MatchResult(String value, Locale locale, String uri) {
 			super();
 			this.value = value;
 			this.locale = locale;
 			this.uri = uri;
 		}
 		
-		public String getLocale() {
+		public Locale getLocale() {
 			return locale;
 		}
 		
@@ -171,6 +178,27 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 		public String getValue() {
 			return value;
 		}
+	}
+	
+	private static class MatchResultComparator implements Comparator<MatchResult> {
 
+		private Collator collator;
+		private Locale locale;
+				
+		public MatchResultComparator(Locale locale) {
+			collator = Collator.getInstance(locale);
+			this.locale = locale;
+		}
+		
+		@Override
+		public int compare(MatchResult o1, MatchResult o2) {
+//			System.out.print(o2.getLocale());
+//			System.out.print(" -> ");
+//			System.out.print(o1.getLocale());
+//			System.out.print(" = ");
+//			System.out.println(collator.compare(o1.getLocale(),o2.getLocale()));
+			return collator.compare(o1.getLocale().getDisplayLanguage(locale),o2.getLocale().getDisplayLanguage(locale));
+		}
+		
 	}
 }

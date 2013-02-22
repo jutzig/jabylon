@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IFormSubmitter;
 import org.apache.wicket.markup.html.form.StatelessForm;
@@ -29,6 +31,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +46,7 @@ import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
+import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 
 public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> {
@@ -53,6 +57,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	IModel<PropertyPair> previousModel;
 	IModel<PropertyPair> mainModel;
 	IModel<PropertyPair> nextModel;
+	IModel<Boolean> modified;
 
 	@Inject
 	private transient PropertyPersistenceService propertyPersistence;
@@ -81,16 +86,20 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	public void renderHead(IHeaderResponse response)
 	{
 	    response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_WARN_WHEN_DIRTY));
+	    response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_SHORTCUTS));
+	    response.render(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("js/singlePropertyEditor.js")));
 	    super.renderHead(response);
 	}
 
 	private void createModels(IModel<PropertyFileDescriptor> model, String targetKey, PropertyListMode mode) {
 
+		modified = Model.of(Boolean.valueOf(false));
+		
 		PropertyFileDescriptor descriptor = model.getObject();
 		Multimap<String, Review> reviews = reviewModel.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
-		Map<String, Property> translated = descriptor.loadProperties().asMap();
-		PropertyFile templateFile = master.loadProperties();
+		Map<String, Property> translated = loadProperties(descriptor).asMap();
+		PropertyFile templateFile = loadProperties(master);
 
 		PropertyPair previous = null;
 		PropertyPair main = null;
@@ -101,7 +110,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			if (translation == null)
 				translation = PropertiesFactory.eINSTANCE.createProperty();
 			translation.setKey(property.getKey());
-			PropertyPair pair = new PropertyPair(property, translation, descriptor.getVariant(), descriptor.cdoID());
+			PropertyPair pair = new PropertyPair(EcoreUtil.copy(property), EcoreUtil.copy(translation), descriptor.getVariant(), descriptor.cdoID());
 			String key = pair.getKey();
 			if (mode.apply(pair, reviews.get(key))) {
 				if (main != null) {
@@ -121,7 +130,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		// the template
 		if (next == null) {
 			for (Property property : translated.values()) {
-				PropertyPair pair = new PropertyPair(null, property, descriptor.getVariant(), descriptor.cdoID());
+				PropertyPair pair = new PropertyPair(null, EcoreUtil.copy(property), descriptor.getVariant(), descriptor.cdoID());
 				if (mode.apply(pair, reviews.get(pair.getKey()))) {
 					if (main != null) {
 						// we already found a hit, this is to compute the next
@@ -151,6 +160,16 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		buildComponentTree(previous, main, next);
 	}
 
+	private PropertyFile loadProperties(PropertyFileDescriptor descriptor) {
+		try {
+			PropertyFile propertyFile = propertyPersistence.loadProperties(descriptor);
+			return propertyFile;
+		} catch (ExecutionException e) {
+			logger.error("Failed to load property file for "+descriptor,e);
+			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to load property file for "+descriptor);
+		}
+	}
+
 	private void buildComponentTree(PropertyPair previous, final PropertyPair main, PropertyPair next) {
 
 		Form<Property> pairForm = new StatelessForm<Property>("properties-form", Model.of(main.getTranslation())) {
@@ -158,27 +177,26 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			private static final long serialVersionUID = 1L;
 
 			protected void onSubmit() {
-
+	
 				PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
-				PropertyFile file = descriptor.loadProperties();
+				PropertyFile file = loadProperties(descriptor);
 				Map<String, Property> map = file.asMap();
-				boolean hasChanged = false;
-				Property translation = getModelObject();
-				if (translation != null) {
-					if (map.containsKey(translation.getKey())) {
-						Property property = map.get(translation.getKey());
-						hasChanged = hasChanged(translation, property);
-						property.setComment(translation.getComment());
-						property.setValue(translation.getValue());
-					} else if (!isEmpty(translation.getValue())) {
-						hasChanged = true;
-						file.getProperties().add(translation);
+				if(modified.getObject()) {
+					Property translation = getModelObject();
+					if (translation != null) {
+						if (map.containsKey(translation.getKey())) {
+							Property property = map.get(translation.getKey());
+							property.setComment(translation.getComment());
+							property.setValue(translation.getValue());
+						} else if (!isEmpty(translation.getValue())) {
+							file.getProperties().add(translation);
+						}
 					}
-				}
-				if (hasChanged) {
+					
 					propertyPersistence.saveProperties(descriptor, file);
-					getSession().info("Saved successfully");
+					getSession().info("Saved successfully");					
 				}
+	
 				IFormSubmitter submitter = findSubmittingButton();
 				if (submitter instanceof Button) {
 					Button button = (Button) submitter;
@@ -197,6 +215,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			}
 
 		};
+		
+		//this will let us know if the user actually changed anything
+		CheckBox modifiedIndicator = new CheckBox("modify-indicator", modified);
+		modifiedIndicator.setDefaultModelObject(false);
+		pairForm.add(modifiedIndicator);
+		
 		add(pairForm);
 		Button nextButton = new Button("next");
 		Button previousButton = new Button("previous");
@@ -253,24 +277,6 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 		PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
 		add(tools);
-	}
-
-	private boolean hasChanged(Property prop1, Property prop2) {
-		if (prop1 == null)
-			return !(prop2 == null || prop2.getValue().isEmpty());
-		if (!safeEquals(prop1.getValue(), prop2.getValue()))
-			return true;
-		if (!safeEquals(prop1.getComment(), prop2.getComment()))
-			return true;
-		if (!safeEquals(prop1.getKey(), prop2.getKey()))
-			return true;
-		return false;
-	}
-
-	private boolean safeEquals(String s1, String s2) {
-		if (s1 == null)
-			return s2 == null || s2.isEmpty();
-		return s1.equals(s2);
 	}
 
 	private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
