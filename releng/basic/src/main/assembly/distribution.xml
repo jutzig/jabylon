@@ -12,8 +12,11 @@
 			<outputFileNameMapping>${artifact.groupId}.${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
 			<outputDirectory>/plugins</outputDirectory>
 			<scope>compile</scope>
-			<useTransitiveDependencies>false</useTransitiveDependencies>
+			<useTransitiveDependencies>true</useTransitiveDependencies>
 			<useProjectArtifact>false</useProjectArtifact>
+			<excludes>
+				<exclude>*:*:pom</exclude>
+			</excludes>
 		</dependencySet>
 	</dependencySets>
 	<fileSets>
