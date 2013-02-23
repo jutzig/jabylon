@@ -17,7 +17,7 @@
             section="de.jutzig.jabylon.team.git.config.GitConfigSection"
             tab="git">
          <permission
-               requires="GLOBAL_EDIT_PROJECTS">
+               requires="#Project.global.config">
          </permission>
       </section>
    </extension>

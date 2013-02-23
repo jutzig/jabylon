@@ -83,6 +83,10 @@ public class GenericResolvablePage<T  extends Resolvable<?, ?>> extends GenericP
 //		RepositoryLookup repositoryLookup = Activator.getDefault().getRepositoryLookup();
 		return lookup.lookup(segments);
 	}
+	
+	public RepositoryLookup getLookup() {
+		return lookup;
+	}
 
 
 }

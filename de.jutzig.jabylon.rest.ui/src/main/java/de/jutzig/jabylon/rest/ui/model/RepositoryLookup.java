@@ -21,6 +21,7 @@ public interface RepositoryLookup
     <T extends CDOObject> T lookup(CDOID id);
     
     <T extends CDOObject> T lookupWithTransaction(CDOID id);
+    
 
 }
 

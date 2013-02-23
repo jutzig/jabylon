@@ -48,6 +48,7 @@ import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericResolvablePage;
 import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import de.jutzig.jabylon.security.CommonPermissions;
@@ -162,7 +163,7 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 		
 		ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions);
 		form.add(tabContainer);
-
+//		form.add(new CustomFeedbackPanel("feedback"));
 	
 //		Button submitButton = new Button("submit-button", Model.of("Submit"));
 //		form.add(submitButton);
@@ -234,6 +235,17 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 
 		return tabs;
 
+	}
+	
+	@Override
+	protected Resolvable<?, ?> doLookup(List<String> segments) {
+
+		Resolvable<?, ?> resolvable = super.doLookup(segments);
+		CDOView cdoView = resolvable.cdoView();
+		if (cdoView instanceof CDOTransaction) {
+			return resolvable;
+		}
+		return cdoView.getSession().openTransaction().getObject(resolvable);
 	}
 	
 }

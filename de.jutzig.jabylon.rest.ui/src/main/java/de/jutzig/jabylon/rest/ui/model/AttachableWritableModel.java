@@ -64,5 +64,10 @@ public class AttachableWritableModel<T extends Resolvable<?, ?>> implements IEOb
 		
 	}
 
+	@Override
+	public IModel<?> getParent() {
+		return parent;
+	}
+
 
 }
