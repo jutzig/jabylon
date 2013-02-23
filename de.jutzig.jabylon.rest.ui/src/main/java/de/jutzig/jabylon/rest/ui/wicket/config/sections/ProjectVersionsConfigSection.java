@@ -361,10 +361,5 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			// TODO Auto-generated method stub
 
 		}
-
-		@Override
-		public boolean hasFormComponents() {
-			return false;
-		}
 	}
 }

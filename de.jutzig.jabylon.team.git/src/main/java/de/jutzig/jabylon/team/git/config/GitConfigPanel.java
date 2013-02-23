@@ -48,50 +48,5 @@ public class GitConfigPanel extends GenericPanel<Project> {
 		emailField.add(EmailAddressValidator.getInstance());
 		add(emailField);
 	}
-
-	
-//	
-//	@Override
-//	public Component createContents() {
-//		form = new Form();
-//		form.setImmediate(true);
-//		form.setCaption("Git Settings");
-//		form.setWriteThrough(true);
-//		form.setFormFieldFactory(new DefaultFieldFactory() {
-//			@Override
-//			public Field createField(Item item, Object propertyId, Component uiContext) {
-//				if(propertyId.equals(GitConstants.KEY_PASSWORD))
-//				{
-//					PasswordField field = new PasswordField();
-//					field.setCaption("Password");
-//					field.setNullRepresentation("");
-//					return field;
-//				}
-//				Field field = super.createField(item, propertyId, uiContext);
-//				if(propertyId.equals(GitConstants.KEY_COMMIT))
-//				{
-//					field.setDescription("Check to have Jabylon automatically commit all changes to the local Git Repository");
-//					field.setCaption("Commit Automatically");
-//				}
-//				else if(propertyId.equals(GitConstants.KEY_PUSH))
-//				{
-//					field.setDescription("Check to have Jabylon automatically push all commits to a remote Git Repository");
-//					field.setCaption("Push Automatically");
-//				} 
-//				else if(propertyId.equals(GitConstants.KEY_USERNAME))
-//				{
-//					field.setCaption("Username");
-//					if (field instanceof TextField) {
-//						TextField text = (TextField) field;
-//						text.setNullRepresentation("");
-//						
-//					}
-//				}
-//				return field; 
-//			}
-//		});
-//		return form;
-//	}
-//
 	
 }
