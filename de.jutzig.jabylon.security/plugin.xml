@@ -28,16 +28,43 @@
    <extension
          point="de.jutzig.jabylon.security.permission">
       <permission
-            description="Edit all projects"
-            name="GLOBAL_EDIT_PROJECTS">
+            description="Configure all projects"
+            name="#Project.global.config">
       </permission>
       <permission
             description="Edit users"
-            name="EDIT_USERS">
+            name="#User.global.config">
       </permission>
       <permission
             description="base right to access any kind of configuration"
-            name="ACCESS_CONFIG">
+            name="#Workspace.global.config">
+      </permission>
+      <permission
+            description="Install Plugins and perform updates"
+            name="#System.global.config">
+      </permission>
+      <permission
+            description="Right to view all translations"
+            name="#Workspace.global.view">
+      </permission>
+      <permission
+            description="Right to edit all translations"
+            name="#Workspace.global.edit">
+      </permission>
+      <permission
+            description="Permission to edit the project"
+            name="#Project.[name].edit">
+      </permission>
+      <permission
+            description="Permission to view the project"
+            name="#Project.[name].view">
+      </permission>
+      <permission
+            description="Permission to configure the project"
+            name="#Project.[name].configure">
+      </permission>
+      <permission
+            name="#User.[name].edit">
       </permission>
    </extension>
    <extension
@@ -46,13 +73,22 @@
             description="Administrator"
             name="ADMINISTRATOR">
          <permission_id
-               id="GLOBAL_EDIT_PROJECTS">
+               id="#Project.global.config">
          </permission_id>
          <permission_id
-               id="EDIT_USERS">
+               id="#System.global.edit">
          </permission_id>
          <permission_id
-               id="ACCESS_CONFIG">
+               id="#User.global.config">
+         </permission_id>
+         <permission_id
+               id="#Workspace.global.config">
+         </permission_id>
+         <permission_id
+               id="#Workspace.global.edit">
+         </permission_id>
+         <permission_id
+               id="#Workspace.global.view">
          </permission_id>
       </role>
    </extension>

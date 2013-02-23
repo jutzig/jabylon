@@ -35,6 +35,7 @@ import com.google.common.base.Function;
 import de.jutzig.jabylon.rest.ui.model.ComputableModel;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.updatecenter.repository.BundleState;
 import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
 
@@ -42,8 +43,7 @@ import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-//TODO: use different right for this
-@AuthorizeInstantiation("ACCESS_CONFIG")
+@AuthorizeInstantiation(CommonPermissions.SYSTEM_GLOBAL_CONFIG)
 public class InstalledSoftwareTab extends BasicPanel<String> {
 
 	private static final long serialVersionUID = 1L;

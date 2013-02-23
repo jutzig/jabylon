@@ -39,12 +39,9 @@ import org.eclipse.net4j.jvm.JVMUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
-import org.h2.jdbc.JdbcConnection;
 import org.h2.jdbcx.JdbcDataSource;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,9 +148,27 @@ public class Activator implements BundleActivator {
 
 		addAvailablePermissions(userManagement);
 		Role adminRole = addOrUpdateAdminRole(userManagement);
+		addAnonymousRoleIfMissing(userManagement);
 		addAdminUserIfMissing(adminRole, userManagement);
 		transaction.commit();
 
+	}
+
+	private void addAnonymousRoleIfMissing(UserManagement userManagement) {
+		Role role = userManagement.findRoleByName("Anonymous");
+		if(role==null) {
+			role = UsersFactory.eINSTANCE.createRole();
+			role.setName("Anonymous");
+			Permission read = getPermission(userManagement.getPermissions(), "#Workspace.global.view");
+			if(read!=null)
+				role.getPermissions().add(read);
+			Permission write = getPermission(userManagement.getPermissions(), "#Workspace.global.edit");
+			if(write!=null)
+				role.getPermissions().add(write);
+			userManagement.getRoles().add(role);
+		}
+		
+		
 	}
 
 	private Role addOrUpdateAdminRole(UserManagement userManagement) {
@@ -168,7 +183,7 @@ public class Activator implements BundleActivator {
 	private User getAnonymousUser() {
 		User anonymous = UsersFactory.eINSTANCE.createUser();
 		anonymous.setName("Anonymous");
-		anonymous.setPassword("changeme");
+		anonymous.setPassword("ThereIsNoPasswordForAnonymous");
 		return anonymous;
 	}
 
@@ -223,7 +238,7 @@ public class Activator implements BundleActivator {
 
 		for (IConfigurationElement config : permissions) {
 			String permissionName = config.getAttribute("name");
-			if (dbContainsPermission(dbPermissions, permissionName))
+			if (getPermission(dbPermissions, permissionName)!=null)
 				continue;
 
 			String permissionDescription = config.getAttribute("description");
@@ -234,13 +249,13 @@ public class Activator implements BundleActivator {
 		}
 	}
 
-	private boolean dbContainsPermission(EList<Permission> dbPermissions,
+	private Permission getPermission(EList<Permission> dbPermissions,
 			String permissionName) {
 		for (Permission permission : dbPermissions) {
 			if (permission.getName().equals(permissionName))
-				return true;
+				return permission;
 		}
-		return false;
+		return null;
 	}
 
 	private void initializeWorkspace(CDOTransaction transaction)

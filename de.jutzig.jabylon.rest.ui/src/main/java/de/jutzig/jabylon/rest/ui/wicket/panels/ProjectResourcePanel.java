@@ -6,6 +6,7 @@ package de.jutzig.jabylon.rest.ui.wicket.panels;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -30,10 +31,12 @@ import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
+@AuthorizeInstantiation(CommonPermissions.WORKSPACE_GLOBAL_VIEW)
 public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;

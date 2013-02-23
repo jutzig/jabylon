@@ -14,6 +14,8 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.eclipse.emf.cdo.view.CDOView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.security.JabylonSecurityBundle;
@@ -30,6 +32,8 @@ public class DBLoginModule implements LoginModule {
 	String pw;
 	List<Permission> permissions = new ArrayList<Permission>();
 
+	private static final Logger logger = LoggerFactory.getLogger(DBLoginModule.class);
+	
 	public DBLoginModule() {
 	}
 
@@ -71,8 +75,7 @@ public class DBLoginModule implements LoginModule {
 		try {
 			cbHandler.handle(new Callback[]{nameCallback, passwordCallback});
 		} catch(Exception e) {
-			//FIXME
-			e.printStackTrace();
+			logger.error("Login failed",e);
 		}
 
 		user = nameCallback.getName();
@@ -103,7 +106,7 @@ public class DBLoginModule implements LoginModule {
 				return false;
 			}
 		} catch (Exception e) {
-			e.printStackTrace(); //TODO logging
+			logger.error("Login failed",e);
 			return false;
 		} finally {
 			view.close();

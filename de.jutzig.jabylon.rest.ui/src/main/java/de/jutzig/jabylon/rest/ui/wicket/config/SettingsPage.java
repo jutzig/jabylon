@@ -42,6 +42,7 @@ import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericResolvablePage;
 import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.User;
 
 
@@ -49,7 +50,7 @@ import de.jutzig.jabylon.users.User;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-@AuthorizeInstantiation("ACCESS_CONFIG")
+@AuthorizeInstantiation(CommonPermissions.SYSTEM_GLOBAL_CONFIG)
 public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 
 	private static final long serialVersionUID = 1L;

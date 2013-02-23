@@ -30,8 +30,10 @@ import org.slf4j.LoggerFactory;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.security.JabylonSecurityBundle;
 import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 
@@ -104,13 +106,30 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		{
 			//in our case permissions are wicket roles
 			EList<Permission> permissions = user.getObject().getAllPermissions();
-			List<String> roleNames = new ArrayList<String>(permissions.size());
-			for (Permission permission : permissions) {
-				roleNames.add(permission.getName());
-			}
-			return new Roles(roleNames.toArray(new String[permissions.size()]));
+			return createRoles(permissions);
 		}
-		return null;
+		return getAnonymousRoles();
+	}
+
+	private Roles createRoles(EList<Permission> permissions) {
+		List<String> roleNames = new ArrayList<String>(permissions.size());
+		for (Permission permission : permissions) {
+			roleNames.add(permission.getName());
+		}
+		return new Roles(roleNames.toArray(new String[permissions.size()]));
+	}
+
+	private Roles getAnonymousRoles() {
+		logger.info("Computing Anonymous Roles");
+		//TODO: this could be handled without two lookups
+		CDOView view = Activator.getDefault().getRepositoryConnector().openView();
+		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
+		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+		userManagement = Activator.getDefault().getRepositoryLookup().lookup(userManagement.cdoID());
+		Role role = userManagement.findRoleByName(CommonPermissions.ROLE_ANONYMOUS);
+		Roles roles = createRoles(role.getAllPermissions());
+		view.close();
+		return roles;
 	}
 
 	public User getUser() {

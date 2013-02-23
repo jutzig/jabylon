@@ -6,16 +6,11 @@
  */
 package de.jutzig.jabylon.users.impl;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.UsersPackage;
-
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -182,6 +177,14 @@ public class PermissionImpl extends CDOObjectImpl implements Permission {
 				return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	@Override
+	public String toString() {
+		String name = getName();
+		if(name!=null)
+			return name;
+		return super.toString();
 	}
 
 } //PermissionImpl

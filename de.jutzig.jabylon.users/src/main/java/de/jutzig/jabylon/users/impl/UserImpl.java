@@ -7,8 +7,8 @@
 package de.jutzig.jabylon.users.impl;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -56,6 +56,11 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @ordered
 	 */
 	protected static final String PASSWORD_EDEFAULT = null;
+	
+	/**
+	 * global right in the form of #EClass.global.action 
+	 */
+	private static final Pattern GLOBAL_RIGHT = Pattern.compile("(.+?)\\.global\\.(\\w+)");
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -165,10 +170,23 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @generated NOT
 	 */
 	public boolean hasPermission(String permission) {
+		return hasDirectPermission(permission) || hasGlobalPermission(permission);
+	}
+	
+	private boolean hasDirectPermission(String permission) {
 		EList<Permission> allPermissions = getAllPermissions();
 		for (Permission permission2 : allPermissions) {
 			if(permission2.getName().equals(permission))
 				return true; 
+		}
+		return false;
+	}
+	
+	private boolean hasGlobalPermission(String permission) {
+		Matcher matcher = GLOBAL_RIGHT.matcher(permission);
+		if(matcher.matches()) {
+			String globalPermission = matcher.group(1) + ".global." + matcher.group(2);
+			return hasDirectPermission(globalPermission);
 		}
 		return false;
 	}
