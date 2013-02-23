@@ -14,10 +14,6 @@ public interface ConfigSection<T> extends Serializable{
 	
 	void commit(IModel<T> input, Preferences config);
 	
-	/**
-	 * determine if the config page renders form submit
-	 * @return
-	 */
-	boolean hasFormComponents();
+	boolean isVisible(IModel<T> input, Preferences config);
 	
 }

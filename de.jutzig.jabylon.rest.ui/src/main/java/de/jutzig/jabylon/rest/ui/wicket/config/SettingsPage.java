@@ -12,13 +12,22 @@ import java.util.Set;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.CDOState;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +41,13 @@ import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.rest.ui.model.AttachableModel;
 import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
 import de.jutzig.jabylon.rest.ui.model.IEObjectModel;
 import de.jutzig.jabylon.rest.ui.model.WritableEObjectModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
-import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
-import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
-import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
+import de.jutzig.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericResolvablePage;
 import de.jutzig.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import de.jutzig.jabylon.security.CommonPermissions;
@@ -76,16 +84,92 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 				setModel(new AttachableWritableModel(eclass, getModel()));
 			}
 		}
-		List<ITab> extensions = loadTabExtensions();
 		
-		BootstrapTabbedPanel<ITab> tabContainer = new BootstrapTabbedPanel<ITab>("tabs", extensions);
-		add(tabContainer);
-		tabContainer.setOutputMarkupId(true);
+		Resolvable<?, ?> modelObject = getModelObject();
+		boolean isNew = modelObject.cdoState()==CDOState.NEW || modelObject.cdoState()==CDOState.TRANSIENT;
+		final Preferences preferences = isNew ? new AttachablePreferences() : new DelegatingPreferences(PreferencesUtil.scopeFor(modelObject));
+
+		List<ITab> extensions = loadTabExtensions(preferences);
+		
+
 		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", getModel(),getPageParameters());
 		breadcrumbPanel.setRootLabel("Settings");
 		
 		breadcrumbPanel.setRootURL(WicketUtil.getContextPath()+"/settings");
 		add(breadcrumbPanel);
+		
+		// submit section
+		
+		Form form = new StatelessForm("form", getModel()) {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit() {
+				IEObjectModel<Resolvable<?, ?>> model = SettingsPage.this.getModel();
+				CDOObject object = model.getObject();
+				CDOView cdoView;
+				if (model instanceof AttachableModel) {
+					//it's a new object that needs attaching
+					AttachableModel<Resolvable<?, ?>> attachable = (AttachableModel) model;
+					attachable.attach();
+					CDOObject parent = (CDOObject) attachable.getObject().eContainer();
+					cdoView = parent.cdoView();
+				}
+				else
+					cdoView = object.cdoView();
+				if (cdoView instanceof CDOTransaction) {
+					CDOTransaction transaction = (CDOTransaction) cdoView;
+					commit(preferences, object, transaction);
+					model.detach();
+				}
+				else
+					throw new IllegalStateException("not a transaction");
+				
+
+				super.onSubmit();
+			}
+
+			protected void commit(final Preferences preferences, CDOObject object, CDOTransaction transaction) {
+				try {
+					transaction.commit();
+					if (object instanceof Resolvable) {
+						@SuppressWarnings("rawtypes")
+						Resolvable r = (Resolvable) object;
+						if(!r.getName().equals(preferences.name()))
+						{
+							//FIXME: must rename preferences properly
+//								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
+						}
+						setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
+					}
+					preferences.flush();
+					getSession().success("Saved successfully");
+				} catch (CommitException e) {
+					getSession().error(e.getMessage());
+					logger.error("failed to commit configuration for "+object,e);
+				} catch (BackingStoreException e) {
+					getSession().error(e.getMessage());
+					logger.error("failed to commit configuration for "+object,e);
+				}
+				finally{
+					transaction.close();
+				}
+			}
+
+
+		};
+		
+		ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions);
+		form.add(tabContainer);
+
+	
+//		Button submitButton = new Button("submit-button", Model.of("Submit"));
+//		form.add(submitButton);
+//		Button cancelButton = new Button("cancel-button", Model.of("Cancel"));
+//		form.add(cancelButton);
+		
+		add(form);
 	}
 
 	@Override
@@ -103,7 +187,7 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 		return user;
 	}
 
-	private List<ITab> loadTabExtensions() {
+	private List<ITab> loadTabExtensions(Preferences preferences) {
 	
 		List<IConfigurationElement> configurationElements = DynamicConfigUtil.getConfigTabs();
 		ListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);		
@@ -121,8 +205,6 @@ public class SettingsPage extends GenericResolvablePage<Resolvable<?, ?>> {
 		}
 		List<ITab> extensions = new ArrayList<ITab>();
 		Resolvable<?, ?> modelObject = getModelObject();
-		boolean isNew = modelObject.cdoState()==CDOState.NEW || modelObject.cdoState()==CDOState.TRANSIENT;
-		Preferences preferences = isNew ? new AttachablePreferences() : new DelegatingPreferences(PreferencesUtil.scopeFor(modelObject));
 		for (IConfigurationElement element : configurationElements) {
 			String name = element.getAttribute("name");
 			String id = element.getAttribute("tabID");
