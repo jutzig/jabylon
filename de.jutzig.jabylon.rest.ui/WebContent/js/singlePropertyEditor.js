@@ -6,7 +6,8 @@ $(document).ready(function() {
 
 	//set initial focus to translation
 	if(currentFocus==null) {
-		$("#translation").focus();
+		currentFocus = $("#translation");
+		currentFocus.focus();
 	};
 
 	//show JS tooltip on badges
