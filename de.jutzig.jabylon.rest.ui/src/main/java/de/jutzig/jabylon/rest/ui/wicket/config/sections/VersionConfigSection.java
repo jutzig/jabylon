@@ -31,6 +31,7 @@ import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
 
 public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 
@@ -155,7 +156,7 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 		PageParameters params = new PageParameters();
 		params.set(0, model.getObject().getParent().getName());
 		params.set(1, model.getObject().getName());
-		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_LOCALE.getName());
+		params.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_LOCALE.getName());
 		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
 	}
 

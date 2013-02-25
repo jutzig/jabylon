@@ -170,5 +170,10 @@ public class WorkspaceImpl extends ResolvableImpl<Workspace, Project> implements
 	public int internalUpdatePercentComplete() {
 		return 100;
 	}
+	
+	@Override
+	public String getName() {
+		return "workspace";
+	}
 
 } //WorkspaceImpl

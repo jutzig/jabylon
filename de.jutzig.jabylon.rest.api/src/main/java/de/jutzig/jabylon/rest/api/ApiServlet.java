@@ -114,6 +114,9 @@ public class ApiServlet extends HttpServlet
 		String info = path;
 		if (info == null)
 			info = "";
+		//FIXME: this is for backwards compatibility. Unify this with URI resolver
+		if(info.startsWith("/workspace"))
+			info = info.replaceFirst("/workspace", "");
 		org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(info);
 		return workspace.resolveChild(uri);
 

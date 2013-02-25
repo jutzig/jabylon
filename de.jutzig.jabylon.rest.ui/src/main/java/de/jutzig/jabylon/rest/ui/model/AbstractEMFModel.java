@@ -57,7 +57,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
         @Override
         public X apply(CDOID from)
         {
-            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().lookup(from);
+            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolve(from);
             return (X)cdoObject;
         }
     }

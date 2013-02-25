@@ -3,8 +3,12 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.emf.common.util.URI;
 
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
@@ -53,5 +57,17 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericResolvableP
 		BreadcrumbPanel breadcrumbPanel = new BreadcrumbPanel("breadcrumb-panel", (IModel<Resolvable<?, ?>>) getModel() ,getPageParameters());
 		add(breadcrumbPanel);
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	protected T doLookup(List<String> segments) {
+		List<String> modified = new ArrayList<String>(segments);
+		if(!segments.isEmpty() && !segments.get(0).equals("workspace"))
+			modified.add(0, "workspace");
+		URI uri = URI.createHierarchicalURI(modified.toArray(new String[modified.size()]), null, null);
+		
+		return (T) getLookup().resolve(uri);
+	}
+	
 
 }

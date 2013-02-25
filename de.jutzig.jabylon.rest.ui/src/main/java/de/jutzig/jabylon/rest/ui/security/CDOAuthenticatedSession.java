@@ -84,7 +84,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 			CDOView view = Activator.getDefault().getRepositoryConnector().openView();
 			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
 			UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-			userManagement = Activator.getDefault().getRepositoryLookup().lookup(userManagement.cdoID());
+			userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
 			User user = userManagement.findUserByName(username);
 			this.user = new EObjectModel<User>(user);
 			view.close();
@@ -125,7 +125,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		CDOView view = Activator.getDefault().getRepositoryConnector().openView();
 		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
 		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-		userManagement = Activator.getDefault().getRepositoryLookup().lookup(userManagement.cdoID());
+		userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
 		Role role = userManagement.findRoleByName(CommonPermissions.ROLE_ANONYMOUS);
 		Roles roles = createRoles(role.getAllPermissions());
 		view.close();

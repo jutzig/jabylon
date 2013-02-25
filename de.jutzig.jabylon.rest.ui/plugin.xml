@@ -73,6 +73,18 @@
           name="Checks"
           tabID="checks">
     </tab>
+    <tab
+          name="Users"
+          tabID="users">
+    </tab>
+    <tab
+          name="Groups"
+          tabID="groups">
+    </tab>
+    <tab
+          name="Roles"
+          tabID="roles">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -126,6 +138,12 @@
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.TranslationChecksConfigSection$TranslationChecksConfig"
           tab="checks">
+    </section>
+    <section
+          name="User Management"
+          objectClass="de.jutzig.jabylon.users.UserManagement"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.UsersConfigSection$UsersConfigSectionContributor"
+          tab="users">
     </section>
  </extension>
  <extension

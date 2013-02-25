@@ -12,14 +12,13 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import com.google.common.base.Function;
 import com.google.common.base.Suppliers;
 
-import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.Activator;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  * 
  */
-public class WritableEObjectModel<T extends Resolvable<?, ?>> extends EObjectModel<T> {
+public class WritableEObjectModel<T extends CDOObject> extends EObjectModel<T> {
 
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +55,7 @@ public class WritableEObjectModel<T extends Resolvable<?, ?>> extends EObjectMod
 		@SuppressWarnings("unchecked")
 		@Override
 		public X apply(CDOID from) {
-			CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().lookupWithTransaction(from);
+			CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolveWithTransaction(from);
 			return (X) cdoObject;
 		}
 

@@ -8,7 +8,7 @@ import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.wicket.Page;
 
-import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
+import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.rest.ui.util.PageProvider;
 
 @Component
@@ -23,19 +23,19 @@ public class ResourcePageProvider implements PageProvider{
 	 * before a RepositoryLookup Service is available
 	 */
 	@Reference(policy=ReferencePolicy.STATIC,cardinality=ReferenceCardinality.MANDATORY_UNARY)
-	private RepositoryLookup lookup;
+	private URIResolver lookup;
 	
 	@Override
 	public Class<? extends Page> getPageClass() {
 		return ResourcePage.class;
 	}
 
-	public void bindLookup(RepositoryLookup lookup)
+	public void bindLookup(URIResolver lookup)
 	{
 		
 	}
 	
-	public void unbindLookup(RepositoryLookup lookup)
+	public void unbindLookup(URIResolver lookup)
 	{
 		
 	}

@@ -21,10 +21,10 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
-import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import de.jutzig.jabylon.rest.ui.security.JabylonAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
@@ -53,7 +53,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		RepositoryLookup connector = Activator.getDefault().getRepositoryLookup();
+		URIResolver connector = Activator.getDefault().getRepositoryLookup();
 		if (connector != null)
 			return WelcomePage.class;
 		return StartupPage.class;
@@ -113,7 +113,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		pageTracker.open();
 
 		mountPage("/login", LoginPage.class); //$NON-NLS-1$
-		mountPage("/settings/workspace", SettingsPage.class); //$NON-NLS-1$
+		mountPage("/settings", SettingsPage.class); //$NON-NLS-1$
 //		mountPage("/workspace", ResourcePage.class);
 		
 		

@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -21,6 +20,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.common.util.FileUtil;
 import de.jutzig.jabylon.properties.Project;
@@ -28,7 +29,9 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -37,6 +40,7 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 
 	private static final long serialVersionUID = -5358263608301930488L;
+	private static final Logger logger = LoggerFactory.getLogger(WorkspaceConfigSection.class);
 
 	public WorkspaceConfigSection(String id, IModel<Workspace> object, Preferences prefs) {
 		super(id, object);
@@ -49,7 +53,7 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 			@Override
 			protected void populateItem(ListItem<Project> item) {
 				
-				item.add(new ExternalLink("edit","workspace/"+item.getModelObject().getName()));
+				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(item.getModelObject())));
 				item.add(new Label("project-name",item.getModelObject().getName()));
 				item.add(createDeleteAction(item.getModel()));
 			}
@@ -58,8 +62,8 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 	}
 
 	private Component buildAddNewLink(IModel<Workspace> model) {
-		PageParameters params = new PageParameters();
-		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT.getName());
+		PageParameters params = WicketUtil.buildPageParametersFor(model.getObject());
+		params.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT.getName());
 		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
 	}
 	
@@ -83,9 +87,8 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 					transaction.commit();
 					setResponsePage(SettingsPage.class);
 				} catch (CommitException e) {
-					// TODO Auto-generated catch block
+					logger.error("Commit failed",e);
 					getSession().error(e.getMessage());
-					e.printStackTrace();
 				} finally {
 					transaction.close();
 				}
