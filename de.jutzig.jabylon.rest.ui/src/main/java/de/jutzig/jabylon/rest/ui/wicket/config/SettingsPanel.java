@@ -101,7 +101,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 				if (cdoView instanceof CDOTransaction) {
 					CDOTransaction transaction = (CDOTransaction) cdoView;
 					commit(preferences, object, transaction);
-					model.detach();
+//					model.detach();
 				}
 				else
 					throw new IllegalStateException("not a transaction");
@@ -133,7 +133,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 					logger.error("failed to commit configuration for "+object,e);
 				}
 				finally{
-					transaction.close();
+//					transaction.close();
 				}
 			}
 

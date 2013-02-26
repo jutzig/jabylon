@@ -144,6 +144,18 @@
           objectClass="de.jutzig.jabylon.users.UserManagement"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.UsersConfigSection$UsersConfigSectionContributor"
           tab="users">
+       <permission
+             requires="#User.global.config">
+       </permission>
+    </section>
+    <section
+          name="User"
+          objectClass="de.jutzig.jabylon.users.User"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.UserConfigSection$UserConfigSectionContributor"
+          tab="general">
+       <permission
+             requires="#User.global.config">
+       </permission>
     </section>
  </extension>
  <extension
