@@ -85,6 +85,10 @@
           name="Roles"
           tabID="roles">
     </tab>
+    <tab
+          name="Permissions"
+          tabID="permissions">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -162,6 +166,24 @@
           objectClass="de.jutzig.jabylon.users.User"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserRolesConfigSection$UserRolesConfigSectionContributor"
           tab="roles">
+       <permission
+             requires="#User.global.config">
+       </permission>
+    </section>
+    <section
+          name="Role Management"
+          objectClass="de.jutzig.jabylon.users.UserManagement"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolesConfigSection$RolesConfigSectionContributor"
+          tab="roles">
+       <permission
+             requires="#User.global.config">
+       </permission>
+    </section>
+    <section
+          name="Role Permissions"
+          objectClass="de.jutzig.jabylon.users.Role"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolePermissionsConfigSection$RolePermissionsConfigSectionContributor"
+          tab="permissions">
        <permission
              requires="#User.global.config">
        </permission>
