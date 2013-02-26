@@ -33,7 +33,7 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 	public SettingsNavBarPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
 		PageParameters params = parameters;
-		if (object.getObject() instanceof Resolvable && !(object.getObject() instanceof Workspace)) { 
+		if (object != null && object.getObject() instanceof Resolvable && !(object.getObject() instanceof Workspace)) { 
 			//workspace config isn't all that interesting. Show the overview by default instead
 			Resolvable r = (Resolvable) object.getObject();
 			params = WicketUtil.buildPageParametersFor(r);
