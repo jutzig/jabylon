@@ -26,6 +26,7 @@ import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EPackage;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
@@ -53,6 +54,8 @@ import de.jutzig.jabylon.users.User;
  */
 public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
+	public static final String QUERY_PARAM_NAMESPACE = "namespace";
+
 	private static final long serialVersionUID = 1L;
 	
 	public static final String QUERY_PARAM_CREATE = "create";
@@ -61,14 +64,10 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
 	public SettingsPanel(String id, IModel<T> model, PageParameters pageParameters) {
 		super(id, model);
-		StringValue value = pageParameters.get(QUERY_PARAM_CREATE);
-		if(value!=null && !value.isEmpty())
+		EClass eclass = getEClassToCreate(pageParameters);
+		if(eclass!=null)
 		{
-			EClassifier eClassifier = PropertiesPackage.eINSTANCE.getEClassifier(value.toString());
-			if (eClassifier instanceof EClass) {
-				EClass eclass = (EClass) eClassifier;
-				setModel(new AttachableWritableModel(eclass, getModel()));
-			}
+			setModel(new AttachableWritableModel(eclass, getModel()));
 		}
 		
 		T modelObject = getModelObject();
@@ -91,7 +90,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 				CDOView cdoView;
 				if (model instanceof AttachableModel) {
 					//it's a new object that needs attaching
-					AttachableModel<Resolvable<?, ?>> attachable = (AttachableModel) model;
+					AttachableModel<CDOObject> attachable = (AttachableModel) model;
 					attachable.attach();
 					CDOObject parent = (CDOObject) attachable.getObject().eContainer();
 					cdoView = parent.cdoView();
@@ -153,6 +152,25 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
 	}
 	
+
+	private EClass getEClassToCreate(PageParameters pageParameters) {
+		StringValue value = pageParameters.get(QUERY_PARAM_CREATE);
+		if(value!=null && !value.isEmpty())
+		{
+			String namespace = pageParameters.get(QUERY_PARAM_NAMESPACE).toString(PropertiesPackage.eNS_URI);
+			EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(namespace);
+			if(ePackage!=null) {
+				EClassifier eClassifier = ePackage.getEClassifier(value.toString());
+				if (eClassifier instanceof EClass) {
+					EClass eclass = (EClass) eClassifier;
+					return eclass;
+				}				
+			}
+		}
+		return null;
+		
+	}
+
 
 	private User getUser() {
 		User user = null;

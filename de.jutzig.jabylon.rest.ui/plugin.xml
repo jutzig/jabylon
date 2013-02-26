@@ -142,7 +142,7 @@
     <section
           name="User Management"
           objectClass="de.jutzig.jabylon.users.UserManagement"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.UsersConfigSection$UsersConfigSectionContributor"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UsersConfigSection$UsersConfigSectionContributor"
           tab="users">
        <permission
              requires="#User.global.config">
@@ -151,8 +151,17 @@
     <section
           name="User"
           objectClass="de.jutzig.jabylon.users.User"
-          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.UserConfigSection$UserConfigSectionContributor"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserConfigSection$UserConfigSectionContributor"
           tab="general">
+       <permission
+             requires="#User.global.config">
+       </permission>
+    </section>
+    <section
+          name="User Roles"
+          objectClass="de.jutzig.jabylon.users.User"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserRolesConfigSection$UserRolesConfigSectionContributor"
+          tab="roles">
        <permission
              requires="#User.global.config">
        </permission>

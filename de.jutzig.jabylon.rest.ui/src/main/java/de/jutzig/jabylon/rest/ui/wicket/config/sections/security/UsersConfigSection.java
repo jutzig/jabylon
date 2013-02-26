@@ -1,19 +1,25 @@
-package de.jutzig.jabylon.rest.ui.wicket.config.sections;
+package de.jutzig.jabylon.rest.ui.wicket.config.sections.security;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOState;
+import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.cdo.connector.Modification;
+import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
@@ -27,6 +33,7 @@ import de.jutzig.jabylon.users.UsersPackage;
 public class UsersConfigSection extends GenericPanel<UserManagement> {
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(UsersConfigSection.class);
 
 	public UsersConfigSection(String id, IModel<UserManagement> model) {
 		super(id, model);
@@ -43,11 +50,38 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 				item.add(new Label("name", nameProperty));
 				item.add(new Label("username", nameProperty));
 				item.add(new Label("roles",buildRoles(item.getModelObject())));
-				item.add(new ExternalLink("edit","#"));
-				item.add(new ExternalLink("delete","#"));
+				PageParameters params = new PageParameters(getPage().getPageParameters());
+				params.set(params.getIndexedCount(),"users");
+				params.set(params.getIndexedCount(),item.getModelObject().getName());
+				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class, params));
+				item.add(new Link<User>("delete",item.getModel()){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick() {
+						try {
+							TransactionUtil.commit(getModelObject(), new Modification<User, User>() {
+
+								@Override
+								public User apply(User object) {
+									User user = getModel().getObject();
+									EcoreUtil.remove(user);
+									return user;
+								}
+
+							});
+						} catch (CommitException e) {
+							getSession().error(e.getMessage());
+							logger.error("Failed to commit",e);
+						}
+					}
+					
+				});
 			}
 		};
 		add(userList);
+		add(buildAddNewLink(getModel()));
 	}
 
 	protected String buildRoles(User modelObject) {
@@ -73,6 +107,7 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 		}
 		params.set(0, "security");
 		params.add(SettingsPanel.QUERY_PARAM_CREATE, UsersPackage.Literals.USER.getName());
+		params.add(SettingsPanel.QUERY_PARAM_NAMESPACE, UsersPackage.eNS_URI);
 		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
 	}
 

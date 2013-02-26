@@ -1,0 +1,19 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+	<div class="control-group">
+		<label class="control-label" for="username">Name</label>
+		<div class="controls">
+			<input wicket:id="username" id="username" type="text"
+				placeholder="Username"> <span class="help-block"><wicket:message key="username.help.block">Username (must be unique)</wicket:message></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="userpassword">Password</label>
+		<div class="controls">
+			<input wicket:id="userpassword" id="userpassword" type="password"
+				placeholder="**************"> <span class="help-block"><wicket:message key="userpassword.help.block">Enter the new password here</wicket:message></span>
+		</div>
+	</div>
+</wicket:panel>
+</html>

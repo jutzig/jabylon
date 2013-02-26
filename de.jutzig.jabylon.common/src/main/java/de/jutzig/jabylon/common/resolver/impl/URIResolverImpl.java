@@ -10,6 +10,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
@@ -29,7 +30,7 @@ import de.jutzig.jabylon.common.resolver.URIResolver;
 @Service
 public class URIResolverImpl implements URIResolver {
 
-	@Reference(referenceInterface=URIHandler.class,cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE,bind="addHandler",unbind="removeHandler")
+	@Reference(referenceInterface=URIHandler.class,cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE,bind="addHandler",unbind="removeHandler",policy=ReferencePolicy.DYNAMIC)
 	private List<URIHandler> handlers = new CopyOnWriteArrayList<URIHandler>();
 	private CDOSession session;
 	private CDOView view;

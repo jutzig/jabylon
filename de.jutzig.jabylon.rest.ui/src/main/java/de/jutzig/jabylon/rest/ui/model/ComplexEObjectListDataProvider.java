@@ -4,6 +4,7 @@
 package de.jutzig.jabylon.rest.ui.model;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
 	public void setObject(List<R> object) {
         CDOObject parent = model.getObject();
         EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
-        parent.eSet(feature, object);
+        parent.eSet(feature, new ArrayList<R>(object));
 	}
 
 }
