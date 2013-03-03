@@ -13,12 +13,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -59,16 +57,7 @@ public class RolesConfigSection extends GenericPanel<UserManagement> {
 					@Override
 					public void onClick() {
 						try {
-							TransactionUtil.commit(getModelObject(), new Modification<Role, Role>() {
-
-								@Override
-								public Role apply(Role object) {
-									Role role = getModel().getObject();
-									EcoreUtil.remove(role);
-									return role;
-								}
-
-							});
+							TransactionUtil.deleteWithCrossRefs(getModelObject());
 						} catch (CommitException e) {
 							getSession().error(e.getMessage());
 							logger.error("Failed to commit",e);
