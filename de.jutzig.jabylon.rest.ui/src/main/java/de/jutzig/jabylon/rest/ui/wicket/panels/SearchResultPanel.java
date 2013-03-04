@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
@@ -33,7 +33,7 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class SearchResultPanel<T> extends GenericPanel<T> {
 
@@ -57,10 +57,9 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 				ScoreDoc doc = item.getModelObject();
 				Document document;
 				try {
-					
+
 					document = result.getSearcher().doc(doc.doc);
 					item.add(new Label("value", document.get(QueryService.FIELD_VALUE)));
-					item.add(new Label("key", document.get(QueryService.FIELD_KEY)));
 					String projectLabel = "{0} ({1})";
 					String projectName = document.get(QueryService.FIELD_PROJECT);
 					String projectVersion = document.get(QueryService.FIELD_VERSION);
@@ -71,7 +70,7 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 					params.set(1, projectVersion);
 					params.set(2, projectLocale);
 					URI uri = URI.createURI(descriptorURI);
-					
+
 					int startParam = 3;
 					for (int i = startParam; i < uri.segmentCount()+startParam; i++) {
 						params.set(i, uri.segment(i-startParam));
@@ -81,13 +80,18 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 					item.add(link);
 					projectLabel = MessageFormat.format(projectLabel, projectName, projectVersion);
 
-					BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("project-link", ResourcePage.class, createPageParams(projectName,projectVersion)); 
+					BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("project-link", ResourcePage.class, createPageParams(projectName,projectVersion));
 					projectVersionLink.add(new Label("project", projectLabel));
 					item.add(projectVersionLink);
-					
+
+					String key = document.get(QueryService.FIELD_KEY);
+					BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionKeyLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("key-link", ResourcePage.class, params.set("key", key));
+					projectVersionKeyLink.add(new Label("key", key));
+					item.add(projectVersionKeyLink);
+
 					item.add(new Label("comment", document.get(QueryService.FIELD_COMMENT)));
-					
-					
+
+
 					Locale locale = WicketUtil.getLocaleFromString(projectLocale);
 					String localeLabel = locale.getDisplayName(WicketUtil.getUserLocale());
 					item.add(new Label("language", localeLabel));
@@ -109,7 +113,7 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 	public QueryService getQueryService() {
 		return queryService;
 	}
-	
+
 	protected PageParameters createPageParams(String... segments)
 	{
 		PageParameters params = new PageParameters();
