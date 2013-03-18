@@ -66,6 +66,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 	@Inject
 	private transient PropertyPersistenceService propertyPersistence;
+	private int index, total;
 
 	public PropertyEditorSinglePanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
@@ -105,11 +106,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		PropertyFileDescriptor master = descriptor.getMaster();
 		Map<String, Property> translated = loadProperties(descriptor).asMap();
 		PropertyFile templateFile = loadProperties(master);
+		total = templateFile.getProperties().size();
 
 		PropertyPair previous = null;
 		PropertyPair main = null;
 		PropertyPair next = null;
-
+		index = 1;
 		for (Property property : templateFile.getProperties()) {
 			Property translation = translated.remove(property.getKey());
 			if (translation == null)
@@ -125,10 +127,13 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 				} else if (targetKey == null || (key != null && key.equals(targetKey))) {
 					// this is the one we need to edit
 					main = pair;
-				} else
+				} else {
 					// remember the last one
-					previous = pair;
+					previous = pair;					
+				}
 			}
+			if (main == null)
+				index++;
 
 		}
 		// we didn't find a next yet, so keep searching in the ones missing in
@@ -144,16 +149,21 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 					} else if (targetKey == null || (pair.getKey() != null && pair.getKey().equals(targetKey))) {
 						// this is the one we need to edit
 						main = pair;
-					} else
+					} else {
 						// remember the last one
 						previous = pair;
+					}
 				}
+				if(main==null)
+					index++;
 			}
 		}
 		if (previous != null)
 			previousModel = Model.of(previous);
 		if (main != null)
+		{
 			mainModel = Model.of(main);
+		}
 		else {
 			String message = "Property with key {0} was not found in mode {1}";
 			message = MessageFormat.format(message, targetKey, mode);
@@ -277,8 +287,16 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		translationPanel.add(textArea);
 
 		previousButton.setEnabled(previous != null);
-		translationPanel.add(nextButton);
-		templatePanel.add(previousButton);
+		pairForm.add(nextButton);
+		pairForm.add(previousButton);
+		
+		String progressLabel = "{0} of {1}";
+		progressLabel = MessageFormat.format(progressLabel, index, total);
+		Label progress = new Label("progress", String.valueOf(progressLabel));
+		double actualIndex = Math.max(1, index);
+		int percent = (int) ((actualIndex/(double)total) * 100);
+		progress.add(new AttributeModifier("style", "width: " + percent + "%"));
+		pairForm.add(progress);
 
 		PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
 		add(tools);
