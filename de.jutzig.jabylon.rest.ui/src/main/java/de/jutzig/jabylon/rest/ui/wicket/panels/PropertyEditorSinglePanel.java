@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import de.jutzig.jabylon.common.util.URLUtil;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -49,6 +50,7 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.AnchorBookmarkablePageLink;
 import de.jutzig.jabylon.security.CommonPermissions;
 
 @AuthorizeInstantiation(CommonPermissions.WORKSPACE_GLOBAL_EDIT)
@@ -299,9 +301,10 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 			@Override
 			protected void populateItem(ListItem<PropertyListMode> item) {
-
 				String mode = item.getModelObject().name().toLowerCase();
-				BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).clearNamed().set("mode", mode));
+				String anchor = URLUtil.escapeToIdAttribute(mainModel.getObject().getKey());
+				PageParameters pageParams = new PageParameters(getPageParameters()).clearNamed().set("mode", mode);
+				BookmarkablePageLink<Object> link = new AnchorBookmarkablePageLink<Object>("link", getPage().getClass(), pageParams, anchor);
 				link.setBody(Model.of("Show " + mode));
 				item.add(link);
 				link.add(new AttributeModifier("onclick", "return confirmAction()"));

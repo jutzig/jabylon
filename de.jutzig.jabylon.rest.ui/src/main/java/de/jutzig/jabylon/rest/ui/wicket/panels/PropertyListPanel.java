@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import de.jutzig.jabylon.common.util.URLUtil;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -102,13 +103,11 @@ public class PropertyListPanel
                 IModel<PropertyPair> model = item.getModel();
                 String key = model.getObject().getKey();
                 Collection<Review> reviewList = reviewModel.getObject().get(key);
-                item.add(new BookmarkablePageLink<Object>("edit",
-                                                          getPage().getClass(),
-                                                          new PageParameters(getPageParameters()).add("key", key))
-
-                {
-                    private static final long serialVersionUID = 1L;
-                });
+                BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("edit",getPage().getClass(),new PageParameters(getPageParameters()).add("key", key));
+                item.add(link);
+                link.setMarkupId(URLUtil.escapeToIdAttribute(key));
+                link.setOutputMarkupId(true);
+                link.add(new AttributeModifier("name", link.getMarkupId()));
                 Label keyLabel = new Label("key", key);
                 keyLabel.add(new AttributeModifier("title", model.getObject().getTranslated()));
                 item.add(keyLabel);
