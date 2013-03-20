@@ -59,9 +59,9 @@ public class PropertiesResourceImpl extends ResourceImpl {
 		PropertyType type = getPropertyType(options);
 
 		if(type==PropertyType.ENCODED_ISO)
-			helper = new PropertiesHelper(true);
+			helper = new PropertiesHelper(true, getURI());
 		else
-			helper = new PropertiesHelper(false);
+			helper = new PropertiesHelper(false, getURI());
 
 		InputStream in = inputStream;
 		if(!in.markSupported())

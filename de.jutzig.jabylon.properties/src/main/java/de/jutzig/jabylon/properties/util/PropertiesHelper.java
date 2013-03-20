@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,11 @@ public class PropertiesHelper {
 	private static final int MAX_BOM_LENGTH = 4;
 	/** the license header at the beginning of the file (if any)*/
 	private String licenseHeader;
-	/** keeps track if we alreadz checked for a license header*/
+	/** keeps track if we already checked for a license header*/
 	private boolean checkedForHeader;
-
+	/** to be able to log the path */
+	private URI uri;
+	
 	final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 	
 	public PropertiesHelper() {
@@ -38,9 +41,20 @@ public class PropertiesHelper {
 	}
 	
 	public PropertiesHelper(boolean unicodeEscaping) {
-		this.unicodeEscaping = unicodeEscaping;
+		this(unicodeEscaping,null);
 	}
-	
+
+	/**
+	 * 
+	 * @param unicodeEscaping
+	 * @param uri can be used to log the path of invalid files if supplied
+	 */
+	public PropertiesHelper(boolean unicodeEscaping, URI uri) {
+		this.unicodeEscaping = unicodeEscaping;
+		if(uri==null)
+			uri = URI.createURI("NONE SUPPLIED");
+		this.uri = uri;
+	}
 	
 	public Property readProperty(BufferedReader reader) throws IOException
 	{
@@ -87,7 +101,7 @@ public class PropertiesHelper {
 				String[] parts = split(propertyValue.toString());
 				if(parts == null || parts[0]==null) //invalid property
 				{
-					logger.error("Invalid line in property file: \"{}\". Skipping", propertyValue);
+					logger.error("Invalid line \"{}\" in property file \"{}\". Skipping", propertyValue, uri);
 					continue;
 				}
 				property.setKey(parts[0]);
