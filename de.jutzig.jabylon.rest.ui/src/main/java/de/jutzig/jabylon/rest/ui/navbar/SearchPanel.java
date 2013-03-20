@@ -67,7 +67,8 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 			PageParameters params = new PageParameters();
 			params.add(SearchPage.SEARCH_TERM, getSearchString());
-			params.add(SearchPage.SCOPE, uri);
+			String scope = getPageParameters().get(SearchPage.SCOPE).toString(uri.toString()); //if there already is a scope, use it. Otherwise use the current uri
+			params.add(SearchPage.SCOPE, scope);
 			setResponsePage(SearchPage.class, params);
 		}
 
