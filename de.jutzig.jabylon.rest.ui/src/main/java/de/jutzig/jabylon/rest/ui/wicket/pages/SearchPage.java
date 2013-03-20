@@ -4,10 +4,12 @@
 package de.jutzig.jabylon.rest.ui.wicket.pages;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
@@ -58,7 +60,12 @@ public class SearchPage extends GenericPage<String> {
 	}
 
 	private SearchResult search(String term, String scope, int maxHits) {
-		return queryService.search(term, scope);
+		try {
+			return queryService.search(term, scope);			
+		}
+		catch (RuntimeException e) {
+			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
 	}
 
 	private String getSearchTerm(PageParameters params) {
