@@ -12,6 +12,14 @@
       </loginModule>
    </extension>
    <extension
+         id="ldapLoginModule"
+         point="org.eclipse.equinox.security.loginModule">
+      <loginModule
+            class="de.jutzig.jabylon.security.internal.LDAPLoginModule"
+            description="LDAP LoginModule">
+      </loginModule>
+   </extension>
+   <extension
          id="callbackHandler"
          point="org.eclipse.equinox.security.callbackHandler">
       <callbackHandler
