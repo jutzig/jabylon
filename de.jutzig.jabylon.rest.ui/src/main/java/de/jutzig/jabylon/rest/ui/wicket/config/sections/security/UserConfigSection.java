@@ -20,9 +20,10 @@ public class UserConfigSection extends GenericPanel<User> {
 		super(id, model);
 		add(new RequiredTextField<String>("username",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__NAME)));
 		PasswordTextField passwordTextField = new PasswordTextField("userpassword",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__PASSWORD));
+		passwordTextField.setRequired(false);
 		passwordTextField.setResetPassword(false);
 		add(passwordTextField);
-		
+
 	}
 
 	public static class UserConfigSectionContributor extends AbstractConfigSection<User> {
@@ -37,9 +38,9 @@ public class UserConfigSection extends GenericPanel<User> {
 
 		@Override
 		public void commit(IModel<User> input, Preferences config) {
-			
-			
+
+
 		}
-		
+
 	}
 }
