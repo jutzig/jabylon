@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.security;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -55,11 +55,11 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<User> user;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CDOAuthenticatedSession.class);
-	
+
 	private static final String JAAS_CONFIG_FILE = "jaas.config"; //$NON-NLS-1$
-	
+
 	public CDOAuthenticatedSession(Request request) {
 		super(request);
 	}
@@ -69,9 +69,9 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 	 */
 	@Override
 	public boolean authenticate(final String username, final String password) {
-		
+
 		Map<String, ILoginContext> contexts = createLoginContexts(new CallbackHandler() {
-			
+
 			@Override
 			public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 				for (int i = 0; i < callbacks.length; i++) {
@@ -104,7 +104,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 					newUser.getRoles().add(anonymousRole);
 
 					user = TransactionUtil.commit(userManagement, new Modification<UserManagement, User>() {
-						
+
 						@Override
 						public User apply(UserManagement object) {
 							object.getUsers().add(newUser);
@@ -115,20 +115,20 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 				}
 				this.user = new EObjectModel<User>(user);
 				view.close();
-				
+
 				return true;
 			} catch (LoginException e) {
 				logger.error(entry.getKey()+" Login for user "+username+" failed: "+e.getMessage());
 			} catch (CommitException e) {
 				logger.error("Failed to commit new user after first login from " + entry.getKey(),e);
 			}
-			
+
 		}
 		return false;
 	}
 
 	private Map<String,ILoginContext> createLoginContexts(CallbackHandler callbackHandler) {
-		
+
 		URL configUrl = getJAASConfig();
 		Map<String,ILoginContext> contexts = new LinkedHashMap<String,ILoginContext>();
 		contexts.put("DB",LoginContextFactory.createContext("DB", configUrl, callbackHandler));
@@ -138,13 +138,14 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 
 	private URL getJAASConfig() {
 		String configArea = System.getProperty("osgi.configuration.area","configuration");
-		File jaasConfig = new File(new File(configArea),JAAS_CONFIG_FILE);
-		if(jaasConfig.isFile()) {
-			try {
+		try {
+			URI uri = new URI(configArea);
+			File jaasConfig = new File(new File(uri), JAAS_CONFIG_FILE);
+			if(jaasConfig.isFile()) {
 				return jaasConfig.toURI().toURL();
-			} catch (MalformedURLException e) {
-				logger.error("invalid jaas url",e);
-			}			
+			}
+		} catch (Exception e) {
+			logger.error("invalid jaas url", e);
 		}
 		//fallback
 		return JabylonSecurityBundle.getBundleContext().getBundle().getEntry("META-INF/"+JAAS_CONFIG_FILE);
@@ -191,5 +192,5 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 			return null;
 		return user.getObject();
 	}
-	
+
 }
