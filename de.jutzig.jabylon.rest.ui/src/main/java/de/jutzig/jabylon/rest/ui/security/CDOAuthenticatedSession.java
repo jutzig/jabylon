@@ -98,6 +98,10 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 					logger.info("User {} logged in for the first time. Creating DB Entry");
 					final User newUser = UsersFactory.eINSTANCE.createUser();
 					newUser.setName(username);
+					Role anonymousRole = userManagement.findRoleByName("Anonymous");
+					if(anonymousRole==null)
+						throw new RuntimeException("Anonymous role must always exist");
+					newUser.getRoles().add(anonymousRole);
 
 					user = TransactionUtil.commit(userManagement, new Modification<UserManagement, User>() {
 						
