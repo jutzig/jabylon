@@ -111,7 +111,6 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 							return newUser;
 						}
 					});
-					userManagement.getUsers().add(user);
 				}
 				this.user = new EObjectModel<User>(user);
 				view.close();
