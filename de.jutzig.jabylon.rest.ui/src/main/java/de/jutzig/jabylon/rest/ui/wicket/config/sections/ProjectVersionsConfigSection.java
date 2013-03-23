@@ -49,6 +49,7 @@ import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
@@ -359,6 +360,15 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 		public void commit(IModel<Project> input, Preferences config) {
 			// TODO Auto-generated method stub
 
+		}
+
+
+		@Override
+		public String getRequiredPermission() {
+			String projectName = null;
+			if(getDomainObject()!=null)
+				projectName = getDomainObject().getName();
+			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
 		}
 	}
 }

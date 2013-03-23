@@ -8,4 +8,11 @@
           pullRight="true">
     </item>
  </extension>
+ <extension
+       point="de.jutzig.jabylon.security.permission">
+    <permission
+          description="Right to install plugins and updates"
+          name="System:software:config">
+    </permission>
+ </extension>
 </plugin>

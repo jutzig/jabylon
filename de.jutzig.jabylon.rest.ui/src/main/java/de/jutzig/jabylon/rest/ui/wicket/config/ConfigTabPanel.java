@@ -9,14 +9,14 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.CDOObject;
 import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import de.jutzig.jabylon.users.User;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 
 	
 	private static final long serialVersionUID = 1L;
-	private Logger logger = LoggerFactory.getLogger(ConfigTabPanel.class);
 	
 
 	public ConfigTabPanel(String id, final List<ConfigSection<T>> sections, final IModel<T> model, final Preferences preferences) {
@@ -30,9 +30,17 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 				ConfigSection<T> object = arg0.getModelObject();
 				WebMarkupContainer container = object.createContents("content", model, preferences);
 				arg0.add(container);
+				container.setVisibilityAllowed(hasPermission(object));
 			}
+
 		};
 		add(view);
 	}
 
+	private boolean hasPermission(ConfigSection<T> object) {
+		User user = ((CDOAuthenticatedSession)CDOAuthenticatedSession.get()).getUser();
+		if(user==null)
+			return false;
+		return user.hasPermission(object.getRequiredPermission());
+	}
 }

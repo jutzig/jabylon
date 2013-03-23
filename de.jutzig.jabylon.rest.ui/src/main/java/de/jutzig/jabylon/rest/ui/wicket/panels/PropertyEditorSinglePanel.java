@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -40,6 +39,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import de.jutzig.jabylon.common.util.URLUtil;
+import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
@@ -47,14 +47,15 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.AnchorBookmarkablePageLink;
 import de.jutzig.jabylon.security.CommonPermissions;
 
-@AuthorizeInstantiation(CommonPermissions.WORKSPACE_GLOBAL_EDIT)
-public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> {
+
+public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> implements RestrictedComponent{
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(PropertyEditorSinglePanel.class);
@@ -332,6 +333,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		};
 		add(mode);
 
+	}
+
+	@Override
+	public String getRequiredPermission() {
+		Project project = getModel().getObject().getProjectLocale().getParent().getParent();
+		return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT);
 	}
 
 }

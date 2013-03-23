@@ -9,6 +9,7 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UsersPackage;
 
@@ -42,5 +43,10 @@ public class UserConfigSection extends GenericPanel<User> {
 
 		}
 
+
+		@Override
+		public String getRequiredPermission() {
+			return CommonPermissions.USER_GLOBAL_CONFIG;
+		}
 	}
 }

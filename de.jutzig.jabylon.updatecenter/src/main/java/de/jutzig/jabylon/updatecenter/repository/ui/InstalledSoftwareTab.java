@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -33,9 +32,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 
 import de.jutzig.jabylon.rest.ui.model.ComputableModel;
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
-import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.updatecenter.repository.BundleState;
 import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
 
@@ -43,8 +42,7 @@ import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-@AuthorizeInstantiation(CommonPermissions.SYSTEM_GLOBAL_CONFIG)
-public class InstalledSoftwareTab extends BasicPanel<String> {
+public class InstalledSoftwareTab extends BasicPanel<String> implements RestrictedComponent{
 
 	private static final long serialVersionUID = 1L;
 
@@ -150,6 +148,11 @@ public class InstalledSoftwareTab extends BasicPanel<String> {
 		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
 		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
 		super.renderHead(response);
+	}
+
+	@Override
+	public String getRequiredPermission() {
+		return "System:software:config";
 	}
 }
 

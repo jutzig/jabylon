@@ -14,6 +14,7 @@ import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.UserManagement;
@@ -57,6 +58,11 @@ public class RolePermissionsConfigSection extends GenericPanel<Role> {
 		public void commit(IModel<Role> input, Preferences config) {
 			
 			
+		}
+
+		@Override
+		public String getRequiredPermission() {
+			return CommonPermissions.USER_GLOBAL_CONFIG;
 		}
 		
 	}

@@ -97,45 +97,30 @@
           objectClass="de.jutzig.jabylon.properties.Workspace"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralWorkspaceConfig"
           tab="general">
-       <permission
-             requires="#Workspace.global.config">
-       </permission>
     </section>
     <section
           name="General Project Settings"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralProjectConfig"
           tab="general">
-       <permission
-             requires="#Workspace.global.config">
-       </permission>
     </section>
     <section
           name="Scanning"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ScanningConfigSection$ScanningConfig"
           tab="scanning">
-       <permission
-             requires="#Workspace.global.config">
-       </permission>
     </section>
     <section
           name="Versions"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ProjectVersionsConfigSection$VersionsConfig"
           tab="versions">
-       <permission
-             requires="#Workspace.global.config">
-       </permission>
     </section>
     <section
           name="Version Settings"
           objectClass="de.jutzig.jabylon.properties.ProjectVersion"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.VersionConfigSection$VersionConfig"
           tab="general">
-       <permission
-             requires="#Workspace.global.config">
-       </permission>
     </section>
     <section
           name="Translation Checks"
@@ -148,45 +133,30 @@
           objectClass="de.jutzig.jabylon.users.UserManagement"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UsersConfigSection$UsersConfigSectionContributor"
           tab="users">
-       <permission
-             requires="#User.global.config">
-       </permission>
     </section>
     <section
           name="User"
           objectClass="de.jutzig.jabylon.users.User"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserConfigSection$UserConfigSectionContributor"
           tab="general">
-       <permission
-             requires="#User.global.config">
-       </permission>
     </section>
     <section
           name="User Roles"
           objectClass="de.jutzig.jabylon.users.User"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserRolesConfigSection$UserRolesConfigSectionContributor"
           tab="roles">
-       <permission
-             requires="#User.global.config">
-       </permission>
     </section>
     <section
           name="Role Management"
           objectClass="de.jutzig.jabylon.users.UserManagement"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolesConfigSection$RolesConfigSectionContributor"
           tab="roles">
-       <permission
-             requires="#User.global.config">
-       </permission>
     </section>
     <section
           name="Role Permissions"
           objectClass="de.jutzig.jabylon.users.Role"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolePermissionsConfigSection$RolePermissionsConfigSectionContributor"
           tab="permissions">
-       <permission
-             requires="#User.global.config">
-       </permission>
     </section>
  </extension>
  <extension

@@ -17,6 +17,7 @@ import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.rest.ui.model.BooleanPreferencesPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class TranslationChecksConfigSection extends GenericPanel<Project> {
 
@@ -59,6 +60,15 @@ public class TranslationChecksConfigSection extends GenericPanel<Project> {
 			// TODO Auto-generated method stub
 			// TODO rename on filesystem
 
+		}
+		
+
+		@Override
+		public String getRequiredPermission() {
+			String projectName = null;
+			if(getDomainObject()!=null)
+				projectName = getDomainObject().getName();
+			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
 		}
 
 	}

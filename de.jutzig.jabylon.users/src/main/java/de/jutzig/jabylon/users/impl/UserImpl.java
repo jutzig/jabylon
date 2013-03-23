@@ -7,7 +7,6 @@
 package de.jutzig.jabylon.users.impl;
 
 import java.util.Collection;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -56,11 +55,6 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @ordered
 	 */
 	protected static final String PASSWORD_EDEFAULT = null;
-	
-	/**
-	 * global right in the form of #EClass.global.action 
-	 */
-	private static final Pattern GLOBAL_RIGHT = Pattern.compile("(.+?)\\.global\\.(\\w+)");
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -169,26 +163,21 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean hasPermission(String permission) {
-		return hasDirectPermission(permission) || hasGlobalPermission(permission);
-	}
-	
-	private boolean hasDirectPermission(String permission) {
+	public boolean hasPermission(String requestedPermission) {
 		EList<Permission> allPermissions = getAllPermissions();
-		for (Permission permission2 : allPermissions) {
-			if(permission2.getName().equals(permission))
-				return true; 
+		for (Permission availablePermission : allPermissions) {
+			if(matches(availablePermission,requestedPermission))
+				return true;
 		}
 		return false;
 	}
 	
-	private boolean hasGlobalPermission(String permission) {
-		Matcher matcher = GLOBAL_RIGHT.matcher(permission);
-		if(matcher.matches()) {
-			String globalPermission = matcher.group(1) + ".global." + matcher.group(2);
-			return hasDirectPermission(globalPermission);
-		}
-		return false;
+	private boolean matches(Permission availablePermission, String requestedPermission) {
+		if(availablePermission.getName()==null || availablePermission.getName().isEmpty())
+			return false;
+		String permissionRegex = availablePermission.getName().replace("*", ".*");
+		permissionRegex += ".*";
+		return Pattern.matches(permissionRegex, requestedPermission);
 	}
 
 	/**

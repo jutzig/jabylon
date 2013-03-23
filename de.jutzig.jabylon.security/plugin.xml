@@ -37,42 +37,31 @@
          point="de.jutzig.jabylon.security.permission">
       <permission
             description="Configure all projects"
-            name="#Project.global.config">
+            name="Project:*:config">
+      </permission>
+      <permission
+            description="Edit all projects"
+            name="Project:*:edit">
+      </permission>
+      <permission
+            description="View all project transations"
+            name="Project:*:view">
       </permission>
       <permission
             description="Edit users"
-            name="#User.global.config">
+            name="User:*:config">
       </permission>
       <permission
-            description="base right to access any kind of configuration"
-            name="#Workspace.global.config">
+            description="configure workspace, edit, create and delete projects"
+            name="Workspace:config">
       </permission>
       <permission
-            description="Install Plugins and perform updates"
-            name="#System.global.config">
+            description="basic right to access configuration in general"
+            name="System:config">
       </permission>
       <permission
-            description="Right to view all translations"
-            name="#Workspace.global.view">
-      </permission>
-      <permission
-            description="Right to edit all translations"
-            name="#Workspace.global.edit">
-      </permission>
-      <permission
-            description="Permission to edit the project"
-            name="#Project.[name].edit">
-      </permission>
-      <permission
-            description="Permission to view the project"
-            name="#Project.[name].view">
-      </permission>
-      <permission
-            description="Permission to configure the project"
-            name="#Project.[name].configure">
-      </permission>
-      <permission
-            name="#User.[name].edit">
+            description="Right to view all projects"
+            name="Workspace:view">
       </permission>
    </extension>
    <extension

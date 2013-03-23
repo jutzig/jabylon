@@ -25,35 +25,33 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
 import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.Role;
-import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersPackage;
 
-public class UsersConfigSection extends GenericPanel<UserManagement> {
+public class RoleUsersConfigSection extends GenericPanel<UserManagement> {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(UsersConfigSection.class);
+	private static final Logger logger = LoggerFactory.getLogger(RoleUsersConfigSection.class);
 
-	public UsersConfigSection(String id, IModel<UserManagement> model) {
+	public RoleUsersConfigSection(String id, IModel<UserManagement> model) {
 		super(id, model);
-		ComplexEObjectListDataProvider<User> provider = new ComplexEObjectListDataProvider<User>(model, UsersPackage.Literals.USER_MANAGEMENT__USERS);
-		ListView<User> userList = new ListView<User>("user.row",provider) {
+		ComplexEObjectListDataProvider<Role> provider = new ComplexEObjectListDataProvider<Role>(model, UsersPackage.Literals.USER_MANAGEMENT__ROLES);
+		ListView<Role> roleList = new ListView<Role>("role.row",provider) {
 
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<User> item) {
+			protected void populateItem(ListItem<Role> item) {
 				
-				IModel<String> nameProperty = new EObjectPropertyModel<String, User>(item.getModel(), UsersPackage.Literals.USER__NAME); 	
-				item.add(new Label("name", nameProperty));
-				item.add(new Label("username", nameProperty));
+				IModel<String> nameProperty = new EObjectPropertyModel<String, Role>(item.getModel(), UsersPackage.Literals.ROLE__NAME); 	
+				item.add(new Label("rolename", nameProperty));
 				item.add(new Label("roles",buildRoles(item.getModelObject())));
 				PageParameters params = new PageParameters(getPage().getPageParameters());
-				params.set(params.getIndexedCount(),"users");
+				params.set(params.getIndexedCount(),"roles");
 				params.set(params.getIndexedCount(),item.getModelObject().getName());
 				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class, params));
-				item.add(new Link<User>("delete",item.getModel()){
+				item.add(new Link<Role>("delete",item.getModel()){
 
 					private static final long serialVersionUID = 1L;
 
@@ -70,20 +68,14 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 				});
 			}
 		};
-		add(userList);
+		add(roleList);
 		add(buildAddNewLink(getModel()));
 	}
+	
 
-	protected String buildRoles(User modelObject) {
-		StringBuilder builder = new StringBuilder();
-		//TODO: shouldn't there be an "allRoles"?
-		for (Role role : modelObject.getRoles()) {
-			builder.append(role.getName());
-			builder.append(", ");
-		}
-		if(builder.length()>2)
-			builder.setLength(builder.length()-2);
-		return builder.toString();
+	protected String buildRoles(Role modelObject) {
+		//TODO: replace this once roles have a list of roles
+		return modelObject.getParent() == null ? "" : modelObject.getParent().getName(); 
 	}
 	
 	private Component buildAddNewLink(IModel<UserManagement> model) {
@@ -96,19 +88,19 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 			return link;
 		}
 		params.set(0, "security");
-		params.add(SettingsPanel.QUERY_PARAM_CREATE, UsersPackage.Literals.USER.getName());
+		params.add(SettingsPanel.QUERY_PARAM_CREATE, UsersPackage.Literals.ROLE.getName());
 		params.add(SettingsPanel.QUERY_PARAM_NAMESPACE, UsersPackage.eNS_URI);
 		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
 	}
 
-	public static class UsersConfigSectionContributor extends AbstractConfigSection<UserManagement> {
+	public static class RolesConfigSectionContributor extends AbstractConfigSection<UserManagement> {
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public WebMarkupContainer createContents(String id, IModel<UserManagement> input, Preferences config) {
 
-			return new UsersConfigSection(id, input);
+			return new RoleUsersConfigSection(id, input);
 		}
 
 		@Override
@@ -117,12 +109,12 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 			
 		}
 		
+		
 
 		@Override
 		public String getRequiredPermission() {
 			return CommonPermissions.USER_GLOBAL_CONFIG;
 		}
-		
 	}
 	
 }

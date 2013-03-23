@@ -6,6 +6,7 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 
@@ -20,6 +21,11 @@ public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 	public void commit(IModel<Workspace> input, Preferences config) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getRequiredPermission() {
+		return CommonPermissions.WORKSPACE_CONFIG;
 	}
 
 }

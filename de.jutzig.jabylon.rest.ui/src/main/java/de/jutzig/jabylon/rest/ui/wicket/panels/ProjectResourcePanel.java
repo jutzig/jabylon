@@ -6,7 +6,6 @@ package de.jutzig.jabylon.rest.ui.wicket.panels;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -27,8 +26,8 @@ import de.jutzig.jabylon.properties.ResourceFolder;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesSwitch;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 import de.jutzig.jabylon.rest.ui.util.GlobalResources;
-import de.jutzig.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import de.jutzig.jabylon.security.CommonPermissions;
@@ -36,8 +35,7 @@ import de.jutzig.jabylon.security.CommonPermissions;
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
-@AuthorizeInstantiation(CommonPermissions.WORKSPACE_GLOBAL_VIEW)
-public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> {
+public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> implements RestrictedComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -119,6 +117,22 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
 		return target;
 
+	}
+
+	@Override
+	public String getRequiredPermission() {
+		Resolvable<?, ?> object = getModelObject();
+		while(object!=null) {
+			if (object instanceof Project) {
+				Project project = (Project) object;
+				return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
+			}
+			else if (object instanceof Workspace) {
+				return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,CommonPermissions.ACTION_VIEW);
+			}
+			object = object.getParent();
+		}
+		return null;
 	}
 }
 

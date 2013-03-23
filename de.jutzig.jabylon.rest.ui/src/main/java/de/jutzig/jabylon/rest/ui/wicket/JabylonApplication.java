@@ -26,8 +26,8 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
-import de.jutzig.jabylon.rest.ui.security.JabylonAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
+import de.jutzig.jabylon.rest.ui.security.PermissionBasedAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.util.PageProvider;
 import de.jutzig.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
@@ -66,7 +66,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		OSGiInjector injector = new OSGiInjector(this);
 		getBehaviorInstantiationListeners().add(injector);
 		getComponentInstantiationListeners().add(injector);
-		getSecuritySettings().setAuthorizationStrategy(new JabylonAuthorizationStrategy(this));
+		getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());
 		getAjaxRequestTargetListeners().add(new AjaxFeedbackListener());
 		final BundleContext bundleContext = Activator.getDefault().getContext();
 

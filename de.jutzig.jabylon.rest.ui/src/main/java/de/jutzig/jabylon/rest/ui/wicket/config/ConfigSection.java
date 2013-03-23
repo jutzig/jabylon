@@ -6,7 +6,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.osgi.service.prefs.Preferences;
 
-public interface ConfigSection<T> extends Serializable{
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
+
+public interface ConfigSection<T> extends Serializable, RestrictedComponent{
 	
 	WebMarkupContainer createContents(String id, IModel<T> input, Preferences config);
 	

@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 import de.jutzig.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 import de.jutzig.jabylon.security.CommonPermissions;
@@ -19,8 +20,7 @@ import de.jutzig.jabylon.updatecenter.repository.OBRRepositoryService;
 import de.jutzig.jabylon.updatecenter.repository.ResourceFilter;
 
 
-@AuthorizeInstantiation(CommonPermissions.SYSTEM_GLOBAL_CONFIG)
-public class UpdatecenterPage extends GenericPage<Serializable> {
+public class UpdatecenterPage extends GenericPage<Serializable> implements RestrictedComponent{
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,6 +53,12 @@ public class UpdatecenterPage extends GenericPage<Serializable> {
 	protected IModel<Serializable> createModel(PageParameters params) {
 		IModel<Serializable> model = Model.of();
 		return model;
+	}
+
+
+	@Override
+	public String getRequiredPermission() {
+		return "System:software:config";
 	}
 
 }

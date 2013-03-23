@@ -12,6 +12,7 @@ import de.jutzig.jabylon.rest.ui.model.AttachableModel;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
@@ -56,6 +57,11 @@ public class UserRolesConfigSection extends GenericPanel<User> {
 			
 		}
 		
+
+		@Override
+		public String getRequiredPermission() {
+			return CommonPermissions.USER_GLOBAL_CONFIG;
+		}
 	}
 	
 	private static class Renderer implements IChoiceRenderer<Role> {

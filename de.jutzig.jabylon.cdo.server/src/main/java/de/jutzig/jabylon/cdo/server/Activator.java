@@ -159,25 +159,29 @@ public class Activator implements BundleActivator {
 		if(role==null) {
 			role = UsersFactory.eINSTANCE.createRole();
 			role.setName("Anonymous");
-			Permission read = getPermission(userManagement.getPermissions(), "#Workspace.global.view");
-			if(read!=null)
-				role.getPermissions().add(read);
-			Permission write = getPermission(userManagement.getPermissions(), "#Workspace.global.edit");
-			if(write!=null)
-				role.getPermissions().add(write);
+			addPermission(userManagement, role,"Workspace:view");
+			addPermission(userManagement, role,"Project:*:view");
 			userManagement.getRoles().add(role);
 		}
-		
-		
 	}
+
+	private void addPermission(UserManagement userManagement, Role role, String permissionName) {
+		Permission readWorkspace = getPermission(userManagement.getPermissions(), permissionName);
+		if(readWorkspace!=null)
+			role.getPermissions().add(readWorkspace);
+	}
+	
+	
 
 	private Role addOrUpdateAdminRole(UserManagement userManagement) {
 		Role adminRole = userManagement.findRoleByName("Administrator");
 
 		if (adminRole == null)
-			return addAdminRole(userManagement);
-		else
-			return updateAdminRole(adminRole, userManagement);
+			addAdminRole(userManagement);
+		EList<Permission> allPermissions = userManagement.getPermissions();
+		Permission wildcardPermission = getPermission(allPermissions, "*");
+		adminRole.getPermissions().add(wildcardPermission);
+		return adminRole;
 	}
 
 	private User getAnonymousUser() {
@@ -194,24 +198,9 @@ public class Activator implements BundleActivator {
 		return admin;
 	}
 
-	private Role updateAdminRole(Role adminRole, UserManagement userManagement) {
-		EList<Permission> allPermissions = userManagement.getPermissions();
-
-		for (Permission perm : allPermissions) {
-			if (!adminRole.getPermissions().contains(perm))
-				adminRole.getPermissions().add(perm);
-		}
-
-		return adminRole;
-	}
-
 	private Role addAdminRole(UserManagement userManagement) {
 		Role adminRole = UsersFactory.eINSTANCE.createRole();
 		adminRole.setName("Administrator");
-		EList<Permission> allPermissions = userManagement.getPermissions();
-		for (Permission perm : allPermissions) {
-			adminRole.getPermissions().add(perm);
-		}
 		userManagement.getRoles().add(adminRole);
 		return adminRole;
 	}
@@ -245,6 +234,13 @@ public class Activator implements BundleActivator {
 			Permission perm = UsersFactory.eINSTANCE.createPermission();
 			perm.setName(permissionName);
 			perm.setDescription(permissionDescription);
+			dbPermissions.add(perm);
+		}
+		
+		if(getPermission(dbPermissions, "*")==null) {
+			Permission perm = UsersFactory.eINSTANCE.createPermission();
+			perm.setName("*");
+			perm.setDescription("All Permissions");
 			dbPermissions.add(perm);
 		}
 	}

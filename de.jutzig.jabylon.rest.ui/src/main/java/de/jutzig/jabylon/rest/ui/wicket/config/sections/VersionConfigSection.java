@@ -32,6 +32,7 @@ import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 
@@ -176,6 +177,14 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 
 		}
 
+
+		@Override
+		public String getRequiredPermission() {
+			String projectName = null;
+			if(getDomainObject()!=null && getDomainObject().getParent()!=null)
+				projectName = getDomainObject().getParent().getName();
+			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
+		}
 	}
 
 }

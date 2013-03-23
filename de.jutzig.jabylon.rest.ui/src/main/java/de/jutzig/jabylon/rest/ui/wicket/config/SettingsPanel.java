@@ -212,22 +212,5 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		}
 		return extensions;
 	}
-
-	private Map<String, IConfigurationElement> computeVisibleTabs(List<IConfigurationElement> configSections) {
-		// linked hashmap to retain the precendence order
-		Map<String, IConfigurationElement> tabs = new LinkedHashMap<String, IConfigurationElement>();
-		List<IConfigurationElement> tabList = DynamicConfigUtil.getConfigTabs();
-		for (IConfigurationElement tab : tabList) {
-			tabs.put(tab.getAttribute("tabID"), tab);
-		}
-		Set<String> neededTabs = new HashSet<String>();
-		for (IConfigurationElement element : configSections) {
-			neededTabs.add(element.getAttribute("tab"));
-		}
-		tabs.keySet().retainAll(neededTabs);
-
-		return tabs;
-
-	}
 	
 }

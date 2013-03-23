@@ -23,6 +23,7 @@ import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersPackage;
@@ -106,6 +107,12 @@ public class RolesConfigSection extends GenericPanel<UserManagement> {
 		public void commit(IModel<UserManagement> input, Preferences config) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+
+		@Override
+		public String getRequiredPermission() {
+			return CommonPermissions.USER_GLOBAL_CONFIG;
 		}
 		
 	}
