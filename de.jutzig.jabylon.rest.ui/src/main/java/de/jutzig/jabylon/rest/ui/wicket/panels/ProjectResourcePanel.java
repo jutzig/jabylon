@@ -53,7 +53,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 	}
 
 	@Override
-	protected void onBeforeRender() {
+	protected void onBeforeRenderPanel() {
 		ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModel(),
 				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		final boolean endsOnSlash = urlEndsOnSlash();
@@ -87,7 +87,6 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		};
 		// dataView.setItemsPerPage(10);
 		add(dataView);
-		super.onBeforeRender();
 	}
 
 	private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {

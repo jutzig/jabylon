@@ -47,8 +47,6 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     
     private String currentKey;
     
-    private boolean initialized;
-    
     @Inject
     private List<PropertyEditorTool> tools;
     
@@ -65,20 +63,13 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     public PropertiesEditorToolbar(String id, IModel<PropertyFileDescriptor> model, PageParameters pageParameters) {
     	super(id, model, pageParameters);
 	}
-
+	
 	@Override
-    protected void onBeforeRender() {
-    	if(!initialized)
-    	{
-    		extensions = createExtensions();
-    		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true);
-    		add(tabContainer);
-    		initialized = true;
-    	}
-    	super.onBeforeRender();
-    }
-    
-    
+	protected void construct() {
+		extensions = createExtensions();
+		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true);
+		add(tabContainer);
+	}
     
 
     private List<PropertyToolTab> createExtensions() {

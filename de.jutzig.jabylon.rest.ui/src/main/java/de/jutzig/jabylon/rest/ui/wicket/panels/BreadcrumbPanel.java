@@ -37,9 +37,8 @@ public class BreadcrumbPanel extends BasicResolvablePanel<Resolvable<?, ?>> {
 	}	
 	
 	@Override
-	protected void onBeforeRender() {
+	protected void onBeforeRenderPanel() {
 		populateBreadcrumbs();
-		super.onBeforeRender();
 	}
 
 	private void populateBreadcrumbs() {
