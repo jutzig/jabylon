@@ -31,6 +31,7 @@ import de.jutzig.jabylon.users.UserManagement;
 @Service
 public class UserManagmentURIHandler implements URIHandler {
 
+	public static final String SECURITY_URI_PREFIX = "security";
 	@Reference
 	private RepositoryConnector repositoryConnector;
 	private CDOSession session;
@@ -61,7 +62,7 @@ public class UserManagmentURIHandler implements URIHandler {
 		if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
 			return null;
 		String firstSegment = uri.segment(0);
-		if ("security".equals(firstSegment)) {
+		if (SECURITY_URI_PREFIX.equals(firstSegment)) {
 			List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
 			Object parent = userManagment;
 			for (String segment : list) {
@@ -116,7 +117,7 @@ public class UserManagmentURIHandler implements URIHandler {
 	public boolean canHandle(URI uri) {
 		if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
 			return false;
-		return "security".equals(uri.segment(0));
+		return SECURITY_URI_PREFIX.equals(uri.segment(0));
 	}
 
 }
