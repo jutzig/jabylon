@@ -12,7 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
@@ -40,6 +42,7 @@ import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.security.JabylonSecurityBundle;
+import de.jutzig.jabylon.security.SubjectAttribute;
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
@@ -89,6 +92,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		for (Entry<String, ILoginContext> entry : contexts.entrySet()) {
 			try {
 				entry.getValue().login();
+				final Subject subject = entry.getValue().getSubject();
 				logger.info("{} Login for user {} successful",entry.getKey(),username);
 				//TODO: this could be handled without two lookups
 				CDOView view = Activator.getDefault().getRepositoryConnector().openView();
@@ -109,11 +113,25 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 
 						@Override
 						public User apply(UserManagement object) {
+							applyAttributes(newUser,subject);
 							object.getUsers().add(newUser);
 							return newUser;
 						}
 					});
 				}
+				else
+				{
+					user = TransactionUtil.commit(user, new Modification<User, User>() {
+
+						@Override
+						public User apply(User object) {
+							applyAttributes(object ,subject);
+							return object;
+						}
+					});
+					
+				}
+				
 				this.user = new EObjectModel<User>(user);
 				view.close();
 
@@ -121,11 +139,19 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 			} catch (LoginException e) {
 				logger.error(entry.getKey()+" Login for user "+username+" failed: "+e.getMessage());
 			} catch (CommitException e) {
-				logger.error("Failed to commit new user after first login from " + entry.getKey(),e);
+				logger.error("Failed to commit new user or updating exsiting after first login from " + entry.getKey(),e);
 			}
 
 		}
 		return false;
+	}
+
+	protected void applyAttributes(User user, Subject subject) {
+		Set<SubjectAttribute> attributes = subject.getPublicCredentials(SubjectAttribute.class);
+		for (SubjectAttribute subjectAttribute : attributes) {
+			subjectAttribute.applyTo(user);
+		}
+		
 	}
 
 	private Map<String,ILoginContext> createLoginContexts(CallbackHandler callbackHandler) {
