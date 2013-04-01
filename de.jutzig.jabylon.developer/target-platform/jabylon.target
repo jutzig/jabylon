@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Jabylon" sequenceNumber="79">
+<?pde version="3.8"?><target name="Jabylon" sequenceNumber="83">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.vaadin.vaadin.feature.group" version="1.0.0.BETA"/>
 <repository location="http://svogt.github.com/jabylon/update-site/"/>
 </location>
-<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-auth-roles/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-ioc/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/servicemix/bundles/org.apache.servicemix.bundles.javax-inject/1_2" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/com/google/guava/guava/13.0.1" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-core/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/com/googlecode/flyway/flyway-core/2.1.1" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-util/6.0.0" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-request/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/eclipse/jgit/org.eclipse.jgit/2.1.0.201209190230-r" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.1.1.v20120911-1146"/>
 <unit id="org.eclipse.e4.rcp.feature.group" version="1.1.0.v20120521-2329-8yFTIGIbGGduEZ6-7-jLx41nXj"/>
@@ -28,6 +21,14 @@
 <unit id="org.eclipse.xtext.sdk.feature.group" version="2.3.1.v201208210947"/>
 <repository location="http://download.eclipse.org/releases/juno/"/>
 </location>
+<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/eclipse/jgit/org.eclipse.jgit/2.1.0.201209190230-r" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-core/6.0.0" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/felix/org.apache.felix.bundlerepository/1.6.6" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/servicemix/bundles/org.apache.servicemix.bundles.javax-inject/1_2" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-auth-roles/6.0.0" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions/6.0.0" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/com/google/guava/guava/13.0.1" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-ioc/6.0.0" type="Directory"/>
 </locations>
 </target>

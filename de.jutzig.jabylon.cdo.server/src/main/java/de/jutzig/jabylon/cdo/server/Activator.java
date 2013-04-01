@@ -46,6 +46,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.db.migration.DBMigrator;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.Workspace;
@@ -365,6 +366,7 @@ public class Activator implements BundleActivator {
 
 		
 		deleteStaleObjects(dataSource);
+		new DBMigrator().migrate(dataSource);
 		
 		IDBStore store = CDODBUtil.createStore(mappingStrategy, adapter,
 				DBUtil.createConnectionProvider(dataSource));
