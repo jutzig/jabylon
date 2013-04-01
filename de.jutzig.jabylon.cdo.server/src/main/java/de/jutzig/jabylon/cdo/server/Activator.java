@@ -178,7 +178,7 @@ public class Activator implements BundleActivator {
 		Role adminRole = userManagement.findRoleByName("Administrator");
 
 		if (adminRole == null)
-			addAdminRole(userManagement);
+			adminRole = addAdminRole(userManagement);
 		EList<Permission> allPermissions = userManagement.getPermissions();
 		Permission wildcardPermission = getPermission(allPermissions, "*");
 		adminRole.getPermissions().add(wildcardPermission);
