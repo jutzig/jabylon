@@ -3,8 +3,10 @@ package de.jutzig.jabylon.rest.ui.wicket.config.sections.security;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -24,6 +26,11 @@ public class UserConfigSection extends GenericPanel<User> {
 		passwordTextField.setRequired(false);
 		passwordTextField.setResetPassword(false);
 		add(passwordTextField);
+		
+		TextField<String> emailField = new TextField<String>("email",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__EMAIL));
+		add(emailField);
+		emailField.add(EmailAddressValidator.getInstance());
+		add(new RequiredTextField<String>("displayName",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__DISPLAY_NAME)));
 
 	}
 

@@ -21,6 +21,9 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.jutzig.jabylon.users.User#getPassword <em>Password</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.User#getRoles <em>Roles</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.User#getPermissions <em>Permissions</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.User#getDisplayName <em>Display Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.User#getType <em>Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.User#getEmail <em>Email</em>}</li>
  * </ul>
  * </p>
  *
@@ -113,6 +116,84 @@ public interface User extends CDOObject {
 	 * @generated
 	 */
 	EList<Permission> getPermissions();
+
+	/**
+	 * Returns the value of the '<em><b>Display Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Display Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Display Name</em>' attribute.
+	 * @see #setDisplayName(String)
+	 * @see de.jutzig.jabylon.users.UsersPackage#getUser_DisplayName()
+	 * @model
+	 * @generated
+	 */
+	String getDisplayName();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.users.User#getDisplayName <em>Display Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Display Name</em>' attribute.
+	 * @see #getDisplayName()
+	 * @generated
+	 */
+	void setDisplayName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see #setType(String)
+	 * @see de.jutzig.jabylon.users.UsersPackage#getUser_Type()
+	 * @model
+	 * @generated
+	 */
+	String getType();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.users.User#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type</em>' attribute.
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Email</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Email</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Email</em>' attribute.
+	 * @see #setEmail(String)
+	 * @see de.jutzig.jabylon.users.UsersPackage#getUser_Email()
+	 * @model
+	 * @generated
+	 */
+	String getEmail();
+
+	/**
+	 * Sets the value of the '{@link de.jutzig.jabylon.users.User#getEmail <em>Email</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Email</em>' attribute.
+	 * @see #getEmail()
+	 * @generated
+	 */
+	void setEmail(String value);
 
 	/**
 	 * <!-- begin-user-doc -->

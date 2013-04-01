@@ -6,6 +6,13 @@
  */
 package de.jutzig.jabylon.users.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import de.jutzig.jabylon.users.AuthType;
 import de.jutzig.jabylon.users.Permission;
 import de.jutzig.jabylon.users.Role;
@@ -13,14 +20,6 @@ import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersFactory;
 import de.jutzig.jabylon.users.UsersPackage;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -168,6 +167,33 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 */
 	public EReference getUser_Permissions() {
 		return (EReference)userEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUser_DisplayName() {
+		return (EAttribute)userEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUser_Type() {
+		return (EAttribute)userEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUser_Email() {
+		return (EAttribute)userEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -329,6 +355,9 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		createEAttribute(userEClass, USER__PASSWORD);
 		createEReference(userEClass, USER__ROLES);
 		createEReference(userEClass, USER__PERMISSIONS);
+		createEAttribute(userEClass, USER__DISPLAY_NAME);
+		createEAttribute(userEClass, USER__TYPE);
+		createEAttribute(userEClass, USER__EMAIL);
 
 		roleEClass = createEClass(ROLE);
 		createEAttribute(roleEClass, ROLE__NAME);
@@ -384,6 +413,9 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		initEAttribute(getUser_Password(), ecorePackage.getEString(), "password", null, 1, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUser_Roles(), this.getRole(), null, "roles", null, 0, -1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUser_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUser_DisplayName(), ecorePackage.getEString(), "displayName", null, 0, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUser_Type(), ecorePackage.getEString(), "type", null, 0, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getUser_Email(), ecorePackage.getEString(), "email", null, 0, 1, User.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(userEClass, this.getPermission(), "getAllPermissions", 0, -1, IS_UNIQUE, IS_ORDERED);
 

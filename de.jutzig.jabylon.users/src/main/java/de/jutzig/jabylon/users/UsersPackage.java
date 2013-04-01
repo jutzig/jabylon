@@ -106,13 +106,40 @@ public interface UsersPackage extends EPackage {
 	int USER__PERMISSIONS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Display Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__DISPLAY_NAME = 4;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__TYPE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Email</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER__EMAIL = 6;
+
+	/**
 	 * The number of structural features of the '<em>User</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER_FEATURE_COUNT = 4;
+	int USER_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link de.jutzig.jabylon.users.impl.RoleImpl <em>Role</em>}' class.
@@ -337,6 +364,39 @@ public interface UsersPackage extends EPackage {
 	EReference getUser_Permissions();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.users.User#getDisplayName <em>Display Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Display Name</em>'.
+	 * @see de.jutzig.jabylon.users.User#getDisplayName()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EAttribute getUser_DisplayName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.users.User#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see de.jutzig.jabylon.users.User#getType()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EAttribute getUser_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.jutzig.jabylon.users.User#getEmail <em>Email</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Email</em>'.
+	 * @see de.jutzig.jabylon.users.User#getEmail()
+	 * @see #getUser()
+	 * @generated
+	 */
+	EAttribute getUser_Email();
+
+	/**
 	 * Returns the meta object for class '{@link de.jutzig.jabylon.users.Role <em>Role</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -549,6 +609,30 @@ public interface UsersPackage extends EPackage {
 		 * @generated
 		 */
 		EReference USER__PERMISSIONS = eINSTANCE.getUser_Permissions();
+
+		/**
+		 * The meta object literal for the '<em><b>Display Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER__DISPLAY_NAME = eINSTANCE.getUser_DisplayName();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER__TYPE = eINSTANCE.getUser_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Email</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER__EMAIL = eINSTANCE.getUser_Email();
 
 		/**
 		 * The meta object literal for the '{@link de.jutzig.jabylon.users.impl.RoleImpl <em>Role</em>}' class.

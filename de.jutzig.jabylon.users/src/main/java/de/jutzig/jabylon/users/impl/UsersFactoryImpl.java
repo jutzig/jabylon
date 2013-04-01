@@ -6,15 +6,19 @@
  */
 package de.jutzig.jabylon.users.impl;
 
-import de.jutzig.jabylon.users.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import de.jutzig.jabylon.users.AuthType;
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
+import de.jutzig.jabylon.users.UsersFactory;
+import de.jutzig.jabylon.users.UsersPackage;
 
 /**
  * <!-- begin-user-doc -->
