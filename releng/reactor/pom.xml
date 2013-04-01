@@ -11,7 +11,7 @@
 		<!-- <module>../../de.jutzig.jabylon.auto.translate</module> -->
 		<module>../../de.jutzig.jabylon.cdo.connector</module>
 		<module>../../de.jutzig.jabylon.cdo.server</module>
-		<module>../../de.jutzig.jabylon.db.migrator</module>
+		<module>../../de.jutzig.jabylon.db.migration</module>
 		<module>../../de.jutzig.jabylon.common</module>
 		<module>../../de.jutzig.jabylon.index</module>
 		<module>../../de.jutzig.jabylon.properties</module>
