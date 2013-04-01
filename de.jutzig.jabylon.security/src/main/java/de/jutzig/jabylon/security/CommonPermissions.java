@@ -22,6 +22,8 @@ public class CommonPermissions {
 	public static final String ROLE_ANONYMOUS = "Anonymous";
 	public static final String ROLE_ADMINISTRATOR = "Administrator";
 	
+	public static final String USER_ANONYMOUS = ROLE_ANONYMOUS;
+	
 	
 	public static final String PROJECT = "Project";
 	public static final String WORKSPACE = "Workspace";
