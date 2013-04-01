@@ -51,7 +51,7 @@ public class TranslationChecksConfigSection extends GenericPanel<Project> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences prefs) {
+		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
 			return new TranslationChecksConfigSection(id, input, prefs.node(PreferencesUtil.NODE_CHECKS));
 		}
 

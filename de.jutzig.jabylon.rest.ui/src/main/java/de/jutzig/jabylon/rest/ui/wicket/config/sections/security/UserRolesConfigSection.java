@@ -46,7 +46,7 @@ public class UserRolesConfigSection extends GenericPanel<User> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<User> input, Preferences config) {
+		public WebMarkupContainer doCreateContents(String id, IModel<User> input, Preferences config) {
 
 			return new UserRolesConfigSection(id, input);
 		}

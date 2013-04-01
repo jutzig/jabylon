@@ -33,7 +33,7 @@ public class ScanningConfigSection extends GenericPanel<Project> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences prefs) {
+		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
 			return new ScanningConfigSection(id, input, prefs);
 		}
 

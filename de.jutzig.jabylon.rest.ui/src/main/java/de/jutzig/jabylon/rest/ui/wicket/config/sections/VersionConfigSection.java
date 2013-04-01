@@ -166,7 +166,7 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<ProjectVersion> input, Preferences prefs) {
+		public WebMarkupContainer doCreateContents(String id, IModel<ProjectVersion> input, Preferences prefs) {
 			return new VersionConfigSection(id, input);
 		}
 

@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.config;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.osgi.service.prefs.Preferences;
 
@@ -39,4 +40,12 @@ public abstract class AbstractConfigSection<T> implements ConfigSection<T>{
 	public boolean isVisible(IModel<T> input, Preferences config) {
 		return true;
 	}
+	
+	@Override
+	public final WebMarkupContainer createContents(String id, IModel<T> input, Preferences config) {
+		this.model = input;
+		return doCreateContents(id,input,config);
+	}
+
+	protected abstract WebMarkupContainer doCreateContents(String id, IModel<T> input, Preferences config);
 }

@@ -106,7 +106,7 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<UserManagement> input, Preferences config) {
+		public WebMarkupContainer doCreateContents(String id, IModel<UserManagement> input, Preferences config) {
 
 			return new UsersConfigSection(id, input);
 		}

@@ -26,7 +26,7 @@ public class GitConfigSection extends AbstractConfigSection<Project>{
 
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences config) {
+	public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences config) {
 		GitConfigPanel panel = new GitConfigPanel(id, input, config);
 		panel.setVisible(gitSelected(input));
 		return panel;

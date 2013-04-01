@@ -13,7 +13,7 @@ public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Workspace> input, Preferences prefs) {
+	public WebMarkupContainer doCreateContents(String id, IModel<Workspace> input, Preferences prefs) {
 		return new WorkspaceConfigSection(id, input, prefs);
 	}
 

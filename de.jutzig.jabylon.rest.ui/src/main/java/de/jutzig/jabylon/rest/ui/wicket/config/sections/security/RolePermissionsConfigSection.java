@@ -49,7 +49,7 @@ public class RolePermissionsConfigSection extends GenericPanel<Role> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<Role> input, Preferences config) {
+		public WebMarkupContainer doCreateContents(String id, IModel<Role> input, Preferences config) {
 
 			return new RolePermissionsConfigSection(id, input);
 		}
