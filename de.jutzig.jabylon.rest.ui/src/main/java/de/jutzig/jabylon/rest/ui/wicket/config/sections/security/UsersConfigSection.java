@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
-import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
+import de.jutzig.jabylon.rest.ui.wicket.components.UserImagePanel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
@@ -44,10 +44,8 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
-				
-				IModel<String> nameProperty = new EObjectPropertyModel<String, User>(item.getModel(), UsersPackage.Literals.USER__NAME); 	
-				item.add(new Label("name", nameProperty));
-				item.add(new Label("username", nameProperty));
+				 	
+				item.add(new UserImagePanel("username", item.getModel()));
 				item.add(new Label("roles",buildRoles(item.getModelObject())));
 				PageParameters params = new PageParameters(getPage().getPageParameters());
 				params.set(params.getIndexedCount(),"users");

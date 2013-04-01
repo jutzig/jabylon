@@ -50,6 +50,7 @@ public class UserImagePanel extends Panel {
 			email = model.getObject().toString();
 		Url url = Url.parse(GRAVATAR_BASE_URL + MD5Util.md5Hex(normalize(email)));
 		url.addQueryParameter("size", size);
+		url.addQueryParameter("d", "wavatar");
 		return new UrlResourceReference(url);
 
 	}
