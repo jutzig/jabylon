@@ -4,17 +4,15 @@
 package de.jutzig.jabylon.rest.ui.wicket.config;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.eclipse.core.runtime.CoreException;
@@ -33,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 
 import de.jutzig.jabylon.common.util.AttachablePreferences;
 import de.jutzig.jabylon.common.util.DelegatingPreferences;
@@ -61,6 +58,8 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 	public static final String QUERY_PARAM_CREATE = "create";
 	
 	private static final Logger logger = LoggerFactory.getLogger(SettingsPage.class);
+	
+	private List<ConfigSection<?>> allSections;
 
 	public SettingsPanel(String id, IModel<T> model, PageParameters pageParameters) {
 		super(id, model);
@@ -110,6 +109,9 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 			}
 
 			protected void commit(final Preferences preferences, CDOObject object, CDOTransaction transaction) {
+				for (ConfigSection<?> section : allSections) {
+					section.commit(getModel(), preferences);
+				}
 				try {
 					transaction.commit();
 					if (object instanceof Resolvable) {
@@ -143,8 +145,8 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		form.add(tabContainer);
 //		form.add(new CustomFeedbackPanel("feedback"));
 	
-//		Button submitButton = new Button("submit-button", Model.of("Submit"));
-//		form.add(submitButton);
+		Button submitButton = new Button("submit", Model.of("Submit"));
+		form.add(submitButton);
 //		Button cancelButton = new Button("cancel-button", Model.of("Cancel"));
 //		form.add(cancelButton);
 		
@@ -184,8 +186,8 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 	private List<ITab> loadTabExtensions(Preferences preferences) {
 	
 		List<IConfigurationElement> configurationElements = DynamicConfigUtil.getConfigTabs();
-		ListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);		
-		
+		ArrayListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);		
+		allSections = new ArrayList<ConfigSection<?>>();
 		List<IConfigurationElement> elements = DynamicConfigUtil.getApplicableElements(getModelObject(), getUser());
 		for (IConfigurationElement element : elements) {
 			String id = element.getAttribute("tab");
@@ -202,7 +204,9 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		for (IConfigurationElement element : configurationElements) {
 			String name = element.getAttribute("name");
 			String id = element.getAttribute("tabID");
-			ConfigTab tab = new ConfigTab(name, sections.removeAll(id),getModel(), preferences);
+			List<ConfigSection<?>> tabSections = sections.removeAll(id);
+			ConfigTab tab = new ConfigTab(name, tabSections,getModel(), preferences);
+			allSections.addAll(tabSections);
 			if(tab.isVisible())
 				extensions.add(tab);
 		}
