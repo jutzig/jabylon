@@ -6,7 +6,10 @@ package de.jutzig.jabylon.rest.ui.wicket.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;
@@ -73,7 +76,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		boolean isNew = modelObject.cdoState()==CDOState.NEW || modelObject.cdoState()==CDOState.TRANSIENT;
 		final Preferences preferences = isNew ? new AttachablePreferences() : new DelegatingPreferences(PreferencesUtil.scopeFor(modelObject));
 
-		List<ITab> extensions = loadTabExtensions(preferences);
+		final List<ITab> extensions = loadTabExtensions(preferences);
 		
 		// submit section
 		
@@ -141,7 +144,22 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
 		};
 		
-		ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions);
+		ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				boolean visible = super.isVisible();
+				List<ITab> tabContents = extensions;
+				for (ITab component : tabContents) {
+					if(component.isVisible())
+						return visible;
+				}
+				//if no tab is visible, the user has no permission to be here
+				throw new UnauthorizedInstantiationException(SettingsPanel.class);
+			}
+		};
 		form.add(tabContainer);
 //		form.add(new CustomFeedbackPanel("feedback"));
 	

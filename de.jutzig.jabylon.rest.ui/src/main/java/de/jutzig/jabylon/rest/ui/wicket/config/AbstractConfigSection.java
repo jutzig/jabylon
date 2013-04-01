@@ -7,6 +7,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.osgi.service.prefs.Preferences;
 
+import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import de.jutzig.jabylon.users.User;
+
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
@@ -38,7 +41,13 @@ public abstract class AbstractConfigSection<T> implements ConfigSection<T>{
 	
 	@Override
 	public boolean isVisible(IModel<T> input, Preferences config) {
-		return true;
+		model = input;
+		CDOAuthenticatedSession session = (CDOAuthenticatedSession) CDOAuthenticatedSession.get(); 
+		User user = session.getUser();
+		if(user!=null)
+			return user.hasPermission(getRequiredPermission());
+		else
+			return session.getAnonymousUser().hasPermission(getRequiredPermission());
 	}
 	
 	@Override

@@ -34,7 +34,7 @@ public class GitConfigSection extends AbstractConfigSection<Project>{
 
 	@Override
 	public boolean isVisible(IModel<Project> input, Preferences config) {
-		return gitSelected(input);
+		return gitSelected(input) && super.isVisible(input, config);
 	}
 
 
