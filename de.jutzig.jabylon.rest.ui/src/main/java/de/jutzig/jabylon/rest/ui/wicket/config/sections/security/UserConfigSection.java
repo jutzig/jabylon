@@ -10,6 +10,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
+import de.jutzig.jabylon.rest.ui.wicket.components.UserImagePanel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.User;
@@ -21,6 +22,7 @@ public class UserConfigSection extends GenericPanel<User> {
 
 	public UserConfigSection(String id, IModel<User> model) {
 		super(id, model);
+		add(new UserImagePanel("image", getModel(),128));
 		add(new RequiredTextField<String>("username",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__NAME)));
 		PasswordTextField passwordTextField = new PasswordTextField("userpassword",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__PASSWORD));
 		passwordTextField.setRequired(false);

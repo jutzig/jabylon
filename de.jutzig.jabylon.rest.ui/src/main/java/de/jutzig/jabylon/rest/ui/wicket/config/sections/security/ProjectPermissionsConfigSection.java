@@ -36,6 +36,7 @@ import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.UserImagePanel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.Permission;
@@ -218,7 +219,8 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 
 			@Override
 			protected void populateItem(Item<UserPermission> item) {
-				item.add(new Label("registrant", item.getModelObject().getRegistrant().getObject().getName()));
+//				item.add(new Label("registrant", item.getModelObject().getRegistrant().getObject().getName()));
+				item.add(new UserImagePanel("registrant", item.getModelObject().getRegistrant()));
 				final DropDownChoice<PermissionSetting> permissionChoice = new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting
 						.values()), new PermissionSettingRenderer());
 				permissionChoice.setOutputMarkupId(true);

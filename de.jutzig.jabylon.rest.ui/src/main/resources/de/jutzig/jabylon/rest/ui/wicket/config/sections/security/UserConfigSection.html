@@ -1,33 +1,42 @@
 <html xmlns:wicket="http://wicket.apache.org">
 
 <wicket:panel>
-	<div class="control-group">
-		<label class="control-label" for="username">Name</label>
-		<div class="controls">
-			<input wicket:id="username" id="username" type="text"
-				placeholder="Username"> <span class="help-block"><wicket:message key="username.help.block">Username (must be unique)</wicket:message></span>
+	<div class="row">
+		<div class="span10">
+			<div class="control-group">
+				<label class="control-label" for="username">Name</label>
+				<div class="controls">
+					<input wicket:id="username" id="username" type="text"
+						placeholder="Username"> <span class="help-block"><wicket:message
+							key="username.help.block">Username (must be unique)</wicket:message></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="userpassword">Password</label>
+				<div class="controls">
+					<input wicket:id="userpassword" id="userpassword" type="password"
+						placeholder="**************"> <span class="help-block"><wicket:message
+							key="userpassword.help.block">Enter the new password here</wicket:message></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="displayName">Display Name</label>
+				<div class="controls">
+					<input wicket:id="displayName" id="displayName" type="text"
+						placeholder="John Doe"> <span class="help-block"><wicket:message
+							key="displayName.help.block">Enter the full name here</wicket:message></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="email">email</label>
+				<div class="controls">
+					<input wicket:id="email" id="email" type="text"
+						placeholder="JohnDoe@example.org"> <span
+						class="help-block"><wicket:message key="email.help.block">Enter the email address here</wicket:message></span>
+				</div>
+			</div>
 		</div>
+		<div class="span2" wicket:id="image"></div>
 	</div>
-	<div class="control-group">
-		<label class="control-label" for="userpassword">Password</label>
-		<div class="controls">
-			<input wicket:id="userpassword" id="userpassword" type="password"
-				placeholder="**************"> <span class="help-block"><wicket:message key="userpassword.help.block">Enter the new password here</wicket:message></span>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label" for="displayName">Display Name</label>
-		<div class="controls">
-			<input wicket:id="displayName" id="displayName" type="text"
-				placeholder="John Doe"> <span class="help-block"><wicket:message key="displayName.help.block">Enter the full name here</wicket:message></span>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label" for="email">email</label>
-		<div class="controls">
-			<input wicket:id="email" id="email" type="text"
-				placeholder="JohnDoe@example.org"> <span class="help-block"><wicket:message key="email.help.block">Enter the email address here</wicket:message></span>
-		</div>
-	</div>		
 </wicket:panel>
 </html>
