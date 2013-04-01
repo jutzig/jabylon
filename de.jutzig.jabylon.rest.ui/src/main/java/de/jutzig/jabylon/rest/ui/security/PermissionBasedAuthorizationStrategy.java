@@ -11,6 +11,7 @@ import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.request.component.IRequestableComponent;
 
 import de.jutzig.jabylon.security.CommonPermissions;
+import de.jutzig.jabylon.users.User;
 
 /**
  * @author jutzig.dev@googlemail.com
@@ -32,7 +33,13 @@ public class PermissionBasedAuthorizationStrategy implements IAuthorizationStrat
 				return true;
 			CDOAuthenticatedSession session = (CDOAuthenticatedSession) CDOAuthenticatedSession.get();
 			if(session.getUser()==null)
+			{
+				User anonymousUser = session.getAnonymousUser();
+				boolean allowed = anonymousUser.hasPermission(permission);
+				if(allowed)
+					return true;
 				throw new RestartResponseAtInterceptPageException(LoginPage.class);
+			}
 			boolean allowed = session.getUser().hasPermission(permission);
 			if(allowed)
 				return true;

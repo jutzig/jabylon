@@ -55,6 +55,8 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<User> user;
+	
+	private IModel<User> anonymousUser;
 
 	private static final Logger logger = LoggerFactory.getLogger(CDOAuthenticatedSession.class);
 
@@ -190,6 +192,23 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 		if(user == null)
 			return null;
 		return user.getObject();
+	}
+	
+	public User getAnonymousUser() {
+		if(anonymousUser == null)
+		{
+
+			CDOView view = Activator.getDefault().getRepositoryConnector().openView();
+			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
+			UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+			userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
+			User anonymous = userManagement.findUserByName(CommonPermissions.USER_ANONYMOUS);
+			if(anonymous!=null)
+				anonymousUser = new EObjectModel<User>(anonymous);
+			else
+				return null;
+		}
+		return anonymousUser.getObject();
 	}
 
 }
