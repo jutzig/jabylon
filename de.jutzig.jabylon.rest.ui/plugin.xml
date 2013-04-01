@@ -158,6 +158,12 @@
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolePermissionsConfigSection$RolePermissionsConfigSectionContributor"
           tab="permissions">
     </section>
+    <section
+          name="Permissions"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.ProjectPermissionsConfigSection$ProjectPermissionsConfigSectionContributor"
+          tab="permissions">
+    </section>
  </extension>
  <extension
        point="org.eclipse.equinox.http.registry.resources">
