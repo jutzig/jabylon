@@ -26,6 +26,7 @@ import javax.security.auth.spi.LoginModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.security.SubjectAttribute;
 import de.jutzig.jabylon.users.UsersPackage;
 
@@ -168,7 +169,7 @@ public class LDAPLoginModule implements LoginModule {
 				subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__EMAIL, email));
 			if(fullName!=null && !fullName.isEmpty())
 				subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__DISPLAY_NAME, fullName));
-			subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__TYPE, "LDAP"));
+			subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__TYPE, CommonPermissions.AUTH_TYPE_LDAP));
 			
 		} else {
 			subj.getPublicCredentials().remove(user);

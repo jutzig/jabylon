@@ -41,6 +41,8 @@ public class CommonPermissions {
 
 	public static final String WORKSPACE_CONFIG = WORKSPACE + ":" + ACTION_CONFIG;
 	
+	public static final String AUTH_TYPE_LDAP = "LDAP";
+	
 	/**
 	 * right to edit any configuration
 	 */

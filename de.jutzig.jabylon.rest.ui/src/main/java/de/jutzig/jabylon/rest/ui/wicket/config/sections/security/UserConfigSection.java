@@ -22,18 +22,30 @@ public class UserConfigSection extends GenericPanel<User> {
 
 	public UserConfigSection(String id, IModel<User> model) {
 		super(id, model);
+		
+		boolean isLDAP = CommonPermissions.AUTH_TYPE_LDAP.equals(model.getObject().getType());
+		
 		add(new UserImagePanel("image", getModel(),128));
-		add(new RequiredTextField<String>("username",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__NAME)));
+		RequiredTextField<String> userID = new RequiredTextField<String>("username",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__NAME));
+		userID.setEnabled(!isLDAP);
+		add(userID);
 		PasswordTextField passwordTextField = new PasswordTextField("userpassword",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__PASSWORD));
-		passwordTextField.setRequired(false);
+		passwordTextField.setRequired(!isLDAP);
+		passwordTextField.setEnabled(!isLDAP);
 		passwordTextField.setResetPassword(false);
 		add(passwordTextField);
 		
 		TextField<String> emailField = new TextField<String>("email",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__EMAIL));
+		emailField.setEnabled(!isLDAP);
 		add(emailField);
 		emailField.add(EmailAddressValidator.getInstance());
-		add(new RequiredTextField<String>("displayName",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__DISPLAY_NAME)));
+		TextField<String> displayName = new TextField<String>("displayName",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__DISPLAY_NAME));
+		displayName.setEnabled(!isLDAP);
+		add(displayName);
 
+		TextField<String> type = new TextField<String>("type",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__TYPE));
+		type.setEnabled(false);
+		add(type);
 	}
 
 	public static class UserConfigSectionContributor extends AbstractConfigSection<User> {
