@@ -6,10 +6,8 @@ package de.jutzig.jabylon.rest.ui.wicket.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;

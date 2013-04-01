@@ -1,6 +1,7 @@
 package de.jutzig.jabylon.review.standard.internal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
