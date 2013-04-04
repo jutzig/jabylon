@@ -62,8 +62,12 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 	
 	private List<ConfigSection<?>> allSections;
 
+	private PageParameters params;
+	
+	@SuppressWarnings("unchecked")
 	public SettingsPanel(String id, IModel<T> model, PageParameters pageParameters) {
 		super(id, model);
+		this.params = pageParameters;
 		EClass eclass = getEClassToCreate(pageParameters);
 		if(eclass!=null)
 		{
@@ -158,6 +162,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 				throw new UnauthorizedInstantiationException(SettingsPanel.class);
 			}
 		};
+		tabContainer.setActiveTab(getActiveTab(extensions));
 		form.add(tabContainer);
 //		form.add(new CustomFeedbackPanel("feedback"));
 	
@@ -170,6 +175,32 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
 	}
 	
+	/**
+	 * determines which tab should be active by default
+	 * @param extensions
+	 * @return
+	 */
+	private int getActiveTab(List<ITab> extensions) {
+		PageParameters parameters = params;
+		if(parameters==null)
+			return 0;
+		int count = parameters.getIndexedCount();
+		if(count<1)
+			return 0;
+		String tabName = parameters.get("tab").toString();
+		if(tabName==null)
+			return 0;
+		for(int i=0;i<extensions.size();i++) {
+			//see http://github.com/jutzig/jabylon/issues/issue/100
+			// if the user navigates back from e.g. /roles/admin
+			// we can use the last uri segment as a hint for the active tab
+			ITab tab = extensions.get(i);
+			if(tabName.equalsIgnoreCase(tab.getTitle().getObject()))
+				return i;
+		}
+		return 0;
+	}
+
 
 	private EClass getEClassToCreate(PageParameters pageParameters) {
 		StringValue value = pageParameters.get(QUERY_PARAM_CREATE);

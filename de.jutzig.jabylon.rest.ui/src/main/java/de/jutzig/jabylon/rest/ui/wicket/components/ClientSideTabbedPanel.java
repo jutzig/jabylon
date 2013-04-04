@@ -17,7 +17,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 
 	private List<T> tabs;
 	private List<WebMarkupContainer> tabContents;
-	private IModel<Integer> activeTab;
+	private IModel<Integer> activeTab= Model.of(0);
 
 	public ClientSideTabbedPanel(final String id, List<T> tabs, boolean vertical) {
 		super(id);
@@ -34,7 +34,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 			@Override
 			protected void populateItem(final ListItem<T> item) {
 				int index = item.getIndex();
-				if (index == 0)
+				if (index == activeTab.getObject())
 					item.add(new AttributeAppender("class", " active"));
 				item.add(new ExternalLink("link", Model.of("#" + id + index),
 						item.getModelObject().getTitle()));
@@ -74,6 +74,14 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 
 	public List<WebMarkupContainer> getTabContents() {
 		return tabContents;
+	}
+	
+	public void setActiveTab(IModel<Integer> activeIndex) {
+		this.activeTab = activeIndex;
+	}
+	
+	public void setActiveTab(int activeIndex) {
+		this.activeTab = Model.of(activeIndex);
 	}
 
 }
