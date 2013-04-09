@@ -30,6 +30,7 @@ import com.vaadin.ui.Window.Notification;
 
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.Workspace;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.ui.applications.MainDashboard;
 import de.jutzig.jabylon.ui.components.Section;
 import de.jutzig.jabylon.ui.config.AbstractConfigSection;
@@ -146,6 +147,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 			public void buttonClick(ClickEvent event) {
 				User addedUser = ((BeanItem<User>) addUserForm.getItemDataSource()).getBean();
 				userManagement.getUsers().add(addedUser);
+				CommonPermissions.addDefaultPermissions(userManagement,addedUser);
 				MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
 			}
 		});
@@ -172,6 +174,7 @@ public class UserConfig extends AbstractConfigSection<Workspace> implements Conf
 
 	@Override
 	public void commit(Preferences config) {
+
 
 	}
 

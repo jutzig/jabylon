@@ -6,7 +6,11 @@ package de.jutzig.jabylon.security;
 import java.text.MessageFormat;
 
 import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
 import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
+import de.jutzig.jabylon.users.UsersFactory;
 
 /**
  * 
@@ -51,7 +55,10 @@ public class CommonPermissions {
 	
 	/**
 	 * basic right to access configuration in general
+	 * Deprecation: do we still need this?
+	 * Settings page no longer requires it
 	 */
+	@Deprecated
 	public static final String SYSTEM_GENERAL_CONFIG = "System:config";
 	
 	private static final String PERMISSION_PATTERN = "{0}:{1}:{2}";
@@ -97,5 +104,27 @@ public class CommonPermissions {
 	
 	public static boolean isEditRequest(String permission) {
 		return permission.contains(":"+ACTION_EDIT);
+	}
+
+	/**
+	 * adds the default permissions and roles for a new user
+	 * @param userManagement
+	 * @param user
+	 */
+	public static void addDefaultPermissions(UserManagement userManagement, User user) {
+		String name = user.getName();
+		String selfEdit = constructPermission(USER,name,ACTION_CONFIG);
+		Permission selfEditPermission = userManagement.findPermissionByName(selfEdit);
+		if(selfEditPermission==null) {
+			selfEditPermission = UsersFactory.eINSTANCE.createPermission();
+			selfEditPermission.setName(selfEdit);
+			userManagement.getPermissions().add(selfEditPermission);
+		}
+		user.getPermissions().add(selfEditPermission);
+		
+		Role anonymousRole = userManagement.findRoleByName(ROLE_ANONYMOUS);
+		if(anonymousRole==null)
+			throw new RuntimeException("Anonymous role must always exist");
+		user.getRoles().add(anonymousRole);
 	}
 }

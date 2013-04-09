@@ -7,13 +7,18 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.eclipse.emf.ecore.EObject;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.rest.ui.model.AttachableModel;
 import de.jutzig.jabylon.rest.ui.model.EObjectPropertyModel;
 import de.jutzig.jabylon.rest.ui.wicket.components.UserImagePanel;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
 import de.jutzig.jabylon.users.UsersPackage;
 
 public class UserConfigSection extends GenericPanel<User> {
@@ -52,6 +57,8 @@ public class UserConfigSection extends GenericPanel<User> {
 
 		private static final long serialVersionUID = 1L;
 
+		private static Logger logger = LoggerFactory.getLogger(UserConfigSectionContributor.class);
+
 		@Override
 		public WebMarkupContainer doCreateContents(String id, IModel<User> input, Preferences config) {
 
@@ -60,14 +67,29 @@ public class UserConfigSection extends GenericPanel<User> {
 
 		@Override
 		public void commit(IModel<User> input, Preferences config) {
-
-
+			User user = input.getObject();
+			
+			if(input instanceof AttachableModel) {
+				@SuppressWarnings("rawtypes")
+				AttachableModel<?> model = (AttachableModel)input;
+				Object container = model.getParent().getObject();
+				if (container instanceof UserManagement) {
+					// only initialize defaults if it is an attachable model (new user)
+					UserManagement userManagement = (UserManagement) container;
+					CommonPermissions.addDefaultPermissions(userManagement,user);
+				} 
+				else
+					logger.error("Failed to obtain usermanagement for "+user+". Default permissions will not be initialized");
+			}
 		}
 
 
 		@Override
 		public String getRequiredPermission() {
-			return CommonPermissions.USER_GLOBAL_CONFIG;
+			String name = "null";
+			if(getDomainObject()!=null && getDomainObject().getName()!=null)
+				name = getDomainObject().getName();
+			return CommonPermissions.constructPermission(CommonPermissions.USER,name,CommonPermissions.ACTION_CONFIG);
 		}
 	}
 }

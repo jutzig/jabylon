@@ -82,7 +82,7 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
 
 	@Override
 	public String getRequiredPermission() {
-	      return CommonPermissions.SYSTEM_GENERAL_CONFIG;
+	      return null;
 	}
 	
 }
