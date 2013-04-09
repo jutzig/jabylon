@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -18,19 +19,24 @@ public class UserImagePanel extends Panel {
 
 	private static final String GRAVATAR_BASE_URL = "https://www.gravatar.com/avatar/";
 	private static final int DEFAULT_SIZE = 30;
-	private int size = 30;
+	private static final int LARGE_SIZE = 150;
+	private int size = DEFAULT_SIZE;
 
 	private static final long serialVersionUID = 1L;
 
 	public UserImagePanel(String id, IModel<User> model) {
-		this(id,model,DEFAULT_SIZE);
+		this(id,model,false);
 	}
-
-	public UserImagePanel(String id, IModel<User> model, int size) {
-		super(id, model);
-		this.size = size;
+	
+	public UserImagePanel(String id, IModel<User> model, boolean large) {
+		super(id,model);
+		Label name = new Label("name", getUsername(model));
+		add(name);
+		if(large) {
+			name.add(new AttributeAppender("style", "font-size: large;"));
+			size = LARGE_SIZE;
+		}
 		add(new Image("image", getImageUrl(model)));
-		add(new Label("name", getUsername(model)));
 	}
 	
 	

@@ -25,7 +25,7 @@ public class UserConfigSection extends GenericPanel<User> {
 		
 		boolean isLDAP = CommonPermissions.AUTH_TYPE_LDAP.equals(model.getObject().getType());
 		
-		add(new UserImagePanel("image", getModel(),128));
+		add(new UserImagePanel("image", getModel(),true));
 		RequiredTextField<String> userID = new RequiredTextField<String>("username",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__NAME));
 		userID.setEnabled(!isLDAP);
 		add(userID);
