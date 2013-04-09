@@ -248,34 +248,39 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 		for (UserPermission permission : userPermissions) {
 			User user = permission.getRegistrant().getObject();
 			user = management.cdoView().getObject(user);
+			
+			/*
+			 * Issue #101
+			 * first delete all permission in case they have been reduced
+			 * http://github.com/jutzig/jabylon/issues/issue/101
+			 */
+			String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
+			EList<Permission> userPermissions = user.getPermissions();
+			Iterator<Permission> it = userPermissions.iterator();
+			while (it.hasNext()) {
+				if (it.next().getName().startsWith(prefix))
+					it.remove();
+			}
+			
 			switch (permission.getPermission()) {
 			case CONFIG:
 				Permission perm = getOrCreatePermission(
 						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
 						management);
-				if (!user.hasPermission(perm.getName()))
-					user.getPermissions().add(perm);
+				user.getPermissions().add(perm);
 			case EDIT:
 				perm = getOrCreatePermission(
 						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
 						management);
-				if (!user.hasPermission(perm.getName()))
-					user.getPermissions().add(perm);
+				user.getPermissions().add(perm);
 			case READ:
 				perm = getOrCreatePermission(
 						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
 						management);
-				if (!user.hasPermission(perm.getName()))
-					user.getPermissions().add(perm);
+				user.getPermissions().add(perm);
 				break;
 			case NONE:
-				String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
-				EList<Permission> userPermissions = user.getPermissions();
-				Iterator<Permission> it = userPermissions.iterator();
-				while (it.hasNext()) {
-					if (it.next().getName().startsWith(prefix))
-						it.remove();
-				}
+				// nothing to do
 			}
 		}
 		
@@ -283,6 +288,20 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 		for (RolePermission permission : rolePermissions) {
 			Role role = permission.getRegistrant().getObject();
 			role = management.cdoView().getObject(role);
+			
+			/*
+			 * Issue #101
+			 * first delete all permission in case they have been reduced
+			 * http://github.com/jutzig/jabylon/issues/issue/101
+			 */
+			String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
+			EList<Permission> userPermissions = role.getPermissions();
+			Iterator<Permission> it = userPermissions.iterator();
+			while (it.hasNext()) {
+				if (it.next().getName().startsWith(prefix))
+					it.remove();
+			}
+			
 			switch (permission.getPermission()) {
 			case CONFIG:
 				Permission perm = getOrCreatePermission(
@@ -304,13 +323,7 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 					role.getPermissions().add(perm);
 				break;
 			case NONE:
-				String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
-				EList<Permission> userPermissions = role.getPermissions();
-				Iterator<Permission> it = userPermissions.iterator();
-				while (it.hasNext()) {
-					if (it.next().getName().startsWith(prefix))
-						it.remove();
-				}
+				//nothing to do
 			}
 		}
 		
