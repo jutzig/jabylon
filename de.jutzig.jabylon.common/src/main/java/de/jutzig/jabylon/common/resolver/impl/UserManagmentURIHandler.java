@@ -66,7 +66,7 @@ public class UserManagmentURIHandler implements URIHandler {
 			List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
 			Object parent = userManagment;
 			for (String segment : list) {
-				parent = getChild(parent, segment);
+				parent = getChild(parent, URI.decode(segment));
 				if (parent == null)
 					return null;
 			}

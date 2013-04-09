@@ -69,8 +69,8 @@ public class TransactionUtil {
 					{
 						reference.getSourceObject().eUnset(sourceFeature);
 					}
-					EcoreUtil.remove(object);
 				}
+				EcoreUtil.remove(object);
 				return null;
 			}
 		});

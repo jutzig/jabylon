@@ -81,10 +81,20 @@ public class GenericResolvablePage<T  extends CDOObject> extends GenericPage<T> 
 	
 	@SuppressWarnings("unchecked")
 	protected T doLookup(List<String> segments) {
-		URI uri = URI.createHierarchicalURI(segments.toArray(new String[segments.size()]), null, null);
+		String path = getURIPath(segments);
+		URI uri = URI.createURI(path,true);
 		return (T) lookup.resolve(uri);
 	}
 	
+	private String getURIPath(List<String> segments) {
+		StringBuilder builder = new StringBuilder();
+		for (String string : segments) {
+			builder.append("/");
+			builder.append(URI.encodeSegment(string, true));
+		}
+		return builder.toString();
+	}
+
 	public URIResolver getLookup() {
 		return lookup;
 	}
