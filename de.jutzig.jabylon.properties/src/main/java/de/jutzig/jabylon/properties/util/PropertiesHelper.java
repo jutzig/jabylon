@@ -110,6 +110,11 @@ public class PropertiesHelper {
 				return property;
 			}
 		}
+		//in some cases we already created an instance, but then never found a key
+		//in that case, return null instead of an incomplete property
+		//http://github.com/jutzig/jabylon/issues/issue/104
+		if(property!=null && property.getKey()==null)
+			return null;
 		return property;
 	}
 
