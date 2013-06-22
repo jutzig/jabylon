@@ -26,9 +26,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
-import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
@@ -37,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.connector.Modification;
 import de.jutzig.jabylon.cdo.connector.TransactionUtil;
-import de.jutzig.jabylon.cdo.server.ServerConstants;
+import de.jutzig.jabylon.common.resolver.impl.UserManagmentURIHandler;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 import de.jutzig.jabylon.security.CommonPermissions;
@@ -60,6 +58,8 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 	private IModel<User> user;
 	
 	private IModel<User> anonymousUser;
+	
+	private IModel<UserManagement> userManagementModel;
 
 	private static final Logger logger = LoggerFactory.getLogger(CDOAuthenticatedSession.class);
 
@@ -67,8 +67,41 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 
 	public CDOAuthenticatedSession(Request request) {
 		super(request);
+		
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		if(user!=null)
+			user.detach();
+		if(anonymousUser!=null)
+			anonymousUser.detach();
+		if(userManagementModel!=null)
+			userManagementModel.detach();
 	}
 
+	
+	private UserManagement getUserManagement()
+	{
+		if(userManagementModel==null)
+		{
+			Object resolved = Activator.getDefault().getRepositoryLookup().resolve(UserManagmentURIHandler.SECURITY_URI_PREFIX);
+			if (resolved instanceof UserManagement) {
+				UserManagement managment = (UserManagement) resolved;
+				userManagementModel = new EObjectModel<UserManagement>(managment); 
+				return managment;
+			}
+			else
+			{
+				logger.error("Failed to obtain UserManagement");			
+				return null;
+			}
+		}
+		return userManagementModel.getObject();
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.apache.wicket.authroles.authentication.AuthenticatedWebSession#authenticate(java.lang.String, java.lang.String)
 	 */
@@ -89,24 +122,23 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 				}
 			}
 		});
+		UserManagement management = getUserManagement();
+		if(management==null)
+			return false;
+		User user = management.findUserByName(username);
 		for (Entry<String, ILoginContext> entry : contexts.entrySet()) {
 			try {
 				entry.getValue().login();
 				final Subject subject = entry.getValue().getSubject();
 				logger.info("{} Login for user {} successful",entry.getKey(),username);
-				//TODO: this could be handled without two lookups
-				CDOView view = Activator.getDefault().getRepositoryConnector().openView();
-				CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-				UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-				userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
-				User user = userManagement.findUserByName(username);
+				
 				if(user==null) {
 					logger.info("User {} logged in for the first time. Creating DB Entry");
 					final User newUser = UsersFactory.eINSTANCE.createUser();
 					newUser.setName(username);
-					CommonPermissions.addDefaultPermissions(userManagement,user);
+					CommonPermissions.addDefaultPermissions(management,user);
 
-					user = TransactionUtil.commit(userManagement, new Modification<UserManagement, User>() {
+					user = TransactionUtil.commit(management, new Modification<UserManagement, User>() {
 
 						@Override
 						public User apply(UserManagement object) {
@@ -130,8 +162,6 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 				}
 				
 				this.user = new EObjectModel<User>(user);
-				view.close();
-
 				return true;
 			} catch (LoginException e) {
 				logger.error(entry.getKey()+" Login for user "+username+" failed: "+e.getMessage());
@@ -200,14 +230,8 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 
 	private Roles getAnonymousRoles() {
 		logger.info("Computing Anonymous Roles");
-		//TODO: this could be handled without two lookups
-		CDOView view = Activator.getDefault().getRepositoryConnector().openView();
-		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-		userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
-		Role role = userManagement.findRoleByName(CommonPermissions.ROLE_ANONYMOUS);
+		Role role = getUserManagement().findRoleByName(CommonPermissions.ROLE_ANONYMOUS);
 		Roles roles = createRoles(role.getAllPermissions());
-		view.close();
 		return roles;
 	}
 
@@ -220,12 +244,9 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
 	public User getAnonymousUser() {
 		if(anonymousUser == null)
 		{
-
-			CDOView view = Activator.getDefault().getRepositoryConnector().openView();
-			CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-			UserManagement userManagement = (UserManagement) resource.getContents().get(0);
-			userManagement = (UserManagement) Activator.getDefault().getRepositoryLookup().resolve(userManagement.cdoID());
-			User anonymous = userManagement.findUserByName(CommonPermissions.USER_ANONYMOUS);
+			if(getUserManagement()==null)
+				return null;
+			User anonymous = getUserManagement().findUserByName(CommonPermissions.USER_ANONYMOUS);
 			if(anonymous!=null)
 				anonymousUser = new EObjectModel<User>(anonymous);
 			else
