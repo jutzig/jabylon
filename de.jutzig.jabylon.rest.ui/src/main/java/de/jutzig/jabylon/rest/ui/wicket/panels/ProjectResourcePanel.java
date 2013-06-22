@@ -3,6 +3,7 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.awt.Point;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
@@ -15,6 +16,7 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.emf.common.util.EList;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
@@ -23,6 +25,7 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesSwitch;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
@@ -77,9 +80,15 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 				ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
 				item.add(link);
-				Label progress = new Label("progress", String.valueOf(resolvable.getPercentComplete())+"%");
-				progress.add(new AttributeModifier("style", "width: " + resolvable.getPercentComplete() + "%"));
+				
+				Point widths = computeProgressBars(target.getEndPoint());
+				Label progress = new Label("progress", String.valueOf(widths.x)+"%");
+				progress.add(new AttributeModifier("style", "width: " + widths.x  + "%"));
+				Label warning = new Label("warning", "");
+				warning.add(new AttributeModifier("style", "width: " + widths.y  + "%"));
 				item.add(progress);
+				item.add(warning);
+				
 				new ImageSwitch(item).doSwitch(target.getEndPoint());
 				item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
 			}
@@ -87,6 +96,29 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		};
 		// dataView.setItemsPerPage(10);
 		add(dataView);
+	}
+
+	/**
+	 * computes the width of the two stacked progress bars
+	 * @param resolvable
+	 * @return
+	 */
+	protected Point computeProgressBars(Resolvable<?, ?> resolvable) {
+		
+		int greenWidth = resolvable.getPercentComplete();
+		int yellowWidth = 0;
+		if (resolvable instanceof PropertyFileDescriptor) {
+			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolvable;
+			int keys = descriptor.getMaster() == null ? descriptor.getKeys() : descriptor.getMaster().getKeys();
+			if(keys>0)
+			{
+				EList<Review> reviews = descriptor.getReviews();
+				yellowWidth = (int) (reviews.size()*100/(double)keys);
+				greenWidth -= yellowWidth;
+			}
+		}
+		return new Point(greenWidth, yellowWidth);
+
 	}
 
 	private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {
