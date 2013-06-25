@@ -12,19 +12,6 @@
  * 
  * Tabs are persisted in the Browser's sessionStorage.
  */
-
-$('body').on('shown', '[data-toggle="tab"]', function(e) {
-  if (window.sessionStorage) {
-		var $tab = $(e.target);
-		var tabsheet = $tab.closest('[data-tabsheet]').data('tabsheet');
-		if (tabsheet) {
-			var selector = '[href="' + $tab.attr('href') + '"]';
-			selector && window.sessionStorage.setItem('tabsheet-' + tabsheet, selector);
-			//console.log('Active tab in "' + tabsheet + '": ' + selector);
-		}
-	}
-});
-
 $('body').ready(function(e) {
   if (window.sessionStorage) {
 		$('[data-tabsheet]').each(function(idx, el) {
@@ -33,7 +20,19 @@ $('body').ready(function(e) {
 			if (selector) {
 				//console.log('Active tab in "' + tabsheet + '": ' + selector);
 				$('[data-toggle="tab"]').filter(selector).tab('show');
-			}
+			};
 		});
-	}
+	};
+
+	$('body').on('shown', '[data-toggle="tab"]', function(e) {
+		if (window.sessionStorage) {
+			var $tab = $(e.target);
+			var tabsheet = $tab.closest('[data-tabsheet]').data('tabsheet');
+			if (tabsheet) {
+				var selector = '[href="' + $tab.attr('href') + '"]';
+				selector && window.sessionStorage.setItem('tabsheet-' + tabsheet, selector);
+				//console.log('Active tab in "' + tabsheet + '": ' + selector);
+			};
+		};
+	});
 });
