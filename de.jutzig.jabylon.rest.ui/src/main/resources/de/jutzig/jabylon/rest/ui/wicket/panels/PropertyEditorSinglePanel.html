@@ -1,0 +1,63 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<body>
+	<wicket:panel>
+		<div class="row">
+			<div class="span12">
+				<ul class="nav nav-pills">
+					<li wicket:id="view-mode"><a wicket:id="link">Show Missing</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<form wicket:id="properties-form" id="properties-form">
+					<h3 wicket:id="key-label">Key</h3>
+					<div class="row">
+						<div wicket:id="template-area" class="span6">
+							<textarea wicket:id="template" id="template" rows="3" cols="3"
+								readonly="readonly" style="width: 95%;">this is the template</textarea>
+							<br />
+							<textarea wicket:id="template-comment" id="template-comment"
+								rows="3" style="width: 95%;" readonly="readonly">this is the original comment</textarea>
+							<p>
+						</div>
+						<div wicket:id="translation-area" class="span6">
+							<textarea wicket:id="translation" id="translation" rows="3"
+								cols="3" style="width: 97%;" placeholder="Translation">this is the translation</textarea>
+							<br />
+							<textarea wicket:id="translation-comment"
+								id="translation-comment" rows="3" cols="3"
+								style="align: right; width: 97%;" placeholder="Comment">this is the comment</textarea>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="span3">
+							<button wicket:id="previous" id="previous" type="submit"
+								value="previous" class="btn">
+								<i class="icon-backward"></i> previous
+							</button>
+						</div>
+						<div class="span6">
+							<div class="progress">
+								<div class="bar bar-success" wicket:id="progress">12 of 560</div>
+							</div>
+						</div>
+						<div class="span3">
+							<p align="right">
+								<button wicket:id="next" id="next" type="submit" class="btn">
+									<i class="icon-forward"></i> next
+								</button>
+							</p>
+						</div>
+					</div>
+					<input wicket:id="modify-indicator" class="modify-indicator"
+						type="checkbox" hidden="true" name="checkbox">
+				</form>
+				<div wicket:id="tools"></div>
+			</div>
+		</div>
+	</wicket:panel>
+</body>
+</html>

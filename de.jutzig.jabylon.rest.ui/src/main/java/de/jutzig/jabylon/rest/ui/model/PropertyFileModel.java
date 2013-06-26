@@ -7,14 +7,12 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 
 import de.jutzig.jabylon.properties.Property;
-import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
 /**

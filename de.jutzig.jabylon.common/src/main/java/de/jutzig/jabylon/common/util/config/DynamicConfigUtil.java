@@ -32,7 +32,7 @@ public class DynamicConfigUtil {
 		List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
 		for (IConfigurationElement child : configSections) {
 
-			if (hasPermissions(child, user) && isApplicable(child, domainObject)) {
+			if (isApplicable(child, domainObject)) {
 				applicable.add(child);
 			}
 
@@ -52,19 +52,6 @@ public class DynamicConfigUtil {
 
 		}
 		return applicable;
-	}
-
-	private static boolean hasPermissions(IConfigurationElement child, User user) {
-
-		IConfigurationElement[] children = child.getChildren("permission");
-		for (IConfigurationElement permission : children) {
-			if (user == null)
-				return false;
-			if (!user.hasPermission(permission.getAttribute("requires")))
-				return false;
-		}
-		return true;
-
 	}
 
 	private static boolean isApplicable(IConfigurationElement child, Object domainElement) {

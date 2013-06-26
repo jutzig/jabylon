@@ -32,7 +32,6 @@ Export-Package: de.jutzig.jabylon.ui.config,
  de.jutzig.jabylon.ui.container,
  de.jutzig.jabylon.ui.review,
  de.jutzig.jabylon.ui.styles,
- de.jutzig.jabylon.ui.team,
  de.jutzig.jabylon.ui.tools,
  de.jutzig.jabylon.ui.util
 Bundle-Activator: de.jutzig.jabylon.ui.Activator

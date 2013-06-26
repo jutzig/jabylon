@@ -13,7 +13,7 @@
 	<extension
          point="org.eclipse.equinox.http.registry.filters">
       <filter
-            alias="/jabylon"
+            alias="/"
             class="de.jutzig.jabylon.rest.ui.JabylonFilter"
             httpcontextId="jabylon">
          <init-param
@@ -22,7 +22,7 @@
          </init-param>
          <init-param
                name="filterMappingUrlPattern"
-               value="/jabylon/*">
+               value="/*">
          </init-param>
          <init-param
                name="configuration"
@@ -69,6 +69,26 @@
           name="Versions"
           tabID="versions">
     </tab>
+    <tab
+          name="Checks"
+          tabID="checks">
+    </tab>
+    <tab
+          name="Users"
+          tabID="users">
+    </tab>
+    <tab
+          name="Groups"
+          tabID="groups">
+    </tab>
+    <tab
+          name="Roles"
+          tabID="roles">
+    </tab>
+    <tab
+          name="Permissions"
+          tabID="permissions">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -77,51 +97,78 @@
           objectClass="de.jutzig.jabylon.properties.Workspace"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralWorkspaceConfig"
           tab="general">
-       <permission
-             requires="GLOBAL_EDIT_PROJECTS">
-       </permission>
     </section>
     <section
           name="General Project Settings"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.GeneralProjectConfig"
           tab="general">
-       <permission
-             requires="GLOBAL_EDIT_PROJECTS">
-       </permission>
     </section>
     <section
           name="Scanning"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ScanningConfigSection$ScanningConfig"
           tab="scanning">
-       <permission
-             requires="GLOBAL_EDIT_PROJECTS">
-       </permission>
     </section>
     <section
           name="Versions"
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.ProjectVersionsConfigSection$VersionsConfig"
           tab="versions">
-       <permission
-             requires="GLOBAL_EDIT_PROJECTS">
-       </permission>
     </section>
     <section
           name="Version Settings"
           objectClass="de.jutzig.jabylon.properties.ProjectVersion"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.VersionConfigSection$VersionConfig"
           tab="general">
-       <permission
-             requires="GLOBAL_EDIT_PROJECTS">
-       </permission>
+    </section>
+    <section
+          name="Translation Checks"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.TranslationChecksConfigSection$TranslationChecksConfig"
+          tab="checks">
+    </section>
+    <section
+          name="User Management"
+          objectClass="de.jutzig.jabylon.users.UserManagement"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UsersConfigSection$UsersConfigSectionContributor"
+          tab="users">
+    </section>
+    <section
+          name="User"
+          objectClass="de.jutzig.jabylon.users.User"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserConfigSection$UserConfigSectionContributor"
+          tab="general">
+    </section>
+    <section
+          name="User Roles"
+          objectClass="de.jutzig.jabylon.users.User"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.UserRolesConfigSection$UserRolesConfigSectionContributor"
+          tab="roles">
+    </section>
+    <section
+          name="Role Management"
+          objectClass="de.jutzig.jabylon.users.UserManagement"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolesConfigSection$RolesConfigSectionContributor"
+          tab="roles">
+    </section>
+    <section
+          name="Role Permissions"
+          objectClass="de.jutzig.jabylon.users.Role"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.RolePermissionsConfigSection$RolePermissionsConfigSectionContributor"
+          tab="permissions">
+    </section>
+    <section
+          name="Permissions"
+          objectClass="de.jutzig.jabylon.properties.Project"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.ProjectPermissionsConfigSection$ProjectPermissionsConfigSectionContributor"
+          tab="permissions">
     </section>
  </extension>
  <extension
        point="org.eclipse.equinox.http.registry.resources">
     <resource
-          alias="/jabylon"
+          alias="/"
           base-name="WebContent">
     </resource>
  </extension>

@@ -13,6 +13,7 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
         eType="#//Property" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="licenseHeader" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Property">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -128,6 +129,7 @@
       <eParameters name="path" eType="#//URI"/>
     </eOperations>
     <eOperations name="absoluteFilePath" eType="#//URI"/>
+    <eOperations name="toURI" eType="#//URI"/>
     <eOperations name="getChild">
       <eGenericType eTypeParameter="#//Resolvable/C"/>
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

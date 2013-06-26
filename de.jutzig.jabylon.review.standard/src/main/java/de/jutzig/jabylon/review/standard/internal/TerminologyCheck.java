@@ -10,14 +10,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.collect.MapMaker;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
+import de.jutzig.jabylon.common.review.ReviewParticipant;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesFactory;
@@ -27,32 +34,32 @@ import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.ReviewState;
 import de.jutzig.jabylon.properties.Severity;
 import de.jutzig.jabylon.properties.Workspace;
-import de.jutzig.jabylon.ui.review.ReviewParticipant;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@Component
+@Service
 public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
-
 	
 	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 
 	private static ThreadLocal<PropertyFileDescriptor> currentDescriptor = new ThreadLocal<PropertyFileDescriptor>(); 	
 	
-	private Map<Locale, Map<String, Property>> terminologyCache;
+	private LoadingCache<Locale, Map<String, Property>> terminologyCache;
+	
+	private static final Logger logger = LoggerFactory.getLogger(TerminologyCheck.class);
 	
 	/**
 	 * 
 	 */
 	public TerminologyCheck() {
 
-		MapMaker mapMaker = new MapMaker();
-		mapMaker.concurrencyLevel(1).softValues().expiration(60, TimeUnit.SECONDS);
-		terminologyCache = mapMaker.makeComputingMap(new Function<Locale, Map<String, Property>>() {
-
+		terminologyCache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).concurrencyLevel(1).build(new CacheLoader<Locale, Map<String, Property>>() {
+			
 			@Override
-			public Map<String, Property> apply(Locale from) {
+			public Map<String, Property> load(Locale key) throws Exception {
 				PropertyFileDescriptor descriptor = currentDescriptor.get();
 				if(descriptor==null)
 					return Collections.emptyMap();
@@ -61,7 +68,6 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 					return Collections.emptyMap();
 				return terminology.loadProperties().asMap();
 			}
-			
 		});
 	}
 
@@ -74,7 +80,13 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 		currentDescriptor.set(descriptor);
 		if(variant==null)
 			return null;
-		Map<String, Property> terminology = terminologyCache.get(variant);
+		Map<String, Property> terminology;
+		try {
+			terminology = terminologyCache.get(variant);
+		} catch (ExecutionException e) {
+			logger.error("Failed to retrieve termininology from cache. Skipping check.",e);
+			return null;
+		}
 		return analyze(master, slave, terminology);
 		
 	}
@@ -137,5 +149,20 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 		if(descriptors.isEmpty())
 			return null;
 		return descriptors.get(0);
+	}
+
+	@Override
+	public String getID() {
+		return "TerminologyCheck";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Checks that words that appear in the Terminology project in the template are properly translated"; 
+	}
+
+	@Override
+	public String getName() {
+		return "Terminology Check";
 	}
 }

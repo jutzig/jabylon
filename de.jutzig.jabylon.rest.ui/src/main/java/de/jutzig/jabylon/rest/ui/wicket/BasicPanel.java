@@ -17,6 +17,7 @@ public class BasicPanel<T>extends GenericPanel<T> {
 
 	private static final long serialVersionUID = 1L;
 	private transient PageParameters pageParameters;
+	private boolean constructed;
 
 	public BasicPanel(String id, IModel<T> model, PageParameters parameters) {
 		super(id,model);
@@ -43,4 +44,38 @@ public class BasicPanel<T>extends GenericPanel<T> {
 		}
 		return false;
 	}
+	
+
+	@Override
+	protected final void onBeforeRender() {
+
+		internalConstruct();
+		onBeforeRenderPanel();
+		super.onBeforeRender();
+	}
+
+	protected void onBeforeRenderPanel() {
+
+	}
+
+	private final void internalConstruct() {
+		if (!constructed) {
+			preConstruct();
+			construct();
+			constructed = true;
+
+		}
+	}
+
+	protected void preConstruct() {
+		// subclasses may override
+
+	}
+
+	protected void construct() {
+
+		// subclasses may override
+	}
+
+	
 }

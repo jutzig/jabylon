@@ -7,8 +7,7 @@
 package de.jutzig.jabylon.users.impl;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -31,6 +30,9 @@ import de.jutzig.jabylon.users.UsersPackage;
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getPassword <em>Password</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getRoles <em>Roles</em>}</li>
  *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getPermissions <em>Permissions</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getDisplayName <em>Display Name</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getType <em>Type</em>}</li>
+ *   <li>{@link de.jutzig.jabylon.users.impl.UserImpl#getEmail <em>Email</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,6 +58,36 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * @ordered
 	 */
 	protected static final String PASSWORD_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getDisplayName() <em>Display Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDisplayName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DISPLAY_NAME_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TYPE_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getEmail() <em>Email</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEmail()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String EMAIL_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -149,6 +181,60 @@ public class UserImpl extends CDOObjectImpl implements User {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getDisplayName() {
+		return (String)eDynamicGet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDisplayName(String newDisplayName) {
+		eDynamicSet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, newDisplayName);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getType() {
+		return (String)eDynamicGet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setType(String newType) {
+		eDynamicSet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, newType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getEmail() {
+		return (String)eDynamicGet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setEmail(String newEmail) {
+		eDynamicSet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, newEmail);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -164,13 +250,21 @@ public class UserImpl extends CDOObjectImpl implements User {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean hasPermission(String permission) {
+	public boolean hasPermission(String requestedPermission) {
 		EList<Permission> allPermissions = getAllPermissions();
-		for (Permission permission2 : allPermissions) {
-			if(permission2.getName().equals(permission))
-				return true; 
+		for (Permission availablePermission : allPermissions) {
+			if(matches(availablePermission,requestedPermission))
+				return true;
 		}
 		return false;
+	}
+	
+	private boolean matches(Permission availablePermission, String requestedPermission) {
+		if(availablePermission.getName()==null || availablePermission.getName().isEmpty())
+			return false;
+		String permissionRegex = availablePermission.getName().replace("*", ".*");
+		permissionRegex += ".*";
+		return Pattern.matches(permissionRegex, requestedPermission);
 	}
 
 	/**
@@ -189,6 +283,12 @@ public class UserImpl extends CDOObjectImpl implements User {
 				return getRoles();
 			case UsersPackage.USER__PERMISSIONS:
 				return getPermissions();
+			case UsersPackage.USER__DISPLAY_NAME:
+				return getDisplayName();
+			case UsersPackage.USER__TYPE:
+				return getType();
+			case UsersPackage.USER__EMAIL:
+				return getEmail();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -216,6 +316,15 @@ public class UserImpl extends CDOObjectImpl implements User {
 				getPermissions().clear();
 				getPermissions().addAll((Collection<? extends Permission>)newValue);
 				return;
+			case UsersPackage.USER__DISPLAY_NAME:
+				setDisplayName((String)newValue);
+				return;
+			case UsersPackage.USER__TYPE:
+				setType((String)newValue);
+				return;
+			case UsersPackage.USER__EMAIL:
+				setEmail((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -240,6 +349,15 @@ public class UserImpl extends CDOObjectImpl implements User {
 			case UsersPackage.USER__PERMISSIONS:
 				getPermissions().clear();
 				return;
+			case UsersPackage.USER__DISPLAY_NAME:
+				setDisplayName(DISPLAY_NAME_EDEFAULT);
+				return;
+			case UsersPackage.USER__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
+			case UsersPackage.USER__EMAIL:
+				setEmail(EMAIL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -260,6 +378,12 @@ public class UserImpl extends CDOObjectImpl implements User {
 				return !getRoles().isEmpty();
 			case UsersPackage.USER__PERMISSIONS:
 				return !getPermissions().isEmpty();
+			case UsersPackage.USER__DISPLAY_NAME:
+				return DISPLAY_NAME_EDEFAULT == null ? getDisplayName() != null : !DISPLAY_NAME_EDEFAULT.equals(getDisplayName());
+			case UsersPackage.USER__TYPE:
+				return TYPE_EDEFAULT == null ? getType() != null : !TYPE_EDEFAULT.equals(getType());
+			case UsersPackage.USER__EMAIL:
+				return EMAIL_EDEFAULT == null ? getEmail() != null : !EMAIL_EDEFAULT.equals(getEmail());
 		}
 		return super.eIsSet(featureID);
 	}

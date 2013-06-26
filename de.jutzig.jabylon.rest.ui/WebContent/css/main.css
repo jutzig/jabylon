@@ -9,7 +9,20 @@ body {
 }
 
 .navbar { /* padding-left: 60px; */
-	
+
+}
+
+/** this is to allow nested paragraphs in the navbar (logout link) */
+.navbar .nav > li > p > a {
+  color: #777777;
+  /** text-shadow: 0 1px 0 #ffffff; */
+}
+
+.navbar .nav > li > p > a:focus,
+.navbar .nav > li > p > a:hover {
+  color: #333333;
+  text-decoration: none;
+  background-color: transparent;
 }
 
 /** to ensure that disabled toolbar links are in the right position*/
@@ -18,17 +31,30 @@ body {
 	padding: 10px 15px;
 }
 
+/** Feedback */
+.feedbackPanel.ajax {
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	width: 100%;
+}
+.feedbackPanel.ajax .alert {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /** buttons */
 .toggle-button {
-	
+
 }
 
 .next-button {
-	
+
 }
 
 .previous-button {
-	
+
 }
 
 /** sort icons */
@@ -90,7 +116,80 @@ table.table {
 	max-width: none !important;
 }
 
-/* make progress label in progress bars bold */ 
+/* make progress label in progress bars bold */
 div.progress div.bar {
 	font-weight: bold;
+}
+
+form.jabylon-properties-form {
+    padding-bottom: 150px;
+}
+
+div.jabylon-properties-toolbar {
+
+    bottom: 0;
+    height: 150px;
+    left: 0;
+    position: fixed;
+    text-align: left;
+    width: 100%;
+    z-index: 1000;
+
+
+    background-color: #FFFFFF;
+    /* background-image: linear-gradient(to bottom, #222222, #111111);
+    background-repeat: repeat-x; */
+    border-color: #252525;
+
+    border-top-style: solid;
+    border-top-width: 2px
+
+}
+
+form.jabylon-properties-form table.jabylon-property-tool-table {
+	overflow: auto;
+	height: 150px;
+}
+
+table.jabylon-property-tool-table span{
+	font-size: small;
+}
+
+table.jabylon-property-tool-table div.progress {
+    height: 10px;
+    margin-bottom: 0px;
+}
+
+/* get rid of the default wicket palette styles */
+table.palette {
+    border: 0 none;
+}
+
+table.palette td.header {
+    background-color: white;
+    border: none;
+    font-size: 9pt;
+    font-weight: bold;
+    padding: 2px;
+    text-align: center;
+}
+
+table.palette td.pane {
+    text-align: center;
+    width: 100px;
+}
+
+table.palette td.pane select {
+    width: 200px;
+}
+
+table.palette td.buttons {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
+table.palette td.buttons button {
+    height: 30px;
+    width: 25px;
 }

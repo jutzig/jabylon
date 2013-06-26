@@ -104,15 +104,32 @@ public class ScanConfigurationTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getExcludes()
-	 * @generated NOT
+	 * @generated
 	 */
 	public void testGetExcludes() {
+	}
+
+	public void testGetExcludesWithDefault() {
 		assertEquals(0, getFixture().getExcludes().size());
-		
-		getFixture().setExclude("A\nB\nC");
-		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
-		
+	}
+
+	public void testGetExcludesWithLF() {
 		getFixture().setExclude("A\nB\nC\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
+	}
+
+	public void testGetExcludesWithCRLF() {
+		getFixture().setExclude("A\r\nB\r\nC\r\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
+	}
+
+	public void testGetExcludesWithCR() {
+		getFixture().setExclude("A\rB\rC\r");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
+	}
+
+	public void testGetExcludesWithSpaces() {
+		getFixture().setExclude(" A \nB\nC \n");
 		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
 	}
 
@@ -121,17 +138,33 @@ public class ScanConfigurationTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.jutzig.jabylon.properties.ScanConfiguration#getIncludes()
-	 * @generated NOT
+	 * @generated
 	 */
 	public void testGetIncludes() {
-		
+	}
+
+	public void testGetIncludesWithDefault() {
 		assertEquals(1, getFixture().getIncludes().size());
 		Assert.assertArrayEquals(new String[]{"**/*.properties"}, getFixture().getIncludes().toArray(new String[0]));
-		
-		getFixture().setInclude("A\nB\nC");
-		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
-		
+	}
+
+	public void testGetIncludesWithLF() {
 		getFixture().setInclude("A\nB\nC\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
+	}
+
+	public void testGetIncludesWithCRLF() {
+		getFixture().setInclude("A\r\nB\r\nC\r\n");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
+	}
+
+	public void testGetIncludesWithCR() {
+		getFixture().setInclude("A\rB\rC\r");
+		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
+	}
+
+	public void testGetIncludesWithSpaces() {
+		getFixture().setInclude(" A \nB\nC \n");
 		Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getIncludes().toArray(new String[0]));
 	}
 

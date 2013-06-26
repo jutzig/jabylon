@@ -13,7 +13,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.jutzig.jabylon.common.util.config.DynamicConfigUtil;
+import de.jutzig.jabylon.properties.Resolvable;
+import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicPanel;
 import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
@@ -29,7 +32,13 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 
 	public SettingsNavBarPanel(String id, IModel<T> object, PageParameters parameters) {
 		super(id, object, parameters);
-		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,parameters); //$NON-NLS-1$
+		PageParameters params = parameters;
+		if (object != null && object.getObject() instanceof Resolvable && !(object.getObject() instanceof Workspace)) { 
+			//workspace config isn't all that interesting. Show the overview by default instead
+			Resolvable r = (Resolvable) object.getObject();
+			params = WicketUtil.buildPageParametersFor(r);
+		}
+		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link",SettingsPage.class,params); //$NON-NLS-1$
 
 		//TODO: this looks shitty with bootstrap currently
 		if(AuthenticatedWebSession.get().isSignedIn())
@@ -55,15 +64,15 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 		add(link);
 	}
 
-	public static class SettingsPanelFactory implements PanelFactory, Serializable
+	public static class SettingsPanelFactory implements PanelFactory<Object>, Serializable
 	{
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new SettingsNavBarPanel<T>(id, input, params);
+			return new SettingsNavBarPanel<Object>(id, input, params);
 		}
 		
 	}

@@ -11,7 +11,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
@@ -49,7 +49,8 @@ public class ReorgIndexJob implements JobExecution {
 
 	protected IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-		return new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_29), MaxFieldLength.UNLIMITED);
+		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
+		return new IndexWriter(directory, config);
 	}
 
 	@Override
@@ -68,7 +69,6 @@ public class ReorgIndexJob implements JobExecution {
 			CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 			Workspace workspace = (Workspace) resource.getContents().get(0);
 			indexWorkspace(workspace, writer);
-			writer.optimize();
 			writer.commit();
 			writer.close();
 			closed = true;

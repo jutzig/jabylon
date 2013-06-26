@@ -6,12 +6,16 @@
  */
 package de.jutzig.jabylon.users.util;
 
-import de.jutzig.jabylon.users.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
+
+import de.jutzig.jabylon.users.AuthType;
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
+import de.jutzig.jabylon.users.UsersPackage;
 
 /**
  * <!-- begin-user-doc -->

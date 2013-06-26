@@ -3,12 +3,14 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.injector;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.wicket.proxy.IProxyTargetLocator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -21,9 +23,11 @@ public class OSGiProxyTargetLocator implements IProxyTargetLocator {
 	
 	private static final long serialVersionUID = 1L;
 	private String typeName;
+	private boolean isList;
 	
-	public OSGiProxyTargetLocator(Field field) {
-		typeName = field.getType().getName();
+	public OSGiProxyTargetLocator(Class<?> clazz, boolean isList) {
+		typeName = clazz.getName();
+		this.isList = isList;
 	}
 	
 	/* (non-Javadoc)
@@ -31,6 +35,38 @@ public class OSGiProxyTargetLocator implements IProxyTargetLocator {
 	 */
 	@Override
 	public Object locateProxyTarget() {
+		if(isList)
+			return getAllServices();
+		return getSingleService();
+
+	}
+
+	private List<?> getAllServices() {
+		Bundle bundle = FrameworkUtil.getBundle(OSGiProxyTargetLocator.class);
+		BundleContext context = bundle.getBundleContext();
+		ServiceReference<?>[] references;
+		try {
+			references = context.getAllServiceReferences(typeName, null);
+			if(references!=null && references.length>0)
+			{
+				List<Object> services = new ArrayList<Object>(references.length);
+				for (ServiceReference<?> serviceReference : references) {
+					Object service = context.getService(serviceReference);
+					if(service!=null)
+						services.add(service);
+				}
+				if(!services.isEmpty())
+					return services;
+			}
+		} catch (InvalidSyntaxException e) {
+			// can't happen we use no filter
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private Object getSingleService() {
 		Bundle bundle = FrameworkUtil.getBundle(OSGiProxyTargetLocator.class);
 		BundleContext context = bundle.getBundleContext();
 		ServiceReference<?> reference = context.getServiceReference(typeName);

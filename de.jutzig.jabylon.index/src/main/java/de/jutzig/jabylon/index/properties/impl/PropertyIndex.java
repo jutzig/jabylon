@@ -11,7 +11,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
@@ -45,7 +45,9 @@ public class PropertyIndex extends Job implements PropertiesListener {
 	protected IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 
-		return new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_29), MaxFieldLength.UNLIMITED);
+		IndexWriterConfig c = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
+		
+		return new IndexWriter(directory, c);
 	}
 
 	@Override

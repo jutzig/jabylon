@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -37,9 +39,13 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 
 import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.cdo.server.ServerConstants;
@@ -77,6 +83,12 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	private Workspace workspace;
 
 	private Thread runner;
+	
+	private LoadingCache<CDOID, PropertyFile> cache;
+
+	private boolean active;
+	
+	
 
 	public PropertiesPersistenceServiceImpl() {
 		listeners = new CopyOnWriteArrayList<PropertiesListener>();
@@ -91,18 +103,35 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		runner = new Thread(this, "Properties Persistence Service");
 		runner.setDaemon(true);
 		runner.start();
+		active = true;
 	}
 	
 	@Deactivate
 	public void deactivate()
 	{
-		listeners.clear();
+		shutdownQueue();
+		listeners.clear();	
 		queue = null;
 		runner.interrupt();
 		runner = null;
 	}
 
 	
+	private void shutdownQueue() {
+		active = false;
+		int size = queue.size();
+		logger.info("Shutting down. Queuesize is {}",size);
+		while(queue.size()>0) {
+			logger.info("Shutting down. Remaining Queuesize is {}",queue.size());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				logger.info("Interrupted while draining queue. Exiting");
+			}
+		}
+		
+	}
+
 	public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
 		this.repositoryConnector = repositoryConnector;
 		CDOSession session = repositoryConnector.createSession();
@@ -112,6 +141,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		view.options().addChangeSubscriptionPolicy(CDOAdapterPolicy.ALL);
 		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 		workspace = (Workspace) resource.getContents().get(0);
+		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(20000).weigher(new PropertySizeWeigher()).recordStats().build(new PropertyFileCacheLoader(workspace.cdoView()));
 		workspace.eAdapters().add(new EContentAdapter() {
 			@Override
 			public void notifyChanged(Notification notification) {
@@ -278,13 +308,24 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 
 	@Override
 	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
+		if(!active)
+		{
+			logger.error("Received save request while not active");
+			throw new IllegalStateException("The PropertiesPersistanceService is deactivated");
+		}
 		try {
 			PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
-			queue.put(new PropertyTuple(adaptedDescriptor, file, autoTranslate));
+			PropertyFile writeCopy = createCopy(file);
+			// create a write copy to be independent of future writes
+			queue.put(new PropertyTuple(adaptedDescriptor, writeCopy, autoTranslate));
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
 		}
 
+	}
+
+	private PropertyFile createCopy(PropertyFile file) {
+		return EcoreUtil.copy(file);
 	}
 
 	/*
@@ -360,6 +401,8 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 			logger.warn("Received Interrupt. Shutting down...");
 			// let thread end...
 		} finally {
+			if(queue!=null)
+				queue.clear();
 			if (transaction != null)
 				transaction.close();
 		}
@@ -402,6 +445,18 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 			listener.propertyFileModified(descriptor, diff, autoSync);
 		}
 
+	}
+
+	@Override
+	public PropertyFile loadProperties(PropertyFileDescriptor descriptor) throws ExecutionException {
+		
+		return loadProperties(descriptor.cdoID());
+	}
+	
+	@Override
+	public PropertyFile loadProperties(CDOID descriptor) throws ExecutionException {
+		
+		return cache.get(descriptor);
 	}
 
 }

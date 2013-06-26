@@ -5,7 +5,6 @@ package de.jutzig.jabylon.index.properties;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
-import org.eclipse.emf.cdo.view.CDOView;
 
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
@@ -25,6 +24,11 @@ public interface QueryService {
 	String FIELD_VERSION = "version";
 	String FIELD_PROJECT = "project";
 	String FIELD_CDO_ID = "cdoID";
+	/**
+	 * location of the template file, or empty string if there is none
+	 * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation()
+	 */
+	String FIELD_TEMPLATE_LOCATION = "templatePath";
 	String MASTER = "master";
 
 
@@ -32,6 +36,6 @@ public interface QueryService {
 
 	SearchResult search(Query query, int maxHits);
 
-	PropertyFileDescriptor getDescriptor(Document doc, CDOView view);
+	PropertyFileDescriptor getDescriptor(Document doc);
 
 }

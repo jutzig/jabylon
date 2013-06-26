@@ -6,14 +6,17 @@
  */
 package de.jutzig.jabylon.users.util;
 
-import de.jutzig.jabylon.users.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
+
+import de.jutzig.jabylon.users.AuthType;
+import de.jutzig.jabylon.users.Permission;
+import de.jutzig.jabylon.users.Role;
+import de.jutzig.jabylon.users.User;
+import de.jutzig.jabylon.users.UserManagement;
+import de.jutzig.jabylon.users.UsersPackage;
 
 /**
  * <!-- begin-user-doc -->

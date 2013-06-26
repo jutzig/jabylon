@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -49,6 +48,8 @@ import de.jutzig.jabylon.rest.ui.wicket.components.ProgressPanel;
 import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
+import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
@@ -75,7 +76,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 				item.add(progressPanel);
 				ProjectVersion projectVersion = item.getModelObject();
-				item.add(new ExternalLink("edit",projectVersion.getParent().getName() + "/" + projectVersion.getName()));
+				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(projectVersion)));
 				item.add(createCheckoutAction(progressPanel, item.getModel()));
 				item.add(createRescanAction(progressPanel, item.getModel()));
 				item.add(createUpdateAction(progressPanel, item.getModel()));
@@ -90,7 +91,6 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 	}
 
 	private Component buildAddNewLink(IModel<Project> model) {
-		PageParameters params = new PageParameters();
 		Project project = model.getObject();
 		if (project.cdoState() == CDOState.NEW || project.cdoState() == CDOState.TRANSIENT) {
 			// it's a new project, we can't add anything yet
@@ -98,9 +98,9 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 			link.setEnabled(false);
 			return link;
 		}
-		params.set(0, project.getName());
-		params.add(SettingsPage.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
-		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
+		PageParameters parameters = WicketUtil.buildPageParametersFor(project);
+		parameters.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
+		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, parameters);
 	}
 
 	private IModel<String> createSummaryModel(final IModel<ProjectVersion> modelObject) {
@@ -352,7 +352,7 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences prefs) {
+		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
 			return new ProjectVersionsConfigSection(id, input, prefs);
 		}
 
@@ -362,9 +362,13 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
 		}
 
+
 		@Override
-		public boolean hasFormComponents() {
-			return false;
+		public String getRequiredPermission() {
+			String projectName = null;
+			if(getDomainObject()!=null)
+				projectName = getDomainObject().getName();
+			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
 		}
 	}
 }

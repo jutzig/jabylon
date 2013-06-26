@@ -1,0 +1,436 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>dependencies</artifactId>
+	<packaging>pom</packaging>
+	<description>lists the dependencies necessary to provide a standalone jabylon</description>
+
+
+	<parent>
+		<artifactId>jabylon-parent</artifactId>
+		<groupId>de.jutzig.jabylon</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-repo</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							
+							<useRepositoryLayout>true</useRepositoryLayout>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>index-obr</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>index</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<mavenRepository>${project.build.directory}/dependency</mavenRepository>
+							<obrRepository>target/repository.xml</obrRepository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<dependencies>
+		<!-- standalone product specific -->
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>launcher</artifactId>
+			<version>1.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.update</groupId>
+			<artifactId>configurator</artifactId>
+			<version>3.3.200</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>simpleconfigurator</artifactId>
+			<version>1.0.301</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- equinox -->
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>app</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>contenttype</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>common</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>preferences</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>security</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>services</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>registry</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>jobs</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>ds</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- CDO -->
+		<dependency>
+			<artifactId>common</artifactId>
+			<groupId>org.eclipse.emf.cdo</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>cdo</artifactId>
+			<groupId>org.eclipse.emf</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>server</artifactId>
+			<groupId>org.eclipse.emf.cdo</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>net4j</artifactId>
+			<groupId>org.eclipse.emf.cdo</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>net4j</artifactId>
+			<groupId>org.eclipse</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>db</artifactId>
+			<groupId>org.eclipse.net4j</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.net4j</groupId>
+			<artifactId>util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>jvm</artifactId>
+			<groupId>org.eclipse.net4j</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>db</artifactId>
+			<groupId>org.eclipse.emf.cdo.server</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>net4j</artifactId>
+			<groupId>org.eclipse.emf.cdo.server</groupId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<artifactId>h2</artifactId>
+			<groupId>org.eclipse.net4j.db</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>h2</artifactId>
+			<groupId>org</groupId>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<!-- lucene -->
+		<dependency>
+			<artifactId>core</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>misc</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>queries</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<artifactId>lucene</artifactId>
+			<groupId>org.apache</groupId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- EMF -->
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>common</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>ecore</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf.ecore</groupId>
+			<artifactId>change</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf.ecore</groupId>
+			<artifactId>xmi</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- misc -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>servlet</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache</groupId>
+			<artifactId>ant</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>slf4j</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>classic</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- wicket -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-auth-roles</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-request</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-ioc</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- GIT -->
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- shell -->
+		<dependency>
+			<groupId>org.apache.felix.gogo</groupId>
+			<artifactId>command</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix.gogo</groupId>
+			<artifactId>shell</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix.gogo</groupId>
+			<artifactId>runtime</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>console</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- OBR support -->
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.bundlerepository</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>server</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>util</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>http</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>io</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>servlet</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>security</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>continuation</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox.http</groupId>
+			<artifactId>jetty</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.equinox.http</groupId>
+			<artifactId>registry</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox.http</groupId>
+			<artifactId>servlet</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Flyway -->
+		<dependency>
+			<groupId>com.googlecode.flyway</groupId>
+			<artifactId>flyway-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+</project>

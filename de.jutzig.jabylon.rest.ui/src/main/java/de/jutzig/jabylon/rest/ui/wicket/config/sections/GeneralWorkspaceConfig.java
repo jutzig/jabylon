@@ -6,13 +6,14 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Workspace> input, Preferences prefs) {
+	public WebMarkupContainer doCreateContents(String id, IModel<Workspace> input, Preferences prefs) {
 		return new WorkspaceConfigSection(id, input, prefs);
 	}
 
@@ -21,11 +22,10 @@ public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public boolean hasFormComponents() {
-		return false;
-	}
 
+	@Override
+	public String getRequiredPermission() {
+		return CommonPermissions.WORKSPACE_CONFIG;
+	}
 
 }

@@ -21,14 +21,15 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.EMFFactoryConverter;
-import de.jutzig.jabylon.rest.ui.model.RepositoryLookup;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
-import de.jutzig.jabylon.rest.ui.security.JabylonAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.security.LoginPage;
+import de.jutzig.jabylon.rest.ui.security.PermissionBasedAuthorizationStrategy;
 import de.jutzig.jabylon.rest.ui.util.PageProvider;
+import de.jutzig.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.injector.OSGiInjector;
 import de.jutzig.jabylon.rest.ui.wicket.pages.StartupPage;
@@ -36,11 +37,9 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.WelcomePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class JabylonApplication extends AuthenticatedWebApplication {
-
-	public static final String CONTEXT = "jabylon"; //$NON-NLS-1$
 
 	@SuppressWarnings("rawtypes")
 	private ServiceTracker pageTracker;
@@ -49,12 +48,12 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
-		RepositoryLookup connector = Activator.getDefault().getRepositoryLookup();
+		URIResolver connector = Activator.getDefault().getRepositoryLookup();
 		if (connector != null)
 			return WelcomePage.class;
 		return StartupPage.class;
@@ -67,7 +66,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		OSGiInjector injector = new OSGiInjector(this);
 		getBehaviorInstantiationListeners().add(injector);
 		getComponentInstantiationListeners().add(injector);
-		getSecuritySettings().setAuthorizationStrategy(new JabylonAuthorizationStrategy(this));
+		getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());
+		getAjaxRequestTargetListeners().add(new AjaxFeedbackListener());
 		final BundleContext bundleContext = Activator.getDefault().getContext();
 
 		pageTracker = new ServiceTracker(bundleContext, PageProvider.class, new ServiceTrackerCustomizer() {
@@ -113,9 +113,12 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		pageTracker.open();
 
 		mountPage("/login", LoginPage.class); //$NON-NLS-1$
-		mountPage("/settings/workspace", SettingsPage.class); //$NON-NLS-1$
+		mountPage("/settings", SettingsPage.class); //$NON-NLS-1$
 //		mountPage("/workspace", ResourcePage.class);
+		
+		
 	}
+
 
 	protected IConverterLocator newConverterLocator() {
 		ConverterLocator converterLocator = new ConverterLocator();
@@ -124,8 +127,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 		return converterLocator;
 	}
 
-	
-	
+
+
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return CDOAuthenticatedSession.class;

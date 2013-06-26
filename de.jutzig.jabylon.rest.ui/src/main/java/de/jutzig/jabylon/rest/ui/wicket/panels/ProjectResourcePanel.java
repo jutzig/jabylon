@@ -3,21 +3,20 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.awt.Point;
 import java.text.MessageFormat;
-import java.util.Locale;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.request.Url;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.request.resource.UrlResourceReference;
+import org.eclipse.emf.common.util.EList;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
@@ -26,17 +25,20 @@ import de.jutzig.jabylon.properties.PropertiesPackage;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.properties.ResourceFolder;
+import de.jutzig.jabylon.properties.Review;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.properties.util.PropertiesSwitch;
-import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
+import de.jutzig.jabylon.rest.ui.util.GlobalResources;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  */
-public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> {
+public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> implements RestrictedComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,9 +46,17 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		super("content", object, parameters);
 		add(new Label("header", new LabelSwitch().doSwitch(object)));
 	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
+		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_DATATABLES_CUSTOMSORT));
+		super.renderHead(response);
+	}
 
 	@Override
-	protected void onBeforeRender() {
+	protected void onBeforeRenderPanel() {
 		ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModel(),
 				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
 		final boolean endsOnSlash = urlEndsOnSlash();
@@ -70,9 +80,15 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 				ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
 				item.add(link);
-				Label progress = new Label("progress", String.valueOf(resolvable.getPercentComplete())+"%");
-				progress.add(new AttributeModifier("style", "width: " + resolvable.getPercentComplete() + "%"));
+				
+				Point widths = computeProgressBars(target.getEndPoint());
+				Label progress = new Label("progress", String.valueOf(widths.x)+"%");
+				progress.add(new AttributeModifier("style", "width: " + widths.x  + "%"));
+				Label warning = new Label("warning", "");
+				warning.add(new AttributeModifier("style", "width: " + widths.y  + "%"));
 				item.add(progress);
+				item.add(warning);
+				
 				new ImageSwitch(item).doSwitch(target.getEndPoint());
 				item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
 			}
@@ -80,7 +96,29 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		};
 		// dataView.setItemsPerPage(10);
 		add(dataView);
-		super.onBeforeRender();
+	}
+
+	/**
+	 * computes the width of the two stacked progress bars
+	 * @param resolvable
+	 * @return
+	 */
+	protected Point computeProgressBars(Resolvable<?, ?> resolvable) {
+		
+		int greenWidth = resolvable.getPercentComplete();
+		int yellowWidth = 0;
+		if (resolvable instanceof PropertyFileDescriptor) {
+			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolvable;
+			int keys = descriptor.getMaster() == null ? descriptor.getKeys() : descriptor.getMaster().getKeys();
+			if(keys>0)
+			{
+				EList<Review> reviews = descriptor.getReviews();
+				yellowWidth = (int) (reviews.size()*100/(double)keys);
+				greenWidth -= yellowWidth;
+			}
+		}
+		return new Point(greenWidth, yellowWidth);
+
 	}
 
 	private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {
@@ -110,6 +148,22 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 		LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
 		return target;
 
+	}
+
+	@Override
+	public String getRequiredPermission() {
+		Resolvable<?, ?> object = getModelObject();
+		while(object!=null) {
+			if (object instanceof Project) {
+				Project project = (Project) object;
+				return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
+			}
+			else if (object instanceof Workspace) {
+				return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,CommonPermissions.ACTION_VIEW);
+			}
+			object = object.getParent();
+		}
+		return null;
 	}
 }
 

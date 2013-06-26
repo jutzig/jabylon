@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
@@ -38,13 +37,13 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 
 
-	public static class SearchPanelFactory implements PanelFactory, Serializable {
+	public static class SearchPanelFactory implements PanelFactory<Object>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public <T> Panel createPanel(PageParameters params, IModel<T> input, String id) {
+		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new SearchPanel<T>(id, input, params);
+			return new SearchPanel<Object>(id, input, params);
 
 		}
 
@@ -68,7 +67,8 @@ public class SearchPanel<T> extends BasicPanel<T> {
 
 			PageParameters params = new PageParameters();
 			params.add(SearchPage.SEARCH_TERM, getSearchString());
-			params.add(SearchPage.SCOPE, uri);
+			String scope = getPageParameters().get(SearchPage.SCOPE).toString(uri.toString()); //if there already is a scope, use it. Otherwise use the current uri
+			params.add(SearchPage.SCOPE, scope);
 			setResponsePage(SearchPage.class, params);
 		}
 

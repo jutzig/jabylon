@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.ObjectInputStream.GetField;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
@@ -91,7 +90,7 @@ public class PropertiesHelperTest {
 			Property property = fixture.readProperty(reader);
 			assertEquals("DTM.CASCADE_SESSION_FRAMES_TEXT", property.getKey());
 			assertEquals("Cascade", property.getValue());
-			assertEquals("test", property.getComment());
+			assertEquals("test", fixture.getLicenseHeader());
 		} finally {
 			if (reader != null)
 				reader.close();
@@ -242,5 +241,17 @@ public class PropertiesHelperTest {
 		InputStream in = Mockito.mock(InputStream.class);
 		when(in.markSupported()).thenReturn(false);
 		fixture.checkForBom(in);
+	}
+	
+	/**
+	 * tests that files that contain only a newline are handled correctly
+	 * http://github.com/jutzig/jabylon/issues/issue/104
+	 * @throws IOException 
+	 */
+    @Test
+	public void testEmptyFile() throws IOException {
+    	StringInputStream in = new StringInputStream("\n\r");
+    	Property property = fixture.readProperty(new BufferedReader(new InputStreamReader(in)));
+    	assertNull(property);
 	}
 }

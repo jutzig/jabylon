@@ -9,6 +9,7 @@ import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import de.jutzig.jabylon.security.CommonPermissions;
 
 
 /**
@@ -25,14 +26,30 @@ public class GitConfigSection extends AbstractConfigSection<Project>{
 
 
 	@Override
-	public WebMarkupContainer createContents(String id, IModel<Project> input, Preferences config) {
-		return new GitConfigPanel(id, input, config);
+	public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences config) {
+		GitConfigPanel panel = new GitConfigPanel(id, input, config);
+		panel.setVisible(gitSelected(input));
+		return panel;
 	}
+
+	@Override
+	public boolean isVisible(IModel<Project> input, Preferences config) {
+		return gitSelected(input) && super.isVisible(input, config);
+	}
+
 
 	@Override
 	public void commit(IModel<Project> input, Preferences config) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String getRequiredPermission() {
+		String projectName = null;
+		if(getDomainObject()!=null)
+			projectName = getDomainObject().getName();
+		return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
 	}
 
 }

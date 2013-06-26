@@ -1,0 +1,29 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+
+	<table class="table table-striped table-hover table-condensed jabylon-property-tool-table" id="similarity-table">
+		<thead>
+			<tr>
+				<th width="42%"><wicket:message key="SimilarStringsToolPanel.template.column">Template</wicket:message></th>
+				<th width="42%"><wicket:message key="SimilarStringsToolPanel.translation.column">Translation</wicket:message></th>
+				<th width="6%"><wicket:message key="SimilarStringsToolPanel.link.column">Link</wicket:message></th>
+				<th width="10%"><wicket:message key="SimilarStringsToolPanel.similarity.column">Similarity</wicket:message></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr wicket:id="children">
+				<td><span wicket:id="template">Template</span></td>
+				<td><span wicket:id="translation">translation</span></td>
+				<td><a wicket:id="link">open</a></td>
+				<td>
+					<div class="progress">
+						<div class="bar" wicket:id="similarity"></div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</wicket:panel>
+</html>

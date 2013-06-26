@@ -3,10 +3,16 @@ var lastExpanded;
 //to remember what to do when tab-key is used
 var currentFocus;
 
+//keep track of the last selected key, to reduce load in 'requestAid'
+var lastSelectedKey;
+
 $(document).ready(function() {
-	
+
 	selectFuzzyRow();
-	
+
+	//show JS tooltip on badges
+	$('.label').tooltip();
+
 	$(":input").focus(function () {
 		if(this && this.tagName && this.tagName.toLowerCase() == "textarea") {
 			currentFocus = this;
@@ -16,7 +22,8 @@ $(document).ready(function() {
 	});
 
 	$('#table').dataTable({
-		"iDisplayLength" : 50
+		"iDisplayLength" : 50,
+		"bPaginate": false
 	});
 
 	// this is to make an AJAX request whenever a textarea is selected
@@ -24,7 +31,12 @@ $(document).ready(function() {
 		var textArea = $(this);
 		var tr = textArea.parents('tr');
 		var keyField = tr.find('td span').first();
-		requestAid(keyField.text());
+		var key = keyField.text();
+		if(lastSelectedKey!=key)
+		{
+			lastSelectedKey = key;
+			requestAid(key);
+		}
 	});
 
 	$('.next-button').click(function() {
@@ -41,7 +53,7 @@ $(document).ready(function() {
 		collapseRow(parent);
 	});
 
-	
+
 
 	// initialize keyboard shortcuts
 	shortcut.add("Ctrl+Down", function() {
@@ -84,8 +96,8 @@ $(document).ready(function() {
 			expandRow(next);
 			next.find('textarea[placeholder~="Translation"]').focus();
 		}
-		
-		
+
+
 	});
 
 
@@ -97,16 +109,18 @@ $(document).ready(function() {
 		var sData = $('textarea', table.fnGetNodes()).serialize();
 		var form = $('#properties-form');
 		var url = form.attr('action');
-		$.post(url, sData);
-		location.reload();
-		return true;
+		var theLocation = location;
+		$.post(url, sData).done(function() {
+	       	theLocation.reload();
+    		return true;
+        });;
 	});
 
-	
+
 });
 
 // automatically expand the first row that has an error
-function selectFuzzyRow() 
+function selectFuzzyRow()
 {
 	//TODO: for some reason this breaks without the timeout?
 	setTimeout(function(){

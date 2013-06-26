@@ -48,7 +48,7 @@ import de.jutzig.jabylon.rest.api.json.JSONEmitter;
  * TODO short description for ApiServlet.
  * <p>
  * Long description for ApiServlet.
- * 
+ *
  * @author utzig
  */
 public class ApiServlet extends HttpServlet
@@ -114,6 +114,9 @@ public class ApiServlet extends HttpServlet
 		String info = path;
 		if (info == null)
 			info = "";
+		//FIXME: this is for backwards compatibility. Unify this with URI resolver
+		if(info.startsWith("/workspace"))
+			info = info.replaceFirst("/workspace", "");
 		org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(info);
 		return workspace.resolveChild(uri);
 
@@ -255,7 +258,7 @@ public class ApiServlet extends HttpServlet
 				int read = inputStream.read(buffer);
 				if (read > 0)
 					out.write(buffer, 0, read);
-				if (read < buffer.length)
+				if (read < 0)
 					break;
 			}
 		} finally {

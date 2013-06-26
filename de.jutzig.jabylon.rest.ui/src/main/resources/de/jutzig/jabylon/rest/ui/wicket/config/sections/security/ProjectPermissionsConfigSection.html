@@ -1,0 +1,51 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+
+	<h3>Role Permissions</h3>
+	<ul class="nav nav-list">
+		<li class="divider"></li>
+	</ul>
+	<div class="row">
+		<table class="span6">
+			<tr wicket:id="rolePermissionRow">
+				<td><span wicket:id="registrant"></span></td>
+				<td><select wicket:id="permission"></select></td>
+			</tr>
+		</table>
+
+		<div style="clear: both; padding-top: 15px;" class="row-fluid">
+			<form style="padding: 20px 40px;" class="well form-inline"
+				wicket:id="addRolePermissionForm">
+				<select class="input-xlarge" wicket:id="registrant"></select> <select
+					class="input-large" wicket:id="permission"></select> <input
+					class="btn btn-success" type="submit" value="Add"
+					wicket:id="addPermissionButton" />
+			</form>
+		</div>
+	</div>
+
+	<h3>User Permissions</h3>
+	<ul class="nav nav-list">
+		<li class="divider"></li>
+	</ul>
+	<div class="row">
+		<table class="span6">
+			<tr wicket:id="userPermissionRow">
+				<td><span wicket:id="registrant"></span></td>
+				<td><select wicket:id="permission"></select></td>
+			</tr>
+		</table>
+
+		<div style="clear: both; padding-top: 15px;" class="row-fluid">
+			<form style="padding: 20px 40px;" class="well form-inline"
+				wicket:id="addUserPermissionForm">
+				<select class="input-xlarge" wicket:id="registrant"></select> <select
+					class="input-large" wicket:id="permission"></select> <input
+					class="btn btn-success" type="submit" value="Add"
+					wicket:id="addPermissionButton" />
+			</form>
+		</div>
+	</div>
+</wicket:panel>
+</html>

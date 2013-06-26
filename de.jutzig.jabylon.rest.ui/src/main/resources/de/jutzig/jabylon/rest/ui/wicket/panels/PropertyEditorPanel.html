@@ -10,14 +10,6 @@ select {
 }
 -->
 </style>
-
-	<script type="text/javascript"
-		src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
-	<script type="text/javascript"
-		src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
-	<script type="text/javascript"
-		src="/jabylon/js/openjs/shortcuts.js"></script>		
-	<script type="text/javascript" src="/jabylon/js/propertyEditor.js"></script>
 </wicket:head>
 
 </head>
@@ -27,8 +19,7 @@ select {
 			<li wicket:id="view-mode"><a wicket:id="link"
 				href="#?mode=missing">Show Missing</a></li>
 		</ul>
-		<form wicket:id="properties-form" id="properties-form">
-			<span wicket:id="response">Key</span>
+		<form wicket:id="properties-form" id="properties-form" class="jabylon-properties-form">
 			<table
 				class="table table-striped table-hover dataview table-condensed"
 				id="table">
@@ -48,6 +39,7 @@ select {
 			<button type="submit" class="btn btn-primary"
 				wicket:id="properties-submit"><wicket:message key="PropertyEditorPanel.submit.button">Submit</wicket:message></button>
 		</form>
+		<div wicket:id="properties-toolbar" class="jabylon-properties-toolbar"></div>
 	</wicket:panel>
 </body>
 </html>

@@ -294,6 +294,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getPropertyFile_LicenseHeader() {
+		return (EAttribute)propertyFileEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProperty() {
 		return propertyEClass;
 	}
@@ -868,6 +877,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		// Create classes and their features
 		propertyFileEClass = createEClass(PROPERTY_FILE);
 		createEReference(propertyFileEClass, PROPERTY_FILE__PROPERTIES);
+		createEAttribute(propertyFileEClass, PROPERTY_FILE__LICENSE_HEADER);
 
 		propertyEClass = createEClass(PROPERTY);
 		createEAttribute(propertyEClass, PROPERTY__KEY);
@@ -1045,6 +1055,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		// Initialize classes and features; add operations and parameters
 		initEClass(propertyFileEClass, PropertyFile.class, "PropertyFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPropertyFile_Properties(), this.getProperty(), null, "properties", null, 0, -1, PropertyFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyFile_LicenseHeader(), ecorePackage.getEString(), "licenseHeader", null, 0, 1, PropertyFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(propertyFileEClass, this.getProperty(), "getProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "key", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1142,6 +1153,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEOperation(op, g1);
 
 		addEOperation(resolvableEClass, this.getURI(), "absoluteFilePath", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(resolvableEClass, this.getURI(), "toURI", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(resolvableEClass, null, "getChild", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);

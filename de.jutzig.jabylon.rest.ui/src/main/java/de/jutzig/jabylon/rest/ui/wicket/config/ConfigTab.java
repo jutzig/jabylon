@@ -6,7 +6,6 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.eclipse.emf.cdo.CDOObject;
 import org.osgi.service.prefs.Preferences;
 
 import de.jutzig.jabylon.properties.Resolvable;
@@ -42,9 +41,13 @@ public class ConfigTab <T extends Resolvable<?, ?>> implements ITab {
 
 	@Override
 	public boolean isVisible() {
-		if(sections==null || sections.isEmpty())
+		if(sections==null)
 			return false;
-		return true;
+		for (ConfigSection<T> section : sections) {
+			if(section.isVisible(model, preferences))
+				return true;
+		}
+		return false;
 	}
 
 }

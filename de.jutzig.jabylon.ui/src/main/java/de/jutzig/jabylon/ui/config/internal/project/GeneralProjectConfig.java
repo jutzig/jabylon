@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.config.internal.project;
 
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -58,7 +59,7 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class GeneralProjectConfig extends AbstractConfigSection<Project> implements ValueChangeListener {
@@ -73,7 +74,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.jutzig.jabylon.ui.config.ConfigSection#createContents()
 	 */
 	@Override
@@ -184,7 +185,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.jutzig.jabylon.ui.config.ConfigSection#commit(org.osgi.service.prefs
 	 * .Preferences)
@@ -208,7 +209,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.jutzig.jabylon.ui.config.AbstractConfigSection#init(org.osgi.service
 	 * .prefs.Preferences)
@@ -291,14 +292,15 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 						dialog.run(true, new RunnableWithProgress() {
 
 							@Override
-							public void run(IProgressMonitor monitor) {
+							public IStatus run(IProgressMonitor monitor) {
 								try {
 									teamProvider.checkout(version, monitor);
 									button.setEnabled(false);
-								} catch (IOException e) {
+								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								return null;
 							}
 						});
 					}
@@ -306,7 +308,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				return button;
 			}
 		});
-		
+
 		versionTable.addGeneratedColumn("Update", new ColumnGenerator() {
 
 			@Override
@@ -326,7 +328,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 						dialog.run(true, new RunnableWithProgress() {
 
 							@Override
-							public void run(IProgressMonitor monitor) {
+							public IStatus run(IProgressMonitor monitor) {
 								try {
 									SubMonitor subMonitor = SubMonitor.convert(monitor,"Updating",100);
 									Collection<PropertyFileDiff> updates = teamProvider.update(version, subMonitor.newChild(80));
@@ -336,13 +338,14 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 										version.partialScan(PreferencesUtil.getScanConfigForProject(object), updatedFile);
 										subMonitor.worked(1);
 									}
-									
-								} catch (IOException e) {
+
+								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}finally{
 									monitor.done();
 								}
+								return null;
 							}
 						});
 					}
@@ -350,8 +353,8 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 				return button;
 			}
 		});
-		
-		
+
+
 		versionTable.addGeneratedColumn("Commit", new ColumnGenerator() {
 
 			@Override
@@ -371,15 +374,16 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> impleme
 						dialog.run(true, new RunnableWithProgress() {
 
 							@Override
-							public void run(IProgressMonitor monitor) {
+							public IStatus run(IProgressMonitor monitor) {
 								try {
 									teamProvider.commit(version, monitor);
-								} catch (IOException e) {
+								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}finally{
 									monitor.done();
 								}
+								return null;
 							}
 						});
 					}

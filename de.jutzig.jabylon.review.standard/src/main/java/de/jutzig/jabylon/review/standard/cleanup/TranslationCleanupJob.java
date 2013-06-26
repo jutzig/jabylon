@@ -3,14 +3,14 @@
  */
 package de.jutzig.jabylon.review.standard.cleanup;
 
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.cdo.server.ServerConstants;
 import de.jutzig.jabylon.properties.Project;
@@ -31,11 +31,13 @@ import de.jutzig.jabylon.scheduler.JobExecution;
  */
 public class TranslationCleanupJob implements JobExecution {
 
+	
+	private static final Logger logger = LoggerFactory.getLogger(TranslationCleanupJob.class);
+	
 	/**
 	 * 
 	 */
 	public TranslationCleanupJob() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -43,15 +45,15 @@ public class TranslationCleanupJob implements JobExecution {
 	 */
 	@Override
 	public void run(Map<String, Object> jobContext) throws Exception {
-		ReviewActivator.getDefault().log("Starting translation cleanup job", IStatus.INFO);
+		logger.info("Starting translation cleanup job");
 		CDOView view = JobContextUtil.openView(jobContext);
 		try {
 			Resource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 			Workspace workspace = (Workspace) resource.getContents().get(0);
 			cleanup(workspace);
-			ReviewActivator.getDefault().log("Translation cleanup job finished successfully", IStatus.INFO);
+			logger.info("Translation cleanup job finished successfully");
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("Internal Error during translation cleanup",e);
 		}
 		finally {
 			if(view!=null)
@@ -101,8 +103,7 @@ public class TranslationCleanupJob implements JobExecution {
 			if(!map.containsKey(property.getKey()))
 			{
 				iterator.remove();
-				String message = "Removed unused translation {0} in {1}";
-				ReviewActivator.getDefault().log(MessageFormat.format(message, property.getKey(), descriptor.fullPath()), IStatus.INFO);
+				logger.info("Removed unused translation {} in {}",property.getKey(), descriptor.fullPath());
 				hadDeletes = true;
 			}
 		}
