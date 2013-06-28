@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.validators;
 
@@ -16,28 +16,28 @@ import org.apache.wicket.validation.ValidationError;
  */
 public class UniqueNameValidator implements IValidator<String> {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Set<String> usedNames;
-	
-	
+    private static final long serialVersionUID = 1L;
 
-	public UniqueNameValidator(Set<String> usedNames) {
-		super();
-		this.usedNames = usedNames;
-	}
+    private Set<String> usedNames;
 
 
 
-	@Override
-	public void validate(IValidatable<String> validatable) {
-		if(usedNames.contains(validatable.getValue()))
-		{
-			String message = "The name {0} is already used.";
-			message = MessageFormat.format(message, validatable.getValue());
-			validatable.error(new ValidationError(message));
-		}
-		
-	}
+    public UniqueNameValidator(Set<String> usedNames) {
+        super();
+        this.usedNames = usedNames;
+    }
+
+
+
+    @Override
+    public void validate(IValidatable<String> validatable) {
+        if(usedNames.contains(validatable.getValue()))
+        {
+            String message = "The name {0} is already used.";
+            message = MessageFormat.format(message, validatable.getValue());
+            validatable.error(new ValidationError(message));
+        }
+
+    }
 
 }

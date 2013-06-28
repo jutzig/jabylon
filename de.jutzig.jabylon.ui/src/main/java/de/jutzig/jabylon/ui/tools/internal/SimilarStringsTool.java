@@ -95,13 +95,13 @@ public class SimilarStringsTool
             PropertyFileDescriptor slave = getSlave(descriptor);
             if(slave==null)
                 continue;
-            
+
             PropertyFile properties = slave.loadProperties();
             String key = document.get(QueryService.FIELD_KEY);
             if(slave==translation && currentSelection.getKey().equals(key))
-            	continue; //that means we found the current property as a similarity. Very helpful...
+                continue; //that means we found the current property as a similarity. Very helpful...
             Property property = properties.getProperty(key);
-            
+
             if(property==null || property.getValue()==null)
                 continue;
             Similarity similarity = new Similarity(document.get(QueryService.FIELD_VALUE), property.getValue(),(int)(scoreDoc.score*100));

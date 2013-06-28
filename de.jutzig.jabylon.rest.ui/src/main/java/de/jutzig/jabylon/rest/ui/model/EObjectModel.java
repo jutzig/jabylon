@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 public class EObjectModel<T extends CDOObject> extends AbstractEMFModel<T, T> implements IEObjectModel<T> {
 
-	public EObjectModel(T model)
+    public EObjectModel(T model)
     {
         super(model);
     }
@@ -24,14 +24,14 @@ public class EObjectModel<T extends CDOObject> extends AbstractEMFModel<T, T> im
     {
         setDomainObject(object);
     }
-    
+
     /* (non-Javadoc)
-	 * @see de.jutzig.jabylon.rest.ui.model.IEObjectModel#forProperty(org.eclipse.emf.ecore.EStructuralFeature)
-	 */
+     * @see de.jutzig.jabylon.rest.ui.model.IEObjectModel#forProperty(org.eclipse.emf.ecore.EStructuralFeature)
+     */
     @Override
-	public <X> IModel<X> forProperty(EStructuralFeature feature)
+    public <X> IModel<X> forProperty(EStructuralFeature feature)
     {
-    	return new EObjectPropertyModel<X, T>(this, feature);
+        return new EObjectPropertyModel<X, T>(this, feature);
     }
 
 }

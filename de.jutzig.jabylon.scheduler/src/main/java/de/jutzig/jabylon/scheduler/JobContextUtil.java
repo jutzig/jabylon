@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.scheduler;
 
@@ -19,27 +19,27 @@ import de.jutzig.jabylon.scheduler.internal.JabylonJob;
 public class JobContextUtil {
 
 
-	public static CDOSession openSession(Map<String, Object> jobContext)
-	{
-		RepositoryConnector connector = getRepositoryConnector(jobContext);
-		return connector.createSession();
-	}
-	
-	public static CDOTransaction openTransaction(Map<String, Object> jobContext)
-	{
-		RepositoryConnector connector = getRepositoryConnector(jobContext);
-		return connector.openTransaction();
-	}
-	
-	public static CDOView openView(Map<String, Object> jobContext)
-	{
-		RepositoryConnector connector = getRepositoryConnector(jobContext);
-		return connector.openView();
-	}
-	
-	public static RepositoryConnector getRepositoryConnector(Map<String, Object> jobContext)
-	{
-		return (RepositoryConnector) jobContext.get(JabylonJob.CONNECTOR_KEY);
-	}
-	
+    public static CDOSession openSession(Map<String, Object> jobContext)
+    {
+        RepositoryConnector connector = getRepositoryConnector(jobContext);
+        return connector.createSession();
+    }
+
+    public static CDOTransaction openTransaction(Map<String, Object> jobContext)
+    {
+        RepositoryConnector connector = getRepositoryConnector(jobContext);
+        return connector.openTransaction();
+    }
+
+    public static CDOView openView(Map<String, Object> jobContext)
+    {
+        RepositoryConnector connector = getRepositoryConnector(jobContext);
+        return connector.openView();
+    }
+
+    public static RepositoryConnector getRepositoryConnector(Map<String, Object> jobContext)
+    {
+        return (RepositoryConnector) jobContext.get(JabylonJob.CONNECTOR_KEY);
+    }
+
 }

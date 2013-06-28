@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.model;
 
@@ -14,40 +14,40 @@ import com.google.common.base.Function;
  */
 public class ComputableModel<F,T> implements IModel<T>, IDetachable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Function<F, T> loadingFunction;
-	
-	private transient T result;
+    private Function<F, T> loadingFunction;
 
-	private F seed;
-	
-	public ComputableModel(Function<F, T> loadingFunction, F seed) {
-		super();
-		this.loadingFunction = loadingFunction;
-		this.seed = seed;
-	}
+    private transient T result;
 
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.model.IDetachable#detach()
-	 */
-	@Override
-	public void detach() {
-		result = null;
+    private F seed;
 
-	}
+    public ComputableModel(Function<F, T> loadingFunction, F seed) {
+        super();
+        this.loadingFunction = loadingFunction;
+        this.seed = seed;
+    }
 
-	@Override
-	public T getObject() {
-		if(result == null)
-			result = loadingFunction.apply(seed);
-		return result;
-	}
+    /* (non-Javadoc)
+     * @see org.apache.wicket.model.IDetachable#detach()
+     */
+    @Override
+    public void detach() {
+        result = null;
 
-	@Override
-	public void setObject(T object) {
-		throw new UnsupportedOperationException("not yet implemented");
-		
-	}
+    }
+
+    @Override
+    public T getObject() {
+        if(result == null)
+            result = loadingFunction.apply(seed);
+        return result;
+    }
+
+    @Override
+    public void setObject(T object) {
+        throw new UnsupportedOperationException("not yet implemented");
+
+    }
 
 }

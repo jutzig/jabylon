@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.log.viewer.supplier;
 
@@ -20,13 +20,13 @@ import de.jutzig.jabylon.rest.ui.util.PageProvider;
 @Service(PageProvider.class)
 public class LogViewerPageSupplier implements PageProvider {
 
-	@Property(value="/log")
-	static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
+    @Property(value="/log")
+    static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 
 
-	@Override
-	public Class<? extends Page> getPageClass() {
-		 return LogViewerPage.class;
-	}
+    @Override
+    public Class<? extends Page> getPageClass() {
+         return LogViewerPage.class;
+    }
 
 }

@@ -14,92 +14,92 @@ import de.jutzig.jabylon.properties.ScanConfiguration;
 import de.jutzig.jabylon.properties.types.PropertyScanner;
 
 public class WorkspaceScanner {
-	
-	public WorkspaceScanner() {
-		// FileSet fs = Util.createFileSet(dir,includes,excludes);
 
-	}
+    public WorkspaceScanner() {
+        // FileSet fs = Util.createFileSet(dir,includes,excludes);
 
-	public void fullScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, IProgressMonitor monitor) {
+    }
 
-		FileSet fs = createFileSet(config);
-		fs.setDir(baseDir);
-		SubMonitor subMon = SubMonitor.convert(monitor, "Scanning", 100);
-		String masterLocale = config.getMasterLocale();
-		if (masterLocale != null && masterLocale.isEmpty())
-			masterLocale = null;
-		if (baseDir.exists()) {
-			DirectoryScanner ds = fs.getDirectoryScanner(new org.apache.tools.ant.Project());
-			subMon.worked(10);
-			String[] files = ds.getIncludedFiles();
-			subMon.setWorkRemaining(files.length);
-			for (String f : files) {
-				File file = new File(baseDir, f);
-				if(scanner.isTemplate(file, config)) {
-					subMon.subTask(f);
-					acceptor.newMatch(file);
-					subMon.worked(1);
-				}
-			}
-		}
-		if(monitor!=null)
-			monitor.done();
-	}
+    public void fullScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, IProgressMonitor monitor) {
 
-	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
-		Project antProject = new org.apache.tools.ant.Project();
-		FileSet fs = createFileSet(config);
-		String[] excludes = fs.mergeExcludes(antProject);
-		if(excludes!=null)
-		{
-			for (String exclude : excludes) {
-				if(SelectorUtils.match(normalizePattern(exclude), singleFile.getPath()))
-					return;
-			}
-		}
-		String[] includes = fs.mergeIncludes(antProject);
-		if(includes==null)
-			return;
-		for (String include : includes) {
-			if(SelectorUtils.match(normalizePattern(include), singleFile.getPath()))
-			{
-				if (baseDir.exists()) {
+        FileSet fs = createFileSet(config);
+        fs.setDir(baseDir);
+        SubMonitor subMon = SubMonitor.convert(monitor, "Scanning", 100);
+        String masterLocale = config.getMasterLocale();
+        if (masterLocale != null && masterLocale.isEmpty())
+            masterLocale = null;
+        if (baseDir.exists()) {
+            DirectoryScanner ds = fs.getDirectoryScanner(new org.apache.tools.ant.Project());
+            subMon.worked(10);
+            String[] files = ds.getIncludedFiles();
+            subMon.setWorkRemaining(files.length);
+            for (String f : files) {
+                File file = new File(baseDir, f);
+                if(scanner.isTemplate(file, config)) {
+                    subMon.subTask(f);
+                    acceptor.newMatch(file);
+                    subMon.worked(1);
+                }
+            }
+        }
+        if(monitor!=null)
+            monitor.done();
+    }
+
+    public void partialScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
+        Project antProject = new org.apache.tools.ant.Project();
+        FileSet fs = createFileSet(config);
+        String[] excludes = fs.mergeExcludes(antProject);
+        if(excludes!=null)
+        {
+            for (String exclude : excludes) {
+                if(SelectorUtils.match(normalizePattern(exclude), singleFile.getPath()))
+                    return;
+            }
+        }
+        String[] includes = fs.mergeIncludes(antProject);
+        if(includes==null)
+            return;
+        for (String include : includes) {
+            if(SelectorUtils.match(normalizePattern(include), singleFile.getPath()))
+            {
+                if (baseDir.exists()) {
 
 //					if(scanner.isTemplate(singleFile, config)) {
-						acceptor.newMatch(singleFile);
+                        acceptor.newMatch(singleFile);
 //					}
 
-				}
-				break;
-			}
-		}
-	}
+                }
+                break;
+            }
+        }
+    }
 
 
-	public boolean partialScan(File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
-		SingleFileAcceptor acceptor = new SingleFileAcceptor();
-		partialScan(acceptor, baseDir, scanner, config, singleFile);
-		return acceptor.isMatch();
-	}
+    public boolean partialScan(File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
+        SingleFileAcceptor acceptor = new SingleFileAcceptor();
+        partialScan(acceptor, baseDir, scanner, config, singleFile);
+        return acceptor.isMatch();
+    }
 
 
-	private FileSet createFileSet(ScanConfiguration config) {
-		FileSet fs = new FileSet();
-		fs.setProject(new Project());
-		for (String exclude : config.getExcludes()) {
-			NameEntry entry = fs.createExclude();
-			entry.setName(exclude);
-		}
-		for (String include : config.getIncludes()) {
-			NameEntry entry = fs.createInclude();
-			entry.setName(include);
-		}
-		return fs;
+    private FileSet createFileSet(ScanConfiguration config) {
+        FileSet fs = new FileSet();
+        fs.setProject(new Project());
+        for (String exclude : config.getExcludes()) {
+            NameEntry entry = fs.createExclude();
+            entry.setName(exclude);
+        }
+        for (String include : config.getIncludes()) {
+            NameEntry entry = fs.createInclude();
+            entry.setName(include);
+        }
+        return fs;
 
-	}
+    }
 
-	private static String normalizePattern(String p) {
-		return p.replace('/', File.separatorChar).replace('\\', File.separatorChar);
-	}
+    private static String normalizePattern(String p) {
+        return p.replace('/', File.separatorChar).replace('\\', File.separatorChar);
+    }
 
 }

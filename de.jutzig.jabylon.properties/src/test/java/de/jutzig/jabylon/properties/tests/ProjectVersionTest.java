@@ -46,121 +46,121 @@ import junit.textui.TestRunner;
  */
 public class ProjectVersionTest extends ResolvableTest {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(ProjectVersionTest.class);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static void main(String[] args) {
+        TestRunner.run(ProjectVersionTest.class);
+    }
 
-	/**
-	 * Constructs a new Project Version test case with the given name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ProjectVersionTest(String name) {
-		super(name);
-	}
+    /**
+     * Constructs a new Project Version test case with the given name.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ProjectVersionTest(String name) {
+        super(name);
+    }
 
-	/**
-	 * Returns the fixture for this Project Version test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected ProjectVersion getFixture() {
-		return (ProjectVersion)fixture;
-	}
+    /**
+     * Returns the fixture for this Project Version test case.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected ProjectVersion getFixture() {
+        return (ProjectVersion)fixture;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(PropertiesFactory.eINSTANCE.createProjectVersion());
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
+    @Override
+    protected void setUp() throws Exception {
+        setFixture(PropertiesFactory.eINSTANCE.createProjectVersion());
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        setFixture(null);
+    }
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject() <em>Project</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProject()
-	 * @generated NOT
-	 */
-	public void testGetProject() {
-		assertNull(getFixture().getParent());
-		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.getChildren().add(getFixture());
-	}
-	
-	public void testGetProjectChildVersion() {
-		Project project = PropertiesFactory.eINSTANCE.createProject();
-		project.getChildren().add(getFixture());
-		assertSame(project,getFixture().getParent());
-	}
-	
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration)
-	 * @generated
-	 */
-	@Ignore
-	public void testFullScan__ScanConfiguration() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+    /**
+     * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#getProject() <em>Project</em>}' feature getter.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.jutzig.jabylon.properties.ProjectVersion#getProject()
+     * @generated NOT
+     */
+    public void testGetProject() {
+        assertNull(getFixture().getParent());
+        Project project = PropertiesFactory.eINSTANCE.createProject();
+        project.getChildren().add(getFixture());
+    }
+
+    public void testGetProjectChildVersion() {
+        Project project = PropertiesFactory.eINSTANCE.createProject();
+        project.getChildren().add(getFixture());
+        assertSame(project,getFixture().getParent());
+    }
+
+    /**
+     * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.jutzig.jabylon.properties.ProjectVersion#fullScan(de.jutzig.jabylon.properties.ScanConfiguration)
+     * @generated
+     */
+    @Ignore
+    public void testFullScan__ScanConfiguration() {
+        // TODO: implement this operation test method
+        // Ensure that you remove @generated or mark it @generated NOT
 //		fail();
-	}
+    }
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#getProjectLocale(java.util.Locale) <em>Get Project Locale</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.ProjectVersion#getProjectLocale(java.util.Locale)
-	 * @generated NOT
-	 */
-	public void testGetProjectLocale__Locale() {
-		assertNull(getFixture().getProjectLocale(null));
-		ProjectLocale locale1 = PropertiesFactory.eINSTANCE.createProjectLocale();
-		ProjectLocale locale2 = PropertiesFactory.eINSTANCE.createProjectLocale();
-		Locale frenglish = new Locale("fr","EN");
-		Locale denglish = new Locale("de","EN");
-		locale1.setLocale(frenglish);
-		getFixture().getChildren().add(locale1);
-		assertNull(getFixture().getProjectLocale(denglish));
-		
-		locale2.setLocale(denglish);
-		getFixture().getChildren().add(locale2);
-		assertSame(locale2, getFixture().getProjectLocale(denglish));
-		
-	}
-	
-	@Override
-	public void testRelativePath() {
-		URI expected = URI.createHierarchicalURI(new String[] {"test"}, null, null);
-		getFixture().setName("test");
-		assertEquals(expected, getFixture().relativePath());
-	}
-	
+    /**
+     * Tests the '{@link de.jutzig.jabylon.properties.ProjectVersion#getProjectLocale(java.util.Locale) <em>Get Project Locale</em>}' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.jutzig.jabylon.properties.ProjectVersion#getProjectLocale(java.util.Locale)
+     * @generated NOT
+     */
+    public void testGetProjectLocale__Locale() {
+        assertNull(getFixture().getProjectLocale(null));
+        ProjectLocale locale1 = PropertiesFactory.eINSTANCE.createProjectLocale();
+        ProjectLocale locale2 = PropertiesFactory.eINSTANCE.createProjectLocale();
+        Locale frenglish = new Locale("fr","EN");
+        Locale denglish = new Locale("de","EN");
+        locale1.setLocale(frenglish);
+        getFixture().getChildren().add(locale1);
+        assertNull(getFixture().getProjectLocale(denglish));
+
+        locale2.setLocale(denglish);
+        getFixture().getChildren().add(locale2);
+        assertSame(locale2, getFixture().getProjectLocale(denglish));
+
+    }
+
+    @Override
+    public void testRelativePath() {
+        URI expected = URI.createHierarchicalURI(new String[] {"test"}, null, null);
+        getFixture().setName("test");
+        assertEquals(expected, getFixture().relativePath());
+    }
+
 
 
 } //ProjectVersionTest

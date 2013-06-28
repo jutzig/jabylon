@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.team.git.config;
 
@@ -23,30 +23,30 @@ import de.jutzig.jabylon.team.git.GitConstants;
  */
 public class GitConfigPanel extends GenericPanel<Project> {
 
-	private static final long serialVersionUID = 1L;
-	
-	public GitConfigPanel(String id, IModel<Project> model, Preferences config) {
-		super(id, model);
-		EObjectPropertyModel<URI, Project> repositoryURI = new EObjectPropertyModel<URI, Project>(model, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI);
-		TextField<URI> uriField = new TextField<URI>("inputURI", repositoryURI);
-		uriField.setType(URI.class);
-		uriField.setConvertEmptyInputStringToNull(true);
-		uriField.setRequired(true);
-		add(uriField);
-		
-		PreferencesPropertyModel usernameModel = new PreferencesPropertyModel(config, GitConstants.KEY_USERNAME, "");
-		add(new TextField<String>("inputUsername",usernameModel));
-		PreferencesPropertyModel passwordModel = new PreferencesPropertyModel(config, GitConstants.KEY_PASSWORD, "");
-		PasswordTextField passwordTextField = new PasswordTextField("inputPassword",passwordModel);
-		passwordTextField.setResetPassword(false);
-		passwordTextField.setRequired(false);
-		add(passwordTextField);
-		
-		PreferencesPropertyModel emailModel = new PreferencesPropertyModel(config, GitConstants.KEY_EMAIL, "jabylon@example.org");
-		TextField<String> emailField = new TextField<String>("inputEmail", emailModel);
-		emailField.setRequired(true);
-		emailField.add(EmailAddressValidator.getInstance());
-		add(emailField);
-	}
-	
+    private static final long serialVersionUID = 1L;
+
+    public GitConfigPanel(String id, IModel<Project> model, Preferences config) {
+        super(id, model);
+        EObjectPropertyModel<URI, Project> repositoryURI = new EObjectPropertyModel<URI, Project>(model, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI);
+        TextField<URI> uriField = new TextField<URI>("inputURI", repositoryURI);
+        uriField.setType(URI.class);
+        uriField.setConvertEmptyInputStringToNull(true);
+        uriField.setRequired(true);
+        add(uriField);
+
+        PreferencesPropertyModel usernameModel = new PreferencesPropertyModel(config, GitConstants.KEY_USERNAME, "");
+        add(new TextField<String>("inputUsername",usernameModel));
+        PreferencesPropertyModel passwordModel = new PreferencesPropertyModel(config, GitConstants.KEY_PASSWORD, "");
+        PasswordTextField passwordTextField = new PasswordTextField("inputPassword",passwordModel);
+        passwordTextField.setResetPassword(false);
+        passwordTextField.setRequired(false);
+        add(passwordTextField);
+
+        PreferencesPropertyModel emailModel = new PreferencesPropertyModel(config, GitConstants.KEY_EMAIL, "jabylon@example.org");
+        TextField<String> emailField = new TextField<String>("inputEmail", emailModel);
+        emailField.setRequired(true);
+        emailField.add(EmailAddressValidator.getInstance());
+        add(emailField);
+    }
+
 }

@@ -36,110 +36,110 @@ import junit.textui.TestRunner;
  */
 public class ProjectLocaleTest extends ResolvableTest {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(ProjectLocaleTest.class);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static void main(String[] args) {
+        TestRunner.run(ProjectLocaleTest.class);
+    }
 
-	/**
-	 * Constructs a new Project Locale test case with the given name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ProjectLocaleTest(String name) {
-		super(name);
-	}
+    /**
+     * Constructs a new Project Locale test case with the given name.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ProjectLocaleTest(String name) {
+        super(name);
+    }
 
-	/**
-	 * Returns the fixture for this Project Locale test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected ProjectLocale getFixture() {
-		return (ProjectLocale)fixture;
-	}
+    /**
+     * Returns the fixture for this Project Locale test case.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected ProjectLocale getFixture() {
+        return (ProjectLocale)fixture;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(PropertiesFactory.eINSTANCE.createProjectLocale());
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
+    @Override
+    protected void setUp() throws Exception {
+        setFixture(PropertiesFactory.eINSTANCE.createProjectLocale());
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        setFixture(null);
+    }
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion() <em>Project Version</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion()
-	 * @generated NOT
-	 */
-	public void testGetProjectVersion() {
-		assertNull(getFixture().getParent());
-		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.getChildren().add(getFixture());
-		assertSame(version,getFixture().getParent());
-	}
+    /**
+     * Tests the '{@link de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion() <em>Project Version</em>}' feature getter.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.jutzig.jabylon.properties.ProjectLocale#getProjectVersion()
+     * @generated NOT
+     */
+    public void testGetProjectVersion() {
+        assertNull(getFixture().getParent());
+        ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+        version.getChildren().add(getFixture());
+        assertSame(version,getFixture().getParent());
+    }
 
 
-	/**
-	 * Tests the '{@link de.jutzig.jabylon.properties.ProjectLocale#isMaster() <em>Is Master</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.jutzig.jabylon.properties.ProjectLocale#isMaster()
-	 * @generated NOT
-	 */
-	public void testIsMaster() {
-		assertFalse(getFixture().isMaster());
-	}
-	
-	public void testIsMasterSlaveLocale() {
-		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.getChildren().add(getFixture());
-		assertFalse(getFixture().isMaster());
-	}
-	
-	
-	public void testIsMasterMasterLocale() {
-		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
-		version.getChildren().add(getFixture());
-		version.setTemplate(getFixture());
-		assertTrue(getFixture().isMaster());
-	}
-	
-	@Override
-	public void testRelativePath() {
-		URI expected = URI.createURI("");
-		getFixture().setLocale(new Locale("pl","PL"));
-		assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
-	}
-	
-	@Override
-	public void testRelativePathNullSafe() {
-		URI expected = URI.createURI("");
-		getFixture().setLocale(new Locale("pl","PL"));
-		assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
-	}
+    /**
+     * Tests the '{@link de.jutzig.jabylon.properties.ProjectLocale#isMaster() <em>Is Master</em>}' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.jutzig.jabylon.properties.ProjectLocale#isMaster()
+     * @generated NOT
+     */
+    public void testIsMaster() {
+        assertFalse(getFixture().isMaster());
+    }
+
+    public void testIsMasterSlaveLocale() {
+        ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+        version.getChildren().add(getFixture());
+        assertFalse(getFixture().isMaster());
+    }
+
+
+    public void testIsMasterMasterLocale() {
+        ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+        version.getChildren().add(getFixture());
+        version.setTemplate(getFixture());
+        assertTrue(getFixture().isMaster());
+    }
+
+    @Override
+    public void testRelativePath() {
+        URI expected = URI.createURI("");
+        getFixture().setLocale(new Locale("pl","PL"));
+        assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
+    }
+
+    @Override
+    public void testRelativePathNullSafe() {
+        URI expected = URI.createURI("");
+        getFixture().setLocale(new Locale("pl","PL"));
+        assertEquals("locales are virtual, they have an empty relative path",expected, getFixture().relativePath());
+    }
 
 } //ProjectLocaleTest

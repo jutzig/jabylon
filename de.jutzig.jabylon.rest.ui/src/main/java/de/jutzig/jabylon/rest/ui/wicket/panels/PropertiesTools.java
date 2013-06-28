@@ -30,56 +30,56 @@ import de.jutzig.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
  * TODO short description for PropertiesEditorToolbar.
  * <p>
  * Long description for PropertiesEditorToolbar.
- * 
+ *
  * @author utzig
  */
 public class PropertiesTools extends BasicPanel<PropertyPair> {
-	/** field <code>serialVersionUID</code> */
-	private static final long serialVersionUID = 1L;
+    /** field <code>serialVersionUID</code> */
+    private static final long serialVersionUID = 1L;
 
-	@Inject
-	private List<PropertyEditorTool> tools;
+    @Inject
+    private List<PropertyEditorTool> tools;
 
-	private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
+    private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
 
-	private List<PropertyToolTab> extensions;
+    private List<PropertyToolTab> extensions;
 
-	public PropertiesTools(String id, IModel<PropertyPair> model, PageParameters pageParameters) {
-		super(id, model, pageParameters);
-	}
+    public PropertiesTools(String id, IModel<PropertyPair> model, PageParameters pageParameters) {
+        super(id, model, pageParameters);
+    }
 
-	@Override
-	protected void construct() {
-		extensions = createExtensions();
-		tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true, "propertiesTools");
-		add(tabContainer);
-		PropertyPair pair = getModelObject();
-		// int selected = tabContainer.getSelectedTab();
-		for (PropertyToolTab tool : extensions) {
-			tool.setModel(Model.of(pair));
-		}
-	}
+    @Override
+    protected void construct() {
+        extensions = createExtensions();
+        tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true, "propertiesTools");
+        add(tabContainer);
+        PropertyPair pair = getModelObject();
+        // int selected = tabContainer.getSelectedTab();
+        for (PropertyToolTab tool : extensions) {
+            tool.setModel(Model.of(pair));
+        }
+    }
 
-	private List<PropertyToolTab> createExtensions() {
-		List<PropertyToolTab> extensions = new ArrayList<PropertyToolTab>(tools.size());
-		Collections.sort(tools, new Comparator<PropertyEditorTool>() {
-			@Override
-			public int compare(PropertyEditorTool o1, PropertyEditorTool o2) {
-				return o1.getPrecedence() - o2.getPrecedence();
-			}
-		});
-		for (PropertyEditorTool tool : tools) {
-			extensions.add(new PropertyToolTab(tool));
-		}
-		return extensions;
-	}
+    private List<PropertyToolTab> createExtensions() {
+        List<PropertyToolTab> extensions = new ArrayList<PropertyToolTab>(tools.size());
+        Collections.sort(tools, new Comparator<PropertyEditorTool>() {
+            @Override
+            public int compare(PropertyEditorTool o1, PropertyEditorTool o2) {
+                return o1.getPrecedence() - o2.getPrecedence();
+            }
+        });
+        for (PropertyEditorTool tool : tools) {
+            extensions.add(new PropertyToolTab(tool));
+        }
+        return extensions;
+    }
 
-	public void respond(AjaxRequestTarget target) {
-		List<WebMarkupContainer> tabContents = tabContainer.getTabContents();
-		for (WebMarkupContainer webMarkupContainer : tabContents) {
-			target.add(webMarkupContainer);
-		}
+    public void respond(AjaxRequestTarget target) {
+        List<WebMarkupContainer> tabContents = tabContainer.getTabContents();
+        for (WebMarkupContainer webMarkupContainer : tabContents) {
+            target.add(webMarkupContainer);
+        }
 
-	}
+    }
 
 }

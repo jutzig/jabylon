@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.review;
 
@@ -15,6 +15,6 @@ import de.jutzig.jabylon.properties.Review;
  */
 public interface ReviewParticipant {
 
-	public Review review(PropertyFileDescriptor descriptor, Property master, Property slave);
-	
+    public Review review(PropertyFileDescriptor descriptor, Property master, Property slave);
+
 }

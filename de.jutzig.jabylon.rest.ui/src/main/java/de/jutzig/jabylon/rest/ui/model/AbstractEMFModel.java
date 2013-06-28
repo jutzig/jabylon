@@ -28,7 +28,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
         id=model.cdoID();
         this.modelSupplier = Suppliers.memoize(new LoadingSupplier<T>(model));
     }
-    
+
 
     protected T getDomainObject()
     {
@@ -61,46 +61,46 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
             return (X)cdoObject;
         }
     }
-    
-    
+
+
     private static final class LoadingSupplier<T> implements Supplier<T>, Serializable {
 
-		private static final long serialVersionUID = 1L;
-		private transient T instance;
-    	private LookupFunction<T> function;
-    	private CDOID id;
-    	
-    	
-    	
-    	public LoadingSupplier(T instance) {
-			super();
-			this.instance = instance;
-			function = new LookupFunction<T>();
-		}
+        private static final long serialVersionUID = 1L;
+        private transient T instance;
+        private LookupFunction<T> function;
+        private CDOID id;
 
 
 
-		@Override
-    	public T get() {
-			if(instance==null)
-				instance = function.apply(id);
-    		return instance;
-    	}
-    	
+        public LoadingSupplier(T instance) {
+            super();
+            this.instance = instance;
+            function = new LookupFunction<T>();
+        }
+
+
+
+        @Override
+        public T get() {
+            if(instance==null)
+                instance = function.apply(id);
+            return instance;
+        }
+
     }
-    
+
     @SuppressWarnings("rawtypes")
-	@Override
+    @Override
     public boolean equals(Object obj) {
-    	if (obj instanceof AbstractEMFModel) {
-			AbstractEMFModel other = (AbstractEMFModel) obj;
-			return other.id.equals(id);
-		}
-    	return false;
+        if (obj instanceof AbstractEMFModel) {
+            AbstractEMFModel other = (AbstractEMFModel) obj;
+            return other.id.equals(id);
+        }
+        return false;
     }
-    
+
     @Override
     public int hashCode() {
-    	return id.hashCode();
+        return id.hashCode();
     }
 }

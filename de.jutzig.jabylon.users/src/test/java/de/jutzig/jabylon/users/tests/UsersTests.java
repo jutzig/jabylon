@@ -19,35 +19,35 @@ import junit.textui.TestRunner;
  */
 public class UsersTests extends TestSuite {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(suite());
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static void main(String[] args) {
+        TestRunner.run(suite());
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static Test suite() {
-		TestSuite suite = new UsersTests("users Tests");
-		suite.addTestSuite(UserTest.class);
-		suite.addTestSuite(RoleTest.class);
-		suite.addTestSuite(UserManagementTest.class);
-		return suite;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static Test suite() {
+        TestSuite suite = new UsersTests("users Tests");
+        suite.addTestSuite(UserTest.class);
+        suite.addTestSuite(RoleTest.class);
+        suite.addTestSuite(UserManagementTest.class);
+        return suite;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public UsersTests(String name) {
-		super(name);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public UsersTests(String name) {
+        super(name);
+    }
 
 } //UsersTests

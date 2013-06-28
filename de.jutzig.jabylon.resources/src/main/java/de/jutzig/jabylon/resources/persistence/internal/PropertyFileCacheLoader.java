@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.resources.persistence.internal;
 
@@ -18,21 +18,21 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
  */
 public class PropertyFileCacheLoader extends CacheLoader<CDOID, PropertyFile> {
 
-	private CDOView view;
-	
-	public PropertyFileCacheLoader(CDOView view) {
-		this.view = view;
-	}
-	
-	
-	@Override
-	public PropertyFile load(CDOID key) throws Exception {
-		CDOObject object = view.getObject(key);
-		if (object instanceof PropertyFileDescriptor) {
-			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-			return descriptor.loadProperties();
-		}
-		throw new IllegalArgumentException("Object is not a PropertyFileDescriptor: "+object);
-	}
+    private CDOView view;
+
+    public PropertyFileCacheLoader(CDOView view) {
+        this.view = view;
+    }
+
+
+    @Override
+    public PropertyFile load(CDOID key) throws Exception {
+        CDOObject object = view.getObject(key);
+        if (object instanceof PropertyFileDescriptor) {
+            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+            return descriptor.loadProperties();
+        }
+        throw new IllegalArgumentException("Object is not a PropertyFileDescriptor: "+object);
+    }
 
 }

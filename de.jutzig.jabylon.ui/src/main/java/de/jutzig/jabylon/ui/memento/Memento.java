@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.memento;
 
@@ -9,10 +9,10 @@ package de.jutzig.jabylon.ui.memento;
  */
 public interface Memento {
 
-	void put(String key, String value);
-	
-	String get(String key);
-	
-	Memento getChild(String path);
-	
+    void put(String key, String value);
+
+    String get(String key);
+
+    Memento getChild(String path);
+
 }

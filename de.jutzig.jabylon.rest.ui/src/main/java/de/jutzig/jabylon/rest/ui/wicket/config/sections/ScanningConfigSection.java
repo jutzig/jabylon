@@ -16,40 +16,40 @@ import de.jutzig.jabylon.security.CommonPermissions;
 
 public class ScanningConfigSection extends GenericPanel<Project> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ScanningConfigSection(String id, IModel<Project> model, Preferences config) {
-		super(id, model);
-		PreferencesPropertyModel includeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_INCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__INCLUDE.getDefaultValueLiteral());
-		add(new TextArea<String>("inputIncludes", includeModel));
-		PreferencesPropertyModel excludeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_EXCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__EXCLUDE.getDefaultValueLiteral());
-		add(new TextArea<String>("inputExcludes",excludeModel));
-		PreferencesPropertyModel templateLocaleModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
-		add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
-	}
+    public ScanningConfigSection(String id, IModel<Project> model, Preferences config) {
+        super(id, model);
+        PreferencesPropertyModel includeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_INCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__INCLUDE.getDefaultValueLiteral());
+        add(new TextArea<String>("inputIncludes", includeModel));
+        PreferencesPropertyModel excludeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_EXCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__EXCLUDE.getDefaultValueLiteral());
+        add(new TextArea<String>("inputExcludes",excludeModel));
+        PreferencesPropertyModel templateLocaleModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
+        add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
+    }
 
-	public static class ScanningConfig extends AbstractConfigSection<Project> {
+    public static class ScanningConfig extends AbstractConfigSection<Project> {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
-			return new ScanningConfigSection(id, input, prefs);
-		}
+        @Override
+        public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
+            return new ScanningConfigSection(id, input, prefs);
+        }
 
-		@Override
-		public void commit(IModel<Project> input, Preferences config) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+        @Override
+        public void commit(IModel<Project> input, Preferences config) {
+            // TODO Auto-generated method stub
 
-		@Override
-		public String getRequiredPermission() {
-			String projectName = null;
-			if(getDomainObject()!=null)
-				projectName = getDomainObject().getName();
-			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
-		}
-	}
+        }
+
+
+        @Override
+        public String getRequiredPermission() {
+            String projectName = null;
+            if(getDomainObject()!=null)
+                projectName = getDomainObject().getName();
+            return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
+        }
+    }
 }

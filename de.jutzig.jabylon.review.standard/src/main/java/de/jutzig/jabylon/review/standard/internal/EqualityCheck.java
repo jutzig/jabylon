@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.review.standard.internal;
 
@@ -21,43 +21,43 @@ import de.jutzig.jabylon.properties.Severity;
 @Service
 public class EqualityCheck implements ReviewParticipant {
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
-	 */
-	@Override
-	public Review review(PropertyFileDescriptor descriptor, Property master, Property slave) {
-		if(master==null||slave==null)
-			return null;
-		String masterValue = master.getValue();
-		String slaveValue = slave.getValue();
-		if(masterValue!=null)
-		{
-			if(masterValue.equals(slaveValue))
-			{
-				Review review = PropertiesFactory.eINSTANCE.createReview();
-				review.setMessage("Template and translated string are identical");
-				review.setReviewType("Equality Check");
-				review.setSeverity(Severity.WARNING);
-				review.setUser("Jabylon");
-				return review;
-			}
-		}
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.common.review.ReviewParticipant#review(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.Property, de.jutzig.jabylon.properties.Property)
+     */
+    @Override
+    public Review review(PropertyFileDescriptor descriptor, Property master, Property slave) {
+        if(master==null||slave==null)
+            return null;
+        String masterValue = master.getValue();
+        String slaveValue = slave.getValue();
+        if(masterValue!=null)
+        {
+            if(masterValue.equals(slaveValue))
+            {
+                Review review = PropertiesFactory.eINSTANCE.createReview();
+                review.setMessage("Template and translated string are identical");
+                review.setReviewType("Equality Check");
+                review.setSeverity(Severity.WARNING);
+                review.setUser("Jabylon");
+                return review;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public String getID() {
-		return "EqualityCheck";
-	}
+    @Override
+    public String getID() {
+        return "EqualityCheck";
+    }
 
-	@Override
-	public String getDescription() {
-		return "Checks if the template and translation are identical (copy/paste)";
-	}
+    @Override
+    public String getDescription() {
+        return "Checks if the template and translation are identical (copy/paste)";
+    }
 
-	@Override
-	public String getName() {
-		return "Equality Check";
-	}
+    @Override
+    public String getName() {
+        return "Equality Check";
+    }
 
 }

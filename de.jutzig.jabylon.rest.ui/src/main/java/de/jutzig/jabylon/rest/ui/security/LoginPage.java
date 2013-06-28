@@ -10,15 +10,15 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.GenericPage;
 
 public class LoginPage extends GenericPage<Resolvable<?, ?>> {
 
-	public LoginPage(PageParameters parameters) {
-		super(parameters);
-		SignInPanel panel = new SignInPanel("sign-in", true);
-		panel.addOrReplace(new Label("feedback",""));
-		add(panel);
-	}
+    public LoginPage(PageParameters parameters) {
+        super(parameters);
+        SignInPanel panel = new SignInPanel("sign-in", true);
+        panel.addOrReplace(new Label("feedback",""));
+        add(panel);
+    }
 
-	@Override
-	protected IModel<Resolvable<?, ?>> createModel(PageParameters params) {
-		return null;
-	}
+    @Override
+    protected IModel<Resolvable<?, ?>> createModel(PageParameters params) {
+        return null;
+    }
 }

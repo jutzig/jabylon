@@ -13,7 +13,7 @@ $(document).ready(function() {
             // if there is a modify-indicator checkbox in the modified form, check it
             var form = $(this).parents("form");
             var indicator = form.children(".modify-indicator");
-            indicator.attr("checked","checked"); 
+            indicator.attr("checked","checked");
         });
     });
 

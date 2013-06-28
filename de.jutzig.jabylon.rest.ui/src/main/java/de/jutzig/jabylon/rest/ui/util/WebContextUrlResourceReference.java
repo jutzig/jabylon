@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.util;
 
@@ -12,11 +12,11 @@ import org.apache.wicket.request.resource.UrlResourceReference;
  */
 public class WebContextUrlResourceReference extends UrlResourceReference {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public WebContextUrlResourceReference(String webContextRelativeUrl) {
-		super(Url.parse(WicketUtil.getContextPath()+"/"+webContextRelativeUrl));
+    public WebContextUrlResourceReference(String webContextRelativeUrl) {
+        super(Url.parse(WicketUtil.getContextPath()+"/"+webContextRelativeUrl));
 
-	}
+    }
 
 }

@@ -17,23 +17,23 @@ import de.jutzig.jabylon.updatecenter.repository.ui.UpdatecenterPage;
  */
 public class UpdatecenterPanel<T> extends BasicPanel<T> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UpdatecenterPanel(String id, IModel<T> model, PageParameters parameters) {
-		super(id, model, parameters);
-		add(new BookmarkablePageLink<T>("link", UpdatecenterPage.class));
-	}
+    public UpdatecenterPanel(String id, IModel<T> model, PageParameters parameters) {
+        super(id, model, parameters);
+        add(new BookmarkablePageLink<T>("link", UpdatecenterPage.class));
+    }
 
-	public static class UpdatecenterPanelFactory implements PanelFactory<Object>, Serializable
-	{
+    public static class UpdatecenterPanelFactory implements PanelFactory<Object>, Serializable
+    {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
+        @Override
+        public Panel createPanel(PageParameters params, IModel<Object> input, String id) {
 
-			return new UpdatecenterPanel<Object>(id, input , params);
-		}
-		
-	}
+            return new UpdatecenterPanel<Object>(id, input , params);
+        }
+
+    }
 }

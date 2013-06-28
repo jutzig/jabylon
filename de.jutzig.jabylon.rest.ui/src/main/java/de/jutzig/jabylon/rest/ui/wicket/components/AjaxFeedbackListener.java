@@ -12,18 +12,18 @@ import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
  */
 public class AjaxFeedbackListener implements AjaxRequestTarget.IListener {
 
-	@Override
-	public void onBeforeRespond(Map<String, Component> map,
-			AjaxRequestTarget target) {
-		if (target.getPage() instanceof IAjaxFeedbackPage) {
-			IAjaxFeedbackPage feedbackPage = (IAjaxFeedbackPage) target.getPage();
-			feedbackPage.showFeedback(target);
-		}
-	}
+    @Override
+    public void onBeforeRespond(Map<String, Component> map,
+            AjaxRequestTarget target) {
+        if (target.getPage() instanceof IAjaxFeedbackPage) {
+            IAjaxFeedbackPage feedbackPage = (IAjaxFeedbackPage) target.getPage();
+            feedbackPage.showFeedback(target);
+        }
+    }
 
-	@Override
-	public void onAfterRespond(Map<String, Component> map,
-			IJavaScriptResponse response) {
-	}
+    @Override
+    public void onAfterRespond(Map<String, Component> map,
+            IJavaScriptResponse response) {
+    }
 
 }

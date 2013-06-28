@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.util;
 
@@ -10,8 +10,8 @@ import org.apache.wicket.Page;
  *
  */
 public interface PageProvider {
-	
-	String MOUNT_PATH_PROPERTY = "mountPath";
-	
-	Class<? extends Page> getPageClass();
+
+    String MOUNT_PATH_PROPERTY = "mountPath";
+
+    Class<? extends Page> getPageClass();
 }

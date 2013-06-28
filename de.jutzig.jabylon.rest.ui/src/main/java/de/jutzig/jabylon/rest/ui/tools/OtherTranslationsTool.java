@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.tools;
 
@@ -13,8 +13,8 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 
 /**
  * shows how a given key has been translated in other languages.
- * 
- * {@link http://github.com/jutzig/jabylon/issues/issue/71} 
+ *
+ * {@link http://github.com/jutzig/jabylon/issues/issue/71}
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
@@ -22,24 +22,24 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 @Service(value=PropertyEditorTool.class)
 public class OtherTranslationsTool implements PropertyEditorTool {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.rest.ui.wicket.PanelFactory#createPanel(org.apache.wicket.request.mapper.parameter.PageParameters, org.apache.wicket.model.IModel, java.lang.String)
-	 */
-	@Override
-	public Panel createPanel(PageParameters params, IModel<PropertyPair> input, String id) {
-		return new OtherTranslationsToolPanel(id, input);
-	}
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.rest.ui.wicket.PanelFactory#createPanel(org.apache.wicket.request.mapper.parameter.PageParameters, org.apache.wicket.model.IModel, java.lang.String)
+     */
+    @Override
+    public Panel createPanel(PageParameters params, IModel<PropertyPair> input, String id) {
+        return new OtherTranslationsToolPanel(id, input);
+    }
 
-	@Override
-	public String getName() {
-		return "Other Languages";
-	}
+    @Override
+    public String getName() {
+        return "Other Languages";
+    }
 
-	@Override
-	public int getPrecedence() {
-		return 110;
-	}
+    @Override
+    public int getPrecedence() {
+        return 110;
+    }
 
 }

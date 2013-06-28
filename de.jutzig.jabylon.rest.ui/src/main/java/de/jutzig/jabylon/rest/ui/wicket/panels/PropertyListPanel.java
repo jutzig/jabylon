@@ -63,7 +63,7 @@ public class PropertyListPanel
     private static final long serialVersionUID = 1L;
     IModel<Multimap<String, Review>> reviewModel;
     static final String OK_LABEL = "OK";
-    
+
     private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
 
     @Inject
@@ -73,7 +73,7 @@ public class PropertyListPanel
     public PropertyListPanel(PropertyFileDescriptor object, PageParameters parameters)
     {
         super("content", object, parameters);
-        		
+
         PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>()
@@ -121,8 +121,8 @@ public class PropertyListPanel
         };
         properties.setOutputMarkupId(true);
         add(properties);
-        
-        String contextPath = WicketUtil.getContextPath();        
+
+        String contextPath = WicketUtil.getContextPath();
         String href = contextPath + "/api"+ getModelObject().toURI().appendQuery("type=file");
         ExternalLink link = new ExternalLink("download.link", href);
         File file = new File(getModelObject().absoluteFilePath().toFileString());
@@ -130,8 +130,8 @@ public class PropertyListPanel
         link.setEnabled(enabled);
         if(!enabled)
         {
-        	link.add(new AttributeAppender("disabled", Model.of("disabled")));
-        	link.add(new AttributeAppender("class", Model.of("disabled")));
+            link.add(new AttributeAppender("disabled", Model.of("disabled")));
+            link.add(new AttributeAppender("class", Model.of("disabled")));
         }
         add(link);
     }
@@ -324,16 +324,16 @@ class PropertyPairListDataProvider
 
 
     private PropertyFile loadProperties(PropertyFileDescriptor descriptor) {
-    	try {
-			return propertyPersistence.loadProperties(descriptor);
-		} catch (ExecutionException e) {
-			logger.error("Failed to load properties for "+descriptor);
-			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Failed to load properties for "+descriptor);
-		}
-	}
+        try {
+            return propertyPersistence.loadProperties(descriptor);
+        } catch (ExecutionException e) {
+            logger.error("Failed to load properties for "+descriptor);
+            throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Failed to load properties for "+descriptor);
+        }
+    }
 
 
-	@Override
+    @Override
     public long size()
     {
         return getList().size();
@@ -362,7 +362,7 @@ class PropertyPairListDataProvider
     }
 
 }
-    
+
 }
 
 

@@ -13,42 +13,42 @@ import org.slf4j.helpers.BasicMarkerFactory;
 
 @Component
 public class OSGiLogger implements LogListener {
-	@Reference
-	private LogReaderService logReader;
+    @Reference
+    private LogReaderService logReader;
 
-	private Logger logger = LoggerFactory.getLogger(OSGiLogger.class);
-	private BasicMarkerFactory factory = new BasicMarkerFactory();
+    private Logger logger = LoggerFactory.getLogger(OSGiLogger.class);
+    private BasicMarkerFactory factory = new BasicMarkerFactory();
 
-	public void bindLogReader(LogReaderService service) {
-		this.logReader = service;
-		logReader.addLogListener(this);
-	}
-	
-	public void unbindLogReader(LogReaderService service) {
-		service.removeLogListener(this);
-		logReader = null;
-	}
+    public void bindLogReader(LogReaderService service) {
+        this.logReader = service;
+        logReader.addLogListener(this);
+    }
 
-	@Override
-	public void logged(LogEntry entry) {
+    public void unbindLogReader(LogReaderService service) {
+        service.removeLogListener(this);
+        logReader = null;
+    }
 
-		Marker marker = null;
-		if (entry.getBundle() != null)
-			marker = factory.getMarker(entry.getBundle().getSymbolicName());
-		switch (entry.getLevel()) {
-		case LogService.LOG_DEBUG:
-			logger.debug(marker, entry.getMessage(), entry.getException());
-			break;
-		case LogService.LOG_ERROR:
-			logger.error(marker, entry.getMessage(), entry.getException());
-			break;
-		case LogService.LOG_INFO:
-			logger.info(marker, entry.getMessage(), entry.getException());
-			break;
-		case LogService.LOG_WARNING:
-			logger.warn(marker, entry.getMessage(), entry.getException());
-			break;
-		}
+    @Override
+    public void logged(LogEntry entry) {
 
-	}
+        Marker marker = null;
+        if (entry.getBundle() != null)
+            marker = factory.getMarker(entry.getBundle().getSymbolicName());
+        switch (entry.getLevel()) {
+        case LogService.LOG_DEBUG:
+            logger.debug(marker, entry.getMessage(), entry.getException());
+            break;
+        case LogService.LOG_ERROR:
+            logger.error(marker, entry.getMessage(), entry.getException());
+            break;
+        case LogService.LOG_INFO:
+            logger.info(marker, entry.getMessage(), entry.getException());
+            break;
+        case LogService.LOG_WARNING:
+            logger.warn(marker, entry.getMessage(), entry.getException());
+            break;
+        }
+
+    }
 }

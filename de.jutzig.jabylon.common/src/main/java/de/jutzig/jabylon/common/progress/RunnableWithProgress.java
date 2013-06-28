@@ -7,6 +7,6 @@ import org.eclipse.core.runtime.IStatus;
 
 public interface RunnableWithProgress extends Serializable{
 
-	IStatus run(IProgressMonitor monitor);
-	
+    IStatus run(IProgressMonitor monitor);
+
 }

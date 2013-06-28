@@ -5,15 +5,15 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
 
 public interface RepositoryConnector {
-	
-	CDOView openView();
-	
-	CDOTransaction openTransaction();
-	
+
+    CDOView openView();
+
+    CDOTransaction openTransaction();
+
 //	CDOSession getSession();
-	
-	CDOSession createSession();
-	
-	void close();
-	
+
+    CDOSession createSession();
+
+    void close();
+
 }

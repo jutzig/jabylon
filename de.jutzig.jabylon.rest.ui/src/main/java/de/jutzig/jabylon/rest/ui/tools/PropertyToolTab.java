@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.tools;
 
@@ -17,47 +17,47 @@ import de.jutzig.jabylon.rest.ui.model.PropertyPair;
  */
 public class PropertyToolTab implements ITab {
 
-	private static final long serialVersionUID = 1L;
-	private PropertyEditorTool tool;
-	private IModel<PropertyPair> model;
-	
-	
+    private static final long serialVersionUID = 1L;
+    private PropertyEditorTool tool;
+    private IModel<PropertyPair> model;
 
-	public PropertyToolTab(PropertyEditorTool tool) {
-		super();
-		this.tool = tool;
-		model = new Model<PropertyPair>();
-	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.extensions.markup.html.tabs.ITab#getTitle()
-	 */
-	@Override
-	public IModel<String> getTitle() {
-		return Model.of(tool.getName());
-	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.extensions.markup.html.tabs.ITab#getPanel(java.lang.String)
-	 */
-	@Override
-	public WebMarkupContainer getPanel(String containerId) {
-		return tool.createPanel(new PageParameters(), model, containerId);
-	}
+    public PropertyToolTab(PropertyEditorTool tool) {
+        super();
+        this.tool = tool;
+        model = new Model<PropertyPair>();
+    }
 
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.extensions.markup.html.tabs.ITab#isVisible()
-	 */
-	@Override
-	public boolean isVisible() {
-		return true;
-	}
-	
-	public void setModel(IModel<PropertyPair> model) {
-		this.model.setObject(model.getObject());
-		
-	}
-	
-	
+    /* (non-Javadoc)
+     * @see org.apache.wicket.extensions.markup.html.tabs.ITab#getTitle()
+     */
+    @Override
+    public IModel<String> getTitle() {
+        return Model.of(tool.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.wicket.extensions.markup.html.tabs.ITab#getPanel(java.lang.String)
+     */
+    @Override
+    public WebMarkupContainer getPanel(String containerId) {
+        return tool.createPanel(new PageParameters(), model, containerId);
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.wicket.extensions.markup.html.tabs.ITab#isVisible()
+     */
+    @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    public void setModel(IModel<PropertyPair> model) {
+        this.model.setObject(model.getObject());
+
+    }
+
+
 
 }

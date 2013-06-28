@@ -20,63 +20,63 @@ import de.jutzig.jabylon.users.UsersPackage;
 
 public class UserRolesConfigSection extends GenericPanel<User> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public UserRolesConfigSection(String id, IModel<User> model) {
-		super(id, model);
-		EObject container = model.getObject().eContainer();
-		ComplexEObjectListDataProvider<Role> userRoles = new ComplexEObjectListDataProvider<Role>(model, UsersPackage.Literals.USER__ROLES);
-		ComplexEObjectListDataProvider<Role> availableRoles = null;
-	
-		if (container instanceof UserManagement) {
-			UserManagement management = (UserManagement) container;
-			availableRoles = new ComplexEObjectListDataProvider(new EObjectModel<UserManagement>(management), UsersPackage.Literals.USER_MANAGEMENT__ROLES);
-		}
-		else if(model instanceof AttachableModel) {
-			availableRoles = new ComplexEObjectListDataProvider(((AttachableModel)model).getParent(), UsersPackage.Literals.USER_MANAGEMENT__ROLES);
-		}
-		
-		Palette<Role> palette = new Palette<Role>("palette", userRoles, availableRoles, new Renderer(), 10, false);
-		add(palette);		
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public UserRolesConfigSection(String id, IModel<User> model) {
+        super(id, model);
+        EObject container = model.getObject().eContainer();
+        ComplexEObjectListDataProvider<Role> userRoles = new ComplexEObjectListDataProvider<Role>(model, UsersPackage.Literals.USER__ROLES);
+        ComplexEObjectListDataProvider<Role> availableRoles = null;
 
-	public static class UserRolesConfigSectionContributor extends AbstractConfigSection<User> {
+        if (container instanceof UserManagement) {
+            UserManagement management = (UserManagement) container;
+            availableRoles = new ComplexEObjectListDataProvider(new EObjectModel<UserManagement>(management), UsersPackage.Literals.USER_MANAGEMENT__ROLES);
+        }
+        else if(model instanceof AttachableModel) {
+            availableRoles = new ComplexEObjectListDataProvider(((AttachableModel)model).getParent(), UsersPackage.Literals.USER_MANAGEMENT__ROLES);
+        }
 
-		private static final long serialVersionUID = 1L;
+        Palette<Role> palette = new Palette<Role>("palette", userRoles, availableRoles, new Renderer(), 10, false);
+        add(palette);
+    }
 
-		@Override
-		public WebMarkupContainer doCreateContents(String id, IModel<User> input, Preferences config) {
+    public static class UserRolesConfigSectionContributor extends AbstractConfigSection<User> {
 
-			return new UserRolesConfigSection(id, input);
-		}
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void commit(IModel<User> input, Preferences config) {
-			
-			
-		}
-		
+        @Override
+        public WebMarkupContainer doCreateContents(String id, IModel<User> input, Preferences config) {
 
-		@Override
-		public String getRequiredPermission() {
-			return CommonPermissions.USER_GLOBAL_CONFIG;
-		}
-	}
-	
-	private static class Renderer implements IChoiceRenderer<Role> {
+            return new UserRolesConfigSection(id, input);
+        }
 
-		private static final long serialVersionUID = 1L;
+        @Override
+        public void commit(IModel<User> input, Preferences config) {
 
-		@Override
-		public Object getDisplayValue(Role object) {
-			return object.getName();
-		}
 
-		@Override
-		public String getIdValue(Role object, int index) {
-			return object.getName();
-		}
-		
-	}
+        }
+
+
+        @Override
+        public String getRequiredPermission() {
+            return CommonPermissions.USER_GLOBAL_CONFIG;
+        }
+    }
+
+    private static class Renderer implements IChoiceRenderer<Role> {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Object getDisplayValue(Role object) {
+            return object.getName();
+        }
+
+        @Override
+        public String getIdValue(Role object, int index) {
+            return object.getName();
+        }
+
+    }
 }

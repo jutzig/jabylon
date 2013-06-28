@@ -12,37 +12,37 @@ public class ProgressShowingAjaxButton extends AjaxButton implements ProgressCal
 
 
 
-	private static final long serialVersionUID = 1L;
-	private ProgressPanel panel;
-	private RunnableWithProgress runnable;
+    private static final long serialVersionUID = 1L;
+    private ProgressPanel panel;
+    private RunnableWithProgress runnable;
 
-	public ProgressShowingAjaxButton(String id, ProgressPanel panel, RunnableWithProgress runnable) {
-		super(id);
-		this.panel = panel;
-		this.runnable = runnable;
-		setDefaultFormProcessing(false);
-	}
+    public ProgressShowingAjaxButton(String id, ProgressPanel panel, RunnableWithProgress runnable) {
+        super(id);
+        this.panel = panel;
+        this.runnable = runnable;
+        setDefaultFormProcessing(false);
+    }
 
-	@Override
-	protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-		super.onSubmit(target, form);
+    @Override
+    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+        super.onSubmit(target, form);
 
-		panel.start(target, this);
-		setEnabled(false);
-		long id = Activator.getDefault().getProgressService().schedule(runnable);
-		panel.getModel().setTaskID(id);
-	}
-	
-	@Override
-	public void progressStart(AjaxRequestTarget target, ProgressionModel model) {
-		target.add(this);
-		
-	}
+        panel.start(target, this);
+        setEnabled(false);
+        long id = Activator.getDefault().getProgressService().schedule(runnable);
+        panel.getModel().setTaskID(id);
+    }
 
-	@Override
-	public void progressDone(AjaxRequestTarget target, ProgressionModel model) {
-		setEnabled(true);
-	}
+    @Override
+    public void progressStart(AjaxRequestTarget target, ProgressionModel model) {
+        target.add(this);
+
+    }
+
+    @Override
+    public void progressDone(AjaxRequestTarget target, ProgressionModel model) {
+        setEnabled(true);
+    }
 
 
 }

@@ -47,564 +47,564 @@ import de.jutzig.jabylon.users.UsersFactory;
 
 public class ProjectPermissionsConfigSection extends BasicPanel<Project> implements RestrictedComponent {
 
-	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(ProjectPermissionsConfigSection.class);
-	@Inject
-	private transient URIResolver resolver;
-	private IModel<UserManagement> userManagement;
-	private List<UserPermission> userPermissions;
-	private List<IModel<User>> assignableUsers;
-	
-	private List<RolePermission> rolePermissions;
-	private List<IModel<Role>> assignableRoles;
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(ProjectPermissionsConfigSection.class);
+    @Inject
+    private transient URIResolver resolver;
+    private IModel<UserManagement> userManagement;
+    private List<UserPermission> userPermissions;
+    private List<IModel<User>> assignableUsers;
 
-	public ProjectPermissionsConfigSection(String id, IModel<Project> model, PageParameters params) {
-		super(id, model, params);
-	}
+    private List<RolePermission> rolePermissions;
+    private List<IModel<Role>> assignableRoles;
 
-	@Override
-	protected void preConstruct() {
-		Object resolved = resolver.resolve(UserManagmentURIHandler.SECURITY_URI_PREFIX);
-		if (resolved instanceof UserManagement) {
-			UserManagement management = (UserManagement) resolved;
-			userManagement = new EObjectModel<UserManagement>(management);
-			assignableUsers = new ArrayList<IModel<User>>();
-			userPermissions = createUserPermissions(getModel().getObject(), userManagement.getObject(), assignableUsers);
-			assignableRoles = new ArrayList<IModel<Role>>();
-			rolePermissions = createRolePermissions(getModel().getObject(), userManagement.getObject(), assignableRoles);
-		}
-	}
+    public ProjectPermissionsConfigSection(String id, IModel<Project> model, PageParameters params) {
+        super(id, model, params);
+    }
 
-	private List<UserPermission> createUserPermissions(Project project, UserManagement userManagement, List<IModel<User>> assignableUsers) {
-		EList<User> users = userManagement.getUsers();
-		List<UserPermission> result = new ArrayList<UserPermission>();
-		for (User user : users) {
-			boolean filterUser = user.hasPermission(CommonPermissions.WILDCARD);
-			PermissionSetting highestSetting = PermissionSetting.NONE;
-			EList<Permission> allPermissions = user.getPermissions();
-			for (Permission permission : allPermissions) {
-				String permissionName = permission.getName();
-				if (permissionName.startsWith(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName()))) {
-					// user already has permissions
-					if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
-						highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
-					else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
-						highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
-					else
-						highestSetting = PermissionSetting.CONFIG;
-					filterUser = true;
-				} 
-			}
-			if(highestSetting!=PermissionSetting.NONE) {
-				UserPermission userPermission = new UserPermission(new EObjectModel<User>(user), highestSetting);
-				result.add(userPermission);					
-			}
-			if (!filterUser)
-				assignableUsers.add(new EObjectModel<User>(user));
-		}
-		return result;
-	}
+    @Override
+    protected void preConstruct() {
+        Object resolved = resolver.resolve(UserManagmentURIHandler.SECURITY_URI_PREFIX);
+        if (resolved instanceof UserManagement) {
+            UserManagement management = (UserManagement) resolved;
+            userManagement = new EObjectModel<UserManagement>(management);
+            assignableUsers = new ArrayList<IModel<User>>();
+            userPermissions = createUserPermissions(getModel().getObject(), userManagement.getObject(), assignableUsers);
+            assignableRoles = new ArrayList<IModel<Role>>();
+            rolePermissions = createRolePermissions(getModel().getObject(), userManagement.getObject(), assignableRoles);
+        }
+    }
+
+    private List<UserPermission> createUserPermissions(Project project, UserManagement userManagement, List<IModel<User>> assignableUsers) {
+        EList<User> users = userManagement.getUsers();
+        List<UserPermission> result = new ArrayList<UserPermission>();
+        for (User user : users) {
+            boolean filterUser = user.hasPermission(CommonPermissions.WILDCARD);
+            PermissionSetting highestSetting = PermissionSetting.NONE;
+            EList<Permission> allPermissions = user.getPermissions();
+            for (Permission permission : allPermissions) {
+                String permissionName = permission.getName();
+                if (permissionName.startsWith(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName()))) {
+                    // user already has permissions
+                    if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
+                    else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
+                    else
+                        highestSetting = PermissionSetting.CONFIG;
+                    filterUser = true;
+                }
+            }
+            if(highestSetting!=PermissionSetting.NONE) {
+                UserPermission userPermission = new UserPermission(new EObjectModel<User>(user), highestSetting);
+                result.add(userPermission);
+            }
+            if (!filterUser)
+                assignableUsers.add(new EObjectModel<User>(user));
+        }
+        return result;
+    }
 
 
-	private List<RolePermission> createRolePermissions(Project project, UserManagement userManagement, List<IModel<Role>> assignableRoles) {
-		EList<Role> roles = userManagement.getRoles();
-		List<RolePermission> result = new ArrayList<RolePermission>();
-		for (Role role : roles) {
-			boolean filterUser = hasPermission(role,CommonPermissions.WILDCARD);
-			PermissionSetting highestSetting = PermissionSetting.NONE;
-			EList<Permission> allPermissions = role.getPermissions();
-			for (Permission permission : allPermissions) {
-				String permissionName = permission.getName();
-				if (permissionName.startsWith(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName()))) {
-					// user already has permissions
-					if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
-						highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
-					else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
-						highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
-					else
-						highestSetting = PermissionSetting.CONFIG;
-					filterUser = true;
-				} 
-			}
-			if(highestSetting!=PermissionSetting.NONE) {
-				RolePermission rolePermission = new RolePermission(new EObjectModel<Role>(role), highestSetting);
-				result.add(rolePermission);					
-			}
-			if (!filterUser)
-				assignableRoles.add(new EObjectModel<Role>(role));
-		}
-		return result;
-	}
-	
-	private boolean hasPermission(Role role, String permissionName) {
-		EList<Permission> allPermissions = role.getAllPermissions();
-		for (Permission permission : allPermissions) {
-			if(permission.getName().equals(permissionName))
-				return true;
-		}
-		return false;
-	}
+    private List<RolePermission> createRolePermissions(Project project, UserManagement userManagement, List<IModel<Role>> assignableRoles) {
+        EList<Role> roles = userManagement.getRoles();
+        List<RolePermission> result = new ArrayList<RolePermission>();
+        for (Role role : roles) {
+            boolean filterUser = hasPermission(role,CommonPermissions.WILDCARD);
+            PermissionSetting highestSetting = PermissionSetting.NONE;
+            EList<Permission> allPermissions = role.getPermissions();
+            for (Permission permission : allPermissions) {
+                String permissionName = permission.getName();
+                if (permissionName.startsWith(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName()))) {
+                    // user already has permissions
+                    if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
+                    else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
+                    else
+                        highestSetting = PermissionSetting.CONFIG;
+                    filterUser = true;
+                }
+            }
+            if(highestSetting!=PermissionSetting.NONE) {
+                RolePermission rolePermission = new RolePermission(new EObjectModel<Role>(role), highestSetting);
+                result.add(rolePermission);
+            }
+            if (!filterUser)
+                assignableRoles.add(new EObjectModel<Role>(role));
+        }
+        return result;
+    }
 
-	@Override
-	protected void onDetach() {
-		if(userManagement!=null)
-			userManagement.detach();
-		if(assignableUsers!=null)
-		{
-			for (IModel<User> user : assignableUsers) {
-				user.detach();
-			}			
-		}
-		super.onDetach();
-	}
+    private boolean hasPermission(Role role, String permissionName) {
+        EList<Permission> allPermissions = role.getAllPermissions();
+        for (Permission permission : allPermissions) {
+            if(permission.getName().equals(permissionName))
+                return true;
+        }
+        return false;
+    }
 
-	@Override
-	protected void construct() {
-		setOutputMarkupId(true);
-		
-		RefreshingView<RolePermission> roleDataView = new RefreshingView<RolePermission>("rolePermissionRow") {
+    @Override
+    protected void onDetach() {
+        if(userManagement!=null)
+            userManagement.detach();
+        if(assignableUsers!=null)
+        {
+            for (IModel<User> user : assignableUsers) {
+                user.detach();
+            }
+        }
+        super.onDetach();
+    }
 
-			private static final long serialVersionUID = 1L;
+    @Override
+    protected void construct() {
+        setOutputMarkupId(true);
 
-			@Override
-			protected Iterator<IModel<RolePermission>> getItemModels() {
-				ModelIteratorAdapter<RolePermission> adapter = new ModelIteratorAdapter<RolePermission>(rolePermissions.iterator()) {
+        RefreshingView<RolePermission> roleDataView = new RefreshingView<RolePermission>("rolePermissionRow") {
 
-					@Override
-					protected IModel<RolePermission> model(RolePermission object) {
-						return new CompoundPropertyModel<RolePermission>(object);
-					}
-				};
-				return adapter;
-			}
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(Item<RolePermission> item) {
-				item.add(new Label("registrant", item.getModelObject().getRegistrant().getObject().getName()));
-				final DropDownChoice<PermissionSetting> permissionChoice = new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting
-						.values()), new PermissionSettingRenderer());
-				permissionChoice.setOutputMarkupId(true);
+            @Override
+            protected Iterator<IModel<RolePermission>> getItemModels() {
+                ModelIteratorAdapter<RolePermission> adapter = new ModelIteratorAdapter<RolePermission>(rolePermissions.iterator()) {
 
-				permissionChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                    @Override
+                    protected IModel<RolePermission> model(RolePermission object) {
+                        return new CompoundPropertyModel<RolePermission>(object);
+                    }
+                };
+                return adapter;
+            }
 
-					private static final long serialVersionUID = 1L;
+            @Override
+            protected void populateItem(Item<RolePermission> item) {
+                item.add(new Label("registrant", item.getModelObject().getRegistrant().getObject().getName()));
+                final DropDownChoice<PermissionSetting> permissionChoice = new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting
+                        .values()), new PermissionSettingRenderer());
+                permissionChoice.setOutputMarkupId(true);
 
-					protected void onUpdate(AjaxRequestTarget target) {
-						target.add(permissionChoice);
-					}
-				});
-				item.add(permissionChoice);
+                permissionChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
-			}
+                    private static final long serialVersionUID = 1L;
 
-		};
-		add(roleDataView);
-		addAddRolePermissionForm(assignableRoles);
-		
-		RefreshingView<UserPermission> dataView = new RefreshingView<UserPermission>("userPermissionRow") {
+                    protected void onUpdate(AjaxRequestTarget target) {
+                        target.add(permissionChoice);
+                    }
+                });
+                item.add(permissionChoice);
 
-			private static final long serialVersionUID = 1L;
+            }
 
-			@Override
-			protected Iterator<IModel<UserPermission>> getItemModels() {
-				ModelIteratorAdapter<UserPermission> adapter = new ModelIteratorAdapter<UserPermission>(userPermissions.iterator()) {
+        };
+        add(roleDataView);
+        addAddRolePermissionForm(assignableRoles);
 
-					@Override
-					protected IModel<UserPermission> model(UserPermission object) {
-						return new CompoundPropertyModel<UserPermission>(object);
-					}
-				};
-				return adapter;
-			}
+        RefreshingView<UserPermission> dataView = new RefreshingView<UserPermission>("userPermissionRow") {
 
-			@Override
-			protected void populateItem(Item<UserPermission> item) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected Iterator<IModel<UserPermission>> getItemModels() {
+                ModelIteratorAdapter<UserPermission> adapter = new ModelIteratorAdapter<UserPermission>(userPermissions.iterator()) {
+
+                    @Override
+                    protected IModel<UserPermission> model(UserPermission object) {
+                        return new CompoundPropertyModel<UserPermission>(object);
+                    }
+                };
+                return adapter;
+            }
+
+            @Override
+            protected void populateItem(Item<UserPermission> item) {
 //				item.add(new Label("registrant", item.getModelObject().getRegistrant().getObject().getName()));
-				item.add(new UserImagePanel("registrant", item.getModelObject().getRegistrant()));
-				final DropDownChoice<PermissionSetting> permissionChoice = new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting
-						.values()), new PermissionSettingRenderer());
-				permissionChoice.setOutputMarkupId(true);
+                item.add(new UserImagePanel("registrant", item.getModelObject().getRegistrant()));
+                final DropDownChoice<PermissionSetting> permissionChoice = new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting
+                        .values()), new PermissionSettingRenderer());
+                permissionChoice.setOutputMarkupId(true);
 
-				permissionChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                permissionChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
-					private static final long serialVersionUID = 1L;
+                    private static final long serialVersionUID = 1L;
 
-					protected void onUpdate(AjaxRequestTarget target) {
-						target.add(permissionChoice);
-					}
-				});
-				item.add(permissionChoice);
+                    protected void onUpdate(AjaxRequestTarget target) {
+                        target.add(permissionChoice);
+                    }
+                });
+                item.add(permissionChoice);
 
-			}
+            }
 
-		};
-		add(dataView);
-		addAddPermissionForm(assignableUsers);
+        };
+        add(dataView);
+        addAddPermissionForm(assignableUsers);
 
-	}
+    }
 
-	protected void commit() {
-		UserManagement management = (UserManagement) resolver.resolveWithTransaction(userManagement.getObject().cdoID());
-		for (UserPermission permission : userPermissions) {
-			User user = permission.getRegistrant().getObject();
-			user = management.cdoView().getObject(user);
-			
-			/*
-			 * Issue #101
-			 * first delete all permission in case they have been reduced
-			 * http://github.com/jutzig/jabylon/issues/issue/101
-			 */
-			String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
-			EList<Permission> userPermissions = user.getPermissions();
-			Iterator<Permission> it = userPermissions.iterator();
-			while (it.hasNext()) {
-				if (it.next().getName().startsWith(prefix))
-					it.remove();
-			}
-			
-			switch (permission.getPermission()) {
-			case CONFIG:
-				Permission perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
-						management);
-				user.getPermissions().add(perm);
-			case EDIT:
-				perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
-						management);
-				user.getPermissions().add(perm);
-			case READ:
-				perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
-						management);
-				user.getPermissions().add(perm);
-				break;
-			case NONE:
-				// nothing to do
-			}
-		}
-		
-		//now the roles
-		for (RolePermission permission : rolePermissions) {
-			Role role = permission.getRegistrant().getObject();
-			role = management.cdoView().getObject(role);
-			
-			/*
-			 * Issue #101
-			 * first delete all permission in case they have been reduced
-			 * http://github.com/jutzig/jabylon/issues/issue/101
-			 */
-			String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
-			EList<Permission> userPermissions = role.getPermissions();
-			Iterator<Permission> it = userPermissions.iterator();
-			while (it.hasNext()) {
-				if (it.next().getName().startsWith(prefix))
-					it.remove();
-			}
-			
-			switch (permission.getPermission()) {
-			case CONFIG:
-				Permission perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
-						management);
-				if (!hasPermission(role, perm.getName()))
-					role.getPermissions().add(perm);
-			case EDIT:
-				perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
-						management);
-				if (!hasPermission(role,perm.getName()))
-					role.getPermissions().add(perm);
-			case READ:
-				perm = getOrCreatePermission(
-						CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
-						management);
-				if (!hasPermission(role,perm.getName()))
-					role.getPermissions().add(perm);
-				break;
-			case NONE:
-				//nothing to do
-			}
-		}
-		
-		CDOTransaction transaction = (CDOTransaction) management.cdoView();
-		try {
-			transaction.commit();
-		} catch (CommitException e) {
-			logger.error("Failed to commit new permission settings",e);
-		}
-	}
+    protected void commit() {
+        UserManagement management = (UserManagement) resolver.resolveWithTransaction(userManagement.getObject().cdoID());
+        for (UserPermission permission : userPermissions) {
+            User user = permission.getRegistrant().getObject();
+            user = management.cdoView().getObject(user);
 
-	private Permission getOrCreatePermission(String permissionName, UserManagement management) {
-		Permission permission = management.findPermissionByName(permissionName);
-		if(permission==null) {
-			permission = UsersFactory.eINSTANCE.createPermission();
-			management.getPermissions().add(permission);
-			permission.setName(permissionName);
-		}
-		return permission;
-	}
+            /*
+             * Issue #101
+             * first delete all permission in case they have been reduced
+             * http://github.com/jutzig/jabylon/issues/issue/101
+             */
+            String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
+            EList<Permission> userPermissions = user.getPermissions();
+            Iterator<Permission> it = userPermissions.iterator();
+            while (it.hasNext()) {
+                if (it.next().getName().startsWith(prefix))
+                    it.remove();
+            }
 
-	public static class ProjectPermissionsConfigSectionContributor extends AbstractConfigSection<Project> {
+            switch (permission.getPermission()) {
+            case CONFIG:
+                Permission perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
+                        management);
+                user.getPermissions().add(perm);
+            case EDIT:
+                perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
+                        management);
+                user.getPermissions().add(perm);
+            case READ:
+                perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
+                        management);
+                user.getPermissions().add(perm);
+                break;
+            case NONE:
+                // nothing to do
+            }
+        }
 
-		private static final long serialVersionUID = 1L;
-		private ProjectPermissionsConfigSection projectPermissionsConfigSection;
+        //now the roles
+        for (RolePermission permission : rolePermissions) {
+            Role role = permission.getRegistrant().getObject();
+            role = management.cdoView().getObject(role);
 
-		@Override
-		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences config) {
+            /*
+             * Issue #101
+             * first delete all permission in case they have been reduced
+             * http://github.com/jutzig/jabylon/issues/issue/101
+             */
+            String prefix = CommonPermissions.constructPermission(CommonPermissions.PROJECT, getModel().getObject().getName());
+            EList<Permission> userPermissions = role.getPermissions();
+            Iterator<Permission> it = userPermissions.iterator();
+            while (it.hasNext()) {
+                if (it.next().getName().startsWith(prefix))
+                    it.remove();
+            }
 
-			projectPermissionsConfigSection = new ProjectPermissionsConfigSection(id, input, new PageParameters());
-			return projectPermissionsConfigSection;
-		}
+            switch (permission.getPermission()) {
+            case CONFIG:
+                Permission perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
+                        management);
+                if (!hasPermission(role, perm.getName()))
+                    role.getPermissions().add(perm);
+            case EDIT:
+                perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
+                        management);
+                if (!hasPermission(role,perm.getName()))
+                    role.getPermissions().add(perm);
+            case READ:
+                perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
+                        management);
+                if (!hasPermission(role,perm.getName()))
+                    role.getPermissions().add(perm);
+                break;
+            case NONE:
+                //nothing to do
+            }
+        }
 
-		@Override
-		public void commit(IModel<Project> input, Preferences config) {
-			projectPermissionsConfigSection.commit();
+        CDOTransaction transaction = (CDOTransaction) management.cdoView();
+        try {
+            transaction.commit();
+        } catch (CommitException e) {
+            logger.error("Failed to commit new permission settings",e);
+        }
+    }
 
-		}
+    private Permission getOrCreatePermission(String permissionName, UserManagement management) {
+        Permission permission = management.findPermissionByName(permissionName);
+        if(permission==null) {
+            permission = UsersFactory.eINSTANCE.createPermission();
+            management.getPermissions().add(permission);
+            permission.setName(permissionName);
+        }
+        return permission;
+    }
 
-		@Override
-		public String getRequiredPermission() {
-			String projectName = null;
-			if (getDomainObject() != null)
-				projectName = getDomainObject().getName();
-			return CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, projectName, CommonPermissions.ACTION_CONFIG);
-		}
-	}
+    public static class ProjectPermissionsConfigSectionContributor extends AbstractConfigSection<Project> {
 
-	private void addAddPermissionForm(final List<IModel<User>> assignableUsers) {
-		/*
-		 * Add permission form
-		 */
-		CompoundPropertyModel<UserPermission> addPermissionModel = new CompoundPropertyModel<UserPermission>(new UserPermission());
-		Form<UserPermission> addPermissionForm = new Form<UserPermission>("addUserPermissionForm", addPermissionModel);
-		DropDownChoice<IModel<User>> registrantChoice = new DropDownChoice<IModel<User>>("registrant", assignableUsers, new UserRenderer());
+        private static final long serialVersionUID = 1L;
+        private ProjectPermissionsConfigSection projectPermissionsConfigSection;
 
-		addPermissionForm.add(registrantChoice);
+        @Override
+        public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences config) {
 
-		addPermissionForm.add(new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting.values()), new PermissionSettingRenderer()));
-		AjaxButton button = new AjaxButton("addPermissionButton", addPermissionForm) {
+            projectPermissionsConfigSection = new ProjectPermissionsConfigSection(id, input, new PageParameters());
+            return projectPermissionsConfigSection;
+        }
 
-			private static final long serialVersionUID = 1L;
+        @Override
+        public void commit(IModel<Project> input, Preferences config) {
+            projectPermissionsConfigSection.commit();
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserPermission userPermission = (UserPermission) form.getModel().getObject();
-				if (userPermission.getPermission() == null) {
-					return;
-				}
-				UserPermission copy = new UserPermission(userPermission.getRegistrant(), userPermission.getPermission());
-				userPermissions.add(copy);
+        }
 
-				Collections.sort(userPermissions);
+        @Override
+        public String getRequiredPermission() {
+            String projectName = null;
+            if (getDomainObject() != null)
+                projectName = getDomainObject().getName();
+            return CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, projectName, CommonPermissions.ACTION_CONFIG);
+        }
+    }
 
-				// remove registrant from available choices
-				assignableUsers.remove(userPermission.getRegistrant());
+    private void addAddPermissionForm(final List<IModel<User>> assignableUsers) {
+        /*
+         * Add permission form
+         */
+        CompoundPropertyModel<UserPermission> addPermissionModel = new CompoundPropertyModel<UserPermission>(new UserPermission());
+        Form<UserPermission> addPermissionForm = new Form<UserPermission>("addUserPermissionForm", addPermissionModel);
+        DropDownChoice<IModel<User>> registrantChoice = new DropDownChoice<IModel<User>>("registrant", assignableUsers, new UserRenderer());
 
-				// force the panel to refresh
-				target.add(ProjectPermissionsConfigSection.this);
-			}
-		};
-		addPermissionForm.add(button);
+        addPermissionForm.add(registrantChoice);
 
-		// only show add permission form if we have a registrant choice
-		if (assignableUsers.isEmpty())
-			addPermissionForm.setVisible(false);
-		else
-			registrantChoice.setDefaultModelObject(assignableUsers.get(0));
-		add(addPermissionForm);
-	}
+        addPermissionForm.add(new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting.values()), new PermissionSettingRenderer()));
+        AjaxButton button = new AjaxButton("addPermissionButton", addPermissionForm) {
 
-	private void addAddRolePermissionForm(final List<IModel<Role>> assignableRoles) {
-		/*
-		 * Add permission form
-		 */
-		CompoundPropertyModel<RolePermission> addPermissionModel = new CompoundPropertyModel<RolePermission>(new RolePermission());
-		Form<RolePermission> addPermissionForm = new Form<RolePermission>("addRolePermissionForm", addPermissionModel);
-		DropDownChoice<IModel<Role>> registrantChoice = new DropDownChoice<IModel<Role>>("registrant", assignableRoles, new RoleRenderer());
+            private static final long serialVersionUID = 1L;
 
-		addPermissionForm.add(registrantChoice);
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                UserPermission userPermission = (UserPermission) form.getModel().getObject();
+                if (userPermission.getPermission() == null) {
+                    return;
+                }
+                UserPermission copy = new UserPermission(userPermission.getRegistrant(), userPermission.getPermission());
+                userPermissions.add(copy);
 
-		addPermissionForm.add(new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting.values()), new PermissionSettingRenderer()));
-		AjaxButton button = new AjaxButton("addPermissionButton", addPermissionForm) {
+                Collections.sort(userPermissions);
 
-			private static final long serialVersionUID = 1L;
+                // remove registrant from available choices
+                assignableUsers.remove(userPermission.getRegistrant());
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				RolePermission rolePermission = (RolePermission) form.getModel().getObject();
-				if (rolePermission.getPermission() == null) {
-					return;
-				}
-				RolePermission copy = new RolePermission(rolePermission.getRegistrant(), rolePermission.getPermission());
-				rolePermissions.add(copy);
+                // force the panel to refresh
+                target.add(ProjectPermissionsConfigSection.this);
+            }
+        };
+        addPermissionForm.add(button);
 
-				Collections.sort(rolePermissions);
+        // only show add permission form if we have a registrant choice
+        if (assignableUsers.isEmpty())
+            addPermissionForm.setVisible(false);
+        else
+            registrantChoice.setDefaultModelObject(assignableUsers.get(0));
+        add(addPermissionForm);
+    }
 
-				// remove registrant from available choices
-				assignableRoles.remove(rolePermission.getRegistrant());
+    private void addAddRolePermissionForm(final List<IModel<Role>> assignableRoles) {
+        /*
+         * Add permission form
+         */
+        CompoundPropertyModel<RolePermission> addPermissionModel = new CompoundPropertyModel<RolePermission>(new RolePermission());
+        Form<RolePermission> addPermissionForm = new Form<RolePermission>("addRolePermissionForm", addPermissionModel);
+        DropDownChoice<IModel<Role>> registrantChoice = new DropDownChoice<IModel<Role>>("registrant", assignableRoles, new RoleRenderer());
 
-				// force the panel to refresh
-				target.add(ProjectPermissionsConfigSection.this);
-			}
-		};
-		addPermissionForm.add(button);
+        addPermissionForm.add(registrantChoice);
 
-		// only show add permission form if we have a registrant choice
-		if (assignableRoles.isEmpty())
-			addPermissionForm.setVisible(false);
-		else
-			registrantChoice.setDefaultModelObject(assignableRoles.get(0));
-		add(addPermissionForm);
-	}
+        addPermissionForm.add(new DropDownChoice<PermissionSetting>("permission", Arrays.asList(PermissionSetting.values()), new PermissionSettingRenderer()));
+        AjaxButton button = new AjaxButton("addPermissionButton", addPermissionForm) {
 
-	@Override
-	public String getRequiredPermission() {
-		return CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModelObject().getName(), CommonPermissions.ACTION_CONFIG);
-	}
+            private static final long serialVersionUID = 1L;
 
-	
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                RolePermission rolePermission = (RolePermission) form.getModel().getObject();
+                if (rolePermission.getPermission() == null) {
+                    return;
+                }
+                RolePermission copy = new RolePermission(rolePermission.getRegistrant(), rolePermission.getPermission());
+                rolePermissions.add(copy);
+
+                Collections.sort(rolePermissions);
+
+                // remove registrant from available choices
+                assignableRoles.remove(rolePermission.getRegistrant());
+
+                // force the panel to refresh
+                target.add(ProjectPermissionsConfigSection.this);
+            }
+        };
+        addPermissionForm.add(button);
+
+        // only show add permission form if we have a registrant choice
+        if (assignableRoles.isEmpty())
+            addPermissionForm.setVisible(false);
+        else
+            registrantChoice.setDefaultModelObject(assignableRoles.get(0));
+        add(addPermissionForm);
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        return CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModelObject().getName(), CommonPermissions.ACTION_CONFIG);
+    }
+
+
 }
 
 enum PermissionSetting {
-	NONE, READ, EDIT, CONFIG;
+    NONE, READ, EDIT, CONFIG;
 }
 
 class PermissionSettingRenderer implements IChoiceRenderer<PermissionSetting> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public Object getDisplayValue(PermissionSetting object) {
-		switch (object) {
-		case NONE:
-			return "None";
-		case READ:
-			return "View";
-		case EDIT:
-			return "Edit";
-		case CONFIG:
-			return "Configure";
-		}
-		return "None";
-	}
+    @Override
+    public Object getDisplayValue(PermissionSetting object) {
+        switch (object) {
+        case NONE:
+            return "None";
+        case READ:
+            return "View";
+        case EDIT:
+            return "Edit";
+        case CONFIG:
+            return "Configure";
+        }
+        return "None";
+    }
 
-	@Override
-	public String getIdValue(PermissionSetting object, int index) {
-		return object.name();
-	}
+    @Override
+    public String getIdValue(PermissionSetting object, int index) {
+        return object.name();
+    }
 }
 
 class UserRenderer implements IChoiceRenderer<IModel<User>> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public Object getDisplayValue(IModel<User> object) {
-		return object.getObject().getName();
-	}
+    @Override
+    public Object getDisplayValue(IModel<User> object) {
+        return object.getObject().getName();
+    }
 
-	@Override
-	public String getIdValue(IModel<User> object, int index) {
-		return object.getObject().cdoID().toString();
-	}
+    @Override
+    public String getIdValue(IModel<User> object, int index) {
+        return object.getObject().cdoID().toString();
+    }
 
 }
 
 class RoleRenderer implements IChoiceRenderer<IModel<Role>> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public Object getDisplayValue(IModel<Role> object) {
-		return object.getObject().getName();
-	}
+    @Override
+    public Object getDisplayValue(IModel<Role> object) {
+        return object.getObject().getName();
+    }
 
-	@Override
-	public String getIdValue(IModel<Role> object, int index) {
-		return object.getObject().cdoID().toString();
-	}
+    @Override
+    public String getIdValue(IModel<Role> object, int index) {
+        return object.getObject().cdoID().toString();
+    }
 
 }
 
 
 class UserPermission implements Serializable, Comparable<UserPermission> {
 
-	private static final long serialVersionUID = 1L;
-	private IModel<User> registrant;
-	private PermissionSetting permission;
+    private static final long serialVersionUID = 1L;
+    private IModel<User> registrant;
+    private PermissionSetting permission;
 
-	public UserPermission(IModel<User> registrant, PermissionSetting permission) {
-		super();
-		this.registrant = registrant;
-		this.permission = permission;
-	}
+    public UserPermission(IModel<User> registrant, PermissionSetting permission) {
+        super();
+        this.registrant = registrant;
+        this.permission = permission;
+    }
 
-	public UserPermission() {
-	}
+    public UserPermission() {
+    }
 
-	public void setPermission(PermissionSetting permission) {
-		this.permission = permission;
-	}
+    public void setPermission(PermissionSetting permission) {
+        this.permission = permission;
+    }
 
-	public void setRegistrant(IModel<User> registrant) {
-		this.registrant = registrant;
-	}
+    public void setRegistrant(IModel<User> registrant) {
+        this.registrant = registrant;
+    }
 
-	public IModel<User> getRegistrant() {
-		return registrant;
-	}
+    public IModel<User> getRegistrant() {
+        return registrant;
+    }
 
-	public PermissionSetting getPermission() {
-		return permission;
-	}
+    public PermissionSetting getPermission() {
+        return permission;
+    }
 
-	@Override
-	public int compareTo(UserPermission o) {
-		if (registrant == null)
-			return -1;
-		if (o.getRegistrant().getObject().getName() == null)
-			return 1;
-		return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
-	}
+    @Override
+    public int compareTo(UserPermission o) {
+        if (registrant == null)
+            return -1;
+        if (o.getRegistrant().getObject().getName() == null)
+            return 1;
+        return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
+    }
 
 }
 
 class RolePermission implements Serializable, Comparable<RolePermission> {
 
-	private static final long serialVersionUID = 1L;
-	private IModel<Role> registrant;
-	private PermissionSetting permission;
+    private static final long serialVersionUID = 1L;
+    private IModel<Role> registrant;
+    private PermissionSetting permission;
 
-	public RolePermission(IModel<Role> registrant, PermissionSetting permission) {
-		super();
-		this.registrant = registrant;
-		this.permission = permission;
-	}
+    public RolePermission(IModel<Role> registrant, PermissionSetting permission) {
+        super();
+        this.registrant = registrant;
+        this.permission = permission;
+    }
 
-	public RolePermission() {
-	}
+    public RolePermission() {
+    }
 
-	public void setPermission(PermissionSetting permission) {
-		this.permission = permission;
-	}
+    public void setPermission(PermissionSetting permission) {
+        this.permission = permission;
+    }
 
-	public void setRegistrant(IModel<Role> registrant) {
-		this.registrant = registrant;
-	}
+    public void setRegistrant(IModel<Role> registrant) {
+        this.registrant = registrant;
+    }
 
-	public IModel<Role> getRegistrant() {
-		return registrant;
-	}
+    public IModel<Role> getRegistrant() {
+        return registrant;
+    }
 
-	public PermissionSetting getPermission() {
-		return permission;
-	}
+    public PermissionSetting getPermission() {
+        return permission;
+    }
 
-	@Override
-	public int compareTo(RolePermission o) {
-		if (registrant == null)
-			return -1;
-		if (o.getRegistrant().getObject().getName() == null)
-			return 1;
-		return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
-	}
+    @Override
+    public int compareTo(RolePermission o) {
+        if (registrant == null)
+            return -1;
+        if (o.getRegistrant().getObject().getName() == null)
+            return 1;
+        return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
+    }
 
 }

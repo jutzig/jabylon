@@ -13,67 +13,67 @@ import de.jutzig.jabylon.users.User;
 
 public class DynamicConfigUtil {
 
-	private static Supplier<List<IConfigurationElement>> configSections;
-	private static Supplier<List<IConfigurationElement>> configTabs;
+    private static Supplier<List<IConfigurationElement>> configSections;
+    private static Supplier<List<IConfigurationElement>> configTabs;
 
-	
-	static{
-		configTabs = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.configTab"))));
-		configSections = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.config"))));
-	}
-	
-	private DynamicConfigUtil() {
-		// hide utility constructor
-	}
 
-	public static List<IConfigurationElement> getApplicableElements(Object domainObject, User user) {
+    static{
+        configTabs = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.configTab"))));
+        configSections = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("de.jutzig.jabylon.rest.ui.config"))));
+    }
 
-		List<IConfigurationElement> configSections = getConfigSections();
-		List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
-		for (IConfigurationElement child : configSections) {
+    private DynamicConfigUtil() {
+        // hide utility constructor
+    }
 
-			if (isApplicable(child, domainObject)) {
-				applicable.add(child);
-			}
+    public static List<IConfigurationElement> getApplicableElements(Object domainObject, User user) {
 
-		}
-		return applicable;
-	}
-	
-	public static List<IConfigurationElement> getApplicableElements(Object domainObject) {
+        List<IConfigurationElement> configSections = getConfigSections();
+        List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
+        for (IConfigurationElement child : configSections) {
 
-		List<IConfigurationElement> configSections = getConfigSections();
-		List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
-		for (IConfigurationElement child : configSections) {
+            if (isApplicable(child, domainObject)) {
+                applicable.add(child);
+            }
 
-			if (isApplicable(child, domainObject)) {
-				applicable.add(child);
-			}
+        }
+        return applicable;
+    }
 
-		}
-		return applicable;
-	}
+    public static List<IConfigurationElement> getApplicableElements(Object domainObject) {
 
-	private static boolean isApplicable(IConfigurationElement child, Object domainElement) {
-		String objectClass = child.getAttribute("objectClass");
+        List<IConfigurationElement> configSections = getConfigSections();
+        List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
+        for (IConfigurationElement child : configSections) {
 
-		try {
-			Class<?> clazz = Class.forName(objectClass);
-			return clazz.isInstance(domainElement);
-		} catch (ClassNotFoundException e) {
-			// TODO: this will not work for arbitrary classes. Need to explode
-			// super classes and interfaces of the domain object
-			e.printStackTrace();
-			return false;
-		}
+            if (isApplicable(child, domainObject)) {
+                applicable.add(child);
+            }
 
-	}
+        }
+        return applicable;
+    }
 
-	public static List<IConfigurationElement> getConfigSections() {
-		return configSections.get();
-	}
+    private static boolean isApplicable(IConfigurationElement child, Object domainElement) {
+        String objectClass = child.getAttribute("objectClass");
 
-	public static List<IConfigurationElement> getConfigTabs() {
+        try {
+            Class<?> clazz = Class.forName(objectClass);
+            return clazz.isInstance(domainElement);
+        } catch (ClassNotFoundException e) {
+            // TODO: this will not work for arbitrary classes. Need to explode
+            // super classes and interfaces of the domain object
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static List<IConfigurationElement> getConfigSections() {
+        return configSections.get();
+    }
+
+    public static List<IConfigurationElement> getConfigTabs() {
 //		if (configTabs == null) {
 //			configTabs = new ArrayList<IConfigurationElement>();
 //			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("de.jutzig.jabylon.ui.configTab");
@@ -96,6 +96,6 @@ public class DynamicConfigUtil {
 //				}
 //			});
 //		}
-		return configTabs.get();
-	}
+        return configTabs.get();
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.components;
 
@@ -20,98 +20,98 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
  */
 public class EditableTable extends HorizontalLayout implements ClickListener{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8653576988287492011L;
-	private Table table;
-	private Button addButton;
-	private Button removeButton;
-	private CheckBox edit;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8653576988287492011L;
+    private Table table;
+    private Button addButton;
+    private Button removeButton;
+    private CheckBox edit;
 
-	public EditableTable() {
-		this(false);
-		
-	}
-	
-	public EditableTable(boolean editable) {
-		HorizontalLayout layout = this;
-		layout.setSpacing(true);
-		table = new Table();
-		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
-		table.setWidth(100, UNITS_PERCENTAGE);
-		table.setHeight(300, UNITS_PIXELS);
-		layout.addComponent(table);
-		layout.setExpandRatio(table, 1);
+    public EditableTable() {
+        this(false);
 
-		VerticalLayout buttonLayout = new VerticalLayout();
-		addButton = new Button(Messages.getString("EditableTable_ADD_BUTTON")); //$NON-NLS-1$
-		addButton.setWidth(100, UNITS_PERCENTAGE);
-		addButton.addListener(this);
-		buttonLayout.addComponent(addButton);
-		removeButton = new Button(Messages.getString("EditableTable_REMOVE_BUTTON")); //$NON-NLS-1$
-		removeButton.addListener(this);
-		removeButton.setWidth(100, UNITS_PERCENTAGE);
-		buttonLayout.addComponent(removeButton);
+    }
 
-		buttonLayout.setSpacing(true);
+    public EditableTable(boolean editable) {
+        HorizontalLayout layout = this;
+        layout.setSpacing(true);
+        table = new Table();
+        table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
+        table.setWidth(100, UNITS_PERCENTAGE);
+        table.setHeight(300, UNITS_PIXELS);
+        layout.addComponent(table);
+        layout.setExpandRatio(table, 1);
 
-		
-		buttonLayout.setWidth(100, UNITS_PIXELS);
-		buttonLayout.setHeight(100, UNITS_PERCENTAGE);
-		layout.addComponent(buttonLayout);
-		layout.setExpandRatio(buttonLayout, 0);
-		
-		if(editable)
-		{
-			edit = new CheckBox(Messages.getString("EditableTable_EDIT_BUTTON")); //$NON-NLS-1$
-			edit.addListener(this);
-			edit.setImmediate(true);
+        VerticalLayout buttonLayout = new VerticalLayout();
+        addButton = new Button(Messages.getString("EditableTable_ADD_BUTTON")); //$NON-NLS-1$
+        addButton.setWidth(100, UNITS_PERCENTAGE);
+        addButton.addListener(this);
+        buttonLayout.addComponent(addButton);
+        removeButton = new Button(Messages.getString("EditableTable_REMOVE_BUTTON")); //$NON-NLS-1$
+        removeButton.addListener(this);
+        removeButton.setWidth(100, UNITS_PERCENTAGE);
+        buttonLayout.addComponent(removeButton);
 
-			buttonLayout.addComponent(edit);
-		}
-		Label spacer = new Label();
-		buttonLayout.addComponent(spacer);
-		buttonLayout.setExpandRatio(spacer, 1);
-		
-	}
-
-	@Override
-	public void buttonClick(ClickEvent event) {
-		if(event.getButton()==addButton)
-			addPressed();
-		else if(event.getButton()==removeButton)
-			removePressed();
-		else if(event.getButton()==edit)
-			editPressed(edit.booleanValue());
-		
-	}
-	
-	
-	private void editPressed(boolean selected) {
-		table.setEditable(selected);
-		
-	}
-
-	protected void removePressed() {
-
-		
-	}
-
-	protected void addPressed() {
-
-		
-	}
+        buttonLayout.setSpacing(true);
 
 
-	public Table getTable() {
-		return table;
-	}
-	
-	public void setEditable(boolean editable)
-	{
-		table.setEditable(editable);
-		edit.setValue(editable);
-	}
-	
+        buttonLayout.setWidth(100, UNITS_PIXELS);
+        buttonLayout.setHeight(100, UNITS_PERCENTAGE);
+        layout.addComponent(buttonLayout);
+        layout.setExpandRatio(buttonLayout, 0);
+
+        if(editable)
+        {
+            edit = new CheckBox(Messages.getString("EditableTable_EDIT_BUTTON")); //$NON-NLS-1$
+            edit.addListener(this);
+            edit.setImmediate(true);
+
+            buttonLayout.addComponent(edit);
+        }
+        Label spacer = new Label();
+        buttonLayout.addComponent(spacer);
+        buttonLayout.setExpandRatio(spacer, 1);
+
+    }
+
+    @Override
+    public void buttonClick(ClickEvent event) {
+        if(event.getButton()==addButton)
+            addPressed();
+        else if(event.getButton()==removeButton)
+            removePressed();
+        else if(event.getButton()==edit)
+            editPressed(edit.booleanValue());
+
+    }
+
+
+    private void editPressed(boolean selected) {
+        table.setEditable(selected);
+
+    }
+
+    protected void removePressed() {
+
+
+    }
+
+    protected void addPressed() {
+
+
+    }
+
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setEditable(boolean editable)
+    {
+        table.setEditable(editable);
+        edit.setValue(editable);
+    }
+
 }

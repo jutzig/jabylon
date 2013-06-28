@@ -6,7 +6,7 @@
 <style type="text/css">
 <!--
 select {
-	width: auto;
+    width: auto;
 }
 -->
 </style>
@@ -14,250 +14,250 @@ select {
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript"
-	src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
+    src="/jabylon/js/datatables/jquery.datatables.min.js"></script>
 <script type="text/javascript"
-	src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
+    src="/jabylon/js/datatables/dataTables.bootstrap.js"></script>
 <!-- <script type="text/javascript"
-		src="/jabylon/js/datatables/custom.sorting.js"></script> -->
+        src="/jabylon/js/datatables/custom.sorting.js"></script> -->
 <script type="text/javascript">
 <!--
-	$(document).ready(function() {
-		$('#table').dataTable({
-			"iDisplayLength" : 50,
-			//TODO: remove this once sorted out why pagination breaks the expand logic
-			"bPaginate" : false
-		});
-		
-		//toggle section with expand button
-		$('.expand-button').click(function() {
-			
-			var parent = $(this).parents('tr');
-			toggleRow(parent);
-		});
-		
-		$('.next-button').click(function() {
-			
-			var parent = $(this).parents('tr');
-			expandRow(parent.next());
-			collapseRow(parent);
-		});
-		
-		$('.previous-button').click(function() {
-			
-			var parent = $(this).parents('tr');
-			expandRow(parent.prev());
-			collapseRow(parent);
-		});
-	});
+    $(document).ready(function() {
+        $('#table').dataTable({
+            "iDisplayLength" : 50,
+            //TODO: remove this once sorted out why pagination breaks the expand logic
+            "bPaginate" : false
+        });
+
+        //toggle section with expand button
+        $('.expand-button').click(function() {
+
+            var parent = $(this).parents('tr');
+            toggleRow(parent);
+        });
+
+        $('.next-button').click(function() {
+
+            var parent = $(this).parents('tr');
+            expandRow(parent.next());
+            collapseRow(parent);
+        });
+
+        $('.previous-button').click(function() {
+
+            var parent = $(this).parents('tr');
+            expandRow(parent.prev());
+            collapseRow(parent);
+        });
+    });
 //-->
 </script>
 
 <script type="text/javascript">
 <!--
 
-	function expandRow(row) {
-		var divs = row.find('td > div');
-		divs.collapse('show');
-		var icon = row.find('button > i');
-		icon.toggleClass('icon-chevron-down');
-		icon.toggleClass('icon-chevron-right');
-	}
+    function expandRow(row) {
+        var divs = row.find('td > div');
+        divs.collapse('show');
+        var icon = row.find('button > i');
+        icon.toggleClass('icon-chevron-down');
+        icon.toggleClass('icon-chevron-right');
+    }
 
-	function collapseRow(row) {
-		row.find('td > div').collapse('hide');
-		var icon = row.find('button > i');
-		icon.toggleClass('icon-chevron-down');
-		icon.toggleClass('icon-chevron-right');
+    function collapseRow(row) {
+        row.find('td > div').collapse('hide');
+        var icon = row.find('button > i');
+        icon.toggleClass('icon-chevron-down');
+        icon.toggleClass('icon-chevron-right');
 
-	}
+    }
 
-	function toggleRowByID(rowID) {
-		var row = $(rowID);
-		toggleRowByID(rowID);
-	}
-	
-	function toggleRow(row) {
-		var divs = row.find('td > div');
-		divs.collapse('toggle');
-		var icon = row.find('button > i');
-		icon.toggleClass('icon-chevron-down');
-		icon.toggleClass('icon-chevron-right');
-	}
+    function toggleRowByID(rowID) {
+        var row = $(rowID);
+        toggleRowByID(rowID);
+    }
 
-	function selectFuzzyRow() {
-		var tableRow = $('tr.error').first();
-		expandRow(tableRow);
-	}
+    function toggleRow(row) {
+        var divs = row.find('td > div');
+        divs.collapse('toggle');
+        var icon = row.find('button > i');
+        icon.toggleClass('icon-chevron-down');
+        icon.toggleClass('icon-chevron-right');
+    }
 
-	$(document).ready(function() {
-		/* $('#table').dataTable({"iDisplayLength" : 50}); */
-		
-		//this is to make an AJAX request whenever
-		$('textarea').focus(function() {
-			var textArea = $(this);
-			var tr = textArea.parents('tr');
-			var keyField = tr.find('td span');
-			requestAid(keyField.text());
-		});
-		
-		selectFuzzyRow();
-	});
+    function selectFuzzyRow() {
+        var tableRow = $('tr.error').first();
+        expandRow(tableRow);
+    }
+
+    $(document).ready(function() {
+        /* $('#table').dataTable({"iDisplayLength" : 50}); */
+
+        //this is to make an AJAX request whenever
+        $('textarea').focus(function() {
+            var textArea = $(this);
+            var tr = textArea.parents('tr');
+            var keyField = tr.find('td span');
+            requestAid(keyField.text());
+        });
+
+        selectFuzzyRow();
+    });
 //-->
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript"
-	src="/jabylon/bootstrap/js/bootstrap.min.js"></script>
+    src="/jabylon/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container">
+    <div class="container">
 
-		<table
-			class="table table-striped table-hover dataview table-condensed"
-			id="table">
-			<!-- <caption>Projects</caption> -->
-			<thead>
-				<tr>
-					<th width="45%">Key</th>
-					<th width="45%">Translation</th>
-					<th width="10%">Status</th>
-				</tr>
-			</thead>
-			<tbody id="tbody">
+        <table
+            class="table table-striped table-hover dataview table-condensed"
+            id="table">
+            <!-- <caption>Projects</caption> -->
+            <thead>
+                <tr>
+                    <th width="45%">Key</th>
+                    <th width="45%">Translation</th>
+                    <th width="10%">Status</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
 
-				<tr id="id8a" class="error">
-					<td><button type="button" class="btn btn-small expand-button">
-							<i class="icon-chevron-right"></i>
-						</button> <span>anderer_key</span>
-						<div style="width: 100%; margin-right: 5px" class="collapse">
+                <tr id="id8a" class="error">
+                    <td><button type="button" class="btn btn-small expand-button">
+                            <i class="icon-chevron-right"></i>
+                        </button> <span>anderer_key</span>
+                        <div style="width: 100%; margin-right: 5px" class="collapse">
 
-							<textarea rows="3" cols="3" readonly="readonly"
-								style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
-							<br />
-							<textarea rows="3" style="width: 95%;" readonly="readonly"
-								name="repeater:0:row:template-area:template-comment"></textarea>
-							<p>
-								<button value="previous" name="button5" class="previous-button">previous</button>
-							</p>
-						</div></td>
-					<td>
-						<div style="width: 100%; margin-left: 5px" class="collapse">
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Translation"
-								name="repeater:0:row:translation-area:translation"></textarea>
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Comment"></textarea>
-							<p align="right">
-							<p align="right">
-								<button value="next" name="button5" class="next-button">next</button>
-							</p>
-							</p>
+                            <textarea rows="3" cols="3" readonly="readonly"
+                                style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
+                            <br />
+                            <textarea rows="3" style="width: 95%;" readonly="readonly"
+                                name="repeater:0:row:template-area:template-comment"></textarea>
+                            <p>
+                                <button value="previous" name="button5" class="previous-button">previous</button>
+                            </p>
+                        </div></td>
+                    <td>
+                        <div style="width: 100%; margin-left: 5px" class="collapse">
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Translation"
+                                name="repeater:0:row:translation-area:translation"></textarea>
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Comment"></textarea>
+                            <p align="right">
+                            <p align="right">
+                                <button value="next" name="button5" class="next-button">next</button>
+                            </p>
+                            </p>
 
-						</div>
-					</td>
-					<td><i class="icon-warning-sign"></i></td>
-				</tr>
+                        </div>
+                    </td>
+                    <td><i class="icon-warning-sign"></i></td>
+                </tr>
 
-				<tr id="id8f" class="error">
-					<td><button type="button" class="btn" data-toggle="collapse">
-							<i class="icon-chevron-down"></i>
-						</button> <span>anderer_key</span>
-						<div style="width: 100%; margin-right: 5px" class="collapse"
-							id="foo">
+                <tr id="id8f" class="error">
+                    <td><button type="button" class="btn" data-toggle="collapse">
+                            <i class="icon-chevron-down"></i>
+                        </button> <span>anderer_key</span>
+                        <div style="width: 100%; margin-right: 5px" class="collapse"
+                            id="foo">
 
-							<textarea rows="3" cols="3" readonly="readonly"
-								style="width: 95%;">total_anderer_value</textarea>
-							<br />
-							<textarea rows="3" style="width: 95%;" readonly="readonly"></textarea>
-							<p>
-								<button value="previous" name="button5"
-									onClick="expandPreviousRow('#id8f');">previous</button>
+                            <textarea rows="3" cols="3" readonly="readonly"
+                                style="width: 95%;">total_anderer_value</textarea>
+                            <br />
+                            <textarea rows="3" style="width: 95%;" readonly="readonly"></textarea>
+                            <p>
+                                <button value="previous" name="button5"
+                                    onClick="expandPreviousRow('#id8f');">previous</button>
 
-							</p>
+                            </p>
 
-						</div></td>
-					<td>
-						<div style="width: 100%; margin-left: 5px" class="collapse"
-							id="bar">
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Translation"></textarea>
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Comment"></textarea>
-							<p align="right">
-								<button value="next" name="button5"
-									onClick="expandNextRow('#id8f')">next</button>
+                        </div></td>
+                    <td>
+                        <div style="width: 100%; margin-left: 5px" class="collapse"
+                            id="bar">
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Translation"></textarea>
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Comment"></textarea>
+                            <p align="right">
+                                <button value="next" name="button5"
+                                    onClick="expandNextRow('#id8f')">next</button>
 
-							</p>
-						</div>
-					</td>
-					<td><i class="icon-warning-sign"></i></td>
-				</tr>
+                            </p>
+                        </div>
+                    </td>
+                    <td><i class="icon-warning-sign"></i></td>
+                </tr>
 
 
-				<tr id="abc">
-					<td><button type="button" class="btn" data-toggle="collapse"
-							data-parent="#tbody" data-target="tbody tr#abc div">
-							<i class="icon-chevron-down"></i>
-						</button> <span>anderer_key</span>
-						<div style="width: 100%; margin-right: 5px" class="collapse"
-							id="foo">
+                <tr id="abc">
+                    <td><button type="button" class="btn" data-toggle="collapse"
+                            data-parent="#tbody" data-target="tbody tr#abc div">
+                            <i class="icon-chevron-down"></i>
+                        </button> <span>anderer_key</span>
+                        <div style="width: 100%; margin-right: 5px" class="collapse"
+                            id="foo">
 
-							<textarea rows="3" cols="3" readonly="readonly"
-								style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
-							<br />
-							<textarea rows="3" style="width: 95%;" readonly="readonly"
-								name="repeater:0:row:template-area:template-comment"></textarea>
-							<p>
-								<button value="previous" name="button5"
-									onClick="expandPreviousRow('#abc');">previous</button>
+                            <textarea rows="3" cols="3" readonly="readonly"
+                                style="width: 95%;" name="repeater:0:row:template-area:template">total_anderer_value</textarea>
+                            <br />
+                            <textarea rows="3" style="width: 95%;" readonly="readonly"
+                                name="repeater:0:row:template-area:template-comment"></textarea>
+                            <p>
+                                <button value="previous" name="button5"
+                                    onClick="expandPreviousRow('#abc');">previous</button>
 
-							</p>
+                            </p>
 
-						</div></td>
-					<td>
-						<div style="width: 100%; margin-left: 5px" class="collapse"
-							id="bar">
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Translation"
-								name="repeater:0:row:translation-area:translation"></textarea>
-							<br />
-							<textarea rows="3" cols="3" style="width: 95%;"
-								placeholder="Comment"
-								name="repeater:0:row:translation-area:translation-comment"></textarea>
-							<p align="right">
-								<button value="next" name="button5"
-									onClick="expandNextRow('#abc')">next</button>
+                        </div></td>
+                    <td>
+                        <div style="width: 100%; margin-left: 5px" class="collapse"
+                            id="bar">
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Translation"
+                                name="repeater:0:row:translation-area:translation"></textarea>
+                            <br />
+                            <textarea rows="3" cols="3" style="width: 95%;"
+                                placeholder="Comment"
+                                name="repeater:0:row:translation-area:translation-comment"></textarea>
+                            <p align="right">
+                                <button value="next" name="button5"
+                                    onClick="expandNextRow('#abc')">next</button>
 
-							</p>
-						</div>
-					</td>
-					<td><i class="icon-warning-sign"></i></td>
-				</tr>
+                            </p>
+                        </div>
+                    </td>
+                    <td><i class="icon-warning-sign"></i></td>
+                </tr>
 
-				<tr id="id91" class="error">
-					<td><a class="btn btn-small" href="#" id="id88"><i
-							class="icon-chevron-right" id="id92"></i></a> <span>lala</span></td>
-					<td><span></span></td>
-					<td><i class="icon-warning-sign"></i></td>
-				</tr>
+                <tr id="id91" class="error">
+                    <td><a class="btn btn-small" href="#" id="id88"><i
+                            class="icon-chevron-right" id="id92"></i></a> <span>lala</span></td>
+                    <td><span></span></td>
+                    <td><i class="icon-warning-sign"></i></td>
+                </tr>
 
-				<tr id="id93" class="error">
-					<td><a class="btn btn-small" href="#" id="id89"><i
-							class="icon-chevron-right" id="id94"></i></a> <span>narf</span></td>
-					<td><span></span></td>
-					<td><i class="icon-warning-sign"></i></td>
-				</tr>
+                <tr id="id93" class="error">
+                    <td><a class="btn btn-small" href="#" id="id89"><i
+                            class="icon-chevron-right" id="id94"></i></a> <span>narf</span></td>
+                    <td><span></span></td>
+                    <td><i class="icon-warning-sign"></i></td>
+                </tr>
 
-			</tbody>
-		</table>
+            </tbody>
+        </table>
 
-	</div>
+    </div>
 
 
 

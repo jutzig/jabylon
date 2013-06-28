@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.config;
 
@@ -24,71 +24,71 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  */
 public class SettingsOverviewPanel extends GenericPanel<Void> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public SettingsOverviewPanel(String id) {
-		super(id);
+    public SettingsOverviewPanel(String id) {
+        super(id);
 
-		List<ConfigKind> configs = new ArrayList<ConfigKind>(EnumSet.allOf(ConfigKind.class));
-		ListView<ConfigKind> view = new ListView<ConfigKind>("config",configs) {
+        List<ConfigKind> configs = new ArrayList<ConfigKind>(EnumSet.allOf(ConfigKind.class));
+        ListView<ConfigKind> view = new ListView<ConfigKind>("config",configs) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(ListItem<ConfigKind> item) {
-				item.add(item.getModelObject().constructLink("link"));
-				item.add(new Label("description",item.getModelObject().getDescription()));
-				
-			}
-			
-		};
-		add(view);
-	}
+            @Override
+            protected void populateItem(ListItem<ConfigKind> item) {
+                item.add(item.getModelObject().constructLink("link"));
+                item.add(new Label("description",item.getModelObject().getDescription()));
+
+            }
+
+        };
+        add(view);
+    }
 
 }
 
 enum ConfigKind {
-	WORKSPACE("Projects","Configure the Jabylon translation Projects"){
+    WORKSPACE("Projects","Configure the Jabylon translation Projects"){
 
-		@Override
-		public Link<Void> constructLink(String id) {
-			PageParameters params = new PageParameters();
-			params.set(0, "workspace");
-			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(id, SettingsPage.class, params);
-			link.setBody(Model.of("Projects"));
-			return link;
-		}
-		
-		
-	}, 
-	
-	SYSTEM("System","Install updates, plugins and manage the bundle konfiguration") {
-		@Override
-		public AbstractLink constructLink(String id) {
-			
-			return new ExternalLink(id, "/system", "System");
-		}
-	}
-	, SECURITY("Security","Manage Roles, Users, Permissions and generell security settings") {
-		@Override
-		public AbstractLink constructLink(String id) {
-			return new ExternalLink(id, "/settings/security","Security");
-		}
-	};
-	
-	private String name, description;
-	
-	private ConfigKind(String name, String description) {
-		this.name = name;
-		this.description = description;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	public String getName() {
-		return name;
-	}
-	public abstract AbstractLink constructLink(String id);
-	
+        @Override
+        public Link<Void> constructLink(String id) {
+            PageParameters params = new PageParameters();
+            params.set(0, "workspace");
+            BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(id, SettingsPage.class, params);
+            link.setBody(Model.of("Projects"));
+            return link;
+        }
+
+
+    },
+
+    SYSTEM("System","Install updates, plugins and manage the bundle konfiguration") {
+        @Override
+        public AbstractLink constructLink(String id) {
+
+            return new ExternalLink(id, "/system", "System");
+        }
+    }
+    , SECURITY("Security","Manage Roles, Users, Permissions and generell security settings") {
+        @Override
+        public AbstractLink constructLink(String id) {
+            return new ExternalLink(id, "/settings/security","Security");
+        }
+    };
+
+    private String name, description;
+
+    private ConfigKind(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public String getName() {
+        return name;
+    }
+    public abstract AbstractLink constructLink(String id);
+
 }

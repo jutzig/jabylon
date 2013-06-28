@@ -80,12 +80,12 @@ public class JSONEmitter
         {
             PropertyFileDescriptor descriptor = (PropertyFileDescriptor)object;
             PropertyFile properties = descriptor.loadProperties();
-            
+
             if(!properties.getProperties().isEmpty())
             {
-            	didWriteSeparator = false;
-            	result.append("\"propertyFile\":");
-            	writeObject(properties, result, depth-1);            	
+                didWriteSeparator = false;
+                result.append("\"propertyFile\":");
+                writeObject(properties, result, depth-1);
             }
         }
 

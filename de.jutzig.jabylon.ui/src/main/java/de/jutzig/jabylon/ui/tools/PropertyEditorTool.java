@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.tools;
 
@@ -16,11 +16,11 @@ import de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem;
  *
  */
 public interface PropertyEditorTool {
-	
-	void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor);
-	
-	void init(PropertyFileDescriptor template, PropertyFileDescriptor translation);
-	
-	Component createComponent();
-	
+
+    void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor);
+
+    void init(PropertyFileDescriptor template, PropertyFileDescriptor translation);
+
+    Component createComponent();
+
 }

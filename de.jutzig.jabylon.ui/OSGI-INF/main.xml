@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="jabylon" factory="vaadin.app">
-	<implementation class="de.jutzig.jabylon.ui.applications.MainDashboard"/>
+    <implementation class="de.jutzig.jabylon.ui.applications.MainDashboard"/>
  <reference bind="setRepositoryConnector" cardinality="1..1" interface="de.jutzig.jabylon.cdo.connector.RepositoryConnector" name="RepositoryConnector" policy="dynamic" unbind="unsetRepositoryConnector"/>
  <reference bind="setPropertyPersistence" cardinality="1..1" interface="de.jutzig.jabylon.resources.persistence.PropertyPersistenceService" name="PropertyPersistenceService" policy="static" unbind="unsetPropertyPersistence"/>
  <reference bind="setQueryService" cardinality="1..1" interface="de.jutzig.jabylon.index.properties.QueryService" name="QueryService" policy="static" unbind="unsetQueryService"/>

@@ -10,13 +10,13 @@ import com.google.common.base.Function;
 
 public class IConfigurationElementLoader implements Function<String, List<IConfigurationElement>>
 {
-	public List<IConfigurationElement> apply(String extensionPoint)
-	{
-		List<IConfigurationElement> result = new ArrayList<IConfigurationElement>();
-		IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint);
-		for (IConfigurationElement iConfigurationElement : elements) {
-			result.add(iConfigurationElement);
-		}
-		return result;
-	}
+    public List<IConfigurationElement> apply(String extensionPoint)
+    {
+        List<IConfigurationElement> result = new ArrayList<IConfigurationElement>();
+        IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint);
+        for (IConfigurationElement iConfigurationElement : elements) {
+            result.add(iConfigurationElement);
+        }
+        return result;
+    }
 }

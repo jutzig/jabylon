@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.tools;
 
@@ -47,158 +47,158 @@ import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 
-	private static final long serialVersionUID = 1L;
-	private static Logger logger = LoggerFactory.getLogger(OtherTranslationsToolPanel.class);
-	@Inject
-	private transient QueryService queryService;
+    private static final long serialVersionUID = 1L;
+    private static Logger logger = LoggerFactory.getLogger(OtherTranslationsToolPanel.class);
+    @Inject
+    private transient QueryService queryService;
 
-	@Inject
-	private transient URIResolver resolver;
+    @Inject
+    private transient URIResolver resolver;
 
-	public OtherTranslationsToolPanel(String id, IModel<PropertyPair> model) {
-		super(id, model);
-		;
+    public OtherTranslationsToolPanel(String id, IModel<PropertyPair> model) {
+        super(id, model);
+        ;
 
-	}
+    }
 
-	@Override
-	protected void onBeforeRender() {
-		List<MatchResult> result = doSearch(getModel());
-		ListView<MatchResult> list = new ListView<MatchResult>("children", result) {
+    @Override
+    protected void onBeforeRender() {
+        List<MatchResult> result = doSearch(getModel());
+        ListView<MatchResult> list = new ListView<MatchResult>("children", result) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(ListItem<MatchResult> item) {
-				MatchResult match = item.getModelObject();
-				item.add(new Label("locale", match.getLocale().getDisplayName(getLocale())));
-				item.add(new Label("translation", match.getValue()));
-				PageParameters params = new PageParameters();
+            @Override
+            protected void populateItem(ListItem<MatchResult> item) {
+                MatchResult match = item.getModelObject();
+                item.add(new Label("locale", match.getLocale().getDisplayName(getLocale())));
+                item.add(new Label("translation", match.getValue()));
+                PageParameters params = new PageParameters();
 
-				URI uri = URI.createURI(match.getUri());
-				for (int i = 0; i < uri.segmentCount(); i++) {
-					params.set(i, uri.segment(i));
-				}
-				params.add("key", OtherTranslationsToolPanel.this.getModel().getObject().getKey());
-				item.add(new BookmarkablePageLink<Void>("link", ResourcePage.class, params));
-				
-				Image image = new Image("flag", WicketUtil.getIconForLocale(match.getLocale()));
-				item.add(image);
+                URI uri = URI.createURI(match.getUri());
+                for (int i = 0; i < uri.segmentCount(); i++) {
+                    params.set(i, uri.segment(i));
+                }
+                params.add("key", OtherTranslationsToolPanel.this.getModel().getObject().getKey());
+                item.add(new BookmarkablePageLink<Void>("link", ResourcePage.class, params));
 
-			}
-		};
-		addOrReplace(list);
-		super.onBeforeRender();
-	}
+                Image image = new Image("flag", WicketUtil.getIconForLocale(match.getLocale()));
+                item.add(image);
 
-	protected List<MatchResult> doSearch(IModel<PropertyPair> model) {
-		long time = System.currentTimeMillis();
-		PropertyPair pair = model.getObject();
-		if (pair == null || pair.getOriginal() == null)
-			return Collections.emptyList();
-		
-		CDOID descriptorID = model.getObject().getDescriptorID();
-		PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolver.resolve(descriptorID);
-		if(descriptor.getMaster()==null)
-			return Collections.emptyList();
-		BooleanQuery query = new BooleanQuery();
+            }
+        };
+        addOrReplace(list);
+        super.onBeforeRender();
+    }
 
-		query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getMaster().getLocation().toString())), Occur.MUST);
-		query.add(new TermQuery(new Term(QueryService.FIELD_KEY, pair.getKey())), Occur.MUST);
+    protected List<MatchResult> doSearch(IModel<PropertyPair> model) {
+        long time = System.currentTimeMillis();
+        PropertyPair pair = model.getObject();
+        if (pair == null || pair.getOriginal() == null)
+            return Collections.emptyList();
 
-		// exclude all masters from the search
-		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT);
-		// exclude the current language
-		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, descriptor.getProjectLocale().getLocale().toString())), Occur.MUST_NOT);
+        CDOID descriptorID = model.getObject().getDescriptorID();
+        PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolver.resolve(descriptorID);
+        if(descriptor.getMaster()==null)
+            return Collections.emptyList();
+        BooleanQuery query = new BooleanQuery();
 
-		SearchResult result = queryService.search(query, 50);
+        query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getMaster().getLocation().toString())), Occur.MUST);
+        query.add(new TermQuery(new Term(QueryService.FIELD_KEY, pair.getKey())), Occur.MUST);
 
-		if (result == null)
-			return Collections.emptyList();
-		List<MatchResult> resultSet = new ArrayList<OtherTranslationsToolPanel.MatchResult>();
-		TopDocs topDocs = result.getTopDocs();
-		ScoreDoc[] doc = topDocs.scoreDocs;
-		for (ScoreDoc scoreDoc : doc) {
+        // exclude all masters from the search
+        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT);
+        // exclude the current language
+        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, descriptor.getProjectLocale().getLocale().toString())), Occur.MUST_NOT);
 
-			try {
-				Document document = result.getSearcher().doc(scoreDoc.doc);
+        SearchResult result = queryService.search(query, 50);
 
-				PropertyFileDescriptor foundDescriptor = queryService.getDescriptor(document);
-				if(foundDescriptor==null)
-					continue;
+        if (result == null)
+            return Collections.emptyList();
+        List<MatchResult> resultSet = new ArrayList<OtherTranslationsToolPanel.MatchResult>();
+        TopDocs topDocs = result.getTopDocs();
+        ScoreDoc[] doc = topDocs.scoreDocs;
+        for (ScoreDoc scoreDoc : doc) {
 
-				String uri = foundDescriptor.toURI().toString();
-				Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, document.get(QueryService.FIELD_LOCALE));
-				MatchResult match = new MatchResult(document.get(QueryService.FIELD_VALUE), locale, uri);
-				resultSet.add(match);
-			} catch (CorruptIndexException e) {
-				logger.error("Failed to find other translations", e);
-			} catch (IOException e) {
-				logger.error("Failed to find other translations", e);
-			}
+            try {
+                Document document = result.getSearcher().doc(scoreDoc.doc);
 
-		}
-		try {
-			result.getSearcher().close();
-			logger.debug("Finding other translations took {} ms",System.currentTimeMillis()-time);
-		} catch (IOException e) {
-			logger.error("Failed to close searcher", e);
-		}
-		Collections.sort(resultSet, new MatchResultComparator(getLocale()));
-		return resultSet;
+                PropertyFileDescriptor foundDescriptor = queryService.getDescriptor(document);
+                if(foundDescriptor==null)
+                    continue;
 
-	}
+                String uri = foundDescriptor.toURI().toString();
+                Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, document.get(QueryService.FIELD_LOCALE));
+                MatchResult match = new MatchResult(document.get(QueryService.FIELD_VALUE), locale, uri);
+                resultSet.add(match);
+            } catch (CorruptIndexException e) {
+                logger.error("Failed to find other translations", e);
+            } catch (IOException e) {
+                logger.error("Failed to find other translations", e);
+            }
 
-	public static class MatchResult implements Serializable {
+        }
+        try {
+            result.getSearcher().close();
+            logger.debug("Finding other translations took {} ms",System.currentTimeMillis()-time);
+        } catch (IOException e) {
+            logger.error("Failed to close searcher", e);
+        }
+        Collections.sort(resultSet, new MatchResultComparator(getLocale()));
+        return resultSet;
 
-		private static final long serialVersionUID = 1L;
-		private String uri;
-		private Locale locale;
-		private String value;
+    }
 
-		public MatchResult(String value, Locale locale, String uri) {
-			super();
-			this.value = value;
-			this.locale = locale;
-			this.uri = uri;
-		}
-		
-		public Locale getLocale() {
-			return locale;
-		}
-		
-		public String getUri() {
-			return uri;
-		}
-		
-		public String getValue() {
-			return value;
-		}
-	}
-	
-	private static class MatchResultComparator implements Comparator<MatchResult> {
+    public static class MatchResult implements Serializable {
 
-		private Collator collator;
-		private Locale locale;
-				
-		public MatchResultComparator(Locale locale) {
-			collator = Collator.getInstance(locale);
-			this.locale = locale;
-		}
-		
-		@Override
-		public int compare(MatchResult o1, MatchResult o2) {
+        private static final long serialVersionUID = 1L;
+        private String uri;
+        private Locale locale;
+        private String value;
+
+        public MatchResult(String value, Locale locale, String uri) {
+            super();
+            this.value = value;
+            this.locale = locale;
+            this.uri = uri;
+        }
+
+        public Locale getLocale() {
+            return locale;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    private static class MatchResultComparator implements Comparator<MatchResult> {
+
+        private Collator collator;
+        private Locale locale;
+
+        public MatchResultComparator(Locale locale) {
+            collator = Collator.getInstance(locale);
+            this.locale = locale;
+        }
+
+        @Override
+        public int compare(MatchResult o1, MatchResult o2) {
 //			System.out.print(o2.getLocale());
 //			System.out.print(" -> ");
 //			System.out.print(o1.getLocale());
 //			System.out.print(" = ");
 //			System.out.println(collator.compare(o1.getLocale(),o2.getLocale()));
-			return collator.compare(o1.getLocale().getDisplayLanguage(locale),o2.getLocale().getDisplayLanguage(locale));
-		}
-		
-	}
+            return collator.compare(o1.getLocale().getDisplayLanguage(locale),o2.getLocale().getDisplayLanguage(locale));
+        }
+
+    }
 }

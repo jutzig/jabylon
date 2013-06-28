@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.components;
 
@@ -18,81 +18,81 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
  */
 public class ConfirmationDialog extends Window {
 
-	private Window parent;
-	private Runnable proceedAction;
-	private Runnable cancelAction;
-	private Label statusLabel;
+    private Window parent;
+    private Runnable proceedAction;
+    private Runnable cancelAction;
+    private Label statusLabel;
 
-	public ConfirmationDialog(Window parent, String message) {
-		this.parent = parent;
-		setModal(true);
-		addStyleName("opaque"); //$NON-NLS-1$
-		setWidth(440, UNITS_PIXELS);
-		setHeight(200, UNITS_PIXELS);
-		createContents(message);
-	}
-	
-	private void createContents(String message) {
-		GridLayout layout = new GridLayout();
-		layout.setColumns(2);
-		layout.setRows(3);
-		layout.setMargin(true);
-		layout.setSpacing(true); 
-		layout.setSizeFull();
-		
-		String status = getCaption()==null ? "" : getCaption();  //$NON-NLS-1$
-		statusLabel = new Label(status);
-		statusLabel.addStyleName(JabylonStyle.BIG_WARNING.getCSSName());
-		layout.addComponent(statusLabel, 0, 0,1,0);
-		
-		Label label = new Label(message);
-		layout.addComponent(label, 0, 1,1,1);
-		
-		Button cancel = new Button(Messages.getString("ConfirmationDialog_CANCEL_BUTTON")); //$NON-NLS-1$
-		cancel.addListener(new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				if(cancelAction!=null)
-					cancelAction.run();
-				parent.removeWindow(ConfirmationDialog.this);
-				
-			}
-		});
-		layout.addComponent(cancel);
-		
-		
-		Button ok = new Button(Messages.getString("ConfirmationDialog_PROCEED_BUTTON")); //$NON-NLS-1$
-		ok.addListener(new ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				if(proceedAction!=null)
-					proceedAction.run();
-				parent.removeWindow(ConfirmationDialog.this);
-				
-			}
-		});
-		layout.addComponent(ok);
-		
-		setContent(layout);
+    public ConfirmationDialog(Window parent, String message) {
+        this.parent = parent;
+        setModal(true);
+        addStyleName("opaque"); //$NON-NLS-1$
+        setWidth(440, UNITS_PIXELS);
+        setHeight(200, UNITS_PIXELS);
+        createContents(message);
+    }
 
-	}
-	
-	public void setCancelAction(Runnable r)
-	{
-		cancelAction = r;
-	}
-	
-	public void setProceedAction(Runnable r)
-	{
-		proceedAction = r;
-	}
-	
-	@Override
-	public void setCaption(String caption) {
-		super.setCaption(caption);
-		if(statusLabel!=null)
-			statusLabel.setValue(caption);
-	}
+    private void createContents(String message) {
+        GridLayout layout = new GridLayout();
+        layout.setColumns(2);
+        layout.setRows(3);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        layout.setSizeFull();
+
+        String status = getCaption()==null ? "" : getCaption();  //$NON-NLS-1$
+        statusLabel = new Label(status);
+        statusLabel.addStyleName(JabylonStyle.BIG_WARNING.getCSSName());
+        layout.addComponent(statusLabel, 0, 0,1,0);
+
+        Label label = new Label(message);
+        layout.addComponent(label, 0, 1,1,1);
+
+        Button cancel = new Button(Messages.getString("ConfirmationDialog_CANCEL_BUTTON")); //$NON-NLS-1$
+        cancel.addListener(new ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(cancelAction!=null)
+                    cancelAction.run();
+                parent.removeWindow(ConfirmationDialog.this);
+
+            }
+        });
+        layout.addComponent(cancel);
+
+
+        Button ok = new Button(Messages.getString("ConfirmationDialog_PROCEED_BUTTON")); //$NON-NLS-1$
+        ok.addListener(new ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(proceedAction!=null)
+                    proceedAction.run();
+                parent.removeWindow(ConfirmationDialog.this);
+
+            }
+        });
+        layout.addComponent(ok);
+
+        setContent(layout);
+
+    }
+
+    public void setCancelAction(Runnable r)
+    {
+        cancelAction = r;
+    }
+
+    public void setProceedAction(Runnable r)
+    {
+        proceedAction = r;
+    }
+
+    @Override
+    public void setCaption(String caption) {
+        super.setCaption(caption);
+        if(statusLabel!=null)
+            statusLabel.setValue(caption);
+    }
 }

@@ -18,31 +18,31 @@ import de.jutzig.jabylon.rest.ui.util.PageProvider;
 @Service
 public class UpdatecenterPageProvider implements PageProvider {
 
-	
-	@Property(value="/system")
-	static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
-	
-	/** 
-	 * not really needed, just make sure the page doesn't get
-	 * mounted before the query service is available
-	 */
-	@Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
-	private RepositoryAdmin service;
-	
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.rest.ui.util.PageProvider#getPageClass()
-	 */
-	@Override
-	public Class<? extends Page> getPageClass() {
-		return UpdatecenterPage.class;
-	}
-	
-	public void bindQueryService(RepositoryAdmin service) {
-		this.service = service;
-	}
-	
-	public void unbindQueryService(RepositoryAdmin service) {
-		this.service = service;
-	}
+
+    @Property(value="/system")
+    static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
+
+    /**
+     * not really needed, just make sure the page doesn't get
+     * mounted before the query service is available
+     */
+    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private RepositoryAdmin service;
+
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.rest.ui.util.PageProvider#getPageClass()
+     */
+    @Override
+    public Class<? extends Page> getPageClass() {
+        return UpdatecenterPage.class;
+    }
+
+    public void bindQueryService(RepositoryAdmin service) {
+        this.service = service;
+    }
+
+    public void unbindQueryService(RepositoryAdmin service) {
+        this.service = service;
+    }
 
 }

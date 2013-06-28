@@ -22,93 +22,93 @@ import de.jutzig.jabylon.ui.util.WeakReferenceAdapter;
 @SuppressWarnings("serial")
 public class GenericEObjectContainer<T extends EObject> extends AbstractInMemoryContainer<T, EStructuralFeature, Item> implements Container.ItemSetChangeNotifier, Container.Filterable{
 
-	private EObject parent;
-	private EReference contentReference;
-	private EList<T> contents;
+    private EObject parent;
+    private EReference contentReference;
+    private EList<T> contents;
 
 
-	public GenericEObjectContainer(EObject parent, EReference contents) {
-		super();
-		this.parent = parent;
-		parent.eAdapters().add(new WeakReferenceAdapter(new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification msg) {
-				if(msg.getFeature()==contentReference)
-				{
-					//TODO: can probably do this more fine grained
-					fireItemSetChange();
-				}
+    public GenericEObjectContainer(EObject parent, EReference contents) {
+        super();
+        this.parent = parent;
+        parent.eAdapters().add(new WeakReferenceAdapter(new AdapterImpl() {
+            @Override
+            public void notifyChanged(Notification msg) {
+                if(msg.getFeature()==contentReference)
+                {
+                    //TODO: can probably do this more fine grained
+                    fireItemSetChange();
+                }
 
-			}
-		}));
-		this.contentReference = contents;
-	}
+            }
+        }));
+        this.contentReference = contents;
+    }
 
-	@Override
-	public Collection<?> getContainerPropertyIds() {
-		EClass clazz = (EClass) contentReference.getEType();
-		return clazz.getEAllStructuralFeatures();
-	}
+    @Override
+    public Collection<?> getContainerPropertyIds() {
+        EClass clazz = (EClass) contentReference.getEType();
+        return clazz.getEAllStructuralFeatures();
+    }
 
 
-	@Override
-	protected List<T> getAllItemIds() {
-		return getContents();
-	}
+    @Override
+    protected List<T> getAllItemIds() {
+        return getContents();
+    }
 
-	@SuppressWarnings("unchecked")
-	private EList<T> getContents() {
-		if(contents==null)
-			contents = (EList<T>) parent.eGet(contentReference);
-		return contents;
+    @SuppressWarnings("unchecked")
+    private EList<T> getContents() {
+        if(contents==null)
+            contents = (EList<T>) parent.eGet(contentReference);
+        return contents;
 
-	}
+    }
 
-	@Override
-	public Property getContainerProperty(Object itemId, Object propertyId) {
-		return getItem(itemId).getItemProperty(propertyId);
-	}
+    @Override
+    public Property getContainerProperty(Object itemId, Object propertyId) {
+        return getItem(itemId).getItemProperty(propertyId);
+    }
 
-	@Override
-	public Class<?> getType(Object propertyId) {
-		return ((EStructuralFeature)propertyId).getEType().getInstanceClass();
-	}
+    @Override
+    public Class<?> getType(Object propertyId) {
+        return ((EStructuralFeature)propertyId).getEType().getInstanceClass();
+    }
 
-	@Override
-	public int size() {
-		return getContents().size();
-	}
+    @Override
+    public int size() {
+        return getContents().size();
+    }
 
-	@Override
-	public boolean containsId(Object itemId) {
-		return getContents().contains(itemId);
-	}
+    @Override
+    public boolean containsId(Object itemId) {
+        return getContents().contains(itemId);
+    }
 
-	public EObject getParent() {
-		return parent;
-	}
+    public EObject getParent() {
+        return parent;
+    }
 
-	@Override
-	protected Item getUnfilteredItem(Object itemId) {
-		return new EObjectItem((EObject) itemId);
-	}
+    @Override
+    protected Item getUnfilteredItem(Object itemId) {
+        return new EObjectItem((EObject) itemId);
+    }
 
-	@Override
-	public void addContainerFilter(Filter filter) throws UnsupportedFilterException {
-		super.addFilter(filter);
-		
-	}
+    @Override
+    public void addContainerFilter(Filter filter) throws UnsupportedFilterException {
+        super.addFilter(filter);
 
-	@Override
-	public void removeContainerFilter(Filter filter) {
-		super.removeFilter(filter);
-		
-	}
+    }
 
-	@Override
-	public void removeAllContainerFilters() {
-		super.removeAllFilters();
-		
-	}
+    @Override
+    public void removeContainerFilter(Filter filter) {
+        super.removeFilter(filter);
+
+    }
+
+    @Override
+    public void removeAllContainerFilters() {
+        super.removeAllFilters();
+
+    }
 
 }

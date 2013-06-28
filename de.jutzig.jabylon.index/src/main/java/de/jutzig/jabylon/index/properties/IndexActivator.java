@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.index.properties;
 
@@ -22,43 +22,43 @@ import de.jutzig.jabylon.cdo.server.ServerConstants;
  */
 public class IndexActivator extends Plugin implements BundleActivator {
 
-	private static IndexActivator INSTANCE;
-	private FSDirectory directory;
-	public static final String PLUGIN_ID = "de.jutzig.jabylon.index";
-	private static final Logger logger = LoggerFactory.getLogger(IndexActivator.class);
-	
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		INSTANCE = this;
-		
-	}
+    private static IndexActivator INSTANCE;
+    private FSDirectory directory;
+    public static final String PLUGIN_ID = "de.jutzig.jabylon.index";
+    private static final Logger logger = LoggerFactory.getLogger(IndexActivator.class);
 
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-		if(directory!=null)
-			directory.close();
-		INSTANCE = null;
-		directory = null;
-		logger.info("Stopping Lucene Index");
-	}
-	
-	public Directory getOrCreateDirectory()
-	{
-		if(directory==null)
-		{
-			try {
-				logger.info("Opening Lucene Index");
-				directory = FSDirectory.open(new File(ServerConstants.WORKING_DIR,"lucene"));
-			} catch (IOException e) {
-				logger.error("Failed to open index directory",e);
-			}			
-		}
-		return directory;
-	}
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        INSTANCE = this;
 
-	public static IndexActivator getDefault() {
-		return INSTANCE;
-	}
+    }
+
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        super.stop(context);
+        if(directory!=null)
+            directory.close();
+        INSTANCE = null;
+        directory = null;
+        logger.info("Stopping Lucene Index");
+    }
+
+    public Directory getOrCreateDirectory()
+    {
+        if(directory==null)
+        {
+            try {
+                logger.info("Opening Lucene Index");
+                directory = FSDirectory.open(new File(ServerConstants.WORKING_DIR,"lucene"));
+            } catch (IOException e) {
+                logger.error("Failed to open index directory",e);
+            }
+        }
+        return directory;
+    }
+
+    public static IndexActivator getDefault() {
+        return INSTANCE;
+    }
 }

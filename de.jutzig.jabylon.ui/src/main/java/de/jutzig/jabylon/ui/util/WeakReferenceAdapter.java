@@ -8,46 +8,46 @@ import org.eclipse.emf.common.notify.Notifier;
 
 public class WeakReferenceAdapter extends WeakReference<Adapter> implements Adapter{
 
-	private Notifier notifier;
-	
-	public WeakReferenceAdapter(Adapter referent) {
-		super(referent);	
-	}
+    private Notifier notifier;
 
-	@Override
-	public void notifyChanged(Notification notification) {
-		Adapter delegate = checkReferent();
-		if(delegate==null)
-			return;
-		delegate.notifyChanged(notification);
-	}
+    public WeakReferenceAdapter(Adapter referent) {
+        super(referent);
+    }
 
-	@Override
-	public Notifier getTarget() {
-		return notifier;
-	}
+    @Override
+    public void notifyChanged(Notification notification) {
+        Adapter delegate = checkReferent();
+        if(delegate==null)
+            return;
+        delegate.notifyChanged(notification);
+    }
 
-	@Override
-	public void setTarget(Notifier newTarget) {
-		notifier = newTarget;
-		
-	}
+    @Override
+    public Notifier getTarget() {
+        return notifier;
+    }
 
-	@Override
-	public boolean isAdapterForType(Object type) {
-		Adapter delegate = checkReferent();
-		if(delegate==null)
-			return false;
-		return delegate.isAdapterForType(type);
-	}
+    @Override
+    public void setTarget(Notifier newTarget) {
+        notifier = newTarget;
 
-	private Adapter checkReferent() {
-		Adapter adapter = get();
-		if(adapter==null)
-			notifier.eAdapters().remove(this);
-		return adapter;
-	}
-	
-	
-	
+    }
+
+    @Override
+    public boolean isAdapterForType(Object type) {
+        Adapter delegate = checkReferent();
+        if(delegate==null)
+            return false;
+        return delegate.isAdapterForType(type);
+    }
+
+    private Adapter checkReferent() {
+        Adapter adapter = get();
+        if(adapter==null)
+            notifier.eAdapters().remove(this);
+        return adapter;
+    }
+
+
+
 }

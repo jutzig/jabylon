@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.review.standard.cleanup;
 
@@ -31,95 +31,95 @@ import de.jutzig.jabylon.scheduler.JobExecution;
  */
 public class TranslationCleanupJob implements JobExecution {
 
-	
-	private static final Logger logger = LoggerFactory.getLogger(TranslationCleanupJob.class);
-	
-	/**
-	 * 
-	 */
-	public TranslationCleanupJob() {
-	}
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.scheduler.JobExecution#run(java.util.Map)
-	 */
-	@Override
-	public void run(Map<String, Object> jobContext) throws Exception {
-		logger.info("Starting translation cleanup job");
-		CDOView view = JobContextUtil.openView(jobContext);
-		try {
-			Resource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
-			Workspace workspace = (Workspace) resource.getContents().get(0);
-			cleanup(workspace);
-			logger.info("Translation cleanup job finished successfully");
-		} catch (Exception e) {
-			logger.error("Internal Error during translation cleanup",e);
-		}
-		finally {
-			if(view!=null)
-				view.close();
-		}
+    private static final Logger logger = LoggerFactory.getLogger(TranslationCleanupJob.class);
 
-	}
+    /**
+     *
+     */
+    public TranslationCleanupJob() {
+    }
 
-	private void cleanup(Workspace workspace) {
-		EList<Project> projects = workspace.getChildren();
-		for (Project project : projects) {
-			cleanup(project);
-		}
-		
-	}
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.scheduler.JobExecution#run(java.util.Map)
+     */
+    @Override
+    public void run(Map<String, Object> jobContext) throws Exception {
+        logger.info("Starting translation cleanup job");
+        CDOView view = JobContextUtil.openView(jobContext);
+        try {
+            Resource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
+            Workspace workspace = (Workspace) resource.getContents().get(0);
+            cleanup(workspace);
+            logger.info("Translation cleanup job finished successfully");
+        } catch (Exception e) {
+            logger.error("Internal Error during translation cleanup",e);
+        }
+        finally {
+            if(view!=null)
+                view.close();
+        }
 
-	private void cleanup(Project project) {
-		for (ProjectVersion version : project.getChildren()) {
-			cleanup(version);
-		}
-		
-	}
+    }
 
-	private void cleanup(ProjectVersion version) {
-		for (ProjectLocale locale : version.getChildren()) {
-			cleanup(locale);
-		}
-		
-		
-	}
+    private void cleanup(Workspace workspace) {
+        EList<Project> projects = workspace.getChildren();
+        for (Project project : projects) {
+            cleanup(project);
+        }
 
-	private void cleanup(ProjectLocale locale) {
-		for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
-			cleanup(descriptor);
-		}
-		
-	}
+    }
 
-	private void cleanup(PropertyFileDescriptor descriptor) {
-		PropertyFile masterProperties = descriptor.getMaster().loadProperties();
-		Map<String, Property> map = masterProperties.asMap();
-		PropertyFile properties = descriptor.loadProperties();
-		Iterator<Property> iterator = properties.getProperties().iterator();
-		boolean hadDeletes = false;
-		while (iterator.hasNext()) {
-			Property property = (Property) iterator.next();
-			if(!map.containsKey(property.getKey()))
-			{
-				iterator.remove();
-				logger.info("Removed unused translation {} in {}",property.getKey(), descriptor.fullPath());
-				hadDeletes = true;
-			}
-		}
-		if(hadDeletes)
-		{
-			PropertyPersistenceService propertyPersistenceService = ReviewActivator.getDefault().getPersistenceService();
-			propertyPersistenceService.saveProperties(descriptor, properties);
-		}
-	}
+    private void cleanup(Project project) {
+        for (ProjectVersion version : project.getChildren()) {
+            cleanup(version);
+        }
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.scheduler.JobExecution#retryOnError()
-	 */
-	@Override
-	public boolean retryOnError() {
-		return false;
-	}
+    }
+
+    private void cleanup(ProjectVersion version) {
+        for (ProjectLocale locale : version.getChildren()) {
+            cleanup(locale);
+        }
+
+
+    }
+
+    private void cleanup(ProjectLocale locale) {
+        for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
+            cleanup(descriptor);
+        }
+
+    }
+
+    private void cleanup(PropertyFileDescriptor descriptor) {
+        PropertyFile masterProperties = descriptor.getMaster().loadProperties();
+        Map<String, Property> map = masterProperties.asMap();
+        PropertyFile properties = descriptor.loadProperties();
+        Iterator<Property> iterator = properties.getProperties().iterator();
+        boolean hadDeletes = false;
+        while (iterator.hasNext()) {
+            Property property = (Property) iterator.next();
+            if(!map.containsKey(property.getKey()))
+            {
+                iterator.remove();
+                logger.info("Removed unused translation {} in {}",property.getKey(), descriptor.fullPath());
+                hadDeletes = true;
+            }
+        }
+        if(hadDeletes)
+        {
+            PropertyPersistenceService propertyPersistenceService = ReviewActivator.getDefault().getPersistenceService();
+            propertyPersistenceService.saveProperties(descriptor, properties);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.scheduler.JobExecution#retryOnError()
+     */
+    @Override
+    public boolean retryOnError() {
+        return false;
+    }
 
 }

@@ -10,23 +10,23 @@ import de.jutzig.jabylon.updatecenter.repository.ResourceFilter;
 
 public class UpdatecenterTab extends AbstractTab {
 
-	private ResourceFilter filter;
+    private ResourceFilter filter;
 
-	public UpdatecenterTab(IModel<String> title, ResourceFilter filter) {
-		super(title);
-		this.filter = filter;
-	}
+    public UpdatecenterTab(IModel<String> title, ResourceFilter filter) {
+        super(title);
+        this.filter = filter;
+    }
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public WebMarkupContainer getPanel(String panelId) {
-		switch (filter) {
-		case INSTALLED:
-			return new InstalledSoftwareTab(panelId);
-		default:
-			return new UpdatecenterTabContent(panelId, Model.of(filter), new PageParameters());
-		}
-	}
+    @Override
+    public WebMarkupContainer getPanel(String panelId) {
+        switch (filter) {
+        case INSTALLED:
+            return new InstalledSoftwareTab(panelId);
+        default:
+            return new UpdatecenterTabContent(panelId, Model.of(filter), new PageParameters());
+        }
+    }
 
 }

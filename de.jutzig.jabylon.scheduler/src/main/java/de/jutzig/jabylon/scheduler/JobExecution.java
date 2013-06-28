@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.scheduler;
 
@@ -12,9 +12,9 @@ import java.util.Map;
  */
 public interface JobExecution {
 
-	public void run(Map<String, Object> jobContext) throws Exception;
-	
-	boolean retryOnError();
-	
-	
+    public void run(Map<String, Object> jobContext) throws Exception;
+
+    boolean retryOnError();
+
+
 }

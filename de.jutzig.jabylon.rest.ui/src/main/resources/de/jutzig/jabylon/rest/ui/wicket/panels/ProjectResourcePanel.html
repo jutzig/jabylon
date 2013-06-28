@@ -1,57 +1,57 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:head>
-	<style type="text/css">
+    <style type="text/css">
 <!--
 select {
-	width: auto;
+    width: auto;
 }
 -->
 </style>
 
 
-	<!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
-	<script type="text/javascript">
-	<!--
-		$(document).ready(function() {
-			$('#table').dataTable({
-				"iDisplayLength" : 25,
-				"aoColumns": [
-                	null,
-                	{ "sType": "percent" }
-            	]
-			});
-		});
-	//-->
-	</script>
+    <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script type="text/javascript">
+    <!--
+        $(document).ready(function() {
+            $('#table').dataTable({
+                "iDisplayLength" : 25,
+                "aoColumns": [
+                    null,
+                    { "sType": "percent" }
+                ]
+            });
+        });
+    //-->
+    </script>
 </wicket:head>
 <wicket:panel>
 
-	<div class="page-header" >
-		<h2 wicket:id="header">Resource Overview</h2>
-	</div>
+    <div class="page-header" >
+        <h2 wicket:id="header">Resource Overview</h2>
+    </div>
 
-	<table class="table table-striped table-hover dataview" id="table">
-		<!-- <caption>Projects</caption> -->
-		<thead>
-			<tr>
-				<th><wicket:message key="ProjectResourcePanel.name.column">Name</wicket:message></th>
-				<th><wicket:message key="ProjectResourcePanel.progress.column">Progress</wicket:message></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id="children">
-				<td><img wicket:id="regular-image" /><i wicket:id="css-icon"></i>
-					<a wicket:id="link" href="./">Child</a>
-					<p wicket:id="summary">Summary stuff..</p></td>
-				<td style="width: 30%">
-					<div class="progress">
-						<div class="bar bar-success" wicket:id="progress">12%</div>
-						<div class="bar bar-warning" wicket:id="warning">8%</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+    <table class="table table-striped table-hover dataview" id="table">
+        <!-- <caption>Projects</caption> -->
+        <thead>
+            <tr>
+                <th><wicket:message key="ProjectResourcePanel.name.column">Name</wicket:message></th>
+                <th><wicket:message key="ProjectResourcePanel.progress.column">Progress</wicket:message></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wicket:id="children">
+                <td><img wicket:id="regular-image" /><i wicket:id="css-icon"></i>
+                    <a wicket:id="link" href="./">Child</a>
+                    <p wicket:id="summary">Summary stuff..</p></td>
+                <td style="width: 30%">
+                    <div class="progress">
+                        <div class="bar bar-success" wicket:id="progress">12%</div>
+                        <div class="bar bar-warning" wicket:id="warning">8%</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 </wicket:panel>
 </html>

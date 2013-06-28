@@ -31,217 +31,217 @@ import de.jutzig.jabylon.users.User;
 import de.jutzig.jabylon.users.UserManagement;
 
 public class MainDashboard extends Application implements TransactionListener, CrumbTrail {
-	private static final long serialVersionUID = -400265217831682603L;
+    private static final long serialVersionUID = -400265217831682603L;
 
-	private RepositoryConnector repositoryConnector;
-	Button addProject;
-	private CDOView currentView;
-	private static final ThreadLocal<MainDashboard> application = new ThreadLocal<MainDashboard>();
-	private BreadCrumb breadcrumbs;
-	private Workspace workspace;
-	private VerticalLayout mainLayout;
-	private ComponentContainer contentArea;
-	private PropertyPersistenceService propertyPersistence;
-	private QueryService queryService;
-	private UriFragmentUtility fragmentUtil;
+    private RepositoryConnector repositoryConnector;
+    Button addProject;
+    private CDOView currentView;
+    private static final ThreadLocal<MainDashboard> application = new ThreadLocal<MainDashboard>();
+    private BreadCrumb breadcrumbs;
+    private Workspace workspace;
+    private VerticalLayout mainLayout;
+    private ComponentContainer contentArea;
+    private PropertyPersistenceService propertyPersistence;
+    private QueryService queryService;
+    private UriFragmentUtility fragmentUtil;
 
-	public MainDashboard() {
+    public MainDashboard() {
 
-	}
+    }
 
-	@Override
-	public void init() {
-		// mainWindow initialization omitted
-		setTheme("jabylon"); //$NON-NLS-1$
-		workspace = getOrInitializeWorkspace();
-		getContext().addTransactionListener(this);
-		application.set(this);
-		buildMainLayout();
-		setUser(getAnonymousUser());
-	}
+    @Override
+    public void init() {
+        // mainWindow initialization omitted
+        setTheme("jabylon"); //$NON-NLS-1$
+        workspace = getOrInitializeWorkspace();
+        getContext().addTransactionListener(this);
+        application.set(this);
+        buildMainLayout();
+        setUser(getAnonymousUser());
+    }
 
-	private User getAnonymousUser() {
-		CDOView view = getView();
+    private User getAnonymousUser() {
+        CDOView view = getView();
 
-		CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
-		UserManagement userManagement = (UserManagement) resource.getContents().get(0);
+        CDOResource resource = view.getResource(ServerConstants.USERS_RESOURCE);
+        UserManagement userManagement = (UserManagement) resource.getContents().get(0);
 
-		return userManagement.findUserByName("Anonymous"); //$NON-NLS-1$
-	}
+        return userManagement.findUserByName("Anonymous"); //$NON-NLS-1$
+    }
 
-	private void buildMainLayout() {
-		setMainWindow(new Window(Messages.getString("MainDashboard_APPLICATION_NAME"))); //$NON-NLS-1$
+    private void buildMainLayout() {
+        setMainWindow(new Window(Messages.getString("MainDashboard_APPLICATION_NAME"))); //$NON-NLS-1$
 
-		mainLayout = new VerticalLayout();
-		mainLayout.setSizeFull();
-		fragmentUtil = new UriFragmentUtility();
-		mainLayout.addComponent(fragmentUtil);
-		ApplicationTitleBar titleBar = new ApplicationTitleBar();
-		mainLayout.addComponent(titleBar);
-		mainLayout.setExpandRatio(titleBar, 0f);
-		addListener(titleBar); // user change listener
+        mainLayout = new VerticalLayout();
+        mainLayout.setSizeFull();
+        fragmentUtil = new UriFragmentUtility();
+        mainLayout.addComponent(fragmentUtil);
+        ApplicationTitleBar titleBar = new ApplicationTitleBar();
+        mainLayout.addComponent(titleBar);
+        mainLayout.setExpandRatio(titleBar, 0f);
+        addListener(titleBar); // user change listener
 
-		contentArea = new VerticalLayout();
-		contentArea.setSizeFull();
+        contentArea = new VerticalLayout();
+        contentArea.setSizeFull();
 //		contentArea.setHeight(800, Component.UNITS_PIXELS);
-		Component header = createHeader();
-		mainLayout.addComponent(header);
-		mainLayout.setExpandRatio(header, 0);
-		breadcrumbs.addCrumbListener(titleBar);
+        Component header = createHeader();
+        mainLayout.addComponent(header);
+        mainLayout.setExpandRatio(header, 0);
+        breadcrumbs.addCrumbListener(titleBar);
 
 
-		mainLayout.addComponent(contentArea);
-		mainLayout.setExpandRatio(contentArea, 2);
-		getMainWindow().setSizeFull();
-		getMainWindow().setContent(mainLayout);
+        mainLayout.addComponent(contentArea);
+        mainLayout.setExpandRatio(contentArea, 2);
+        getMainWindow().setSizeFull();
+        getMainWindow().setContent(mainLayout);
 
-	}
+    }
 
-	private Component createHeader() {
+    private Component createHeader() {
 
-		HorizontalLayout nav = new HorizontalLayout();
-		nav.setHeight("30px"); //$NON-NLS-1$
-		nav.setWidth("100%"); //$NON-NLS-1$
-		// nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
-		nav.setSpacing(true);
-		// nav.setMargin(true, true, false, true);
+        HorizontalLayout nav = new HorizontalLayout();
+        nav.setHeight("30px"); //$NON-NLS-1$
+        nav.setWidth("100%"); //$NON-NLS-1$
+        // nav.setStyleName(JabylonStyle.BREADCRUMB_PANEL.getCSSName());
+        nav.setSpacing(true);
+        // nav.setMargin(true, true, false, true);
 
-		// Breadcrumbs
-		BreadCrumbImpl crumbs = new BreadCrumbImpl();
-		breadcrumbs = crumbs;
-		nav.addComponent(crumbs);
-		nav.setExpandRatio(crumbs, 1);
-		nav.setComponentAlignment(crumbs, Alignment.MIDDLE_LEFT);
+        // Breadcrumbs
+        BreadCrumbImpl crumbs = new BreadCrumbImpl();
+        breadcrumbs = crumbs;
+        nav.addComponent(crumbs);
+        nav.setExpandRatio(crumbs, 1);
+        nav.setComponentAlignment(crumbs, Alignment.MIDDLE_LEFT);
 
-		return nav;
-	}
+        return nav;
+    }
 
-	public HorizontalLayout createToolbar() {
+    public HorizontalLayout createToolbar() {
 
-		HorizontalLayout lo = new HorizontalLayout();
+        HorizontalLayout lo = new HorizontalLayout();
 
-		return lo;
+        return lo;
 
-	}
+    }
 
-	public void setMainComponent(Component c) {
-		contentArea.removeAllComponents();
-		contentArea.addComponent(c);
-	}
+    public void setMainComponent(Component c) {
+        contentArea.removeAllComponents();
+        contentArea.addComponent(c);
+    }
 
-	public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
-		this.propertyPersistence = propertyPersistence;
-	}
+    public void setPropertyPersistence(PropertyPersistenceService propertyPersistence) {
+        this.propertyPersistence = propertyPersistence;
+    }
 
-	public PropertyPersistenceService getPropertyPersistence() {
-		return propertyPersistence;
-	}
+    public PropertyPersistenceService getPropertyPersistence() {
+        return propertyPersistence;
+    }
 
-	public void unsetPropertyPersistence(PropertyPersistenceService propertyPersistence) {
-		this.propertyPersistence = null;
-	}
+    public void unsetPropertyPersistence(PropertyPersistenceService propertyPersistence) {
+        this.propertyPersistence = null;
+    }
 
-	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = repositoryConnector;
-	}
+    public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
+        this.repositoryConnector = repositoryConnector;
+    }
 
-	public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = null;
-	}
+    public void unsetRepositoryConnector(RepositoryConnector repositoryConnector) {
+        this.repositoryConnector = null;
+    }
 
-	public RepositoryConnector getRepositoryConnector() {
-		return repositoryConnector;
-	}
+    public RepositoryConnector getRepositoryConnector() {
+        return repositoryConnector;
+    }
 
-	private CDOView getView() {
-		if (currentView == null)
-			currentView = getRepositoryConnector().openView();
-		return currentView;
-	}
+    private CDOView getView() {
+        if (currentView == null)
+            currentView = getRepositoryConnector().openView();
+        return currentView;
+    }
 
-	private void closeView() {
-		if (currentView != null) {
-			currentView.close();
-			currentView = null;
-		}
-	}
+    private void closeView() {
+        if (currentView != null) {
+            currentView.close();
+            currentView = null;
+        }
+    }
 
-	@Override
-	public void transactionStart(Application application, Object transactionData) {
-		if (application == this)
-			MainDashboard.application.set(this);
-	}
+    @Override
+    public void transactionStart(Application application, Object transactionData) {
+        if (application == this)
+            MainDashboard.application.set(this);
+    }
 
-	public static MainDashboard getCurrent() {
-		return application.get();
-	}
+    public static MainDashboard getCurrent() {
+        return application.get();
+    }
 
-	public BreadCrumb getBreadcrumbs() {
-		return breadcrumbs;
-	}
+    public BreadCrumb getBreadcrumbs() {
+        return breadcrumbs;
+    }
 
-	@Override
-	public void transactionEnd(Application application, Object transactionData) {
-		MainDashboard.application.remove();
-	}
+    @Override
+    public void transactionEnd(Application application, Object transactionData) {
+        MainDashboard.application.remove();
+    }
 
-	private Workspace getOrInitializeWorkspace() {
-		CDOView view = getView();
+    private Workspace getOrInitializeWorkspace() {
+        CDOView view = getView();
 
-		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
-		Workspace workspace = (Workspace) resource.getContents().get(0);
+        CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
+        Workspace workspace = (Workspace) resource.getContents().get(0);
 
-		return workspace;
-	}
+        return workspace;
+    }
 
-	@Override
-	public CrumbTrail walkTo(String path) {
-		if (path.startsWith(SearchResultPage.SEARCH_ADDRESS)) {
-			return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), workspace);
-		}
-		ProjectDashboard dashboard = new ProjectDashboard(path);
-		// setMainComponent(dashboard);
-		return dashboard;
-	}
+    @Override
+    public CrumbTrail walkTo(String path) {
+        if (path.startsWith(SearchResultPage.SEARCH_ADDRESS)) {
+            return new SearchResultPage(path.substring(SearchResultPage.SEARCH_ADDRESS.length()), workspace);
+        }
+        ProjectDashboard dashboard = new ProjectDashboard(path);
+        // setMainComponent(dashboard);
+        return dashboard;
+    }
 
-	@Override
-	public Component createContents() {
-		return new ProjectListPanel();
-	}
+    @Override
+    public Component createContents() {
+        return new ProjectListPanel();
+    }
 
-	@Override
-	public String getTrailCaption() {
-		return Messages.getString("MainDashboard_HOME"); //$NON-NLS-1$
-	}
+    @Override
+    public String getTrailCaption() {
+        return Messages.getString("MainDashboard_HOME"); //$NON-NLS-1$
+    }
 
-	public Workspace getWorkspace() {
-		return workspace;
-	}
+    public Workspace getWorkspace() {
+        return workspace;
+    }
 
-	@Override
-	public boolean isDirty() {
-		return false;
-	}
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 
-	@Override
-	public CDOObject getDomainObject() {
-		return workspace;
-	}
+    @Override
+    public CDOObject getDomainObject() {
+        return workspace;
+    }
 
-	public QueryService getQueryService() {
-		return queryService;
-	}
+    public QueryService getQueryService() {
+        return queryService;
+    }
 
-	public void setQueryService(QueryService queryService) {
-		this.queryService = queryService;
-	}
+    public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
 
-	public void unsetQueryService(QueryService queryService) {
-		this.queryService = null;
-	}
+    public void unsetQueryService(QueryService queryService) {
+        this.queryService = null;
+    }
 
-	public UriFragmentUtility getFragmentUtil() {
-		return fragmentUtil;
-	}
+    public UriFragmentUtility getFragmentUtil() {
+        return fragmentUtil;
+    }
 
 }

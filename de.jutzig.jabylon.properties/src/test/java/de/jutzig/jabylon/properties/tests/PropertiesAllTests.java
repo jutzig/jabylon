@@ -19,33 +19,33 @@ import junit.textui.TestRunner;
  */
 public class PropertiesAllTests extends TestSuite {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(suite());
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static void main(String[] args) {
+        TestRunner.run(suite());
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static Test suite() {
-		TestSuite suite = new PropertiesAllTests("Properties Tests");
-		suite.addTest(PropertiesTests.suite());
-		return suite;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static Test suite() {
+        TestSuite suite = new PropertiesAllTests("Properties Tests");
+        suite.addTest(PropertiesTests.suite());
+        return suite;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PropertiesAllTests(String name) {
-		super(name);
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public PropertiesAllTests(String name) {
+        super(name);
+    }
 
 } //PropertiesAllTests

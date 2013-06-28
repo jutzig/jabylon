@@ -1,41 +1,41 @@
 <configuration>
-	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
 
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${jabylon.log}/jabylon.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover -->
-			<fileNamePattern>${jabylon.log}/jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<!-- keep 30 days' worth of history -->
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
+    <appender name="FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${jabylon.log}/jabylon.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${jabylon.log}/jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
 
-		<encoder>
-			<pattern>%date %marker [%thread] %logger{10} [%file : %line]%n[%level] %msg%n
-			</pattern>
-		</encoder>
-	</appender>
+        <encoder>
+            <pattern>%date %marker [%thread] %logger{10} [%file : %line]%n[%level] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%level  %marker %logger{20} %msg%n</pattern>
-		</encoder>
-	</appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%level  %marker %logger{20} %msg%n</pattern>
+        </encoder>
+    </appender>
 
-	<logger name="de.jutzig.jabylon" level="info">
-	</logger>
+    <logger name="de.jutzig.jabylon" level="info">
+    </logger>
 
-	<logger name="de.jutzig.jabylon.cdo.server.logging.OSGiLogger" level="INFO">
-	</logger>
+    <logger name="de.jutzig.jabylon.cdo.server.logging.OSGiLogger" level="INFO">
+    </logger>
 
-	<logger name="org.mortbay.log" level="warn"></logger>
-	
+    <logger name="org.mortbay.log" level="warn"></logger>
 
-	<root level="info">
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
-	</root>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
 
 </configuration>

@@ -13,79 +13,79 @@ import com.vaadin.data.util.AbstractProperty;
 
 public class EObjectProperty extends AbstractProperty implements Adapter{
 
-	
-	private EObject object;
-	private EStructuralFeature feature;
-	
-	
-	
-	public EObjectProperty(EObject object, EStructuralFeature feature) {
-		super();
-		this.object = object;
-		this.feature = feature;
-	}
 
-	@Override
-	public Object getValue() {
-		if(object==null)
-			return null;
-		return object.eGet(feature);
-	}
+    private EObject object;
+    private EStructuralFeature feature;
 
-	@Override
-	public void setValue(Object newValue) throws ReadOnlyException,
-			ConversionException {
-		if (feature instanceof EAttribute && newValue!=null) {
-			EAttribute attribute = (EAttribute) feature;
-			EDataType type = attribute.getEAttributeType();
-			if(!type.isInstance(newValue))
-				newValue = feature.getEType().getEPackage().getEFactoryInstance().createFromString(type, newValue.toString());
-			
-		}
-		object.eSet(feature, newValue);
-	}
 
-	@Override
-	public Class<?> getType() {
-		return feature.getEType().getInstanceClass();
-	}
 
-	
-	@Override
-	public void addListener(ValueChangeListener listener) {
-		if(getListeners(ValueChangeListener.class).isEmpty() && object!=null)
-		{
-			object.eAdapters().add(this);
-		}
-		super.addListener(listener);
-	}
+    public EObjectProperty(EObject object, EStructuralFeature feature) {
+        super();
+        this.object = object;
+        this.feature = feature;
+    }
 
-	@Override
-	public void notifyChanged(Notification notification) {
-		if(feature==notification.getFeature())
-			fireValueChange();
-	}
+    @Override
+    public Object getValue() {
+        if(object==null)
+            return null;
+        return object.eGet(feature);
+    }
 
-	@Override
-	public Notifier getTarget() {
-		return object;
-	}
+    @Override
+    public void setValue(Object newValue) throws ReadOnlyException,
+            ConversionException {
+        if (feature instanceof EAttribute && newValue!=null) {
+            EAttribute attribute = (EAttribute) feature;
+            EDataType type = attribute.getEAttributeType();
+            if(!type.isInstance(newValue))
+                newValue = feature.getEType().getEPackage().getEFactoryInstance().createFromString(type, newValue.toString());
 
-	@Override
-	public void setTarget(Notifier newTarget) {
-		if (newTarget != object)
-		{
-			if(newTarget instanceof EObject) 
-				object = (EObject) newTarget;
-			else
-				object = null;		
-		}
-		
-	}
+        }
+        object.eSet(feature, newValue);
+    }
 
-	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == Property.class;
-	}
-	
+    @Override
+    public Class<?> getType() {
+        return feature.getEType().getInstanceClass();
+    }
+
+
+    @Override
+    public void addListener(ValueChangeListener listener) {
+        if(getListeners(ValueChangeListener.class).isEmpty() && object!=null)
+        {
+            object.eAdapters().add(this);
+        }
+        super.addListener(listener);
+    }
+
+    @Override
+    public void notifyChanged(Notification notification) {
+        if(feature==notification.getFeature())
+            fireValueChange();
+    }
+
+    @Override
+    public Notifier getTarget() {
+        return object;
+    }
+
+    @Override
+    public void setTarget(Notifier newTarget) {
+        if (newTarget != object)
+        {
+            if(newTarget instanceof EObject)
+                object = (EObject) newTarget;
+            else
+                object = null;
+        }
+
+    }
+
+    @Override
+    public boolean isAdapterForType(Object type) {
+        return type == Property.class;
+    }
+
 }

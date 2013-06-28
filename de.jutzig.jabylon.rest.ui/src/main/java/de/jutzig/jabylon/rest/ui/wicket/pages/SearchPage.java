@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.pages;
 
@@ -25,74 +25,74 @@ import de.jutzig.jabylon.rest.ui.wicket.panels.SearchResultPanel;
  */
 public class SearchPage extends GenericPage<String> {
 
-	public static final String MAX_HITS = "m";
+    public static final String MAX_HITS = "m";
 
-	public static final String SEARCH_TERM = "t";
+    public static final String SEARCH_TERM = "t";
 
-	public static final String SCOPE = "s";
+    public static final String SCOPE = "s";
 
-	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	private transient QueryService queryService;
-	
-	private static final Logger logger = LoggerFactory.getLogger(SearchPage.class);
-	
-	public SearchPage(PageParameters parameters) {
-		super(parameters);
-		setStatelessHint(true);
-	}
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	protected void construct() {
-		super.construct();
-		String term = getSearchTerm(getPageParameters());
-		String scope = getSearchScope(getPageParameters());
-		if(term==null)
-			add(new Label("content","no search term entered"));
-		else
-		{
-			SearchResult result = search(term,scope, getPageParameters().get(MAX_HITS).toInt(50));
-			add(new SearchResultPanel("content",result,getPageParameters()));
-			
-		}
-	}
+    private static final long serialVersionUID = 1L;
 
-	private SearchResult search(String term, String scope, int maxHits) {
-		try {
-			return queryService.search(term, scope);			
-		}
-		catch (RuntimeException e) {
-			throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-		}
-	}
+    @Inject
+    private transient QueryService queryService;
 
-	private String getSearchTerm(PageParameters params) {
-		StringValue value = params.get(SEARCH_TERM);
-		if(value.isEmpty())
-			return null;
-		return value.toString();
-	}
-	
-	private String getSearchScope(PageParameters params) {
-		StringValue value = params.get(SCOPE);
-		if(value.isEmpty())
-			return null;
-		return value.toString();
-	}
+    private static final Logger logger = LoggerFactory.getLogger(SearchPage.class);
 
-	@Override
-	protected IModel<String> createModel(PageParameters params) {
-		StringValue value = params.get("uri");
-		if(value.isEmpty())
-			return null;
-		return Model.of(value.toString());
-	}
-	
-	@Override
-	public boolean isBookmarkable() {
-		return true;
-	}
+    public SearchPage(PageParameters parameters) {
+        super(parameters);
+        setStatelessHint(true);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected void construct() {
+        super.construct();
+        String term = getSearchTerm(getPageParameters());
+        String scope = getSearchScope(getPageParameters());
+        if(term==null)
+            add(new Label("content","no search term entered"));
+        else
+        {
+            SearchResult result = search(term,scope, getPageParameters().get(MAX_HITS).toInt(50));
+            add(new SearchResultPanel("content",result,getPageParameters()));
+
+        }
+    }
+
+    private SearchResult search(String term, String scope, int maxHits) {
+        try {
+            return queryService.search(term, scope);
+        }
+        catch (RuntimeException e) {
+            throw new AbortWithHttpErrorCodeException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    private String getSearchTerm(PageParameters params) {
+        StringValue value = params.get(SEARCH_TERM);
+        if(value.isEmpty())
+            return null;
+        return value.toString();
+    }
+
+    private String getSearchScope(PageParameters params) {
+        StringValue value = params.get(SCOPE);
+        if(value.isEmpty())
+            return null;
+        return value.toString();
+    }
+
+    @Override
+    protected IModel<String> createModel(PageParameters params) {
+        StringValue value = params.get("uri");
+        if(value.isEmpty())
+            return null;
+        return Model.of(value.toString());
+    }
+
+    @Override
+    public boolean isBookmarkable() {
+        return true;
+    }
 
 }

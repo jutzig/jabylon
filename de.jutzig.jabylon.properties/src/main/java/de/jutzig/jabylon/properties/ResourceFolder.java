@@ -15,11 +15,11 @@ package de.jutzig.jabylon.properties;
  */
 public interface ResourceFolder extends Resolvable<Resolvable<?, ?>, Resolvable<?, ?>> {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	ProjectLocale getProjectLocale();
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation"
+     * @generated
+     */
+    ProjectLocale getProjectLocale();
 } // ResourceFolder

@@ -21,67 +21,67 @@ import de.jutzig.jabylon.ui.styles.JabylonStyle;
 
 public class ProjectListPanel extends GridLayout implements ClickListener {
 
-	public ProjectListPanel() {
-		
-		createContents();
-		setMargin(true, true, true, true);
-		setSpacing(true);
-		setSizeFull();
+    public ProjectListPanel() {
+
+        createContents();
+        setMargin(true, true, true, true);
+        setSpacing(true);
+        setSizeFull();
 //		setSizeFull();
-		
-	}
 
-	private void createContents() {
-		Workspace workspace = MainDashboard.getCurrent().getWorkspace();
-		EList<Project> projects = workspace.getChildren();
-		setColumns(1);
-		setRows(projects.size()+1);
-		buildHeader();
-		
-		Section section = new Section();
-		section.setHeight(500, UNITS_PIXELS);
-		section.setCaption("Active Projects");
-		section.setWidth(100, UNITS_PERCENTAGE);
+    }
+
+    private void createContents() {
+        Workspace workspace = MainDashboard.getCurrent().getWorkspace();
+        EList<Project> projects = workspace.getChildren();
+        setColumns(1);
+        setRows(projects.size()+1);
+        buildHeader();
+
+        Section section = new Section();
+        section.setHeight(500, UNITS_PIXELS);
+        section.setCaption("Active Projects");
+        section.setWidth(100, UNITS_PERCENTAGE);
 //		section.setWidth(800, UNITS_PIXELS);
-		VerticalLayout layout = new VerticalLayout();
-		
-		final Table table = new Table();
-		table.setSizeFull();
-		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
+        VerticalLayout layout = new VerticalLayout();
+
+        final Table table = new Table();
+        table.setSizeFull();
+        table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 //		table.setWidth(800, UNITS_PIXELS);
-		table.addContainerProperty("location", Button.class, null);
-		table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
-		table.setColumnWidth("progress", 110);
-		
-		for (Project project : projects) {
-			Button projectName = new Button(project.getName());
-			projectName.setStyleName(Reindeer.BUTTON_LINK);
-			projectName.setData(project);
-			projectName.addListener(this);
-			projectName.setIcon(ImageConstants.IMAGE_PROJECT);
-			
-			StaticProgressIndicator progress = new ResolvableProgressIndicator(project);
-			
-			table.addItem(new Object[] {projectName,progress},project.cdoID());
-		}
-		
-		layout.addComponent(table);
-		layout.setSizeFull();
-		section.setContent(layout);
-		addComponent(section);		
-	}
+        table.addContainerProperty("location", Button.class, null);
+        table.addContainerProperty("progress", ResolvableProgressIndicator.class, null);
+        table.setColumnWidth("progress", 110);
 
-	private void buildHeader() {
+        for (Project project : projects) {
+            Button projectName = new Button(project.getName());
+            projectName.setStyleName(Reindeer.BUTTON_LINK);
+            projectName.setData(project);
+            projectName.addListener(this);
+            projectName.setIcon(ImageConstants.IMAGE_PROJECT);
 
-		
-	}
+            StaticProgressIndicator progress = new ResolvableProgressIndicator(project);
 
-	@Override
-	public void buttonClick(ClickEvent event) {
-		Project project = (Project) event.getButton().getData();
-		MainDashboard.getCurrent().getBreadcrumbs().walkTo(project.getName());
-		
-	}
-	
+            table.addItem(new Object[] {projectName,progress},project.cdoID());
+        }
+
+        layout.addComponent(table);
+        layout.setSizeFull();
+        section.setContent(layout);
+        addComponent(section);
+    }
+
+    private void buildHeader() {
+
+
+    }
+
+    @Override
+    public void buttonClick(ClickEvent event) {
+        Project project = (Project) event.getButton().getData();
+        MainDashboard.getCurrent().getBreadcrumbs().walkTo(project.getName());
+
+    }
+
 
 }

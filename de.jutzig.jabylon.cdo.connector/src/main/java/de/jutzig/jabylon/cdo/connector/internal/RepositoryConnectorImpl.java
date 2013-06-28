@@ -25,81 +25,81 @@ import de.jutzig.jabylon.users.UsersPackage;
 @Service(RepositoryConnector.class)
 public class RepositoryConnectorImpl implements RepositoryConnector {
 
-	private IConnector connector = null;
-	private CDOSession session = null;
-	
-	@Reference
-	private IAcceptor acceptor;
-	/**
-	 * The repository name
-	 */
-	private static final String REPOSITORY_NAME = "jabylon";
+    private IConnector connector = null;
+    private CDOSession session = null;
 
-	@Deactivate
-	@Override
-	public void close() {
+    @Reference
+    private IAcceptor acceptor;
+    /**
+     * The repository name
+     */
+    private static final String REPOSITORY_NAME = "jabylon";
 
-		if (session != null)
-			LifecycleUtil.deactivate(session);
+    @Deactivate
+    @Override
+    public void close() {
 
-		if (connector != null)
-			LifecycleUtil.deactivate(connector);
+        if (session != null)
+            LifecycleUtil.deactivate(session);
 
-	}
+        if (connector != null)
+            LifecycleUtil.deactivate(connector);
 
-	
-	public void bindAcceptor(IAcceptor acceptor)
-	{
-		this.acceptor = acceptor;
-	}
-	
-	public void unbindAcceptor(IAcceptor acceptor)
-	{
-		this.acceptor = null;
-	}
-	
-	/**
-	 * Getter for session including lazy initialization
-	 *
-	 * @return the CDO session
-	 */
-	public CDOSession getSession() {
-		if (session == null) {
-			session = createSession();
-		}
-		return session;
-	}
+    }
 
-	/**
-	 * Getter for transaction including lazy initialization
-	 *
-	 * @return the transaction
-	 */
-	public CDOTransaction openTransaction() {
-		return getSession().openTransaction();
 
-	}
+    public void bindAcceptor(IAcceptor acceptor)
+    {
+        this.acceptor = acceptor;
+    }
 
-	@Override
-	public CDOView openView() {
-		return getSession().openView();
-	}
+    public void unbindAcceptor(IAcceptor acceptor)
+    {
+        this.acceptor = null;
+    }
 
-	@Override
-	public CDOSession createSession() {
-		IManagedContainer container = IPluginContainer.INSTANCE;
+    /**
+     * Getter for session including lazy initialization
+     *
+     * @return the CDO session
+     */
+    public CDOSession getSession() {
+        if (session == null) {
+            session = createSession();
+        }
+        return session;
+    }
 
-		if (connector == null)
-			connector = JVMUtil.getConnector(container, "default");
+    /**
+     * Getter for transaction including lazy initialization
+     *
+     * @return the transaction
+     */
+    public CDOTransaction openTransaction() {
+        return getSession().openTransaction();
 
-		CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
-		config.setConnector(connector);
-		config.setRepositoryName(REPOSITORY_NAME);
-		CDOSession theSession = config.openSession();
-		theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
-		theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
-		theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
-		return theSession;
-	}
+    }
+
+    @Override
+    public CDOView openView() {
+        return getSession().openView();
+    }
+
+    @Override
+    public CDOSession createSession() {
+        IManagedContainer container = IPluginContainer.INSTANCE;
+
+        if (connector == null)
+            connector = JVMUtil.getConnector(container, "default");
+
+        CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
+        config.setConnector(connector);
+        config.setRepositoryName(REPOSITORY_NAME);
+        CDOSession theSession = config.openSession();
+        theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
+        theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
+        theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
+        return theSession;
+    }
 
 }

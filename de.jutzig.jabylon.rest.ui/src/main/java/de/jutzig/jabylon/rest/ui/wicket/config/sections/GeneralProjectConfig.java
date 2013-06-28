@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
@@ -17,27 +17,27 @@ import de.jutzig.jabylon.security.CommonPermissions;
  */
 public class GeneralProjectConfig extends AbstractConfigSection<Project> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
-		return new ProjectConfigSection(id, input);
-	}
+    @Override
+    public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
+        return new ProjectConfigSection(id, input);
+    }
 
-	@Override
-	public void commit(IModel<Project> input, Preferences config) {
-		// TODO Auto-generated method stub
-		// TODO rename on filesystem 
-		
-	}
+    @Override
+    public void commit(IModel<Project> input, Preferences config) {
+        // TODO Auto-generated method stub
+        // TODO rename on filesystem
 
-	@Override
-	public String getRequiredPermission() {
-		String projectName = null;
-		if(getDomainObject()!=null)
-			projectName = getDomainObject().getName();
-		return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
-	}
-	
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        String projectName = null;
+        if(getDomainObject()!=null)
+            projectName = getDomainObject().getName();
+        return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
+    }
+
 
 }

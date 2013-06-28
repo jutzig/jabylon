@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.components;
 
@@ -38,116 +38,116 @@ import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
  */
 public class PropertyToolArea extends CustomComponent implements PropertyEditorTool {
 
-	private List<PropertyEditorTool> tools;
-	private Map<Component, String> toolIDMap;
-	private TabSheet tabSheet;
-	
-	public PropertyToolArea() {
-		tools = new ArrayList<PropertyEditorTool>();
-		createContents();
-		setSizeFull();
-		
-	}
+    private List<PropertyEditorTool> tools;
+    private Map<Component, String> toolIDMap;
+    private TabSheet tabSheet;
 
-	private void createContents() {
-		tabSheet = new TabSheet();
-		tabSheet.addListener(new SelectedTabChangeListener() {
-			
-			@Override
-			public void selectedTabChange(SelectedTabChangeEvent event) {
-				Component selectedTab = event.getTabSheet().getSelectedTab();
-				String id = toolIDMap.get(selectedTab);
-				if(getApplication()!=null)
-				{
-					Object user = getApplication().getUser();
-					if (user != null) {
-						Preferences scope = PreferencesUtil.scopeFor((EObject) user);
-						scope.put("selected.property.tool", id); //$NON-NLS-1$
-						try {
-							scope.flush();
-						} catch (BackingStoreException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					
-				}
-			}
-		});
-		tabSheet.setSizeFull();
-		setCompositionRoot(tabSheet);
-		buildItems(tabSheet);
-		
-	}
+    public PropertyToolArea() {
+        tools = new ArrayList<PropertyEditorTool>();
+        createContents();
+        setSizeFull();
 
-	private void buildItems(TabSheet accordion) {
-		toolIDMap = new HashMap<Component, String>();
+    }
 
-		
-		IConfigurationElement[] tools = Activator.getDefault().getPropertyEditorTools();
-		for (IConfigurationElement element : tools) {
-			String name = element.getAttribute(Messages.getString("PropertyToolArea.1")); //$NON-NLS-1$
-			try {
-				PropertyEditorTool tool = (PropertyEditorTool) element.createExecutableExtension("class"); //$NON-NLS-1$
-				String iconString = element.getAttribute("icon"); //$NON-NLS-1$
-				String id = element.getAttribute("id"); //$NON-NLS-1$
-				Component component = tool.createComponent();
-				toolIDMap.put(component, id);
-				Tab tab = accordion.addTab(component);
-				
-				tab.setCaption(name);
-				this.tools.add(tool);
-				if(iconString!=null && iconString.length()>0)
-				{
-					tab.setIcon(new ThemeResource(iconString));
-				}
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    private void createContents() {
+        tabSheet = new TabSheet();
+        tabSheet.addListener(new SelectedTabChangeListener() {
 
-		}
-		
-	}
+            @Override
+            public void selectedTabChange(SelectedTabChangeEvent event) {
+                Component selectedTab = event.getTabSheet().getSelectedTab();
+                String id = toolIDMap.get(selectedTab);
+                if(getApplication()!=null)
+                {
+                    Object user = getApplication().getUser();
+                    if (user != null) {
+                        Preferences scope = PreferencesUtil.scopeFor((EObject) user);
+                        scope.put("selected.property.tool", id); //$NON-NLS-1$
+                        try {
+                            scope.flush();
+                        } catch (BackingStoreException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
 
-	@Override
-	public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor) {
-		for (PropertyEditorTool tool : tools) {
-			tool.selectionChanged(currentSelection, reviews, acceptor);
-		}
-		
-	}
+                }
+            }
+        });
+        tabSheet.setSizeFull();
+        setCompositionRoot(tabSheet);
+        buildItems(tabSheet);
 
-	@Override
-	public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
-		for (PropertyEditorTool tool : tools) {
-			tool.init(template, translation);
-		}
-		
-	}
+    }
 
-	@Override
-	public Component createComponent() {
-		return this;
-	}
-	
-	
-	@Override
-	public void attach() {
-		super.attach();
-		
-		Object user = getApplication().getUser();
-		if(user!=null)
-		{
-			Preferences scope = PreferencesUtil.scopeFor((EObject) user);
-			String activeID = scope.get("selected.property.tool", null); //$NON-NLS-1$
-			if(activeID!=null && toolIDMap.containsValue(activeID))
-			{
-				for (Entry<Component, String> entry : toolIDMap.entrySet()) {
-					if(entry.getValue().equals(activeID))
-						tabSheet.setSelectedTab(entry.getKey());
-				}
-			}
-		}
-	}
+    private void buildItems(TabSheet accordion) {
+        toolIDMap = new HashMap<Component, String>();
+
+
+        IConfigurationElement[] tools = Activator.getDefault().getPropertyEditorTools();
+        for (IConfigurationElement element : tools) {
+            String name = element.getAttribute(Messages.getString("PropertyToolArea.1")); //$NON-NLS-1$
+            try {
+                PropertyEditorTool tool = (PropertyEditorTool) element.createExecutableExtension("class"); //$NON-NLS-1$
+                String iconString = element.getAttribute("icon"); //$NON-NLS-1$
+                String id = element.getAttribute("id"); //$NON-NLS-1$
+                Component component = tool.createComponent();
+                toolIDMap.put(component, id);
+                Tab tab = accordion.addTab(component);
+
+                tab.setCaption(name);
+                this.tools.add(tool);
+                if(iconString!=null && iconString.length()>0)
+                {
+                    tab.setIcon(new ThemeResource(iconString));
+                }
+            } catch (CoreException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    @Override
+    public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor) {
+        for (PropertyEditorTool tool : tools) {
+            tool.selectionChanged(currentSelection, reviews, acceptor);
+        }
+
+    }
+
+    @Override
+    public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
+        for (PropertyEditorTool tool : tools) {
+            tool.init(template, translation);
+        }
+
+    }
+
+    @Override
+    public Component createComponent() {
+        return this;
+    }
+
+
+    @Override
+    public void attach() {
+        super.attach();
+
+        Object user = getApplication().getUser();
+        if(user!=null)
+        {
+            Preferences scope = PreferencesUtil.scopeFor((EObject) user);
+            String activeID = scope.get("selected.property.tool", null); //$NON-NLS-1$
+            if(activeID!=null && toolIDMap.containsValue(activeID))
+            {
+                for (Entry<Component, String> entry : toolIDMap.entrySet()) {
+                    if(entry.getValue().equals(activeID))
+                        tabSheet.setSelectedTab(entry.getKey());
+                }
+            }
+        }
+    }
 }

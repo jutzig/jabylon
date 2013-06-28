@@ -22,64 +22,64 @@ import de.jutzig.jabylon.users.UsersPackage;
 
 public class RolePermissionsConfigSection extends GenericPanel<Role> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public RolePermissionsConfigSection(String id, IModel<Role> model) {
-		super(id, model);
-		add(new RequiredTextField<String>("rolename", new EObjectPropertyModel<String, Role>(model, UsersPackage.Literals.ROLE__NAME)));
-		EObject container = model.getObject().eContainer();
-		ComplexEObjectListDataProvider<Permission> selected = new ComplexEObjectListDataProvider<Permission>(model, UsersPackage.Literals.ROLE__PERMISSIONS);
-		ComplexEObjectListDataProvider<Permission> available = null;
-	
-		if (container instanceof UserManagement) {
-			UserManagement management = (UserManagement) container;
-			available = new ComplexEObjectListDataProvider(new EObjectModel<UserManagement>(management), UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
-		}
-		else if(model instanceof AttachableModel) {
-			available = new ComplexEObjectListDataProvider(((AttachableModel)model).getParent(), UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
-		}
-		
-		Palette<Permission> palette = new Palette<Permission>("palette", selected, available, new Renderer(), 10, false);
-		add(palette);		
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public RolePermissionsConfigSection(String id, IModel<Role> model) {
+        super(id, model);
+        add(new RequiredTextField<String>("rolename", new EObjectPropertyModel<String, Role>(model, UsersPackage.Literals.ROLE__NAME)));
+        EObject container = model.getObject().eContainer();
+        ComplexEObjectListDataProvider<Permission> selected = new ComplexEObjectListDataProvider<Permission>(model, UsersPackage.Literals.ROLE__PERMISSIONS);
+        ComplexEObjectListDataProvider<Permission> available = null;
 
-	public static class RolePermissionsConfigSectionContributor extends AbstractConfigSection<Role> {
+        if (container instanceof UserManagement) {
+            UserManagement management = (UserManagement) container;
+            available = new ComplexEObjectListDataProvider(new EObjectModel<UserManagement>(management), UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
+        }
+        else if(model instanceof AttachableModel) {
+            available = new ComplexEObjectListDataProvider(((AttachableModel)model).getParent(), UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS);
+        }
 
-		private static final long serialVersionUID = 1L;
+        Palette<Permission> palette = new Palette<Permission>("palette", selected, available, new Renderer(), 10, false);
+        add(palette);
+    }
 
-		@Override
-		public WebMarkupContainer doCreateContents(String id, IModel<Role> input, Preferences config) {
+    public static class RolePermissionsConfigSectionContributor extends AbstractConfigSection<Role> {
 
-			return new RolePermissionsConfigSection(id, input);
-		}
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void commit(IModel<Role> input, Preferences config) {
-			
-			
-		}
+        @Override
+        public WebMarkupContainer doCreateContents(String id, IModel<Role> input, Preferences config) {
 
-		@Override
-		public String getRequiredPermission() {
-			return CommonPermissions.USER_GLOBAL_CONFIG;
-		}
-		
-	}
-	
-	private static class Renderer implements IChoiceRenderer<Permission> {
+            return new RolePermissionsConfigSection(id, input);
+        }
 
-		private static final long serialVersionUID = 1L;
+        @Override
+        public void commit(IModel<Role> input, Preferences config) {
 
-		@Override
-		public Object getDisplayValue(Permission object) {
-			return object.getName();
-		}
 
-		@Override
-		public String getIdValue(Permission object, int index) {
-			return object.getName();
-		}
-		
-	}
+        }
+
+        @Override
+        public String getRequiredPermission() {
+            return CommonPermissions.USER_GLOBAL_CONFIG;
+        }
+
+    }
+
+    private static class Renderer implements IChoiceRenderer<Permission> {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Object getDisplayValue(Permission object) {
+            return object.getName();
+        }
+
+        @Override
+        public String getIdValue(Permission object, int index) {
+            return object.getName();
+        }
+
+    }
 }

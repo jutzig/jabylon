@@ -25,17 +25,17 @@ import de.jutzig.jabylon.ui.beans.LocaleBean;
 
 public class NewLocaleForm extends VerticalLayout {
 
-	private ProjectVersion project;
-	
-	public NewLocaleForm(ProjectVersion project) {
-		this.project = project;
-		setMargin(true);
-		createContents();
+    private ProjectVersion project;
 
-	}
-	
-	private void createContents() {
-		  // Create the Form
+    public NewLocaleForm(ProjectVersion project) {
+        this.project = project;
+        setMargin(true);
+        createContents();
+
+    }
+
+    private void createContents() {
+          // Create the Form
         final Form form = new Form();
         form.setWriteThrough(true);
         form.setImmediate(true);
@@ -43,18 +43,18 @@ public class NewLocaleForm extends VerticalLayout {
         final BeanItem<LocaleBean> localeItem = new BeanItem<LocaleBean>(new LocaleBean());
         form.setItemDataSource(localeItem);
         form.setFormFieldFactory(new DefaultFieldFactory() {
-			
-        	@Override
-        	public Field createField(Item item, Object propertyId,
-        			Component uiContext) {
 
-        		Field field = super.createField(item, propertyId, uiContext);
-        		field.addValidator(new ProjectLocaleValidator());
-        		if(propertyId.equals("language")) //$NON-NLS-1$
-        			field.setRequired(true);
-        		return field;
-        	}
-		});
+            @Override
+            public Field createField(Item item, Object propertyId,
+                    Component uiContext) {
+
+                Field field = super.createField(item, propertyId, uiContext);
+                field.addValidator(new ProjectLocaleValidator());
+                if(propertyId.equals("language")) //$NON-NLS-1$
+                    field.setRequired(true);
+                return field;
+            }
+        });
         // Determines which properties are shown, and in which order:
         List<String> properties = new ArrayList<String>(3);
         properties.add("language"); //$NON-NLS-1$
@@ -81,57 +81,57 @@ public class NewLocaleForm extends VerticalLayout {
         Button apply = new Button(Messages.getString("NewLocaleForm_CREATE_LOCALE_BUTTON"), new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 try {
-                	if(!form.isValid())
-                		return;
-                	Locale newLocale = localeItem.getBean().createLocale();
-                	ProjectLocale existingProjectLocale = project.getProjectLocale(newLocale);
-                	if(existingProjectLocale!=null)
-                	{
-                		form.setComponentError(new UserError("The locale "+newLocale.toString()+" exists already"));
-                		return;
-                		
-                	}
+                    if(!form.isValid())
+                        return;
+                    Locale newLocale = localeItem.getBean().createLocale();
+                    ProjectLocale existingProjectLocale = project.getProjectLocale(newLocale);
+                    if(existingProjectLocale!=null)
+                    {
+                        form.setComponentError(new UserError("The locale "+newLocale.toString()+" exists already"));
+                        return;
+
+                    }
                     final ProjectLocale locale = PropertiesFactory.eINSTANCE.createProjectLocale();
                     locale.setLocale(newLocale);
-                    project.getChildren().add(locale);     
-                		
-                	getWindow().getParent().removeWindow(getWindow());
-                    
+                    project.getChildren().add(locale);
+
+                    getWindow().getParent().removeWindow(getWindow());
+
                 } catch (Exception e) {
                     // Ignored, we'll let the Form handle the errors
-                	e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         });
         buttons.addComponent(apply);
         form.getFooter().addComponent(buttons);
         form.getFooter().setMargin(false, false, true, true);
-		
-	}
 
-	
+    }
+
+
 }
 
 class ProjectLocaleValidator implements Validator
 {
 
-	@Override
-	public void validate(Object value) throws InvalidValueException {
-		if(!isValid(value))
-		{
-			throw new InvalidValueException("Must be a two letter code");
-		}
-		
-	}
+    @Override
+    public void validate(Object value) throws InvalidValueException {
+        if(!isValid(value))
+        {
+            throw new InvalidValueException("Must be a two letter code");
+        }
 
-	@Override
-	public boolean isValid(Object value) {
-		if(value==null)
-			return false;
-		String string = value.toString();
-		if(string.length()!=2)
-			return false;
-		return (Character.isLetter(string.charAt(0)) && Character.isLetter(string.charAt(0)));
-	}
-	
+    }
+
+    @Override
+    public boolean isValid(Object value) {
+        if(value==null)
+            return false;
+        String string = value.toString();
+        if(string.length()!=2)
+            return false;
+        return (Character.isLetter(string.charAt(0)) && Character.isLetter(string.charAt(0)));
+    }
+
 }

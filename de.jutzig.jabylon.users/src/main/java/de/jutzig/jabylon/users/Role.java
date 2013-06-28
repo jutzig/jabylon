@@ -29,80 +29,80 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface Role extends CDOObject {
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see de.jutzig.jabylon.users.UsersPackage#getRole_Name()
-	 * @model
-	 * @generated
-	 */
-	String getName();
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Name</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see de.jutzig.jabylon.users.UsersPackage#getRole_Name()
+     * @model
+     * @generated
+     */
+    String getName();
 
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.users.Role#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
+    /**
+     * Sets the value of the '{@link de.jutzig.jabylon.users.Role#getName <em>Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
 
-	/**
-	 * Returns the value of the '<em><b>Parent</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parent</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parent</em>' reference.
-	 * @see #setParent(Role)
-	 * @see de.jutzig.jabylon.users.UsersPackage#getRole_Parent()
-	 * @model
-	 * @generated
-	 */
-	Role getParent();
+    /**
+     * Returns the value of the '<em><b>Parent</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Parent</em>' reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Parent</em>' reference.
+     * @see #setParent(Role)
+     * @see de.jutzig.jabylon.users.UsersPackage#getRole_Parent()
+     * @model
+     * @generated
+     */
+    Role getParent();
 
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.users.Role#getParent <em>Parent</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parent</em>' reference.
-	 * @see #getParent()
-	 * @generated
-	 */
-	void setParent(Role value);
+    /**
+     * Sets the value of the '{@link de.jutzig.jabylon.users.Role#getParent <em>Parent</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Parent</em>' reference.
+     * @see #getParent()
+     * @generated
+     */
+    void setParent(Role value);
 
-	/**
-	 * Returns the value of the '<em><b>Permissions</b></em>' reference list.
-	 * The list contents are of type {@link de.jutzig.jabylon.users.Permission}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Permissions</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Permissions</em>' reference list.
-	 * @see de.jutzig.jabylon.users.UsersPackage#getRole_Permissions()
-	 * @model
-	 * @generated
-	 */
-	EList<Permission> getPermissions();
+    /**
+     * Returns the value of the '<em><b>Permissions</b></em>' reference list.
+     * The list contents are of type {@link de.jutzig.jabylon.users.Permission}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Permissions</em>' reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Permissions</em>' reference list.
+     * @see de.jutzig.jabylon.users.UsersPackage#getRole_Permissions()
+     * @model
+     * @generated
+     */
+    EList<Permission> getPermissions();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	EList<Permission> getAllPermissions();
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation"
+     * @generated
+     */
+    EList<Permission> getAllPermissions();
 
 } // Role

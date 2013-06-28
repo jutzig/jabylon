@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.model;
 
@@ -12,28 +12,28 @@ import org.osgi.service.prefs.Preferences;
  */
 public class BooleanPreferencesPropertyModel extends Model<Boolean> {
 
-	private static final long serialVersionUID = 8851885506195822461L;
-	private Preferences prefs;
+    private static final long serialVersionUID = 8851885506195822461L;
+    private Preferences prefs;
 
-	public BooleanPreferencesPropertyModel(Preferences prefs, String key, boolean defaultValue) {
-		super();
-		this.prefs = prefs;
-		this.key = key;
-		this.defaultValue = defaultValue;
-	}
+    public BooleanPreferencesPropertyModel(Preferences prefs, String key, boolean defaultValue) {
+        super();
+        this.prefs = prefs;
+        this.key = key;
+        this.defaultValue = defaultValue;
+    }
 
-	private String key;
-	private boolean defaultValue;
-	
-	@Override
-	public Boolean getObject() {
-		return prefs.getBoolean(key, defaultValue);
-	}
-	
-	@Override
-	public void setObject(Boolean object) {
-		prefs.putBoolean(key, object);
-	}
-	
+    private String key;
+    private boolean defaultValue;
+
+    @Override
+    public Boolean getObject() {
+        return prefs.getBoolean(key, defaultValue);
+    }
+
+    @Override
+    public void setObject(Boolean object) {
+        prefs.putBoolean(key, object);
+    }
+
 
 }

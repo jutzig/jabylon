@@ -5,45 +5,45 @@
 <title>Jabylon</title>
 </head>
 <wicket:head>
-	<script type="text/javascript">
-	<!--
-		$(document).ready(function() {
-			$('#table').dataTable({
-				"iDisplayLength" : 50,
-			});
-		});
-	//-->
-	</script>
+    <script type="text/javascript">
+    <!--
+        $(document).ready(function() {
+            $('#table').dataTable({
+                "iDisplayLength" : 50,
+            });
+        });
+    //-->
+    </script>
 </wicket:head>
 <body>
-	<wicket:panel>
-		<div class="row">
-			<div class="span12">
-				<form wicket:id="form">
-					<table class="table table-striped table-hover" id="table">
-						<thead>
-							<tr>
-								<th>Plug-In</th>
-								<th>Description</th>
-								<th>Version</th>
-								<th>Install</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr wicket:id="row">
-								<td><span wicket:id="name">Example</span></td>
-								<td><span wicket:id="description">This examples
-										certain examples</span></td>
-								<td><span wicket:id="version">1.0.0</span></td>
-								<td><input type="checkbox" wicket:id="install"></td>
-							</tr>
-						</tbody>
-					</table>
-					<button type="submit" class="btn btn-primary">Install</button>
-				</form>
-			</div>
-		</div>
-		<wicket:child />
-	</wicket:panel>
+    <wicket:panel>
+        <div class="row">
+            <div class="span12">
+                <form wicket:id="form">
+                    <table class="table table-striped table-hover" id="table">
+                        <thead>
+                            <tr>
+                                <th>Plug-In</th>
+                                <th>Description</th>
+                                <th>Version</th>
+                                <th>Install</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr wicket:id="row">
+                                <td><span wicket:id="name">Example</span></td>
+                                <td><span wicket:id="description">This examples
+                                        certain examples</span></td>
+                                <td><span wicket:id="version">1.0.0</span></td>
+                                <td><input type="checkbox" wicket:id="install"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Install</button>
+                </form>
+            </div>
+        </div>
+        <wicket:child />
+    </wicket:panel>
 </body>
 </html>

@@ -18,137 +18,137 @@ import de.jutzig.jabylon.properties.types.impl.JavaPropertyScanner;
 
 public class WorkspaceScannerTest {
 
-	@Test
-	public void testFullScan() {
-		File baseDir = new File("src/test/resources/project/master");
+    @Test
+    public void testFullScan() {
+        File baseDir = new File("src/test/resources/project/master");
 
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.fullScan(new PropertyFileAcceptor() {
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.fullScan(new PropertyFileAcceptor() {
 
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
 
-			}
-		}, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
-		int index = 0;
-		assertEquals("messages.properties", filenames.get(index++));
-		assertEquals("messages2.properties", filenames.get(index++));
-		assertEquals("plugin.properties", filenames.get(index++));
-		assertEquals("messages.properties", filenames.get(index++));
-		assertEquals("wiki_example.properties", filenames.get(index++));
-		assertEquals(5, filenames.size());
-	}
+            }
+        }, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
+        int index = 0;
+        assertEquals("messages.properties", filenames.get(index++));
+        assertEquals("messages2.properties", filenames.get(index++));
+        assertEquals("plugin.properties", filenames.get(index++));
+        assertEquals("messages.properties", filenames.get(index++));
+        assertEquals("wiki_example.properties", filenames.get(index++));
+        assertEquals(5, filenames.size());
+    }
 
-	@Test
-	public void testFullScanWithFileExcude() {
-		File baseDir = new File("src/test/resources/project/master");
-		ScanConfiguration configuration = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		configuration.setExclude("**/wiki_examp*.properties");
+    @Test
+    public void testFullScanWithFileExcude() {
+        File baseDir = new File("src/test/resources/project/master");
+        ScanConfiguration configuration = PropertiesFactory.eINSTANCE.createScanConfiguration();
+        configuration.setExclude("**/wiki_examp*.properties");
 
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.fullScan(new PropertyFileAcceptor() {
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.fullScan(new PropertyFileAcceptor() {
 
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
 
-			}
-		}, baseDir, new JavaPropertyScanner(), configuration, null);
-		int index = 0;
-		assertEquals("messages.properties", filenames.get(index++));
-		assertEquals("messages2.properties", filenames.get(index++));
-		assertEquals("plugin.properties", filenames.get(index++));
-		assertEquals("messages.properties", filenames.get(index++));
-		assertEquals(4, filenames.size());
-	}
+            }
+        }, baseDir, new JavaPropertyScanner(), configuration, null);
+        int index = 0;
+        assertEquals("messages.properties", filenames.get(index++));
+        assertEquals("messages2.properties", filenames.get(index++));
+        assertEquals("plugin.properties", filenames.get(index++));
+        assertEquals("messages.properties", filenames.get(index++));
+        assertEquals(4, filenames.size());
+    }
 
-	@Test
-	public void testFullScanWithMasterLocale() {
-		File baseDir = new File("src/test/resources/project/master");
-		ScanConfiguration configuration = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		configuration.setMasterLocale("en_CA");
-
-
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.fullScan(new PropertyFileAcceptor() {
-
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
-
-			}
-		}, baseDir, new JavaPropertyScanner(), configuration, null);
-		assertEquals(1, filenames.size());
-		int index = 0;
-		assertEquals("messages_en_CA.properties", filenames.get(index++));
-	}
-
-	@Test
-	public void testPartialScan() throws Exception {
+    @Test
+    public void testFullScanWithMasterLocale() {
+        File baseDir = new File("src/test/resources/project/master");
+        ScanConfiguration configuration = PropertiesFactory.eINSTANCE.createScanConfiguration();
+        configuration.setMasterLocale("en_CA");
 
 
-		File baseDir = new File("src/test/resources/project/master");
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.fullScan(new PropertyFileAcceptor() {
 
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.partialScan(new PropertyFileAcceptor() {
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
 
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
+            }
+        }, baseDir, new JavaPropertyScanner(), configuration, null);
+        assertEquals(1, filenames.size());
+        int index = 0;
+        assertEquals("messages_en_CA.properties", filenames.get(index++));
+    }
 
-			}
-		}, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
-		int index = 0;
-		assertEquals(1, filenames.size());
-		assertEquals("messages.properties", filenames.get(index++));
+    @Test
+    public void testPartialScan() throws Exception {
 
 
-	}
+        File baseDir = new File("src/test/resources/project/master");
 
-	@Test
-	public void testPartialScanWithComplicatedInclude()
-	{
-		File baseDir = new File("src/test/resources/project/master");
-		ScanConfiguration scanConfig = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		scanConfig.setInclude("**/jabylon/properties/util/autotranslate/*.properties");
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.partialScan(new PropertyFileAcceptor() {
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.partialScan(new PropertyFileAcceptor() {
 
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
 
-			}
-		}, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
-		int index = 0;
-		assertEquals(1, filenames.size());
-		assertEquals("messages.properties", filenames.get(index++));
-	}
+            }
+        }, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+        int index = 0;
+        assertEquals(1, filenames.size());
+        assertEquals("messages.properties", filenames.get(index++));
 
-	@Test
-	public void testPartialScanWithExclude()
-	{
-		File baseDir = new File("src/test/resources/project/master");
-		//try more complicated include
-		ScanConfiguration scanConfig = PropertiesFactory.eINSTANCE.createScanConfiguration();
-		scanConfig.setExclude("**/jabylon/properties/util/autotranslate/*.properties");
-		WorkspaceScanner scanner = new WorkspaceScanner();
-		final List<String> filenames = new ArrayList<String>();
-		scanner.partialScan(new PropertyFileAcceptor() {
 
-			@Override
-			public void newMatch(File file) {
-				filenames.add(file.getName());
+    }
 
-			}
-		}, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
-		assertEquals(0, filenames.size());
-	}
+    @Test
+    public void testPartialScanWithComplicatedInclude()
+    {
+        File baseDir = new File("src/test/resources/project/master");
+        ScanConfiguration scanConfig = PropertiesFactory.eINSTANCE.createScanConfiguration();
+        scanConfig.setInclude("**/jabylon/properties/util/autotranslate/*.properties");
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.partialScan(new PropertyFileAcceptor() {
+
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
+
+            }
+        }, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+        int index = 0;
+        assertEquals(1, filenames.size());
+        assertEquals("messages.properties", filenames.get(index++));
+    }
+
+    @Test
+    public void testPartialScanWithExclude()
+    {
+        File baseDir = new File("src/test/resources/project/master");
+        //try more complicated include
+        ScanConfiguration scanConfig = PropertiesFactory.eINSTANCE.createScanConfiguration();
+        scanConfig.setExclude("**/jabylon/properties/util/autotranslate/*.properties");
+        WorkspaceScanner scanner = new WorkspaceScanner();
+        final List<String> filenames = new ArrayList<String>();
+        scanner.partialScan(new PropertyFileAcceptor() {
+
+            @Override
+            public void newMatch(File file) {
+                filenames.add(file.getName());
+
+            }
+        }, baseDir, new JavaPropertyScanner(), scanConfig, new File("src/test/resources/project/master/de/jutzig/jabylon/properties/util/autotranslate/messages.properties"));
+        assertEquals(0, filenames.size());
+    }
 
 }

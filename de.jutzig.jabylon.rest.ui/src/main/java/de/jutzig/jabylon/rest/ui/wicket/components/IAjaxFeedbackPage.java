@@ -4,6 +4,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public interface IAjaxFeedbackPage {
 
-	void showFeedback(AjaxRequestTarget target);
+    void showFeedback(AjaxRequestTarget target);
 
 }

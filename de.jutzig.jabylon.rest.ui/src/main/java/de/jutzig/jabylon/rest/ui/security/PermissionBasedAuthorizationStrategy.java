@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.security;
 
@@ -19,35 +19,35 @@ import de.jutzig.jabylon.users.User;
  */
 public class PermissionBasedAuthorizationStrategy implements IAuthorizationStrategy{
 
-	@Override
-	public <T extends IRequestableComponent> boolean isInstantiationAuthorized(Class<T> componentClass) {
-		return true;
-	}
+    @Override
+    public <T extends IRequestableComponent> boolean isInstantiationAuthorized(Class<T> componentClass) {
+        return true;
+    }
 
-	@Override
-	public boolean isActionAuthorized(Component component, Action action) {
-		if (component instanceof RestrictedComponent) {
-			RestrictedComponent restricted = (RestrictedComponent) component;
-			String permission = restricted.getRequiredPermission();
-			if(permission==null)
-				return true;
-			CDOAuthenticatedSession session = (CDOAuthenticatedSession) CDOAuthenticatedSession.get();
-			if(session.getUser()==null)
-			{
-				User anonymousUser = session.getAnonymousUser();
-				boolean allowed = anonymousUser.hasPermission(permission);
-				if(allowed)
-					return true;
-				throw new RestartResponseAtInterceptPageException(LoginPage.class);
-			}
-			boolean allowed = session.getUser().hasPermission(permission);
-			if(allowed)
-				return true;
-			if(CommonPermissions.isEditRequest(permission))
-				throw new UnauthorizedActionException(component,action);
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean isActionAuthorized(Component component, Action action) {
+        if (component instanceof RestrictedComponent) {
+            RestrictedComponent restricted = (RestrictedComponent) component;
+            String permission = restricted.getRequiredPermission();
+            if(permission==null)
+                return true;
+            CDOAuthenticatedSession session = (CDOAuthenticatedSession) CDOAuthenticatedSession.get();
+            if(session.getUser()==null)
+            {
+                User anonymousUser = session.getAnonymousUser();
+                boolean allowed = anonymousUser.hasPermission(permission);
+                if(allowed)
+                    return true;
+                throw new RestartResponseAtInterceptPageException(LoginPage.class);
+            }
+            boolean allowed = session.getUser().hasPermission(permission);
+            if(allowed)
+                return true;
+            if(CommonPermissions.isEditRequest(permission))
+                throw new UnauthorizedActionException(component,action);
+            return false;
+        }
+        return true;
+    }
 
 }

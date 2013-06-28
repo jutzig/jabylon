@@ -8,11 +8,11 @@ import org.apache.wicket.model.IModel;
 
 public class BootstrapTabbedPanel<T extends ITab> extends TabbedPanel<T> {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public BootstrapTabbedPanel(String id, List<T> tabs) {
+    public BootstrapTabbedPanel(String id, List<T> tabs) {
         super(id, tabs);
 
         commonInit();

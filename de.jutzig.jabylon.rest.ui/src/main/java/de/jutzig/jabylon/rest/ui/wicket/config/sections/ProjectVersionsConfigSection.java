@@ -53,155 +53,155 @@ import de.jutzig.jabylon.security.CommonPermissions;
 
 public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
-	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(ProjectVersionsConfigSection.class);
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(ProjectVersionsConfigSection.class);
 
-	public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
-		super(id, model);
-		add(buildAddNewLink(model));
-		ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model,
-				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-		ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions", provider) {
+    public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
+        super(id, model);
+        add(buildAddNewLink(model));
+        ComplexEObjectListDataProvider<ProjectVersion> provider = new ComplexEObjectListDataProvider<ProjectVersion>(model,
+                PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+        ListView<ProjectVersion> project = new ListView<ProjectVersion>("versions", provider) {
 
-			private static final long serialVersionUID = 1L;
-			private ProgressionModel progressModel;
+            private static final long serialVersionUID = 1L;
+            private ProgressionModel progressModel;
 
-			@Override
-			protected void populateItem(ListItem<ProjectVersion> item) {
-				item.setOutputMarkupId(true);
-				item.add(new Label("name", item.getModelObject().getName()));
-				item.add(new Label("summary", createSummaryModel(item.getModel())));
-				progressModel = new ProgressionModel(-1);
-				final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
+            @Override
+            protected void populateItem(ListItem<ProjectVersion> item) {
+                item.setOutputMarkupId(true);
+                item.add(new Label("name", item.getModelObject().getName()));
+                item.add(new Label("summary", createSummaryModel(item.getModel())));
+                progressModel = new ProgressionModel(-1);
+                final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
 
-				item.add(progressPanel);
-				ProjectVersion projectVersion = item.getModelObject();
-				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(projectVersion)));
-				item.add(createCheckoutAction(progressPanel, item.getModel()));
-				item.add(createRescanAction(progressPanel, item.getModel()));
-				item.add(createUpdateAction(progressPanel, item.getModel()));
-				item.add(createCommitAction(progressPanel, item.getModel()));
-				item.add(createDeleteAction(progressPanel, item.getModel()));
+                item.add(progressPanel);
+                ProjectVersion projectVersion = item.getModelObject();
+                item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(projectVersion)));
+                item.add(createCheckoutAction(progressPanel, item.getModel()));
+                item.add(createRescanAction(progressPanel, item.getModel()));
+                item.add(createUpdateAction(progressPanel, item.getModel()));
+                item.add(createCommitAction(progressPanel, item.getModel()));
+                item.add(createDeleteAction(progressPanel, item.getModel()));
 
-			}
+            }
 
-		};
-		project.setOutputMarkupId(true);
-		add(project);
-	}
+        };
+        project.setOutputMarkupId(true);
+        add(project);
+    }
 
-	private Component buildAddNewLink(IModel<Project> model) {
-		Project project = model.getObject();
-		if (project.cdoState() == CDOState.NEW || project.cdoState() == CDOState.TRANSIENT) {
-			// it's a new project, we can't add anything yet
-			Button link = new Button("addNew");
-			link.setEnabled(false);
-			return link;
-		}
-		PageParameters parameters = WicketUtil.buildPageParametersFor(project);
-		parameters.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
-		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, parameters);
-	}
+    private Component buildAddNewLink(IModel<Project> model) {
+        Project project = model.getObject();
+        if (project.cdoState() == CDOState.NEW || project.cdoState() == CDOState.TRANSIENT) {
+            // it's a new project, we can't add anything yet
+            Button link = new Button("addNew");
+            link.setEnabled(false);
+            return link;
+        }
+        PageParameters parameters = WicketUtil.buildPageParametersFor(project);
+        parameters.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT_VERSION.getName());
+        return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, parameters);
+    }
 
-	private IModel<String> createSummaryModel(final IModel<ProjectVersion> modelObject) {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 1L;
+    private IModel<String> createSummaryModel(final IModel<ProjectVersion> modelObject) {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1L;
 
-			public String getObject() {
-				int size = modelObject.getObject().getChildren().size();
-				String message = "Translations available in {0} languages";
-				return MessageFormat.format(message, size);
-			};
-		};
+            public String getObject() {
+                int size = modelObject.getObject().getChildren().size();
+                String message = "Translations available in {0} languages";
+                return MessageFormat.format(message, size);
+            };
+        };
 
-	}
+    }
 
-	protected Component createDeleteAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+    protected Component createDeleteAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
 
-		Button button = new IndicatingAjaxButton("delete") {
+        Button button = new IndicatingAjaxButton("delete") {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+            @Override
+            protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
 
-				ProjectVersion version = model.getObject();
-				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-				version = transaction.getObject(version);
+                ProjectVersion version = model.getObject();
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                version = transaction.getObject(version);
 
-				try {
-					File directory = new File(version.absolutPath().toFileString());
-					FileUtil.delete(directory);
-					Project project = version.getParent();
-					project.getChildren().remove(version);
-					transaction.commit();
-					setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(project));
-				} catch (CommitException e) {
-					logger.error("Commit failed",e);
-					getSession().error(e.getMessage());
-				} finally {
-					transaction.close();
-				}
-			}
+                try {
+                    File directory = new File(version.absolutPath().toFileString());
+                    FileUtil.delete(directory);
+                    Project project = version.getParent();
+                    project.getChildren().remove(version);
+                    transaction.commit();
+                    setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(project));
+                } catch (CommitException e) {
+                    logger.error("Commit failed",e);
+                    getSession().error(e.getMessage());
+                } finally {
+                    transaction.close();
+                }
+            }
 
-		};
-		// button.add(new AttributeModifier("onclick",
-		// "return confirm('Are you sure you want to delete this version?');"));
-		button.setDefaultFormProcessing(false);
-		return button;
-	}
+        };
+        // button.add(new AttributeModifier("onclick",
+        // "return confirm('Are you sure you want to delete this version?');"));
+        button.setDefaultFormProcessing(false);
+        return button;
+    }
 
 
-	protected Component createUpdateAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
-		RunnableWithProgress runnable = new RunnableWithProgress() {
+    protected Component createUpdateAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+        RunnableWithProgress runnable = new RunnableWithProgress() {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public IStatus run(IProgressMonitor monitor) {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-				try {
-					version = transaction.getObject(version);
-					SubMonitor subMonitor = SubMonitor.convert(monitor, "Updating", 100);
-					Collection<PropertyFileDiff> updates = provider.update(version, subMonitor.newChild(50));
-					subMonitor.setWorkRemaining(updates.size() * 2);
-					subMonitor.subTask("Processing updates");
-					for (PropertyFileDiff updatedFile : updates) {
-						version.partialScan(PreferencesUtil.getScanConfigForProject(getModelObject()), updatedFile);
-						subMonitor.worked(1);
-					}
-					subMonitor.setTaskName("Database Sync");
-					transaction.commit(subMonitor.newChild(updates.size()));
-				} catch (TeamProviderException e) {
-					logger.error("Update failed",e);
-					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Update failed",e);
-				} catch (CommitException e) {
-					logger.error("Failed to commit the transaction",e);
-					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
-				} finally {
-					transaction.close();
-				}
-				return Status.OK_STATUS;
+            @Override
+            public IStatus run(IProgressMonitor monitor) {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                try {
+                    version = transaction.getObject(version);
+                    SubMonitor subMonitor = SubMonitor.convert(monitor, "Updating", 100);
+                    Collection<PropertyFileDiff> updates = provider.update(version, subMonitor.newChild(50));
+                    subMonitor.setWorkRemaining(updates.size() * 2);
+                    subMonitor.subTask("Processing updates");
+                    for (PropertyFileDiff updatedFile : updates) {
+                        version.partialScan(PreferencesUtil.getScanConfigForProject(getModelObject()), updatedFile);
+                        subMonitor.worked(1);
+                    }
+                    subMonitor.setTaskName("Database Sync");
+                    transaction.commit(subMonitor.newChild(updates.size()));
+                } catch (TeamProviderException e) {
+                    logger.error("Update failed",e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Update failed",e);
+                } catch (CommitException e) {
+                    logger.error("Failed to commit the transaction",e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
+                } finally {
+                    transaction.close();
+                }
+                return Status.OK_STATUS;
 
-			}
-		};
-		return new ProgressShowingAjaxButton("update", progressPanel, runnable) {
+            }
+        };
+        return new ProgressShowingAjaxButton("update", progressPanel, runnable) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			public boolean isVisible() {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-				if (provider == null)
-					return false;
-				File file = new File(version.absoluteFilePath().toFileString());
-				return (file.isDirectory());
-			};
-		};
+            public boolean isVisible() {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                if (provider == null)
+                    return false;
+                File file = new File(version.absoluteFilePath().toFileString());
+                return (file.isDirectory());
+            };
+        };
 
-	}
+    }
 
 
     protected Component createCommitAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model)
@@ -262,113 +262,113 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
     }
 
-	private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
-		RunnableWithProgress runnable = new RunnableWithProgress() {
+    private Component createCheckoutAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+        RunnableWithProgress runnable = new RunnableWithProgress() {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public IStatus run(IProgressMonitor monitor) {
-				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-				try {
-					ProjectVersion version = model.getObject();
-					version = transaction.getObject(version);
-					TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-					provider.checkout(version, monitor);
-				} catch (TeamProviderException e) {
-					logger.error("Checkout failed",e);
-					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Checkout failed",e);
-				}
-				finally{
-					try {
-						transaction.commit();
-					} catch (CommitException e) {
-						logger.error("Failed to commit the transaction",e);
-						return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
-					}
-					transaction.close();
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		return new ProgressShowingAjaxButton("checkout", progressPanel, runnable) {
+            @Override
+            public IStatus run(IProgressMonitor monitor) {
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                try {
+                    ProjectVersion version = model.getObject();
+                    version = transaction.getObject(version);
+                    TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                    provider.checkout(version, monitor);
+                } catch (TeamProviderException e) {
+                    logger.error("Checkout failed",e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Checkout failed",e);
+                }
+                finally{
+                    try {
+                        transaction.commit();
+                    } catch (CommitException e) {
+                        logger.error("Failed to commit the transaction",e);
+                        return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
+                    }
+                    transaction.close();
+                }
+                return Status.OK_STATUS;
+            }
+        };
+        return new ProgressShowingAjaxButton("checkout", progressPanel, runnable) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			public boolean isVisible() {
-				ProjectVersion version = model.getObject();
-				TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-				if (provider == null)
-					return false;
-				File file = new File(version.absoluteFilePath().toFileString());
-				return (!file.isDirectory());
-			};
-		};
+            public boolean isVisible() {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                if (provider == null)
+                    return false;
+                File file = new File(version.absoluteFilePath().toFileString());
+                return (!file.isDirectory());
+            };
+        };
 
-	}
+    }
 
-	private Component createRescanAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
-		RunnableWithProgress runnable = new RunnableWithProgress() {
+    private Component createRescanAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+        RunnableWithProgress runnable = new RunnableWithProgress() {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public IStatus run(IProgressMonitor monitor) {
-				ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
-				ProjectVersion version = model.getObject();
-				SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
-				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-				version = transaction.getObject(version);
-				version.fullScan(scanConfiguration, subMonitor.newChild(50));
-				subMonitor.setTaskName("Database Sync");
-				try {
-					transaction.commit(subMonitor.newChild(50));
-				} catch (CommitException e) {
-					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
-				} finally {
-					transaction.close();
-				}
-				monitor.done();
-				return Status.OK_STATUS;
-			}
-		};
-		return new ProgressShowingAjaxButton("rescan", progressPanel, runnable) {
+            @Override
+            public IStatus run(IProgressMonitor monitor) {
+                ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
+                ProjectVersion version = model.getObject();
+                SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                version = transaction.getObject(version);
+                version.fullScan(scanConfiguration, subMonitor.newChild(50));
+                subMonitor.setTaskName("Database Sync");
+                try {
+                    transaction.commit(subMonitor.newChild(50));
+                } catch (CommitException e) {
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
+                } finally {
+                    transaction.close();
+                }
+                monitor.done();
+                return Status.OK_STATUS;
+            }
+        };
+        return new ProgressShowingAjaxButton("rescan", progressPanel, runnable) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			public boolean isVisible() {
-				// ProjectVersion version = model.getObject();
-				// File file = new
-				// File(version.absoluteFilePath().toFileString());
-				// return (file.isDirectory());
-				return true;
-			};
-		};
+            public boolean isVisible() {
+                // ProjectVersion version = model.getObject();
+                // File file = new
+                // File(version.absoluteFilePath().toFileString());
+                // return (file.isDirectory());
+                return true;
+            };
+        };
 
-	}
+    }
 
-	public static class VersionsConfig extends AbstractConfigSection<Project> {
+    public static class VersionsConfig extends AbstractConfigSection<Project> {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
-			return new ProjectVersionsConfigSection(id, input, prefs);
-		}
+        @Override
+        public WebMarkupContainer doCreateContents(String id, IModel<Project> input, Preferences prefs) {
+            return new ProjectVersionsConfigSection(id, input, prefs);
+        }
 
-		@Override
-		public void commit(IModel<Project> input, Preferences config) {
-			// TODO Auto-generated method stub
+        @Override
+        public void commit(IModel<Project> input, Preferences config) {
+            // TODO Auto-generated method stub
 
-		}
+        }
 
 
-		@Override
-		public String getRequiredPermission() {
-			String projectName = null;
-			if(getDomainObject()!=null)
-				projectName = getDomainObject().getName();
-			return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
-		}
-	}
+        @Override
+        public String getRequiredPermission() {
+            String projectName = null;
+            if(getDomainObject()!=null)
+                projectName = getDomainObject().getName();
+            return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
+        }
+    }
 }

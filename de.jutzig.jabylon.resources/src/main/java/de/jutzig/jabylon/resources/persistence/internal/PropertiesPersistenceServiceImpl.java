@@ -64,432 +64,432 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 @Component
 @Service(PropertyPersistenceService.class)
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
-	@Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, referenceInterface = PropertiesListener.class, bind="addPropertiesListener",unbind="removePropertiesListener")
-	private List<PropertiesListener> listeners;
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, referenceInterface = PropertiesListener.class, bind="addPropertiesListener",unbind="removePropertiesListener")
+    private List<PropertiesListener> listeners;
 
-	private BlockingQueue<PropertyTuple> queue;
-	
-	private static Logger logger = LoggerFactory.getLogger(PropertiesPersistenceServiceImpl.class);
+    private BlockingQueue<PropertyTuple> queue;
 
-	@Reference
-	private RepositoryConnector repositoryConnector;
-	
-	private Workspace workspace;
+    private static Logger logger = LoggerFactory.getLogger(PropertiesPersistenceServiceImpl.class);
 
-	private Thread runner;
-	
-	private LoadingCache<CDOID, PropertyFile> cache;
+    @Reference
+    private RepositoryConnector repositoryConnector;
 
-	private boolean active;
-	
-	
+    private Workspace workspace;
 
-	public PropertiesPersistenceServiceImpl() {
-		listeners = new CopyOnWriteArrayList<PropertiesListener>();
+    private Thread runner;
 
-	}
-	
-	@Activate
-	public void activate()
-	{
-		
-		queue = new ArrayBlockingQueue<PropertyTuple>(50);
-		runner = new Thread(this, "Properties Persistence Service");
-		runner.setDaemon(true);
-		runner.start();
-		active = true;
-	}
-	
-	@Deactivate
-	public void deactivate()
-	{
-		shutdownQueue();
-		listeners.clear();	
-		queue = null;
-		runner.interrupt();
-		runner = null;
-	}
+    private LoadingCache<CDOID, PropertyFile> cache;
 
-	
-	private void shutdownQueue() {
-		active = false;
-		int size = queue.size();
-		logger.info("Shutting down. Queuesize is {}",size);
-		while(queue.size()>0) {
-			logger.info("Shutting down. Remaining Queuesize is {}",queue.size());
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				logger.info("Interrupted while draining queue. Exiting");
-			}
-		}
-		
-	}
+    private boolean active;
 
-	public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = repositoryConnector;
-		CDOSession session = repositoryConnector.createSession();
-		session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
 
-		CDOView view = session.openView();
-		view.options().addChangeSubscriptionPolicy(CDOAdapterPolicy.ALL);
-		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
-		workspace = (Workspace) resource.getContents().get(0);
-		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(20000).weigher(new PropertySizeWeigher()).recordStats().build(new PropertyFileCacheLoader(workspace.cdoView()));
-		workspace.eAdapters().add(new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
 
-				super.notifyChanged(notification);
-				if (notification.getNotifier() instanceof ProjectVersion) {
-					ProjectVersion version = (ProjectVersion) notification.getNotifier();
-					if (notification.getEventType() == Notification.ADD) {
-						Object object = (Object) notification.getNewValue();
+    public PropertiesPersistenceServiceImpl() {
+        listeners = new CopyOnWriteArrayList<PropertiesListener>();
 
-						if (object instanceof ProjectLocale) {
-							ProjectLocale locale = (ProjectLocale) object;
-							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
-							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesAdded(propertyFileDescriptor, false);
+    }
 
-							}
-						}
+    @Activate
+    public void activate()
+    {
 
-					}
+        queue = new ArrayBlockingQueue<PropertyTuple>(50);
+        runner = new Thread(this, "Properties Persistence Service");
+        runner.setDaemon(true);
+        runner.start();
+        active = true;
+    }
 
-					else if (notification.getEventType() == Notification.REMOVE) {
-						Object object = (Object) notification.getOldValue();
+    @Deactivate
+    public void deactivate()
+    {
+        shutdownQueue();
+        listeners.clear();
+        queue = null;
+        runner.interrupt();
+        runner = null;
+    }
 
-						if (object instanceof ProjectLocale) {
-							ProjectLocale locale = (ProjectLocale) object;
-							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
-							// FIXME: delete obsolete resource folders and
-							// derived locale descriptors
-							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesDeleted(propertyFileDescriptor, false);
 
-							}
-						}
+    private void shutdownQueue() {
+        active = false;
+        int size = queue.size();
+        logger.info("Shutting down. Queuesize is {}",size);
+        while(queue.size()>0) {
+            logger.info("Shutting down. Remaining Queuesize is {}",queue.size());
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                logger.info("Interrupted while draining queue. Exiting");
+            }
+        }
 
-					}
+    }
 
-					else if (notification.getEventType() == Notification.SET) {
+    public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
+        this.repositoryConnector = repositoryConnector;
+        CDOSession session = repositoryConnector.createSession();
+        session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
 
-						Object object = (Object) notification.getNewValue();
+        CDOView view = session.openView();
+        view.options().addChangeSubscriptionPolicy(CDOAdapterPolicy.ALL);
+        CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
+        workspace = (Workspace) resource.getContents().get(0);
+        cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(20000).weigher(new PropertySizeWeigher()).recordStats().build(new PropertyFileCacheLoader(workspace.cdoView()));
+        workspace.eAdapters().add(new EContentAdapter() {
+            @Override
+            public void notifyChanged(Notification notification) {
 
-						if (object instanceof ProjectLocale) {
-							ProjectLocale locale = (ProjectLocale) object;
-							EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
-							for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-								firePropertiesAdded(propertyFileDescriptor, false);
+                super.notifyChanged(notification);
+                if (notification.getNotifier() instanceof ProjectVersion) {
+                    ProjectVersion version = (ProjectVersion) notification.getNotifier();
+                    if (notification.getEventType() == Notification.ADD) {
+                        Object object = (Object) notification.getNewValue();
 
-							}
-						}
+                        if (object instanceof ProjectLocale) {
+                            ProjectLocale locale = (ProjectLocale) object;
+                            EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+                            for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+                                firePropertiesAdded(propertyFileDescriptor, false);
 
-					}
+                            }
+                        }
 
-				}
-				if (notification.getNotifier() instanceof ProjectLocale) {
-					// TODO: delete isn't properly working yet
-					ProjectLocale locale = (ProjectLocale) notification.getNotifier();
-					if (notification.getEventType() == Notification.ADD
-							&& PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
+                    }
 
-						Object object = notification.getNewValue();
-						if (object instanceof PropertyFileDescriptor) {
-							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-							firePropertiesAdded(descriptor, false);
-						}
-					}
+                    else if (notification.getEventType() == Notification.REMOVE) {
+                        Object object = (Object) notification.getOldValue();
 
-					if (notification.getEventType() == Notification.REMOVE
-							&& PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
+                        if (object instanceof ProjectLocale) {
+                            ProjectLocale locale = (ProjectLocale) object;
+                            EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+                            // FIXME: delete obsolete resource folders and
+                            // derived locale descriptors
+                            for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+                                firePropertiesDeleted(propertyFileDescriptor, false);
 
-						Object object = notification.getOldValue();
-						if (object instanceof PropertyFileDescriptor) {
-							PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-							firePropertiesDeleted(descriptor, false);
-						}
+                            }
+                        }
 
-					}
-				}
+                    }
 
-				if (notification.getNotifier() instanceof PropertyFileDescriptor) {
-					PropertyFileDescriptor descriptor = (PropertyFileDescriptor) notification.getNotifier();
-					if (notification.getEventType() == CDONotification.DETACH_OBJECT) {
+                    else if (notification.getEventType() == Notification.SET) {
 
-						firePropertiesDeleted(descriptor, false);
+                        Object object = (Object) notification.getNewValue();
 
-					}
+                        if (object instanceof ProjectLocale) {
+                            ProjectLocale locale = (ProjectLocale) object;
+                            EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
+                            for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+                                firePropertiesAdded(propertyFileDescriptor, false);
 
-				}
+                            }
+                        }
 
-			}
+                    }
 
-			@Override
-			protected void removeAdapter(Notifier notifier) {
-				if (notifier instanceof CDOObject) {
-					CDOObject o = (CDOObject) notifier;
-					if (!o.cdoInvalid())
-						super.removeAdapter(notifier);
+                }
+                if (notification.getNotifier() instanceof ProjectLocale) {
+                    // TODO: delete isn't properly working yet
+                    ProjectLocale locale = (ProjectLocale) notification.getNotifier();
+                    if (notification.getEventType() == Notification.ADD
+                            && PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
 
-				}
-			}
+                        Object object = notification.getNewValue();
+                        if (object instanceof PropertyFileDescriptor) {
+                            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+                            firePropertiesAdded(descriptor, false);
+                        }
+                    }
 
-			protected void handleContainment(Notification notification) {
-				switch (notification.getEventType()) {
-				// prevent ClassCastExceptions if old value is not a notified,
-				// but a CDOID
-				case Notification.REMOVE: {
-					Object oldValue = notification.getOldValue();
-					if (oldValue instanceof Notifier) {
-						Notifier notifier = (Notifier) oldValue;
-						removeAdapter(notifier);
-					} else if (oldValue instanceof CDOID) {
-						CDOID id = (CDOID) oldValue;
-						removeAdapter(workspace.cdoView().getObject(id));
+                    if (notification.getEventType() == Notification.REMOVE
+                            && PropertiesPackage.Literals.PROJECT_LOCALE__DESCRIPTORS == notification.getFeature()) {
 
-					}
-					break;
-				}
-				case Notification.REMOVE_MANY: {
-					Collection<?> oldValues = (Collection<?>) notification.getOldValue();
-					for (Object oldContentValue : oldValues) {
-						if (oldContentValue instanceof Notifier) {
-							Notifier notifier = (Notifier) oldContentValue;
-							removeAdapter(notifier);
-						} else if (oldContentValue instanceof CDOID) {
-							CDOID id = (CDOID) oldContentValue;
-							try {
-								removeAdapter(workspace.cdoView().getObject(id));
-							} catch (ObjectNotFoundException e) {
-								logger.warn("REMOVE_MANY object ID not found: "+notification,e);
-							}
-						}
-					}
-					break;
-				}
+                        Object object = notification.getOldValue();
+                        if (object instanceof PropertyFileDescriptor) {
+                            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+                            firePropertiesDeleted(descriptor, false);
+                        }
 
-				default:
-					super.handleContainment(notification);
-				}
-			}
-		});
-	}
+                    }
+                }
 
-	public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
-		this.repositoryConnector = null;
-		CDOView view = workspace.cdoView();
-		org.eclipse.emf.cdo.session.CDOSession session = view.getSession();
-		LifecycleUtil.deactivate(view);
-		LifecycleUtil.deactivate(session);
+                if (notification.getNotifier() instanceof PropertyFileDescriptor) {
+                    PropertyFileDescriptor descriptor = (PropertyFileDescriptor) notification.getNotifier();
+                    if (notification.getEventType() == CDONotification.DETACH_OBJECT) {
 
-		session = null;
-	}
+                        firePropertiesDeleted(descriptor, false);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
-	 * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
-	 * de.jutzig.jabylon.properties.PropertyFile)
-	 */
-	@Override
-	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file) {
-		saveProperties(descriptor, file, false);
+                    }
 
-	}
+                }
 
-	@Override
-	public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
-		if(!active)
-		{
-			logger.error("Received save request while not active");
-			throw new IllegalStateException("The PropertiesPersistanceService is deactivated");
-		}
-		try {
-			PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
-			PropertyFile writeCopy = createCopy(file);
-			// create a write copy to be independent of future writes
-			queue.put(new PropertyTuple(adaptedDescriptor, writeCopy, autoTranslate));
-		} catch (InterruptedException e) {
-			throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
-		}
+            }
 
-	}
+            @Override
+            protected void removeAdapter(Notifier notifier) {
+                if (notifier instanceof CDOObject) {
+                    CDOObject o = (CDOObject) notifier;
+                    if (!o.cdoInvalid())
+                        super.removeAdapter(notifier);
 
-	private PropertyFile createCopy(PropertyFile file) {
-		return EcoreUtil.copy(file);
-	}
+                }
+            }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
-	 * addPropertiesListener
-	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
-	 */
-	@Override
-	public void addPropertiesListener(PropertiesListener listener) {
-		listeners.add(listener);
+            protected void handleContainment(Notification notification) {
+                switch (notification.getEventType()) {
+                // prevent ClassCastExceptions if old value is not a notified,
+                // but a CDOID
+                case Notification.REMOVE: {
+                    Object oldValue = notification.getOldValue();
+                    if (oldValue instanceof Notifier) {
+                        Notifier notifier = (Notifier) oldValue;
+                        removeAdapter(notifier);
+                    } else if (oldValue instanceof CDOID) {
+                        CDOID id = (CDOID) oldValue;
+                        removeAdapter(workspace.cdoView().getObject(id));
 
-	}
+                    }
+                    break;
+                }
+                case Notification.REMOVE_MANY: {
+                    Collection<?> oldValues = (Collection<?>) notification.getOldValue();
+                    for (Object oldContentValue : oldValues) {
+                        if (oldContentValue instanceof Notifier) {
+                            Notifier notifier = (Notifier) oldContentValue;
+                            removeAdapter(notifier);
+                        } else if (oldContentValue instanceof CDOID) {
+                            CDOID id = (CDOID) oldContentValue;
+                            try {
+                                removeAdapter(workspace.cdoView().getObject(id));
+                            } catch (ObjectNotFoundException e) {
+                                logger.warn("REMOVE_MANY object ID not found: "+notification,e);
+                            }
+                        }
+                    }
+                    break;
+                }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
-	 * removePropertiesListener
-	 * (de.jutzig.jabylon.resources.changes.PropertiesListener)
-	 */
-	@Override
-	public void removePropertiesListener(PropertiesListener listener) {
-		listeners.remove(listener);
-	}
+                default:
+                    super.handleContainment(notification);
+                }
+            }
+        });
+    }
 
-	@Override
-	public void run() {
-		CDOTransaction transaction = null;
-		try {
-			while (true) {
-				PropertyTuple tuple = queue.take();
-				try {
-					if (transaction == null)
-						transaction = workspace.cdoView().getSession().openTransaction();
+    public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
+        this.repositoryConnector = null;
+        CDOView view = workspace.cdoView();
+        org.eclipse.emf.cdo.session.CDOSession session = view.getSession();
+        LifecycleUtil.deactivate(view);
+        LifecycleUtil.deactivate(session);
 
-					PropertyFileDescriptor descriptor = transaction.getObject(tuple.getDescriptor());
-					PropertyFile file = tuple.getFile();
-					URI path = descriptor.absolutPath();
-					Map<String, Object> options = createOptions(descriptor);
-					if (new File(path.toFileString()).exists()) {
-						PropertyFile original = descriptor.loadProperties();
-						PropertyDifferentiator differentiator = new PropertyDifferentiator(original);
-						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
-						resource.getContents().add(file);
-						resource.save(options);
-						descriptor.setKeys(resource.getSavedProperties());
-						descriptor.updatePercentComplete();
-						transaction.commit();
-						List<Notification> diff = differentiator.diff(file);
-						firePropertiesChanges(descriptor, diff, tuple.isAutoSync());
-					} else {
-						PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
-						resource.getContents().add(file);
-						resource.save(options);
-						descriptor.setKeys(resource.getSavedProperties());
-						descriptor.updatePercentComplete();
-						transaction.commit();
-						// FIXME: create resource folders and handle derived
-						// locales
-						firePropertiesAdded(descriptor, tuple.isAutoSync());
-					}
-				} catch (IOException e) {
-					logger.error("Exception while processing "+tuple,e);
-				} catch (CommitException e) {
-					logger.error("failed to commit while processing "+tuple,e);
-					transaction.close();
-					transaction = null;
-				}
-			}
-		} catch (InterruptedException e) {
-			logger.warn("Received Interrupt. Shutting down...");
-			// let thread end...
-		} finally {
-			if(queue!=null)
-				queue.clear();
-			if (transaction != null)
-				transaction.close();
-		}
+        session = null;
+    }
 
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
+     * saveProperties(de.jutzig.jabylon.properties.PropertyFileDescriptor,
+     * de.jutzig.jabylon.properties.PropertyFile)
+     */
+    @Override
+    public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file) {
+        saveProperties(descriptor, file, false);
 
-	private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
-		Map<String, Object> options = new HashMap<String, Object>();
-		if (descriptor.getProjectLocale() != null && descriptor.getProjectLocale().getParent() != null
-				&& descriptor.getProjectLocale().getParent().getParent() != null) {
-			ProjectVersion version = descriptor.getProjectLocale().getParent();
-			Project project = version.getParent();
-			PropertyType propertyType = project.getPropertyType();
-			options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);
-		}
-		return options;
-	}
+    }
 
-	private void firePropertiesAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
-		for (PropertiesListener listener : listeners) {
-			listener.propertyFileAdded(descriptor, autoSync);
-		}
+    @Override
+    public void saveProperties(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoTranslate) {
+        if(!active)
+        {
+            logger.error("Received save request while not active");
+            throw new IllegalStateException("The PropertiesPersistanceService is deactivated");
+        }
+        try {
+            PropertyFileDescriptor adaptedDescriptor = workspace.cdoView().getObject(descriptor);
+            PropertyFile writeCopy = createCopy(file);
+            // create a write copy to be independent of future writes
+            queue.put(new PropertyTuple(adaptedDescriptor, writeCopy, autoTranslate));
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Interrupted while trying to save " + descriptor.fullPath(), e);
+        }
 
-	}
+    }
 
-	private void firePropertiesDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
-		Iterator<PropertiesListener> it = listeners.iterator();
-		while (it.hasNext()) {
-			PropertiesListener listener = it.next();
-			listener.propertyFileDeleted(descriptor, autoSync);
-		}
+    private PropertyFile createCopy(PropertyFile file) {
+        return EcoreUtil.copy(file);
+    }
 
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
+     * addPropertiesListener
+     * (de.jutzig.jabylon.resources.changes.PropertiesListener)
+     */
+    @Override
+    public void addPropertiesListener(PropertiesListener listener) {
+        listeners.add(listener);
 
-	private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff, boolean autoSync) {
-		Iterator<PropertiesListener> it = listeners.iterator();
-		while (it.hasNext()) {
-			PropertiesListener listener = it.next();
+    }
 
-			listener.propertyFileModified(descriptor, diff, autoSync);
-		}
+    /*
+     * (non-Javadoc)
+     *
+     * @see de.jutzig.jabylon.resources.persistence.PropertyPersistenceService#
+     * removePropertiesListener
+     * (de.jutzig.jabylon.resources.changes.PropertiesListener)
+     */
+    @Override
+    public void removePropertiesListener(PropertiesListener listener) {
+        listeners.remove(listener);
+    }
 
-	}
+    @Override
+    public void run() {
+        CDOTransaction transaction = null;
+        try {
+            while (true) {
+                PropertyTuple tuple = queue.take();
+                try {
+                    if (transaction == null)
+                        transaction = workspace.cdoView().getSession().openTransaction();
 
-	@Override
-	public PropertyFile loadProperties(PropertyFileDescriptor descriptor) throws ExecutionException {
-		
-		return loadProperties(descriptor.cdoID());
-	}
-	
-	@Override
-	public PropertyFile loadProperties(CDOID descriptor) throws ExecutionException {
-		
-		return cache.get(descriptor);
-	}
+                    PropertyFileDescriptor descriptor = transaction.getObject(tuple.getDescriptor());
+                    PropertyFile file = tuple.getFile();
+                    URI path = descriptor.absolutPath();
+                    Map<String, Object> options = createOptions(descriptor);
+                    if (new File(path.toFileString()).exists()) {
+                        PropertyFile original = descriptor.loadProperties();
+                        PropertyDifferentiator differentiator = new PropertyDifferentiator(original);
+                        PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
+                        resource.getContents().add(file);
+                        resource.save(options);
+                        descriptor.setKeys(resource.getSavedProperties());
+                        descriptor.updatePercentComplete();
+                        transaction.commit();
+                        List<Notification> diff = differentiator.diff(file);
+                        firePropertiesChanges(descriptor, diff, tuple.isAutoSync());
+                    } else {
+                        PropertiesResourceImpl resource = new PropertiesResourceImpl(path);
+                        resource.getContents().add(file);
+                        resource.save(options);
+                        descriptor.setKeys(resource.getSavedProperties());
+                        descriptor.updatePercentComplete();
+                        transaction.commit();
+                        // FIXME: create resource folders and handle derived
+                        // locales
+                        firePropertiesAdded(descriptor, tuple.isAutoSync());
+                    }
+                } catch (IOException e) {
+                    logger.error("Exception while processing "+tuple,e);
+                } catch (CommitException e) {
+                    logger.error("failed to commit while processing "+tuple,e);
+                    transaction.close();
+                    transaction = null;
+                }
+            }
+        } catch (InterruptedException e) {
+            logger.warn("Received Interrupt. Shutting down...");
+            // let thread end...
+        } finally {
+            if(queue!=null)
+                queue.clear();
+            if (transaction != null)
+                transaction.close();
+        }
+
+    }
+
+    private Map<String, Object> createOptions(PropertyFileDescriptor descriptor) {
+        Map<String, Object> options = new HashMap<String, Object>();
+        if (descriptor.getProjectLocale() != null && descriptor.getProjectLocale().getParent() != null
+                && descriptor.getProjectLocale().getParent().getParent() != null) {
+            ProjectVersion version = descriptor.getProjectLocale().getParent();
+            Project project = version.getParent();
+            PropertyType propertyType = project.getPropertyType();
+            options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);
+        }
+        return options;
+    }
+
+    private void firePropertiesAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
+        for (PropertiesListener listener : listeners) {
+            listener.propertyFileAdded(descriptor, autoSync);
+        }
+
+    }
+
+    private void firePropertiesDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
+        Iterator<PropertiesListener> it = listeners.iterator();
+        while (it.hasNext()) {
+            PropertiesListener listener = it.next();
+            listener.propertyFileDeleted(descriptor, autoSync);
+        }
+
+    }
+
+    private void firePropertiesChanges(PropertyFileDescriptor descriptor, List<Notification> diff, boolean autoSync) {
+        Iterator<PropertiesListener> it = listeners.iterator();
+        while (it.hasNext()) {
+            PropertiesListener listener = it.next();
+
+            listener.propertyFileModified(descriptor, diff, autoSync);
+        }
+
+    }
+
+    @Override
+    public PropertyFile loadProperties(PropertyFileDescriptor descriptor) throws ExecutionException {
+
+        return loadProperties(descriptor.cdoID());
+    }
+
+    @Override
+    public PropertyFile loadProperties(CDOID descriptor) throws ExecutionException {
+
+        return cache.get(descriptor);
+    }
 
 }
 
 class PropertyTuple {
-	private PropertyFileDescriptor descriptor;
-	private PropertyFile file;
-	private boolean autoSync;
+    private PropertyFileDescriptor descriptor;
+    private PropertyFile file;
+    private boolean autoSync;
 
-	public PropertyTuple(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoSync) {
-		super();
-		this.descriptor = descriptor;
-		this.file = file;
-		this.autoSync = autoSync;
-	}
+    public PropertyTuple(PropertyFileDescriptor descriptor, PropertyFile file, boolean autoSync) {
+        super();
+        this.descriptor = descriptor;
+        this.file = file;
+        this.autoSync = autoSync;
+    }
 
-	public PropertyFileDescriptor getDescriptor() {
-		return descriptor;
-	}
+    public PropertyFileDescriptor getDescriptor() {
+        return descriptor;
+    }
 
-	public PropertyFile getFile() {
-		return file;
-	}
+    public PropertyFile getFile() {
+        return file;
+    }
 
-	public boolean isAutoSync() {
-		return autoSync;
-	}
+    public boolean isAutoSync() {
+        return autoSync;
+    }
 
-	@Override
-	public String toString() {
-		return "PropertyTuple [descriptor=" + descriptor + ", file=" + file + ", autoSync=" + autoSync + "]";
-	}
-	
-	
+    @Override
+    public String toString() {
+        return "PropertyTuple [descriptor=" + descriptor + ", file=" + file + ", autoSync=" + autoSync + "]";
+    }
+
+
 
 }

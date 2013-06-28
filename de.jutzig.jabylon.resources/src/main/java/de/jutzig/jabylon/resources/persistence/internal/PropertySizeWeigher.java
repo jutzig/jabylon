@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.resources.persistence.internal;
 
@@ -15,9 +15,9 @@ import de.jutzig.jabylon.properties.PropertyFile;
  */
 public class PropertySizeWeigher implements Weigher<CDOID, PropertyFile> {
 
-	@Override
-	public int weigh(CDOID key, PropertyFile value) {
-		return value.getProperties().size();
-	}
+    @Override
+    public int weigh(CDOID key, PropertyFile value) {
+        return value.getProperties().size();
+    }
 
 }

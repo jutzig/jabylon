@@ -25,40 +25,40 @@ import org.eclipse.emf.common.util.URI;
  * @generated
  */
 public interface Workspace extends Resolvable<Workspace, Project> {
-	/**
-	 * Returns the value of the '<em><b>Root</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Root</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Root</em>' attribute.
-	 * @see #setRoot(URI)
-	 * @see de.jutzig.jabylon.properties.PropertiesPackage#getWorkspace_Root()
-	 * @model dataType="de.jutzig.jabylon.properties.URI"
-	 * @generated
-	 */
-	URI getRoot();
+    /**
+     * Returns the value of the '<em><b>Root</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Root</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Root</em>' attribute.
+     * @see #setRoot(URI)
+     * @see de.jutzig.jabylon.properties.PropertiesPackage#getWorkspace_Root()
+     * @model dataType="de.jutzig.jabylon.properties.URI"
+     * @generated
+     */
+    URI getRoot();
 
-	/**
-	 * Sets the value of the '{@link de.jutzig.jabylon.properties.Workspace#getRoot <em>Root</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Root</em>' attribute.
-	 * @see #getRoot()
-	 * @generated
-	 */
-	void setRoot(URI value);
+    /**
+     * Sets the value of the '{@link de.jutzig.jabylon.properties.Workspace#getRoot <em>Root</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Root</em>' attribute.
+     * @see #getRoot()
+     * @generated
+     */
+    void setRoot(URI value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	ProjectVersion getTerminology();
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation"
+     * @generated
+     */
+    ProjectVersion getTerminology();
 
-	Project getProject(String name);
+    Project getProject(String name);
 
 } // Workspace

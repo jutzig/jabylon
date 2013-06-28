@@ -6,6 +6,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 public interface IEObjectModel<T extends CDOObject> extends IModel<T>{
 
-	public abstract <X> IModel<X> forProperty(EStructuralFeature feature);
+    public abstract <X> IModel<X> forProperty(EStructuralFeature feature);
 
 }

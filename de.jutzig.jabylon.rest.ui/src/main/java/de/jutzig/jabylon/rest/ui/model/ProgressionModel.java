@@ -13,41 +13,41 @@ import de.jutzig.jabylon.rest.ui.Activator;
 
 public class ProgressionModel implements IModel<Progression> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     protected Supplier<Progression> modelSupplier;
-    
-	
+
+
     public ProgressionModel(long id)
     {
         this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
     }
-    
-	@Override
-	public void detach() {
-		//nothing to do
-		
-	}
-	
-	public void setTaskID(long id)
-	{
-		this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
-	}
 
-	@Override
-	public Progression getObject() {
-		return modelSupplier.get();
-	}
+    @Override
+    public void detach() {
+        //nothing to do
 
-	@Override
-	public void setObject(Progression object) {
-		throw new UnsupportedOperationException("Readonly model"); //$NON-NLS-1$
-		
-	}
+    }
+
+    public void setTaskID(long id)
+    {
+        this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
+    }
+
+    @Override
+    public Progression getObject() {
+        return modelSupplier.get();
+    }
+
+    @Override
+    public void setObject(Progression object) {
+        throw new UnsupportedOperationException("Readonly model"); //$NON-NLS-1$
+
+    }
     private static final class LookupFunction implements Serializable, Function<Long, Progression>
     {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
+        @Override
         public Progression apply(Long from)
         {
             return Activator.getDefault().getProgressService().progressionOf(from);

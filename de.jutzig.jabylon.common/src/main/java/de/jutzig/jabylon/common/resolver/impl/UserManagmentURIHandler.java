@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.common.resolver.impl;
 
@@ -25,99 +25,99 @@ import de.jutzig.jabylon.users.UserManagement;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
- * 
+ *
  */
 @Component
 @Service
 public class UserManagmentURIHandler implements URIHandler {
 
-	public static final String SECURITY_URI_PREFIX = "security";
-	@Reference
-	private RepositoryConnector repositoryConnector;
-	private CDOSession session;
-	private UserManagement userManagment;
+    public static final String SECURITY_URI_PREFIX = "security";
+    @Reference
+    private RepositoryConnector repositoryConnector;
+    private CDOSession session;
+    private UserManagement userManagment;
 
-	@Activate
-	public void activate() {
-		session = repositoryConnector.createSession();
-		CDOView view = session.openView();
-		CDOResource userResource = view.getResource(ServerConstants.USERS_RESOURCE);
-		userManagment = (UserManagement) userResource.getContents().get(0);
-	}
+    @Activate
+    public void activate() {
+        session = repositoryConnector.createSession();
+        CDOView view = session.openView();
+        CDOResource userResource = view.getResource(ServerConstants.USERS_RESOURCE);
+        userManagment = (UserManagement) userResource.getContents().get(0);
+    }
 
-	@Deactivate
-	public void deactivate() {
-		session.close();
-	}
+    @Deactivate
+    public void deactivate() {
+        session.close();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.jutzig.jabylon.common.resolver.URIResolver#resolve(org.eclipse.emf
-	 * .common.util.URI)
-	 */
-	@Override
-	public Object resolve(URI uri) {
-		if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
-			return null;
-		String firstSegment = uri.segment(0);
-		if (SECURITY_URI_PREFIX.equals(firstSegment)) {
-			List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
-			Object parent = userManagment;
-			for (String segment : list) {
-				parent = getChild(parent, URI.decode(segment));
-				if (parent == null)
-					return null;
-			}
-			return parent;
-		}
-		return null;
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * de.jutzig.jabylon.common.resolver.URIResolver#resolve(org.eclipse.emf
+     * .common.util.URI)
+     */
+    @Override
+    public Object resolve(URI uri) {
+        if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
+            return null;
+        String firstSegment = uri.segment(0);
+        if (SECURITY_URI_PREFIX.equals(firstSegment)) {
+            List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
+            Object parent = userManagment;
+            for (String segment : list) {
+                parent = getChild(parent, URI.decode(segment));
+                if (parent == null)
+                    return null;
+            }
+            return parent;
+        }
+        return null;
 
-	}
+    }
 
-	private Object getChild(Object parent, String segment) {
-		if (parent instanceof Collection) {
-			@SuppressWarnings("rawtypes")
-			Collection list = (Collection) parent;
-			for (Object object : list) {
-				if(matches(object,segment))
-					return object;
-			}
-		}
-		else if (parent instanceof EObject) {
-			EObject eobject = (EObject) parent;
-			EStructuralFeature feature = eobject.eClass().getEStructuralFeature(segment);
-			if(feature!=null)
-				return eobject.eGet(feature);
-		}
-		return null;
-	}
+    private Object getChild(Object parent, String segment) {
+        if (parent instanceof Collection) {
+            @SuppressWarnings("rawtypes")
+            Collection list = (Collection) parent;
+            for (Object object : list) {
+                if(matches(object,segment))
+                    return object;
+            }
+        }
+        else if (parent instanceof EObject) {
+            EObject eobject = (EObject) parent;
+            EStructuralFeature feature = eobject.eClass().getEStructuralFeature(segment);
+            if(feature!=null)
+                return eobject.eGet(feature);
+        }
+        return null;
+    }
 
-	private boolean matches(Object object, String segment) {
-		if (object instanceof EObject) {
-			EObject eobject = (EObject) object;
-			EStructuralFeature feature = eobject.eClass().getEStructuralFeature("name");
-			if(feature==null)
-				return false;
-			return segment.equals(eobject.eGet(feature));			
-		}
-		return false;
-	}
+    private boolean matches(Object object, String segment) {
+        if (object instanceof EObject) {
+            EObject eobject = (EObject) object;
+            EStructuralFeature feature = eobject.eClass().getEStructuralFeature("name");
+            if(feature==null)
+                return false;
+            return segment.equals(eobject.eGet(feature));
+        }
+        return false;
+    }
 
-	public void bindRepositoryConnector(RepositoryConnector connector) {
-		this.repositoryConnector = connector;
-	}
+    public void bindRepositoryConnector(RepositoryConnector connector) {
+        this.repositoryConnector = connector;
+    }
 
-	public void unbindRepositoryConnector(RepositoryConnector connector) {
-		this.repositoryConnector = null;
-	}
+    public void unbindRepositoryConnector(RepositoryConnector connector) {
+        this.repositoryConnector = null;
+    }
 
-	@Override
-	public boolean canHandle(URI uri) {
-		if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
-			return false;
-		return SECURITY_URI_PREFIX.equals(uri.segment(0));
-	}
+    @Override
+    public boolean canHandle(URI uri) {
+        if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
+            return false;
+        return SECURITY_URI_PREFIX.equals(uri.segment(0));
+    }
 
 }

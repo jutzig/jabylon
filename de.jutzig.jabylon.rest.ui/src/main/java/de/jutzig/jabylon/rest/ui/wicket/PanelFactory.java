@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket;
 
@@ -12,5 +12,5 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  *
  */
 public interface PanelFactory <T>{
-	Panel createPanel(PageParameters params, IModel<T> input, String id);
+    Panel createPanel(PageParameters params, IModel<T> input, String id);
 }

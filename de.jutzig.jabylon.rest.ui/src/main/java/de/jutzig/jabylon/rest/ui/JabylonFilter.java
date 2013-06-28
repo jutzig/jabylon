@@ -7,19 +7,19 @@ import org.apache.wicket.protocol.http.WicketFilter;
 import de.jutzig.jabylon.rest.ui.wicket.JabylonApplication;
 
 public class JabylonFilter extends WicketFilter implements IWebApplicationFactory{
-	@Override
-	protected IWebApplicationFactory getApplicationFactory() {
-		return this;
-	}
+    @Override
+    protected IWebApplicationFactory getApplicationFactory() {
+        return this;
+    }
 
-	@Override
-	public WebApplication createApplication(WicketFilter filter) {
-		return new JabylonApplication();
-	}
+    @Override
+    public WebApplication createApplication(WicketFilter filter) {
+        return new JabylonApplication();
+    }
 
-	@Override
-	public void destroy(WicketFilter filter) {
-		// nothing to do
-		
-	}
+    @Override
+    public void destroy(WicketFilter filter) {
+        // nothing to do
+
+    }
 }

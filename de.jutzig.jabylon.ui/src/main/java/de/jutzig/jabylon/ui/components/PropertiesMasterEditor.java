@@ -35,64 +35,64 @@ import de.jutzig.jabylon.ui.util.PropertyFilter;
 @SuppressWarnings("serial")
 public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeListener, TextChangeListener {
 
-	private PropertyFileDescriptor descriptor;
-	private TextArea orignal;
-	private TextField keyLabel;
-	private PropertyFile source;
-	private boolean dirty;
-	private Button safeButton;
-	private TextArea orignalComment;
-	private VerticalLayout layout;
-	private Table table;
-	private GenericEObjectContainer<Property> container;
+    private PropertyFileDescriptor descriptor;
+    private TextArea orignal;
+    private TextField keyLabel;
+    private PropertyFile source;
+    private boolean dirty;
+    private Button safeButton;
+    private TextArea orignalComment;
+    private VerticalLayout layout;
+    private Table table;
+    private GenericEObjectContainer<Property> container;
 
-	public PropertiesMasterEditor(PropertyFileDescriptor descriptor) {
-		this.descriptor = descriptor;
-	}
+    public PropertiesMasterEditor(PropertyFileDescriptor descriptor) {
+        this.descriptor = descriptor;
+    }
 
 
-	@Override
-	public Component createContents() {
-		layout = new VerticalLayout();
-		layout.setSizeFull();
-		layout.setSpacing(true);
-		layout.setMargin(true);
-		TextField filterBox = new TextField();
-		filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
-		filterBox.addListener(new TextChangeListener() {
+    @Override
+    public Component createContents() {
+        layout = new VerticalLayout();
+        layout.setSizeFull();
+        layout.setSpacing(true);
+        layout.setMargin(true);
+        TextField filterBox = new TextField();
+        filterBox.addStyleName(JabylonStyle.SEARCH_FIELD.getCSSName());
+        filterBox.addListener(new TextChangeListener() {
 
-			@Override
-			public void textChange(TextChangeEvent event) {
-				container.removeAllContainerFilters();
-				container.addContainerFilter(new PropertyFilter(event.getText()));
+            @Override
+            public void textChange(TextChangeEvent event) {
+                container.removeAllContainerFilters();
+                container.addContainerFilter(new PropertyFilter(event.getText()));
 
-			}
-		});
-		filterBox.setInputPrompt(Messages.getString("PropertiesMasterEditor_FILTER_INPUT_PROMPT")); //$NON-NLS-1$
-		layout.addComponent(filterBox);
-		layout.setExpandRatio(filterBox, 0);
+            }
+        });
+        filterBox.setInputPrompt(Messages.getString("PropertiesMasterEditor_FILTER_INPUT_PROMPT")); //$NON-NLS-1$
+        layout.addComponent(filterBox);
+        layout.setExpandRatio(filterBox, 0);
 
-		EditableTable editableTable = new EditableTable() {
-			@Override
-			protected void addPressed() {
-				Property property = PropertiesFactory.eINSTANCE.createProperty();
-				property.setKey("enter.key"); //$NON-NLS-1$
-				source.getProperties().add(property);
-				
-			}
-		};
-		editableTable.setWidth(100, EditableTable.UNITS_PERCENTAGE);
-		editableTable.setSizeFull();
-		table = editableTable.getTable();
-		table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
-		table.setSizeFull();
-		source = descriptor.loadProperties();
+        EditableTable editableTable = new EditableTable() {
+            @Override
+            protected void addPressed() {
+                Property property = PropertiesFactory.eINSTANCE.createProperty();
+                property.setKey("enter.key"); //$NON-NLS-1$
+                source.getProperties().add(property);
 
-		container = new GenericEObjectContainer<Property>(source,PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES);
-	
-		table.setContainerDataSource(container);
-		table.setVisibleColumns(new Object[]{PropertiesPackage.Literals.PROPERTY__KEY,PropertiesPackage.Literals.PROPERTY__VALUE});
-		table.setWidth(100, Table.UNITS_PERCENTAGE);
+            }
+        };
+        editableTable.setWidth(100, EditableTable.UNITS_PERCENTAGE);
+        editableTable.setSizeFull();
+        table = editableTable.getTable();
+        table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
+        table.setSizeFull();
+        source = descriptor.loadProperties();
+
+        container = new GenericEObjectContainer<Property>(source,PropertiesPackage.Literals.PROPERTY_FILE__PROPERTIES);
+
+        table.setContainerDataSource(container);
+        table.setVisibleColumns(new Object[]{PropertiesPackage.Literals.PROPERTY__KEY,PropertiesPackage.Literals.PROPERTY__VALUE});
+        table.setWidth(100, Table.UNITS_PERCENTAGE);
 //		table.addGeneratedColumn("Problems", new ColumnGenerator() {
 //
 //			@Override
@@ -118,133 +118,133 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 //			}
 //		});
 
-		table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
+        table.setColumnHeaderMode(Table.COLUMN_HEADER_MODE_EXPLICIT);
 
-		table.setColumnHeaders(new String[] { Messages.getString("PropertiesMasterEditor_PROPERTY_KEY_COLUMN_HEADER"), Messages.getString("PropertiesMasterEditor_PROPERTY_VALUE_COLUMN_HEADER")/*, "Problems" */}); //$NON-NLS-1$ //$NON-NLS-2$
+        table.setColumnHeaders(new String[] { Messages.getString("PropertiesMasterEditor_PROPERTY_KEY_COLUMN_HEADER"), Messages.getString("PropertiesMasterEditor_PROPERTY_VALUE_COLUMN_HEADER")/*, "Problems" */}); //$NON-NLS-1$ //$NON-NLS-2$
 //		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(0), 1.0f);
 //		table.setColumnExpandRatio(propertyPairContainer.getContainerPropertyIds().get(1), 1.0f);
 //		table.setColumnExpandRatio("Problems", 0.0f);
 
-		table.setEditable(false);
-		table.setWriteThrough(true);
+        table.setEditable(false);
+        table.setWriteThrough(true);
 
-		table.setSelectable(true);
-		table.setMultiSelect(false);
-		table.setImmediate(true); // react at once when something is selected
-		table.addListener((Table.ValueChangeListener) this);
+        table.setSelectable(true);
+        table.setMultiSelect(false);
+        table.setImmediate(true); // react at once when something is selected
+        table.addListener((Table.ValueChangeListener) this);
 
-		layout.addComponent(editableTable);
-		layout.setExpandRatio(editableTable, 2);
+        layout.addComponent(editableTable);
+        layout.setExpandRatio(editableTable, 2);
 
-		createEditorArea();
-		return layout;
-	}
-
-
-
-	private void createEditorArea() {
-		Panel editorArea = new Panel();
-		
-		GridLayout grid = new GridLayout(2, 2);
-		grid.setSizeFull();
-		grid.setSpacing(true);
-		keyLabel = new TextField();
-		keyLabel.setValue(Messages.getString("PropertiesMasterEditor_NO_PROPERTY_SELECTED_LABEL")); //$NON-NLS-1$
-		keyLabel.setWriteThrough(true);
-		keyLabel.setImmediate(true);
-		keyLabel.addListener((TextChangeListener)this);
-		grid.addComponent(keyLabel, 0, 0, 0, 0);
-		grid.setColumnExpandRatio(0, 0.0f);
-		grid.setColumnExpandRatio(1, 0.0f);
-		grid.setRowExpandRatio(0, 0);
-		grid.setRowExpandRatio(1, 0);
-		
-
-		orignalComment = new TextArea();
-		orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
-		orignalComment.setRows(3);
-		orignalComment.setNullRepresentation(""); //$NON-NLS-1$
-		orignalComment.setInputPrompt(Messages.getString("PropertiesMasterEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
-		orignalComment.addListener((TextChangeListener)this);
-		orignalComment.setWriteThrough(true);
-		orignalComment.setImmediate(true);
-		grid.addComponent(orignalComment,0,1,0,1);
-		
-		orignal = new TextArea();
-		orignal.setRows(5);
-		orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
-		orignal.setInputPrompt(Messages.getString("PropertiesMasterEditor_VALUE_INPUT_PROMPT")); //$NON-NLS-1$
-		orignal.addListener((TextChangeListener)this);
-		orignal.setImmediate(true);
-		orignal.setWriteThrough(true);
-		orignal.setNullRepresentation(""); //$NON-NLS-1$
-		
-		grid.addComponent(orignal,1,0,1,1);
+        createEditorArea();
+        return layout;
+    }
 
 
 
+    private void createEditorArea() {
+        Panel editorArea = new Panel();
 
-		safeButton = new Button();
-		safeButton.setEnabled(false);
-		safeButton.setCaption(Messages.getString("PropertiesMasterEditor_SAFE_BUTTON_CAPTION")); //$NON-NLS-1$
-		safeButton.addListener(new ClickListener() {
+        GridLayout grid = new GridLayout(2, 2);
+        grid.setSizeFull();
+        grid.setSpacing(true);
+        keyLabel = new TextField();
+        keyLabel.setValue(Messages.getString("PropertiesMasterEditor_NO_PROPERTY_SELECTED_LABEL")); //$NON-NLS-1$
+        keyLabel.setWriteThrough(true);
+        keyLabel.setImmediate(true);
+        keyLabel.addListener((TextChangeListener)this);
+        grid.addComponent(keyLabel, 0, 0, 0, 0);
+        grid.setColumnExpandRatio(0, 0.0f);
+        grid.setColumnExpandRatio(1, 0.0f);
+        grid.setRowExpandRatio(0, 0);
+        grid.setRowExpandRatio(1, 0);
 
-			@Override
-			public void buttonClick(ClickEvent event) {
-	
-				final int filledKeys = getFilledKeys(source);
-				try {
 
-					descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
-						@Override
-						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
-							object.setKeys(filledKeys);
-							object.updatePercentComplete();
-							return object;
-						}
-					});
-					PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
-					propertyPersistence.saveProperties(descriptor, source);
-					setDirty(false);
-					layout.getWindow().showNotification(Messages.getString("PropertiesMasterEditor_SAFED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        orignalComment = new TextArea();
+        orignalComment.setWidth(100, TextArea.UNITS_PERCENTAGE);
+        orignalComment.setRows(3);
+        orignalComment.setNullRepresentation(""); //$NON-NLS-1$
+        orignalComment.setInputPrompt(Messages.getString("PropertiesMasterEditor_COMMENT_INPUT_PROMPT")); //$NON-NLS-1$
+        orignalComment.addListener((TextChangeListener)this);
+        orignalComment.setWriteThrough(true);
+        orignalComment.setImmediate(true);
+        grid.addComponent(orignalComment,0,1,0,1);
 
-			}
-		});
-		editorArea.setContent(grid);
-		layout.addComponent(editorArea);
-		layout.setExpandRatio(editorArea, 0);
-		layout.addComponent(safeButton);
-		layout.setExpandRatio(safeButton, 0);
+        orignal = new TextArea();
+        orignal.setRows(5);
+        orignal.setWidth(100, TextArea.UNITS_PERCENTAGE);
+        orignal.setInputPrompt(Messages.getString("PropertiesMasterEditor_VALUE_INPUT_PROMPT")); //$NON-NLS-1$
+        orignal.addListener((TextChangeListener)this);
+        orignal.setImmediate(true);
+        orignal.setWriteThrough(true);
+        orignal.setNullRepresentation(""); //$NON-NLS-1$
 
-	}
+        grid.addComponent(orignal,1,0,1,1);
 
-	protected int getFilledKeys(PropertyFile target2) {
-		int counter = 0;
-		for (Property prop : target2.getProperties()) {
-			if (prop.getValue() != null && prop.getValue().length() > 0)
-				counter++;
-		}
-		return counter;
-	}
 
-	@Override
-	public CrumbTrail walkTo(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public String getTrailCaption() {
-		return descriptor.getLocation().lastSegment();
-	}
 
-	@Override
-	public void textChange(TextChangeEvent event) {
-		setDirty(true);
+        safeButton = new Button();
+        safeButton.setEnabled(false);
+        safeButton.setCaption(Messages.getString("PropertiesMasterEditor_SAFE_BUTTON_CAPTION")); //$NON-NLS-1$
+        safeButton.addListener(new ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+
+                final int filledKeys = getFilledKeys(source);
+                try {
+
+                    descriptor = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
+                        @Override
+                        public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
+                            object.setKeys(filledKeys);
+                            object.updatePercentComplete();
+                            return object;
+                        }
+                    });
+                    PropertyPersistenceService propertyPersistence = MainDashboard.getCurrent().getPropertyPersistence();
+                    propertyPersistence.saveProperties(descriptor, source);
+                    setDirty(false);
+                    layout.getWindow().showNotification(Messages.getString("PropertiesMasterEditor_SAFED_CONFIRMATION_DIALOG_TITLE"), descriptor.getLocation().lastSegment()); //$NON-NLS-1$
+                } catch (CommitException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        editorArea.setContent(grid);
+        layout.addComponent(editorArea);
+        layout.setExpandRatio(editorArea, 0);
+        layout.addComponent(safeButton);
+        layout.setExpandRatio(safeButton, 0);
+
+    }
+
+    protected int getFilledKeys(PropertyFile target2) {
+        int counter = 0;
+        for (Property prop : target2.getProperties()) {
+            if (prop.getValue() != null && prop.getValue().length() > 0)
+                counter++;
+        }
+        return counter;
+    }
+
+    @Override
+    public CrumbTrail walkTo(String path) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getTrailCaption() {
+        return descriptor.getLocation().lastSegment();
+    }
+
+    @Override
+    public void textChange(TextChangeEvent event) {
+        setDirty(true);
 //		if (currentItem == null)
 //			return;
 //		reviews.removeAll(currentItem.getKey());
@@ -266,36 +266,36 @@ public class PropertiesMasterEditor implements CrumbTrail, Table.ValueChangeList
 //		}
 //		table.refreshRowCache();
 
-	}
+    }
 
-	public void setDirty(boolean dirty) {
-		this.dirty = dirty;
-		safeButton.setEnabled(dirty);
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+        safeButton.setEnabled(dirty);
 
-	}
+    }
 
-	@Override
-	public boolean isDirty() {
-		return dirty;
-	}
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
 
-	@Override
-	public CDOObject getDomainObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public CDOObject getDomainObject() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void valueChange(ValueChangeEvent event) {
-		Object value = event.getProperty().getValue();
-		if (value == null)
-			return;
-		Item theItem = container.getItem(value);
+    @Override
+    public void valueChange(ValueChangeEvent event) {
+        Object value = event.getProperty().getValue();
+        if (value == null)
+            return;
+        Item theItem = container.getItem(value);
 
-		keyLabel.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__KEY));
-		orignal.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__VALUE));
-		orignalComment.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__COMMENT));
-		
-	}
+        keyLabel.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__KEY));
+        orignal.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__VALUE));
+        orignalComment.setPropertyDataSource(theItem.getItemProperty(PropertiesPackage.Literals.PROPERTY__COMMENT));
+
+    }
 
 }

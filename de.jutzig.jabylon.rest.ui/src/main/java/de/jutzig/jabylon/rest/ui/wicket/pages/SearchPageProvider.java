@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.pages;
 
@@ -21,31 +21,31 @@ import de.jutzig.jabylon.rest.ui.util.PageProvider;
 @Service
 public class SearchPageProvider implements PageProvider {
 
-	
-	@Property(value="/search")
-	static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
-	
-	/** 
-	 * not really needed, just make sure the page doesn't get
-	 * mounted before the query service is available
-	 */
-	@Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
-	private QueryService queryService;
-	
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.rest.ui.util.PageProvider#getPageClass()
-	 */
-	@Override
-	public Class<? extends Page> getPageClass() {
-		return SearchPage.class;
-	}
-	
-	public void bindQueryService(QueryService queryService) {
-		this.queryService = queryService;
-	}
-	
-	public void unbindQueryService(QueryService queryService) {
-		this.queryService = queryService;
-	}
+
+    @Property(value="/search")
+    static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
+
+    /**
+     * not really needed, just make sure the page doesn't get
+     * mounted before the query service is available
+     */
+    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private QueryService queryService;
+
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.rest.ui.util.PageProvider#getPageClass()
+     */
+    @Override
+    public Class<? extends Page> getPageClass() {
+        return SearchPage.class;
+    }
+
+    public void bindQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
+
+    public void unbindQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
 
 }

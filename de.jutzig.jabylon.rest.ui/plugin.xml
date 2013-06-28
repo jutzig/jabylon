@@ -10,7 +10,7 @@
             id="jabylon">
       </httpcontext>
    </extension>
-	<extension
+    <extension
          point="org.eclipse.equinox.http.registry.filters">
       <filter
             alias="/"

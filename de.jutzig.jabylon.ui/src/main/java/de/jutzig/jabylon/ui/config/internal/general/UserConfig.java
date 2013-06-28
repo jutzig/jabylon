@@ -44,159 +44,159 @@ import de.jutzig.jabylon.users.UsersFactory;
 import de.jutzig.jabylon.users.UsersPackage;
 
 public class UserConfig extends AbstractConfigSection<Workspace> implements ConfigSection {
-	Table userTable = null;
-	User selectedUser = null;
-	VerticalLayout userConfig = new VerticalLayout();
-	Section userDetails = null;
-	UserManagement userManagement = null;
+    Table userTable = null;
+    User selectedUser = null;
+    VerticalLayout userConfig = new VerticalLayout();
+    Section userDetails = null;
+    UserManagement userManagement = null;
 
-	@SuppressWarnings("serial")
-	@Override
-	public Component createContents() {
+    @SuppressWarnings("serial")
+    @Override
+    public Component createContents() {
 
-		userConfig.setMargin(true);
-		userTable = new Table("Users");
-		userTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
+        userConfig.setMargin(true);
+        userTable = new Table("Users");
+        userTable.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
 
-		userTable.setSizeFull();
-		userTable.setSelectable(true);
-		userTable.addListener(new ItemClickListener() {
-			@Override
-			public void itemClick(ItemClickEvent event) {
-				removeUserDetails();
+        userTable.setSizeFull();
+        userTable.setSelectable(true);
+        userTable.addListener(new ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                removeUserDetails();
 
-				selectedUser = (User) event.getItemId();
-				if (selectedUser != null)
-					addUserDetails();
-			}
-		});
-		userConfig.addComponent(userTable);
-		HorizontalLayout buttonLine = new HorizontalLayout();
-		Button addUser = new Button("Add User");
-		addUser.addListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				addUser();
-			}
-		});
-		Button deleteUser = new Button("Delete User");
-		deleteUser.addListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				deleteUser();
-			}
-		});
-		buttonLine.addComponent(addUser);
-		buttonLine.addComponent(deleteUser);
-		userConfig.addComponent(buttonLine);
-		return userConfig;
-	}
+                selectedUser = (User) event.getItemId();
+                if (selectedUser != null)
+                    addUserDetails();
+            }
+        });
+        userConfig.addComponent(userTable);
+        HorizontalLayout buttonLine = new HorizontalLayout();
+        Button addUser = new Button("Add User");
+        addUser.addListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                addUser();
+            }
+        });
+        Button deleteUser = new Button("Delete User");
+        deleteUser.addListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                deleteUser();
+            }
+        });
+        buttonLine.addComponent(addUser);
+        buttonLine.addComponent(deleteUser);
+        userConfig.addComponent(buttonLine);
+        return userConfig;
+    }
 
-	private void removeUserDetails() {
-		if (userDetails == null)
-			return;
-		userConfig.removeComponent(userDetails);
-		userDetails = null;
-	}
+    private void removeUserDetails() {
+        if (userDetails == null)
+            return;
+        userConfig.removeComponent(userDetails);
+        userDetails = null;
+    }
 
-	private void addUserDetails() {
-		userDetails = new Section();
-		userDetails.setCaption("User: " + selectedUser.getName());
-		TwinColSelect permissionSelect = new TwinColSelect("Roles");
-		permissionSelect.setMultiSelect(true);
-		permissionSelect.setLeftColumnCaption("Available roles");
-		permissionSelect.setRightColumnCaption("Roles currently assigned");
-		GenericEObjectContainer<Role> ds = new GenericEObjectContainer<Role>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__ROLES);
-		permissionSelect.setContainerDataSource(ds);
-		permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
-		permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.ROLE__NAME);
-		permissionSelect.setValue(new HashSet<Role>(selectedUser.getRoles()));
-		userDetails.addComponent(permissionSelect);
-		userConfig.addComponent(userDetails);
-	}
+    private void addUserDetails() {
+        userDetails = new Section();
+        userDetails.setCaption("User: " + selectedUser.getName());
+        TwinColSelect permissionSelect = new TwinColSelect("Roles");
+        permissionSelect.setMultiSelect(true);
+        permissionSelect.setLeftColumnCaption("Available roles");
+        permissionSelect.setRightColumnCaption("Roles currently assigned");
+        GenericEObjectContainer<Role> ds = new GenericEObjectContainer<Role>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__ROLES);
+        permissionSelect.setContainerDataSource(ds);
+        permissionSelect.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
+        permissionSelect.setItemCaptionPropertyId(UsersPackage.Literals.ROLE__NAME);
+        permissionSelect.setValue(new HashSet<Role>(selectedUser.getRoles()));
+        userDetails.addComponent(permissionSelect);
+        userConfig.addComponent(userDetails);
+    }
 
-	private void addUser() {
-		final Window addUser = new Window("Add user");
-		addUser.setModal(true);
-		addUser.setHeight("180px");
-		addUser.setWidth("280px");
-		final Form addUserForm = new Form();
+    private void addUser() {
+        final Window addUser = new Window("Add user");
+        addUser.setModal(true);
+        addUser.setHeight("180px");
+        addUser.setWidth("280px");
+        final Form addUserForm = new Form();
 
-		addUserForm.setVisibleItemProperties(new Object[]{"name", "password"});
-		addUserForm.setFormFieldFactory(new FormFieldFactory() {
-			@Override
-			public Field createField(Item item, Object propertyId, Component uiContext) {
-				if(propertyId.equals("password"))
-					return new PasswordField("Password:");
-				else if(propertyId.equals("name"))
-					return new TextField("Name:");
-				return null;
-			}
-		});
+        addUserForm.setVisibleItemProperties(new Object[]{"name", "password"});
+        addUserForm.setFormFieldFactory(new FormFieldFactory() {
+            @Override
+            public Field createField(Item item, Object propertyId, Component uiContext) {
+                if(propertyId.equals("password"))
+                    return new PasswordField("Password:");
+                else if(propertyId.equals("name"))
+                    return new TextField("Name:");
+                return null;
+            }
+        });
 
-		User user = UsersFactory.eINSTANCE.createUser();
-		user.setName("<Name>");
-		user.setPassword("");
-		addUserForm.setItemDataSource(new BeanItem<User>(user));
+        User user = UsersFactory.eINSTANCE.createUser();
+        user.setName("<Name>");
+        user.setPassword("");
+        addUserForm.setItemDataSource(new BeanItem<User>(user));
 
-		VerticalLayout layout = new VerticalLayout();
-		layout.addComponent(addUserForm);
-		Button ok = new Button("Submit");
-		ok.addListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				User addedUser = ((BeanItem<User>) addUserForm.getItemDataSource()).getBean();
-				userManagement.getUsers().add(addedUser);
-				CommonPermissions.addDefaultPermissions(userManagement,addedUser);
-				MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
-			}
-		});
-		layout.addComponent(ok);
-		layout.setMargin(true);
-		addUser.setContent(layout);
-		MainDashboard.getCurrent().getMainWindow().addWindow(addUser);
-	}
+        VerticalLayout layout = new VerticalLayout();
+        layout.addComponent(addUserForm);
+        Button ok = new Button("Submit");
+        ok.addListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                User addedUser = ((BeanItem<User>) addUserForm.getItemDataSource()).getBean();
+                userManagement.getUsers().add(addedUser);
+                CommonPermissions.addDefaultPermissions(userManagement,addedUser);
+                MainDashboard.getCurrent().getMainWindow().removeWindow(addUser);
+            }
+        });
+        layout.addComponent(ok);
+        layout.setMargin(true);
+        addUser.setContent(layout);
+        MainDashboard.getCurrent().getMainWindow().addWindow(addUser);
+    }
 
-	private void deleteUser() {
-		if (selectedUser == null) {
-			MainDashboard.getCurrent().getMainWindow()
-					.showNotification("No user select", "Please select a user", Notification.TYPE_WARNING_MESSAGE);
-			return;
-		} else {
-			userManagement.getUsers().remove(selectedUser);
-			selectedUser = null;
-		}
-	}
+    private void deleteUser() {
+        if (selectedUser == null) {
+            MainDashboard.getCurrent().getMainWindow()
+                    .showNotification("No user select", "Please select a user", Notification.TYPE_WARNING_MESSAGE);
+            return;
+        } else {
+            userManagement.getUsers().remove(selectedUser);
+            selectedUser = null;
+        }
+    }
 
-	private Container getUsers() {
-		return new GenericEObjectContainer<User>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__USERS);
-	}
+    private Container getUsers() {
+        return new GenericEObjectContainer<User>(userManagement, UsersPackage.Literals.USER_MANAGEMENT__USERS);
+    }
 
-	@Override
-	public void commit(Preferences config) {
+    @Override
+    public void commit(Preferences config) {
 
 
-	}
+    }
 
-	@Override
-	protected void init(Preferences config) {
-		userManagement = (UserManagement)getDomainObject().cdoView().getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
-		userTable.setContainerDataSource(getUsers());
-		userTable.setVisibleColumns(new Object[] { UsersPackage.Literals.USER__NAME });
-		userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
-		userTable.addGeneratedColumn("Roles", new ColumnGenerator() {
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return getRolesList(((User) itemId).getRoles());
-			}
+    @Override
+    protected void init(Preferences config) {
+        userManagement = (UserManagement)getDomainObject().cdoView().getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);
+        userTable.setContainerDataSource(getUsers());
+        userTable.setVisibleColumns(new Object[] { UsersPackage.Literals.USER__NAME });
+        userTable.setColumnHeader(UsersPackage.Literals.USER__NAME, "Username");
+        userTable.addGeneratedColumn("Roles", new ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object itemId, Object columnId) {
+                return getRolesList(((User) itemId).getRoles());
+            }
 
-			public String getRolesList(EList<Role> roles) {
-				StringBuffer sb = new StringBuffer();
-				for (Role role : roles)
-					sb.append(role.getName()).append(", ");
-				return sb.toString();
-			}
-		});
-	}
+            public String getRolesList(EList<Role> roles) {
+                StringBuffer sb = new StringBuffer();
+                for (Role role : roles)
+                    sb.append(role.getName()).append(", ");
+                return sb.toString();
+            }
+        });
+    }
 
 }

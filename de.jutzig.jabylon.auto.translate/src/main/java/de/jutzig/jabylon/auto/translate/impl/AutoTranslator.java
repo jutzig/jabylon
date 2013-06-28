@@ -43,162 +43,162 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
  */
 public class AutoTranslator implements PropertiesListener {
 
-	private PropertyPersistenceService persistenceService;
-	private QueryService queryService;
+    private PropertyPersistenceService persistenceService;
+    private QueryService queryService;
 
-	@Override
-	public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
-		// TODO Auto-generated method stub
+    @Override
+    public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
-		// TODO Auto-generated method stub
+    @Override
+    public void propertyFileDeleted(PropertyFileDescriptor descriptor, boolean autoSync) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
-		if(autoSync)
-			return;
-		if(descriptor.isMaster())
-			return;
-		PropertyFileDescriptor master = descriptor.getMaster();
-		PropertyFile masterProperties = master.loadProperties();
-		for (Notification notification : changes) {
-			if(notification.getFeature()!=PropertiesPackage.Literals.PROPERTY__VALUE)
-				continue;
-			Object notifier = notification.getNotifier();
-			if (notifier instanceof Property) {
-				Property property = (Property) notifier;
-				String key = property.getKey();
-				Property masterProperty = masterProperties.getProperty(key);
-				if(masterProperty==null)
-					continue;
-				String newValue = notification.getNewStringValue();
-				if(newValue==null)
-					continue;
-				SearchResult result = searchIdenticalValues(masterProperty.getValue());
-				if(result==null)
-					continue;
-				try {
-					ScoreDoc[] docs = result.getTopDocs().scoreDocs;
-					for (ScoreDoc doc : docs) {
-						Document document = result.getSearcher().doc(doc.doc);
-						if(!document.get(QueryService.FIELD_VALUE).equals(masterProperty.getValue()))
-							continue;
-						PropertyFileDescriptor relatedMasterDescriptor = queryService.getDescriptor(document);
-						PropertyFileDescriptor relatedDescriptor = getMatchingLocale(relatedMasterDescriptor,descriptor.getProjectLocale());
-						if(relatedDescriptor==null)
-							continue;
-						PropertyFile relatedProperties = relatedDescriptor.loadProperties();
-						Property relatedproperty = relatedProperties.getProperty(document.get(QueryService.FIELD_KEY));
-						if(relatedproperty==null)
-						{
-							relatedproperty = PropertiesFactory.eINSTANCE.createProperty();
-							relatedproperty.setKey(document.get(QueryService.FIELD_KEY));
-							relatedProperties.getProperties().add(relatedproperty);
-						}
-						String currentValue = relatedproperty.getValue();
-						if(newValue.equals(currentValue))
-							continue;
-						relatedproperty.setValue(newValue);
-						String comment = relatedproperty.getComment();
-						if(comment==null || comment.length()==0)
-							relatedproperty.setComment("Jabylon auto sync-up");
-						else if(!comment.endsWith("Jabylon auto sync-up"))
-						{
-							comment += "\n Jabylon auto sync-up";
-							relatedproperty.setComment(comment);
-						}
-						System.out.println("Auto sync up at "+relatedDescriptor.relativePath());
-						persistenceService.saveProperties(relatedDescriptor, relatedProperties, true);
+    @Override
+    public void propertyFileModified(PropertyFileDescriptor descriptor, List<Notification> changes, boolean autoSync) {
+        if(autoSync)
+            return;
+        if(descriptor.isMaster())
+            return;
+        PropertyFileDescriptor master = descriptor.getMaster();
+        PropertyFile masterProperties = master.loadProperties();
+        for (Notification notification : changes) {
+            if(notification.getFeature()!=PropertiesPackage.Literals.PROPERTY__VALUE)
+                continue;
+            Object notifier = notification.getNotifier();
+            if (notifier instanceof Property) {
+                Property property = (Property) notifier;
+                String key = property.getKey();
+                Property masterProperty = masterProperties.getProperty(key);
+                if(masterProperty==null)
+                    continue;
+                String newValue = notification.getNewStringValue();
+                if(newValue==null)
+                    continue;
+                SearchResult result = searchIdenticalValues(masterProperty.getValue());
+                if(result==null)
+                    continue;
+                try {
+                    ScoreDoc[] docs = result.getTopDocs().scoreDocs;
+                    for (ScoreDoc doc : docs) {
+                        Document document = result.getSearcher().doc(doc.doc);
+                        if(!document.get(QueryService.FIELD_VALUE).equals(masterProperty.getValue()))
+                            continue;
+                        PropertyFileDescriptor relatedMasterDescriptor = queryService.getDescriptor(document);
+                        PropertyFileDescriptor relatedDescriptor = getMatchingLocale(relatedMasterDescriptor,descriptor.getProjectLocale());
+                        if(relatedDescriptor==null)
+                            continue;
+                        PropertyFile relatedProperties = relatedDescriptor.loadProperties();
+                        Property relatedproperty = relatedProperties.getProperty(document.get(QueryService.FIELD_KEY));
+                        if(relatedproperty==null)
+                        {
+                            relatedproperty = PropertiesFactory.eINSTANCE.createProperty();
+                            relatedproperty.setKey(document.get(QueryService.FIELD_KEY));
+                            relatedProperties.getProperties().add(relatedproperty);
+                        }
+                        String currentValue = relatedproperty.getValue();
+                        if(newValue.equals(currentValue))
+                            continue;
+                        relatedproperty.setValue(newValue);
+                        String comment = relatedproperty.getComment();
+                        if(comment==null || comment.length()==0)
+                            relatedproperty.setComment("Jabylon auto sync-up");
+                        else if(!comment.endsWith("Jabylon auto sync-up"))
+                        {
+                            comment += "\n Jabylon auto sync-up";
+                            relatedproperty.setComment(comment);
+                        }
+                        System.out.println("Auto sync up at "+relatedDescriptor.relativePath());
+                        persistenceService.saveProperties(relatedDescriptor, relatedProperties, true);
 
-					}
-				} catch (CorruptIndexException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				finally
-				{
-					try {
-						result.getSearcher().close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+                    }
+                } catch (CorruptIndexException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    try {
+                        result.getSearcher().close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
 
-			}
-		}
+            }
+        }
 
-	}
+    }
 
 
-	private PropertyFileDescriptor getMatchingLocale(PropertyFileDescriptor master, ProjectLocale targetLocale) {
-		if(master==null)
-			return null;
-		ProjectVersion version = master.getProjectLocale().getParent();
-		ProjectLocale projectLocale = version.getProjectLocale(targetLocale.getLocale());
-		if(projectLocale==null)
-			return null;
-		EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-		for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-			if(propertyFileDescriptor.getMaster()==master)
-				return propertyFileDescriptor;
-		}
-		return null;
-	}
+    private PropertyFileDescriptor getMatchingLocale(PropertyFileDescriptor master, ProjectLocale targetLocale) {
+        if(master==null)
+            return null;
+        ProjectVersion version = master.getProjectLocale().getParent();
+        ProjectLocale projectLocale = version.getProjectLocale(targetLocale.getLocale());
+        if(projectLocale==null)
+            return null;
+        EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
+        for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+            if(propertyFileDescriptor.getMaster()==master)
+                return propertyFileDescriptor;
+        }
+        return null;
+    }
 
-	private SearchResult searchIdenticalValues(String value) {
-		if(value ==null)
-			return null;
-		Query query = constructQuery(value);
-		return queryService.search(query,10000);
-	}
+    private SearchResult searchIdenticalValues(String value) {
+        if(value ==null)
+            return null;
+        Query query = constructQuery(value);
+        return queryService.search(query,10000);
+    }
 
-	private Query constructQuery(String value) {
-		BooleanQuery query = new BooleanQuery();
-		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)),Occur.MUST);
-		QueryParser parser = new QueryParser(Version.LUCENE_35,QueryService.FIELD_VALUE,new StandardAnalyzer(Version.LUCENE_29));
-		Query mainQuery = null;
-		try {
-			mainQuery = parser.parse("\""+QueryParser.escape(value)+"\"");
-		} catch (ParseException e) {
-			// should never happen
-			e.printStackTrace();
-		}
-		query.add(mainQuery,Occur.MUST);
-		return query;
-	}
+    private Query constructQuery(String value) {
+        BooleanQuery query = new BooleanQuery();
+        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)),Occur.MUST);
+        QueryParser parser = new QueryParser(Version.LUCENE_35,QueryService.FIELD_VALUE,new StandardAnalyzer(Version.LUCENE_29));
+        Query mainQuery = null;
+        try {
+            mainQuery = parser.parse("\""+QueryParser.escape(value)+"\"");
+        } catch (ParseException e) {
+            // should never happen
+            e.printStackTrace();
+        }
+        query.add(mainQuery,Occur.MUST);
+        return query;
+    }
 
-	public void setPersistenceService(PropertyPersistenceService persistenceService) {
-		this.persistenceService = persistenceService;
-	}
+    public void setPersistenceService(PropertyPersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
+    }
 
-	public void unsetPersistenceService(PropertyPersistenceService persistenceService) {
-		this.persistenceService = null;
-	}
+    public void unsetPersistenceService(PropertyPersistenceService persistenceService) {
+        this.persistenceService = null;
+    }
 
-	public void setQueryService(QueryService queryService) {
-		this.queryService = queryService;
-	}
+    public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
 
-	public void unsetQueryService(QueryService queryService) {
-		this.queryService = null;
-	}
+    public void unsetQueryService(QueryService queryService) {
+        this.queryService = null;
+    }
 
-	
-	public static void main(String[] args) throws FileNotFoundException {
-		Properties props = new Properties();
-		for(int i=0;i<10000;i++)
-		{
-			props.put("property"+i, "test"+i);
-		}
-		props.save(new FileOutputStream(new File("/home/joe/workspaces/jabylon/work/workspace/Jenkins/master/core/src/main/resources/jenkins/mvn/Messages.properties")), null);
-	}
+
+    public static void main(String[] args) throws FileNotFoundException {
+        Properties props = new Properties();
+        for(int i=0;i<10000;i++)
+        {
+            props.put("property"+i, "test"+i);
+        }
+        props.save(new FileOutputStream(new File("/home/joe/workspaces/jabylon/work/workspace/Jenkins/master/core/src/main/resources/jenkins/mvn/Messages.properties")), null);
+    }
 }

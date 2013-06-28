@@ -21,14 +21,14 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     implements IDataProvider<R>, IModel<List<R>>
 {
 
-	private static final long serialVersionUID = 1L;
-	private String featureName;
-	private IModel<? extends CDOObject> model;
+    private static final long serialVersionUID = 1L;
+    private String featureName;
+    private IModel<? extends CDOObject> model;
 
 
     public ComplexEObjectListDataProvider(IModel<? extends CDOObject> model, EStructuralFeature feature)
     {
-    	this.model = model;
+        this.model = model;
         featureName = feature.getName();
     }
 
@@ -47,7 +47,7 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
     @Override
     public long size()
     {
-    	CDOObject parent = model.getObject();;
+        CDOObject parent = model.getObject();;
         EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
         List<R> result = (List<R>)parent.eGet(feature);
         return result.size();
@@ -61,25 +61,25 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
         return new EObjectModel<R>(object);
     }
 
-	@Override
-	public void detach() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void detach() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public List<R> getObject() {
+    }
+
+    @Override
+    public List<R> getObject() {
         CDOObject parent = model.getObject();
         EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
         List<R> result = (List<R>)parent.eGet(feature);
         return result;
-	}
+    }
 
-	@Override
-	public void setObject(List<R> object) {
+    @Override
+    public void setObject(List<R> object) {
         CDOObject parent = model.getObject();
         EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
         parent.eSet(feature, new ArrayList<R>(object));
-	}
+    }
 
 }

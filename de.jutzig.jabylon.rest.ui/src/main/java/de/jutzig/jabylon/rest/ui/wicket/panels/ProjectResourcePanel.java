@@ -40,268 +40,268 @@ import de.jutzig.jabylon.security.CommonPermissions;
  */
 public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>> implements RestrictedComponent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
-		super("content", object, parameters);
-		add(new Label("header", new LabelSwitch().doSwitch(object)));
-	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
-		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
-		response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_DATATABLES_CUSTOMSORT));
-		super.renderHead(response);
-	}
+    public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
+        super("content", object, parameters);
+        add(new Label("header", new LabelSwitch().doSwitch(object)));
+    }
 
-	@Override
-	protected void onBeforeRenderPanel() {
-		ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModel(),
-				PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-		final boolean endsOnSlash = urlEndsOnSlash();
-		final DataView<Resolvable<?, ?>> dataView = new DataView<Resolvable<?, ?>>("children", provider) {
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
+        response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
+        response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_DATATABLES_CUSTOMSORT));
+        super.renderHead(response);
+    }
 
-			private static final long serialVersionUID = -3530355534807668227L;
+    @Override
+    protected void onBeforeRenderPanel() {
+        ComplexEObjectListDataProvider<Resolvable<?, ?>> provider = new ComplexEObjectListDataProvider<Resolvable<?, ?>>(getModel(),
+                PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+        final boolean endsOnSlash = urlEndsOnSlash();
+        final DataView<Resolvable<?, ?>> dataView = new DataView<Resolvable<?, ?>>("children", provider) {
 
-			@Override
-			protected void populateItem(Item<Resolvable<?, ?>> item) {
-				Resolvable<?, ?> resolvable = item.getModelObject();
-				
-				if (resolvable instanceof ProjectLocale) {
-					// hide the template language by default
-					ProjectLocale locale = (ProjectLocale) resolvable;
-					if (locale.isMaster())
-						item.setVisible(false);
+            private static final long serialVersionUID = -3530355534807668227L;
 
-				}
+            @Override
+            protected void populateItem(Item<Resolvable<?, ?>> item) {
+                Resolvable<?, ?> resolvable = item.getModelObject();
 
-				LinkTarget target = buildLinkTarget(resolvable, endsOnSlash);
+                if (resolvable instanceof ProjectLocale) {
+                    // hide the template language by default
+                    ProjectLocale locale = (ProjectLocale) resolvable;
+                    if (locale.isMaster())
+                        item.setVisible(false);
 
-				ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
-				item.add(link);
-				
-				Point widths = computeProgressBars(target.getEndPoint());
-				Label progress = new Label("progress", String.valueOf(widths.x)+"%");
-				progress.add(new AttributeModifier("style", "width: " + widths.x  + "%"));
-				Label warning = new Label("warning", "");
-				warning.add(new AttributeModifier("style", "width: " + widths.y  + "%"));
-				item.add(progress);
-				item.add(warning);
-				
-				new ImageSwitch(item).doSwitch(target.getEndPoint());
-				item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
-			}
+                }
 
-		};
-		// dataView.setItemsPerPage(10);
-		add(dataView);
-	}
+                LinkTarget target = buildLinkTarget(resolvable, endsOnSlash);
 
-	/**
-	 * computes the width of the two stacked progress bars
-	 * @param resolvable
-	 * @return
-	 */
-	protected Point computeProgressBars(Resolvable<?, ?> resolvable) {
-		
-		int greenWidth = resolvable.getPercentComplete();
-		int yellowWidth = 0;
-		if (resolvable instanceof PropertyFileDescriptor) {
-			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolvable;
-			int keys = descriptor.getMaster() == null ? descriptor.getKeys() : descriptor.getMaster().getKeys();
-			if(keys>0)
-			{
-				EList<Review> reviews = descriptor.getReviews();
-				yellowWidth = (int) (reviews.size()*100/(double)keys);
-				greenWidth -= yellowWidth;
-			}
-		}
-		return new Point(greenWidth, yellowWidth);
+                ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
+                item.add(link);
 
-	}
+                Point widths = computeProgressBars(target.getEndPoint());
+                Label progress = new Label("progress", String.valueOf(widths.x)+"%");
+                progress.add(new AttributeModifier("style", "width: " + widths.x  + "%"));
+                Label warning = new Label("warning", "");
+                warning.add(new AttributeModifier("style", "width: " + widths.y  + "%"));
+                item.add(progress);
+                item.add(warning);
 
-	private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {
-		StringBuilder hrefBuilder = new StringBuilder();
-		LabelSwitch labelSwitch = new LabelSwitch();
-		StringBuilder name = new StringBuilder();
-		name.append(labelSwitch.doSwitch(resolvable));
-		if (resolvable.getParent() == null)
-			hrefBuilder.append("/");
-		else if (resolvable.getParent() instanceof Workspace)
-			hrefBuilder.append(endsOnSlash ? resolvable.getName() : "workspace/" + resolvable.getName());
-		else
-			hrefBuilder.append(endsOnSlash ? resolvable.getName() : resolvable.getParent().getName() + "/" + resolvable.getName());
+                new ImageSwitch(item).doSwitch(target.getEndPoint());
+                item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
+            }
 
-		Resolvable<?, ?> folder = (Resolvable<?, ?>) resolvable;
-		if(folder instanceof ResourceFolder)
-		{
-			// if it is a folder, squash more children, if there is only one
-			while (folder.getChildren().size() == 1) {
-				folder = folder.getChildren().get(0);
-				hrefBuilder.append("/");
-				hrefBuilder.append(folder.getName());
-				name.append("/");
-				name.append(labelSwitch.doSwitch(folder));
-			}			
-		}
-		LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
-		return target;
+        };
+        // dataView.setItemsPerPage(10);
+        add(dataView);
+    }
 
-	}
+    /**
+     * computes the width of the two stacked progress bars
+     * @param resolvable
+     * @return
+     */
+    protected Point computeProgressBars(Resolvable<?, ?> resolvable) {
 
-	@Override
-	public String getRequiredPermission() {
-		Resolvable<?, ?> object = getModelObject();
-		while(object!=null) {
-			if (object instanceof Project) {
-				Project project = (Project) object;
-				return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
-			}
-			else if (object instanceof Workspace) {
-				return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,CommonPermissions.ACTION_VIEW);
-			}
-			object = object.getParent();
-		}
-		return null;
-	}
+        int greenWidth = resolvable.getPercentComplete();
+        int yellowWidth = 0;
+        if (resolvable instanceof PropertyFileDescriptor) {
+            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolvable;
+            int keys = descriptor.getMaster() == null ? descriptor.getKeys() : descriptor.getMaster().getKeys();
+            if(keys>0)
+            {
+                EList<Review> reviews = descriptor.getReviews();
+                yellowWidth = (int) (reviews.size()*100/(double)keys);
+                greenWidth -= yellowWidth;
+            }
+        }
+        return new Point(greenWidth, yellowWidth);
+
+    }
+
+    private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {
+        StringBuilder hrefBuilder = new StringBuilder();
+        LabelSwitch labelSwitch = new LabelSwitch();
+        StringBuilder name = new StringBuilder();
+        name.append(labelSwitch.doSwitch(resolvable));
+        if (resolvable.getParent() == null)
+            hrefBuilder.append("/");
+        else if (resolvable.getParent() instanceof Workspace)
+            hrefBuilder.append(endsOnSlash ? resolvable.getName() : "workspace/" + resolvable.getName());
+        else
+            hrefBuilder.append(endsOnSlash ? resolvable.getName() : resolvable.getParent().getName() + "/" + resolvable.getName());
+
+        Resolvable<?, ?> folder = (Resolvable<?, ?>) resolvable;
+        if(folder instanceof ResourceFolder)
+        {
+            // if it is a folder, squash more children, if there is only one
+            while (folder.getChildren().size() == 1) {
+                folder = folder.getChildren().get(0);
+                hrefBuilder.append("/");
+                hrefBuilder.append(folder.getName());
+                name.append("/");
+                name.append(labelSwitch.doSwitch(folder));
+            }
+        }
+        LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
+        return target;
+
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        Resolvable<?, ?> object = getModelObject();
+        while(object!=null) {
+            if (object instanceof Project) {
+                Project project = (Project) object;
+                return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
+            }
+            else if (object instanceof Workspace) {
+                return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,CommonPermissions.ACTION_VIEW);
+            }
+            object = object.getParent();
+        }
+        return null;
+    }
 }
 
 class LinkTarget
 {
-	private String label;
-	private String href;
-	private Resolvable<?, ?> endPoint;
-	public LinkTarget(String label, String href, Resolvable<?, ?> endPoint) {
-		super();
-		this.label = label;
-		this.href = href;
-		this.endPoint = endPoint;
-	}
-	
-	public Resolvable<?, ?> getEndPoint() {
-		return endPoint;
-	}
-	
-	public String getHref() {
-		return href;
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-	
+    private String label;
+    private String href;
+    private Resolvable<?, ?> endPoint;
+    public LinkTarget(String label, String href, Resolvable<?, ?> endPoint) {
+        super();
+        this.label = label;
+        this.href = href;
+        this.endPoint = endPoint;
+    }
+
+    public Resolvable<?, ?> getEndPoint() {
+        return endPoint;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
 }
 
 class LabelSwitch extends PropertiesSwitch<String> {
-	@Override
-	public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
-		return object.getName();
-	}
+    @Override
+    public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
+        return object.getName();
+    }
 
-	@Override
-	public String caseProjectLocale(ProjectLocale object) {
-		if (object.getLocale() != null)
-			return object.getLocale().getDisplayName();
-		return "Template";
-	}
+    @Override
+    public String caseProjectLocale(ProjectLocale object) {
+        if (object.getLocale() != null)
+            return object.getLocale().getDisplayName();
+        return "Template";
+    }
 
-	@Override
-	public String caseWorkspace(Workspace object) {
-		return "Workspace";
-	}
+    @Override
+    public String caseWorkspace(Workspace object) {
+        return "Workspace";
+    }
 }
 
 class Summary extends PropertiesSwitch<String> {
-	@Override
-	public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
-		return object.getPercentComplete()+"% complete";
-	}
+    @Override
+    public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
+        return object.getPercentComplete()+"% complete";
+    }
 
-	@Override
-	public String caseProjectLocale(ProjectLocale object) {
-		if(object.getParent()==null && object.getParent().getTemplate()==null)
-			return null;
-		ProjectLocale template = object.getParent().getTemplate();
-		int propertyCount = template.getPropertyCount();
-		int translatedCount = object.getPropertyCount();
-		String message = "{0} of {1} translated ({2}%)";
-		message = MessageFormat.format(message, translatedCount,propertyCount,object.getPercentComplete());
-		return message;
-	}
-	
-	@Override
-	public String casePropertyFileDescriptor(PropertyFileDescriptor object) {
-		int propertyCount = object.getKeys();
-		if(object.isMaster())
-		{
-			String message = "{0} keys";
-			message = MessageFormat.format(message, propertyCount);
-			return message; 
-		}
-		else
-		{
-			int templateCount = object.getMaster().getKeys();
-			String message = "{0} of {1} translated ({2}%)";
-			message = MessageFormat.format(message, propertyCount, templateCount, object.getPercentComplete());
-			return message;
-			
-		}
-	}
+    @Override
+    public String caseProjectLocale(ProjectLocale object) {
+        if(object.getParent()==null && object.getParent().getTemplate()==null)
+            return null;
+        ProjectLocale template = object.getParent().getTemplate();
+        int propertyCount = template.getPropertyCount();
+        int translatedCount = object.getPropertyCount();
+        String message = "{0} of {1} translated ({2}%)";
+        message = MessageFormat.format(message, translatedCount,propertyCount,object.getPercentComplete());
+        return message;
+    }
+
+    @Override
+    public String casePropertyFileDescriptor(PropertyFileDescriptor object) {
+        int propertyCount = object.getKeys();
+        if(object.isMaster())
+        {
+            String message = "{0} keys";
+            message = MessageFormat.format(message, propertyCount);
+            return message;
+        }
+        else
+        {
+            int templateCount = object.getMaster().getKeys();
+            String message = "{0} of {1} translated ({2}%)";
+            message = MessageFormat.format(message, propertyCount, templateCount, object.getPercentComplete());
+            return message;
+
+        }
+    }
 
 }
 
 
 class ImageSwitch extends PropertiesSwitch<Item<?>> {
 
-	private transient Item<?> item;
+    private transient Item<?> item;
 
-	public ImageSwitch(Item<?> item) {
-		super();
-		this.item = item;
-	}
+    public ImageSwitch(Item<?> item) {
+        super();
+        this.item = item;
+    }
 
-	@Override
-	public Item<?> caseProject(Project object) {
-		return addCSSIcon("icon-folder-close");
-	}
+    @Override
+    public Item<?> caseProject(Project object) {
+        return addCSSIcon("icon-folder-close");
+    }
 
-	@Override
-	public Item<?> caseProjectLocale(ProjectLocale object) {
-		if(object.getLocale()==null)
-			return addCSSIcon("icon-book");
-		WebMarkupContainer markupContainer = new WebMarkupContainer("css-icon");
-		item.add(markupContainer);
-		markupContainer.setVisible(false);
-		
-		Image image = new Image("regular-image", WicketUtil.getIconForLocale(object.getLocale()));
-		item.add(image);
-		return item;
-	}
+    @Override
+    public Item<?> caseProjectLocale(ProjectLocale object) {
+        if(object.getLocale()==null)
+            return addCSSIcon("icon-book");
+        WebMarkupContainer markupContainer = new WebMarkupContainer("css-icon");
+        item.add(markupContainer);
+        markupContainer.setVisible(false);
 
-	@Override
-	public Item<?> caseProjectVersion(ProjectVersion object) {
-		return addCSSIcon("icon-time");
-	}
+        Image image = new Image("regular-image", WicketUtil.getIconForLocale(object.getLocale()));
+        item.add(image);
+        return item;
+    }
 
-	@Override
-	public Item<?> caseResourceFolder(ResourceFolder object) {
-		return addCSSIcon("icon-folder-open");
-	}
+    @Override
+    public Item<?> caseProjectVersion(ProjectVersion object) {
+        return addCSSIcon("icon-time");
+    }
 
-	@Override
-	public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> Item<?> caseResolvable(Resolvable<P, C> object) {
-		return addCSSIcon("icon-file");
-	}
+    @Override
+    public Item<?> caseResourceFolder(ResourceFolder object) {
+        return addCSSIcon("icon-folder-open");
+    }
 
-	protected Item<?> addCSSIcon(String icon) {
-		WebMarkupContainer markupContainer = new WebMarkupContainer("css-icon");
-		item.add(markupContainer);
-		markupContainer.add(new AttributeModifier("class", icon));
-		Image image = new Image("regular-image", "not-there.gif");
-		image.setVisible(false);
-		item.add(image);
-		return item;
-	}
-	
+    @Override
+    public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> Item<?> caseResolvable(Resolvable<P, C> object) {
+        return addCSSIcon("icon-file");
+    }
+
+    protected Item<?> addCSSIcon(String icon) {
+        WebMarkupContainer markupContainer = new WebMarkupContainer("css-icon");
+        item.add(markupContainer);
+        markupContainer.add(new AttributeModifier("class", icon));
+        Image image = new Image("regular-image", "not-there.gif");
+        image.setVisible(false);
+        item.add(image);
+        return item;
+    }
+
 }

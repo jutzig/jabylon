@@ -17,143 +17,143 @@ import de.jutzig.jabylon.rest.ui.model.ProgressionModel;
 
 public class ProgressPanel extends Panel {
 
-	private ProgressionModel model;
-	private boolean started;
-	private CustomFeedbackPanel feedbackPanel;
-	private WebMarkupContainer container;
+    private ProgressionModel model;
+    private boolean started;
+    private CustomFeedbackPanel feedbackPanel;
+    private WebMarkupContainer container;
 
-	public ProgressPanel(String id, ProgressionModel model) {
-		super(id, model);
-		this.model = model;
-		feedbackPanel = new CustomFeedbackPanel("feedbackPanel"); //$NON-NLS-1$
-		add(feedbackPanel);
-		
-		container = new WebMarkupContainer("container"); //$NON-NLS-1$
-		add(container);
-		WebComponent bar = new WebComponent("bar"); //$NON-NLS-1$
-		bar.add(new AttributeModifier("style", getWidthModel(model))); //$NON-NLS-1$
-		container.add(bar);
-		Label taskname = new Label("taskname", getTaskNameModel(model)); //$NON-NLS-1$
-		container.add(taskname);
-		Label subtask = new Label("subtask", getSubTaskModel(model)); //$NON-NLS-1$
-		container.add(subtask);
-		setVisible(false);
-	}
+    public ProgressPanel(String id, ProgressionModel model) {
+        super(id, model);
+        this.model = model;
+        feedbackPanel = new CustomFeedbackPanel("feedbackPanel"); //$NON-NLS-1$
+        add(feedbackPanel);
 
-	private IModel<String> getWidthModel(final IModel<Progression> model) {
-		return new AbstractReadOnlyModel<String>() {
+        container = new WebMarkupContainer("container"); //$NON-NLS-1$
+        add(container);
+        WebComponent bar = new WebComponent("bar"); //$NON-NLS-1$
+        bar.add(new AttributeModifier("style", getWidthModel(model))); //$NON-NLS-1$
+        container.add(bar);
+        Label taskname = new Label("taskname", getTaskNameModel(model)); //$NON-NLS-1$
+        container.add(taskname);
+        Label subtask = new Label("subtask", getSubTaskModel(model)); //$NON-NLS-1$
+        container.add(subtask);
+        setVisible(false);
+    }
 
-			private static final long serialVersionUID = 1L;
+    private IModel<String> getWidthModel(final IModel<Progression> model) {
+        return new AbstractReadOnlyModel<String>() {
 
-			@Override
-			public String getObject() {
-				return "width: " + model.getObject().getCompletion() + "%;"; //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		};
-	}
+            private static final long serialVersionUID = 1L;
 
-	private IModel<String> getTaskNameModel(final IModel<Progression> model) {
-		return new AbstractReadOnlyModel<String>() {
+            @Override
+            public String getObject() {
+                return "width: " + model.getObject().getCompletion() + "%;"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        };
+    }
 
-			private static final long serialVersionUID = 1L;
+    private IModel<String> getTaskNameModel(final IModel<Progression> model) {
+        return new AbstractReadOnlyModel<String>() {
 
-			@Override
-			public String getObject() {
-				return model.getObject().getTaskName();
-			}
-		};
-	}
+            private static final long serialVersionUID = 1L;
 
-	private IModel<String> getSubTaskModel(final IModel<Progression> model) {
-		return new AbstractReadOnlyModel<String>() {
+            @Override
+            public String getObject() {
+                return model.getObject().getTaskName();
+            }
+        };
+    }
 
-			private static final long serialVersionUID = 1L;
+    private IModel<String> getSubTaskModel(final IModel<Progression> model) {
+        return new AbstractReadOnlyModel<String>() {
 
-			@Override
-			public String getObject() {
-				return model.getObject().getSubTaskName();
-			}
-		};
-	}
+            private static final long serialVersionUID = 1L;
 
-	public void start(AjaxRequestTarget target, final ProgressCallback callback) {
+            @Override
+            public String getObject() {
+                return model.getObject().getSubTaskName();
+            }
+        };
+    }
 
-		setVisible(true);
-		container.setVisible(true);
+    public void start(AjaxRequestTarget target, final ProgressCallback callback) {
 
-		add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
+        setVisible(true);
+        container.setVisible(true);
 
-			private static final long serialVersionUID = 1L;
+        add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 
-			@Override
-			protected void onPostProcessTarget(AjaxRequestTarget target) {
-				if (!started && callback != null) {
-					callback.progressStart(target, getModel());
-					started = true;
-				}
-				ProgressionModel model = getModel();
-				callback.progressStart(target, model);
-				Progression progression = model.getObject();
+            private static final long serialVersionUID = 1L;
 
-				if (progression.isDone()) {
-					// stop the self update
-					stop(target);
-					if (!progression.getStatus().isOK()) {
-						addFeedbackMessage(progression.getStatus());
-						container.setVisible(false);
+            @Override
+            protected void onPostProcessTarget(AjaxRequestTarget target) {
+                if (!started && callback != null) {
+                    callback.progressStart(target, getModel());
+                    started = true;
+                }
+                ProgressionModel model = getModel();
+                callback.progressStart(target, model);
+                Progression progression = model.getObject();
 
-					} else
-						ProgressPanel.this.setVisible(false);
-					if (callback != null)
-						callback.progressDone(target, getModel());
-				}
-			}
+                if (progression.isDone()) {
+                    // stop the self update
+                    stop(target);
+                    if (!progression.getStatus().isOK()) {
+                        addFeedbackMessage(progression.getStatus());
+                        container.setVisible(false);
 
-		});
-		if (getParent() != null) {
-			target.add(getParent());
-		} else {
-			target.add(this);
-		}
-	}
+                    } else
+                        ProgressPanel.this.setVisible(false);
+                    if (callback != null)
+                        callback.progressDone(target, getModel());
+                }
+            }
 
-	protected void addFeedbackMessage(IStatus status) {
-		if (status == null)
-			return;
-		String message = status.getMessage();
-		if (status.getException() != null && status.getException().getMessage() != null) {
-			if (message == null || message.isEmpty())
-				message = status.getException().getMessage();
-			else
-				message += " : " + status.getException().getMessage(); //$NON-NLS-1$
-		}
-		if (message == null)
-			return;
-		switch (status.getSeverity()) {
-		case IStatus.INFO:
-			feedbackPanel.info(message);
-			break;
-		case IStatus.ERROR:
-			feedbackPanel.error(message);
-			break;
-		case IStatus.WARNING:
-			feedbackPanel.warn(message);
-			break;
-		case IStatus.OK:
-			feedbackPanel.success(message);
-			break;
-		default:
-			break;
-		}
-	}
+        });
+        if (getParent() != null) {
+            target.add(getParent());
+        } else {
+            target.add(this);
+        }
+    }
 
-	public ProgressionModel getModel() {
-		return model;
-	}
+    protected void addFeedbackMessage(IStatus status) {
+        if (status == null)
+            return;
+        String message = status.getMessage();
+        if (status.getException() != null && status.getException().getMessage() != null) {
+            if (message == null || message.isEmpty())
+                message = status.getException().getMessage();
+            else
+                message += " : " + status.getException().getMessage(); //$NON-NLS-1$
+        }
+        if (message == null)
+            return;
+        switch (status.getSeverity()) {
+        case IStatus.INFO:
+            feedbackPanel.info(message);
+            break;
+        case IStatus.ERROR:
+            feedbackPanel.error(message);
+            break;
+        case IStatus.WARNING:
+            feedbackPanel.warn(message);
+            break;
+        case IStatus.OK:
+            feedbackPanel.success(message);
+            break;
+        default:
+            break;
+        }
+    }
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 2573454585436627297L;
+    public ProgressionModel getModel() {
+        return model;
+    }
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2573454585436627297L;
 
 }

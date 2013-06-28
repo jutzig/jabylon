@@ -10,22 +10,22 @@ import de.jutzig.jabylon.security.CommonPermissions;
 
 public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public WebMarkupContainer doCreateContents(String id, IModel<Workspace> input, Preferences prefs) {
-		return new WorkspaceConfigSection(id, input, prefs);
-	}
+    @Override
+    public WebMarkupContainer doCreateContents(String id, IModel<Workspace> input, Preferences prefs) {
+        return new WorkspaceConfigSection(id, input, prefs);
+    }
 
-	@Override
-	public void commit(IModel<Workspace> input, Preferences config) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void commit(IModel<Workspace> input, Preferences config) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public String getRequiredPermission() {
-		return CommonPermissions.WORKSPACE_CONFIG;
-	}
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        return CommonPermissions.WORKSPACE_CONFIG;
+    }
 
 }

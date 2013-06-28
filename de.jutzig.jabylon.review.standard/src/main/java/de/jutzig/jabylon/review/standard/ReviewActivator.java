@@ -15,39 +15,39 @@ import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
  *
  */
 public class ReviewActivator extends Plugin implements BundleActivator {
-	private static ReviewActivator INSTANCE;
-	public static final String PLUGIN_ID = "de.jutzig.jabylon.review.standard";
-	private PropertyPersistenceService persistenceService;
-	private ServiceReference<PropertyPersistenceService> persistenceReference;
+    private static ReviewActivator INSTANCE;
+    public static final String PLUGIN_ID = "de.jutzig.jabylon.review.standard";
+    private PropertyPersistenceService persistenceService;
+    private ServiceReference<PropertyPersistenceService> persistenceReference;
 
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		INSTANCE = this;
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        INSTANCE = this;
 
-	}
+    }
 
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-		INSTANCE = null;
-		persistenceService = null;
-		if(persistenceReference!=null)
-			context.ungetService(persistenceReference);
-	}
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        super.stop(context);
+        INSTANCE = null;
+        persistenceService = null;
+        if(persistenceReference!=null)
+            context.ungetService(persistenceReference);
+    }
 
 
-	public static ReviewActivator getDefault() {
-		return INSTANCE;
-	}
+    public static ReviewActivator getDefault() {
+        return INSTANCE;
+    }
 
-	public PropertyPersistenceService getPersistenceService()
-	{
-		if(persistenceService==null)
-		{
-			persistenceReference = getBundle().getBundleContext().getServiceReference(PropertyPersistenceService.class);
-			persistenceService = getBundle().getBundleContext().getService(persistenceReference);
-		}
-		return persistenceService;
-	}
+    public PropertyPersistenceService getPersistenceService()
+    {
+        if(persistenceService==null)
+        {
+            persistenceReference = getBundle().getBundleContext().getServiceReference(PropertyPersistenceService.class);
+            persistenceService = getBundle().getBundleContext().getService(persistenceReference);
+        }
+        return persistenceService;
+    }
 }

@@ -4,6 +4,6 @@ import java.io.Serializable;
 
 public enum ResourceFilter implements Serializable{
 
-	ALL, INSTALLED, UPDATEABLE, PLUGIN, INSTALLABLE;
-	
+    ALL, INSTALLED, UPDATEABLE, PLUGIN, INSTALLABLE;
+
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.tools.internal;
 
@@ -35,66 +35,66 @@ import de.jutzig.jabylon.ui.tools.SuggestionAcceptor;
  */
 public class TerminologyTool implements PropertyEditorTool {
 
-	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
-	private BeanItemContainer<Property> container;
-	private Map<String, Property> terminology;
-	private SuggestionAcceptor acceptor;
+    private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
+    private BeanItemContainer<Property> container;
+    private Map<String, Property> terminology;
+    private SuggestionAcceptor acceptor;
 
-	/**
-	 * 
-	 */
-	public TerminologyTool() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     *
+     */
+    public TerminologyTool() {
+        // TODO Auto-generated constructor stub
+    }
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#selectionChanged(de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem, java.util.Collection)
-	 */
-	@Override
-	public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor) {
-		Property property = currentSelection.getSourceProperty();
-		String value = property.getValue();
-		container.removeAllItems();
-		this.acceptor  = acceptor;
-		if(terminology!=null)
-			tokenize(value);
-	}
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#selectionChanged(de.jutzig.jabylon.ui.container.PropertyPairContainer.PropertyPairItem, java.util.Collection)
+     */
+    @Override
+    public void selectionChanged(PropertyPairItem currentSelection, Collection<Review> reviews, SuggestionAcceptor acceptor) {
+        Property property = currentSelection.getSourceProperty();
+        String value = property.getValue();
+        container.removeAllItems();
+        this.acceptor  = acceptor;
+        if(terminology!=null)
+            tokenize(value);
+    }
 
-	private void tokenize(String value) {
-		if(value==null)
-			return;
-		StringTokenizer tokenizer = new StringTokenizer(value, TERMINOLOGY_DELIMITER);
-		while(tokenizer.hasMoreTokens())
-		{
-			String token = tokenizer.nextToken();
-			Property property = terminology.get(token);
-			if(property!=null)
-			{
-				container.addBean(property);
-			}
-			
-		}
-		
-	}
+    private void tokenize(String value) {
+        if(value==null)
+            return;
+        StringTokenizer tokenizer = new StringTokenizer(value, TERMINOLOGY_DELIMITER);
+        while(tokenizer.hasMoreTokens())
+        {
+            String token = tokenizer.nextToken();
+            Property property = terminology.get(token);
+            if(property!=null)
+            {
+                container.addBean(property);
+            }
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#init(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.PropertyFileDescriptor)
-	 */
-	@Override
-	public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
-		 terminology = null;
-		 PropertyFileDescriptor descriptor = getTerminology(translation);
-		 if(descriptor==null)
-			 return;
-		 terminology = descriptor.loadProperties().asMap();
-		 
-	}
+        }
 
-	/* (non-Javadoc)
-	 * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#createComponent()
-	 */
-	@Override
-	public Component createComponent() {
+    }
+
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#init(de.jutzig.jabylon.properties.PropertyFileDescriptor, de.jutzig.jabylon.properties.PropertyFileDescriptor)
+     */
+    @Override
+    public void init(PropertyFileDescriptor template, PropertyFileDescriptor translation) {
+         terminology = null;
+         PropertyFileDescriptor descriptor = getTerminology(translation);
+         if(descriptor==null)
+             return;
+         terminology = descriptor.loadProperties().asMap();
+
+    }
+
+    /* (non-Javadoc)
+     * @see de.jutzig.jabylon.ui.tools.PropertyEditorTool#createComponent()
+     */
+    @Override
+    public Component createComponent() {
         Table table = new Table();
         table.setSizeFull();
         table.addStyleName(JabylonStyle.TABLE_STRIPED.getCSSName());
@@ -108,50 +108,50 @@ public class TerminologyTool implements PropertyEditorTool {
         table.setColumnExpandRatio("value", 1f);
         table.setColumnHeaders(new String[]{"Term","Translation"});
         table.addListener(new ItemClickListener() {
-			
-			@Override
-			public void itemClick(ItemClickEvent event) {
-				if(event.isDoubleClick())
-				{
-					@SuppressWarnings("unchecked")
-					BeanItem<Property> item = ((BeanItem<Property>) event.getItem());
-					Property property = item.getBean();
-					acceptor.append(property.getValue());
-				}
-				
-			}
-		});
+
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                if(event.isDoubleClick())
+                {
+                    @SuppressWarnings("unchecked")
+                    BeanItem<Property> item = ((BeanItem<Property>) event.getItem());
+                    Property property = item.getBean();
+                    acceptor.append(property.getValue());
+                }
+
+            }
+        });
         table.setItemDescriptionGenerator(new ItemDescriptionGenerator() {
-			
-			@Override
-			public String generateDescription(Component source, Object itemId, Object propertyId) {
-				if (itemId instanceof Property) {
-					Property property = (Property) itemId;
-					String comment = property.getComment();
-					if(comment==null || comment.length()==0)
-						return "Double click to copy a value to the editor";
-					return comment;
-				}
-				return "Double click to copy a value to the editor";
-			}
-		});
+
+            @Override
+            public String generateDescription(Component source, Object itemId, Object propertyId) {
+                if (itemId instanceof Property) {
+                    Property property = (Property) itemId;
+                    String comment = property.getComment();
+                    if(comment==null || comment.length()==0)
+                        return "Double click to copy a value to the editor";
+                    return comment;
+                }
+                return "Double click to copy a value to the editor";
+            }
+        });
         return table;
-	}
-	
-	private PropertyFileDescriptor getTerminology(PropertyFileDescriptor descriptor)
-	{
-		Locale locale = descriptor.getProjectLocale().getLocale();
-		Workspace workspace = descriptor.getProjectLocale().getParent().getParent().getParent();
-		ProjectVersion terminology = workspace.getTerminology();
-		if(terminology==null)
-			return null;
-		ProjectLocale projectLocale = terminology.getProjectLocale(locale);
-		if(projectLocale==null)
-			return null;
-		EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-		if(descriptors.isEmpty())
-			return null;
-		return descriptors.get(0);
-	}
+    }
+
+    private PropertyFileDescriptor getTerminology(PropertyFileDescriptor descriptor)
+    {
+        Locale locale = descriptor.getProjectLocale().getLocale();
+        Workspace workspace = descriptor.getProjectLocale().getParent().getParent().getParent();
+        ProjectVersion terminology = workspace.getTerminology();
+        if(terminology==null)
+            return null;
+        ProjectLocale projectLocale = terminology.getProjectLocale(locale);
+        if(projectLocale==null)
+            return null;
+        EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
+        if(descriptors.isEmpty())
+            return null;
+        return descriptors.get(0);
+    }
 
 }

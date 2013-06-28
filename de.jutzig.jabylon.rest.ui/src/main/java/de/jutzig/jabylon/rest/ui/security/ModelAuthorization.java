@@ -13,11 +13,11 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ModelAuthorization {
 
-	/**
-	 * The permissions that are required to execute this action
-	 * 
-	 * @return The permissions that are required to execute this action. Returns a zero length array by default
-	 */
-	String[] value() default { };
-	
+    /**
+     * The permissions that are required to execute this action
+     *
+     * @return The permissions that are required to execute this action. Returns a zero length array by default
+     */
+    String[] value() default { };
+
 }

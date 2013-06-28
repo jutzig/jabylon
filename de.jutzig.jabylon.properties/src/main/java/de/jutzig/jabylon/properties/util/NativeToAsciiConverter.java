@@ -9,7 +9,7 @@ public class NativeToAsciiConverter {
     private static final char[] HEX_DIGITS = {
         '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'
     };
-	
+
     /**
      * Converts encoded &#92;uxxxx to unicode chars
      * and changes special saved chars to their original forms
@@ -74,9 +74,9 @@ public class NativeToAsciiConverter {
         }
         return outBuffer.toString();
     }
-	
-	
-	
+
+
+
     /**
      * Converts unicodes to encoded &#92;uxxxx.
      * @param str string to convert
@@ -90,7 +90,7 @@ public class NativeToAsciiConverter {
         for (int x = 0; x < len; x++) {
             char aChar = str.charAt(x);
             if(aChar=='\n' || aChar=='\r') //leave the newlines alone
-            	outBuffer.append(aChar);
+                outBuffer.append(aChar);
             else if ((aChar < 0x0020) || (aChar > 0x007e)) {
                 outBuffer.append('\\');
                 outBuffer.append('u');
@@ -104,7 +104,7 @@ public class NativeToAsciiConverter {
         }
         return outBuffer.toString();
     }
-    
+
     /**
      * Converts a nibble to a hex character
      * @param nibble  the nibble to convert.

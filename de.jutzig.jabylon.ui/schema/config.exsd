@@ -23,21 +23,21 @@
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute translatable="true"/>
@@ -62,7 +62,7 @@
          <attribute name="section" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="de.jutzig.jabylon.ui.config.AbstractConfigSection:de.jutzig.jabylon.ui.config.ConfigSection"/>
@@ -72,7 +72,7 @@
          <attribute name="title" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute translatable="true"/>
@@ -82,7 +82,7 @@
          <attribute name="tab" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute kind="identifier" basedOn="de.jutzig.jabylon.ui.configTab/tab/@tabID"/>
@@ -107,7 +107,7 @@
          <attribute name="requires" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute kind="identifier" basedOn="de.jutzig.jabylon.security.permission/permission/@name"/>

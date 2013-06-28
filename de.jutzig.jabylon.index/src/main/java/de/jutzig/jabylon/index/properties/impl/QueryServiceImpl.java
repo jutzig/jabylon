@@ -49,133 +49,133 @@ import de.jutzig.jabylon.properties.Workspace;
 @Service
 public class QueryServiceImpl implements QueryService {
 
-	
-	private static final Logger logger = LoggerFactory.getLogger(QueryServiceImpl.class);
 
-	@Reference
-	private URIResolver uriResolver;
-	
-	
-	public void bindUriResolver(URIResolver uriResolver) {
-		this.uriResolver = uriResolver;
-	}
-	
-	public void unbindUriResolver(URIResolver uriResolver) {
-		this.uriResolver = null;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * de.jutzig.jabylon.index.properties.QueryService#search(java.lang.String)
-	 */
-	@Override
-	public SearchResult search(String search, String scopeURI) {
-		search = search.toLowerCase();
-		Query q = constructQuery(uriResolver.resolve(scopeURI), search);
-		return search(q,1000);
+    private static final Logger logger = LoggerFactory.getLogger(QueryServiceImpl.class);
 
-	}
+    @Reference
+    private URIResolver uriResolver;
 
-	private Query constructQuery(Object scope, String search) {
-		BooleanQuery query = new BooleanQuery();
-		if (query instanceof Workspace) {
-			//nothing to do
-		} else if (scope instanceof Project) {
-			Project project = (Project) scope;
-			query.add(createProjectQuery(project),Occur.MUST);
-		} else if (scope instanceof ProjectVersion) {
-			ProjectVersion version = (ProjectVersion) scope;
-			query.add(createProjectQuery(version.getParent()), Occur.MUST);
-			query.add(createVersionQuery(version), Occur.MUST);
 
-		} else if (scope instanceof ProjectLocale) {
-			ProjectLocale locale = (ProjectLocale) scope;
-			query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
-			query.add(createVersionQuery(locale.getParent()), Occur.MUST);
-			query.add(createLocaleQuery(locale), Occur.MUST);
-		}
-		else if (scope instanceof ResourceFolder) {
-			ResourceFolder folder = (ResourceFolder) scope;
-			ProjectLocale locale = folder.getProjectLocale();
-			query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
-			query.add(createVersionQuery(locale.getParent()), Occur.MUST);
-			query.add(createLocaleQuery(locale), Occur.MUST);
-			query.add(new PrefixQuery(new Term(QueryService.FIELD_FULL_PATH,folder.fullPath().path())), Occur.MUST);
-		}
-		else if (scope instanceof PropertyFileDescriptor) {
-			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) scope;
-			query.add(createProjectQuery(descriptor.getProjectLocale().getParent().getParent()), Occur.MUST);
-			query.add(createVersionQuery(descriptor.getProjectLocale().getParent()), Occur.MUST);
-			query.add(createLocaleQuery(descriptor.getProjectLocale()), Occur.MUST);
-			query.add(createDescriptorQuery(descriptor), Occur.MUST);
-		}		
-		MultiFieldQueryParser queryParser = new MultiFieldQueryParser(Version.LUCENE_35, new String[] {FIELD_COMMENT, FIELD_KEY, FIELD_VALUE}, new StandardAnalyzer(Version.LUCENE_35));
-		try {
-			Query userQuery = queryParser.parse(search);
-			query.add(userQuery, Occur.MUST);
-		} catch (ParseException e) {
-			throw new RuntimeException(e.getMessage(),e);
-		}
-		//TODO: should master files be searchable too?
-		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT); //exclude all masters from the search
-		return query;
-	}
+    public void bindUriResolver(URIResolver uriResolver) {
+        this.uriResolver = uriResolver;
+    }
 
-	private TermQuery createLocaleQuery(ProjectLocale locale) {
-		return new TermQuery(new Term(FIELD_LOCALE, locale.getLocale().toString()));
-	}
+    public void unbindUriResolver(URIResolver uriResolver) {
+        this.uriResolver = null;
+    }
 
-	private TermQuery createVersionQuery(ProjectVersion version) {
-		return new TermQuery(new Term(FIELD_VERSION, version.getName()));
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * de.jutzig.jabylon.index.properties.QueryService#search(java.lang.String)
+     */
+    @Override
+    public SearchResult search(String search, String scopeURI) {
+        search = search.toLowerCase();
+        Query q = constructQuery(uriResolver.resolve(scopeURI), search);
+        return search(q,1000);
 
-	private TermQuery createProjectQuery(Project project) {
-		TermQuery query = new TermQuery(new Term(FIELD_PROJECT, project.getName()));
-		return query;
-	}
+    }
 
-	private TermQuery createDescriptorQuery(PropertyFileDescriptor descriptor) {
-		return new TermQuery(new Term(FIELD_FULL_PATH, descriptor.fullPath().toString()));
-	}
+    private Query constructQuery(Object scope, String search) {
+        BooleanQuery query = new BooleanQuery();
+        if (query instanceof Workspace) {
+            //nothing to do
+        } else if (scope instanceof Project) {
+            Project project = (Project) scope;
+            query.add(createProjectQuery(project),Occur.MUST);
+        } else if (scope instanceof ProjectVersion) {
+            ProjectVersion version = (ProjectVersion) scope;
+            query.add(createProjectQuery(version.getParent()), Occur.MUST);
+            query.add(createVersionQuery(version), Occur.MUST);
 
-	@Override
-	public SearchResult search(Query query, int maxHits) {
+        } else if (scope instanceof ProjectLocale) {
+            ProjectLocale locale = (ProjectLocale) scope;
+            query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
+            query.add(createVersionQuery(locale.getParent()), Occur.MUST);
+            query.add(createLocaleQuery(locale), Occur.MUST);
+        }
+        else if (scope instanceof ResourceFolder) {
+            ResourceFolder folder = (ResourceFolder) scope;
+            ProjectLocale locale = folder.getProjectLocale();
+            query.add(createProjectQuery(locale.getParent().getParent()), Occur.MUST);
+            query.add(createVersionQuery(locale.getParent()), Occur.MUST);
+            query.add(createLocaleQuery(locale), Occur.MUST);
+            query.add(new PrefixQuery(new Term(QueryService.FIELD_FULL_PATH,folder.fullPath().path())), Occur.MUST);
+        }
+        else if (scope instanceof PropertyFileDescriptor) {
+            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) scope;
+            query.add(createProjectQuery(descriptor.getProjectLocale().getParent().getParent()), Occur.MUST);
+            query.add(createVersionQuery(descriptor.getProjectLocale().getParent()), Occur.MUST);
+            query.add(createLocaleQuery(descriptor.getProjectLocale()), Occur.MUST);
+            query.add(createDescriptorQuery(descriptor), Occur.MUST);
+        }
+        MultiFieldQueryParser queryParser = new MultiFieldQueryParser(Version.LUCENE_35, new String[] {FIELD_COMMENT, FIELD_KEY, FIELD_VALUE}, new StandardAnalyzer(Version.LUCENE_35));
+        try {
+            Query userQuery = queryParser.parse(search);
+            query.add(userQuery, Occur.MUST);
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        }
+        //TODO: should master files be searchable too?
+        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT); //exclude all masters from the search
+        return query;
+    }
 
-		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-		IndexSearcher searcher = null;
-		try {
-			IndexReader reader = IndexReader.open(directory, true);
-			searcher = new IndexSearcher(reader);
-			TopDocs result = searcher.search(query, maxHits);
+    private TermQuery createLocaleQuery(ProjectLocale locale) {
+        return new TermQuery(new Term(FIELD_LOCALE, locale.getLocale().toString()));
+    }
 
-			return new SearchResult(searcher, result);
+    private TermQuery createVersionQuery(ProjectVersion version) {
+        return new TermQuery(new Term(FIELD_VERSION, version.getName()));
+    }
 
-		} catch (CorruptIndexException e) {
-			logger.error("Error during search "+query,e);
-		} catch (IOException e) {
-			logger.error("Error during search "+query,e);
-		}
-		return null;
-	}
+    private TermQuery createProjectQuery(Project project) {
+        TermQuery query = new TermQuery(new Term(FIELD_PROJECT, project.getName()));
+        return query;
+    }
 
-	@Override
-	public PropertyFileDescriptor getDescriptor(Document doc) {
-		String cdoID = doc.get(FIELD_CDO_ID);
-		CDOID id = CDOIDUtil.read(cdoID);
-		Object object = null;
-		try {
-			object = uriResolver.resolve(id);
-		} catch (ObjectNotFoundException e) {
-			return null;
-		}
-		if (object instanceof PropertyFileDescriptor) {
-			PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-			return descriptor;
-		}
-		return null;
-	}
+    private TermQuery createDescriptorQuery(PropertyFileDescriptor descriptor) {
+        return new TermQuery(new Term(FIELD_FULL_PATH, descriptor.fullPath().toString()));
+    }
+
+    @Override
+    public SearchResult search(Query query, int maxHits) {
+
+        Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
+        IndexSearcher searcher = null;
+        try {
+            IndexReader reader = IndexReader.open(directory, true);
+            searcher = new IndexSearcher(reader);
+            TopDocs result = searcher.search(query, maxHits);
+
+            return new SearchResult(searcher, result);
+
+        } catch (CorruptIndexException e) {
+            logger.error("Error during search "+query,e);
+        } catch (IOException e) {
+            logger.error("Error during search "+query,e);
+        }
+        return null;
+    }
+
+    @Override
+    public PropertyFileDescriptor getDescriptor(Document doc) {
+        String cdoID = doc.get(FIELD_CDO_ID);
+        CDOID id = CDOIDUtil.read(cdoID);
+        Object object = null;
+        try {
+            object = uriResolver.resolve(id);
+        } catch (ObjectNotFoundException e) {
+            return null;
+        }
+        if (object instanceof PropertyFileDescriptor) {
+            PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
+            return descriptor;
+        }
+        return null;
+    }
 
 
 }

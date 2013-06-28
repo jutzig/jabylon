@@ -1,33 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.jutzig.jabylon.maven.repository</artifactId>
-	<packaging>pom</packaging>
-	<groupId>de.jutzig.jabylon</groupId>
-	<version>1.0.0-SNAPSHOT</version>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<id>package</id>
-						<phase>package</phase>
-						<goals>
-							<goal>to-maven</goal>
-						</goals>
-						<inherited>false</inherited>
-						<configuration>
-							<eclipseDir>/home/joe/Desktop/targetplatform</eclipseDir>
-							<deployTo>id::default::file:///home/joe/Desktop/targetplatform/maven</deployTo>
-							<stripQualifier>true</stripQualifier>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>de.jutzig.jabylon.maven.repository</artifactId>
+    <packaging>pom</packaging>
+    <groupId>de.jutzig.jabylon</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>to-maven</goal>
+                        </goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <eclipseDir>/home/joe/Desktop/targetplatform</eclipseDir>
+                            <deployTo>id::default::file:///home/joe/Desktop/targetplatform/maven</deployTo>
+                            <stripQualifier>true</stripQualifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

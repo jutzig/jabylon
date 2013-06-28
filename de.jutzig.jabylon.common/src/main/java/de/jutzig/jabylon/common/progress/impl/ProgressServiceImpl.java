@@ -25,79 +25,79 @@ import de.jutzig.jabylon.common.progress.RunnableWithProgress;
 @Service(ProgressService.class)
 public class ProgressServiceImpl implements ProgressService {
 
-	private AtomicLong id = new AtomicLong();
-	private ExecutorService pool = Executors.newFixedThreadPool(10);
-	private Cache<Long, RunnableWrapper> jobs = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS).build();
-	private static final Logger logger = LoggerFactory.getLogger(ProgressService.class);
-	
-	@Override
-	public long schedule(RunnableWithProgress task) {
-		long currentID = id.getAndIncrement();
-		RunnableWrapper wrapper = new RunnableWrapper(task, new ProgressionImpl());
-		jobs.put(currentID, wrapper);
-		pool.execute(wrapper);
-		return currentID;
-	}
+    private AtomicLong id = new AtomicLong();
+    private ExecutorService pool = Executors.newFixedThreadPool(10);
+    private Cache<Long, RunnableWrapper> jobs = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS).build();
+    private static final Logger logger = LoggerFactory.getLogger(ProgressService.class);
 
-	@Override
-	public Progression progressionOf(long id) {
-		RunnableWrapper wrapper = jobs.getIfPresent(id);
-		if(wrapper!=null)
-			return (Progression) wrapper.getMonitor();
-		return null;
-	}
+    @Override
+    public long schedule(RunnableWithProgress task) {
+        long currentID = id.getAndIncrement();
+        RunnableWrapper wrapper = new RunnableWrapper(task, new ProgressionImpl());
+        jobs.put(currentID, wrapper);
+        pool.execute(wrapper);
+        return currentID;
+    }
 
-	@Override
-	public void cancel(long id) {
-		RunnableWrapper wrapper = jobs.getIfPresent(id);
-		if(wrapper!=null)
-			wrapper.getMonitor().setCanceled(true);
+    @Override
+    public Progression progressionOf(long id) {
+        RunnableWrapper wrapper = jobs.getIfPresent(id);
+        if(wrapper!=null)
+            return (Progression) wrapper.getMonitor();
+        return null;
+    }
 
-	}
+    @Override
+    public void cancel(long id) {
+        RunnableWrapper wrapper = jobs.getIfPresent(id);
+        if(wrapper!=null)
+            wrapper.getMonitor().setCanceled(true);
 
-	@Override
-	@Deactivate
-	public void shutdown() {
-		pool.shutdown();
+    }
 
-	}
+    @Override
+    @Deactivate
+    public void shutdown() {
+        pool.shutdown();
 
-
-
-	class RunnableWrapper implements Runnable {
-		private RunnableWithProgress progressRunnable;
-
-		private ProgressionImpl monitor;
-		
+    }
 
 
-		public RunnableWrapper(RunnableWithProgress progressRunnable, ProgressionImpl monitor) {
-			super();
-			this.progressRunnable = progressRunnable;
-			this.monitor = monitor;
-		}
 
-		@Override
-		public void run() {
-			try {
-				IStatus result = progressRunnable.run(monitor);
-				if(result==null)
-					result = Status.OK_STATUS;
-				monitor.setStatus(result);
-			} catch(Exception e)
-			{
-				logger.error("Runnable failed: "+progressRunnable,e);
-				monitor.setStatus(new Status(IStatus.ERROR, "de.jutzig.jabylon.common", null,e));
-			}
-			finally {
-				monitor.done();
-			}
+    class RunnableWrapper implements Runnable {
+        private RunnableWithProgress progressRunnable;
 
-		}
-		
-		public IProgressMonitor getMonitor() {
-			return monitor;
-		}
+        private ProgressionImpl monitor;
 
-	}
+
+
+        public RunnableWrapper(RunnableWithProgress progressRunnable, ProgressionImpl monitor) {
+            super();
+            this.progressRunnable = progressRunnable;
+            this.monitor = monitor;
+        }
+
+        @Override
+        public void run() {
+            try {
+                IStatus result = progressRunnable.run(monitor);
+                if(result==null)
+                    result = Status.OK_STATUS;
+                monitor.setStatus(result);
+            } catch(Exception e)
+            {
+                logger.error("Runnable failed: "+progressRunnable,e);
+                monitor.setStatus(new Status(IStatus.ERROR, "de.jutzig.jabylon.common", null,e));
+            }
+            finally {
+                monitor.done();
+            }
+
+        }
+
+        public IProgressMonitor getMonitor() {
+            return monitor;
+        }
+
+    }
 }

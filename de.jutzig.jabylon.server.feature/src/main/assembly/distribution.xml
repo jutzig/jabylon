@@ -13,15 +13,15 @@
     </file>
   </files>
   <fileSets>
-  	<fileSet>
-  		<directory>target/site</directory>
-  		<outputDirectory>/</outputDirectory>
-  		<includes>
-  			<include>plugins/*</include>
-  			<include>features/*</include>
-  		</includes>
-  	</fileSet>
+      <fileSet>
+          <directory>target/site</directory>
+          <outputDirectory>/</outputDirectory>
+          <includes>
+              <include>plugins/*</include>
+              <include>features/*</include>
+          </includes>
+      </fileSet>
   </fileSets>
   <baseDirectory>/</baseDirectory>
-  
+
 </assembly>

@@ -9,13 +9,13 @@ import org.osgi.service.prefs.Preferences;
 import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
 
 public interface ConfigSection<T> extends Serializable, RestrictedComponent{
-	
-	WebMarkupContainer createContents(String id, IModel<T> input, Preferences config);
-	
-	void apply(Preferences config);
-	
-	void commit(IModel<T> input, Preferences config);
-	
-	boolean isVisible(IModel<T> input, Preferences config);
-	
+
+    WebMarkupContainer createContents(String id, IModel<T> input, Preferences config);
+
+    void apply(Preferences config);
+
+    void commit(IModel<T> input, Preferences config);
+
+    boolean isVisible(IModel<T> input, Preferences config);
+
 }

@@ -10,14 +10,14 @@ import de.jutzig.jabylon.properties.Review;
  */
 public interface ReviewParticipant {
 
-	public Review review(PropertyFileDescriptor descriptor, Property master, Property slave);
-	
-	String PROPERTY_ID = "id";
-	
-	String getID();
-	
-	String getDescription();
-	
-	String getName();
-	
+    public Review review(PropertyFileDescriptor descriptor, Property master, Property slave);
+
+    String PROPERTY_ID = "id";
+
+    String getID();
+
+    String getDescription();
+
+    String getName();
+
 }

@@ -7,9 +7,9 @@ import de.jutzig.jabylon.rest.ui.wicket.PanelFactory;
 
 public interface PropertyEditorTool extends PanelFactory<PropertyPair>, Serializable{
 
-	
-	String getName();
-	
-	int getPrecedence();
-	
+
+    String getName();
+
+    int getPrecedence();
+
 }

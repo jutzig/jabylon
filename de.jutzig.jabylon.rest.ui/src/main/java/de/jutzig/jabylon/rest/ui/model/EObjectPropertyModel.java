@@ -7,21 +7,21 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 public class EObjectPropertyModel<T, P  extends CDOObject> extends ChainingModel<T> {
 
-	private static final long serialVersionUID = 1L;
-	
-	private String featureName;
+    private static final long serialVersionUID = 1L;
+
+    private String featureName;
 
     public EObjectPropertyModel(IModel<P> model, EStructuralFeature feature)
     {
         super(model);
         this.featureName = feature.getName();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public T getObject()
     {
-    	P object = getDomainObject();
+        P object = getDomainObject();
         return (T)object.eGet(object.eClass().getEStructuralFeature(featureName));
     }
 
@@ -32,11 +32,11 @@ public class EObjectPropertyModel<T, P  extends CDOObject> extends ChainingModel
         domainObject.eSet(domainObject.eClass().getEStructuralFeature(featureName), object);
     }
 
-	@SuppressWarnings("unchecked")
-	private P getDomainObject() {
-		return (P) getChainedModel().getObject();
-	}
-    
-    
+    @SuppressWarnings("unchecked")
+    private P getDomainObject() {
+        return (P) getChainedModel().getObject();
+    }
+
+
 
 }

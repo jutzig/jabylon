@@ -12,31 +12,31 @@ public abstract class ListEditor<T> extends RepeatingView
                              implements IFormModelUpdateListener
 {
 
-	private static final long serialVersionUID = 1L;
-	private List<T> items;
- 
+    private static final long serialVersionUID = 1L;
+    private List<T> items;
+
     public ListEditor(String id, IModel<List<T>> model)
     {
         super(id, model);
     }
- 
+
     protected abstract void onPopulateItem(ListItem<T> item);
- 
+
     public void addItem(T value)
     {
         items.add(value);
-        ListItem<T> item = new ListItem<T>(newChildId(), 
+        ListItem<T> item = new ListItem<T>(newChildId(),
                                               items.size() - 1);
         add(item);
         onPopulateItem(item);
     }
- 
+
     protected void onBeforeRender()
     {
         if (!hasBeenRendered())
         {
-        	@SuppressWarnings("unchecked")
-			List<T> list = (List<T>) getDefaultModelObject();
+            @SuppressWarnings("unchecked")
+            List<T> list = (List<T>) getDefaultModelObject();
             items = new ArrayList<T>(list);
             for (int i = 0; i < items.size(); i++)
             {
@@ -47,7 +47,7 @@ public abstract class ListEditor<T> extends RepeatingView
         }
         super.onBeforeRender();
     }
- 
+
     public void updateModel()
     {
         setDefaultModelObject(items);

@@ -8,14 +8,14 @@ import de.jutzig.jabylon.rest.ui.model.EObjectModel;
 
 public class BasicResolvablePanel<T extends Resolvable<?, ?>> extends BasicPanel<T> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public BasicResolvablePanel(String id, T object, PageParameters parameters) {
-		super(id,new EObjectModel<T>(object),parameters);
-	}
-	
-	public BasicResolvablePanel(String id, IModel<T> model, PageParameters parameters) {
-		super(id,model,parameters);
-	}
-	
+    public BasicResolvablePanel(String id, T object, PageParameters parameters) {
+        super(id,new EObjectModel<T>(object),parameters);
+    }
+
+    public BasicResolvablePanel(String id, IModel<T> model, PageParameters parameters) {
+        super(id,model,parameters);
+    }
+
 }

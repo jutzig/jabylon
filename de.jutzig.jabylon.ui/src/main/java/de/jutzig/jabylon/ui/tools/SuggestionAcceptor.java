@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.ui.tools;
 
@@ -8,9 +8,9 @@ package de.jutzig.jabylon.ui.tools;
  *
  */
 public interface SuggestionAcceptor {
-	
-	void append(String suggestion);
-	
-	void replace(String suggestion);
-	
+
+    void append(String suggestion);
+
+    void replace(String suggestion);
+
 }

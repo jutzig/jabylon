@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
@@ -39,66 +39,66 @@ import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
  */
 public class WorkspaceConfigSection extends GenericPanel<Workspace> {
 
-	private static final long serialVersionUID = -5358263608301930488L;
-	private static final Logger logger = LoggerFactory.getLogger(WorkspaceConfigSection.class);
+    private static final long serialVersionUID = -5358263608301930488L;
+    private static final Logger logger = LoggerFactory.getLogger(WorkspaceConfigSection.class);
 
-	public WorkspaceConfigSection(String id, IModel<Workspace> object, Preferences prefs) {
-		super(id, object);
-		add(buildAddNewLink(object));
-		ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
-		ListView<Project> project = new ListView<Project>("projects",provider) {
+    public WorkspaceConfigSection(String id, IModel<Workspace> object, Preferences prefs) {
+        super(id, object);
+        add(buildAddNewLink(object));
+        ComplexEObjectListDataProvider<Project> provider = new ComplexEObjectListDataProvider<Project>(object, PropertiesPackage.Literals.RESOLVABLE__CHILDREN);
+        ListView<Project> project = new ListView<Project>("projects",provider) {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(ListItem<Project> item) {
-				
-				item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(item.getModelObject())));
-				item.add(new Label("project-name",item.getModelObject().getName()));
-				item.add(createDeleteAction(item.getModel()));
-			}
-		};
-		add(project);
-	}
+            @Override
+            protected void populateItem(ListItem<Project> item) {
 
-	private Component buildAddNewLink(IModel<Workspace> model) {
-		PageParameters params = WicketUtil.buildPageParametersFor(model.getObject());
-		params.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT.getName());
-		return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
-	}
-	
-	protected Component createDeleteAction(final IModel<Project> model) {
+                item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class,WicketUtil.buildPageParametersFor(item.getModelObject())));
+                item.add(new Label("project-name",item.getModelObject().getName()));
+                item.add(createDeleteAction(item.getModel()));
+            }
+        };
+        add(project);
+    }
 
-		Button button = new IndicatingAjaxButton("delete") {
+    private Component buildAddNewLink(IModel<Workspace> model) {
+        PageParameters params = WicketUtil.buildPageParametersFor(model.getObject());
+        params.add(SettingsPanel.QUERY_PARAM_CREATE, PropertiesPackage.Literals.PROJECT.getName());
+        return new BookmarkablePageLink<Void>("addNew", SettingsPage.class, params);
+    }
 
-			private static final long serialVersionUID = 1L;
+    protected Component createDeleteAction(final IModel<Project> model) {
 
-			@Override
-			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+        Button button = new IndicatingAjaxButton("delete") {
 
-				Project project = model.getObject();
-				CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-				project = transaction.getObject(project);
+            private static final long serialVersionUID = 1L;
 
-				try {
-					File directory = new File(project.absolutPath().toFileString());
-					FileUtil.delete(directory);
-					project.getParent().getChildren().remove(project);
-					transaction.commit();
-					setResponsePage(SettingsPage.class);
-				} catch (CommitException e) {
-					logger.error("Commit failed",e);
-					getSession().error(e.getMessage());
-				} finally {
-					transaction.close();
-				}
-			}
+            @Override
+            protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+
+                Project project = model.getObject();
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                project = transaction.getObject(project);
+
+                try {
+                    File directory = new File(project.absolutPath().toFileString());
+                    FileUtil.delete(directory);
+                    project.getParent().getChildren().remove(project);
+                    transaction.commit();
+                    setResponsePage(SettingsPage.class);
+                } catch (CommitException e) {
+                    logger.error("Commit failed",e);
+                    getSession().error(e.getMessage());
+                } finally {
+                    transaction.close();
+                }
+            }
 
 
-		};
+        };
 //		button.add(new AttributeModifier("onclick", "return confirm('Are you sure you want to delete this version?');"));
-		button.setDefaultFormProcessing(false);
-		return button;
-	}
+        button.setDefaultFormProcessing(false);
+        return button;
+    }
 
 }

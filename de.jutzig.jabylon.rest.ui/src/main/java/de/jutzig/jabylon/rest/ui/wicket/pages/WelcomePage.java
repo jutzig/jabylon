@@ -6,8 +6,8 @@ import de.jutzig.jabylon.properties.Workspace;
 
 public class WelcomePage extends ResourcePage<Workspace> {
 
-	public WelcomePage(PageParameters parameters) {
-		super(parameters);
-	}
+    public WelcomePage(PageParameters parameters) {
+        super(parameters);
+    }
 
 }

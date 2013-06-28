@@ -4,6 +4,6 @@ import de.jutzig.jabylon.ui.components.Section;
 
 public class DynamicConfigSection extends Section {
 
-	
-	
+
+
 }

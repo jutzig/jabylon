@@ -12,42 +12,42 @@ import de.jutzig.jabylon.properties.Resolvable;
 
 public class ConfigTab <T extends Resolvable<?, ?>> implements ITab {
 
-	private static final long serialVersionUID = 1L;
-	private String title;
-	private List<ConfigSection<T>> sections;
-	private IModel<T> model;
-	private Preferences preferences;
+    private static final long serialVersionUID = 1L;
+    private String title;
+    private List<ConfigSection<T>> sections;
+    private IModel<T> model;
+    private Preferences preferences;
 
-	
-	public ConfigTab(String title, List<ConfigSection<T>> sections, IModel<T> model, Preferences preferences) {
-		this.title = title;
-		this.sections = sections;
-		this.model = model;
-		this.preferences = preferences;
-		
-	}
-	
-	@Override
-	public IModel<String> getTitle() {
-		return Model.of(title);
-	}
 
-	@Override
-	public WebMarkupContainer getPanel(String containerId) {	
-		
-		ConfigTabPanel panel = new ConfigTabPanel(containerId, sections, model, preferences);
-		return panel;
-	}
+    public ConfigTab(String title, List<ConfigSection<T>> sections, IModel<T> model, Preferences preferences) {
+        this.title = title;
+        this.sections = sections;
+        this.model = model;
+        this.preferences = preferences;
 
-	@Override
-	public boolean isVisible() {
-		if(sections==null)
-			return false;
-		for (ConfigSection<T> section : sections) {
-			if(section.isVisible(model, preferences))
-				return true;
-		}
-		return false;
-	}
+    }
+
+    @Override
+    public IModel<String> getTitle() {
+        return Model.of(title);
+    }
+
+    @Override
+    public WebMarkupContainer getPanel(String containerId) {
+
+        ConfigTabPanel panel = new ConfigTabPanel(containerId, sections, model, preferences);
+        return panel;
+    }
+
+    @Override
+    public boolean isVisible() {
+        if(sections==null)
+            return false;
+        for (ConfigSection<T> section : sections) {
+            if(section.isVisible(model, preferences))
+                return true;
+        }
+        return false;
+    }
 
 }

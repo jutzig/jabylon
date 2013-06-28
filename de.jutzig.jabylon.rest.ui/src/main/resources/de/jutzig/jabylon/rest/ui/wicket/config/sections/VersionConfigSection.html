@@ -1,40 +1,40 @@
 <html xmlns:wicket="http://wicket.apache.org">
 
 <wicket:panel>
-	<div class="control-group">
-		<label class="control-label" for="inputName"><wicket:message key="VersionConfigSection.name.input">Branch or Tag name</wicket:message></label>
-		<div class="controls">
-			<input type="text" id="inputName" wicket:id="inputName" wicket:message="placeholder:VersionConfigSection.name.placeholder"
-				placeholder="Name">
-		</div>
-	</div>
-	<div class="row" wicket:id="rowPanel">
-		<div class="span6">
-			<div class="control-group">
-				<label class="control-label" for="inputLanguage"><wicket:message key="VersionConfigSection.language">Language</wicket:message></label>
-				<div class="controls">
-					<input type="text" wicket:id="inputLanguage" id="inputLanguage">
-				</div>
-				<label class="control-label" for="inputCountry"><wicket:message key="VersionConfigSection.country">Country</wicket:message></label>
-				<div class="controls">
-					<input type="text" wicket:id="inputCountry" id="inputCountry">
-				</div>
-				<label class="control-label" for="inputVariant"><wicket:message key="VersionConfigSection.variant">Variant</wicket:message></label>
-				<div class="controls">
-					<input type="text" wicket:id="inputVariant" id="inputVariant">
-				</div>
-			</div>
-			<div class="control-group">
-				<a href="#" class="btn btn-primary" wicket:id="addLocale"><wicket:message key="VersionConfigSection.add.button">Add</wicket:message></a>
-				<a href="#" class="btn btn-danger" wicket:id="removeLocale"><wicket:message key="VersionConfigSection.remove.button">Remove</wicket:message></a>
-			</div>
+    <div class="control-group">
+        <label class="control-label" for="inputName"><wicket:message key="VersionConfigSection.name.input">Branch or Tag name</wicket:message></label>
+        <div class="controls">
+            <input type="text" id="inputName" wicket:id="inputName" wicket:message="placeholder:VersionConfigSection.name.placeholder"
+                placeholder="Name">
+        </div>
+    </div>
+    <div class="row" wicket:id="rowPanel">
+        <div class="span6">
+            <div class="control-group">
+                <label class="control-label" for="inputLanguage"><wicket:message key="VersionConfigSection.language">Language</wicket:message></label>
+                <div class="controls">
+                    <input type="text" wicket:id="inputLanguage" id="inputLanguage">
+                </div>
+                <label class="control-label" for="inputCountry"><wicket:message key="VersionConfigSection.country">Country</wicket:message></label>
+                <div class="controls">
+                    <input type="text" wicket:id="inputCountry" id="inputCountry">
+                </div>
+                <label class="control-label" for="inputVariant"><wicket:message key="VersionConfigSection.variant">Variant</wicket:message></label>
+                <div class="controls">
+                    <input type="text" wicket:id="inputVariant" id="inputVariant">
+                </div>
+            </div>
+            <div class="control-group">
+                <a href="#" class="btn btn-primary" wicket:id="addLocale"><wicket:message key="VersionConfigSection.add.button">Add</wicket:message></a>
+                <a href="#" class="btn btn-danger" wicket:id="removeLocale"><wicket:message key="VersionConfigSection.remove.button">Remove</wicket:message></a>
+            </div>
 
-		</div>
-		<div class="span6">
+        </div>
+        <div class="span6">
 
-			<select wicket:id="children"></select>
-		</div>
-	</div>
+            <select wicket:id="children"></select>
+        </div>
+    </div>
 
 </wicket:panel>
 </html>

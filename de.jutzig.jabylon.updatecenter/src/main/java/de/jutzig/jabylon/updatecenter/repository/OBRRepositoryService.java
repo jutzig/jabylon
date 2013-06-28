@@ -7,14 +7,14 @@ import org.osgi.framework.Bundle;
 
 public interface OBRRepositoryService {
 
-	List<Bundle> listInstalledBundles();
-	
-	List<Resource> getAvailableResources(ResourceFilter filter);
-	
-	Resource[] findResources(String id);
-	
-	void install(String resourceId);
-	
-	void install(Resource... resource);
+    List<Bundle> listInstalledBundles();
+
+    List<Resource> getAvailableResources(ResourceFilter filter);
+
+    Resource[] findResources(String id);
+
+    void install(String resourceId);
+
+    void install(Resource... resource);
 
 }
