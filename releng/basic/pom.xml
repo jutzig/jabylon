@@ -62,19 +62,11 @@
 			<artifactId>common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>de.jutzig.jabylon</groupId>
-			<artifactId>index</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>de.jutzig.jabylon</groupId>
 			<artifactId>properties</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>de.jutzig.jabylon</groupId>
 			<artifactId>resources</artifactId>
