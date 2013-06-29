@@ -272,13 +272,11 @@
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>common</artifactId>
                 <version>3.6.100</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>preferences</artifactId>
                 <version>3.5.0</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
@@ -294,13 +292,11 @@
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>registry</artifactId>
                 <version>3.5.200</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.core</groupId>
                 <artifactId>runtime</artifactId>
                 <version>3.8.0</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.core</groupId>

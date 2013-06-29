@@ -36,7 +36,7 @@
                         <Embed-Dependency>quartz</Embed-Dependency>
                         <Embed-Directory>lib</Embed-Directory>
                         <Embed-StripVersion>true</Embed-StripVersion>
-                        <Import-Package>!com.mchange.v2.c3p0,!javax.*,*</Import-Package>
+                        <Import-Package>!com.mchange.v2.c3p0,!javax.*,*;common=!;core=!;registry=!</Import-Package>
                         <Bundle-ActivationPolicy>!</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
