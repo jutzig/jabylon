@@ -179,6 +179,17 @@ public class PropertiesHelperTest {
 		assertEquals("key = test\\\ntest\n", writer.toString());
 
 	}
+	
+
+	@Test
+	public void testWritePropertyWindowsMultiline() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue("test\r\ntest");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = test\\\r\ntest\n", writer.toString());
+
+	}	
 
 	@Test
 	public void testWritePropertyKeyMultiline() throws IOException {
@@ -189,6 +200,15 @@ public class PropertiesHelperTest {
 		assertEquals("key\\\nkey = test\n", writer.toString());
 
 	}
+	
+	@Test
+	public void testReadPropertyWindowsMultiline() throws IOException {
+		BufferedReader reader = asReader("key = test\\\r\ntest\n");
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		//TODO: could be discussed how this could be handled differently
+		assertEquals("Currently all linefeeds are read as \n","test\ntest", property.getValue());
+	}	
 
 	@Test
 	public void testWritePropertyMultilineComment() throws IOException {
@@ -254,4 +274,9 @@ public class PropertiesHelperTest {
     	Property property = fixture.readProperty(new BufferedReader(new InputStreamReader(in)));
     	assertNull(property);
 	}
+    
+    protected BufferedReader asReader(String string)
+    {
+    	return new BufferedReader(new StringReader(string));
+    }
 }
