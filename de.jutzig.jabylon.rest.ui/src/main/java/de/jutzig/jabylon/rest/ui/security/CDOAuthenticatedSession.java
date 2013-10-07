@@ -136,12 +136,12 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
                     logger.info("User {} logged in for the first time. Creating DB Entry");
                     final User newUser = UsersFactory.eINSTANCE.createUser();
                     newUser.setName(username);
-                    CommonPermissions.addDefaultPermissions(management,user);
 
                     user = TransactionUtil.commit(management, new Modification<UserManagement, User>() {
 
                         @Override
                         public User apply(UserManagement object) {
+                        	CommonPermissions.addDefaultPermissions(object, newUser);
                             applyAttributes(newUser,subject);
                             object.getUsers().add(newUser);
                             return newUser;
