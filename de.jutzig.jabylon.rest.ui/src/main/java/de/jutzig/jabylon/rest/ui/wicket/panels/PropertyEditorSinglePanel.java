@@ -210,7 +210,11 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
                     }
 
                     propertyPersistence.saveProperties(descriptor, file);
-                    getSession().info("Saved successfully");
+                    /*
+                     * see https://github.com/jutzig/jabylon/issues/112
+                     * for now we deactivate the successful message to not bother the user
+                     * getSession().info("Saved successfully");
+                     */
                 }
 
                 IFormSubmitter submitter = findSubmittingButton();
