@@ -4,6 +4,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -64,6 +65,8 @@ public class BreadcrumbPanel<T> extends BasicPanel<T> {
     }
 
     private List<String> computeSegments(PageParameters pageParameters) {
+    	if(pageParameters==null)
+    		return Collections.emptyList();
         int size = pageParameters.getIndexedCount();
         List<String> segments = new ArrayList<String>(size+1);
         //add a null to go to the root
