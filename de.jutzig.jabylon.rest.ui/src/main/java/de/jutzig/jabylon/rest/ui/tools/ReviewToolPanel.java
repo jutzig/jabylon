@@ -1,6 +1,9 @@
 package de.jutzig.jabylon.rest.ui.tools;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +57,8 @@ public class ReviewToolPanel extends GenericPanel<PropertyPair> {
 
             }
         }
+        
+        DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT,getSession().getLocale());
 
         RepeatingView view = new RepeatingView("reviews");
         for (Review review : matchingReviews) {
@@ -63,6 +68,8 @@ public class ReviewToolPanel extends GenericPanel<PropertyPair> {
             c.add(label);
             c.add(new Label("message", review.getMessage()));
             c.add(new Label("description", review.getReviewType()));
+            String created = review.getCreated() > 0 ? formatter.format(new Date(review.getCreated())) : "";
+            c.add(new Label("created", created));
             view.add(c);
         }
         addOrReplace(view);

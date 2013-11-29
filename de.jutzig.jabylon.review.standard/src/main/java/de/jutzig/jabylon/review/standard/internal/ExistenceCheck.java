@@ -52,6 +52,7 @@ public class ExistenceCheck implements ReviewParticipant {
         if(slave != null)
         {
             Review review = PropertiesFactory.eINSTANCE.createReview();
+            review.setCreated(System.currentTimeMillis());
             String message = "The key ''{0}'' is missing in the template language";
             message = MessageFormat.format(message, slave.getKey());
             review.setMessage(message);

@@ -45,6 +45,7 @@ public class PunctuationCheck implements ReviewParticipant {
             if(occ!=0)
             {
                 Review review = PropertiesFactory.eINSTANCE.createReview();
+                review.setCreated(System.currentTimeMillis());
                 String message;
                 if(occ<0)
                     message = "Translation contains more ''{0}'' characters than the template.";

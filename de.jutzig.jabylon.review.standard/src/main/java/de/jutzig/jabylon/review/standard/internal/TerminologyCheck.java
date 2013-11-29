@@ -123,6 +123,7 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
         {
             Entry<String, String> next = mustFinds.entrySet().iterator().next();
             Review review = PropertiesFactory.eINSTANCE.createReview();
+            review.setCreated(System.currentTimeMillis());
             review.setState(ReviewState.OPEN);
             review.setSeverity(Severity.ERROR);
             String message = "Template language contained the term ''{0}'' but the terminology translation ''{1}'' is missing";

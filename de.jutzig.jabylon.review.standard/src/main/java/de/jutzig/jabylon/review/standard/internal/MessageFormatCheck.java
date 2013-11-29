@@ -57,6 +57,7 @@ public class MessageFormatCheck implements ReviewParticipant {
 			if(!masterPatterns.contains(pattern))
 			{
 				Review review = PropertiesFactory.eINSTANCE.createReview();
+				review.setCreated(System.currentTimeMillis());
 				String message = "Translation contains message format ''{0}'' which is not present in the template language";
 				review.setMessage(MessageFormat.format(message, pattern));
 				review.setUser("Jabylon");

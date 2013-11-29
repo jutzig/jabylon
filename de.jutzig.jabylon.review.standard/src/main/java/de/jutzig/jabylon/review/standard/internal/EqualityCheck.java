@@ -35,6 +35,7 @@ public class EqualityCheck implements ReviewParticipant {
             if(masterValue.equals(slaveValue))
             {
                 Review review = PropertiesFactory.eINSTANCE.createReview();
+                review.setCreated(System.currentTimeMillis());
                 review.setMessage("Template and translated string are identical");
                 review.setReviewType("Equality Check");
                 review.setSeverity(Severity.WARNING);

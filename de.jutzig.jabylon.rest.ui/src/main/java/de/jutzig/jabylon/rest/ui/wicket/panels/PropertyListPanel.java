@@ -2,11 +2,14 @@ package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -152,12 +155,23 @@ public class PropertyListPanel
             reviews = createInMemoryReview(propertyPair);
 
         RepeatingView view = new RepeatingView("reviews");
+        DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT,getSession().getLocale());
         for (Review review : reviews)
         {
             Label label = new Label(view.newChildId(), review.getReviewType());
             label.add(new AttributeAppender("class", getLabelClass(review)));
+            StringBuilder title = new StringBuilder();
             if (review.getMessage() != null)
-                label.add(new AttributeModifier("title", review.getMessage()));
+            	title.append(review.getMessage());
+            if(review.getCreated()>0)
+            {
+            	if(title.length()>0)
+            		//add a linebreak
+            		title.append("\n");
+            	title.append(formatter.format(new Date(review.getCreated())));
+            }
+            if(title.length()>0)
+            	label.add(new AttributeModifier("title", title.toString()));
             view.add(label);
         }
 
