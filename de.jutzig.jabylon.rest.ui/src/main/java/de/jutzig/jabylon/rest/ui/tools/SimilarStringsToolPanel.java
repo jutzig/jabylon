@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.index.properties.SearchResult;
+import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
@@ -87,6 +88,9 @@ public class SimilarStringsToolPanel
             protected void populateItem(ListItem<Similarity> item)
             {
                 Similarity similarity = item.getModelObject();
+                Label kind = new Label("kind", "");
+                kind.setVisible(similarity.isSameProject());
+                item.add(kind);
                 item.add(new Label("template", similarity.getOriginal()));
                 item.add(new Label("translation", similarity.getTranslation()));
                 item.add(new AttributeAppender("title", similarity.getFullPath()));
@@ -116,6 +120,7 @@ public class SimilarStringsToolPanel
         PropertyPair pair = model.getObject();
         if (pair == null || pair.getOriginal() == null)
             return Collections.emptyList();
+        
         FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(10, new StandardAnalyzer(Version.LUCENE_35));
         query.addTerms(pair.getOriginal(), QueryService.FIELD_VALUE, 0.6f, 3);
         //make sure we only look for templates, not translations
@@ -194,14 +199,18 @@ public class SimilarStringsToolPanel
             //that would mean we found the current property, which is (of course) similar :-)
             if(pair.getKey().equals(key) && slave.cdoID().equals(pair.getDescriptorID()))
                 return null;
-
+            Project project = descriptor.getProjectLocale().getParent().getParent();
+            URI originalProjectPath = project.fullPath();
+            String resultPath = masterDoc.get(QueryService.FIELD_FULL_PATH);
+            boolean isSameProject = resultPath.startsWith(originalProjectPath.path());
             Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE),
                                                    translationDoc.get(QueryService.FIELD_VALUE),
                                                    score,
                                                    masterDoc.get(QueryService.FIELD_FULL_PATH),
                                                    slave.toURI().toString(),
                                                    key,
-                                                   hitNumber);
+                                                   hitNumber,
+                                                   isSameProject);
             return similarity;
         }
         finally {
@@ -231,6 +240,7 @@ public class SimilarStringsToolPanel
         private String key;
         /** the order number is to make sure compareTo never returns 0 */
         private int orderNumber;
+		private boolean sameProject;
 
 
         public Similarity(String original,
@@ -239,7 +249,7 @@ public class SimilarStringsToolPanel
                           String fullPath,
                           String uri,
                           String key,
-                          int orderNumber)
+                          int orderNumber, boolean sameProject)
         {
             super();
             this.original = original;
@@ -249,6 +259,7 @@ public class SimilarStringsToolPanel
             this.uri = uri;
             this.key = key;
             this.orderNumber = orderNumber;
+            this.sameProject = sameProject;
         }
 
 
@@ -286,7 +297,11 @@ public class SimilarStringsToolPanel
         {
             return uri;
         }
-
+        
+        public boolean isSameProject() 
+        {
+			return sameProject;
+		}
 
         @Override
         public int hashCode()
