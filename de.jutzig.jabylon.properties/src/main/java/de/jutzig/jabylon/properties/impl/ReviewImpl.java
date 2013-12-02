@@ -262,10 +262,13 @@ public class ReviewImpl extends CDOObjectImpl implements Review {
     /**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public long getCreated() {
-		return (Long)eDynamicGet(PropertiesPackage.REVIEW__CREATED, PropertiesPackage.Literals.REVIEW__CREATED, true, true);
+		Long value = (Long)eDynamicGet(PropertiesPackage.REVIEW__CREATED, PropertiesPackage.Literals.REVIEW__CREATED, true, true);
+		if(value!=null)
+		    return value;
+		return 0l;
 	}
 
 				/**
