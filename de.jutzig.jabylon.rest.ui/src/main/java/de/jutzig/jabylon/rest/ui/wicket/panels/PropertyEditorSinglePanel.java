@@ -220,13 +220,27 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
                 IFormSubmitter submitter = findSubmittingButton();
                 if (submitter instanceof Button) {
                     Button button = (Button) submitter;
-                    if (button.getId().equals("next")) {
+                    if (button.getId().equals("next")) 
+                    {
                         if (nextModel != null && nextModel.getObject() != null)
                             setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));
-                    } else {
-                        if (previousModel != null && previousModel.getObject() != null)
-                            setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
+                        else
+                        {
+                        	// there is no next. go to overview
+                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));                        	
+                        }
+                        
+                    } else  
+                    {
+                    	if (previousModel != null && previousModel.getObject() != null)
+                    		setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
+                    	else
+                        {
+                        	// there is no next. go to overview
+                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));                        	
+                        }
                     }
+                    
                 }
             }
 
