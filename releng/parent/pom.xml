@@ -80,8 +80,33 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>2.5.1</version>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                    only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                    <executions>
+                        <execution>
+                            <id>clean-manifest</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                            <inherited>true</inherited>
+                            <configuration>
+                                <filesets>
+                                    <fileset>
+                                        <directory>META-INF</directory>
+                                        <includes>
+                                            <include>MANIFEST.MF</include>
+                                        </includes>
+                                    </fileset>
+                                </filesets>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse
+                    m2e settings only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -220,7 +245,8 @@
                             <tasks>
                                 <copy
                                     file="${project.build.directory}/scr-plugin-generated/OSGI-INF/serviceComponents.xml"
-                                    toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr" />
+                                    toDir="${basedir}/OSGI-INF"
+                                    failonerror="false" overwrite="tr" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -447,8 +473,8 @@
             <dependency>
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
-                <!-- need version with qualifier here, to disambiguate from non-bundle
-                    artifact in central -->
+                <!-- need version with qualifier here, to disambiguate from
+                    non-bundle artifact in central -->
                 <version>0.1.41-v201101211617</version>
             </dependency>
             <dependency>

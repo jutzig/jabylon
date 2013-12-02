@@ -36,6 +36,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ import de.jutzig.jabylon.properties.PropertiesFactory;
 import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
+import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.wicket.pages.ResourcePage;
 
@@ -120,7 +122,8 @@ public class SimilarStringsToolPanel
         PropertyPair pair = model.getObject();
         if (pair == null || pair.getOriginal() == null)
             return Collections.emptyList();
-        
+
+        Project project = getProject(pair);
         FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(10, new StandardAnalyzer(Version.LUCENE_35));
         query.addTerms(pair.getOriginal(), QueryService.FIELD_VALUE, 0.6f, 3);
         //make sure we only look for templates, not translations
@@ -141,7 +144,7 @@ public class SimilarStringsToolPanel
             try
             {
                 Document document = result.getSearcher().doc(scoreDoc.doc);
-                Similarity similarity = createSimilarity(document, pair.getLanguage(), (int)(scoreDoc.score * 100),hitNumber++);
+                Similarity similarity = createSimilarity(document, pair.getLanguage(), (int)(scoreDoc.score * 100),hitNumber++,project);
                 if (similarity == null)
                     continue;
                 resultList.add(similarity);
@@ -170,7 +173,26 @@ public class SimilarStringsToolPanel
     }
 
 
-    private Similarity createSimilarity(Document masterDoc, Locale language, int score, int hitNumber)
+    private Project getProject(PropertyPair pair)
+    {
+        try
+        {
+            CDOObject object = Activator.getDefault().getRepositoryLookup().resolve(pair.getDescriptorID());
+            if (object instanceof PropertyFileDescriptor)
+            {
+                PropertyFileDescriptor descriptor = (PropertyFileDescriptor)object;
+                return descriptor.getProjectLocale().getParent().getParent();
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error("Failed to lookup project for "+pair);
+        }
+        return null;
+    }
+
+
+    private Similarity createSimilarity(Document masterDoc, Locale language, int score, int hitNumber, Project originalProject)
         throws CorruptIndexException, IOException
     {
         PropertyFileDescriptor descriptor = queryService.getDescriptor(masterDoc);
@@ -199,10 +221,9 @@ public class SimilarStringsToolPanel
             //that would mean we found the current property, which is (of course) similar :-)
             if(pair.getKey().equals(key) && slave.cdoID().equals(pair.getDescriptorID()))
                 return null;
-            Project project = descriptor.getProjectLocale().getParent().getParent();
-            URI originalProjectPath = project.fullPath();
+            URI originalProjectPath = originalProject.fullPath();
             String resultPath = masterDoc.get(QueryService.FIELD_FULL_PATH);
-            boolean isSameProject = resultPath.startsWith(originalProjectPath.path());
+            boolean isSameProject = resultPath.startsWith(originalProjectPath.path()+"/");
             Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE),
                                                    translationDoc.get(QueryService.FIELD_VALUE),
                                                    score,
@@ -297,8 +318,8 @@ public class SimilarStringsToolPanel
         {
             return uri;
         }
-        
-        public boolean isSameProject() 
+
+        public boolean isSameProject()
         {
 			return sameProject;
 		}
