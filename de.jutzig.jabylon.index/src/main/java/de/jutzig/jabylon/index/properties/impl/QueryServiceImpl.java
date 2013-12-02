@@ -24,16 +24,19 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.cdo.connector.RepositoryConnector;
 import de.jutzig.jabylon.common.resolver.URIResolver;
 import de.jutzig.jabylon.index.properties.IndexActivator;
 import de.jutzig.jabylon.index.properties.QueryService;
 import de.jutzig.jabylon.index.properties.SearchResult;
+import de.jutzig.jabylon.index.properties.jobs.impl.ReorgIndexJob;
 import de.jutzig.jabylon.properties.Project;
 import de.jutzig.jabylon.properties.ProjectLocale;
 import de.jutzig.jabylon.properties.ProjectVersion;
@@ -55,6 +58,8 @@ public class QueryServiceImpl implements QueryService {
     @Reference
     private URIResolver uriResolver;
 
+    @Reference
+    private RepositoryConnector RepositoryConnector;
 
     public void bindUriResolver(URIResolver uriResolver) {
         this.uriResolver = uriResolver;
@@ -63,6 +68,14 @@ public class QueryServiceImpl implements QueryService {
     public void unbindUriResolver(URIResolver uriResolver) {
         this.uriResolver = null;
     }
+    
+    public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
+		RepositoryConnector = repositoryConnector;
+	}
+    
+    public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
+		RepositoryConnector = repositoryConnector;
+	}
 
     /*
      * (non-Javadoc)
@@ -176,6 +189,12 @@ public class QueryServiceImpl implements QueryService {
         }
         return null;
     }
+
+	@Override
+	public void rebuildIndex(IProgressMonitor monitor) throws CorruptIndexException, IOException {
+		ReorgIndexJob.indexWorkspace(RepositoryConnector, monitor);
+		
+	}
 
 
 }

@@ -3,8 +3,12 @@
  */
 package de.jutzig.jabylon.index.properties;
 
+import java.io.IOException;
+
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.Query;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 
@@ -37,5 +41,13 @@ public interface QueryService {
     SearchResult search(Query query, int maxHits);
 
     PropertyFileDescriptor getDescriptor(Document doc);
+
+    /**
+     * recreates the complete search index
+     * @param monitor
+     * @throws CorruptIndexException
+     * @throws IOException
+     */
+	void rebuildIndex(IProgressMonitor monitor) throws CorruptIndexException, IOException;
 
 }

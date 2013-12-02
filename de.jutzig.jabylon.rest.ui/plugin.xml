@@ -89,6 +89,10 @@
           name="Permissions"
           tabID="permissions">
     </tab>
+    <tab
+          name="Index"
+          tabID="index">
+    </tab>
  </extension>
  <extension
        point="de.jutzig.jabylon.rest.ui.config">
@@ -163,6 +167,12 @@
           objectClass="de.jutzig.jabylon.properties.Project"
           section="de.jutzig.jabylon.rest.ui.wicket.config.sections.security.ProjectPermissionsConfigSection$ProjectPermissionsConfigSectionContributor"
           tab="permissions">
+    </section>
+    <section
+          name="Index Settings"
+          objectClass="de.jutzig.jabylon.properties.Workspace"
+          section="de.jutzig.jabylon.rest.ui.wicket.config.sections.IndexingConfigSection$IndexingConfig"
+          tab="index">
     </section>
  </extension>
  <extension

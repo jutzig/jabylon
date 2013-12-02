@@ -1,0 +1,26 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+
+    <div class="well">
+        <h4>Index Settings</h4>
+        <span wicket:id="summary"></span>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" wicket:id="update-index">
+                            <i class="icon-edit"></i> <wicket:message key="IndexingConfigSection.update.index">Rebuild Index</wicket:message>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div wicket:id="progress" style="width: 400px">[Progress]</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</wicket:panel>
+</html>

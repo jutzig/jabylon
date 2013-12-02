@@ -4,6 +4,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.config.sections;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,19 +18,32 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.jutzig.jabylon.common.progress.RunnableWithProgress;
+import de.jutzig.jabylon.common.team.TeamProvider;
+import de.jutzig.jabylon.common.team.TeamProviderException;
+import de.jutzig.jabylon.common.team.TeamProviderUtil;
 import de.jutzig.jabylon.common.util.FileUtil;
+import de.jutzig.jabylon.common.util.PreferencesUtil;
 import de.jutzig.jabylon.properties.Project;
+import de.jutzig.jabylon.properties.ProjectVersion;
 import de.jutzig.jabylon.properties.PropertiesPackage;
+import de.jutzig.jabylon.properties.PropertyFileDiff;
 import de.jutzig.jabylon.properties.Workspace;
 import de.jutzig.jabylon.rest.ui.Activator;
 import de.jutzig.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
+import de.jutzig.jabylon.rest.ui.wicket.components.ProgressPanel;
+import de.jutzig.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPage;
 import de.jutzig.jabylon.rest.ui.wicket.config.SettingsPanel;
 
