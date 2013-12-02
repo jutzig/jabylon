@@ -305,7 +305,6 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         textArea.add(new AttributeModifier("translate", "no"));
         translationPanel.add(textArea);
 
-        previousButton.setEnabled(previous != null);
         pairForm.add(nextButton);
         pairForm.add(previousButton);
 
