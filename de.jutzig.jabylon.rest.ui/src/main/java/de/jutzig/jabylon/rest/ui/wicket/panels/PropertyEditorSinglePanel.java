@@ -1,7 +1,11 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -10,6 +14,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -23,6 +29,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -45,6 +52,7 @@ import de.jutzig.jabylon.properties.Property;
 import de.jutzig.jabylon.properties.PropertyFile;
 import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 import de.jutzig.jabylon.properties.Review;
+import de.jutzig.jabylon.properties.Severity;
 import de.jutzig.jabylon.resources.persistence.PropertyPersistenceService;
 import de.jutzig.jabylon.rest.ui.model.PropertyPair;
 import de.jutzig.jabylon.rest.ui.security.RestrictedComponent;
@@ -315,9 +323,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         int percent = (int) ((actualIndex/(double)total) * 100);
         progress.add(new AttributeModifier("style", "width: " + percent + "%"));
         pairForm.add(progress);
+        
+        fillReviewsColumn(mainModel, pairForm);
 
         PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
         add(tools);
+        
     }
 
     private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
@@ -357,5 +368,53 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         Project project = getModel().getObject().getProjectLocale().getParent().getParent();
         return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT);
     }
+    
+    
 
+	protected void fillReviewsColumn(IModel<PropertyPair> propertyPair, MarkupContainer container) 
+	{
+		RepeatingView view = new RepeatingView("reviews");
+		container.add(view);
+		if(propertyPair==null || propertyPair.getObject()==null)
+			return;
+		Collection<Review> reviews = reviewModel.getObject().get(propertyPair.getObject().getKey());
+		DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, getSession().getLocale());
+		for (Review review : reviews) {
+			Label label = new Label(view.newChildId(), review.getReviewType());
+			label.add(new AttributeAppender("class", getLabelClass(review)));
+			StringBuilder title = new StringBuilder();
+			if (review.getMessage() != null)
+				title.append(review.getMessage());
+			if (review.getCreated() > 0) {
+				if (title.length() > 0)
+					// add a linebreak
+					title.append("\n");
+				title.append(formatter.format(new Date(review.getCreated())));
+			}
+			if (title.length() > 0)
+				label.add(new AttributeModifier("title", title.toString()));
+			view.add(label);
+		}
+
+		
+
+	}
+    
+	
+
+    protected String getLabelClass(Review review)
+    {
+        Severity severity = review.getSeverity();
+        switch (severity)
+        {
+            case ERROR:
+                return " label-important";
+            case INFO:
+                return " label-info";
+            case WARNING:
+                return " label-warning";
+            default:
+                return "";
+        }
+    }	
 }
