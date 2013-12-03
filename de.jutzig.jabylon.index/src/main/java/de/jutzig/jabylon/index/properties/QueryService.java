@@ -20,14 +20,18 @@ import de.jutzig.jabylon.properties.PropertyFileDescriptor;
 public interface QueryService {
 
     String FIELD_VALUE = "value";
+    String FIELD_MASTER_VALUE = "masterValue";
     String FIELD_KEY = "key";
+    String FIELD_ANALYZED_KEY = "analyzedkey";
     String FIELD_URI = "uri";
     String FIELD_FULL_PATH = "path";
     String FIELD_COMMENT = "comment";
+    String FIELD_MASTER_COMMENT = "masterComment";
     String FIELD_LOCALE = "locale";
     String FIELD_VERSION = "version";
     String FIELD_PROJECT = "project";
     String FIELD_CDO_ID = "cdoID";
+
     /**
      * location of the template file, or empty string if there is none
      * @see de.jutzig.jabylon.properties.PropertyFileDescriptor#getLocation()

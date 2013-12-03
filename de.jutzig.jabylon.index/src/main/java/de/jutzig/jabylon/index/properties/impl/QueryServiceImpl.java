@@ -68,11 +68,11 @@ public class QueryServiceImpl implements QueryService {
     public void unbindUriResolver(URIResolver uriResolver) {
         this.uriResolver = null;
     }
-    
+
     public void bindRepositoryConnector(RepositoryConnector repositoryConnector) {
 		RepositoryConnector = repositoryConnector;
 	}
-    
+
     public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
 		RepositoryConnector = repositoryConnector;
 	}
@@ -124,7 +124,7 @@ public class QueryServiceImpl implements QueryService {
             query.add(createLocaleQuery(descriptor.getProjectLocale()), Occur.MUST);
             query.add(createDescriptorQuery(descriptor), Occur.MUST);
         }
-        MultiFieldQueryParser queryParser = new MultiFieldQueryParser(Version.LUCENE_35, new String[] {FIELD_COMMENT, FIELD_KEY, FIELD_VALUE}, new StandardAnalyzer(Version.LUCENE_35));
+        MultiFieldQueryParser queryParser = new MultiFieldQueryParser(Version.LUCENE_35, new String[] {FIELD_COMMENT, FIELD_KEY, FIELD_ANALYZED_KEY, FIELD_VALUE, FIELD_MASTER_VALUE, FIELD_MASTER_COMMENT}, new StandardAnalyzer(Version.LUCENE_35));
         try {
             Query userQuery = queryParser.parse(search);
             query.add(userQuery, Occur.MUST);
@@ -193,7 +193,7 @@ public class QueryServiceImpl implements QueryService {
 	@Override
 	public void rebuildIndex(IProgressMonitor monitor) throws CorruptIndexException, IOException {
 		ReorgIndexJob.indexWorkspace(RepositoryConnector, monitor);
-		
+
 	}
 
 

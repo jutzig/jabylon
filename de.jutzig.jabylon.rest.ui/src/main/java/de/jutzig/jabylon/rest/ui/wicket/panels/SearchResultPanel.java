@@ -91,6 +91,8 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
 
                     item.add(new Label("comment", document.get(QueryService.FIELD_COMMENT)));
 
+                    item.add(new Label("mastervalue", document.get(QueryService.FIELD_MASTER_VALUE)));
+                    item.add(new Label("mastercomment", document.get(QueryService.FIELD_MASTER_COMMENT)));
 
                     Locale locale = WicketUtil.getLocaleFromString(projectLocale);
                     String localeLabel = locale.getDisplayName(WicketUtil.getUserLocale());

@@ -1,7 +1,9 @@
 package de.jutzig.jabylon.index.properties.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -25,9 +27,14 @@ public class PropertyFileAnalyzer {
         PropertyFile file = descriptor.loadProperties();
         List<Document> documents = new ArrayList<Document>(file.getProperties().size());
 
+        Map<String, Property> masterProperties = Collections.emptyMap();
+        if(!descriptor.isMaster()) {
+        	PropertyFile masterFile = descriptor.getMaster().loadProperties();
+        	 masterProperties = masterFile.asMap();
+        }
+
         EList<Property> properties = file.getProperties();
         for (Property property : properties) {
-
             Document doc = new Document();
             ProjectLocale locale = descriptor.getProjectLocale();
             ProjectVersion version = locale.getParent();
@@ -47,6 +54,16 @@ public class PropertyFileAnalyzer {
             {
                 Field localeField = new Field(QueryService.FIELD_LOCALE, locale.getLocale().toString(), Store.YES, Index.NOT_ANALYZED);
                 doc.add(localeField);
+
+                //only add the master to a localized document
+                if(masterProperties.get(property.getKey())!=null && masterProperties.get(property.getKey()).getValue()!=null) {
+                	Field masterValueField = new Field(QueryService.FIELD_MASTER_VALUE, masterProperties.get(property.getKey()).getValue(), Store.YES, Index.ANALYZED);
+                	doc.add(masterValueField);
+                }
+                if(masterProperties.get(property.getKey())!=null && masterProperties.get(property.getKey()).getComment()!=null) {
+                	Field masterCommentField = new Field(QueryService.FIELD_MASTER_COMMENT, masterProperties.get(property.getKey()).getComment(), Store.YES, Index.ANALYZED);
+                	doc.add(masterCommentField);
+                }
             }
             Field uriField = new Field(QueryService.FIELD_URI, descriptor.getLocation().toString(), Store.YES, Index.NOT_ANALYZED);
             doc.add(uriField);
@@ -63,6 +80,8 @@ public class PropertyFileAnalyzer {
             doc.add(comment);
             Field key = new Field(QueryService.FIELD_KEY, nullSafe(property.getKey()), Store.YES, Index.NOT_ANALYZED);
             doc.add(key);
+            Field analyzedKey = new Field(QueryService.FIELD_KEY, nullSafe(property.getKey()), Store.YES, Index.ANALYZED);
+            doc.add(analyzedKey);
             Field value = new Field(QueryService.FIELD_VALUE, nullSafe(property.getValue()), Store.YES, Index.ANALYZED);
             doc.add(value);
             String templateLocation = descriptor.getMaster() == null ? "" : descriptor.getMaster().getLocation().toString();
