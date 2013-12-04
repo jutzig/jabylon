@@ -1,10 +1,7 @@
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.awt.Point;
+import static org.mockito.Mockito.*;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
@@ -38,8 +35,10 @@ public class ProjectResourcePanelTest {
     public void computeProgressBars() {
         Resolvable mock = mock(Resolvable.class);
         when(mock.getPercentComplete()).thenReturn(15);
-        Point result = fixture.computeProgressBars(mock);
-        assertEquals(new Point(15,0), result);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals(15, result.getSuccess());
+        assertEquals(0, result.getWarning());
+        assertEquals(0, result.getDanger());
     }
 
 
@@ -51,8 +50,10 @@ public class ProjectResourcePanelTest {
         PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
         when(mock.getKeys()).thenReturn(0);
         when(mock.getPercentComplete()).thenReturn(0);
-        Point result = fixture.computeProgressBars(mock);
-        assertEquals(new Point(0,0), result);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals(0, result.getSuccess());
+        assertEquals(0, result.getWarning());
+        assertEquals(0, result.getDanger());
     }
 
 
@@ -68,8 +69,11 @@ public class ProjectResourcePanelTest {
         EList<Review> reviews = mock(EList.class);
         when(reviews.size()).thenReturn(10);
         when(mock.getReviews()).thenReturn(reviews);
-        Point result = fixture.computeProgressBars(mock);
-        assertEquals("Must subtract the 'dirty' keys from the total percentage",new Point(70,10), result);
+
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals("Must subtract the 'dirty' keys from the total percentage", 70, result.getSuccess());
+        assertEquals(10, result.getWarning());
+        assertEquals(0, result.getDanger());
     }
 
     /**
@@ -84,8 +88,10 @@ public class ProjectResourcePanelTest {
         EList<Review> reviews = mock(EList.class);
         when(reviews.size()).thenReturn(10);
         when(mock.getReviews()).thenReturn(reviews);
-        Point result = fixture.computeProgressBars(mock);
-        assertEquals("Must subtract the 'dirty' keys from the total percentage",new Point(90,10), result);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals("Must subtract the 'dirty' keys from the total percentage", 90, result.getSuccess());
+        assertEquals(10, result.getWarning());
+        assertEquals(0, result.getDanger());
     }
 
 
@@ -105,8 +111,45 @@ public class ProjectResourcePanelTest {
         EList<Review> reviews = mock(EList.class);
         when(reviews.size()).thenReturn(10);
         when(mock.getReviews()).thenReturn(reviews);
-        Point result = fixture.computeProgressBars(mock);
-        assertEquals("Must subtract the 'dirty' keys from the amount of master keys",new Point(70,10), result);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals("Must subtract the 'dirty' keys from the amount of master keys", 70, result.getSuccess());
+        assertEquals(10, result.getWarning());
+        assertEquals(0, result.getDanger());
     }
+
+    /**
+     * also see https://github.com/jutzig/jabylon/wiki/Progress-Bar-TestCases
+     * https://github.com/jutzig/jabylon/issues/122
+     */
+    @Test
+    public void computeProgressBarsDescriptorWith5PercentMissing() {
+        PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
+        when(mock.getKeys()).thenReturn(0);
+        when(mock.getPercentComplete()).thenReturn(95);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals(95, result.getSuccess());
+        assertEquals(0, result.getWarning());
+        assertEquals("with 5% or less it should show danger",5, result.getDanger());
+    }
+
+    /**
+     * also see https://github.com/jutzig/jabylon/wiki/Progress-Bar-TestCases
+     * https://github.com/jutzig/jabylon/issues/122
+     */
+    @Test
+    public void computeProgressBarsDescriptorWith5PercentMissingAndWarnings() {
+        PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
+        when(mock.getKeys()).thenReturn(100);
+        when(mock.getPercentComplete()).thenReturn(95);
+        @SuppressWarnings("unchecked")
+        EList<Review> reviews = mock(EList.class);
+        when(reviews.size()).thenReturn(10);
+        when(mock.getReviews()).thenReturn(reviews);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals(85, result.getSuccess());
+        assertEquals(10, result.getWarning());
+        assertEquals("with 5% or less it should show danger",5, result.getDanger());
+    }
+
 
 }

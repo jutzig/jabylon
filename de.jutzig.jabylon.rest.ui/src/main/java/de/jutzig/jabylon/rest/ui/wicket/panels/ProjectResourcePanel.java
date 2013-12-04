@@ -3,7 +3,6 @@
  */
 package de.jutzig.jabylon.rest.ui.wicket.panels;
 
-import java.awt.Point;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
@@ -81,13 +80,16 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
                 ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
                 item.add(link);
 
-                Point widths = computeProgressBars(target.getEndPoint());
-                Label progress = new Label("progress", String.valueOf(widths.x)+"%");
-                progress.add(new AttributeModifier("style", "width: " + widths.x  + "%"));
+                Triplet widths = computeProgressBars(target.getEndPoint());
+                Label progress = new Label("progress", String.valueOf(widths.getSuccess())+"%");
+                progress.add(new AttributeModifier("style", "width: " + widths.getSuccess()  + "%"));
                 Label warning = new Label("warning", "");
-                warning.add(new AttributeModifier("style", "width: " + widths.y  + "%"));
+                warning.add(new AttributeModifier("style", "width: " + widths.getWarning()  + "%"));
+                Label danger = new Label("danger", "");
+                danger.add(new AttributeModifier("style", "width: " + widths.getDanger()  + "%"));
                 item.add(progress);
                 item.add(warning);
+                item.add(danger);
 
                 new ImageSwitch(item).doSwitch(target.getEndPoint());
                 item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
@@ -103,7 +105,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
      * @param resolvable
      * @return
      */
-    protected Point computeProgressBars(Resolvable<?, ?> resolvable) {
+    protected Triplet computeProgressBars(Resolvable<?, ?> resolvable) {
 
         int greenWidth = resolvable.getPercentComplete();
         int yellowWidth = 0;
@@ -117,7 +119,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
                 greenWidth -= yellowWidth;
             }
         }
-        return new Point(greenWidth, yellowWidth);
+        return new Triplet(greenWidth, yellowWidth);
 
     }
 
@@ -302,6 +304,39 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
         image.setVisible(false);
         item.add(image);
         return item;
+    }
+
+}
+
+class Triplet
+{
+    int success, warning;
+
+    public Triplet(int success, int warning)
+    {
+        super();
+        this.success = success;
+        this.warning = warning;
+    }
+
+    public int getSuccess()
+    {
+        return success;
+    }
+
+    public int getWarning()
+    {
+        return warning;
+    }
+
+    public int getDanger()
+    {
+        int danger = 100 - success - warning;
+        //only show danger level if the remainder is <=5
+//        https://github.com/jutzig/jabylon/issues/122
+        if(danger<=5)
+            return danger;
+        return 0;
     }
 
 }
