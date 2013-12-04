@@ -86,7 +86,7 @@ public class ReorgIndexJob implements JobExecution {
         			EObject next = contents.next();
         			if (next instanceof PropertyFileDescriptor) {
         				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) next;
-        				mon.setTaskName(descriptor.getName());
+        				mon.subTask(descriptor.getLocation().toString());
         				List<Document> documents = analyzer.createDocuments(descriptor);
         				for (Document document : documents) {
         					writer.addDocument(document);
