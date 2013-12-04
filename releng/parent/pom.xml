@@ -223,7 +223,7 @@
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                         <Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
                         <Include-Resource>{maven-resources}</Include-Resource>
-                        <Import-Package>*;common=!;core=!;registry=!</Import-Package>
+                        <Import-Package>*;common=!;core=!;registry=!;misc=!;queries=!</Import-Package>
                         <Bundle-Category>Jabylon-Plugin</Bundle-Category>
                     </instructions>
                 </configuration>
