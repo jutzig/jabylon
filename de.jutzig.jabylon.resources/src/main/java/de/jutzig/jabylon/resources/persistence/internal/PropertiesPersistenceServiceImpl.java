@@ -171,10 +171,11 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
                             EList<PropertyFileDescriptor> descriptors = locale.getDescriptors();
                             // FIXME: delete obsolete resource folders and
                             // derived locale descriptors
-                            for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
-                                firePropertiesDeleted(propertyFileDescriptor, false);
-
-                            }
+                            // this doesn't work because the object is already invalid
+//                            for (PropertyFileDescriptor propertyFileDescriptor : descriptors) {
+//                                firePropertiesDeleted(propertyFileDescriptor, false);
+//
+//                            }
                         }
 
                     }

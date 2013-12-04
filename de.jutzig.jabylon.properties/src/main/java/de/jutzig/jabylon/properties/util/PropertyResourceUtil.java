@@ -153,8 +153,15 @@ public class PropertyResourceUtil {
     public static void addNewLocale(ProjectLocale locale, ProjectVersion version) {
         ProjectLocale template = version.getTemplate();
         version.getChildren().add(locale);
+        if(template==null) {
+        	//we always need a template
+        	template = PropertiesFactory.eINSTANCE.createProjectLocale();
+            version.setTemplate(template);
+            template.setName("template");
+            version.getChildren().add(template);
+        }
         createMissingChildren(template, locale, locale);
-    }
+    }    
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant) {
