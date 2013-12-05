@@ -47,6 +47,11 @@ public class GitConfigPanel extends GenericPanel<Project> {
         emailField.setRequired(true);
         emailField.add(EmailAddressValidator.getInstance());
         add(emailField);
+        
+        PreferencesPropertyModel messageModel = new PreferencesPropertyModel(config, GitConstants.KEY_MESSAGE, "");
+        TextField<String> messageField = new TextField<String>("inputMessage", messageModel);
+        messageField.setRequired(false);
+        add(messageField);
     }
 
 }

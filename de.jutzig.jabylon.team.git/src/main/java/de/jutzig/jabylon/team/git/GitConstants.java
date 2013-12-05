@@ -17,4 +17,5 @@ public class GitConstants {
     public static final String KEY_USERNAME = "git.username";
     public static final String KEY_PASSWORD = "git.password";
     public static final String KEY_EMAIL = "git.email";
+    public static final String KEY_MESSAGE = "git.message";
 }
