@@ -17,6 +17,12 @@ $(document).ready(function() {
         currentFocus = this;
     });
 
+    //copy similar strings to translation area
+    $("#similarity-table i.icon-share").click(function () {
+    	var translation = $(this).prev("span");
+    	$("#translation").val(translation.text());
+    	markDirty();
+    });
 
 
     // initialize keyboard shortcuts
@@ -97,3 +103,12 @@ function traverseFocus() {
     }
     currentFocus.focus();
 }
+
+/**
+ * mark the editor as dirty so it will safe
+ */
+function markDirty() {
+	var indicator = $("form").children(".modify-indicator");
+	indicator.attr("checked","checked");
+	isDirty = true;
+ }
