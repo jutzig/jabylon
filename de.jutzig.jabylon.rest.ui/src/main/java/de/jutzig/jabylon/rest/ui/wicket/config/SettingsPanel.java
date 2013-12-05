@@ -6,6 +6,7 @@ package de.jutzig.jabylon.rest.ui.wicket.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.form.Button;
@@ -42,8 +43,10 @@ import de.jutzig.jabylon.properties.Resolvable;
 import de.jutzig.jabylon.rest.ui.model.AttachableModel;
 import de.jutzig.jabylon.rest.ui.model.AttachableWritableModel;
 import de.jutzig.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import de.jutzig.jabylon.rest.ui.security.LoginPage;
 import de.jutzig.jabylon.rest.ui.util.WicketUtil;
 import de.jutzig.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
+import de.jutzig.jabylon.security.CommonPermissions;
 import de.jutzig.jabylon.users.User;
 
 /**
@@ -158,6 +161,11 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
                     if(component.isVisible())
                         return visible;
                 }
+                CDOAuthenticatedSession session = (CDOAuthenticatedSession) CDOAuthenticatedSession.get();
+                User user = session.getUser();
+                if(user==null || CommonPermissions.USER_ANONYMOUS.equals(user.getName()))
+                	//user is not logged in, give him the chance
+                	throw new RestartResponseAtInterceptPageException(LoginPage.class);
                 //if no tab is visible, the user has no permission to be here
                 throw new UnauthorizedInstantiationException(SettingsPanel.class);
             }
