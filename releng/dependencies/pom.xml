@@ -9,7 +9,7 @@
 
     <parent>
         <artifactId>jabylon-parent</artifactId>
-        <groupId>de.jutzig.jabylon</groupId>
+        <groupId>org.jabylon</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>

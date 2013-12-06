@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+ <extension
+       point="org.jabylon.rest.ui.navbarItem">
+    <item
+          panel="org.jabylon.updatecenter.repository.ui.navbar.UpdatecenterPanel$UpdatecenterPanelFactory"
+          pullRight="true">
+    </item>
+ </extension>
+ <extension
+       point="org.jabylon.security.permission">
+    <permission
+          description="Right to install plugins and updates"
+          name="System:software:config">
+    </permission>
+ </extension>
+</plugin>

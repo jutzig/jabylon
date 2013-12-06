@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jabylon-parent</artifactId>
     <packaging>pom</packaging>
-    <groupId>de.jutzig.jabylon</groupId>
+    <groupId>org.jabylon</groupId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <!-- <parent> <groupId>de.jutzig.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
+    <!-- <parent> <groupId>org.jabylon</groupId> <version>1.0.0-SNAPSHOT</version>
         <artifactId>jabylon-parent</artifactId> <relativePath>../releng/parent/pom.xml</relativePath>
         </parent> -->
 

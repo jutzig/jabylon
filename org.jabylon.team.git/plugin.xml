@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.jabylon.common.teamProvider">
+      <teamProvider
+            class="org.jabylon.team.git.GitTeamProvider"
+            description="Git Team Provider"
+            name="Git">
+      </teamProvider>
+   </extension>
+   <extension
+         point="org.jabylon.rest.ui.config">
+      <section
+            name="Git"
+            objectClass="org.jabylon.properties.Project"
+            section="org.jabylon.team.git.config.GitConfigSection"
+            tab="git">
+      </section>
+   </extension>
+   <extension
+         point="org.jabylon.rest.ui.configTab">
+      <tab
+            name="Git"
+            tabID="git">
+      </tab>
+   </extension>
+
+</plugin>

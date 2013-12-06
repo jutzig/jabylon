@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+   <extension
+         point="org.jabylon.scheduler.jobs">
+      <job
+            activeByDefault="false"
+            class="org.jabylon.review.standard.cleanup.TranslationCleanupJob"
+            defaultSchedule="0 0 0 * * ?"
+            description="Deletes translated strings that are missing in the template language"
+            id="org.jabylon.review.standard.cleanup"
+            name="Translation Cleanup">
+      </job>
+   </extension>
+
+</plugin>

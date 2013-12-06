@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Jabylon" uid="de.jutzig.jabylon" id="org.eclipse.emf.cdo.server.product" useFeatures="true" includeLaunchers="false">
+<product name="Jabylon" uid="org.jabylon" id="org.eclipse.emf.cdo.server.product" useFeatures="true" includeLaunchers="false">
 
    <configIni use="default">
    </configIni>
@@ -25,16 +25,16 @@
    </plugins>
 
    <features>
-      <feature id="de.jutzig.jabylon.server.feature" version="1.0.0.qualifier"/>
+      <feature id="org.jabylon.server.feature" version="1.0.0.qualifier"/>
    </features>
 
    <configurations>
-      <plugin id="de.jutzig.jabylon.cdo.connector" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.cdo.server" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.index" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.resources" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.rest.api" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.ui" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.cdo.connector" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.cdo.server" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.index" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.resources" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.rest.api" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.ui" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />

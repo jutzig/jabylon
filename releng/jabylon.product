@@ -36,18 +36,18 @@
       <plugin id="com.ibm.icu"/>
       <plugin id="com.jcraft.jsch"/>
       <plugin id="com.vaadin"/>
-      <plugin id="de.jutzig.jabylon.cdo.connector"/>
-      <plugin id="de.jutzig.jabylon.cdo.server"/>
-      <plugin id="de.jutzig.jabylon.index"/>
-      <plugin id="de.jutzig.jabylon.properties"/>
-      <plugin id="de.jutzig.jabylon.resources"/>
-      <plugin id="de.jutzig.jabylon.review.standard"/>
-      <plugin id="de.jutzig.jabylon.scheduler"/>
-      <plugin id="de.jutzig.jabylon.security"/>
-      <plugin id="de.jutzig.jabylon.team.git"/>
-      <plugin id="de.jutzig.jabylon.ui"/>
-      <plugin id="de.jutzig.jabylon.users"/>
-      <plugin id="de.jutzig.jabylon.vaadin.style" fragment="true"/>
+      <plugin id="org.jabylon.cdo.connector"/>
+      <plugin id="org.jabylon.cdo.server"/>
+      <plugin id="org.jabylon.index"/>
+      <plugin id="org.jabylon.properties"/>
+      <plugin id="org.jabylon.resources"/>
+      <plugin id="org.jabylon.review.standard"/>
+      <plugin id="org.jabylon.scheduler"/>
+      <plugin id="org.jabylon.security"/>
+      <plugin id="org.jabylon.team.git"/>
+      <plugin id="org.jabylon.ui"/>
+      <plugin id="org.jabylon.users"/>
+      <plugin id="org.jabylon.vaadin.style" fragment="true"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.transaction" fragment="true"/>
       <plugin id="org.apache.ant"/>
@@ -108,11 +108,11 @@
    </plugins>
 
    <configurations>
-      <plugin id="de.jutzig.jabylon.cdo.connector" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.cdo.server" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.index" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.resources" autoStart="true" startLevel="0" />
-      <plugin id="de.jutzig.jabylon.ui" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.cdo.connector" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.cdo.server" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.index" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.resources" autoStart="true" startLevel="0" />
+      <plugin id="org.jabylon.ui" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />

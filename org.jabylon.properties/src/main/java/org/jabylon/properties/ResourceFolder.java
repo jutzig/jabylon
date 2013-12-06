@@ -1,0 +1,25 @@
+/**
+ */
+package org.jabylon.properties;
+
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Resource Folder</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see org.jabylon.properties.PropertiesPackage#getResourceFolder()
+ * @model
+ * @generated
+ */
+public interface ResourceFolder extends Resolvable<Resolvable<?, ?>, Resolvable<?, ?>> {
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation"
+     * @generated
+     */
+    ProjectLocale getProjectLocale();
+} // ResourceFolder

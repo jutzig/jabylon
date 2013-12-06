@@ -8,7 +8,7 @@
 
     <parent>
         <artifactId>jabylon-parent</artifactId>
-        <groupId>de.jutzig.jabylon</groupId>
+        <groupId>org.jabylon</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
@@ -43,91 +43,91 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>cdo.connector</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>cdo.server</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>db.migration</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>properties</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>resources</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>index</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>scheduler</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>rest.api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>rest.ui</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>security</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>team.git</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>users</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>logback.config</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>review.standard</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.jutzig.jabylon</groupId>
+            <groupId>org.jabylon</groupId>
             <artifactId>updatecenter</artifactId>
             <version>${project.version}</version>
         </dependency>

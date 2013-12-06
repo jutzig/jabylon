@@ -15,7 +15,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.jutzig.jabylon</groupId>
+    <groupId>org.jabylon</groupId>
     <artifactId>karaf.dependencies.feature</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -24,7 +24,7 @@
 
     <parent>
         <artifactId>jabylon-parent</artifactId>
-        <groupId>de.jutzig.jabylon</groupId>
+        <groupId>org.jabylon</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
