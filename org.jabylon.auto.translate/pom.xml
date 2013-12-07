@@ -16,22 +16,16 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>properties</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>resources</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>index</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -57,6 +51,10 @@
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>ecore</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>cdo</artifactId>
         </dependency>
 
     </dependencies>

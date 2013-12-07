@@ -83,12 +83,10 @@
         <dependency>
             <groupId>org.eclipse.osgi</groupId>
             <artifactId>services</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
-            <version>1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.servicemix.bundles</groupId>
@@ -99,7 +97,6 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.osgi.service.obr</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>

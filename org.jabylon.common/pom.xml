@@ -15,57 +15,51 @@
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>runtime</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>properties</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>users</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>cdo.connector</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>cdo.server</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>resources</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>common</artifactId>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>ecore</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf.cdo</groupId>
+        	<artifactId>net4j</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.annotations</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

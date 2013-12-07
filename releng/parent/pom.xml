@@ -299,61 +299,73 @@
                 <groupId>org.eclipse</groupId>
                 <artifactId>osgi</artifactId>
                 <version>3.8.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>app</artifactId>
                 <version>1.3.100</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.core</groupId>
                 <artifactId>contenttype</artifactId>
                 <version>3.4.200</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>util</artifactId>
                 <version>1.0.400</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>common</artifactId>
                 <version>3.6.100</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>preferences</artifactId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>security</artifactId>
                 <version>1.1.100</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.osgi</groupId>
                 <artifactId>services</artifactId>
                 <version>3.3.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>registry</artifactId>
                 <version>3.5.200</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.core</groupId>
                 <artifactId>runtime</artifactId>
                 <version>3.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.core</groupId>
                 <artifactId>jobs</artifactId>
                 <version>3.5.300</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>ds</artifactId>
                 <version>1.4.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- CDO -->
@@ -361,67 +373,80 @@
                 <artifactId>common</artifactId>
                 <groupId>org.eclipse.emf.cdo</groupId>
                 <version>4.1.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>cdo</artifactId>
                 <groupId>org.eclipse.emf</groupId>
                 <version>4.1.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>server</artifactId>
                 <groupId>org.eclipse.emf.cdo</groupId>
                 <version>4.1.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>net4j</artifactId>
                 <groupId>org.eclipse.emf.cdo</groupId>
                 <version>4.1.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>net4j</artifactId>
                 <groupId>org.eclipse</groupId>
                 <version>4.1.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>db</artifactId>
                 <groupId>org.eclipse.net4j</groupId>
                 <version>4.1.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.net4j</groupId>
                 <artifactId>util</artifactId>
                 <version>3.2.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>jvm</artifactId>
                 <groupId>org.eclipse.net4j</groupId>
                 <version>4.1.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>db</artifactId>
                 <groupId>org.eclipse.emf.cdo.server</groupId>
                 <version>4.1.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>net4j</artifactId>
                 <groupId>org.eclipse.emf.cdo.server</groupId>
                 <version>4.0.100</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>derby</artifactId>
                 <groupId>org.eclipse.net4j.db</groupId>
                 <version>4.1.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <artifactId>h2</artifactId>
                 <groupId>org.eclipse.net4j.db</groupId>
                 <version>4.0.100</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>h2</artifactId>
                 <groupId>org</groupId>
                 <version>1.1.117</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- derby -->
@@ -429,6 +454,7 @@
                 <artifactId>derby</artifactId>
                 <groupId>org.apache</groupId>
                 <version>10.5.1</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- lucene -->
@@ -436,26 +462,31 @@
                 <artifactId>core</artifactId>
                 <groupId>org.apache.lucene</groupId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>misc</artifactId>
                 <groupId>org.apache.lucene</groupId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>queries</artifactId>
                 <groupId>org.apache.lucene</groupId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>analysis</artifactId>
                 <groupId>org.apache.lucene</groupId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <artifactId>lucene</artifactId>
                 <groupId>org.apache</groupId>
                 <version>3.5.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- EMF -->
@@ -463,21 +494,25 @@
                 <groupId>org.eclipse.emf</groupId>
                 <artifactId>common</artifactId>
                 <version>2.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.emf</groupId>
                 <artifactId>ecore</artifactId>
                 <version>2.8.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.emf.ecore</groupId>
                 <artifactId>change</artifactId>
                 <version>2.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.emf.ecore</groupId>
                 <artifactId>xmi</artifactId>
                 <version>2.8.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- misc -->
@@ -485,11 +520,13 @@
                 <groupId>javax</groupId>
                 <artifactId>servlet</artifactId>
                 <version>3.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>13.0.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.jcraft</groupId>
@@ -497,38 +534,52 @@
                 <!-- need version with qualifier here, to disambiguate from
                     non-bundle artifact in central -->
                 <version>0.1.41-v201101211617</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache</groupId>
                 <artifactId>ant</artifactId>
                 <version>1.8.3</version>
+                <scope>provided</scope>
             </dependency>
+            <dependency>
+            	<!-- this is the actual jar, the other is the bundle -->
+            	<groupId>org.apache.ant</groupId>
+            	<artifactId>ant</artifactId>
+            	 <version>1.8.3</version>
+                <scope>provided</scope>
+        	</dependency>
 
             <!-- SLF4J -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>api</artifactId>
                 <version>1.6.4</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.6.4</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>slf4j</artifactId>
                 <version>1.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>core</artifactId>
                 <version>1.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>classic</artifactId>
                 <version>1.0.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- wicket -->
@@ -536,57 +587,68 @@
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-core</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-extensions</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-auth-roles</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-request</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-util</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-ioc</artifactId>
                 <version>6.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.servicemix.bundles</groupId>
                 <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
                 <version>1_2</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.scr.annotations</artifactId>
                 <version>1.7.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
                 <version>4.3.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.compendium</artifactId>
                 <version>4.3.1</version>
+                <scope>provided</scope>
             </dependency>
             <!-- GIT -->
             <dependency>
                 <groupId>org.eclipse.jgit</groupId>
                 <artifactId>org.eclipse.jgit</artifactId>
                 <version>2.1.0.201209190230-r</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- shell -->
@@ -594,80 +656,101 @@
                 <groupId>org.apache.felix.gogo</groupId>
                 <artifactId>command</artifactId>
                 <version>0.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix.gogo</groupId>
                 <artifactId>shell</artifactId>
                 <version>0.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix.gogo</groupId>
                 <artifactId>runtime</artifactId>
                 <version>0.8.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>console</artifactId>
                 <version>1.0.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- OBR support -->
-            <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.bundlerepository</artifactId>
-                <version>1.6.6</version>
-            </dependency>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.bundlerepository</artifactId>
+				<version>1.6.6</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.osgi.service.obr</artifactId>
+				<version>1.0.2</version>
+				<scope>provided</scope>
+			</dependency>            
 
             <!-- jetty -->
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>server</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>util</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>http</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>io</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>servlet</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>security</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>continuation</artifactId>
                 <version>8.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox.http</groupId>
                 <artifactId>jetty</artifactId>
                 <version>3.0.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox.http</groupId>
                 <artifactId>registry</artifactId>
                 <version>1.1.200</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.equinox.http</groupId>
                 <artifactId>servlet</artifactId>
                 <version>1.1.300</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
@@ -687,7 +770,24 @@
                 <groupId>com.googlecode.flyway</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>2.1.1</version>
+                <scope>provided</scope>
             </dependency>
+            
+            <!-- quartz -->
+            <dependency>
+            	<groupId>org.quartz-scheduler</groupId>
+            	<artifactId>quartz</artifactId>
+            	<version>2.1.5</version>
+            	<scope>provided</scope>
+        	</dependency>
+        	
+        	<!-- inject -->
+        	<dependency>
+            	<groupId>javax.inject</groupId>
+            	<artifactId>javax.inject</artifactId>
+            	<version>1</version>
+            	<scope>provided</scope>
+        	</dependency>
         </dependencies>
     </dependencyManagement>
 

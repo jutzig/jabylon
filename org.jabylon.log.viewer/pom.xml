@@ -69,9 +69,15 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
-            <version>4.1.0</version>
         </dependency>
-
+        <dependency>
+        	<groupId>org.apache.wicket</groupId>
+        	<artifactId>wicket-auth-roles</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>javax.inject</groupId>
+        	<artifactId>javax.inject</artifactId>
+        </dependency>
     </dependencies>
 
 

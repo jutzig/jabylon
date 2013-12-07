@@ -46,22 +46,16 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>properties</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rest.ui</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
@@ -75,7 +69,22 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>security</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.osgi</groupId>
+        	<artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>ecore</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>cdo</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf.cdo</groupId>
+        	<artifactId>net4j</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -42,7 +42,7 @@
 
 
     <dependencies>
-        <dependency>
+       <dependency>
             <groupId>org.jabylon</groupId>
             <artifactId>cdo.connector</artifactId>
             <version>${project.version}</version>
@@ -133,380 +133,51 @@
         </dependency>
 
 
-        <!-- standalone product specific -->
         <dependency>
+        	<groupId>org.jabylon</groupId>
+        	<artifactId>dependencies</artifactId>
+        	<version>${project.version}</version>
+        	<type>pom</type>
+        	<scope>compile</scope>
+        </dependency>
+        
+         <!-- standalone product specific -->
+         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>launcher</artifactId>
             <version>1.3.0</version>
-
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.update</groupId>
             <artifactId>configurator</artifactId>
             <version>3.3.200</version>
-
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>simpleconfigurator</artifactId>
             <version>1.0.301</version>
-
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
         </dependency>
-
-        <!-- equinox -->
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>osgi</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>app</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>contenttype</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>util</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>common</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>preferences</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>security</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.osgi</groupId>
-            <artifactId>services</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>registry</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>jobs</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>ds</artifactId>
-
-        </dependency>
-
-        <!-- CDO -->
-        <dependency>
-            <artifactId>common</artifactId>
-            <groupId>org.eclipse.emf.cdo</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>cdo</artifactId>
-            <groupId>org.eclipse.emf</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>server</artifactId>
-            <groupId>org.eclipse.emf.cdo</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>net4j</artifactId>
-            <groupId>org.eclipse.emf.cdo</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>net4j</artifactId>
-            <groupId>org.eclipse</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>db</artifactId>
-            <groupId>org.eclipse.net4j</groupId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.net4j</groupId>
-            <artifactId>util</artifactId>
-
-        </dependency>
-        <dependency>
-            <artifactId>jvm</artifactId>
-            <groupId>org.eclipse.net4j</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>db</artifactId>
-            <groupId>org.eclipse.emf.cdo.server</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>net4j</artifactId>
-            <groupId>org.eclipse.emf.cdo.server</groupId>
-
-        </dependency>
-
-        <dependency>
-            <artifactId>h2</artifactId>
-            <groupId>org.eclipse.net4j.db</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>h2</artifactId>
-            <groupId>org</groupId>
-
-        </dependency>
-
-
-        <!-- lucene -->
-        <dependency>
-            <artifactId>core</artifactId>
-            <groupId>org.apache.lucene</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>misc</artifactId>
-            <groupId>org.apache.lucene</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>queries</artifactId>
-            <groupId>org.apache.lucene</groupId>
-
-        </dependency>
-        <dependency>
-            <artifactId>lucene</artifactId>
-            <groupId>org.apache</groupId>
-
-        </dependency>
-
-        <!-- EMF -->
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>common</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>ecore</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf.ecore</groupId>
-            <artifactId>change</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf.ecore</groupId>
-            <artifactId>xmi</artifactId>
-
-        </dependency>
-
-        <!-- misc -->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>servlet</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache</groupId>
-            <artifactId>ant</artifactId>
-
-        </dependency>
-
-        <!-- SLF4J -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>api</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>slf4j</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>core</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>classic</artifactId>
-
-        </dependency>
-
-        <!-- wicket -->
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-extensions</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-auth-roles</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-request</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-util</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-ioc</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-
-        </dependency>
-
-        <!-- GIT -->
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-
-        </dependency>
-
-        <!-- shell -->
-        <dependency>
-            <groupId>org.apache.felix.gogo</groupId>
-            <artifactId>command</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix.gogo</groupId>
-            <artifactId>shell</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix.gogo</groupId>
-            <artifactId>runtime</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>console</artifactId>
-
-        </dependency>
-
-        <!-- OBR support -->
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.bundlerepository</artifactId>
-
-        </dependency>
-
-        <!-- jetty -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>server</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>util</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>http</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>io</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>servlet</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>security</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>continuation</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox.http</groupId>
-            <artifactId>jetty</artifactId>
-
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.equinox.http</groupId>
-            <artifactId>registry</artifactId>
-
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox.http</groupId>
-            <artifactId>servlet</artifactId>
-
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-
-        </dependency>
-
-        <!-- Flyway -->
-        <dependency>
-            <groupId>com.googlecode.flyway</groupId>
-            <artifactId>flyway-core</artifactId>
-
-        </dependency>
-
-
 
     </dependencies>
 

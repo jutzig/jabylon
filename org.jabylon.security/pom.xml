@@ -49,26 +49,32 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>cdo.server</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>cdo.connector</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>users</artifactId>
             <version>${project.version}</version>
-            <type>bundle</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>security</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>ecore</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>cdo</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>api</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -9,13 +9,12 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.team.git.GitConstants;
+import org.osgi.service.prefs.Preferences;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
