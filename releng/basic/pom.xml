@@ -178,6 +178,96 @@
         		</exclusion>
 			</exclusions>
         </dependency>
+        
+                <!-- jetty -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>server</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>util</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>http</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>io</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>servlet</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>security</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>continuation</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.equinox.http</groupId>
+            <artifactId>jetty</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+          			<groupId>*</groupId>
+          			<artifactId>*</artifactId>
+        		</exclusion>
+			</exclusions>
+        </dependency>
 
     </dependencies>
 

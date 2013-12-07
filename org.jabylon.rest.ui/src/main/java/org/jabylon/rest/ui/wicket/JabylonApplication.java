@@ -5,6 +5,8 @@ package org.jabylon.rest.ui.wicket;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -13,6 +15,7 @@ import org.apache.wicket.ThreadContext;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.http.WebRequest;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -20,7 +23,6 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.Activator;
@@ -59,6 +61,12 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         return StartupPage.class;
     }
 
+    @Override
+    public WebRequest newWebRequest(HttpServletRequest servletRequest, String filterPath) {
+    	https://github.com/jutzig/jabylon/issues/47
+    	return new CustomWebRequest(servletRequest, filterPath);
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected void init() {

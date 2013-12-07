@@ -1,0 +1,185 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>jabylon.war</artifactId>
+	<packaging>pom</packaging>
+
+
+	<parent>
+		<artifactId>jabylon-parent</artifactId>
+		<groupId>org.jabylon</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>distribution</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>jabylon</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptor>src/main/assembly/distribution.xml</descriptor>
+					<attach>true</attach>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>cdo.connector</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>cdo.server</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>db.migration</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>properties</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>resources</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>index</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>scheduler</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>rest.api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>rest.ui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>security</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>team.git</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>users</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>logback.config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>review.standard</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>updatecenter</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>dependencies</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- war specific -->
+		<!-- <dependency> <groupId>org.eclipse.equinox</groupId> <artifactId>servletbridge</artifactId> 
+			<version>1.0.0-v20070523</version> <scope>provided</scope> </dependency> -->
+		<!-- <dependency> <groupId>org.eclipse.equinox.http</groupId> <artifactId>servletbridge</artifactId> 
+			<version>1.0.0-v20070523</version> </dependency> -->
+
+		<dependency>
+			<groupId>org.eclipse.update</groupId>
+			<artifactId>configurator</artifactId>
+			<version>3.3.200</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>simpleconfigurator</artifactId>
+			<version>1.0.301</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox.http</groupId>
+			<artifactId>servletbridge</artifactId>
+			<version>1.0.0-v20070523</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+</project>

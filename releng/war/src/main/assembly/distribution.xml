@@ -1,0 +1,48 @@
+<assembly
+    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <formats>
+        <format>war</format>
+    </formats>
+    <baseDirectory>/</baseDirectory>
+    <id>distribution</id>
+    <dependencySets>
+        <dependencySet>
+            <outputFileNameMapping>${artifact.groupId}.${artifact.artifactId}_${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <outputDirectory>WEB-INF/eclipse/plugins</outputDirectory>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useProjectArtifact>false</useProjectArtifact>
+            <scope>compile</scope>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <excludes>
+                <exclude>*:dependencies:pom</exclude>
+                <!-- no idea why we need these -->
+                <exclude>asm:asm</exclude>
+                <exclude>cglib:cglib</exclude>
+                <exclude>javax.inject:javax.inject</exclude>
+                <exclude>org.easymock:easymock</exclude>
+                <exclude>org.osgi:org.osgi.core</exclude>
+                <exclude>org.slf4j:slf4j-api</exclude>
+                <!-- should now be a total of 83 bundles -->
+            </excludes>
+        </dependencySet>        
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/config</directory>
+            <outputDirectory>WEB-INF/eclipse/configuration</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/web</directory>
+            <outputDirectory>WEB-INF</outputDirectory>
+        </fileSet>
+    </fileSets>
+    <files>
+    	<file>
+    		<source>src/main/config/launch.ini</source>
+    		<outputDirectory>WEB-INF/eclipse</outputDirectory>
+    	</file>
+    </files>
+
+</assembly>

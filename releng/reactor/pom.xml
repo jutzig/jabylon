@@ -27,6 +27,7 @@
         <module>../../org.jabylon.users</module>
         <module>../dependencies</module>
         <module>../basic</module>
+        <module>../war</module>
         <module>../../org.jabylon.logback.config</module>
         <module>../../org.jabylon.updatecenter</module>
         <!-- <module>../../org.jabylon.server.feature</module> -->
