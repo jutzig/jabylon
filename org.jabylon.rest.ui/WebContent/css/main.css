@@ -31,6 +31,11 @@ body {
     padding: 10px 15px;
 }
 
+/** make tables a bit more condensed */
+.pagination ul > li > a {
+    line-height: 30px;
+}
+
 /** Feedback */
 .feedbackPanel.ajax {
     position: fixed;
