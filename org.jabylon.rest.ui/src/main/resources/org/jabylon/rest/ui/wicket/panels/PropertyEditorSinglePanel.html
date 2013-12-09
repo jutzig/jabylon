@@ -18,23 +18,18 @@
                         <div class="span12" style="padding-bottom: 4px;"><span wicket:id="reviews" class="label pull-right"></span></div>
                     </div>
                     <div class="row">
-                        <div wicket:id="template-area" class="span6">
-                            <textarea wicket:id="template" id="template" rows="3" cols="3"
-                                readonly="readonly" style="width: 95%;">this is the template</textarea>
-                            <br />
-                            <textarea wicket:id="template-comment" id="template-comment"
-                                rows="3" style="width: 95%;" readonly="readonly">this is the original comment</textarea>
-                            <p>
-                        </div>
-                        <div wicket:id="translation-area" class="span6">
-                            <textarea wicket:id="translation" id="translation" rows="3"
-                                cols="3" style="width: 97%;" placeholder="Translation">this is the translation</textarea>
-                            <br />
-                            <textarea wicket:id="translation-comment"
-                                id="translation-comment" rows="3" cols="3"
-                                style="align: right; width: 97%;" placeholder="Comment">this is the comment</textarea>
-
-                        </div>
+                        <div class="span12"><div class="row">
+	                        <div wicket:id="template-area" class="span6">
+	                            <textarea class="span6" wicket:id="template" id="template" rows="3" readonly="readonly">this is the template</textarea>
+	                            <br />
+	                            <textarea class="span6" wicket:id="template-comment" id="template-comment" rows="3" readonly="readonly">this is the original comment</textarea>
+	                        </div>
+	                        <div wicket:id="translation-area" class="span6">
+	                            <textarea class="span6" wicket:id="translation" id="translation" rows="3" placeholder="Translation">this is the translation</textarea>
+	                            <br />
+	                            <textarea class="span6" wicket:id="translation-comment" id="translation-comment" rows="3" placeholder="Comment">this is the comment</textarea>
+	                        </div>
+                        </div></div>
                     </div>
                     <div class="row">
                         <div class="span3">
