@@ -15,7 +15,12 @@
                 <form wicket:id="properties-form" id="properties-form">
                     <h3 wicket:id="key-label">Key</h3>
                     <div class="row">
-                        <div class="span12" style="padding-bottom: 4px;"><span wicket:id="reviews" class="label pull-right"></span></div>
+                        <div class="span12" style="padding-top: 4px; padding-bottom: 8px;">
+                            <button id="save" wicket:id="save" class="pull-left btn" name="Save" type="submit"><i class="icon-refresh" /> <wicket:message key="PropertyEditorSinglePanel.save.button">Save</wicket:message></button>
+                            <span class="pull-left">&nbsp;</span>
+                            <button id="reset" wicket:id="reset" class="pull-left btn" name="Reset" type="submit"><i class="icon-repeat" /> <wicket:message key="PropertyEditorSinglePanel.reset.button">Reset</wicket:message></button>
+                            <span wicket:id="reviews" class="label pull-right"></span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="span12"><div class="row">
@@ -25,9 +30,9 @@
 	                            <textarea class="span6" wicket:id="template-comment" id="template-comment" rows="3" readonly="readonly">this is the original comment</textarea>
 	                        </div>
 	                        <div wicket:id="translation-area" class="span6">
-	                            <textarea class="span6" wicket:id="translation" id="translation" rows="3" placeholder="Translation">this is the translation</textarea>
+	                            <textarea class="span6" wicket:id="translation" id="translation" rows="3" placeholder="Translation" wicket:message="placeholder:PropertyEditorSinglePanel.placeholder.translation">this is the translation</textarea>
 	                            <br />
-	                            <textarea class="span6" wicket:id="translation-comment" id="translation-comment" rows="3" placeholder="Comment">this is the comment</textarea>
+	                            <textarea class="span6" wicket:id="translation-comment" id="translation-comment" rows="3" placeholder="Comment" wicket:message="placeholder:PropertyEditorSinglePanel.placeholder.comment">this is the comment</textarea>
 	                        </div>
                         </div></div>
                     </div>
@@ -35,7 +40,7 @@
                         <div class="span3">
                             <button wicket:id="previous" id="previous" type="submit"
                                 value="previous" class="btn">
-                                <i class="icon-backward"></i> previous
+                                <i class="icon-backward" /> <wicket:message key="PropertyEditorSinglePanel.previous.button">Save & Previous</wicket:message>
                             </button>
                         </div>
                         <div class="span6">
@@ -46,7 +51,7 @@
                         <div class="span3">
                             <p align="right">
                                 <button wicket:id="next" id="next" type="submit" class="btn">
-                                    <i class="icon-forward"></i> next
+                                    <wicket:message key="PropertyEditorSinglePanel.next.button">Save & Next</wicket:message> <i class="icon-forward" />
                                 </button>
                             </p>
                         </div>

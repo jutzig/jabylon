@@ -201,6 +201,11 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             private static final long serialVersionUID = 1L;
 
             protected void onSubmit() {
+            	IFormSubmitter submitter = findSubmittingButton();
+            	if(submitter instanceof Button && ((Button)submitter).getId().equals("reset")) {
+                    setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
+                    return;
+            	}
 
                 PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
                 PropertyFile file = loadProperties(descriptor);
@@ -225,30 +230,30 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
                      */
                 }
 
-                IFormSubmitter submitter = findSubmittingButton();
                 if (submitter instanceof Button) {
                     Button button = (Button) submitter;
-                    if (button.getId().equals("next")) 
+                    if (button.getId().equals("next"))
                     {
                         if (nextModel != null && nextModel.getObject() != null)
                             setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));
                         else
                         {
                         	// there is no next. go to overview
-                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));                        	
+                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
                         }
-                        
-                    } else  
-                    {
+
+                    } else if (button.getId().equals("previous")) {
                     	if (previousModel != null && previousModel.getObject() != null)
                     		setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
                     	else
                         {
                         	// there is no next. go to overview
-                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));                        	
+                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
                         }
+                    } else {
+                        setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
                     }
-                    
+
                 }
             }
 
@@ -264,6 +269,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         pairForm.add(modifiedIndicator);
 
         add(pairForm);
+
+        Button saveButton = new Button("save");
+        pairForm.add(saveButton);
+        Button resetButton = new Button("reset");
+        pairForm.add(resetButton);
+
         Button nextButton = new Button("next");
         Button previousButton = new Button("previous");
 
@@ -323,12 +334,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         int percent = (int) ((actualIndex/(double)total) * 100);
         progress.add(new AttributeModifier("style", "width: " + percent + "%"));
         pairForm.add(progress);
-        
+
         fillReviewsColumn(mainModel, pairForm);
 
         PropertiesTools tools = new PropertiesTools("tools", mainModel, new PageParameters());
         add(tools);
-        
+
     }
 
     private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
@@ -368,10 +379,10 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         Project project = getModel().getObject().getProjectLocale().getParent().getParent();
         return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT);
     }
-    
-    
 
-	protected void fillReviewsColumn(IModel<PropertyPair> propertyPair, MarkupContainer container) 
+
+
+	protected void fillReviewsColumn(IModel<PropertyPair> propertyPair, MarkupContainer container)
 	{
 		RepeatingView view = new RepeatingView("reviews");
 		container.add(view);
@@ -396,11 +407,11 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			view.add(label);
 		}
 
-		
+
 
 	}
-    
-	
+
+
 
     protected String getLabelClass(Review review)
     {
@@ -416,5 +427,5 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             default:
                 return "";
         }
-    }	
+    }
 }
