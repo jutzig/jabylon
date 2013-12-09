@@ -9,12 +9,14 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="span12">
                 <form wicket:id="properties-form" id="properties-form">
                     <h3 wicket:id="key-label">Key</h3>
-                    <div class="row" align="right"><span wicket:id="reviews" class="label"></span></div>
+                    <div class="row">
+                        <div class="span12" style="padding-bottom: 4px;"><span wicket:id="reviews" class="label pull-right"></span></div>
+                    </div>
                     <div class="row">
                         <div wicket:id="template-area" class="span6">
                             <textarea wicket:id="template" id="template" rows="3" cols="3"
