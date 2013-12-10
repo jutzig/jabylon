@@ -223,7 +223,8 @@
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                         <Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
                         <Include-Resource>{maven-resources}</Include-Resource>
-                        <Import-Package>*;common=!;core=!;registry=!;misc=!;queries=!</Import-Package>
+                        <!-- make sure to import servlet from 2.3.0 up to 4 -->
+                        <Import-Package>javax.servlet;version="[2.3.0,4.0.0)",javax.servlet.*;version="[2.3.0,4.0.0)",*;common=!;core=!;registry=!;misc=!;queries=!</Import-Package>
                         <Bundle-Category>Jabylon-Plugin</Bundle-Category>
                     </instructions>
                 </configuration>
@@ -689,7 +690,7 @@
 				<artifactId>org.osgi.service.obr</artifactId>
 				<version>1.0.2</version>
 				<scope>provided</scope>
-			</dependency>            
+			</dependency>
 
             <!-- jetty -->
             <dependency>
@@ -772,7 +773,7 @@
                 <version>2.1.1</version>
                 <scope>provided</scope>
             </dependency>
-            
+
             <!-- quartz -->
             <dependency>
             	<groupId>org.quartz-scheduler</groupId>
@@ -780,7 +781,7 @@
             	<version>2.1.5</version>
             	<scope>provided</scope>
         	</dependency>
-        	
+
         	<!-- inject -->
         	<dependency>
             	<groupId>javax.inject</groupId>

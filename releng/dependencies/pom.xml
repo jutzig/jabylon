@@ -424,17 +424,6 @@
 
         <!-- misc -->
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>servlet</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
 			<scope>compile</scope>
@@ -687,7 +676,7 @@
           			<groupId>*</groupId>
           			<artifactId>*</artifactId>
         		</exclusion>
-			</exclusions>            
+			</exclusions>
         </dependency>
 
         <dependency>

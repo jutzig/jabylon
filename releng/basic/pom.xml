@@ -140,7 +140,7 @@
         	<type>pom</type>
         	<scope>compile</scope>
         </dependency>
-        
+
          <!-- standalone product specific -->
          <dependency>
             <groupId>org.eclipse.equinox</groupId>
@@ -178,7 +178,7 @@
         		</exclusion>
 			</exclusions>
         </dependency>
-        
+
                 <!-- jetty -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -267,6 +267,17 @@
           			<artifactId>*</artifactId>
         		</exclusion>
 			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>servlet</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

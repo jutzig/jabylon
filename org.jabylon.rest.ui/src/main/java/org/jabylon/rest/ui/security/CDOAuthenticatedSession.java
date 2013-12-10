@@ -32,9 +32,9 @@ import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
+import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.impl.UserManagmentURIHandler;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EObjectModel;
@@ -191,7 +191,9 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
     }
 
     private URL getJAASConfig() {
-        String configArea = System.getProperty("osgi.configuration.area","configuration");
+        String configArea = System.getProperty("osgi.configuration.area");
+        if(configArea==null || configArea.isEmpty())
+            configArea = new File(new File(ServerConstants.WORKSPACE_DIR),"configuration").toURI().toString();
         try {
             URI uri = new URI(configArea);
             File jaasConfig = new File(new File(uri), JAAS_CONFIG_FILE);

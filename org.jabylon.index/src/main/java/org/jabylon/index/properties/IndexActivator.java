@@ -50,6 +50,9 @@ public class IndexActivator extends Plugin implements BundleActivator {
         {
             try {
                 logger.info("Opening Lucene Index");
+                File file = new File(ServerConstants.WORKING_DIR,"lucene");
+                if(!file.exists())
+                    file.mkdirs();
                 directory = FSDirectory.open(new File(ServerConstants.WORKING_DIR,"lucene"));
             } catch (IOException e) {
                 logger.error("Failed to open index directory",e);

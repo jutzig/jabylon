@@ -13,7 +13,8 @@ public class ServerConstants {
     static {
         String tmpWorkingDir;
         try {
-            String path = System.getProperty("osgi.instance.area", System.getProperty("user.home"));
+            //try in order JABYLON_HOME, osgi.instance.area and user.home/jabylon
+            String path = System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon"));
             if(path.startsWith("file:")) //eclipse does this when using variables in a launch config
                 path = path.substring("file:".length());
             File instanceArea = new File(path);
@@ -23,5 +24,6 @@ public class ServerConstants {
         }
         WORKING_DIR = tmpWorkingDir;
         WORKSPACE_DIR = WORKING_DIR+"/workspace";
+        new File(WORKSPACE_DIR).mkdirs();
     }
 }
