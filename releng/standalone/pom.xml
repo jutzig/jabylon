@@ -5,22 +5,15 @@
     <artifactId>jabylon.product</artifactId>
     <packaging>pom</packaging>
 
-
     <parent>
-        <artifactId>jabylon-parent</artifactId>
         <groupId>org.jabylon</groupId>
+        <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
         <plugins>
-            <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.5.1</version> <executions> <execution> <id>copy</id> <phase>prepare-package</phase>
-                <goals> <goal>copy-dependencies</goal> </goals> <inherited>false</inherited>
-                <configuration> <outputDirectory>target/result/plugins</outputDirectory>
-                <excludeTransitive>true</excludeTransitive> <prependGroupId>true</prependGroupId>
-                </configuration> </execution> </executions> </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -40,9 +33,8 @@
         </plugins>
     </build>
 
-
     <dependencies>
-       <dependency>
+        <dependency>
             <groupId>org.jabylon</groupId>
             <artifactId>cdo.connector</artifactId>
             <version>${project.version}</version>
@@ -134,139 +126,139 @@
 
 
         <dependency>
-        	<groupId>org.jabylon</groupId>
-        	<artifactId>dependencies</artifactId>
-        	<version>${project.version}</version>
-        	<type>pom</type>
-        	<scope>compile</scope>
+            <groupId>org.jabylon</groupId>
+            <artifactId>dependencies</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>compile</scope>
         </dependency>
 
-         <!-- standalone product specific -->
-         <dependency>
+        <!-- standalone product specific -->
+        <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>launcher</artifactId>
             <version>1.3.0</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.update</groupId>
             <artifactId>configurator</artifactId>
             <version>3.3.200</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>simpleconfigurator</artifactId>
             <version>1.0.301</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-                <!-- jetty -->
+        <!-- jetty -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>server</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>util</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>http</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>io</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>servlet</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>security</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>continuation</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox.http</groupId>
             <artifactId>jetty</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -279,7 +271,5 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
     </dependencies>
-
 </project>

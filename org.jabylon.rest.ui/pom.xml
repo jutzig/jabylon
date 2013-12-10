@@ -5,10 +5,9 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <artifactId>jabylon-parent</artifactId>
         <groupId>org.jabylon</groupId>
+        <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../releng/parent</relativePath>
     </parent>
 
     <build>

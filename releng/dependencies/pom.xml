@@ -6,12 +6,11 @@
     <packaging>pom</packaging>
     <description>lists the dependencies necessary to provide a standalone jabylon</description>
 
-
     <parent>
-        <artifactId>jabylon-parent</artifactId>
         <groupId>org.jabylon</groupId>
+        <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
@@ -64,269 +63,269 @@
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>osgi</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>app</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>contenttype</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>util</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>common</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>preferences</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>security</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.osgi</groupId>
             <artifactId>services</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>registry</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>runtime</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>jobs</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>ds</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- CDO -->
         <dependency>
             <artifactId>common</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>cdo</artifactId>
             <groupId>org.eclipse.emf</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>server</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse.emf.cdo</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>db</artifactId>
             <groupId>org.eclipse.net4j</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.net4j</groupId>
             <artifactId>util</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>jvm</artifactId>
             <groupId>org.eclipse.net4j</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>db</artifactId>
             <groupId>org.eclipse.emf.cdo.server</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>net4j</artifactId>
             <groupId>org.eclipse.emf.cdo.server</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <artifactId>h2</artifactId>
             <groupId>org.eclipse.net4j.db</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>h2</artifactId>
             <groupId>org</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -334,376 +333,374 @@
         <dependency>
             <artifactId>core</artifactId>
             <groupId>org.apache.lucene</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>misc</artifactId>
             <groupId>org.apache.lucene</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>queries</artifactId>
             <groupId>org.apache.lucene</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>lucene</artifactId>
             <groupId>org.apache</groupId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- EMF -->
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>common</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>ecore</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf.ecore</groupId>
             <artifactId>change</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf.ecore</groupId>
             <artifactId>xmi</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- misc -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache</groupId>
             <artifactId>ant</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>api</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>slf4j</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>core</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>classic</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- wicket -->
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-core</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-extensions</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-auth-roles</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-request</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-util</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-ioc</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- GIT -->
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- shell -->
         <dependency>
             <groupId>org.apache.felix.gogo</groupId>
             <artifactId>command</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.felix.gogo</groupId>
             <artifactId>shell</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.felix.gogo</groupId>
             <artifactId>runtime</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>console</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- OBR support -->
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.bundlerepository</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
-		<!-- http -->
+        <!-- http -->
         <dependency>
             <groupId>org.eclipse.equinox.http</groupId>
             <artifactId>registry</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox.http</groupId>
             <artifactId>servlet</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Flyway -->
         <dependency>
             <groupId>com.googlecode.flyway</groupId>
             <artifactId>flyway-core</artifactId>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-          			<groupId>*</groupId>
-          			<artifactId>*</artifactId>
-        		</exclusion>
-			</exclusions>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
     </dependencies>
-
 </project>
