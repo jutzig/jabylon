@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.rest.ui.util.WicketUtil;
 
@@ -37,8 +39,8 @@ public class SettingsOverviewPanel extends GenericPanel<Void> {
 
             @Override
             protected void populateItem(ListItem<ConfigKind> item) {
-                item.add(item.getModelObject().constructLink("link"));
-                item.add(new Label("description",item.getModelObject().getDescription()));
+                item.add(item.getModelObject().constructLink("link",item));               
+                item.add(new Label("description",new StringResourceModel(item.getModelObject().getDescription(),item,null)));
 
             }
 
@@ -49,39 +51,41 @@ public class SettingsOverviewPanel extends GenericPanel<Void> {
 }
 
 enum ConfigKind {
-    WORKSPACE("Projects","Configure the Jabylon translation Projects"){
+    WORKSPACE("projects.title","projects.description"){
 
         @Override
-        public Link<Void> constructLink(String id) {
+        public Link<Void> constructLink(String id, Component parent) {
             PageParameters params = new PageParameters();
             params.set(0, "workspace");
             BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(id, SettingsPage.class, params);
-            link.setBody(Model.of("Projects"));
+            link.setBody(new StringResourceModel(getName(),parent,null));
             return link;
         }
 
 
     },
 
-    SYSTEM("System","Install updates, plugins and manage the bundle konfiguration") {
+    SYSTEM("system.title","system.description") {
         @Override
-        public AbstractLink constructLink(String id) {
+        public AbstractLink constructLink(String id, Component parent) {
         	//TODO: better to do this dynamic with e.g. an extension point/whiteboard pattern
-            return new ExternalLink(id, WicketUtil.getContextPath() + "/system", "System");
+            return new ExternalLink(id, Model.of(WicketUtil.getContextPath() + "/system"), new StringResourceModel(getName(),parent,null));
         }
     }
-    , SECURITY("Security","Manage Roles, Users, Permissions and generell security settings") {
+    , SECURITY("security.title","security.description") {
         @Override
-        public AbstractLink constructLink(String id) {
+        public AbstractLink constructLink(String id, Component parent) {
             PageParameters params = new PageParameters();
             params.set(0, "security");
             BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(id, SettingsPage.class, params);
-            link.setBody(Model.of("Security"));
+            link.setBody(new StringResourceModel(getName(),parent,null));
             return link;
         }
     };
-
-    private String name, description;
+    /** the property id of the name */
+    private String name;
+    /** the property id of the description */
+    private String description;
 
     private ConfigKind(String name, String description) {
         this.name = name;
@@ -94,6 +98,6 @@ enum ConfigKind {
     public String getName() {
         return name;
     }
-    public abstract AbstractLink constructLink(String id);
+    public abstract AbstractLink constructLink(String id, Component parent);
 
 }

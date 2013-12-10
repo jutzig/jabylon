@@ -6,6 +6,7 @@ package org.jabylon.rest.ui.wicket.panels;
 import java.text.MessageFormat;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -14,9 +15,11 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
-
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
@@ -77,7 +80,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
                 LinkTarget target = buildLinkTarget(resolvable, endsOnSlash);
 
-                ExternalLink link = new ExternalLink("link", target.getHref(), target.getLabel());
+                ExternalLink link = new ExternalLink("link", Model.of(target.getHref()), target.getLabel());
                 item.add(link);
 
                 Triplet widths = computeProgressBars(target.getEndPoint());
@@ -92,7 +95,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
                 item.add(danger);
 
                 new ImageSwitch(item).doSwitch(target.getEndPoint());
-                item.add(new Label("summary",new Summary().doSwitch(target.getEndPoint())));
+                item.add(new Label("summary",new Summary(item).doSwitch(target.getEndPoint())));
             }
 
         };
@@ -147,7 +150,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
                 name.append(labelSwitch.doSwitch(folder));
             }
         }
-        LinkTarget target = new LinkTarget(name.toString(),hrefBuilder.toString(),folder);
+        LinkTarget target = new LinkTarget(Model.of(name.toString()),hrefBuilder.toString(),folder);
         return target;
 
     }
@@ -171,10 +174,10 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
 class LinkTarget
 {
-    private String label;
+    private IModel<String> label;
     private String href;
     private Resolvable<?, ?> endPoint;
-    public LinkTarget(String label, String href, Resolvable<?, ?> endPoint) {
+    public LinkTarget(IModel<String> label, String href, Resolvable<?, ?> endPoint) {
         super();
         this.label = label;
         this.href = href;
@@ -189,7 +192,7 @@ class LinkTarget
         return href;
     }
 
-    public String getLabel() {
+    public IModel<String> getLabel() {
         return label;
     }
 
@@ -214,39 +217,44 @@ class LabelSwitch extends PropertiesSwitch<String> {
     }
 }
 
-class Summary extends PropertiesSwitch<String> {
-    @Override
-    public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
-        return object.getPercentComplete()+"% complete";
+class Summary extends PropertiesSwitch<IModel<String>> {
+    private static final String NUMBER_OF_KEYS_KEY = "number.of.keys";
+	private static final String TRANSLATION_PERCENTAGE_KEY = "translation.percentage";
+	private static final String TRANSLATION_PERCENTAGE_SHORT_KEY = "translation.percentage.short";
+	private transient Component parent;
+
+	public Summary(Component parent) {
+		this.parent = parent;
+	}
+
+	@Override
+    public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> IModel<String> caseResolvable(Resolvable<P, C> object) {
+		return new StringResourceModel(TRANSLATION_PERCENTAGE_SHORT_KEY, parent, null, object.getPercentComplete());
     }
 
     @Override
-    public String caseProjectLocale(ProjectLocale object) {
+    public IModel<String> caseProjectLocale(ProjectLocale object) {
         if(object.getParent()==null && object.getParent().getTemplate()==null)
             return null;
         ProjectLocale template = object.getParent().getTemplate();
         int propertyCount = template.getPropertyCount();
         int translatedCount = object.getPropertyCount();
-        String message = "{0} of {1} translated ({2}%)";
-        message = MessageFormat.format(message, translatedCount,propertyCount,object.getPercentComplete());
-        return message;
+        return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, translatedCount,propertyCount,object.getPercentComplete());
     }
 
     @Override
-    public String casePropertyFileDescriptor(PropertyFileDescriptor object) {
+    public IModel<String> casePropertyFileDescriptor(PropertyFileDescriptor object) {
         int propertyCount = object.getKeys();
         if(object.isMaster())
         {
-            String message = "{0} keys";
+            String message = NUMBER_OF_KEYS_KEY;
             message = MessageFormat.format(message, propertyCount);
-            return message;
+            return new StringResourceModel(NUMBER_OF_KEYS_KEY, parent, null, propertyCount);
         }
         else
         {
             int templateCount = object.getMaster().getKeys();
-            String message = "{0} of {1} translated ({2}%)";
-            message = MessageFormat.format(message, propertyCount, templateCount, object.getPercentComplete());
-            return message;
+            return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, templateCount,propertyCount,object.getPercentComplete());
 
         }
     }

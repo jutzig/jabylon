@@ -14,8 +14,8 @@ import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.LoginPage;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -30,7 +30,10 @@ import org.jabylon.users.User;
  */
 public class LoginPanel<T> extends BasicPanel<T> {
 
-    private static final long serialVersionUID = 1L;
+	
+    private static final String LOGOUT_KEY = "login.link.title";
+	static final String LOGIN_KEY = "logout.link.title";
+	private static final long serialVersionUID = 1L;
     private BookmarkablePageLink<String> userLink;
 
     public LoginPanel(String id, IModel<T> object, PageParameters parameters) {
@@ -47,7 +50,7 @@ public class LoginPanel<T> extends BasicPanel<T> {
             User user = session.getUser();
             if (user != null) {
                 LogoutLink link = new LogoutLink("link");
-                link.add(new Label("link-label", "Logout"));
+                link.add(new Label("link-label", new StringResourceModel(LOGOUT_KEY, this,null)));
                 add(link);
 
                 userLinkParams.set(0, "security");
@@ -62,7 +65,7 @@ public class LoginPanel<T> extends BasicPanel<T> {
             else {
 
                 BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class);
-                link.add(new Label("link-label", "Login"));
+                link.add(new Label("link-label", new StringResourceModel(LOGIN_KEY, this,null)));
                 add(link);
                 userLink.setVisible(false);
             }
@@ -106,7 +109,7 @@ class LogoutLink extends StatelessLink<String> {
             session.invalidate();
             MarkupContainer parent = getParent();
             BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class);
-            link.add(new Label("link-label", "Login"));
+            link.add(new Label("link-label", new StringResourceModel(LoginPanel.LOGIN_KEY,this,null)));
             parent.addOrReplace(link);
             setResponsePage(WelcomePage.class);
         }

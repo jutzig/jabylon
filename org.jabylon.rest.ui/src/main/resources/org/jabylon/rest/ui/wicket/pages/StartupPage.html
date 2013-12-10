@@ -1,4 +1,4 @@
-<html>
+<html xmlns:wicket="http://wicket.apache.org">
 <head>
 <script type="text/JavaScript">
 <!--
@@ -9,7 +9,7 @@
 </script>
 </head>
 <body onload="JavaScript:timedRefresh(5000);">
-    <h2>Jabylon is currently starting up</h2>
-    <p>The page will automatically reload once the service is running...</p>
+    <h2><wicket:message key="booting.header">Jabylon is currently starting up</wicket:message></h2>
+    <p><wicket:message key="booting.message">The page will automatically reload once the service is running...</wicket:message></p>
 </body>
 </html>

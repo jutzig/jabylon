@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.rest.ui.wicket.panels.SearchResultPanel;
@@ -50,7 +50,7 @@ public class SearchPage extends GenericPage<String> {
         String term = getSearchTerm(getPageParameters());
         String scope = getSearchScope(getPageParameters());
         if(term==null)
-            add(new Label("content","no search term entered"));
+            add(new Label("content",new StringResourceModel("no.term.entered.message", this, null)));
         else
         {
             SearchResult result = search(term,scope, getPageParameters().get(MAX_HITS).toInt(50));

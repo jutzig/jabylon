@@ -1,7 +1,6 @@
 package org.jabylon.rest.ui.wicket.config.sections;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 
 import javax.inject.Inject;
 
@@ -12,13 +11,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.progress.RunnableWithProgress;
 import org.jabylon.index.properties.IndexActivator;
@@ -30,6 +26,9 @@ import org.jabylon.rest.ui.wicket.components.ProgressPanel;
 import org.jabylon.rest.ui.wicket.components.ProgressShowingAjaxButton;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.security.CommonPermissions;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IndexingConfigSection extends GenericPanel<Workspace> {
 
@@ -49,8 +48,7 @@ public class IndexingConfigSection extends GenericPanel<Workspace> {
         super(id, model);
         setOutputMarkupId(true);
         progressModel = new ProgressionModel(-1);
-        String message = "Index size is {0} kb";
-        add(new Label("summary", MessageFormat.format(message, getIndexSize())));
+        add(new Label("summary", new StringResourceModel("index.size.summary", this, null, getIndexSize())));
         final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
         add(progressPanel);
         add(createUpdateIndexAction(progressPanel));

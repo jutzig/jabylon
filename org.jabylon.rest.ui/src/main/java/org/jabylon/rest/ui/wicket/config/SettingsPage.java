@@ -5,17 +5,16 @@ package org.jabylon.rest.ui.wicket.config;
 
 import java.util.List;
 
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
-
 import org.jabylon.rest.ui.model.IEObjectModel;
 import org.jabylon.rest.ui.model.WritableEObjectModel;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.pages.GenericResolvablePage;
 import org.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
-import org.jabylon.security.CommonPermissions;
 
 
 /**
@@ -35,7 +34,7 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
         super.construct();
 
         BreadcrumbPanel<CDOObject> breadcrumbPanel = new BreadcrumbPanel<CDOObject>("breadcrumb-panel", getModel(),getPageParameters());
-        breadcrumbPanel.setRootLabel("Settings");
+        breadcrumbPanel.setRootLabel(new StringResourceModel("SettingsPage.breadcrumb.root.label",this,null));
         add(breadcrumbPanel);
     }
 

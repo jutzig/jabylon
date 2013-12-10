@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.eclipse.core.runtime.CoreException;
@@ -27,13 +28,6 @@ import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ArrayListMultimap;
-
 import org.jabylon.common.util.AttachablePreferences;
 import org.jabylon.common.util.DelegatingPreferences;
 import org.jabylon.common.util.PreferencesUtil;
@@ -48,6 +42,12 @@ import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.users.User;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ArrayListMultimap;
 
 /**
  * @author jutzig.dev@googlemail.com
@@ -85,7 +85,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
         // submit section
 
-        @SuppressWarnings({ "rawtypes", "unchecked" })
+        @SuppressWarnings({ "rawtypes" })
         Form form = new StatelessForm("form", getModel()) {
 
             private static final long serialVersionUID = 1L;
@@ -133,7 +133,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
                         setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
                     }
                     preferences.flush();
-                    getSession().success("Saved successfully");
+                    getSession().success(new StringResourceModel("save.success.feedback.message", this, null));
                 } catch (CommitException e) {
                     getSession().error(e.getMessage());
                     logger.error("failed to commit configuration for "+object,e);
@@ -174,7 +174,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         form.add(tabContainer);
 //		form.add(new CustomFeedbackPanel("feedback"));
 
-        Button submitButton = new Button("submit", Model.of("Submit"));
+        Button submitButton = new Button("submit", new StringResourceModel("submit.button.label", this, null));
         form.add(submitButton);
 //		Button cancelButton = new Button("cancel-button", Model.of("Cancel"));
 //		form.add(cancelButton);

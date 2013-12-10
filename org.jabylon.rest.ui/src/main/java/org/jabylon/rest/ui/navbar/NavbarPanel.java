@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.PanelFactory;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
@@ -29,7 +28,8 @@ public class NavbarPanel<T> extends BasicPanel<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(NavbarPanel.class);
 
-    public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
+    @SuppressWarnings("rawtypes")
+	public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
         super(id, model, parameters);
         add(new BookmarkablePageLink<String>("jabylon",WelcomePage.class)); //$NON-NLS-1$
         Map<PanelFactory, Boolean> data = loadNavBarExtensions();
