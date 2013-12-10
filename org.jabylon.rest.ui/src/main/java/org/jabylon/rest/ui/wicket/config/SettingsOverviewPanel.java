@@ -17,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.rest.ui.util.WicketUtil;
 
 /**
  * @author jutzig.dev@googlemail.com
@@ -65,14 +66,18 @@ enum ConfigKind {
     SYSTEM("System","Install updates, plugins and manage the bundle konfiguration") {
         @Override
         public AbstractLink constructLink(String id) {
-
-            return new ExternalLink(id, "/system", "System");
+        	//TODO: better to do this dynamic with e.g. an extension point/whiteboard pattern
+            return new ExternalLink(id, WicketUtil.getContextPath() + "/system", "System");
         }
     }
     , SECURITY("Security","Manage Roles, Users, Permissions and generell security settings") {
         @Override
         public AbstractLink constructLink(String id) {
-            return new ExternalLink(id, "/settings/security","Security");
+            PageParameters params = new PageParameters();
+            params.set(0, "security");
+            BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(id, SettingsPage.class, params);
+            link.setBody(Model.of("Security"));
+            return link;
         }
     };
 
