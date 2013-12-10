@@ -254,7 +254,7 @@ class Summary extends PropertiesSwitch<IModel<String>> {
         else
         {
             int templateCount = object.getMaster().getKeys();
-            return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, templateCount,propertyCount,object.getPercentComplete());
+            return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, propertyCount,templateCount,object.getPercentComplete());
 
         }
     }
