@@ -37,6 +37,10 @@
             <directory>src/main/web</directory>
             <outputDirectory>WEB-INF</outputDirectory>
         </fileSet>
+		<fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
     </fileSets>
     <files>
     	<file>
