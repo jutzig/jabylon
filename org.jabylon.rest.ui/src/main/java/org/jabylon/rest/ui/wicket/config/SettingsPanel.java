@@ -133,7 +133,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
                         setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
                     }
                     preferences.flush();
-                    getSession().success(new StringResourceModel("save.success.feedback.message", this, null));
+                    getSession().success(getString("save.success.feedback.message"));
                 } catch (CommitException e) {
                     getSession().error(e.getMessage());
                     logger.error("failed to commit configuration for "+object,e);
