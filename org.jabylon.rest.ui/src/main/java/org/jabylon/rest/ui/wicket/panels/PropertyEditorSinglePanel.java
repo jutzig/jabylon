@@ -35,6 +35,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
@@ -327,7 +328,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         pairForm.add(nextButton);
         pairForm.add(previousButton);
 
-        String progressLabel = "{0} of {1}";
+        String progressLabel = new StringResourceModel("translation.progress", this, null, index, total).getObject();
         progressLabel = MessageFormat.format(progressLabel, index, total);
         Label progress = new Label("progress", String.valueOf(progressLabel));
         double actualIndex = Math.max(1, index);
@@ -363,7 +364,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
                 String anchor = URLUtil.escapeToIdAttribute(mainModel.getObject().getKey());
                 PageParameters pageParams = new PageParameters(getPageParameters()).clearNamed().set("mode", mode);
                 BookmarkablePageLink<Object> link = new AnchorBookmarkablePageLink<Object>("link", getPage().getClass(), pageParams, anchor);
-                link.setBody(Model.of("Show " + mode));
+                
+                link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
                 item.add(link);
                 link.add(new AttributeModifier("onclick", "return confirmAction()"));
                 if (item.getModelObject() == currentMode)

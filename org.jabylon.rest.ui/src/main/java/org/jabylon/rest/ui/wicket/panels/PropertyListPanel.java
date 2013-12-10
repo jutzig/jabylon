@@ -33,6 +33,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IStatus;
@@ -196,9 +197,9 @@ public class PropertyListPanel
         if (pair.getTranslated() == null || pair.getTranslated().isEmpty())
         {
             Review review = PropertiesFactory.eINSTANCE.createReview();
-            String message = "The key ''{0}'' is not yet translated";
+            String message = new StringResourceModel("review.missing.translation",this,null,pair.getKey()).getString(); 
             review.setMessage(MessageFormat.format(message, pair.getKey()));
-            review.setReviewType("Missing Translation");
+            review.setReviewType(getString("review.missing.translation.type"));
             review.setSeverity(Severity.ERROR);
             return Collections.singletonList(review);
         }
@@ -254,7 +255,7 @@ public class PropertyListPanel
             {
                 String mode = item.getModelObject().name().toLowerCase();
                 BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).set("mode", mode));
-                link.setBody(Model.of("Show "+ mode));
+                link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
                 item.add(link);
                 if (item.getModelObject() == currentMode)
                     item.add(new AttributeModifier("class", "active"));

@@ -31,8 +31,8 @@ import org.jabylon.users.User;
 public class LoginPanel<T> extends BasicPanel<T> {
 
 	
-    private static final String LOGOUT_KEY = "login.link.title";
-	static final String LOGIN_KEY = "logout.link.title";
+    private static final String LOGOUT_KEY = "logout.link.title";
+	static final String LOGIN_KEY = "login.link.title";
 	private static final long serialVersionUID = 1L;
     private BookmarkablePageLink<String> userLink;
 
