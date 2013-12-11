@@ -217,21 +217,25 @@ public class GitTeamProvider implements TeamProvider {
             Git git = new Git(repository);
             // AddCommand addCommand = git.add();
             List<String> changedFiles = addNewFiles(git);
-            if (changedFiles.isEmpty())
-                return;
-            CommitCommand commit = git.commit();
-            Preferences node = PreferencesUtil.scopeFor(project.getParent());
-            String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
-            String email = node.get(GitConstants.KEY_EMAIL, "jabylon@example.org");
-            String message = node.get(GitConstants.KEY_MESSAGE, "Auto Sync-up by Jabylon");
-            commit.setAuthor(username, email);
-            commit.setCommitter(username, email);
-            commit.setMessage(message);
-            for (String path : changedFiles) {
-                commit.setOnly(path);
+            if (!changedFiles.isEmpty())
+            {
+            	CommitCommand commit = git.commit();
+                Preferences node = PreferencesUtil.scopeFor(project.getParent());
+                String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
+                String email = node.get(GitConstants.KEY_EMAIL, "jabylon@example.org");
+                String message = node.get(GitConstants.KEY_MESSAGE, "Auto Sync-up by Jabylon");
+                commit.setAuthor(username, email);
+                commit.setCommitter(username, email);
+                commit.setMessage(message);
+                for (String path : changedFiles) {
+                    commit.setOnly(path);
+                }
+                commit.call();	
             }
-            // commit.setOnly(only)
-            commit.call();
+            else
+            {
+            	LOGGER.info("No changed files, skipping commit phase");
+            }
             PushCommand push = git.push();
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             String refSpecString = "refs/heads/{0}:refs/heads/{0}";
@@ -243,7 +247,7 @@ public class GitTeamProvider implements TeamProvider {
             Ref ref = repository.getRef(project.getName());
             if(ref!=null)
             {
-            	LOGGER.info("Successfully pushed {}",ref.getObjectId());
+            	LOGGER.info("Successfully pushed {} to {}",ref.getObjectId(),project.getParent().getRepositoryURI());
             }
         } catch (NoHeadException e) {
             throw new TeamProviderException(e);
