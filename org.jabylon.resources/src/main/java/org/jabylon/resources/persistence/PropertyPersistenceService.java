@@ -38,5 +38,12 @@ public interface PropertyPersistenceService {
      * @throws ExecutionException if the file cannot be loaded
      */
     PropertyFile loadProperties(CDOID descriptor) throws ExecutionException;
+    
+    /**
+     * clears the internal property cache.
+     * This is useful for instance after an update or rescan operation to make sure all clients see 
+     * up to date information
+     */
+    void clearCache();
 
 }

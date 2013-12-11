@@ -41,12 +41,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.LoadingCache;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.properties.Project;
@@ -61,6 +55,11 @@ import org.jabylon.properties.util.PropertiesResourceImpl;
 import org.jabylon.resources.changes.PropertiesListener;
 import org.jabylon.resources.diff.PropertyDifferentiator;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -481,6 +480,13 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
         return cache.get(descriptor);
     }
 
+    @Override
+    public void clearCache() {
+    	cache.invalidateAll();
+    	
+    }
+    
+    
 }
 
 class PropertyTuple {
