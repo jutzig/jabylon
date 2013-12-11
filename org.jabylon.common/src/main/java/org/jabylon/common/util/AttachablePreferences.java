@@ -41,8 +41,8 @@ public class AttachablePreferences implements Preferences, Serializable{
 
     @Override
     public String get(String arg0, String arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (String) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+            return String.valueOf(values.get(arg0));
         return arg1;
     }
 
@@ -104,8 +104,12 @@ public class AttachablePreferences implements Preferences, Serializable{
     @Override
     public Preferences node(String arg0) {
         Map<String, Preferences> children = getOrCreateChildren();
-        AttachablePreferences child = new AttachablePreferences();
-        children.put(arg0, child);
+        
+        Preferences child = (AttachablePreferences) children.get(arg0);
+        if(child==null) {
+        	child = new AttachablePreferences();
+        	children.put(arg0, child);        	
+        }
         return child;
     }
 

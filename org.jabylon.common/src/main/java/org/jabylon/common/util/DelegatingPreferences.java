@@ -42,7 +42,7 @@ public class DelegatingPreferences implements Preferences, Serializable {
 
     public String get(String key, String def) {
         if(values.containsKey(key))
-            return (String) values.get(key);
+            return String.valueOf(values.get(key));
         return getDelegate().get(key, def);
     }
 

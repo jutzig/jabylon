@@ -64,14 +64,24 @@ public class PreferencesUtil {
 			{
 				LOGGER.info("Migrating old Preferences");
 				IEclipsePreferences newNode = InstanceScope.INSTANCE.getNode(ApplicationConstants.PLUGIN_ID);
-				shallowClonePreferences(oldNode, newNode);
-				copyChildPreferences(oldNode, newNode);
-				newNode.sync();
+				cloneNode(oldNode, newNode);
 				deleteNode(oldNode.node("config"));
 			}
 		} catch (BackingStoreException e) {
 			LOGGER.error("Failed to check if old config needs to be migrated");
 		}
+	}
+	
+	/**
+	 * copies all values and child nodes of the source into the target node
+	 * @param source
+	 * @param target
+	 * @throws BackingStoreException 
+	 */
+	public static void cloneNode(Preferences source, Preferences target) throws BackingStoreException {
+		shallowClonePreferences(source, target);
+		copyChildPreferences(source, target);
+		target.sync();
 	}
 
     public static Preferences workspaceScope()

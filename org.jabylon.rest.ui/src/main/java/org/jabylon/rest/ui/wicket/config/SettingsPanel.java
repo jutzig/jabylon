@@ -14,7 +14,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
@@ -106,47 +105,58 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
                     cdoView = object.cdoView();
                 if (cdoView instanceof CDOTransaction) {
                     CDOTransaction transaction = (CDOTransaction) cdoView;
-                    commit(preferences, object, transaction);
+                    
+                    Preferences prefs = preferences;
+                    if (preferences instanceof AttachablePreferences) {
+						// the prefs are not in the tree yet
+						Preferences targetPrefs = PreferencesUtil.scopeFor(object);
+						try {
+							PreferencesUtil.cloneNode(preferences, targetPrefs);
+							prefs = targetPrefs;
+						} catch (BackingStoreException e) {
+							error("Some settings could not be saved: "+	e.getMessage());
+							logger.error("Failed to attach preferences to target path",e);
+						}
+					}
+                    
+                    commit(prefs, object, transaction);
 //					model.detach();
                 }
                 else
                     throw new IllegalStateException("not a transaction");
-
-
                 super.onSubmit();
             }
 
-            protected void commit(final Preferences preferences, CDOObject object, CDOTransaction transaction) {
-                for (ConfigSection<?> section : allSections) {
-                    section.commit(getModel(), preferences);
-                }
-                try {
-                    transaction.commit();
-                    if (object instanceof Resolvable) {
-                        @SuppressWarnings("rawtypes")
-                        Resolvable r = (Resolvable) object;
-                        if(!r.getName().equals(preferences.name()))
-                        {
-                            //FIXME: must rename preferences properly
-//								preferences = PreferencesUtil.renamePreferenceNode(preferences,r.getName());
-                        }
-                        setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
-                    }
-                    preferences.flush();
-                    getSession().success(getString("save.success.feedback.message"));
-                } catch (CommitException e) {
-                    getSession().error(e.getMessage());
-                    logger.error("failed to commit configuration for "+object,e);
-                } catch (BackingStoreException e) {
-                    getSession().error(e.getMessage());
-                    logger.error("failed to commit configuration for "+object,e);
-                }
-                finally{
-//					transaction.close();
-                }
-            }
+			protected void commit(final Preferences preferences, CDOObject object, CDOTransaction transaction) {
+					
+					for (ConfigSection<?> section : allSections) {
+						section.commit(getModel(), preferences);
+					}
+				try {
+					transaction.commit();
+					if (object instanceof Resolvable) {
+						@SuppressWarnings("rawtypes")
+						Resolvable r = (Resolvable) object;
+						if (!r.getName().equals(preferences.name())) {
+							// FIXME: must rename preferences properly
+							// preferences =
+							// PreferencesUtil.renamePreferenceNode(preferences,r.getName());
+						}
+						setResponsePage(SettingsPage.class, WicketUtil.buildPageParametersFor(r));
+					}
 
-
+					preferences.flush();
+					getSession().success(getString("save.success.feedback.message"));
+				} catch (CommitException e) {
+					getSession().error(e.getMessage());
+					logger.error("failed to commit configuration for " + object, e);
+				} catch (BackingStoreException e) {
+					getSession().error(e.getMessage());
+					logger.error("failed to commit configuration for " + object, e);
+				} finally {
+					// transaction.close();
+				}
+			}
         };
 
         ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions) {
