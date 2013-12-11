@@ -144,6 +144,24 @@
                 </configuration>
             </plugin>
             <plugin>
+            	<groupId>com.mycila</groupId>
+            	<artifactId>license-maven-plugin</artifactId>
+            	<version>2.5</version>
+            	<configuration>
+            		<includes>
+            			<include>**/*.java</include>
+            		</includes>
+            		<header>EPL.txt</header>
+            	</configuration>
+                <executions>
+                	<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+                </executions>            	
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-scr-plugin</artifactId>
                 <version>1.8.0</version>
@@ -809,4 +827,22 @@
             </snapshots>
         </repository>
     </repositories>
+    
+    <name>Jabylon</name>
+    <url>http://www.jabylon.org</url>
+    <description>Jabylon is a web based server to help translating software products into multiple languages</description>
+    <organization>
+    	<name>Jabylon</name>
+    	<url>http://www.jabylon.org</url>
+    </organization>
+    <scm>
+    	<url>https://github.com/jutzig/jabylon</url>
+    	<connection>https://github.com/jutzig/jabylon.git</connection>
+    	<developerConnection>https://github.com/jutzig/jabylon.git</developerConnection>
+    </scm>
+    <issueManagement>
+    	<system>Github</system>
+    	<url>https://github.com/jutzig/jabylon/issues</url>
+    </issueManagement>
+    <inceptionYear>2013</inceptionYear>
 </project>
