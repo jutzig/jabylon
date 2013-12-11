@@ -108,6 +108,14 @@ public class PropertyResourceUtil {
                     translatedDescriptor.setKeys(size);
                     translatedDescriptor.updatePercentComplete();
                 }
+                else
+                {
+                	/*
+                	 * the file wasn't already there, but we still
+                	 * must inform the parent  that there is more children now
+                	 */
+                	parent.updatePercentComplete();
+                }
             }
             // otherwise add it to the template language
             else {
@@ -118,7 +126,6 @@ public class PropertyResourceUtil {
                 }
             }
         }
-
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -256,10 +263,15 @@ public class PropertyResourceUtil {
             for (PropertyFileDescriptor derived : derivedDescriptors) {
                 derived.setProjectLocale(null);
                 Resolvable<?, ?> parent = derived.getParent();
-                if(parent!=null && parent.getChildren().size()==1 && parent instanceof ResourceFolder)
+                if(parent!=null)
                 {
-
-                    deleteFolder((ResourceFolder) parent);
+                	//update the percentage of all derived resources
+                	parent.updatePercentComplete();
+                	if(parent.getChildren().size()==1 && parent instanceof ResourceFolder)
+                	{
+                		
+                		deleteFolder((ResourceFolder) parent);
+                	}                	
                 }
 
                 EcoreUtil.remove(derived);

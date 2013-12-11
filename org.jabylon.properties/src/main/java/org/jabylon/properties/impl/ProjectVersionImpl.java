@@ -166,6 +166,14 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
             if (descriptor != null) {
                 PropertyFile properties = descriptor.loadProperties();
                 descriptor.setKeys(properties.getProperties().size());
+                descriptor.updatePercentComplete();
+                if(descriptor.isMaster()) {
+                	EList<PropertyFileDescriptor> descriptors = descriptor.getDerivedDescriptors();
+                	for (PropertyFileDescriptor child : descriptors) {
+                		//update the percent complete of all translations
+						child.updatePercentComplete();
+					}
+                }
             }
             break;
         }

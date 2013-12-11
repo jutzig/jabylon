@@ -35,7 +35,6 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
 
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void newTranslationMatch(File file) {
         File template = getPropertyScanner().findTemplate(file, getScanConfig());
         //don't do anything if the template doesn't exist yet
