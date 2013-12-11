@@ -72,13 +72,20 @@ public class PropertyListPanel
 
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
+	private PropertyListMode mode;
 
 
     public PropertyListPanel(PropertyFileDescriptor object, PageParameters parameters)
     {
         super("content", object, parameters);
+        mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+    }
 
-        PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+    
+    @Override
+    protected void construct() {
+    	super.construct();
+        
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>()
         {
@@ -92,7 +99,7 @@ public class PropertyListPanel
                 return buildReviewMap(getModelObject());
             }
         };
-        PropertyPairListDataProvider provider = new PropertyPairListDataProvider(object, mode, reviewModel);
+        PropertyPairListDataProvider provider = new PropertyPairListDataProvider(getModelObject(), mode, reviewModel);
         List<PropertyPair> contents = provider.createContents();
 
         ListView<PropertyPair> properties = new ListView<PropertyPair>("repeater", contents)
@@ -139,7 +146,6 @@ public class PropertyListPanel
         }
         add(link);
     }
-
 
     protected void fillStatusColumn(PropertyPair propertyPair,
                                     Collection<Review> reviewCollection,

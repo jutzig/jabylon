@@ -77,14 +77,21 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
     private int index, total;
+	private PropertyListMode mode;
+	private String targetKey;
 
     public PropertyEditorSinglePanel(PropertyFileDescriptor object, PageParameters parameters) {
         super("content", object, parameters);
-
-        PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
-        String targetKey = parameters.get("key").toString(null);
+        mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+        targetKey = parameters.get("key").toString(null);
+        
+    }
+    
+    @Override
+    protected void construct() {
+    	super.construct();
+        
         addLinkList(mode);
-
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>() {
 
             private static final long serialVersionUID = 1L;
@@ -95,7 +102,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             }
         };
         createModels(getModel(), targetKey, mode);
-
+        
     }
 
     @Override
