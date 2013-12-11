@@ -36,6 +36,7 @@ import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -44,7 +45,8 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.osgi.service.prefs.Preferences;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.util.PreferencesUtil;
@@ -58,6 +60,8 @@ import org.jabylon.properties.Workspace;
 import org.jabylon.team.git.util.ProgressMonitorWrapper;
 
 public class GitTeamProvider implements TeamProvider {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GitTeamProvider.class);
 
     private Repository createRepository(ProjectVersion project) throws IOException {
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -98,22 +102,26 @@ public class GitTeamProvider implements TeamProvider {
             }
             diff.setNewTree(p);
 
-            diff.setOutputStream(System.out);
             List<DiffEntry> diffs = diff.call();
             for (DiffEntry diffEntry : diffs) {
                 updatedFiles.add(convertDiffEntry(diffEntry));
-                System.out.println(diffEntry);
+                LOGGER.trace(diffEntry.toString());
             }
             if(!updatedFiles.isEmpty())
             {
                 ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getName()+"^{commit}");
+                LOGGER.info("Merging remote commit {} to {}/{}", new Object[]{lastCommitID,project.getName(),project.getParent().getName()});
+                //TODO: use rebase here?
                 MergeCommand merge = git.merge();
 
 
                 merge.include(lastCommitID);
                 MergeResult mergeResult = merge.call();
-                System.out.println(mergeResult.getMergeStatus());
+                
+                LOGGER.info("Merge finished: {}",mergeResult.getMergeStatus());
             }
+            else
+            	LOGGER.info("Update finished successfully. Nothing to merge, already up to date");
         } catch (JGitInternalException e) {
             throw new TeamProviderException(e);
         } catch (InvalidRemoteException e) {
@@ -232,6 +240,11 @@ public class GitTeamProvider implements TeamProvider {
             push.setRefSpecs(spec);
             // push.setPushAll();
             push.call();
+            Ref ref = repository.getRef(project.getName());
+            if(ref!=null)
+            {
+            	LOGGER.info("Successfully pushed {}",ref.getObjectId());
+            }
         } catch (NoHeadException e) {
             throw new TeamProviderException(e);
         } catch (NoMessageException e) {
@@ -259,7 +272,6 @@ public class GitTeamProvider implements TeamProvider {
         List<String> changedFiles = new ArrayList<String>();
         List<String> newFiles = new ArrayList<String>();
 
-        diffCommand.setOutputStream(System.out);
         List<DiffEntry> result = diffCommand.call();
         //TODO: delete won't work
         for (DiffEntry diffEntry : result) {
