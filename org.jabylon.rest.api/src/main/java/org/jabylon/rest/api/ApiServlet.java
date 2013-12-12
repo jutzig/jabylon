@@ -23,11 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.util.PreferencesUtil;
@@ -44,6 +42,11 @@ import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.api.json.JSONEmitter;
+import org.jabylon.security.CommonPermissions;
+import org.jabylon.security.auth.AuthenticationService;
+import org.jabylon.users.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * TODO short description for ApiServlet.
@@ -56,15 +59,20 @@ public class ApiServlet extends HttpServlet
 // implements Servlet
 {
 
-    /** field <code>serialVersionUID</code> */
+    private static final String BASIC_AUTH_REALM = "BASIC realm=\"Jabylon API\"";
+	private static final String BASIC_PREFIX = "BASIC ";
+	/** field <code>serialVersionUID</code> */
     private static final long serialVersionUID = -1167994739560620821L;
     private Workspace workspace;
     private PropertyPersistenceService persistence;
+	private AuthenticationService authService;
+	
     private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 
-    public ApiServlet(Workspace workspace, PropertyPersistenceService persistence) {
+    public ApiServlet(Workspace workspace, AuthenticationService authService, PropertyPersistenceService persistence) {
         this.workspace = workspace;
         this.persistence = persistence;
+        this.authService = authService;
     }
 
     /**
@@ -92,6 +100,10 @@ public class ApiServlet extends HttpServlet
         if (child == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + req.getPathInfo() + " does not exist");
             return;
+        }
+        if(!isAuthorized(req, false, child)) {
+        	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
         }
         JSONEmitter emitter = new JSONEmitter();
         StringBuilder result = new StringBuilder();
@@ -150,6 +162,10 @@ public class ApiServlet extends HttpServlet
         URI projectURI = URI.createHierarchicalURI(projectPart, null, null);
         Resolvable version = getObject(projectURI.path());
         if (version instanceof ProjectVersion) {
+        	if(!isAuthorized(req, true, version)) {
+        		resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
+        		resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
+        	}
             ProjectVersion projectVersion = (ProjectVersion) version;
             URI descriptorLocation = URI.createHierarchicalURI(descriptorPart, null, null);
             File folder = new File(projectVersion.absoluteFilePath().toFileString());
@@ -168,6 +184,8 @@ public class ApiServlet extends HttpServlet
                         return object;
                     }
                 });
+                //TODO: why not use persistence service to store it instead?
+                persistence.clearCache();
             } catch (CommitException e) {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Commit failed: " + e.getMessage());
                 logger.error("Commit failed", e);
@@ -182,6 +200,10 @@ public class ApiServlet extends HttpServlet
         Resolvable object = getObject(truncated.path());
         if (object instanceof ProjectVersion) {
             ProjectVersion version = (ProjectVersion) object;
+            if(!isAuthorized(req, true, version)) {
+            	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
+                resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
+            }
             if (version.getChild(uri.lastSegment()) == null) {
                 try {
                     TransactionUtil.commit(version, new Modification<ProjectVersion, ProjectVersion>() {
@@ -209,6 +231,10 @@ public class ApiServlet extends HttpServlet
         Resolvable object = getObject(truncated.path());
         if (object instanceof Project) {
             Project project = (Project) object;
+            if(!isAuthorized(req, true, project)) {
+            	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
+                resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
+            }
             if (project.getChild(uri.lastSegment()) == null) {
                 try {
                     TransactionUtil.commit(project, new Modification<Project, Project>() {
@@ -234,6 +260,10 @@ public class ApiServlet extends HttpServlet
 
     private void putProject(HttpServletRequest req, final URI uri, HttpServletResponse resp) throws IOException {
         // TODO: evaluate JSON stream for settings
+        if(!isAuthorized(req, true, workspace)) {
+        	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
+        }
         try {
             TransactionUtil.commit(workspace, new Modification<Workspace, Workspace>() {
                 @Override
@@ -316,5 +346,38 @@ public class ApiServlet extends HttpServlet
         // TODO Auto-generated method stub
 
     }
+    
+    protected boolean isAuthorized(HttpServletRequest request, boolean isEdit, Resolvable<?, ?> target) {
+    	User user = getUser(request);
+    	if(user==null)
+    		return false;
+    	return CommonPermissions.hasPermission(user, target, isEdit ? CommonPermissions.ACTION_EDIT : CommonPermissions.ACTION_VIEW);
+    }
+    
+    protected User getUser(HttpServletRequest request) {
+        
+    	String auth = request.getHeader("Authorization");  
+        if (auth == null) {
+            return null;
+        }
+        if (!auth.toUpperCase().startsWith(BASIC_PREFIX)) { 
+            return null;  // we only do BASIC so far
+        }
+        // Encoded user and password come after "BASIC "
+        String userpassEncoded = auth.substring(BASIC_PREFIX.length());
+        byte[] decoded = Base64.decode(userpassEncoded.getBytes());
+        String userpassDecoded = new String(decoded);
+        String[] userPass = userpassDecoded.split(":");
+        if(userPass.length!=2)
+        	return null;
+        String user = userPass[0];
+        String password = userPass[1];
+        return authenticate(user, password);
+        
+    }
+    
+    private User authenticate(final String username, final String password) {
+    	return authService.authenticateUser(username, password);
+    }    
 
 }

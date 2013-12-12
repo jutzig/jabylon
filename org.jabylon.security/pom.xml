@@ -31,9 +31,6 @@
                     <instructions>
                         <Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
                         <Bundle-Activator>org.jabylon.security.JabylonSecurityBundle</Bundle-Activator>
-                        <Service-Component>
-                            OSGI-INF/main.xml
-                        </Service-Component>
                         <Include-Resource>
                             {maven-resources},plugin.xml
                         </Include-Resource>
@@ -74,6 +71,10 @@
         <dependency>
         	<groupId>org.slf4j</groupId>
         	<artifactId>api</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.felix</groupId>
+        	<artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
     </dependencies>
 </project>

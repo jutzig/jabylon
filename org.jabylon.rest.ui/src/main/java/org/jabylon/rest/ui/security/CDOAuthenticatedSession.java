@@ -11,49 +11,25 @@
  */
 package org.jabylon.rest.ui.security;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.security.auth.Subject;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.LoginException;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.jabylon.cdo.connector.Modification;
-import org.jabylon.cdo.connector.TransactionUtil;
-import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.impl.UserManagmentURIHandler;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.security.CommonPermissions;
-import org.jabylon.security.JabylonSecurityBundle;
-import org.jabylon.security.SubjectAttribute;
+import org.jabylon.security.auth.AuthenticationService;
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
-import org.jabylon.users.UsersFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -70,8 +46,6 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
     private IModel<UserManagement> userManagementModel;
 
     private static final Logger logger = LoggerFactory.getLogger(CDOAuthenticatedSession.class);
-
-    private static final String JAAS_CONFIG_FILE = "jaas.config"; //$NON-NLS-1$
 
     public CDOAuthenticatedSession(Request request) {
         super(request);
@@ -116,104 +90,14 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
     @Override
     public boolean authenticate(final String username, final String password) {
 
-        Map<String, ILoginContext> contexts = createLoginContexts(new CallbackHandler() {
-
-            @Override
-            public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                for (int i = 0; i < callbacks.length; i++) {
-                    Callback cb = callbacks[i];
-                    if(cb instanceof NameCallback) {
-                        ((NameCallback) cb).setName(username); //$NON-NLS-1$
-                    } else if (cb instanceof PasswordCallback) {
-                        ((PasswordCallback) cb).setPassword(password.toCharArray()); //$NON-NLS-1$
-                    }
-                }
-            }
-        });
-        UserManagement management = getUserManagement();
-        if(management==null)
-            return false;
-        User user = management.findUserByName(username);
-        for (Entry<String, ILoginContext> entry : contexts.entrySet()) {
-            try {
-                entry.getValue().login();
-                final Subject subject = entry.getValue().getSubject();
-                logger.info("{} Login for user {} successful",entry.getKey(),username);
-
-                if(user==null) {
-                    logger.info("User {} logged in for the first time. Creating DB Entry");
-                    final User newUser = UsersFactory.eINSTANCE.createUser();
-                    newUser.setName(username);
-
-                    user = TransactionUtil.commit(management, new Modification<UserManagement, User>() {
-
-                        @Override
-                        public User apply(UserManagement object) {
-                        	CommonPermissions.addDefaultPermissions(object, newUser);
-                            applyAttributes(newUser,subject);
-                            object.getUsers().add(newUser);
-                            return newUser;
-                        }
-                    });
-                }
-                else
-                {
-                    user = TransactionUtil.commit(user, new Modification<User, User>() {
-
-                        @Override
-                        public User apply(User object) {
-                            applyAttributes(object ,subject);
-                            return object;
-                        }
-                    });
-
-                }
-
-                this.user = new EObjectModel<User>(user);
-                return true;
-            } catch (LoginException e) {
-                logger.error(entry.getKey()+" Login for user "+username+" failed: "+e.getMessage());
-            } catch (CommitException e) {
-                logger.error("Failed to commit new user or updating exsiting after first login from " + entry.getKey(),e);
-            }
-
-        }
-        return false;
+    	AuthenticationService service = Activator.getDefault().getAuthenticationService();
+    	User user = service.authenticateUser(username, password);
+    	if(user==null)
+    		return false;
+    	this.user = new EObjectModel<User>(user);
+        return true;
     }
 
-    protected void applyAttributes(User user, Subject subject) {
-        Set<SubjectAttribute> attributes = subject.getPublicCredentials(SubjectAttribute.class);
-        for (SubjectAttribute subjectAttribute : attributes) {
-            subjectAttribute.applyTo(user);
-        }
-
-    }
-
-    private Map<String,ILoginContext> createLoginContexts(CallbackHandler callbackHandler) {
-
-        URL configUrl = getJAASConfig();
-        Map<String,ILoginContext> contexts = new LinkedHashMap<String,ILoginContext>();
-        contexts.put("DB",LoginContextFactory.createContext("DB", configUrl, callbackHandler));
-        contexts.put("LDAP",LoginContextFactory.createContext("LDAP", configUrl, callbackHandler));
-        return contexts;
-    }
-
-    private URL getJAASConfig() {
-        String configArea = System.getProperty("osgi.configuration.area");
-        if(configArea==null || configArea.isEmpty())
-            configArea = new File(new File(ServerConstants.WORKSPACE_DIR),"configuration").toURI().toString();
-        try {
-            URI uri = new URI(configArea);
-            File jaasConfig = new File(new File(uri), JAAS_CONFIG_FILE);
-            if(jaasConfig.isFile()) {
-                return jaasConfig.toURI().toURL();
-            }
-        } catch (Exception e) {
-            logger.error("invalid jaas url", e);
-        }
-        //fallback
-        return JabylonSecurityBundle.getBundleContext().getBundle().getEntry("META-INF/"+JAAS_CONFIG_FILE);
-    }
 
     /* (non-Javadoc)
      * @see org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession#getRoles()

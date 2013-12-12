@@ -8,19 +8,21 @@
  */
 package org.jabylon.security;
 
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.ReferencePolicy;
+import org.jabylon.cdo.connector.RepositoryConnector;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import org.jabylon.cdo.connector.RepositoryConnector;
-
-
+@Component(enabled=true)
 public class JabylonSecurityBundle implements BundleActivator {
     public static final String BUNDLE_ID = "org.jabylon.security";
 
     private static BundleContext context;
+    @Reference(bind="setRepositoryConnector",unbind="unsetRepositoryConnector",policy=ReferencePolicy.DYNAMIC,cardinality=ReferenceCardinality.MANDATORY_UNARY)
     private static RepositoryConnector repositoryConnector;
-    private CDOTransaction transaction = null;
 
     @Override
     public void start(BundleContext context) throws Exception {

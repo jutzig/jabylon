@@ -21,16 +21,16 @@ import org.apache.felix.scr.annotations.Modified;
 import org.apache.felix.scr.annotations.Reference;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.view.CDOView;
+import org.jabylon.cdo.connector.RepositoryConnector;
+import org.jabylon.cdo.server.ServerConstants;
+import org.jabylon.properties.Workspace;
+import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.jabylon.security.auth.AuthenticationService;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.jabylon.cdo.connector.RepositoryConnector;
-import org.jabylon.cdo.server.ServerConstants;
-import org.jabylon.properties.Workspace;
-import org.jabylon.resources.persistence.PropertyPersistenceService;
 
 
 @Component(policy = ConfigurationPolicy.OPTIONAL)
@@ -47,6 +47,10 @@ public class APIComponent
 
     @Reference
     private PropertyPersistenceService persistenceService;
+    
+    @Reference
+    private AuthenticationService authService;
+    
     private CDOView view;
 
     private String webContext;
@@ -77,7 +81,7 @@ public class APIComponent
             CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 
             logger.info("Starting up Jabylon REST API servlet at " + webContext);
-            ApiServlet servlet = new ApiServlet((Workspace)resource.getContents().get(0), persistenceService);
+            ApiServlet servlet = new ApiServlet((Workspace)resource.getContents().get(0), authService, persistenceService);
             httpService.registerServlet(webContext, servlet, null, null);
         }
         catch (ServletException e)
@@ -110,7 +114,7 @@ public class APIComponent
         try
         {
             CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
-            ApiServlet servlet = new ApiServlet((Workspace)resource.getContents().get(0), persistenceService);
+            ApiServlet servlet = new ApiServlet((Workspace)resource.getContents().get(0), authService, persistenceService);
             httpService.registerServlet(webContext, servlet, null, null);
             httpService.unregister(getWebContext(context.getProperties()));
         }
@@ -159,6 +163,18 @@ public class APIComponent
     {
         this.persistenceService = null;
     }
+    
+    public void bindAuthService(AuthenticationService service)
+    {
+        this.authService = service;
+    }
+
+
+    public void unbindAuthService(AuthenticationService service)
+    {
+        this.authService = null;
+    }
+    
 
 
     private String getWebContext(Dictionary< ? , ? > properties)

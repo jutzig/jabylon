@@ -99,7 +99,6 @@ public class DBLoginModule implements LoginModule {
     private boolean checkLogin(String userName, String pw) {
         if(JabylonSecurityBundle.getRepositoryConnector()==null)
             return false;
-
         CDOView view = JabylonSecurityBundle.getRepositoryConnector().openView();
         try {
             UserManagement userManagement = (UserManagement)view.getResource(ServerConstants.USERS_RESOURCE).getContents().get(0);

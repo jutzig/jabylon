@@ -105,6 +105,7 @@ public class UserManagementImpl extends CDOObjectImpl implements UserManagement 
      * @generated NOT
      */
     public User findUserByName(String name) {
+    	//TODO: user queries instead?
         for (User user : getUsers()) {
             if(user.getName().equals(name))
                 return user;

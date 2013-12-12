@@ -11,10 +11,10 @@ package org.jabylon.rest.ui;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.progress.ProgressService;
 import org.jabylon.common.resolver.URIResolver;
+import org.jabylon.security.auth.AuthenticationService;
 
 public class Activator implements BundleActivator {
 
@@ -25,6 +25,7 @@ public class Activator implements BundleActivator {
     private ServiceTracker<RepositoryConnector, RepositoryConnector> repositoryConnectorTracker;
     private ServiceTracker<URIResolver, URIResolver> lookupTracker;
     private ServiceTracker<ProgressService, ProgressService> progressServiceTracker;
+    private ServiceTracker<AuthenticationService, AuthenticationService> authenticationServiceTracker;
 
 
     @Override
@@ -51,6 +52,9 @@ public class Activator implements BundleActivator {
 
         progressServiceTracker = new ServiceTracker<ProgressService, ProgressService>(context, ProgressService.class, null);
         progressServiceTracker.open();
+        
+        authenticationServiceTracker = new ServiceTracker<AuthenticationService, AuthenticationService>(context, AuthenticationService.class, null);
+        authenticationServiceTracker.open();
 
     }
     @Override
@@ -59,6 +63,7 @@ public class Activator implements BundleActivator {
         lookupTracker.close();
         progressServiceTracker.close();
         repositoryConnectorTracker.close();
+        authenticationServiceTracker.close();
         INSTANCE = null;
         this.context = null;
     }
@@ -74,6 +79,10 @@ public class Activator implements BundleActivator {
 
     public ProgressService getProgressService() {
         return progressServiceTracker.getService();
+    }
+    
+    public AuthenticationService getAuthenticationService() {
+        return authenticationServiceTracker.getService();
     }
 
     public URIResolver getRepositoryLookup()
