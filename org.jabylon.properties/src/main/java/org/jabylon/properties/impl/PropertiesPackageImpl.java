@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.DiffKind;
 import org.jabylon.properties.Project;
@@ -1244,6 +1243,97 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/CDO/DBStore
+		createDBStoreAnnotations();
+	}
+
+				/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/CDO/DBStore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createDBStoreAnnotations() {
+		String source = "http://www.eclipse.org/CDO/DBStore";		
+		addAnnotation
+		  (getPropertyFileDescriptor_Variant(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "32"
+		   });		
+		addAnnotation
+		  (getPropertyFileDescriptor_Location(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "1024"
+		   });		
+		addAnnotation
+		  (getProject_RepositoryURI(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "1024"
+		   });		
+		addAnnotation
+		  (getProject_TeamProvider(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "32"
+		   });		
+		addAnnotation
+		  (getProjectLocale_Locale(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "32"
+		   });		
+		addAnnotation
+		  (getWorkspace_Root(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "1024"
+		   });		
+		addAnnotation
+		  (getResolvable_Name(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "255"
+		   });		
+		addAnnotation
+		  (getReview_Message(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "1024"
+		   });		
+		addAnnotation
+		  (getReview_User(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "255"
+		   });		
+		addAnnotation
+		  (getReview_ReviewType(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "255"
+		   });		
+		addAnnotation
+		  (getReview_Key(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "1024"
+		   });
 	}
 
 } //PropertiesPackageImpl

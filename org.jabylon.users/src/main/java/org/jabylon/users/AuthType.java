@@ -30,55 +30,55 @@ import org.eclipse.emf.cdo.CDOObject;
  */
 public interface AuthType extends CDOObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Name</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.jabylon.users.UsersPackage#getAuthType_Name()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.jabylon.users.UsersPackage#getAuthType_Name()
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='255'"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.jabylon.users.AuthType#getName <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.jabylon.users.AuthType#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
-     * Returns the value of the '<em><b>Auth Module</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Auth Module</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Auth Module</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Auth Module</em>' attribute.
-     * @see #setAuthModule(String)
-     * @see org.jabylon.users.UsersPackage#getAuthType_AuthModule()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Auth Module</em>' attribute.
+	 * @see #setAuthModule(String)
+	 * @see org.jabylon.users.UsersPackage#getAuthType_AuthModule()
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='255'"
+	 * @generated
+	 */
     String getAuthModule();
 
     /**
-     * Sets the value of the '{@link org.jabylon.users.AuthType#getAuthModule <em>Auth Module</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.jabylon.users.AuthType#getAuthModule <em>Auth Module</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Auth Module</em>' attribute.
-     * @see #getAuthModule()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Auth Module</em>' attribute.
+	 * @see #getAuthModule()
+	 * @generated
+	 */
     void setAuthModule(String value);
 
 } // AuthType

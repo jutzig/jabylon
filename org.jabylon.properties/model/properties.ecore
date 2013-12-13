@@ -29,8 +29,18 @@
     <eOperations name="loadProperties" eType="#//PropertyFile">
       <eParameters name="in" eType="#//InputStream"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variant" eType="#//Locale">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="32"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="#//URI">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="1024"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="master" eType="#//PropertyFileDescriptor"
         resolveProxies="false" eOpposite="#//PropertyFileDescriptor/derivedDescriptors"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="projectLocale" lowerBound="1"
@@ -56,9 +66,19 @@
     <eOperations name="fullScan">
       <eParameters name="configuration" eType="#//ScanConfiguration"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryURI" eType="#//URI">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="1024"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="#//PropertyType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamProvider" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamProvider" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="32"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="terminology" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//Resolvable">
       <eTypeArguments eClassifier="#//Workspace"/>
@@ -84,7 +104,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectLocale">
     <eOperations name="isMaster" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locale" eType="#//Locale">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="32"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptors" upperBound="-1"
         eType="#//PropertyFileDescriptor" resolveProxies="false" eOpposite="#//PropertyFileDescriptor/projectLocale"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -98,7 +123,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Workspace">
     <eOperations name="getTerminology" eType="#//ProjectVersion"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="root" eType="#//URI">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="1024"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//Resolvable">
       <eTypeArguments eClassifier="#//Workspace"/>
       <eTypeArguments eClassifier="#//Project"/>
@@ -142,7 +172,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eOpposite="#//Resolvable/children">
       <eGenericType eTypeParameter="#//Resolvable/P"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="255"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="PropertyType">
     <eLiterals name="ENCODED_ISO"/>
@@ -163,13 +198,33 @@
         defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Review">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="1024"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="255"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="comments" upperBound="-1"
         eType="#//Comment" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" eType="#//ReviewState"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="reviewType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="reviewType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="255"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
+        <details key="columnType" value="VARCHAR"/>
+        <details key="columnLength" value="1024"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="severity" eType="#//Severity"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="created" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
   </eClassifiers>

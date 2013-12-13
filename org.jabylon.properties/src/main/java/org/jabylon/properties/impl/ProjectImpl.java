@@ -10,7 +10,6 @@ package org.jabylon.properties.impl;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
@@ -36,139 +35,139 @@ import org.jabylon.properties.Workspace;
  */
 public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> implements Project {
     /**
-     * The default value of the '{@link #getRepositoryURI() <em>Repository URI</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getRepositoryURI() <em>Repository URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRepositoryURI()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRepositoryURI()
+	 * @generated
+	 * @ordered
+	 */
     protected static final URI REPOSITORY_URI_EDEFAULT = null;
 
 
     /**
-     * The default value of the '{@link #getPropertyType() <em>Property Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getPropertyType() <em>Property Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getPropertyType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getPropertyType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final PropertyType PROPERTY_TYPE_EDEFAULT = PropertyType.ENCODED_ISO;
 
 
     /**
-     * The default value of the '{@link #getTeamProvider() <em>Team Provider</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getTeamProvider() <em>Team Provider</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTeamProvider()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTeamProvider()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TEAM_PROVIDER_EDEFAULT = null;
 
 
     /**
-     * The default value of the '{@link #isTerminology() <em>Terminology</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #isTerminology() <em>Terminology</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isTerminology()
-     * @generated
-     * @ordered
-     */
+	 * @see #isTerminology()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean TERMINOLOGY_EDEFAULT = false;
 
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ProjectImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.PROJECT;
-    }
+		return PropertiesPackage.Literals.PROJECT;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public URI getRepositoryURI() {
-        return (URI)eDynamicGet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, true, true);
-    }
+		return (URI)eDynamicGet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setRepositoryURI(URI newRepositoryURI) {
-        eDynamicSet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, newRepositoryURI);
-    }
+		eDynamicSet(PropertiesPackage.PROJECT__REPOSITORY_URI, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI, newRepositoryURI);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public PropertyType getPropertyType() {
-        return (PropertyType)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, true, true);
-    }
+		return (PropertyType)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setPropertyType(PropertyType newPropertyType) {
-        eDynamicSet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, newPropertyType);
-    }
+		eDynamicSet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, newPropertyType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getTeamProvider() {
-        return (String)eDynamicGet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, true, true);
-    }
+		return (String)eDynamicGet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setTeamProvider(String newTeamProvider) {
-        eDynamicSet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, newTeamProvider);
-    }
+		eDynamicSet(PropertiesPackage.PROJECT__TEAM_PROVIDER, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER, newTeamProvider);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public boolean isTerminology() {
-        return (Boolean)eDynamicGet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, true, true);
-    }
+		return (Boolean)eDynamicGet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setTerminology(boolean newTerminology) {
-        eDynamicSet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, newTerminology);
-    }
+		eDynamicSet(PropertiesPackage.PROJECT__TERMINOLOGY, PropertiesPackage.Literals.PROJECT__TERMINOLOGY, newTerminology);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -198,92 +197,92 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PropertiesPackage.PROJECT__REPOSITORY_URI:
-                return getRepositoryURI();
-            case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-                return getPropertyType();
-            case PropertiesPackage.PROJECT__TEAM_PROVIDER:
-                return getTeamProvider();
-            case PropertiesPackage.PROJECT__TERMINOLOGY:
-                return isTerminology();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				return getRepositoryURI();
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				return getPropertyType();
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				return getTeamProvider();
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				return isTerminology();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PropertiesPackage.PROJECT__REPOSITORY_URI:
-                setRepositoryURI((URI)newValue);
-                return;
-            case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-                setPropertyType((PropertyType)newValue);
-                return;
-            case PropertiesPackage.PROJECT__TEAM_PROVIDER:
-                setTeamProvider((String)newValue);
-                return;
-            case PropertiesPackage.PROJECT__TERMINOLOGY:
-                setTerminology((Boolean)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				setRepositoryURI((URI)newValue);
+				return;
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				setPropertyType((PropertyType)newValue);
+				return;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				setTeamProvider((String)newValue);
+				return;
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				setTerminology((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.PROJECT__REPOSITORY_URI:
-                setRepositoryURI(REPOSITORY_URI_EDEFAULT);
-                return;
-            case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-                setPropertyType(PROPERTY_TYPE_EDEFAULT);
-                return;
-            case PropertiesPackage.PROJECT__TEAM_PROVIDER:
-                setTeamProvider(TEAM_PROVIDER_EDEFAULT);
-                return;
-            case PropertiesPackage.PROJECT__TERMINOLOGY:
-                setTerminology(TERMINOLOGY_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				setRepositoryURI(REPOSITORY_URI_EDEFAULT);
+				return;
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				setPropertyType(PROPERTY_TYPE_EDEFAULT);
+				return;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				setTeamProvider(TEAM_PROVIDER_EDEFAULT);
+				return;
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				setTerminology(TERMINOLOGY_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.PROJECT__REPOSITORY_URI:
-                return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
-            case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-                return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
-            case PropertiesPackage.PROJECT__TEAM_PROVIDER:
-                return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
-            case PropertiesPackage.PROJECT__TERMINOLOGY:
-                return isTerminology() != TERMINOLOGY_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROJECT__REPOSITORY_URI:
+				return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
+			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
+				return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
+			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
+				return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
+			case PropertiesPackage.PROJECT__TERMINOLOGY:
+				return isTerminology() != TERMINOLOGY_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
 
 

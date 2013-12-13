@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.jabylon.properties/src/main/java" editDirectory="/org.jabylon.properties.edit/src/main/java"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/properties/src/main/java" editDirectory="/org.jabylon.properties.edit/src/main/java"
     modelPluginID="org.jabylon.properties" templateDirectory="" modelName="Properties"
     rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
     testsDirectory="/org.jabylon.properties/src/test/java" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>properties.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
-  <genPackages prefix="Properties" basePackage="org.jabylon" resource="Basic"
-      disposableProviderFactory="true" ecorePackage="properties.ecore#/">
+  <genPackages prefix="Properties" basePackage="org.jabylon" resource="Basic" disposableProviderFactory="true"
+      ecorePackage="properties.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//PropertyType">
       <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/ENCODED_ISO"/>
       <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/UNICODE"/>
@@ -36,6 +36,7 @@
     <genDataTypes ecoreDataType="properties.ecore#//InputStream"/>
     <genClasses ecoreClass="properties.ecore#//PropertyFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFile/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFile/licenseHeader"/>
       <genOperations ecoreOperation="properties.ecore#//PropertyFile/getProperty">
         <genParameters ecoreParameter="properties.ecore#//PropertyFile/getProperty/key"/>
       </genOperations>
@@ -110,6 +111,7 @@
         <genParameters ecoreParameter="properties.ecore#//Resolvable/resolveChild/path"/>
       </genOperations>
       <genOperations ecoreOperation="properties.ecore#//Resolvable/absoluteFilePath"/>
+      <genOperations ecoreOperation="properties.ecore#//Resolvable/toURI"/>
       <genOperations ecoreOperation="properties.ecore#//Resolvable/getChild">
         <genParameters ecoreParameter="properties.ecore#//Resolvable/getChild/name"/>
       </genOperations>
@@ -129,16 +131,20 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/reviewType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/key"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/severity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Review/created"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//Comment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/user"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Comment/created"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//PropertyFileDiff">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/newPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/oldPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDiff/kind"/>
     </genClasses>
-    <genClasses ecoreClass="properties.ecore#//ResourceFolder"/>
+    <genClasses ecoreClass="properties.ecore#//ResourceFolder">
+      <genOperations ecoreOperation="properties.ecore#//ResourceFolder/getProjectLocale"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

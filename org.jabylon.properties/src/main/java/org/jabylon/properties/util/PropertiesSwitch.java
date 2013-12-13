@@ -11,7 +11,7 @@ package org.jabylon.properties.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-
+import org.jabylon.properties.*;
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;

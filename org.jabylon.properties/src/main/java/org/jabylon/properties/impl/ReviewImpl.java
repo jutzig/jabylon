@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Review;

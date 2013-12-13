@@ -165,5 +165,35 @@ public class UserManagementTest extends TestCase {
         assertSame(object1,getFixture().findRoleByName("object1"));
         assertSame(object2,getFixture().findRoleByName("object2"));
     }
+    
+    public void testUserByToken() {
+    	User object0 = UsersFactory.eINSTANCE.createUser();
+        object0.setName("object0");
+        User object1 = UsersFactory.eINSTANCE.createUser();
+        object1.setName("object1");
+        object1.setToken("foo");
+        User object2 = UsersFactory.eINSTANCE.createUser();
+        object2.setName("object2");
+        object2.setToken("bar");
+        getFixture().getUsers().add(object0);
+        getFixture().getUsers().add(object1);
+        getFixture().getUsers().add(object2);
+
+        assertNull(getFixture().findUserByToken(null));
+        assertNull(getFixture().findUserByToken("test"));
+        assertSame(object1,getFixture().findUserByToken("foo"));
+        assertSame(object2,getFixture().findUserByToken("bar"));
+    }
+    
+    public void testUserByTokenEmpty() {
+    	User object0 = UsersFactory.eINSTANCE.createUser();
+        object0.setName("object0");
+        object0.setToken("");
+        getFixture().getUsers().add(object0);
+       
+        assertNull("empty tokens are not valid",getFixture().findUserByToken(""));
+    }
+    
+    
 
 } //UserManagementTest

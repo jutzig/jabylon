@@ -10,7 +10,6 @@ package org.jabylon.users.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
 import org.jabylon.users.Permission;
 import org.jabylon.users.UsersPackage;
 
@@ -30,156 +29,156 @@ import org.jabylon.users.UsersPackage;
  */
 public class PermissionImpl extends CDOObjectImpl implements Permission {
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String NAME_EDEFAULT = null;
     /**
-     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getDescription()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DESCRIPTION_EDEFAULT = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected PermissionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return UsersPackage.Literals.PERMISSION;
-    }
+		return UsersPackage.Literals.PERMISSION;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected int eStaticFeatureCount() {
-        return 0;
-    }
+		return 0;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getName() {
-        return (String)eDynamicGet(UsersPackage.PERMISSION__NAME, UsersPackage.Literals.PERMISSION__NAME, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.PERMISSION__NAME, UsersPackage.Literals.PERMISSION__NAME, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setName(String newName) {
-        eDynamicSet(UsersPackage.PERMISSION__NAME, UsersPackage.Literals.PERMISSION__NAME, newName);
-    }
+		eDynamicSet(UsersPackage.PERMISSION__NAME, UsersPackage.Literals.PERMISSION__NAME, newName);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getDescription() {
-        return (String)eDynamicGet(UsersPackage.PERMISSION__DESCRIPTION, UsersPackage.Literals.PERMISSION__DESCRIPTION, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.PERMISSION__DESCRIPTION, UsersPackage.Literals.PERMISSION__DESCRIPTION, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setDescription(String newDescription) {
-        eDynamicSet(UsersPackage.PERMISSION__DESCRIPTION, UsersPackage.Literals.PERMISSION__DESCRIPTION, newDescription);
-    }
+		eDynamicSet(UsersPackage.PERMISSION__DESCRIPTION, UsersPackage.Literals.PERMISSION__DESCRIPTION, newDescription);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case UsersPackage.PERMISSION__NAME:
-                return getName();
-            case UsersPackage.PERMISSION__DESCRIPTION:
-                return getDescription();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case UsersPackage.PERMISSION__NAME:
+				return getName();
+			case UsersPackage.PERMISSION__DESCRIPTION:
+				return getDescription();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case UsersPackage.PERMISSION__NAME:
-                setName((String)newValue);
-                return;
-            case UsersPackage.PERMISSION__DESCRIPTION:
-                setDescription((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case UsersPackage.PERMISSION__NAME:
+				setName((String)newValue);
+				return;
+			case UsersPackage.PERMISSION__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case UsersPackage.PERMISSION__NAME:
-                setName(NAME_EDEFAULT);
-                return;
-            case UsersPackage.PERMISSION__DESCRIPTION:
-                setDescription(DESCRIPTION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.PERMISSION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case UsersPackage.PERMISSION__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case UsersPackage.PERMISSION__NAME:
-                return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-            case UsersPackage.PERMISSION__DESCRIPTION:
-                return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.PERMISSION__NAME:
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case UsersPackage.PERMISSION__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
+		}
+		return super.eIsSet(featureID);
+	}
 
     @Override
     public String toString() {

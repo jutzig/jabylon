@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
 import org.jabylon.users.User;
@@ -40,63 +39,63 @@ import org.jabylon.users.UsersPackage;
  */
 public class UserManagementImpl extends CDOObjectImpl implements UserManagement {
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected UserManagementImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return UsersPackage.Literals.USER_MANAGEMENT;
-    }
+		return UsersPackage.Literals.USER_MANAGEMENT;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected int eStaticFeatureCount() {
-        return 0;
-    }
+		return 0;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     public EList<User> getUsers() {
-        return (EList<User>)eDynamicGet(UsersPackage.USER_MANAGEMENT__USERS, UsersPackage.Literals.USER_MANAGEMENT__USERS, true, true);
-    }
+		return (EList<User>)eDynamicGet(UsersPackage.USER_MANAGEMENT__USERS, UsersPackage.Literals.USER_MANAGEMENT__USERS, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     public EList<Role> getRoles() {
-        return (EList<Role>)eDynamicGet(UsersPackage.USER_MANAGEMENT__ROLES, UsersPackage.Literals.USER_MANAGEMENT__ROLES, true, true);
-    }
+		return (EList<Role>)eDynamicGet(UsersPackage.USER_MANAGEMENT__ROLES, UsersPackage.Literals.USER_MANAGEMENT__ROLES, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     public EList<Permission> getPermissions() {
-        return (EList<Permission>)eDynamicGet(UsersPackage.USER_MANAGEMENT__PERMISSIONS, UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS, true, true);
-    }
+		return (EList<Permission>)eDynamicGet(UsersPackage.USER_MANAGEMENT__PERMISSIONS, UsersPackage.Literals.USER_MANAGEMENT__PERMISSIONS, true, true);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -142,103 +141,118 @@ public class UserManagementImpl extends CDOObjectImpl implements UserManagement 
     }
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public User findUserByToken(String token) {
+		if(token==null || token.isEmpty())
+			return null;
+        for (User user : getUsers()) {
+            if(token.equals(user.getToken()))
+                return user;
+        }
+        return null;
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case UsersPackage.USER_MANAGEMENT__USERS:
-                return ((InternalEList<?>)getUsers()).basicRemove(otherEnd, msgs);
-            case UsersPackage.USER_MANAGEMENT__ROLES:
-                return ((InternalEList<?>)getRoles()).basicRemove(otherEnd, msgs);
-            case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
-                return ((InternalEList<?>)getPermissions()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case UsersPackage.USER_MANAGEMENT__USERS:
+				return ((InternalEList<?>)getUsers()).basicRemove(otherEnd, msgs);
+			case UsersPackage.USER_MANAGEMENT__ROLES:
+				return ((InternalEList<?>)getRoles()).basicRemove(otherEnd, msgs);
+			case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
+				return ((InternalEList<?>)getPermissions()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case UsersPackage.USER_MANAGEMENT__USERS:
-                return getUsers();
-            case UsersPackage.USER_MANAGEMENT__ROLES:
-                return getRoles();
-            case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
-                return getPermissions();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case UsersPackage.USER_MANAGEMENT__USERS:
+				return getUsers();
+			case UsersPackage.USER_MANAGEMENT__ROLES:
+				return getRoles();
+			case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
+				return getPermissions();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case UsersPackage.USER_MANAGEMENT__USERS:
-                getUsers().clear();
-                getUsers().addAll((Collection<? extends User>)newValue);
-                return;
-            case UsersPackage.USER_MANAGEMENT__ROLES:
-                getRoles().clear();
-                getRoles().addAll((Collection<? extends Role>)newValue);
-                return;
-            case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
-                getPermissions().clear();
-                getPermissions().addAll((Collection<? extends Permission>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case UsersPackage.USER_MANAGEMENT__USERS:
+				getUsers().clear();
+				getUsers().addAll((Collection<? extends User>)newValue);
+				return;
+			case UsersPackage.USER_MANAGEMENT__ROLES:
+				getRoles().clear();
+				getRoles().addAll((Collection<? extends Role>)newValue);
+				return;
+			case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
+				getPermissions().clear();
+				getPermissions().addAll((Collection<? extends Permission>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case UsersPackage.USER_MANAGEMENT__USERS:
-                getUsers().clear();
-                return;
-            case UsersPackage.USER_MANAGEMENT__ROLES:
-                getRoles().clear();
-                return;
-            case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
-                getPermissions().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.USER_MANAGEMENT__USERS:
+				getUsers().clear();
+				return;
+			case UsersPackage.USER_MANAGEMENT__ROLES:
+				getRoles().clear();
+				return;
+			case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
+				getPermissions().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case UsersPackage.USER_MANAGEMENT__USERS:
-                return !getUsers().isEmpty();
-            case UsersPackage.USER_MANAGEMENT__ROLES:
-                return !getRoles().isEmpty();
-            case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
-                return !getPermissions().isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.USER_MANAGEMENT__USERS:
+				return !getUsers().isEmpty();
+			case UsersPackage.USER_MANAGEMENT__ROLES:
+				return !getRoles().isEmpty();
+			case UsersPackage.USER_MANAGEMENT__PERMISSIONS:
+				return !getPermissions().isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //UserManagementImpl

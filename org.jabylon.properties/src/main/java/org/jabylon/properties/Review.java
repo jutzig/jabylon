@@ -47,7 +47,7 @@ public interface Review extends CDOObject {
 	 * @return the value of the '<em>Message</em>' attribute.
 	 * @see #setMessage(String)
 	 * @see org.jabylon.properties.PropertiesPackage#getReview_Message()
-	 * @model
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='1024'"
 	 * @generated
 	 */
     String getMessage();
@@ -73,7 +73,7 @@ public interface Review extends CDOObject {
 	 * @return the value of the '<em>User</em>' attribute.
 	 * @see #setUser(String)
 	 * @see org.jabylon.properties.PropertiesPackage#getReview_User()
-	 * @model
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='255'"
 	 * @generated
 	 */
     String getUser();
@@ -144,7 +144,7 @@ public interface Review extends CDOObject {
 	 * @return the value of the '<em>Review Type</em>' attribute.
 	 * @see #setReviewType(String)
 	 * @see org.jabylon.properties.PropertiesPackage#getReview_ReviewType()
-	 * @model
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='255'"
 	 * @generated
 	 */
     String getReviewType();
@@ -170,7 +170,7 @@ public interface Review extends CDOObject {
 	 * @return the value of the '<em>Key</em>' attribute.
 	 * @see #setKey(String)
 	 * @see org.jabylon.properties.PropertiesPackage#getReview_Key()
-	 * @model
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='1024'"
 	 * @generated
 	 */
     String getKey();

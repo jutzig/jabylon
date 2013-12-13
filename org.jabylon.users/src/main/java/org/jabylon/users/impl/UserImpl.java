@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
 import org.jabylon.users.User;
@@ -35,6 +34,7 @@ import org.jabylon.users.UsersPackage;
  *   <li>{@link org.jabylon.users.impl.UserImpl#getDisplayName <em>Display Name</em>}</li>
  *   <li>{@link org.jabylon.users.impl.UserImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.jabylon.users.impl.UserImpl#getEmail <em>Email</em>}</li>
+ *   <li>{@link org.jabylon.users.impl.UserImpl#getToken <em>Token</em>}</li>
  * </ul>
  * </p>
  *
@@ -42,199 +42,227 @@ import org.jabylon.users.UsersPackage;
  */
 public class UserImpl extends CDOObjectImpl implements User {
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String NAME_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getPassword() <em>Password</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getPassword() <em>Password</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getPassword()
-     * @generated
-     * @ordered
-     */
+	 * @see #getPassword()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String PASSWORD_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getDisplayName() <em>Display Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getDisplayName() <em>Display Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getDisplayName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDisplayName()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DISPLAY_NAME_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TYPE_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getEmail() <em>Email</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getEmail() <em>Email</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getEmail()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEmail()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String EMAIL_EDEFAULT = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getToken() <em>Token</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getToken()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TOKEN_EDEFAULT = null;
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected UserImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return UsersPackage.Literals.USER;
-    }
+		return UsersPackage.Literals.USER;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected int eStaticFeatureCount() {
-        return 0;
-    }
+		return 0;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return (String)eDynamicGet(UsersPackage.USER__NAME, UsersPackage.Literals.USER__NAME, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.USER__NAME, UsersPackage.Literals.USER__NAME, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        eDynamicSet(UsersPackage.USER__NAME, UsersPackage.Literals.USER__NAME, newName);
-    }
+		eDynamicSet(UsersPackage.USER__NAME, UsersPackage.Literals.USER__NAME, newName);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getPassword() {
-        return (String)eDynamicGet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setPassword(String newPassword) {
-        eDynamicSet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, newPassword);
-    }
+		eDynamicSet(UsersPackage.USER__PASSWORD, UsersPackage.Literals.USER__PASSWORD, newPassword);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     @SuppressWarnings("unchecked")
     public EList<Role> getRoles() {
-        return (EList<Role>)eDynamicGet(UsersPackage.USER__ROLES, UsersPackage.Literals.USER__ROLES, true, true);
-    }
+		return (EList<Role>)eDynamicGet(UsersPackage.USER__ROLES, UsersPackage.Literals.USER__ROLES, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     @SuppressWarnings("unchecked")
     public EList<Permission> getPermissions() {
-        return (EList<Permission>)eDynamicGet(UsersPackage.USER__PERMISSIONS, UsersPackage.Literals.USER__PERMISSIONS, true, true);
-    }
+		return (EList<Permission>)eDynamicGet(UsersPackage.USER__PERMISSIONS, UsersPackage.Literals.USER__PERMISSIONS, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getDisplayName() {
-        return (String)eDynamicGet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setDisplayName(String newDisplayName) {
-        eDynamicSet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, newDisplayName);
-    }
+		eDynamicSet(UsersPackage.USER__DISPLAY_NAME, UsersPackage.Literals.USER__DISPLAY_NAME, newDisplayName);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getType() {
-        return (String)eDynamicGet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setType(String newType) {
-        eDynamicSet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, newType);
-    }
+		eDynamicSet(UsersPackage.USER__TYPE, UsersPackage.Literals.USER__TYPE, newType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getEmail() {
-        return (String)eDynamicGet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, true, true);
-    }
+		return (String)eDynamicGet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setEmail(String newEmail) {
-        eDynamicSet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, newEmail);
-    }
+		eDynamicSet(UsersPackage.USER__EMAIL, UsersPackage.Literals.USER__EMAIL, newEmail);
+	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getToken() {
+		return (String)eDynamicGet(UsersPackage.USER__TOKEN, UsersPackage.Literals.USER__TOKEN, true, true);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setToken(String newToken) {
+		eDynamicSet(UsersPackage.USER__TOKEN, UsersPackage.Literals.USER__TOKEN, newToken);
+	}
+
+				/**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
@@ -270,124 +298,134 @@ public class UserImpl extends CDOObjectImpl implements User {
     }
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case UsersPackage.USER__NAME:
-                return getName();
-            case UsersPackage.USER__PASSWORD:
-                return getPassword();
-            case UsersPackage.USER__ROLES:
-                return getRoles();
-            case UsersPackage.USER__PERMISSIONS:
-                return getPermissions();
-            case UsersPackage.USER__DISPLAY_NAME:
-                return getDisplayName();
-            case UsersPackage.USER__TYPE:
-                return getType();
-            case UsersPackage.USER__EMAIL:
-                return getEmail();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case UsersPackage.USER__NAME:
+				return getName();
+			case UsersPackage.USER__PASSWORD:
+				return getPassword();
+			case UsersPackage.USER__ROLES:
+				return getRoles();
+			case UsersPackage.USER__PERMISSIONS:
+				return getPermissions();
+			case UsersPackage.USER__DISPLAY_NAME:
+				return getDisplayName();
+			case UsersPackage.USER__TYPE:
+				return getType();
+			case UsersPackage.USER__EMAIL:
+				return getEmail();
+			case UsersPackage.USER__TOKEN:
+				return getToken();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case UsersPackage.USER__NAME:
-                setName((String)newValue);
-                return;
-            case UsersPackage.USER__PASSWORD:
-                setPassword((String)newValue);
-                return;
-            case UsersPackage.USER__ROLES:
-                getRoles().clear();
-                getRoles().addAll((Collection<? extends Role>)newValue);
-                return;
-            case UsersPackage.USER__PERMISSIONS:
-                getPermissions().clear();
-                getPermissions().addAll((Collection<? extends Permission>)newValue);
-                return;
-            case UsersPackage.USER__DISPLAY_NAME:
-                setDisplayName((String)newValue);
-                return;
-            case UsersPackage.USER__TYPE:
-                setType((String)newValue);
-                return;
-            case UsersPackage.USER__EMAIL:
-                setEmail((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case UsersPackage.USER__NAME:
+				setName((String)newValue);
+				return;
+			case UsersPackage.USER__PASSWORD:
+				setPassword((String)newValue);
+				return;
+			case UsersPackage.USER__ROLES:
+				getRoles().clear();
+				getRoles().addAll((Collection<? extends Role>)newValue);
+				return;
+			case UsersPackage.USER__PERMISSIONS:
+				getPermissions().clear();
+				getPermissions().addAll((Collection<? extends Permission>)newValue);
+				return;
+			case UsersPackage.USER__DISPLAY_NAME:
+				setDisplayName((String)newValue);
+				return;
+			case UsersPackage.USER__TYPE:
+				setType((String)newValue);
+				return;
+			case UsersPackage.USER__EMAIL:
+				setEmail((String)newValue);
+				return;
+			case UsersPackage.USER__TOKEN:
+				setToken((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case UsersPackage.USER__NAME:
-                setName(NAME_EDEFAULT);
-                return;
-            case UsersPackage.USER__PASSWORD:
-                setPassword(PASSWORD_EDEFAULT);
-                return;
-            case UsersPackage.USER__ROLES:
-                getRoles().clear();
-                return;
-            case UsersPackage.USER__PERMISSIONS:
-                getPermissions().clear();
-                return;
-            case UsersPackage.USER__DISPLAY_NAME:
-                setDisplayName(DISPLAY_NAME_EDEFAULT);
-                return;
-            case UsersPackage.USER__TYPE:
-                setType(TYPE_EDEFAULT);
-                return;
-            case UsersPackage.USER__EMAIL:
-                setEmail(EMAIL_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.USER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case UsersPackage.USER__PASSWORD:
+				setPassword(PASSWORD_EDEFAULT);
+				return;
+			case UsersPackage.USER__ROLES:
+				getRoles().clear();
+				return;
+			case UsersPackage.USER__PERMISSIONS:
+				getPermissions().clear();
+				return;
+			case UsersPackage.USER__DISPLAY_NAME:
+				setDisplayName(DISPLAY_NAME_EDEFAULT);
+				return;
+			case UsersPackage.USER__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
+			case UsersPackage.USER__EMAIL:
+				setEmail(EMAIL_EDEFAULT);
+				return;
+			case UsersPackage.USER__TOKEN:
+				setToken(TOKEN_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case UsersPackage.USER__NAME:
-                return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-            case UsersPackage.USER__PASSWORD:
-                return PASSWORD_EDEFAULT == null ? getPassword() != null : !PASSWORD_EDEFAULT.equals(getPassword());
-            case UsersPackage.USER__ROLES:
-                return !getRoles().isEmpty();
-            case UsersPackage.USER__PERMISSIONS:
-                return !getPermissions().isEmpty();
-            case UsersPackage.USER__DISPLAY_NAME:
-                return DISPLAY_NAME_EDEFAULT == null ? getDisplayName() != null : !DISPLAY_NAME_EDEFAULT.equals(getDisplayName());
-            case UsersPackage.USER__TYPE:
-                return TYPE_EDEFAULT == null ? getType() != null : !TYPE_EDEFAULT.equals(getType());
-            case UsersPackage.USER__EMAIL:
-                return EMAIL_EDEFAULT == null ? getEmail() != null : !EMAIL_EDEFAULT.equals(getEmail());
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case UsersPackage.USER__NAME:
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case UsersPackage.USER__PASSWORD:
+				return PASSWORD_EDEFAULT == null ? getPassword() != null : !PASSWORD_EDEFAULT.equals(getPassword());
+			case UsersPackage.USER__ROLES:
+				return !getRoles().isEmpty();
+			case UsersPackage.USER__PERMISSIONS:
+				return !getPermissions().isEmpty();
+			case UsersPackage.USER__DISPLAY_NAME:
+				return DISPLAY_NAME_EDEFAULT == null ? getDisplayName() != null : !DISPLAY_NAME_EDEFAULT.equals(getDisplayName());
+			case UsersPackage.USER__TYPE:
+				return TYPE_EDEFAULT == null ? getType() != null : !TYPE_EDEFAULT.equals(getType());
+			case UsersPackage.USER__EMAIL:
+				return EMAIL_EDEFAULT == null ? getEmail() != null : !EMAIL_EDEFAULT.equals(getEmail());
+			case UsersPackage.USER__TOKEN:
+				return TOKEN_EDEFAULT == null ? getToken() != null : !TOKEN_EDEFAULT.equals(getToken());
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //UserImpl

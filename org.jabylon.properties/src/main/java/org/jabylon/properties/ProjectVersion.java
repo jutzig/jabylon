@@ -30,56 +30,56 @@ import org.eclipse.core.runtime.IProgressMonitor;
  */
 public interface ProjectVersion extends Resolvable<Project, ProjectLocale> {
     /**
-     * Returns the value of the '<em><b>Template</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Template</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Template</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Template</em>' reference.
-     * @see #setTemplate(ProjectLocale)
-     * @see org.jabylon.properties.PropertiesPackage#getProjectVersion_Template()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Template</em>' reference.
+	 * @see #setTemplate(ProjectLocale)
+	 * @see org.jabylon.properties.PropertiesPackage#getProjectVersion_Template()
+	 * @model
+	 * @generated
+	 */
     ProjectLocale getTemplate();
 
     /**
-     * Sets the value of the '{@link org.jabylon.properties.ProjectVersion#getTemplate <em>Template</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.jabylon.properties.ProjectVersion#getTemplate <em>Template</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Template</em>' reference.
-     * @see #getTemplate()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Template</em>' reference.
+	 * @see #getTemplate()
+	 * @generated
+	 */
     void setTemplate(ProjectLocale value);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model
-     * @generated
-     */
+	 * @model
+	 * @generated
+	 */
     void fullScan(ScanConfiguration configuration);
 
 
     void fullScan(ScanConfiguration configuration, IProgressMonitor monitor);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model localeDataType="org.jabylon.properties.Locale"
-     * @generated
-     */
+	 * @model localeDataType="org.jabylon.properties.Locale"
+	 * @generated
+	 */
     ProjectLocale getProjectLocale(Locale locale);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model
-     * @generated
-     */
+	 * @model
+	 * @generated
+	 */
     void partialScan(ScanConfiguration configuration, PropertyFileDiff fileDiff);
 
 } // ProjectVersion

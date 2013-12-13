@@ -24,10 +24,10 @@ package org.jabylon.properties;
 public interface ResourceFolder extends Resolvable<Resolvable<?, ?>, Resolvable<?, ?>> {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model kind="operation"
-     * @generated
-     */
+	 * @model kind="operation"
+	 * @generated
+	 */
     ProjectLocale getProjectLocale();
 } // ResourceFolder

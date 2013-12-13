@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.jabylon.users/src/main/java"
-    editDirectory="/org.jabylon.users.edit/src/main/java" editorDirectory="/org.jabylon.users.editor/src/main/java"
-    modelPluginID="org.jabylon.users" modelName="Users" editPluginClass="org.jabylon.users.provider.UsersEditPlugin"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/users/src/main/java" editDirectory="/org.jabylon.users.edit/src/main/java"
+    editorDirectory="/org.jabylon.users.editor/src/main/java" modelPluginID="org.jabylon.users"
+    modelName="Users" editPluginClass="org.jabylon.users.provider.UsersEditPlugin"
     editorPluginClass="org.jabylon.users.presentation.UsersEditorPlugin" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject"
     rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl" testsDirectory="/org.jabylon.users/src/test/java"
     testSuiteClass="org.jabylon.users.tests.UsersAllTests" importerID="org.eclipse.emf.importer.ecore"
@@ -14,6 +13,17 @@
       ecorePackage="users.ecore#/">
     <genClasses ecoreClass="users.ecore#//User">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/password"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference users.ecore#//User/roles"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference users.ecore#//User/permissions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/displayName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/email"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//User/token"/>
+      <genOperations ecoreOperation="users.ecore#//User/getAllPermissions"/>
+      <genOperations ecoreOperation="users.ecore#//User/hasPermission">
+        <genParameters ecoreParameter="users.ecore#//User/hasPermission/permission"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="users.ecore#//Role">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//Role/name"/>
@@ -28,6 +38,20 @@
     <genClasses ecoreClass="users.ecore#//AuthType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//AuthType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute users.ecore#//AuthType/authModule"/>
+    </genClasses>
+    <genClasses ecoreClass="users.ecore#//UserManagement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference users.ecore#//UserManagement/users"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference users.ecore#//UserManagement/roles"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference users.ecore#//UserManagement/permissions"/>
+      <genOperations ecoreOperation="users.ecore#//UserManagement/findUserByName">
+        <genParameters ecoreParameter="users.ecore#//UserManagement/findUserByName/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="users.ecore#//UserManagement/findPermissionByName">
+        <genParameters ecoreParameter="users.ecore#//UserManagement/findPermissionByName/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="users.ecore#//UserManagement/findRoleByName">
+        <genParameters ecoreParameter="users.ecore#//UserManagement/findRoleByName/name"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

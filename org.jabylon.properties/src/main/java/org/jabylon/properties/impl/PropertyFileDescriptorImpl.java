@@ -22,9 +22,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.PropertiesFactory;
@@ -34,6 +31,8 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.Review;
 import org.jabylon.properties.util.PropertiesResourceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <!-- begin-user-doc -->
@@ -61,103 +60,103 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
     private static final Logger logger = LoggerFactory.getLogger(PropertyFileDescriptorImpl.class);
 
     /**
-     * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getVariant() <em>Variant</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVariant()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVariant()
+	 * @generated
+	 * @ordered
+	 */
     protected static final Locale VARIANT_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLocation()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLocation()
+	 * @generated
+	 * @ordered
+	 */
     protected static final URI LOCATION_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getKeys() <em>Keys</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getKeys() <em>Keys</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getKeys()
-     * @generated
-     * @ordered
-     */
+	 * @see #getKeys()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int KEYS_EDEFAULT = 0;
 
     /**
-     * The default value of the '{@link #getLastModified() <em>Last Modified</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getLastModified() <em>Last Modified</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLastModified()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLastModified()
+	 * @generated
+	 * @ordered
+	 */
     protected static final long LAST_MODIFIED_EDEFAULT = 0L;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected PropertyFileDescriptorImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR;
-    }
+		return PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Locale getVariant() {
-        return (Locale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, true, true);
-    }
+		return (Locale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setVariant(Locale newVariant) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, newVariant);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__VARIANT, newVariant);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public URI getLocation() {
-        return (URI)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, true, true);
-    }
+		return (URI)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setLocation(URI newLocation) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, newLocation);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LOCATION, newLocation);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -243,29 +242,29 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
     }
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                PropertyFileDescriptor master = getMaster();
-                if (master != null)
-                    msgs = ((InternalEObject)master).eInverseRemove(this, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertyFileDescriptor.class, msgs);
-                return basicSetMaster((PropertyFileDescriptor)otherEnd, msgs);
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                ProjectLocale projectLocale = getProjectLocale();
-                if (projectLocale != null)
-                    msgs = ((InternalEObject)projectLocale).eInverseRemove(this, PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, ProjectLocale.class, msgs);
-                return basicSetProjectLocale((ProjectLocale)otherEnd, msgs);
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getDerivedDescriptors()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				PropertyFileDescriptor master = getMaster();
+				if (master != null)
+					msgs = ((InternalEObject)master).eInverseRemove(this, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertyFileDescriptor.class, msgs);
+				return basicSetMaster((PropertyFileDescriptor)otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				ProjectLocale projectLocale = getProjectLocale();
+				if (projectLocale != null)
+					msgs = ((InternalEObject)projectLocale).eInverseRemove(this, PropertiesPackage.PROJECT_LOCALE__DESCRIPTORS, ProjectLocale.class, msgs);
+				return basicSetProjectLocale((ProjectLocale)otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDerivedDescriptors()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -304,167 +303,167 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                return basicSetMaster(null, msgs);
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                return basicSetProjectLocale(null, msgs);
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
-                return ((InternalEList<?>)getReviews()).basicRemove(otherEnd, msgs);
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                return ((InternalEList<?>)getDerivedDescriptors()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				return basicSetMaster(null, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				return basicSetProjectLocale(null, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return ((InternalEList<?>)getReviews()).basicRemove(otherEnd, msgs);
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return ((InternalEList<?>)getDerivedDescriptors()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public PropertyFileDescriptor getMaster() {
-        return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, true, true);
-    }
+		return (PropertyFileDescriptor)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public NotificationChain basicSetMaster(PropertyFileDescriptor newMaster, NotificationChain msgs) {
-        msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, msgs);
-        return msgs;
-    }
+		msgs = eDynamicInverseAdd((InternalEObject)newMaster, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, msgs);
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setMaster(PropertyFileDescriptor newMaster) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__MASTER, newMaster);
+	}
 
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public ProjectLocale getProjectLocale() {
-        return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
-    }
+		return (ProjectLocale)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public NotificationChain basicSetProjectLocale(ProjectLocale newProjectLocale, NotificationChain msgs) {
-        msgs = eDynamicInverseAdd((InternalEObject)newProjectLocale, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, msgs);
-        return msgs;
-    }
+		msgs = eDynamicInverseAdd((InternalEObject)newProjectLocale, PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, msgs);
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setProjectLocale(ProjectLocale newProjectLocale) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, newProjectLocale);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE, newProjectLocale);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public int getKeys() {
-        return (Integer)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, true, true);
-    }
+		return (Integer)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setKeys(int newKeys) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, newKeys);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, newKeys);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     @SuppressWarnings("unchecked")
     public EList<Review> getReviews() {
-        return (EList<Review>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__REVIEWS, true, true);
-    }
+		return (EList<Review>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__REVIEWS, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public long getLastModified() {
-        return (Long)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, true, true);
-    }
+		return (Long)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setLastModified(long newLastModified) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, newLastModified);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED, newLastModified);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Comment getLastModification() {
-        return (Comment)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, true, true);
-    }
+		return (Comment)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void setLastModification(Comment newLastModification) {
-        eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, newLastModification);
-    }
+		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION, newLastModification);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     @SuppressWarnings("unchecked")
     public EList<PropertyFileDescriptor> getDerivedDescriptors() {
-        return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
-    }
+		return (EList<PropertyFileDescriptor>)eDynamicGet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS, true, true);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -482,145 +481,145 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
     }
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
-                return getVariant();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
-                return getLocation();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                return getMaster();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                return getProjectLocale();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
-                return getKeys();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
-                return getReviews();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
-                return getLastModified();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
-                return getLastModification();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                return getDerivedDescriptors();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
+				return getVariant();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				return getLocation();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				return getMaster();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				return getProjectLocale();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
+				return getKeys();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return getReviews();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				return getLastModified();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				return getLastModification();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return getDerivedDescriptors();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
-                setVariant((Locale)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
-                setLocation((URI)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                setMaster((PropertyFileDescriptor)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                setProjectLocale((ProjectLocale)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
-                setKeys((Integer)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
-                getReviews().clear();
-                getReviews().addAll((Collection<? extends Review>)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
-                setLastModified((Long)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
-                setLastModification((Comment)newValue);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                getDerivedDescriptors().clear();
-                getDerivedDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
+				setVariant((Locale)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				setLocation((URI)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				setMaster((PropertyFileDescriptor)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				setProjectLocale((ProjectLocale)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
+				setKeys((Integer)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				getReviews().clear();
+				getReviews().addAll((Collection<? extends Review>)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				setLastModified((Long)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				setLastModification((Comment)newValue);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				getDerivedDescriptors().clear();
+				getDerivedDescriptors().addAll((Collection<? extends PropertyFileDescriptor>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
-                setVariant(VARIANT_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
-                setLocation(LOCATION_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                setMaster((PropertyFileDescriptor)null);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                setProjectLocale((ProjectLocale)null);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
-                setKeys(KEYS_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
-                getReviews().clear();
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
-                setLastModified(LAST_MODIFIED_EDEFAULT);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
-                setLastModification((Comment)null);
-                return;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                getDerivedDescriptors().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
+				setVariant(VARIANT_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				setLocation(LOCATION_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				setMaster((PropertyFileDescriptor)null);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				setProjectLocale((ProjectLocale)null);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
+				setKeys(KEYS_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				getReviews().clear();
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				setLastModified(LAST_MODIFIED_EDEFAULT);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				setLastModification((Comment)null);
+				return;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				getDerivedDescriptors().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
-                return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
-                return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
-                return getMaster() != null;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
-                return getProjectLocale() != null;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
-                return getKeys() != KEYS_EDEFAULT;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
-                return !getReviews().isEmpty();
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
-                return getLastModified() != LAST_MODIFIED_EDEFAULT;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
-                return getLastModification() != null;
-            case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
-                return !getDerivedDescriptors().isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__VARIANT:
+				return VARIANT_EDEFAULT == null ? getVariant() != null : !VARIANT_EDEFAULT.equals(getVariant());
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LOCATION:
+				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__MASTER:
+				return getMaster() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__PROJECT_LOCALE:
+				return getProjectLocale() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS:
+				return getKeys() != KEYS_EDEFAULT;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__REVIEWS:
+				return !getReviews().isEmpty();
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFIED:
+				return getLastModified() != LAST_MODIFIED_EDEFAULT;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__LAST_MODIFICATION:
+				return getLastModification() != null;
+			case PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__DERIVED_DESCRIPTORS:
+				return !getDerivedDescriptors().isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     @Override
     public String toString() {

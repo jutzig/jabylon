@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
+import org.jabylon.users.*;
 import org.jabylon.users.AuthType;
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
@@ -30,120 +30,120 @@ import org.jabylon.users.UsersPackage;
  */
 public class UsersFactoryImpl extends EFactoryImpl implements UsersFactory {
     /**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static UsersFactory init() {
-        try {
-            UsersFactory theUsersFactory = (UsersFactory)EPackage.Registry.INSTANCE.getEFactory("http://uri.jabylon.org/users");
-            if (theUsersFactory != null) {
-                return theUsersFactory;
-            }
-        }
-        catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new UsersFactoryImpl();
-    }
+		try {
+			UsersFactory theUsersFactory = (UsersFactory)EPackage.Registry.INSTANCE.getEFactory("http://uri.jabylon.org/users"); 
+			if (theUsersFactory != null) {
+				return theUsersFactory;
+			}
+		}
+		catch (Exception exception) {
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new UsersFactoryImpl();
+	}
 
     /**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public UsersFactoryImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case UsersPackage.USER: return (EObject)createUser();
-            case UsersPackage.ROLE: return (EObject)createRole();
-            case UsersPackage.PERMISSION: return (EObject)createPermission();
-            case UsersPackage.AUTH_TYPE: return (EObject)createAuthType();
-            case UsersPackage.USER_MANAGEMENT: return (EObject)createUserManagement();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eClass.getClassifierID()) {
+			case UsersPackage.USER: return (EObject)createUser();
+			case UsersPackage.ROLE: return (EObject)createRole();
+			case UsersPackage.PERMISSION: return (EObject)createPermission();
+			case UsersPackage.AUTH_TYPE: return (EObject)createAuthType();
+			case UsersPackage.USER_MANAGEMENT: return (EObject)createUserManagement();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public User createUser() {
-        UserImpl user = new UserImpl();
-        return user;
-    }
+		UserImpl user = new UserImpl();
+		return user;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public Role createRole() {
-        RoleImpl role = new RoleImpl();
-        return role;
-    }
+		RoleImpl role = new RoleImpl();
+		return role;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public Permission createPermission() {
-        PermissionImpl permission = new PermissionImpl();
-        return permission;
-    }
+		PermissionImpl permission = new PermissionImpl();
+		return permission;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public AuthType createAuthType() {
-        AuthTypeImpl authType = new AuthTypeImpl();
-        return authType;
-    }
+		AuthTypeImpl authType = new AuthTypeImpl();
+		return authType;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public UserManagement createUserManagement() {
-        UserManagementImpl userManagement = new UserManagementImpl();
-        return userManagement;
-    }
+		UserManagementImpl userManagement = new UserManagementImpl();
+		return userManagement;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public UsersPackage getUsersPackage() {
-        return (UsersPackage)getEPackage();
-    }
+		return (UsersPackage)getEPackage();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @deprecated
-     * @generated
-     */
+	 * @deprecated
+	 * @generated
+	 */
     @Deprecated
     public static UsersPackage getPackage() {
-        return UsersPackage.eINSTANCE;
-    }
+		return UsersPackage.eINSTANCE;
+	}
 
 } //UsersFactoryImpl

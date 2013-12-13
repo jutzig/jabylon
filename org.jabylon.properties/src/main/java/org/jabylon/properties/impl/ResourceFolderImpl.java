@@ -11,7 +11,6 @@
 package org.jabylon.properties.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Resolvable;
@@ -28,23 +27,23 @@ import org.jabylon.properties.ResourceFolder;
  */
 public class ResourceFolderImpl extends ResolvableImpl<Resolvable<?, ?>, Resolvable<?, ?>> implements ResourceFolder {
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ResourceFolderImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.RESOURCE_FOLDER;
-    }
+		return PropertiesPackage.Literals.RESOURCE_FOLDER;
+	}
 
     /**
      * <!-- begin-user-doc -->

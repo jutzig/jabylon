@@ -20,65 +20,65 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface UsersFactory extends EFactory {
     /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     UsersFactory eINSTANCE = org.jabylon.users.impl.UsersFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>User</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>User</em>'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>User</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>User</em>'.
+	 * @generated
+	 */
     User createUser();
 
     /**
-     * Returns a new object of class '<em>Role</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Role</em>'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Role</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Role</em>'.
+	 * @generated
+	 */
     Role createRole();
 
     /**
-     * Returns a new object of class '<em>Permission</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Permission</em>'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Permission</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Permission</em>'.
+	 * @generated
+	 */
     Permission createPermission();
 
     /**
-     * Returns a new object of class '<em>Auth Type</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Auth Type</em>'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Auth Type</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Auth Type</em>'.
+	 * @generated
+	 */
     AuthType createAuthType();
 
     /**
-     * Returns a new object of class '<em>User Management</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>User Management</em>'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>User Management</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>User Management</em>'.
+	 * @generated
+	 */
     UserManagement createUserManagement();
 
     /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
     UsersPackage getUsersPackage();
 
 } //UsersFactory

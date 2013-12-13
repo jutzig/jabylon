@@ -17,7 +17,6 @@ import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.selectors.SelectorUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-
 import org.jabylon.properties.ScanConfiguration;
 import org.jabylon.properties.types.PropertyScanner;
 

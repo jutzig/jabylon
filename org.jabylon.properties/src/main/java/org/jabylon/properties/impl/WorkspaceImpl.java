@@ -11,7 +11,6 @@ package org.jabylon.properties.impl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
@@ -32,51 +31,51 @@ import org.jabylon.properties.Workspace;
  */
 public class WorkspaceImpl extends ResolvableImpl<Workspace, Project> implements Workspace {
     /**
-     * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getRoot() <em>Root</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRoot()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRoot()
+	 * @generated
+	 * @ordered
+	 */
     protected static final URI ROOT_EDEFAULT = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected WorkspaceImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PropertiesPackage.Literals.WORKSPACE;
-    }
+		return PropertiesPackage.Literals.WORKSPACE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public URI getRoot() {
-        return (URI)eDynamicGet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, true, true);
-    }
+		return (URI)eDynamicGet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, true, true);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setRoot(URI newRoot) {
-        eDynamicSet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, newRoot);
-    }
+		eDynamicSet(PropertiesPackage.WORKSPACE__ROOT, PropertiesPackage.Literals.WORKSPACE__ROOT, newRoot);
+	}
 
     /**
      * <!-- begin-user-doc -->
@@ -93,63 +92,63 @@ public class WorkspaceImpl extends ResolvableImpl<Workspace, Project> implements
     }
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                return getRoot();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				return getRoot();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                setRoot((URI)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				setRoot((URI)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                setRoot(ROOT_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				setRoot(ROOT_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PropertiesPackage.WORKSPACE__ROOT:
-                return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case PropertiesPackage.WORKSPACE__ROOT:
+				return ROOT_EDEFAULT == null ? getRoot() != null : !ROOT_EDEFAULT.equals(getRoot());
+		}
+		return super.eIsSet(featureID);
+	}
 
     @Override
     public Project getProject(String name) {

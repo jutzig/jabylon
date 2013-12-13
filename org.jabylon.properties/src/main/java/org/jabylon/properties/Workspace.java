@@ -28,37 +28,38 @@ import org.eclipse.emf.common.util.URI;
  */
 public interface Workspace extends Resolvable<Workspace, Project> {
     /**
-     * Returns the value of the '<em><b>Root</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Root</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Root</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Root</em>' attribute.
-     * @see #setRoot(URI)
-     * @see org.jabylon.properties.PropertiesPackage#getWorkspace_Root()
-     * @model dataType="org.jabylon.properties.URI"
-     * @generated
-     */
+	 * @return the value of the '<em>Root</em>' attribute.
+	 * @see #setRoot(URI)
+	 * @see org.jabylon.properties.PropertiesPackage#getWorkspace_Root()
+	 * @model dataType="org.jabylon.properties.URI"
+	 *        annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='1024'"
+	 * @generated
+	 */
     URI getRoot();
 
     /**
-     * Sets the value of the '{@link org.jabylon.properties.Workspace#getRoot <em>Root</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.jabylon.properties.Workspace#getRoot <em>Root</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Root</em>' attribute.
-     * @see #getRoot()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Root</em>' attribute.
+	 * @see #getRoot()
+	 * @generated
+	 */
     void setRoot(URI value);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model kind="operation"
-     * @generated
-     */
+	 * @model kind="operation"
+	 * @generated
+	 */
     ProjectVersion getTerminology();
 
     Project getProject(String name);

@@ -32,75 +32,85 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface UserManagement extends CDOObject {
     /**
-     * Returns the value of the '<em><b>Users</b></em>' containment reference list.
-     * The list contents are of type {@link org.jabylon.users.User}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Users</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jabylon.users.User}.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Users</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Users</em>' containment reference list.
-     * @see org.jabylon.users.UsersPackage#getUserManagement_Users()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Users</em>' containment reference list.
+	 * @see org.jabylon.users.UsersPackage#getUserManagement_Users()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<User> getUsers();
 
     /**
-     * Returns the value of the '<em><b>Roles</b></em>' containment reference list.
-     * The list contents are of type {@link org.jabylon.users.Role}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Roles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jabylon.users.Role}.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Roles</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Roles</em>' containment reference list.
-     * @see org.jabylon.users.UsersPackage#getUserManagement_Roles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Roles</em>' containment reference list.
+	 * @see org.jabylon.users.UsersPackage#getUserManagement_Roles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Role> getRoles();
 
     /**
-     * Returns the value of the '<em><b>Permissions</b></em>' containment reference list.
-     * The list contents are of type {@link org.jabylon.users.Permission}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Permissions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jabylon.users.Permission}.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Permissions</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Permissions</em>' containment reference list.
-     * @see org.jabylon.users.UsersPackage#getUserManagement_Permissions()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Permissions</em>' containment reference list.
+	 * @see org.jabylon.users.UsersPackage#getUserManagement_Permissions()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Permission> getPermissions();
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model nameRequired="true"
-     * @generated
-     */
+	 * @model nameRequired="true"
+	 * @generated
+	 */
     User findUserByName(String name);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model nameRequired="true"
-     * @generated
-     */
+	 * @model nameRequired="true"
+	 * @generated
+	 */
     Permission findPermissionByName(String name);
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model nameRequired="true"
-     * @generated
-     */
+	 * @model nameRequired="true"
+	 * @generated
+	 */
     Role findRoleByName(String name);
+
+    /**
+	 * <!-- begin-user-doc -->
+	 * Tries to find a user by auth token.
+	 * see {@link User#getToken()}
+	 * <!-- end-user-doc -->
+	 * @model tokenRequired="true"
+	 * @generated
+	 */
+	User findUserByToken(String token);
 
 } // UserManagement
