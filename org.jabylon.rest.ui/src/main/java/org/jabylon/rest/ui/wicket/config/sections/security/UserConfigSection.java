@@ -8,19 +8,19 @@
  */
 package org.jabylon.rest.ui.wicket.config.sections.security;
 
+import java.security.SecureRandom;
+
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
-import org.eclipse.emf.ecore.EObject;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.rest.ui.model.AttachableModel;
+import org.jabylon.rest.ui.model.BooleanPreferencesPropertyModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.wicket.components.UserImagePanel;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
@@ -28,12 +28,16 @@ import org.jabylon.security.CommonPermissions;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersPackage;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserConfigSection extends GenericPanel<User> {
 
-    private static final long serialVersionUID = 1L;
+    private static final String GENERATE_TOKEN_PREF = "generateToken";
+	private static final long serialVersionUID = 1L;
 
-    public UserConfigSection(String id, IModel<User> model) {
+    public UserConfigSection(String id, IModel<User> model, Preferences prefs) {
         super(id, model);
 
         boolean isLDAP = CommonPermissions.AUTH_TYPE_LDAP.equals(model.getObject().getType());
@@ -59,7 +63,13 @@ public class UserConfigSection extends GenericPanel<User> {
         TextField<String> type = new TextField<String>("type",new EObjectPropertyModel<String,User>(getModel(), UsersPackage.Literals.USER__TYPE));
         type.setEnabled(false);
         add(type);
-    }
+
+        Label tokenLabel = new Label("token",new EObjectPropertyModel<String, User>(model, UsersPackage.Literals.USER__TOKEN));
+        add(tokenLabel);
+        CheckBox generateToken = new CheckBox("generate-token", new BooleanPreferencesPropertyModel(prefs, GENERATE_TOKEN_PREF, false));
+//        CheckBox generateToken = new CheckBox("generate-token", Model.of(true));
+		add(generateToken);
+    }  
 
     public static class UserConfigSectionContributor extends AbstractConfigSection<User> {
 
@@ -70,7 +80,7 @@ public class UserConfigSection extends GenericPanel<User> {
         @Override
         public WebMarkupContainer doCreateContents(String id, IModel<User> input, Preferences config) {
 
-            return new UserConfigSection(id, input);
+            return new UserConfigSection(id, input,config);
         }
 
         @Override
@@ -89,6 +99,11 @@ public class UserConfigSection extends GenericPanel<User> {
                 else
                     logger.error("Failed to obtain usermanagement for "+user+". Default permissions will not be initialized");
             }
+            if(config.getBoolean(GENERATE_TOKEN_PREF, false))
+            	user.setToken(generateToken());
+            config.putBoolean(GENERATE_TOKEN_PREF, false);
+            //we don't really need to store this value, it's just to communicate the intention
+            config.remove(GENERATE_TOKEN_PREF);
         }
 
 
@@ -99,5 +114,33 @@ public class UserConfigSection extends GenericPanel<User> {
                 name = getDomainObject().getName();
             return CommonPermissions.constructPermission(CommonPermissions.USER,name,CommonPermissions.ACTION_CONFIG);
         }
-    }
+        
+        protected String generateToken() {
+        	SecureRandom random = new SecureRandom();
+        	StringBuilder result = new StringBuilder();
+        	//glues 2 random longs together
+        	long number = random.nextLong();
+        	result.append(Long.toHexString(number));
+        	number = random.nextLong();
+        	result.append(Long.toHexString(number));
+        	return result.toString();
+    	}           
+    }   
 }
+
+//unfortunately the ajax button seems to mess with the form processing
+//class GenerateTokenButton extends AjaxButton{
+//	
+//	public GenerateTokenButton(String id) {
+//		super(id);
+//	}
+//
+//	private static final long serialVersionUID = 1L;
+//	
+//	@Override
+//	protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+//		super.onSubmit(target, form);
+////		target.add(token);
+////		token.getModel().setObject(generateToken());
+//	}
+//}

@@ -7,7 +7,7 @@
                 <label class="control-label" for="username">Name</label>
                 <div class="controls">
                     <input wicket:id="username" id="username" type="text"
-                        placeholder="Username"> <span class="help-block"><wicket:message
+                        placeholder="Username" class="input-xlarge"> <span class="help-block"><wicket:message
                             key="username.help.block">Username (must be unique)</wicket:message></span>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                 <label class="control-label" for="userpassword">Password</label>
                 <div class="controls">
                     <input wicket:id="userpassword" id="userpassword" type="password"
-                        placeholder="**************"> <span class="help-block"><wicket:message
+                        placeholder="**************"  class="input-xlarge"> <span class="help-block"><wicket:message
                             key="userpassword.help.block">Enter the new password here</wicket:message></span>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <label class="control-label" for="displayName">Display Name</label>
                 <div class="controls">
                     <input wicket:id="displayName" id="displayName" type="text"
-                        placeholder="John Doe"> <span class="help-block"><wicket:message
+                        placeholder="John Doe" class="input-xlarge"> <span class="help-block"><wicket:message
                             key="displayName.help.block">Enter the full name here</wicket:message></span>
                 </div>
             </div>
@@ -31,14 +31,26 @@
                 <label class="control-label" for="email">email</label>
                 <div class="controls">
                     <input wicket:id="email" id="email" type="text"
-                        placeholder="JohnDoe@example.org"> <span
+                        placeholder="JohnDoe@example.org" class="input-xlarge"> <span
                         class="help-block"><wicket:message key="email.help.block">Enter the email address here</wicket:message></span>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="type">Login Type</label>
+			<div class="control-group">
+			 	
+                <label class="control-label" for="generate-token"><wicket:message key="token.label">API Token</wicket:message></label>
                 <div class="controls">
-                    <input wicket:id="type" id="type" type="text" placeholder="Internal DB"> <span
+    				<span wicket:id="token" class="input-xlarge uneditable-input">[tokenvalue]</span>
+                	<label class="checkbox">
+      					<input type="checkbox" wicket:id="generate-token"> <wicket:message key="generate.token.action">[generate]</wicket:message>
+    				</label>
+                    <span class="help-block"><wicket:message key="token.help.block">[token description]</wicket:message></span>
+                </div>
+                
+            </div>            
+            <div class="control-group">
+                <label class="control-label" for="type"><wicket:message key="login.type">[login type]</wicket:message></label>
+                <div class="controls">
+                    <input wicket:id="type" id="type" type="text" placeholder="Internal DB"  class="input-xlarge"> <span
                         class="help-block"><wicket:message key="type.help.block">Login Type</wicket:message></span>
                 </div>
             </div>

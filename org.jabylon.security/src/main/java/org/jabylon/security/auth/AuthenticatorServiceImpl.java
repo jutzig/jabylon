@@ -83,7 +83,10 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 			try {
 				entry.getValue().login();
 				final Subject subject = entry.getValue().getSubject();
-				logger.info("{} Login for user {} successful", entry.getKey(), username);
+				Set<String> credentials = subject.getPublicCredentials(String.class);
+				//in case it was an auth token, the username was null but now we know the right one
+				String actualUsername = credentials.isEmpty() ? username : credentials.iterator().next(); 
+				logger.info("{} Login for user {} successful", entry.getKey(), actualUsername);
 				return subject;
 
 			} catch (LoginException e) {
@@ -96,18 +99,22 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	public User authenticateUser(final String username, final String password) {
 
+		String actualUsername = username;
 		final Subject subject = doAuthenticate(username, password);
 		if (subject == null)
 			return null;
+		Set<String> credentials = subject.getPublicCredentials(String.class);
+		if(!credentials.isEmpty())
+			actualUsername = credentials.iterator().next();
 		UserManagement management = getUserManagement();
 		if (management == null)
 			return null;
-		User user = management.findUserByName(username);
+		User user = management.findUserByName(actualUsername);
 		try {
 			if (user == null) {
-				logger.info("User {} logged in for the first time. Creating DB Entry");
+				logger.info("User {} logged in for the first time. Creating DB Entry",actualUsername);
 				final User newUser = UsersFactory.eINSTANCE.createUser();
-				newUser.setName(username);
+				newUser.setName(actualUsername);
 				user = TransactionUtil.commit(management, new Modification<UserManagement, User>() {
 
 					@Override

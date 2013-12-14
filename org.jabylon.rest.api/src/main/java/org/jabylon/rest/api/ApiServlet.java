@@ -368,11 +368,18 @@ public class ApiServlet extends HttpServlet
         byte[] decoded = Base64.decode(userpassEncoded.getBytes());
         String userpassDecoded = new String(decoded);
         String[] userPass = userpassDecoded.split(":");
-        if(userPass.length!=2)
-        	return null;
-        String user = userPass[0];
-        String password = userPass[1];
-        return authenticate(user, password);
+        if(userPass.length==2)
+        {
+        	String username = userPass[0].isEmpty() ? null : userPass[0];
+        	String password = userPass[1];
+        	return authenticate(username, password);
+        }
+        else if(userPass.length==1)
+        {
+        	//must be an auth token
+        	return authenticate(null, userPass[0]);
+        }
+        return null;
         
     }
     

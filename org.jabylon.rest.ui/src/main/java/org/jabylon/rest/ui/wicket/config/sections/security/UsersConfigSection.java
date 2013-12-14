@@ -24,7 +24,6 @@ import org.eclipse.emf.cdo.util.CommitException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import org.jabylon.rest.ui.wicket.components.UserImagePanel;
@@ -57,7 +56,11 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
                 item.add(new Label("roles",buildRoles(item.getModelObject())));
                 PageParameters params = new PageParameters(getPage().getPageParameters());
                 params.set(params.getIndexedCount(),"users");
-                params.set(params.getIndexedCount(),item.getModelObject().getName());
+                String name = item.getModelObject().getName();
+                //so it doesn't crash on a broken model
+                if(name==null)
+                	name = "";
+                params.set(params.getIndexedCount(),name);
                 item.add(new BookmarkablePageLink<Void>("edit",SettingsPage.class, params));
                 item.add(new Link<User>("delete",item.getModel()){
 
