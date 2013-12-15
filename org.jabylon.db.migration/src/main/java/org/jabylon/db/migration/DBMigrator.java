@@ -43,6 +43,7 @@ public class DBMigrator
         boolean dbExists = dbExists(dataSource);
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
+        flyway.setTable("SCHEMA_VERSION");
         // flyway.setInitOnMigrate(true);
         if (!dbExists)
         {

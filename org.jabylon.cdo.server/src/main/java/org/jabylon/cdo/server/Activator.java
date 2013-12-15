@@ -378,7 +378,7 @@ public class Activator implements BundleActivator {
         //
 
         JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:" + DATABASE_NAME);
+        dataSource.setURL("jdbc:h2:" + DATABASE_NAME+";DB_CLOSE_DELAY=-1");
 
         // myDataSource.setCreateDatabase("create");
         // myDataSource.setPort(3306);
