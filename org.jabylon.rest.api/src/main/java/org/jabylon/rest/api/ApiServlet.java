@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -48,6 +50,12 @@ import org.jabylon.users.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
+
 /**
  * TODO short description for ApiServlet.
  * <p>
@@ -55,7 +63,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author utzig
  */
-public class ApiServlet extends HttpServlet
+public class ApiServlet extends HttpServlet implements Function<String, User>
 // implements Servlet
 {
 
@@ -66,6 +74,7 @@ public class ApiServlet extends HttpServlet
     private Workspace workspace;
     private PropertyPersistenceService persistence;
 	private AuthenticationService authService;
+	private LoadingCache<String, User> cache;
 	
     private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 
@@ -80,8 +89,7 @@ public class ApiServlet extends HttpServlet
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
-        // TODO Auto-generated method stub
-
+    	cache = CacheBuilder.newBuilder().concurrencyLevel(3).expireAfterAccess(2, TimeUnit.MINUTES).maximumSize(10).build(CacheLoader.from(this));
     }
 
     /**
@@ -343,7 +351,7 @@ public class ApiServlet extends HttpServlet
      */
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
+    	cache = null;
 
     }
     
@@ -365,7 +373,25 @@ public class ApiServlet extends HttpServlet
         }
         // Encoded user and password come after "BASIC "
         String userpassEncoded = auth.substring(BASIC_PREFIX.length());
-        byte[] decoded = Base64.decode(userpassEncoded.getBytes());
+        try {
+        	return cache.get(userpassEncoded);
+		} catch (ExecutionException e) {
+			// user is not known or not authorized
+		} catch (UncheckedExecutionException e) {
+			// user is not known or not authorized
+		}
+        
+        return null;
+        
+    }
+    
+    private User authenticate(final String username, final String password) {
+    	return authService.authenticateUser(username, password);
+    }
+
+	@Override
+	public User apply(String authHeader) {
+        byte[] decoded = Base64.decode(authHeader.getBytes());
         String userpassDecoded = new String(decoded);
         String[] userPass = userpassDecoded.split(":");
         if(userPass.length==2)
@@ -380,11 +406,6 @@ public class ApiServlet extends HttpServlet
         	return authenticate(null, userPass[0]);
         }
         return null;
-        
-    }
-    
-    private User authenticate(final String username, final String password) {
-    	return authService.authenticateUser(username, password);
-    }    
+	}    
 
 }
