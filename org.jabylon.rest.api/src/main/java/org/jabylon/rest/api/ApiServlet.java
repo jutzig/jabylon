@@ -79,12 +79,7 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
     private PropertyPersistenceService persistence;
 	private AuthenticationService authService;
 	private LoadingCache<String, User> cache;
-	private static final Set<EClass> KNOWN_TARGETS;
-	static {
-		KNOWN_TARGETS = new HashSet<EClass>();
-		KNOWN_TARGETS.add(PropertiesPackage.Literals.WORKSPACE);
-		KNOWN_TARGETS.add(PropertiesPackage.Literals.PROJECT);
-	}
+
 	
     private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 
@@ -369,25 +364,8 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
     	User user = getUser(request);
     	if(user==null)
     		return false;
-    	Resolvable<?, ?> knownTarget = getActualTarget(target);
-    	if(knownTarget==null)
-    		return false;
-    	return CommonPermissions.hasPermission(user, knownTarget, isEdit ? CommonPermissions.ACTION_EDIT : CommonPermissions.ACTION_VIEW);
+    	return CommonPermissions.hasPermission(user, target, isEdit ? CommonPermissions.ACTION_EDIT : CommonPermissions.ACTION_VIEW);
     }
-    
-    /**
-     * computes something known to us that we can use to construct a proper permission.
-     * e.g. we don't have permissions on per descriptor level, so we need to walk up the
-     * hierarchy until we find something known 
-     * @param target
-     * @return 	
-     */
-    private Resolvable<?, ?> getActualTarget(Resolvable<?, ?> target) {
-    	Resolvable<?, ?> current = target;
-    	while(current!=null && !KNOWN_TARGETS.contains(current.eClass()))
-    		current = current.getParent();
-		return current;
-	}
 
 	protected User getUser(HttpServletRequest request) {
         

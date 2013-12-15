@@ -176,19 +176,9 @@ public class Activator implements BundleActivator {
         if(role==null) {
             role = UsersFactory.eINSTANCE.createRole();
             role.setName("Anonymous");
-            addPermission(userManagement, role,"Workspace:*:view");
+            addPermission(userManagement, role,"Workspace:view");
             addPermission(userManagement, role,"Project:*:view");
             userManagement.getRoles().add(role);
-        }
-        else
-        {
-        	EList<Permission> permissions = role.getPermissions();
-        	for (Permission permission : permissions) {
-        		if(permission.getName().equals("Workspace:view")) {
-        			//that was an old permission. Need to update that
-        			permission.setName("Workspace:*:view");
-        		}
-        	}        	
         }
     }
 

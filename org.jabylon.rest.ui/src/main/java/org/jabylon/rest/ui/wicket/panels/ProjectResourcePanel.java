@@ -168,11 +168,10 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         Resolvable<?, ?> object = getModelObject();
         while(object!=null) {
             if (object instanceof Project) {
-                Project project = (Project) object;
-                return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
+                return CommonPermissions.constructPermissionName(object, CommonPermissions.ACTION_VIEW);
             }
             else if (object instanceof Workspace) {
-                return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,CommonPermissions.ACTION_VIEW);
+            	return CommonPermissions.constructPermissionName(object, CommonPermissions.ACTION_VIEW);
             }
             object = object.getParent();
         }
