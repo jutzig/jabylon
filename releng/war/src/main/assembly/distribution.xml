@@ -24,7 +24,7 @@
                 <exclude>org.easymock:easymock</exclude>
                 <exclude>org.osgi:org.osgi.core</exclude>
                 <exclude>org.slf4j:slf4j-api</exclude>
-                <!-- should now be a total of 74 bundles -->
+                <!-- should now be a total of 76 bundles -->
             </excludes>
         </dependencySet>
     </dependencySets>

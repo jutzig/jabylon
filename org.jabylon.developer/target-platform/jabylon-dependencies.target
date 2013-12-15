@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Jabylon" sequenceNumber="47">
+<?pde version="3.8"?><target name="Jabylon" sequenceNumber="48">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.1.1.v20120911-1146"/>
-<unit id="org.eclipse.cvs.feature.group" version="1.3.200.v20120525-1249-7B79FJJAkF7BF7VEH5IAJT"/>
-<unit id="org.eclipse.jgit.feature.group" version="2.1.0.201209190230-r"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.8.1.v20120917-0436"/>
-<unit id="org.eclipse.epp.package.java.feature.feature.group" version="1.5.1.20121004-1506"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.8.0.v20120522-1841-7M7fA78g5_y-g-jtHxcd5k8q8lFR"/>
-<unit id="org.eclipse.jetty.sdk.feature.group" version="8.1.3.201206060641"/>
-<unit id="org.eclipse.net4j.sdk.feature.group" version="4.1.1.v20120911-1146"/>
-<repository location="http://download.eclipse.org/releases/juno/"/>
+<unit id="org.eclipse.cvs.feature.group" version="1.4.0.v20130911-1000"/>
+<unit id="org.eclipse.jgit.feature.group" version="3.0.3.201309161630-r"/>
+<unit id="org.eclipse.epp.package.java.feature.feature.group" version="2.0.1.20130919-0803"/>
+<unit id="org.eclipse.equinox.server.jetty.feature.group" version="1.1.0.v20130429-1600"/>
+<unit id="org.eclipse.jgit.source.feature.group" version="3.0.3.201309161630-r"/>
+<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.2.1.v20130913-0613"/>
+<unit id="org.eclipse.net4j.sdk.feature.group" version="4.2.1.v20130806-0658"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.9.1.v20130902-0605"/>
+<repository location="http://download.eclipse.org/releases/kepler/"/>
 </location>
 </locations>
 </target>
