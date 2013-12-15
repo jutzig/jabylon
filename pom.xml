@@ -15,6 +15,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+	<distributionManagement>
+		<repository>
+			<id>jabylon</id>
+			<name>jabylon</name>
+			<url>scp://nordmar.esd4j.org:7332/srv/sites/esd4j/jabylon/repository</url>
+		</repository>
+	</distributionManagement>
+
     <modules>
         <module>org.jabylon.cdo.connector</module>
         <module>org.jabylon.cdo.server</module>
@@ -38,6 +46,19 @@
     </modules>
 
     <build>
+    	<extensions>
+    	 <!-- Enabling the use of sftp -->
+<!--       		<extension>
+        		<groupId>org.apache.maven.wagon</groupId>
+         		<artifactId>wagon-ssh-external</artifactId>
+         		<version>1.0-beta-6</version>
+      		</extension> -->
+			<extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>1.0</version>
+            </extension>      		
+    	</extensions>
         <finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
@@ -283,6 +304,18 @@
                     </filesets>
                 </configuration>
             </plugin>
+			<plugin>    
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-site-plugin</artifactId>
+              <version>3.2</version>
+              <dependencies>
+                <dependency>
+                  <groupId>org.apache.maven.doxia</groupId>
+                  <artifactId>doxia-module-markdown</artifactId>
+                  <version>1.5</version>
+                </dependency>
+              </dependencies>
+            </plugin>            
         </plugins>
     </build>
 
@@ -856,12 +889,33 @@
     </organization>
     <scm>
     	<url>https://github.com/jutzig/jabylon</url>
-    	<connection>https://github.com/jutzig/jabylon.git</connection>
-    	<developerConnection>https://github.com/jutzig/jabylon.git</developerConnection>
+    	<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
+    	<developerConnection>scm:git:https://github.com/jutzig/jabylon.git</developerConnection>
     </scm>
     <issueManagement>
     	<system>Github</system>
     	<url>https://github.com/jutzig/jabylon/issues</url>
     </issueManagement>
     <inceptionYear>2013</inceptionYear>
+    <ciManagement>
+    	<system>Jenkins</system>
+    	<url>https://buildhive.cloudbees.com/job/jutzig/job/jabylon/</url>
+    </ciManagement>
+    <licenses>
+    	<license>
+    		<name>EPL</name>
+    		<url>http://www.eclipse.org/legal/epl-v10.html</url>
+    	</license>
+    </licenses>
+    
+    <developers>
+    	<developer>
+    		<name>Johannes Utzig</name>
+    		<id>jutzig</id>
+    	</developer>
+		<developer>
+    		<name>Sascha Vogt</name>
+    		<id>svogt</id>
+    	</developer>    	
+    </developers>
 </project>
