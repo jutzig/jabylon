@@ -20,12 +20,11 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.URIHandler;
@@ -42,7 +41,7 @@ public class UserManagmentURIHandler implements URIHandler {
     public static final String SECURITY_URI_PREFIX = "security";
     @Reference
     private RepositoryConnector repositoryConnector;
-    private CDOSession session;
+    private CDONet4jSession session;
     private UserManagement userManagment;
 
     @Activate

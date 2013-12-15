@@ -28,14 +28,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.index.properties.IndexActivator;
@@ -45,6 +42,8 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
 import org.jabylon.scheduler.JobContextUtil;
 import org.jabylon.scheduler.JobExecution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -114,7 +113,7 @@ public class ReorgIndexJob implements JobExecution {
     	 long time = System.currentTimeMillis();
          logger.info("Reorg of search index started");
          IndexWriter writer = null;
-         CDOSession session = null;
+         CDONet4jSession session = null;
          boolean closed = false;
          try {
              writer = createIndexWriter();

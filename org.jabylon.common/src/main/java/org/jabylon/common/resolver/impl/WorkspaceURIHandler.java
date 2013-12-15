@@ -19,10 +19,9 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.URI;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.URIHandler;
@@ -38,7 +37,7 @@ public class WorkspaceURIHandler implements URIHandler {
 
     @Reference
     private RepositoryConnector repositoryConnector;
-    private CDOSession session;
+    private CDONet4jSession session;
     private Workspace workspace;
 
     @Activate

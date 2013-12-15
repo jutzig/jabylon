@@ -8,7 +8,7 @@
  */
 package org.jabylon.cdo.connector;
 
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
 
@@ -20,7 +20,7 @@ public interface RepositoryConnector {
 
 //	CDOSession getSession();
 
-    CDOSession createSession();
+    CDONet4jSession createSession();
 
     void close();
 

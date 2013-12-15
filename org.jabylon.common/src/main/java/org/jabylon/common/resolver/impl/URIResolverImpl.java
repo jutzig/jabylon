@@ -22,10 +22,9 @@ import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.URI;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.resolver.URIHandler;
 import org.jabylon.common.resolver.URIResolver;
@@ -40,7 +39,7 @@ public class URIResolverImpl implements URIResolver {
 
     @Reference(referenceInterface=URIHandler.class,cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE,bind="addHandler",unbind="removeHandler",policy=ReferencePolicy.DYNAMIC)
     private List<URIHandler> handlers = new CopyOnWriteArrayList<URIHandler>();
-    private CDOSession session;
+    private CDONet4jSession session;
     private CDOView view;
     @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
     private RepositoryConnector repositoryConnector;

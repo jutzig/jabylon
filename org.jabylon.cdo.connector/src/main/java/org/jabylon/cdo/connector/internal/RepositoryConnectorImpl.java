@@ -12,9 +12,9 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSessionConfiguration;
 import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
-import org.eclipse.emf.cdo.net4j.CDOSession;
-import org.eclipse.emf.cdo.net4j.CDOSessionConfiguration;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.cdo.view.CDOView;
@@ -24,7 +24,6 @@ import org.eclipse.net4j.jvm.JVMUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.users.UsersPackage;
@@ -34,7 +33,7 @@ import org.jabylon.users.UsersPackage;
 public class RepositoryConnectorImpl implements RepositoryConnector {
 
     private IConnector connector = null;
-    private CDOSession session = null;
+    private CDONet4jSession session = null;
 
     @Reference
     private IAcceptor acceptor;
@@ -71,7 +70,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
      *
      * @return the CDO session
      */
-    public CDOSession getSession() {
+    public CDONet4jSession getSession() {
         if (session == null) {
             session = createSession();
         }
@@ -94,16 +93,16 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
     }
 
     @Override
-    public CDOSession createSession() {
+    public CDONet4jSession createSession() {
         IManagedContainer container = IPluginContainer.INSTANCE;
 
         if (connector == null)
             connector = JVMUtil.getConnector(container, "default");
 
-        CDOSessionConfiguration config = CDONet4jUtil.createSessionConfiguration();
+        CDONet4jSessionConfiguration config = CDONet4jUtil.createNet4jSessionConfiguration();
         config.setConnector(connector);
         config.setRepositoryName(REPOSITORY_NAME);
-        CDOSession theSession = config.openSession();
+        CDONet4jSession theSession = config.openNet4jSession();
         theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
         theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
         theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);

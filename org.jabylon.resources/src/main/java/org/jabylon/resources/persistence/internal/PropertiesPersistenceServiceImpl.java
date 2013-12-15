@@ -36,7 +36,7 @@ import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.CDOCommonSession.Options.PassiveUpdateMode;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.net4j.CDOSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
@@ -289,7 +289,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
     }
 
 	private void hookListener(final RepositoryConnector repositoryConnector) {
-		CDOSession session = repositoryConnector.createSession();
+		CDONet4jSession session = repositoryConnector.createSession();
 		session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
 		
 		CDOView view = session.openView();

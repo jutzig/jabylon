@@ -29,9 +29,9 @@ import javax.sql.DataSource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.cdo.eresource.CDOResource;
+import org.eclipse.emf.cdo.net4j.CDONet4jSession;
+import org.eclipse.emf.cdo.net4j.CDONet4jSessionConfiguration;
 import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
-import org.eclipse.emf.cdo.net4j.CDOSession;
-import org.eclipse.emf.cdo.net4j.CDOSessionConfiguration;
 import org.eclipse.emf.cdo.server.CDOServerUtil;
 import org.eclipse.emf.cdo.server.IRepository;
 import org.eclipse.emf.cdo.server.IStore;
@@ -128,7 +128,7 @@ public class Activator implements BundleActivator {
             public void run() {
 
                 startRepository();
-                CDOSession session = createSession();
+                CDONet4jSession session = createSession();
                 CDOTransaction transaction = session.openTransaction();
                 try {
                     initializeWorkspace(transaction);
@@ -290,18 +290,17 @@ public class Activator implements BundleActivator {
 
     }
 
-    public CDOSession createSession() {
+    public CDONet4jSession createSession() {
 
         IManagedContainer container = IPluginContainer.INSTANCE;
 
         IJVMConnector connector = JVMUtil.getConnector(container, "default");
 
-        CDOSessionConfiguration config = CDONet4jUtil
-                .createSessionConfiguration();
+        CDONet4jSessionConfiguration config = CDONet4jUtil.createNet4jSessionConfiguration();
         config.setConnector(connector);
         config.setRepositoryName(ServerConstants.REPOSITORY_NAME);
 
-        CDOSession session = config.openSession();
+        CDONet4jSession session = config.openNet4jSession();
         session.options().setCollectionLoadingPolicy(
                 CDOUtil.createCollectionLoadingPolicy(0, 300));
         session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
