@@ -56,6 +56,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 	@Reference(policy=ReferencePolicy.DYNAMIC,cardinality=ReferenceCardinality.MANDATORY_UNARY,bind="setRepositoryConnector",unbind="unbindRepositoryConnector")
 	private RepositoryConnector repositoryConnector;
 	private UserManagement userManagement;
+	private User anonymous;
 
 	public boolean authenticate(final String username, final String password) {
 
@@ -217,5 +218,14 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 		if(userManagement!=null)
 			userManagement.cdoView().close();
 		userManagement = null;
+	}
+
+	@Override
+	public User getAnonymousUser() {
+		if(anonymous==null)
+		{
+			anonymous = getUserManagement().findUserByName(CommonPermissions.USER_ANONYMOUS); 
+		}
+		return anonymous;
 	}
 }

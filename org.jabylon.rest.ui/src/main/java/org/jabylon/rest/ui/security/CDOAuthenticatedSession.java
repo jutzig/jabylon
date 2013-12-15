@@ -140,7 +140,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
         {
             if(getUserManagement()==null)
                 return null;
-            User anonymous = getUserManagement().findUserByName(CommonPermissions.USER_ANONYMOUS);
+            User anonymous = Activator.getDefault().getAuthenticationService().getAnonymousUser();
             if(anonymous!=null)
                 anonymousUser = new EObjectModel<User>(anonymous);
             else

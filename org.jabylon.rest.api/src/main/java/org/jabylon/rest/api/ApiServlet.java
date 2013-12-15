@@ -13,10 +13,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -28,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.util.PreferencesUtil;
@@ -75,6 +79,12 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
     private PropertyPersistenceService persistence;
 	private AuthenticationService authService;
 	private LoadingCache<String, User> cache;
+	private static final Set<EClass> KNOWN_TARGETS;
+	static {
+		KNOWN_TARGETS = new HashSet<EClass>();
+		KNOWN_TARGETS.add(PropertiesPackage.Literals.WORKSPACE);
+		KNOWN_TARGETS.add(PropertiesPackage.Literals.PROJECT);
+	}
 	
     private static final Logger logger = LoggerFactory.getLogger(ApiServlet.class);
 
@@ -359,14 +369,32 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
     	User user = getUser(request);
     	if(user==null)
     		return false;
-    	return CommonPermissions.hasPermission(user, target, isEdit ? CommonPermissions.ACTION_EDIT : CommonPermissions.ACTION_VIEW);
+    	Resolvable<?, ?> knownTarget = getActualTarget(target);
+    	if(knownTarget==null)
+    		return false;
+    	return CommonPermissions.hasPermission(user, knownTarget, isEdit ? CommonPermissions.ACTION_EDIT : CommonPermissions.ACTION_VIEW);
     }
     
-    protected User getUser(HttpServletRequest request) {
+    /**
+     * computes something known to us that we can use to construct a proper permission.
+     * e.g. we don't have permissions on per descriptor level, so we need to walk up the
+     * hierarchy until we find something known 
+     * @param target
+     * @return 	
+     */
+    private Resolvable<?, ?> getActualTarget(Resolvable<?, ?> target) {
+    	Resolvable<?, ?> current = target;
+    	while(current!=null && !KNOWN_TARGETS.contains(current.eClass()))
+    		current = current.getParent();
+		return current;
+	}
+
+	protected User getUser(HttpServletRequest request) {
         
     	String auth = request.getHeader("Authorization");  
         if (auth == null) {
-            return null;
+        	//no auth header -> anonymous
+            return authService.getAnonymousUser();
         }
         if (!auth.toUpperCase().startsWith(BASIC_PREFIX)) { 
             return null;  // we only do BASIC so far
@@ -394,18 +422,21 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
         byte[] decoded = Base64.decode(authHeader.getBytes());
         String userpassDecoded = new String(decoded);
         String[] userPass = userpassDecoded.split(":");
+        User result = null;
         if(userPass.length==2)
         {
         	String username = userPass[0].isEmpty() ? null : userPass[0];
         	String password = userPass[1];
-        	return authenticate(username, password);
+        	result = authenticate(username, password);
         }
         else if(userPass.length==1)
         {
         	//must be an auth token
-        	return authenticate(null, userPass[0]);
+        	result = authenticate(null, userPass[0]);
         }
-        return null;
+        if(result!=null)
+        	return result;
+        throw new IllegalArgumentException("Invalid Credentials");
 	}    
 
 }

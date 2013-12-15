@@ -30,5 +30,12 @@ public interface AuthenticationService {
 	 * @return <code>true</code> if the credentials are valid. <code>false</code> otherwise
 	 */
 	public boolean authenticate(final String username, final String password);
+	
+	/**
+	 * retrieves the anonymous user.
+	 * Useful to determine which permissions one has without being logged in
+	 * @return
+	 */
+	public User getAnonymousUser();
 
 }

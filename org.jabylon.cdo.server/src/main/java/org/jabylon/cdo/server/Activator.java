@@ -56,11 +56,6 @@ import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 import org.h2.jdbcx.JdbcDataSource;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.db.migration.DBMigrator;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
@@ -71,6 +66,11 @@ import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
 import org.jabylon.users.UsersPackage;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Activator implements BundleActivator {
 
@@ -165,20 +165,30 @@ public class Activator implements BundleActivator {
 
         addAvailablePermissions(userManagement);
         Role adminRole = addOrUpdateAdminRole(userManagement);
-        addAnonymousRoleIfMissing(userManagement);
+        addOrUpdateAnonymousRole(userManagement);
         addAdminUserIfMissing(adminRole, userManagement);
         transaction.commit();
 
     }
 
-    private void addAnonymousRoleIfMissing(UserManagement userManagement) {
+    private void addOrUpdateAnonymousRole(UserManagement userManagement) {
         Role role = userManagement.findRoleByName("Anonymous");
         if(role==null) {
             role = UsersFactory.eINSTANCE.createRole();
             role.setName("Anonymous");
-            addPermission(userManagement, role,"Workspace:view");
+            addPermission(userManagement, role,"Workspace:*:view");
             addPermission(userManagement, role,"Project:*:view");
             userManagement.getRoles().add(role);
+        }
+        else
+        {
+        	EList<Permission> permissions = role.getPermissions();
+        	for (Permission permission : permissions) {
+        		if(permission.getName().equals("Workspace:view")) {
+        			//that was an old permission. Need to update that
+        			permission.setName("Workspace:*:view");
+        		}
+        	}        	
         }
     }
 
