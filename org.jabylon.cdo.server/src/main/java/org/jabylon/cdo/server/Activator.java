@@ -180,6 +180,10 @@ public class Activator implements BundleActivator {
             addPermission(userManagement, role,"Project:*:view");
             userManagement.getRoles().add(role);
         }
+        User anonUser = userManagement.findUserByName(role.getName());
+        if(anonUser!=null && !anonUser.getRoles().contains(role))
+        	//add anon role if missing
+        	anonUser.getRoles().add(role);
     }
 
     private void addPermission(UserManagement userManagement, Role role, String permissionName) {
@@ -356,8 +360,6 @@ public class Activator implements BundleActivator {
     private IStore createStore() {
         final String DATABASE_NAME = ServerConstants.WORKING_DIR
                 + "/cdo/embedded/h2;DB_CLOSE_ON_EXIT=FALSE";
-        final String DATABASE_USER = "scott";
-        final String DATABASE_PASS = "tiger";
 
         // EmbeddedDataSource myDataSource = new EmbeddedDataSource();
         // // myDataSource.setUser(DATABASE_USER);
