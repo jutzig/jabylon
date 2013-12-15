@@ -255,11 +255,16 @@ public class PropertyResourceUtil {
     public static URI computeLocaleResourceLocation(Locale locale, ProjectVersion version, URI templateLocation) {
 
         PropertyScanner scanner = createScanner(version);
-        File path = scanner.computeTranslationPath(new File(templateLocation.toFileString()), version.getTemplate().getLocale(), locale);
+        URI parentPath = version.absoluteFilePath();
+        File path = scanner.computeTranslationPath(new File(parentPath.toFileString()+templateLocation.toString()), version.getTemplate().getLocale(), locale);
 
         URI location = URI.createFileURI(path.getAbsolutePath());
-        location = location.deresolve(templateLocation);
-        return location;
+        URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
+        for (int i = parentPath.segmentCount()+1; i < location.segmentCount(); i++) {
+			//append the other segments
+        	trimmedLocation = trimmedLocation.appendSegment(location.segment(i));
+		}
+        return trimmedLocation;
 
     }
 
