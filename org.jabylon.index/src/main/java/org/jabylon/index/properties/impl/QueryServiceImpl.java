@@ -14,6 +14,7 @@ package org.jabylon.index.properties.impl;
 import java.io.IOException;
 
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -36,9 +37,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.index.properties.IndexActivator;
@@ -51,6 +49,8 @@ import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.ResourceFolder;
 import org.jabylon.properties.Workspace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -65,9 +65,24 @@ public class QueryServiceImpl implements QueryService {
 
     @Reference
     private URIResolver uriResolver;
+    
+    private volatile IndexSearcher searcher;
+    private volatile IndexReader reader;
 
     @Reference
     private RepositoryConnector RepositoryConnector;
+    
+    @Deactivate
+    public void deactivate() {
+			try {
+				if(reader!=null)
+					reader.close();
+				if(searcher!=null)
+					searcher.close();
+			} catch (IOException e) {
+				logger.error("Failed to close the index",e);
+			}
+    }
 
     public void bindUriResolver(URIResolver uriResolver) {
         this.uriResolver = uriResolver;
@@ -165,10 +180,33 @@ public class QueryServiceImpl implements QueryService {
     public SearchResult search(Query query, int maxHits) {
 
         Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-        IndexSearcher searcher = null;
         try {
-            IndexReader reader = IndexReader.open(directory, true);
-            searcher = new IndexSearcher(reader);
+        	if(reader==null)
+        	{
+        		synchronized (this) {
+        			//double checked locking
+					if(reader==null)
+						reader = IndexReader.open(directory);
+				}
+        	}
+        	else
+        	{
+        		IndexReader newReader = IndexReader.openIfChanged(reader,true);
+        		if(newReader!=reader && newReader!=null)
+        		{
+        			if(searcher!=null)
+        				searcher.close();
+        			searcher = null;
+        		}
+        	}
+        	if(searcher==null)
+        	{
+        		synchronized (this) {
+        			//double checked locking
+					if(searcher==null)
+						searcher = new IndexSearcher(reader);
+				}
+        	}
             TopDocs result = searcher.search(query, maxHits);
 
             return new SearchResult(searcher, result);
