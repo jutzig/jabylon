@@ -46,19 +46,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFileDescriptor;
-import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -72,9 +70,6 @@ public class SimilarStringsToolPanel
     private static Logger logger = LoggerFactory.getLogger(SimilarStringsToolPanel.class);
     @Inject
     private transient QueryService queryService;
-    @Inject
-    private transient PropertyPersistenceService persistenceService;
-
 
     public SimilarStringsToolPanel(String id, IModel<PropertyPair> model)
     {
@@ -203,57 +198,39 @@ public class SimilarStringsToolPanel
     private Similarity createSimilarity(Document masterDoc, Locale language, int score, int hitNumber, Project originalProject)
         throws CorruptIndexException, IOException
     {
-        PropertyFileDescriptor descriptor = queryService.getDescriptor(masterDoc);
-        if (descriptor == null)
-            return null;
-        String key = masterDoc.get(QueryService.FIELD_KEY);
-        BooleanQuery query = new BooleanQuery();
-        query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getLocation().toString())),Occur.MUST);
-        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, language.toString())), Occur.MUST);
-        query.add(new TermQuery(new Term(QueryService.FIELD_KEY, key)), Occur.MUST);
+		PropertyFileDescriptor descriptor = queryService.getDescriptor(masterDoc);
+		if (descriptor == null)
+			return null;
+		String key = masterDoc.get(QueryService.FIELD_KEY);
+		BooleanQuery query = new BooleanQuery();
+		query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getLocation().toString())), Occur.MUST);
+		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, language.toString())), Occur.MUST);
+		query.add(new TermQuery(new Term(QueryService.FIELD_KEY, key)), Occur.MUST);
 
-        SearchResult searchResult = queryService.search(query, 1);
-        try{
-            TopDocs topDocs = searchResult.getTopDocs();
-            if (topDocs.totalHits == 0)
-                return null;
-            Document translationDoc = searchResult.getSearcher().doc(searchResult.getTopDocs().scoreDocs[0].doc);
-            Property property = PropertiesFactory.eINSTANCE.createProperty();
-            property.setKey(key);
-            property.setValue(translationDoc.get(QueryService.FIELD_VALUE));
-            property.setComment(translationDoc.get(QueryService.FIELD_COMMENT));
-            PropertyFileDescriptor slave = queryService.getDescriptor(translationDoc);
-            if(slave==null)
-                return null;
-            PropertyPair pair = getModelObject();
-            //that would mean we found the current property, which is (of course) similar :-)
-            if(pair.getKey().equals(key) && slave.cdoID().equals(pair.getDescriptorID()))
-                return null;
-            URI originalProjectPath = originalProject.fullPath();
-            String resultPath = masterDoc.get(QueryService.FIELD_FULL_PATH);
-            boolean isSameProject = resultPath.startsWith(originalProjectPath.path()+"/");
-            Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE),
-                                                   translationDoc.get(QueryService.FIELD_VALUE),
-                                                   score,
-                                                   masterDoc.get(QueryService.FIELD_FULL_PATH),
-                                                   slave.toURI().toString(),
-                                                   key,
-                                                   hitNumber,
-                                                   isSameProject);
-            return similarity;
-        }
-        finally {
+		SearchResult searchResult = queryService.search(query, 1);
 
-            try
-            {
-                searchResult.getSearcher().close();
-            }
-            catch (IOException e)
-            {
-                logger.error("Failed to close searcher", e);
-            }
+		TopDocs topDocs = searchResult.getTopDocs();
+		if (topDocs.totalHits == 0)
+			return null;
+		Document translationDoc = searchResult.getSearcher().doc(searchResult.getTopDocs().scoreDocs[0].doc);
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey(key);
+		property.setValue(translationDoc.get(QueryService.FIELD_VALUE));
+		property.setComment(translationDoc.get(QueryService.FIELD_COMMENT));
+		PropertyFileDescriptor slave = queryService.getDescriptor(translationDoc);
+		if (slave == null)
+			return null;
+		PropertyPair pair = getModelObject();
+		// that would mean we found the current property, which is (of course) similar :-)
+		if (pair.getKey().equals(key) && slave.cdoID().equals(pair.getDescriptorID()))
+			return null;
+		URI originalProjectPath = originalProject.fullPath();
+		String resultPath = masterDoc.get(QueryService.FIELD_FULL_PATH);
+		boolean isSameProject = resultPath.startsWith(originalProjectPath.path() + "/");
+		Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE), translationDoc.get(QueryService.FIELD_VALUE), score,
+				masterDoc.get(QueryService.FIELD_FULL_PATH), slave.toURI().toString(), key, hitNumber, isSameProject);
+		return similarity;
 
-        }
     }
 
     public static class Similarity

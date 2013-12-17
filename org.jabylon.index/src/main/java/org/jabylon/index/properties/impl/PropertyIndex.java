@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -32,7 +33,6 @@ import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.common.notify.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.index.properties.IndexActivator;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.properties.PropertyFileDescriptor;
@@ -102,7 +102,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
         try {
             writer = createIndexWriter();
             while (true) {
-                DocumentTuple documentTuple = writes.poll();
+                DocumentTuple documentTuple = writes.poll(2l,TimeUnit.MINUTES);
                 if (documentTuple == null)
                     break;
                 List<Document> documents = documentTuple.getDocuments();
@@ -137,7 +137,9 @@ public class PropertyIndex extends Job implements PropertiesListener {
             logger.error("Exception while indexing",e);
         } catch (IOException e) {
             logger.error("Exception while indexing",e);
-        } finally {
+        } catch (InterruptedException e) {
+        	logger.warn("Interrupted while waiting for new index events",e);
+		} finally {
             try {
                 if (writer != null)
                     writer.close();

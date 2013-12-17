@@ -69,8 +69,6 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 
     public OtherTranslationsToolPanel(String id, IModel<PropertyPair> model) {
         super(id, model);
-        ;
-
     }
 
     @Override
@@ -150,12 +148,8 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
             }
 
         }
-        try {
-            result.getSearcher().close();
-            logger.debug("Finding other translations took {} ms",System.currentTimeMillis()-time);
-        } catch (IOException e) {
-            logger.error("Failed to close searcher", e);
-        }
+        logger.debug("Finding other translations took {} ms",System.currentTimeMillis()-time);
+        
         Collections.sort(resultSet, new MatchResultComparator(getLocale()));
         return resultSet;
 
