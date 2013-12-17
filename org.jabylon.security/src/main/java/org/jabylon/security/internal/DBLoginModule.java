@@ -113,7 +113,7 @@ public class DBLoginModule implements LoginModule {
 				}
 			} else {
 				user = userManagement.findUserByName(userName);
-				valid = pw != null && pw.equals(user.getPassword());
+				valid = pw != null && user!=null && pw.equals(user.getPassword());
 			}
 			if (user == null || !valid)
 				return false;
