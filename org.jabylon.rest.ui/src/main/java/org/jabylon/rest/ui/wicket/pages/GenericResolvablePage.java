@@ -67,7 +67,10 @@ public class GenericResolvablePage<T  extends CDOObject> extends GenericPage<T> 
 
     @Override
     protected IModel<T> createModel(PageParameters params) {
-        return createModel(resolveModel(params));
+    	T result = resolveModel(params);
+    	if(result==null)
+    		throw new AbortWithHttpErrorCodeException(404, "Path does not exist "+getPageParameters());
+        return createModel(result);
     }
 
     protected T resolveModel(PageParameters params) {
