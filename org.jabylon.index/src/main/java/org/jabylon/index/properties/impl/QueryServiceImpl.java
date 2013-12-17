@@ -194,6 +194,8 @@ public class QueryServiceImpl implements QueryService {
         		IndexReader newReader = IndexReader.openIfChanged(reader,true);
         		if(newReader!=reader && newReader!=null)
         		{
+        			reader.close();
+        			reader = newReader;
         			if(searcher!=null)
         				searcher.close();
         			searcher = null;
