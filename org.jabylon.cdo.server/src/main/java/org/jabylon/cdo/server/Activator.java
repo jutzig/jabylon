@@ -303,10 +303,10 @@ public class Activator implements BundleActivator {
         CDONet4jSessionConfiguration config = CDONet4jUtil.createNet4jSessionConfiguration();
         config.setConnector(connector);
         config.setRepositoryName(ServerConstants.REPOSITORY_NAME);
-
         CDONet4jSession session = config.openNet4jSession();
-        session.options().setCollectionLoadingPolicy(
-                CDOUtil.createCollectionLoadingPolicy(0, 300));
+        //see https://github.com/jutzig/jabylon/issues/148
+        //disableing the chunking for now in case this is the root cause
+        session.options().setCollectionLoadingPolicy(CDOUtil.createCollectionLoadingPolicy(-1, -1));
         session.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
         session.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
         return session;
