@@ -22,12 +22,12 @@ import org.jabylon.rest.ui.util.PageProvider;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-@Component
+@Component(enabled=true,immediate=true)
 @Service
 public class UpdatecenterPageProvider implements PageProvider {
 
 
-    @Property(value="/system")
+    @Property(value="/settings/system")
     static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 
     /**

@@ -127,6 +127,11 @@
 			<artifactId>updatecenter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.jabylon</groupId>
+            <artifactId>log.viewer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 
 		<dependency>

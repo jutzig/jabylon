@@ -40,6 +40,7 @@
         <module>org.jabylon.users</module>
         <module>org.jabylon.logback.config</module>
         <module>org.jabylon.updatecenter</module>
+        <module>org.jabylon.log.viewer</module>
         <module>releng/dependencies</module>
         <module>releng/standalone</module>
         <module>releng/war</module>
