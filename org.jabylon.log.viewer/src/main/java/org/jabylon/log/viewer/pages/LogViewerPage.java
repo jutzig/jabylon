@@ -56,15 +56,14 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
     private IModel<String> logcontent;
     
     public LogViewerPage(PageParameters parameters) {
-    	super(parameters);
-    	try {
-    		logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
-    		String content = readChunk(20);
-    		logcontent = Model.of(content);    	
-    	} catch (RuntimeException e) {
-    		logcontent = Model.of(e.getMessage());
-    		LOG.error("Failed to create LogTail",e);
-    	}
+    	super(parameters);   	
+    }
+
+
+    @Override
+    protected void construct() {
+    	super.construct();
+       	
     	final TextArea<String> nextLog = new TextArea<String>("nextLog", logcontent);
     	add(nextLog);
     	
@@ -86,7 +85,6 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
     	});      	
     	final DropDownChoice<LogLevel> logLevel = new DropDownChoice<LogLevel>("loglevel", new EnumSetList(), new LogLevelRenderer());
     	logLevel.setModel(Model.of(LogbackUtil.getLogLevel()));
-//    	logLevel.setModelObject();
         logLevel.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             
 			private static final long serialVersionUID = -4582780686636922915L;
@@ -98,13 +96,7 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
         add(logLevel);
         
         File logFile = new File(LogbackUtil.getLogFiles().get(0).getLocation());
-        add(new DownloadLink("dowloadLog", logFile));    	
-    }
-
-
-    @Override
-    protected void construct() {
-    	super.construct();
+        add(new DownloadLink("dowloadLog", logFile));     	
 
     }
     
@@ -131,7 +123,15 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
 
 	@Override
 	protected IModel<String> createModel(PageParameters params) {
-    	return Model.of("");
+		try {
+    		logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
+    		String content = readChunk(20);
+    		logcontent = Model.of(content);    	
+    	} catch (RuntimeException e) {
+    		logcontent = Model.of(e.getMessage());
+    		LOG.error("Failed to create LogTail",e);
+    	}
+		return logcontent;
 	}
 
 
