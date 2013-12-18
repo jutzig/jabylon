@@ -53,14 +53,12 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
     
     public LogViewerPage(PageParameters parameters) {
     	super(parameters);
-    }
-
-
-    @Override
-    protected void construct() {
-    	super.construct();
+    	logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
+    	String content = readChunk(20);
+    	logcontent = Model.of(content);    	
     	final TextArea<String> nextLog = new TextArea<String>("nextLog", logcontent);
     	add(nextLog);
+    	
     	nextLog.setOutputMarkupId(true);
     	nextLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1)) {
     		
@@ -89,7 +87,14 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
         add(logLevel);
         
         File logFile = new File(LogbackUtil.getLogFiles().get(0).getLocation());
-        add(new DownloadLink("dowloadLog", logFile));
+        add(new DownloadLink("dowloadLog", logFile));    	
+    }
+
+
+    @Override
+    protected void construct() {
+    	super.construct();
+
     }
     
     @Override
@@ -115,10 +120,7 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
 
 	@Override
 	protected IModel<String> createModel(PageParameters params) {
-    	logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
-    	String content = readChunk(20);
-    	logcontent = Model.of(content);
-    	return logcontent;
+    	return Model.of("");
 	}
 
 
