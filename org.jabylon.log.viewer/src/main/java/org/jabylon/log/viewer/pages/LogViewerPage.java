@@ -11,126 +11,150 @@
  */
 package org.jabylon.log.viewer.pages;
 
-import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Iterator;
+import java.io.File;
+import java.util.AbstractList;
+import java.util.Deque;
 
-import javax.inject.Inject;
-
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.DownloadLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogReaderService;
-import org.osgi.service.log.LogService;
-
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.time.Duration;
+import org.jabylon.log.viewer.pages.util.CircularDeque;
+import org.jabylon.log.viewer.pages.util.LogTail;
+import org.jabylon.log.viewer.pages.util.LogbackUtil;
+import org.jabylon.log.viewer.pages.util.LogbackUtil.LogLevel;
+import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
+import org.jabylon.rest.ui.wicket.pages.GenericPage;
+import org.jabylon.security.CommonPermissions;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class LogViewerPage extends WebPage{
+public class LogViewerPage extends GenericPage<String> implements RestrictedComponent{
 
-    private static final long serialVersionUID = 1L;
-    @Inject
-    private transient LogReaderService logReader;
 
-    @Inject
-    private transient LogService logService;
+	private static final long serialVersionUID = 1L;
 
-    public LogViewerPage() {
-
+    private LogTail logTail;
+    
+    private IModel<String> logcontent;
+    
+    public LogViewerPage(PageParameters parameters) {
+    	super(parameters);
     }
 
+
+    @Override
+    protected void construct() {
+    	super.construct();
+    	final TextArea<String> nextLog = new TextArea<String>("nextLog", logcontent);
+    	add(nextLog);
+    	nextLog.setOutputMarkupId(true);
+    	nextLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1)) {
+    		
+			private static final long serialVersionUID = 4831467550166004945L;
+
+			@Override
+    		protected void onPostProcessTarget(AjaxRequestTarget target) {
+    			super.onPostProcessTarget(target);
+    			String chunk = readChunk(40);
+    			logcontent.setObject(chunk);
+    			target.appendJavaScript("updateLog();");
+    			target.add(nextLog);
+    		}
+    	});      	
+    	final DropDownChoice<LogLevel> logLevel = new DropDownChoice<LogLevel>("loglevel", new EnumSetList(), new LogLevelRenderer());
+    	logLevel.setModel(Model.of(LogbackUtil.getLogLevel()));
+//    	logLevel.setModelObject();
+        logLevel.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            
+			private static final long serialVersionUID = -4582780686636922915L;
+
+			protected void onUpdate(AjaxRequestTarget target) {
+            	LogbackUtil.setLogLevel(logLevel.getModelObject());
+            }
+        });
+        add(logLevel);
+        
+        File logFile = new File(LogbackUtil.getLogFiles().get(0).getLocation());
+        add(new DownloadLink("dowloadLog", logFile));
+    }
+    
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
-        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forUrl("/jabylon/bootstrap/js/bootstrap.min.js")));
+        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forUrl("/bootstrap/js/bootstrap.min.js")));
         super.renderHead(response);
     }
 
+   
 
-    @Override
-    protected void onBeforeRender() {
-        logService.log(LogService.LOG_ERROR, "doing stuff");
-        final IDataProvider<LogEntry> provider = new IDataProvider<LogEntry>() {
+	private String readChunk(int lines) {
+		Deque<String> buffer = new CircularDeque<String>(lines);
+		logTail.nextChunk(lines, buffer);
+		StringBuilder result = new StringBuilder();
+		for (String string : buffer) {
+			result.append(string);
+			result.append("\r\n");
+		}
+		return result.toString();
+		
+	}
 
-            @Override
-            public void detach() {
-                // TODO Auto-generated method stub
+	@Override
+	protected IModel<String> createModel(PageParameters params) {
+    	logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
+    	String content = readChunk(20);
+    	logcontent = Model.of(content);
+    	return logcontent;
+	}
 
-            }
 
-            @Override
-            public Iterator<? extends LogEntry> iterator(long first, long count) {
-                return new EnumeratorIterator(logReader.getLog());
-            }
-
-            @Override
-            public long size() {
-                return 100;
-            }
-
-            @SuppressWarnings({ "rawtypes", "unchecked" })
-            @Override
-            public IModel<LogEntry> model(LogEntry object) {
-                IModel model = Model.of((Serializable)object);
-                return model;
-            }
-
-        };
-
-        final DataView<LogEntry> dataView = new DataView<LogEntry>("children", provider) {
-
-            private static final long serialVersionUID = 1l;
-
-            @Override
-            protected void populateItem(Item<LogEntry> item) {
-                LogEntry modelObject = item.getModelObject();
-                item.add(new Label("bundle",modelObject.getBundle().getSymbolicName()));
-                item.add(new Label("level",String.valueOf(modelObject.getLevel())));
-                item.add(new Label("message",String.valueOf(modelObject.getMessage())));
-            }
-
-        };
-        // dataView.setItemsPerPage(10);
-        add(dataView);
-        super.onBeforeRender();
-    }
+	@Override
+	public String getRequiredPermission() {
+		return CommonPermissions.WORKSPACE_CONFIG;
+	}
 
 }
-class EnumeratorIterator implements Iterator<LogEntry>
-{
 
-    private Enumeration enumeration;
+class LogLevelRenderer implements IChoiceRenderer<LogLevel> {
 
-    public EnumeratorIterator(Enumeration enumeration) {
-        super();
-        this.enumeration = enumeration;
-    }
+	private static final long serialVersionUID = 5412202409908394630L;
 
-    @Override
-    public boolean hasNext() {
-        return enumeration.hasMoreElements();
-    }
+	@Override
+	public Object getDisplayValue(LogLevel object) {
+		return object.toString();
+	}
 
-    @Override
-    public LogEntry next() {
-        return (LogEntry) enumeration.nextElement();
-    }
+	@Override
+	public String getIdValue(LogLevel object, int index) {
+		return object.toString();
+	}
+	
+}
 
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
+class EnumSetList extends AbstractList<LogLevel> {
 
-    }
+	@Override
+	public LogLevel get(int index) {
+		return LogLevel.values()[index];
+	}
 
+	@Override
+	public int size() {
+		return LogLevel.values().length;
+	}
+	
 }

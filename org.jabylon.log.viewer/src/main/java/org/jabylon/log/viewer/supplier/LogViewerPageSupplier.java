@@ -15,7 +15,6 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.wicket.Page;
-
 import org.jabylon.log.viewer.pages.LogViewerPage;
 import org.jabylon.rest.ui.util.PageProvider;
 
@@ -28,7 +27,7 @@ import org.jabylon.rest.ui.util.PageProvider;
 @Service(PageProvider.class)
 public class LogViewerPageSupplier implements PageProvider {
 
-    @Property(value="/log")
+    @Property(value="/settings/log")
     static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 
 

@@ -53,6 +53,11 @@
             <artifactId>rest.ui</artifactId>
             <version>${project.version}</version>
         </dependency>
+       <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>security</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
         <dependency>
             <groupId>org.eclipse.osgi</groupId>
             <artifactId>services</artifactId>
@@ -76,6 +81,18 @@
         <dependency>
         	<groupId>javax.inject</groupId>
         	<artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>ch.qos.logback</groupId>
+        	<artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>ch.qos.logback</groupId>
+        	<artifactId>classic</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>api</artifactId>
         </dependency>
     </dependencies>
 

@@ -6,6 +6,22 @@
             <pattern>%level  %marker %logger{20} %msg%n</pattern>
         </encoder>
     </appender>
+    
+    <appender name="FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>jabylon.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date %marker [%thread] %logger{10} [%file : %line]%n[%level] %msg%n
+            </pattern>
+        </encoder>
+    </appender>    
 
     <logger name="org.jabylon" level="debug">
     </logger>
@@ -18,6 +34,7 @@
 
     <root level="info">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
     </root>
 
 </configuration>

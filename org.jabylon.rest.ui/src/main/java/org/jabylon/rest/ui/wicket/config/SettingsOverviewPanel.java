@@ -77,7 +77,14 @@ enum ConfigKind {
         @Override
         public AbstractLink constructLink(String id, Component parent) {
         	//TODO: better to do this dynamic with e.g. an extension point/whiteboard pattern
-            return new ExternalLink(id, Model.of(WicketUtil.getContextPath() + "/system"), new StringResourceModel(getName(),parent,null));
+            return new ExternalLink(id, Model.of(WicketUtil.getContextPath() + "/settings/system"), new StringResourceModel(getName(),parent,null));
+        }
+    },
+    LOGGING("logging.title","logging.description") {
+        @Override
+        public AbstractLink constructLink(String id, Component parent) {
+        	//TODO: better to do this dynamic with e.g. an extension point/whiteboard pattern
+            return new ExternalLink(id, Model.of(WicketUtil.getContextPath() + "/settings/log"), new StringResourceModel(getName(),parent,null));
         }
     }
     , SECURITY("security.title","security.description") {
