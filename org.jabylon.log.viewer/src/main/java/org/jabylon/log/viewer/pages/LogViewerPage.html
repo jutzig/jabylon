@@ -10,9 +10,12 @@
 			<script type="text/javascript">
 				$(document).ready(function() {
 					updateLog();
-
+					$( "#clearLog" ).click(function() {
+						clear();					
+					});
 				});
 
+				
 				function updateLog() {
 					var log = $("#log");
 					log.val(log.val() + $("#nextLog").val());
@@ -24,6 +27,11 @@
 					var log = $("#log");
 					log.scrollTop = log.scrollHeight;
 				};
+				
+				function clear() {
+					var log = $("#log");
+					log.val("");
+				};				
 			</script>
 			<div class="container">
 				<h2><wicket:message key="log.viewer.title">[Log Viewer]</wicket:message></h2>
@@ -33,6 +41,7 @@
 							<label><wicket:message key="log.level.label">[Log Level]</wicket:message> </label> 
 							<select wicket:id="loglevel"></select>
 							<a class="btn btn-primary" wicket:id="dowloadLog" href="#"><i class="icon-download-alt icon-white"></i> <wicket:message key="download.action">[Download log file]</wicket:message></a>
+							<a class="btn btn-danger" id="clearLog"><i class="icon-remove icon-white"></i> <wicket:message key="clear.log.action">[Clear Log]</wicket:message></a>
 						</form>
 					</div>
 				</div>

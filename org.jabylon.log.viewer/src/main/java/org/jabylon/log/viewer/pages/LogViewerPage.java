@@ -37,6 +37,8 @@ import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.rest.ui.wicket.pages.GenericPage;
 import org.jabylon.security.CommonPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -47,15 +49,22 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger LOG = LoggerFactory.getLogger(LogViewerPage.class);
+	
     private LogTail logTail;
     
     private IModel<String> logcontent;
     
     public LogViewerPage(PageParameters parameters) {
     	super(parameters);
-    	logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
-    	String content = readChunk(20);
-    	logcontent = Model.of(content);    	
+    	try {
+    		logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
+    		String content = readChunk(20);
+    		logcontent = Model.of(content);    	
+    	} catch (RuntimeException e) {
+    		logcontent = Model.of(e.getMessage());
+    		LOG.error("Failed to create LogTail",e);
+    	}
     	final TextArea<String> nextLog = new TextArea<String>("nextLog", logcontent);
     	add(nextLog);
     	
@@ -68,6 +77,8 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
     		protected void onPostProcessTarget(AjaxRequestTarget target) {
     			super.onPostProcessTarget(target);
     			String chunk = readChunk(40);
+    			if(chunk==null)
+    				chunk = "";
     			logcontent.setObject(chunk);
     			target.appendJavaScript("updateLog();");
     			target.add(nextLog);
