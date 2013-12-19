@@ -7,7 +7,7 @@
         <file>${jabylon.log:-logs}/jabylon.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${jabylon.log}/jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${jabylon.log:-logs}/jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
