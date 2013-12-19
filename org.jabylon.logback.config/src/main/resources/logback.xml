@@ -4,7 +4,7 @@
 
     <appender name="FILE"
         class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${jabylon.log}/jabylon.log</file>
+        <file>${jabylon.log:-logs}/jabylon.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>${jabylon.log}/jabylon.%d{yyyy-MM-dd}.log</fileNamePattern>

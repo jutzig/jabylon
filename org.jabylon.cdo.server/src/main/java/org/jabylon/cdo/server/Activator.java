@@ -349,6 +349,7 @@ public class Activator implements BundleActivator {
      * @return the CDO repository created
      */
     private IRepository createRepository() {
+    	logger.info("Creating Repository in {}",ServerConstants.WORKING_DIR);
         Map<String, String> props = new HashMap<String, String>();
         // props.put(Props.PROP_SUPPORTING_REVISION_DELTAS, "false");
         // props.put(Props.PROP_CURRENT_LRU_CAPACITY, "10000");

@@ -8,12 +8,9 @@
  */
 package org.jabylon.cdo.connector;
 
+import org.jabylon.cdo.connector.internal.RepositoryConnectorImpl;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-
-import org.jabylon.cdo.connector.internal.RepositoryConnectorImpl;
 
 public class Activator implements BundleActivator {
 
