@@ -40,13 +40,21 @@ import org.jabylon.users.UsersPackage;
 
 public class LDAPLoginModule implements LoginModule {
 
+	/** the ldap server url */
     public static final String KEY_LDAP = "ldap";
+    /** the ldap server port */
     public static final String KEY_LDAP_PORT = "ldap.port";
+    /** the uid attribute of a user */
     public static final String KEY_USER_NAME = "user.id";
+    /** the full name attribute of a user */
     public static final String KEY_USER_FULL_NAME = "user.name";
+    /** the email attribute of a user */
     public static final String KEY_USER_MAIL = "user.mail";
+    /** the root dn to query agains */
     public static final String KEY_ROOT_DN = "root.dn";
+    /** the ldap manager id */
     public static final String KEY_MANAGER = "manager";
+    /** the ldap manager password */
     public static final String KEY_MANAGER_PASSWORD = "manager.password";
     private Subject subj;
     private CallbackHandler cbHandler;

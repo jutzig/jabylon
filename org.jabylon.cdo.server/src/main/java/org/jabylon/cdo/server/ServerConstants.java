@@ -12,8 +12,10 @@ import java.io.File;
 
 public class ServerConstants {
 
+	/** jabylon home dir */
     public static final String WORKING_DIR;
     public static final String REPOSITORY_NAME = "jabylon";
+    /** where the work data goes */
     public static final String WORKSPACE_DIR;
     public static final String WORKSPACE_RESOURCE = "workspace";
     public static final String USERS_RESOURCE = "users";
@@ -21,8 +23,10 @@ public class ServerConstants {
     static {
         String tmpWorkingDir;
         try {
-            //try in order JABYLON_HOME, osgi.instance.area and user.home/jabylon
-            String path = System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon"));
+        	//try in order JABYLON_HOME, -DJABYLON_HOME, osgi.instance.area and user.home/jabylon
+        	String path = System.getenv("JABYLON_HOME");
+        	if(path==null)
+        		path = System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon"));
             if(path.startsWith("file:")) //eclipse does this when using variables in a launch config
                 path = path.substring("file:".length());
             File instanceArea = new File(path);

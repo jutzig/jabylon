@@ -164,7 +164,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 	private URL getJAASConfig() {
 		String configArea = System.getProperty("osgi.configuration.area");
 		if (configArea == null || configArea.isEmpty())
-			configArea = new File(new File(ServerConstants.WORKSPACE_DIR), "configuration").toURI().toString();
+			configArea = new File(new File(ServerConstants.WORKING_DIR), "configuration").toURI().toString();
 		try {
 			URI uri = new URI(configArea);
 			File jaasConfig = new File(new File(uri), JAAS_CONFIG_FILE);
