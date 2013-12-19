@@ -153,7 +153,6 @@ public class PropertiesHelperTest {
 		property.setValue("value");
 		fixture.writeProperty(writer, property);
 		assertEquals("#test\nkey = value\n", writer.toString());
-
 	}
 
 	@Test
@@ -283,6 +282,72 @@ public class PropertiesHelperTest {
     	assertNull(property);
 	}
     
+    /**
+     * tests that unicode non breakable space (\u00A0)is preserved
+     * see https://github.com/jutzig/jabylon/issues/149 
+     * @throws IOException
+     */
+	@Test
+	public void testPreserveNBSPWrite() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue("test\u00A0");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = test\\u00a0\n", writer.toString());
+	}
+	
+	/**
+     * tests that unicode non breakable space (\u00A0)is preserved
+     * see https://github.com/jutzig/jabylon/issues/149 
+     * @throws IOException
+     */
+	@Test
+	public void testPreserveNBSPWriteNoEscaping() throws IOException {
+		fixture = new PropertiesHelper(false);
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue("test\u00A0");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = test\u00A0\n", writer.toString());
+	}	
+
+    /**
+     * tests that unicode non breakable space (\u00A0)is preserved
+     * see https://github.com/jutzig/jabylon/issues/149 
+     * @throws IOException
+     */
+	@Test
+	public void testPreserveNBSPRead() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("key = test\\u00a0\n"));
+
+		try {
+			Property property = fixture.readProperty(reader);
+			assertEquals("the NBSP must survive", "test\u00a0", property.getValue());
+		} finally {
+			if (reader != null)
+				reader.close();
+		}
+	}	
+
+    /**
+     * tests that unicode non breakable space (\u00A0)is preserved
+     * see https://github.com/jutzig/jabylon/issues/149 
+     * @throws IOException
+     */
+	@Test
+	public void testPreserveNBSPReadNoEscaping() throws IOException {
+		fixture = new PropertiesHelper(false);
+		BufferedReader reader = new BufferedReader(new StringReader("key = test\u00a0\n"));
+
+		try {
+			Property property = fixture.readProperty(reader);
+			assertEquals("the NBSP must survive", "test\u00a0", property.getValue());
+		} finally {
+			if (reader != null)
+				reader.close();
+		}
+	}	
+	
     protected BufferedReader asReader(String string)
     {
     	return new BufferedReader(new StringReader(string));
