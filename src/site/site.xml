@@ -19,14 +19,12 @@
       <item name="Maven 1.x" href="http://maven.apache.org/maven-1.x/"/>
       <item name="Maven 2" href="http://maven.apache.org/"/>
     </links> -->
-	<menu name="Installation guide">
-      	<item href="installation_options.html" name="Installation Options" collapse="true">
-      		<item href="standlone.html" name="Standalone" />
-      		<item href="war.html" name="Container" />
-      	</item>
+	<menu name="Introduction">
+		<item href="about.html" name="About"/>
+		<item href="quickstart.html" name="Quickstart"/>
+		<item href="download.html" name="Download"/>
     </menu>    
 	<menu name="User guide">
-      <item href="jabylon.html" name="Jabylon" />
     </menu>        
 
     <menu ref="reports"/>
