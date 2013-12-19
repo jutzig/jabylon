@@ -71,7 +71,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
     @Override
     public WebRequest newWebRequest(HttpServletRequest servletRequest, String filterPath) {
-    	https://github.com/jutzig/jabylon/issues/47
+//    	https://github.com/jutzig/jabylon/issues/47
     	return new CustomWebRequest(servletRequest, filterPath);
     }
     
@@ -79,6 +79,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
+        getRequestCycleSettings().setResponseRequestEncoding("UTF-8"); 
+        getMarkupSettings().setDefaultMarkupEncoding("UTF-8"); 
         OSGiInjector injector = new OSGiInjector(this);
         getBehaviorInstantiationListeners().add(injector);
         getComponentInstantiationListeners().add(injector);
