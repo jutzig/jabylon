@@ -7,7 +7,7 @@
 	</skin>
   <bannerLeft>
     <name>Maven</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <!-- <src>http://maven.apache.org/images/apache-maven-project.png</src> -->
     <href>http://maven.apache.org/</href>
   </bannerLeft>
   <bannerRight>
@@ -23,8 +23,16 @@
 		<item href="about.html" name="About"/>
 		<item href="quickstart.html" name="Quickstart"/>
 		<item href="download.html" name="Download"/>
-    </menu>    
-	<menu name="User guide">
+    </menu>
+	<menu name="Administration guide">
+		<item href="installation.html" name="Installation" collapse="true">
+			<item href="warInstallation.html" name="As a WAR" />
+			<item href="standaloneInstallation.html" name="Standalone" />
+			<item href="startupParameters.html" name="Startup Parameters" />
+			<item href="jaasConfig.html" name="Security Settings" />
+		</item>
+    </menu>        
+	<menu name="User Guide">
     </menu>        
 
     <menu ref="reports"/>

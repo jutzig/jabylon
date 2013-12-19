@@ -1,0 +1,9 @@
+
+# Installation
+
+No matter if you choose to install Jabylon as a standalone application or deploy a WAR in your favorite application server, there is only minimal configuration effort involved.
+
+The following pages will cover the different installation methods:
+
+ * [Installing as a web application](warInstallation.html)
+ * [Installing standalone](standaloneInstallation.html) 
