@@ -107,7 +107,7 @@ public class PropertyResourceUtil {
                 translatedDescriptor.setLocation(derivedLocation);
                 translatedDescriptor.setName(derivedLocation.lastSegment());
                 translatedDescriptor.setMaster(descriptor);
-                if(new File(translatedDescriptor.absoluteFilePath().toFileString()).isFile())
+                if(new File(translatedDescriptor.absoluteFilePath().path()).isFile())
                 {
                     // load file to initialize statistics;
                     PropertyFile translatedFile = translatedDescriptor.loadProperties();
@@ -256,7 +256,7 @@ public class PropertyResourceUtil {
 
         PropertyScanner scanner = createScanner(version);
         URI parentPath = version.absoluteFilePath();
-        File path = scanner.computeTranslationPath(new File(parentPath.toFileString()+templateLocation.toString()), version.getTemplate().getLocale(), locale);
+        File path = scanner.computeTranslationPath(new File(parentPath.path()+templateLocation.toString()), version.getTemplate().getLocale(), locale);
 
         URI location = URI.createFileURI(path.getAbsolutePath());
         URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));

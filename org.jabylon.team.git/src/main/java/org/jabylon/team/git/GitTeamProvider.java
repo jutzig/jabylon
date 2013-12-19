@@ -73,7 +73,7 @@ public class GitTeamProvider implements TeamProvider {
 
     private Repository createRepository(ProjectVersion project) throws IOException {
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        File gitDir = new File(project.absolutPath().toFileString());
+        File gitDir = new File(project.absoluteFilePath().path());
         Repository repository = builder.setGitDir(new File(gitDir,".git")).build();
         return repository;
     }
@@ -168,7 +168,7 @@ public class GitTeamProvider implements TeamProvider {
                 break;
             case RENAME:
                 kind = DiffKind.MOVE;
-                break;
+                break;	
         }
         diff.setKind(kind);
         return diff;
@@ -188,7 +188,7 @@ public class GitTeamProvider implements TeamProvider {
             SubMonitor subMon = SubMonitor.convert(monitor, 100);
             subMon.setTaskName("Checking out");
             subMon.worked(20);
-            File repoDir = new File(project.absolutPath().toFileString());
+            File repoDir = new File(project.absoluteFilePath().path());
             CloneCommand clone = Git.cloneRepository();
             clone.setBare(false);
             clone.setNoCheckout(false);

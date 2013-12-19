@@ -110,7 +110,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
         getChildren().clear();
         setTemplate(null);
         WorkspaceScanner scanner = new WorkspaceScanner();
-        File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
+        File baseDir = new File(absolutPath().path()).getAbsoluteFile();
         SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
         PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
         scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,
@@ -145,7 +145,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
         // translated files won't make it through the scanner
         PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
         WorkspaceScanner scanner = new WorkspaceScanner();
-        File baseDir = new File(absolutPath().toFileString()).getAbsoluteFile();
+        File baseDir = new File(absolutPath().path()).getAbsoluteFile();
         // in case of a remove, the new path doesn't exist anymore
         String filePath = fileDiff.getKind() == DiffKind.REMOVE ? fileDiff.getOldPath() : fileDiff.getNewPath();
         File singleFile = new File(baseDir, filePath);
@@ -286,7 +286,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 
     protected PropertyFileDescriptor findDescriptor(URI path) {
         PropertyScanner scanner = PropertyResourceUtil.createScanner(this);
-        Locale variant = scanner.getLocale(new File(path.toFileString()));
+        Locale variant = scanner.getLocale(new File(path.path()));
 
         ProjectLocale locale = variant == null ? getTemplate() : getProjectLocale(variant);
         if (locale == null)

@@ -193,7 +193,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
         } catch (FileNotFoundException e)
         {
             //The file does not exist, create a new one.
-            logger.debug("Tried to load non-existing property file. Path: {}", path.toFileString());
+            logger.debug("Tried to load non-existing property file. Path: {}", path.path());
             return PropertiesFactory.eINSTANCE.createPropertyFile();
         }
          catch (IOException e) {
