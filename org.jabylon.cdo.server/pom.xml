@@ -78,10 +78,6 @@
             <groupId>org</groupId>
         </dependency>
         <dependency>
-            <artifactId>derby</artifactId>
-            <groupId>org.apache</groupId>
-        </dependency>
-        <dependency>
             <artifactId>properties</artifactId>
             <groupId>${project.groupId}</groupId>
             <version>${project.version}</version>
