@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>jabylon.war</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.jabylon</groupId>
@@ -184,6 +184,20 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>servletbridge</artifactId>
+			<version>1.2.0.201008301518</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/web/lib/org.eclipse.equinox.servletbridge_1.2.0.201008301518.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>servlet</artifactId>
+			<scope>provided</scope>
+		</dependency>		
+		
 	</dependencies>
 
 </project>

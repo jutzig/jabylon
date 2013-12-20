@@ -21,6 +21,7 @@
                 <exclude>asm:asm</exclude>
                 <exclude>cglib:cglib</exclude>
                 <exclude>javax.inject:javax.inject</exclude>
+                <exclude>javax:servlet</exclude>
                 <exclude>org.easymock:easymock</exclude>
                 <exclude>org.osgi:org.osgi.core</exclude>
                 <exclude>org.slf4j:slf4j-api</exclude>
@@ -41,12 +42,10 @@
             <directory>src/main/resources</directory>
             <outputDirectory>/</outputDirectory>
         </fileSet>
+		<fileSet>
+            <directory>target/classes</directory>
+            <outputDirectory>WEB-INF/classes</outputDirectory>
+        </fileSet>        
     </fileSets>
-    <files>
-    	<file>
-    		<source>src/main/config/launch.ini</source>
-    		<outputDirectory>WEB-INF/eclipse</outputDirectory>
-    	</file>
-    </files>
 
 </assembly>

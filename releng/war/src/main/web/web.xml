@@ -3,7 +3,7 @@
 <web-app>
 	<filter id="bridge">
 		<filter-name>equinoxbridgefilter</filter-name>
-		<filter-class>org.eclipse.equinox.servletbridge.BridgeFilter</filter-class>
+		<filter-class>org.jabylon.war.JabylonFilter</filter-class>
 
 		<!-- NEW PARAMETERS -->
 
