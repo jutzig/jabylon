@@ -11,8 +11,6 @@ package org.jabylon.rest.ui.wicket.config.sections;
 import java.io.File;
 import java.util.Collection;
 
-import javax.inject.Inject;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -64,8 +62,6 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(ProjectVersionsConfigSection.class);
-    @Inject
-    private transient PropertyPersistenceService persistenceService;
 
     public ProjectVersionsConfigSection(String id, IModel<Project> model, Preferences config) {
         super(id, model);
@@ -179,8 +175,12 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
                     logger.error("Failed to commit the transaction",e);
                     return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
                 } finally {
-                	persistenceService.clearCache();
-                    transaction.close();
+                	transaction.close();
+                	PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
+                	if(persistenceService!=null)
+                		persistenceService.clearCache();
+                	else
+                		logger.error("Could not obtain property persistence service");
                 }
                 return Status.OK_STATUS;
 
@@ -325,8 +325,12 @@ public class ProjectVersionsConfigSection extends GenericPanel<Project> {
                 } catch (CommitException e) {
                     return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
                 } finally {
-                	persistenceService.clearCache();
-                    transaction.close();
+                	transaction.close();
+                	PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
+                	if(persistenceService!=null)
+                		persistenceService.clearCache();
+                	else
+                		logger.error("Could not obtain property persistence service");
                 }
                 monitor.done();
                 return Status.OK_STATUS;
