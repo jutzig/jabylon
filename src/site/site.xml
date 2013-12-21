@@ -29,10 +29,13 @@
 			<item href="warInstallation.html" name="As a WAR" />
 			<item href="standaloneInstallation.html" name="Standalone" />
 			<item href="startupParameters.html" name="Startup Parameters" />
-			<item href="jaasConfig.html" name="Security Settings" />
+		</item>
+		<item href="security.html" name="Security" collapse="true">
+			<item href="jaasConfig.html" name="Modules" />
 		</item>
     </menu>        
 	<menu name="User Guide">
+		<item href="workingWithProjects.html" name="Working with Projects" />
     </menu>        
 
     <menu ref="reports"/>

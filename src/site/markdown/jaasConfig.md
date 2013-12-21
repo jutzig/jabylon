@@ -10,10 +10,6 @@ Which security modules are used in which order depends on the contents of `confi
 
 The default login module is the internal database login. All users, their passwords, roles and additional data is stored in the database. You do not have to configure anything to use this module. 
 
-There are two system users predefined. The user `Administrator` with the password `changeme` has all permissions. The second user is called `Anonymous` and has no password. A user that is not logged in is automatically considered `Anonymous`.
-
-By default this user has permission to browse the projects, but not edit them. You can remove permissions or add additional ones as you see fit.
-
 
 ## LDAP Authentication
 
