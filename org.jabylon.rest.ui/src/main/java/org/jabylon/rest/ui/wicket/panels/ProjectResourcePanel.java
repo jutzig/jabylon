@@ -12,6 +12,7 @@
 package org.jabylon.rest.ui.wicket.panels;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -54,7 +55,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
     public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
         super("content", object, parameters);
-        add(new Label("header", new LabelSwitch().doSwitch(object)));
+        add(new Label("header", new LabelSwitch(getLocale()).doSwitch(object)));
     }
 
     @Override
@@ -136,7 +137,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
     private LinkTarget buildLinkTarget(Resolvable<?, ?> resolvable, boolean endsOnSlash) {
         StringBuilder hrefBuilder = new StringBuilder();
-        LabelSwitch labelSwitch = new LabelSwitch();
+        LabelSwitch labelSwitch = new LabelSwitch(getLocale());
         StringBuilder name = new StringBuilder();
         name.append(labelSwitch.doSwitch(resolvable));
         if (resolvable.getParent() == null)
@@ -206,7 +207,19 @@ class LinkTarget
 }
 
 class LabelSwitch extends PropertiesSwitch<String> {
-    @Override
+	
+	private Locale locale;
+	
+	
+	
+    public LabelSwitch(Locale locale) {
+		super();
+		this.locale = locale;
+		if(locale==null)
+			this.locale = Locale.getDefault();
+	}
+
+	@Override
     public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> String caseResolvable(Resolvable<P, C> object) {
         return object.getName();
     }
@@ -214,7 +227,7 @@ class LabelSwitch extends PropertiesSwitch<String> {
     @Override
     public String caseProjectLocale(ProjectLocale object) {
         if (object.getLocale() != null)
-            return object.getLocale().getDisplayName();
+            return object.getLocale().getDisplayName(locale);
         return "Template";
     }
 
