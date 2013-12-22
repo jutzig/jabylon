@@ -1,7 +1,7 @@
 
 # Quick Start
 
-The quickest way to get Jabylon up and running is to do [download](./download.html)  the standalone product and extract it to a destination of your choice.
+The quickest way to get Jabylon up and running is to  [download](./download.html)  the standalone product and extract it to a destination of your choice.
 
 The standalone product includes an OSGi framework and an embedded jetty server.
 Once extracted, open a shell and `cd` to the directory. From there you can start the server by typing
