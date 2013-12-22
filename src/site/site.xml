@@ -35,6 +35,7 @@
 		</item>
     </menu>        
 	<menu name="User Guide">
+		<item href="translating.html" name="Translating Resources" />
 		<item href="workingWithProjects.html" name="Working with Projects" />
     </menu>        
 
