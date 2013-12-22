@@ -4,6 +4,7 @@ What is Jabylon?
 Jabylon is an open-source translation server designed to ease the translation of software projects as a team effort.
 It provides a web ui for both developers and translators that can be seen as a [live demo](http://demo-jabylon.rhcloud.com/ "Jabylon Demo"). 
 
+![Jabylon](images/jabylon_intro.png) 
 
 
 ## Is Jabylon the right Tool for me?
