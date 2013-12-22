@@ -908,6 +908,15 @@
     		<url>http://www.eclipse.org/legal/epl-v10.html</url>
     	</license>
     </licenses>
+    <mailingLists>
+    	<mailingList>
+    		<name>Jabylon</name>
+    		<archive>https://groups.google.com/d/forum/jabylon</archive>
+    		<subscribe>jabylon@googlegroups.com</subscribe>
+    		<unsubscribe>jabylon+unsubscribe@googlegroups.com</unsubscribe>
+    		<post></post>
+    	</mailingList>
+    </mailingLists>
     
     <developers>
     	<developer>
