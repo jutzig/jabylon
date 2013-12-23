@@ -12,11 +12,15 @@
 package org.jabylon.rest.ui.wicket.config;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.FeedbackMessages;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;
@@ -25,6 +29,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.cdo.CDOObject;
@@ -164,6 +170,44 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 				} finally {
 					// transaction.close();
 				}
+			}
+			
+			@Override
+			protected void onError() {
+				super.onError();
+				// Check ALL children for error messages
+				//shouldn't be necessary. but...
+				visitChildren(Component.class, new IVisitor<Component, Void>()
+				{
+					@Override
+					public void component(final Component component, final IVisit<Void> visit)
+					{
+						renderMessages(component.getFeedbackMessages());
+					}
+
+				});
+				renderMessages(getFeedbackMessages());
+			}
+			
+			private void renderMessages(FeedbackMessages feedbackMessages) {
+				if(feedbackMessages==null)
+					return;
+				 Iterator<FeedbackMessage> iterator = feedbackMessages.iterator();
+				while(iterator.hasNext()) {
+					FeedbackMessage message = iterator.next();
+					int level = message.getLevel();
+					switch (level) {
+					case FeedbackMessage.ERROR:
+						getSession().error(message.getMessage());
+						break;
+					case FeedbackMessage.WARNING:
+						getSession().warn(message.getMessage());
+						break;
+					default:
+						break;
+					}
+				}
+				
 			}
         };
 
