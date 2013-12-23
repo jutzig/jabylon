@@ -42,6 +42,7 @@ public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
             }
 
         };
+        view.setReuseItems(true);
         add(view);
     }
 

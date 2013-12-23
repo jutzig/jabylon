@@ -59,7 +59,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
                         item.getModelObject().getTitle()));
             }
         };
-
+        listView.setReuseItems(true);
         tabContents = new ArrayList<WebMarkupContainer>();
         ListView<T> tabContent = new ListView<T>("tab-content", tabs) {
 
@@ -81,6 +81,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
                 }
             }
         };
+        tabContent.setReuseItems(true);
         tabbable.add(tabContent);
         tabbable.add(listView);
     }

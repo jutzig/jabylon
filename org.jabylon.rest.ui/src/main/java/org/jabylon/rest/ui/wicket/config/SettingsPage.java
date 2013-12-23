@@ -44,18 +44,18 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
         BreadcrumbPanel<CDOObject> breadcrumbPanel = new BreadcrumbPanel<CDOObject>("breadcrumb-panel", getModel(),getPageParameters());
         breadcrumbPanel.setRootLabel(new StringResourceModel("SettingsPage.breadcrumb.root.label",this,null));
         add(breadcrumbPanel);
+        if(getPageParameters().getIndexedCount()>0)
+        {
+        	addOrReplace(new SettingsPanel<CDOObject>("content", getModel(), getPageParameters()));
+        }
+        else
+        {
+        	addOrReplace(new SettingsOverviewPanel("content"));
+        }
     }
 
     @Override
     protected void onBeforeRenderPage() {
-        if(getPageParameters().getIndexedCount()>0)
-        {
-            addOrReplace(new SettingsPanel<CDOObject>("content", getModel(), getPageParameters()));
-        }
-        else
-        {
-            addOrReplace(new SettingsOverviewPanel("content"));
-        }
         super.onBeforeRenderPage();
     }
 
