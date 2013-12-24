@@ -13,14 +13,16 @@ package org.jabylon.team.git.config;
 
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
+import org.jabylon.rest.ui.wicket.BasicPanel;
+import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.team.git.GitConstants;
 import org.osgi.service.prefs.Preferences;
 
@@ -28,37 +30,55 @@ import org.osgi.service.prefs.Preferences;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class GitConfigPanel extends GenericPanel<Project> {
+public class GitConfigPanel extends BasicPanel<Project> {
 
     private static final long serialVersionUID = 1L;
+	private Preferences config;
 
     public GitConfigPanel(String id, IModel<Project> model, Preferences config) {
-        super(id, model);
-        EObjectPropertyModel<URI, Project> repositoryURI = new EObjectPropertyModel<URI, Project>(model, PropertiesPackage.Literals.PROJECT__REPOSITORY_URI);
-        TextField<URI> uriField = new TextField<URI>("inputURI", repositoryURI);
+        super(id, model, new PageParameters());
+        this.config = config;
+    }
+    
+    @Override
+    protected void construct() {
+    	super.construct();
+        EObjectPropertyModel<URI, Project> repositoryURI = new EObjectPropertyModel<URI, Project>(getModel(), PropertiesPackage.Literals.PROJECT__REPOSITORY_URI);
+        ControlGroup uriGroup = new ControlGroup("uri-group", nls("repository.uri.label"), nls("repository.uri.help"));
+        TextField<URI> uriField = new TextField<URI>("gitURI", repositoryURI);
         uriField.setType(URI.class);
         uriField.setConvertEmptyInputStringToNull(true);
         uriField.setRequired(true);
-        add(uriField);
+        uriGroup.add(uriField);
+        add(uriGroup);
 
         PreferencesPropertyModel usernameModel = new PreferencesPropertyModel(config, GitConstants.KEY_USERNAME, "");
-        add(new TextField<String>("inputUsername",usernameModel));
+        ControlGroup usernameGroup = new ControlGroup("username-group", nls("username.label"));
+        usernameGroup.add(new TextField<String>("gitUsername",usernameModel));
+        add(usernameGroup);
+        
         PreferencesPropertyModel passwordModel = new PreferencesPropertyModel(config, GitConstants.KEY_PASSWORD, "");
-        PasswordTextField passwordTextField = new PasswordTextField("inputPassword",passwordModel);
+        ControlGroup passwordGroup = new ControlGroup("password-group", nls("password.label"));
+        PasswordTextField passwordTextField = new PasswordTextField("gitPassword",passwordModel);
         passwordTextField.setResetPassword(false);
         passwordTextField.setRequired(false);
-        add(passwordTextField);
+        passwordGroup.add(passwordTextField);
+        add(passwordGroup);
 
         PreferencesPropertyModel emailModel = new PreferencesPropertyModel(config, GitConstants.KEY_EMAIL, "jabylon@example.org");
-        TextField<String> emailField = new TextField<String>("inputEmail", emailModel);
+        ControlGroup emailGroup = new ControlGroup("email-group", nls("email.label"), nls("email.help"));
+        TextField<String> emailField = new TextField<String>("gitEmail", emailModel);
         emailField.setRequired(true);
         emailField.add(EmailAddressValidator.getInstance());
-        add(emailField);
+        emailGroup.add(emailField);
+        add(emailGroup);
         
         PreferencesPropertyModel messageModel = new PreferencesPropertyModel(config, GitConstants.KEY_MESSAGE, "");
-        TextField<String> messageField = new TextField<String>("inputMessage", messageModel);
+        ControlGroup messageGroup = new ControlGroup("message-group", nls("message.label"), nls("message.help"));
+        TextField<String> messageField = new TextField<String>("gitCommitMessage", messageModel);
         messageField.setRequired(false);
-        add(messageField);
+        messageGroup.add(messageField);
+        add(messageGroup);
     }
 
 }

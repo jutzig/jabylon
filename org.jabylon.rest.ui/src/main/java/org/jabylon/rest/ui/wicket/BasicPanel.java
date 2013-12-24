@@ -13,6 +13,7 @@ package org.jabylon.rest.ui.wicket;
 
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
@@ -32,7 +33,13 @@ public class BasicPanel<T>extends GenericPanel<T> {
         this.pageParameters = parameters;
     }
 
+    public BasicPanel(String id, IModel<T> model) {
+        this(id,model,null);
+    }
+    
     public PageParameters getPageParameters() {
+    	if(pageParameters==null)
+    		return getPage().getPageParameters();
         return pageParameters;
     }
 
@@ -83,6 +90,15 @@ public class BasicPanel<T>extends GenericPanel<T> {
     protected void construct() {
 
         // subclasses may override
+    }
+    
+    /**
+     * creates a new StringResourceModel for the given key with <code>this</code> as the component
+     * @param key
+     * @return
+     */
+    protected StringResourceModel nls(String key) {
+    	return new StringResourceModel(key, this, null);
     }
 
 

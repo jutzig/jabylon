@@ -11,29 +11,37 @@ package org.jabylon.rest.ui.wicket.config.sections;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
+import org.jabylon.rest.ui.wicket.BasicPanel;
+import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.security.CommonPermissions;
+import org.osgi.service.prefs.Preferences;
 
-public class ScanningConfigSection extends GenericPanel<Project> {
+public class ScanningConfigSection extends BasicPanel<Project> {
 
     private static final long serialVersionUID = 1L;
 
     public ScanningConfigSection(String id, IModel<Project> model, Preferences config) {
         super(id, model);
         PreferencesPropertyModel includeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_INCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__INCLUDE.getDefaultValueLiteral());
-        add(new TextArea<String>("inputIncludes", includeModel));
+        ControlGroup includesGroup = new ControlGroup("includes-group",nls("ScanningConfigSection.includes.label"),nls("ScanningConfigSection.includes.help"));
+        includesGroup.add(new TextArea<String>("inputIncludes", includeModel));
+        add(includesGroup);
+        
+        ControlGroup excludesGroup = new ControlGroup("excludes-group",nls("ScanningConfigSection.excludes.label"),nls("ScanningConfigSection.excludes.help"));
         PreferencesPropertyModel excludeModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_EXCLUDE, PropertiesPackage.Literals.SCAN_CONFIGURATION__EXCLUDE.getDefaultValueLiteral());
-        add(new TextArea<String>("inputExcludes",excludeModel));
+        excludesGroup.add(new TextArea<String>("inputExcludes",excludeModel));
+        add(excludesGroup);
+        
+        ControlGroup templateGroup = new ControlGroup("template-group",nls("ScanningConfigSection.template.locale.label"),nls("ScanningConfigSection.template.locale.help"));
         PreferencesPropertyModel templateLocaleModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
-        add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
+        templateGroup.add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
+        add(templateGroup);
     }
 
     public static class ScanningConfig extends AbstractConfigSection<Project> {

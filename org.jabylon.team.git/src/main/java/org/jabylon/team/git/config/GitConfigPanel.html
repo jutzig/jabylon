@@ -1,40 +1,20 @@
 <html xmlns:wicket="http://wicket.apache.org">
 
 <wicket:panel>
-    <div class="control-group">
-        <label class="control-label" for="inputURI">Repository URI</label>
-        <div class="controls">
-            <input type="text" id="inputURI" wicket:id="inputURI" placeholder="https://github.com/jutzig/jabylon.git">
-        </div>
+    <div wicket:id="uri-group">
+        <input type="text" wicket:id="gitURI" placeholder="https://example.org/project.git">
     </div>
-    <div class="control-group">
-        <label class="control-label" for="inputUsername">Username</label>
-        <div class="controls">
-            <input type="text" id="inputUsername" wicket:id="inputUsername">
-        </div>
+	<div wicket:id="username-group">
+        <input type="text" wicket:id="gitUsername">
     </div>
-    <div class="control-group">
-        <label class="control-label" for="inputPassword">Password</label>
-        <div class="controls">
-            <input type="password" id="inputPassword" wicket:id="inputPassword" placeholder="password">
-        </div>
+	<div wicket:id="password-group">
+        <input type="password" wicket:id="gitPassword">
     </div>
-
-    <div class="control-group">
-        <label class="control-label" for="inputEmail">email</label>
-        <div class="controls">
-            <input type="text" id="inputEmail" wicket:id="inputEmail" placeholder="jabylon@example.org">
-             <span class="help-block">The email address to use for git commits</span>
-        </div>
-    </div>
-    
-	<div class="control-group">
-        <label class="control-label" for="inputEmail">message</label>
-        <div class="controls">
-            <input type="text" id="inputMessage" wicket:id="inputMessage" placeholder="Auto Sync-up by Jabylon">
-             <span class="help-block">The message to use for git commits</span>
-        </div>
-    </div>    
-
+    <div wicket:id="email-group">
+        <input type="text" wicket:id="gitEmail" placeholder="jabylon@example.org">
+    </div> 
+	<div wicket:id="message-group">
+        <input type="text" wicket:id="gitCommitMessage" placeholder="Auto Sync-up by Jabylon">
+    </div>     
 </wicket:panel>
 </html>

@@ -16,31 +16,36 @@ import java.util.Set;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.Workspace;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
+import org.jabylon.rest.ui.wicket.BasicPanel;
+import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.validators.UniqueNameValidator;
 
-public class ProjectConfigSection extends GenericPanel<Project> {
+public class ProjectConfigSection extends BasicPanel<Project> {
 
     private static final long serialVersionUID = 1L;
 
     public ProjectConfigSection(String id, IModel<Project> model) {
-        super(id, model);
+        super(id, model, new PageParameters());
+        ControlGroup nameGroup = new ControlGroup("name-group",nls("ProjectConfigSection.name.label"));
         IModel<String> nameProperty = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
         field.add(new UniqueNameValidator(getUsedProjectNames(model)));
-        add(field);
+        nameGroup.add(field);
+        add(nameGroup);
 
+        ControlGroup typeGroup = new ControlGroup("type-group",nls("ProjectConfigSection.project.type.choice"));
         EObjectPropertyModel<PropertyType, Project> typeModel = new EObjectPropertyModel<PropertyType, Project>(model, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE);
         DropDownChoice<PropertyType> typeChoice = new DropDownChoice<PropertyType>("inputType", typeModel, PropertyType.VALUES);
-        add(typeChoice);
+        typeGroup.add(typeChoice);
+        add(typeGroup);
 
         //use actual service
         List<String> teamProviders = new ArrayList<String>();
@@ -48,10 +53,12 @@ public class ProjectConfigSection extends GenericPanel<Project> {
         teamProviders.add("Git");
         teamProviders.add("CVS");
 
+        ControlGroup teamproviderGroup = new ControlGroup("teamprovider-group", nls("ProjectConfigSection.team.provider.choice"));
         EObjectPropertyModel<String, Project> teamProviderModel = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER);
 
         DropDownChoice<String> teamProviderChoice = new DropDownChoice<String>("inputTeamProvider", teamProviderModel, teamProviders);
-        add(teamProviderChoice);
+        teamproviderGroup.add(teamProviderChoice);
+        add(teamproviderGroup);
     }
 
     private static Set<String> getUsedProjectNames(IModel<Project> model) {
