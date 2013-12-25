@@ -11,6 +11,7 @@
  */
 package org.jabylon.rest.ui.model;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.osgi.service.prefs.Preferences;
 
@@ -24,6 +25,10 @@ public class PreferencesPropertyModel extends Model<String> {
     private Preferences prefs;
 
     public PreferencesPropertyModel(Preferences prefs, String key, String defaultValue) {
+        this(prefs,key,Model.of(defaultValue));
+    }
+    
+    public PreferencesPropertyModel(Preferences prefs, String key, IModel<String> defaultValue) {
         super();
         this.prefs = prefs;
         this.key = key;
@@ -31,11 +36,11 @@ public class PreferencesPropertyModel extends Model<String> {
     }
 
     private String key;
-    private String defaultValue;
+    private IModel<String> defaultValue;
 
     @Override
     public String getObject() {
-        return prefs.get(key, defaultValue);
+        return prefs.get(key, defaultValue.getObject());
     }
 
     @Override

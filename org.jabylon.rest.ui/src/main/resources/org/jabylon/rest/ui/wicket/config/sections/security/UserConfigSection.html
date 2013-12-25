@@ -19,20 +19,13 @@
 				<input wicket:id="email" id="email" type="text"
 						placeholder="JohnDoe@example.org" class="input-xlarge"> 
 			</div>			
-			<div class="control-group">
-
-				<label class="control-label" for="generate-token"><wicket:message
-						key="token.label">API Token</wicket:message></label>
-				<div class="controls">
-					<span wicket:id="token" class="input-xlarge uneditable-input">[tokenvalue]</span>
-					<label class="checkbox"> <input type="checkbox"
-						wicket:id="generate-token"> <wicket:message
-							key="generate.token.action">[generate]</wicket:message>
-					</label> <span class="help-block"><wicket:message
-							key="token.help.block">[token description]</wicket:message></span>
-				</div>
-
-			</div>
+			<div wicket:id="token-group">
+				<input wicket:id="token" readonly type="text" class="input-xlarge uneditable-input"> 
+  				<button wicket:id="generate-token" class="btn" type="button"><wicket:message
+							key="generate.token.action">[generate]</wicket:message></button>
+				<button wicket:id="delete-token" class="btn" type="button"><wicket:message
+							key="delete.token.action">[delete]</wicket:message></button>
+			</div>				
 			<div wicket:id="type-group">
 				<input wicket:id="type" id="type" type="text"
 						placeholder="Internal DB" class="input-xlarge">
