@@ -51,7 +51,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
     @Override
     public void detach()
     {
-     //nothing to do
+    	modelSupplier = Suppliers.memoize(new LoadingSupplier<T>(id));
 
     }
 
@@ -83,6 +83,13 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
         public LoadingSupplier(T instance) {
             super();
             this.instance = instance;
+            function = new LookupFunction<T>();
+        }
+        
+        public LoadingSupplier(CDOID id) {
+            super();
+            this.instance = null;
+            this.id = id;
             function = new LookupFunction<T>();
         }
 

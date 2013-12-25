@@ -71,7 +71,7 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
 
     @Override
     public void detach() {
-        // TODO Auto-generated method stub
+    	model.detach();
 
     }
 
@@ -89,5 +89,9 @@ public class ComplexEObjectListDataProvider<R extends CDOObject>
         EStructuralFeature feature = parent.eClass().getEStructuralFeature(featureName);
         parent.eSet(feature, new ArrayList<R>(object));
     }
+    
+    public IModel<? extends CDOObject> getModel() {  
+		return model;
+	}
 
 }
