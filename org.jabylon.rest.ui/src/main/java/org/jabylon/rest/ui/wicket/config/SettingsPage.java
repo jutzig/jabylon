@@ -35,6 +35,7 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
 
     public SettingsPage(PageParameters parameters) {
         super(parameters);
+        setStatelessHint(false);
     }
 
     @Override
