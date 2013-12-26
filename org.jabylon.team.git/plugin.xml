@@ -2,14 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension
-         point="org.jabylon.common.teamProvider">
-      <teamProvider
-            class="org.jabylon.team.git.GitTeamProvider"
-            description="Git Team Provider"
-            name="Git">
-      </teamProvider>
-   </extension>
-   <extension
          point="org.jabylon.rest.ui.config">
       <section
             name="Git"

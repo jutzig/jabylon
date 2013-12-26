@@ -16,6 +16,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -52,9 +55,6 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.util.PreferencesUtil;
@@ -66,8 +66,16 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
 import org.jabylon.properties.Workspace;
 import org.jabylon.team.git.util.ProgressMonitorWrapper;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+@Component(enabled=true,immediate=true)
+@Service
 public class GitTeamProvider implements TeamProvider {
+	
+	@Property(value="Git")
+	private static String KEY_KIND = TeamProvider.KEY_KIND;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitTeamProvider.class);
 

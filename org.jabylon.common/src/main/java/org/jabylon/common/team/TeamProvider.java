@@ -19,6 +19,11 @@ import org.jabylon.properties.PropertyFileDiff;
 
 public interface TeamProvider {
 
+	/**
+	 * Use this as a service registration property to determine the kind of the team provider
+	 */
+	String KEY_KIND = "kind";
+	
     /**
      * update the given ProjectVersion and return a list of files that have been modified due to the update operation
      * @param project

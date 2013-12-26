@@ -8,45 +8,62 @@
  */
 package org.jabylon.common.team;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.common.collect.Lists;
-
-import org.jabylon.common.util.IConfigurationElementLoader;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TeamProviderUtil {
 
-    private static final Supplier<List<IConfigurationElement>> providers = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("org.jabylon.common.teamProvider"))));
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TeamProviderUtil.class); 
+    
     public static List<String> getAvailableTeamProviders() {
-        return Lists.transform(providers.get(), new Function<IConfigurationElement, String>() {
-            public String apply(IConfigurationElement from)
-            {
-                return from.getAttribute("name");
-            }
-        });
+    	Bundle bundle = FrameworkUtil.getBundle(TeamProviderUtil.class);
+    	BundleContext context = bundle.getBundleContext();
+    	List<String> providers = new ArrayList<String>();
+    	try {
+			Collection<ServiceReference<TeamProvider>> references = context.getServiceReferences(TeamProvider.class, null);
+			for (ServiceReference<TeamProvider> reference : references) {
+				Object property = reference.getProperty(TeamProvider.KEY_KIND);
+        		if(property==null)
+        		{
+        			LOGGER.error("Team provider service has no 'kind' property. Ignoring team provider from "+reference.getBundle());
+        		}
+        		else
+        		{
+        			providers.add(property.toString());
+        		}
+			}
+		} catch (InvalidSyntaxException e) {
+			// this can't happen
+			LOGGER.error("Failed to retrieve service references",e);
+		}
+        return providers;
     }
 
     public static TeamProvider getTeamProvider(String name) {
         if(name==null)
             return null;
-        for (IConfigurationElement element : providers.get()) {
-            String providerName = element.getAttribute("name");
-            if(name.equals(providerName))
-                try {
-                    return (TeamProvider) element.createExecutableExtension("class");
-                } catch (CoreException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-        }
+        try {
+        	Bundle bundle = FrameworkUtil.getBundle(TeamProviderUtil.class);
+        	BundleContext context = bundle.getBundleContext();
+			Collection<ServiceReference<TeamProvider>> references = context.getServiceReferences(TeamProvider.class, null);
+			for (ServiceReference<TeamProvider> reference : references) {
+				Object property = reference.getProperty(TeamProvider.KEY_KIND);
+        		if(name.equals(property))
+        			return context.getService(reference);
+			}
+		} catch (InvalidSyntaxException e) {
+			// this can't happen
+			LOGGER.error("Failed to retrieve service references",e);
+		}
         return null;
     }
 

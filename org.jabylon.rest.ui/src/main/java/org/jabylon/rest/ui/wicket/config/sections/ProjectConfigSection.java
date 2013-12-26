@@ -13,11 +13,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.common.team.TeamProvider;
+import org.jabylon.common.team.TeamProviderUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.PropertyType;
@@ -31,7 +35,7 @@ import org.jabylon.rest.ui.wicket.validators.UniqueNameValidator;
 public class ProjectConfigSection extends BasicPanel<Project> {
 
     private static final long serialVersionUID = 1L;
-
+    
     public ProjectConfigSection(String id, IModel<Project> model) {
         super(id, model, new PageParameters());
         ControlGroup nameGroup = new ControlGroup("name-group",nls("ProjectConfigSection.name.label"));
@@ -49,9 +53,9 @@ public class ProjectConfigSection extends BasicPanel<Project> {
 
         //use actual service
         List<String> teamProviders = new ArrayList<String>();
+        List<String> availableTeamProviders = TeamProviderUtil.getAvailableTeamProviders();
         teamProviders.add("None");
-        teamProviders.add("Git");
-        teamProviders.add("CVS");
+        teamProviders.addAll(availableTeamProviders);
 
         ControlGroup teamproviderGroup = new ControlGroup("teamprovider-group", nls("ProjectConfigSection.team.provider.choice"));
         EObjectPropertyModel<String, Project> teamProviderModel = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.PROJECT__TEAM_PROVIDER);
