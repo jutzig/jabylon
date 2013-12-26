@@ -9,6 +9,8 @@
 package org.jabylon.rest.ui.wicket.config.sections;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -29,13 +31,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.eclipse.emf.common.util.EList;
+import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.util.PropertyResourceUtil;
+import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import org.jabylon.rest.ui.wicket.validators.UniqueNameValidator;
 import org.jabylon.security.CommonPermissions;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
@@ -53,7 +58,9 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
         super(id, model);
         IModel<String> nameProperty = new EObjectPropertyModel<String, ProjectVersion>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
+        field.add(UniqueNameValidator.fromCollection(getBranches(model),PropertiesPackage.Literals.RESOLVABLE__NAME,model.getObject()));
         add(field);
+        
         // add(buildAddNewLink(getModel()));
         final WebMarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
         rowPanel.setOutputMarkupId(true);
@@ -167,6 +174,19 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
         form.add(removeLink);
     }
 
+    
+    public Collection<ProjectVersion> getBranches(IModel<ProjectVersion> current) {
+    	if(current==null)
+    		return Collections.emptyList();
+    	Project parent = current.getObject().getParent();
+    	if(parent==null && current instanceof AttachableModel) {
+    		AttachableModel<ProjectVersion> model = (AttachableModel<ProjectVersion>)current;
+    		parent = (Project) model.getParent().getObject();
+    	}
+    	if(parent==null)
+    		return Collections.emptyList();
+    	return parent.getChildren();
+    }
 
     public static class VersionConfig extends AbstractConfigSection<ProjectVersion> {
 
