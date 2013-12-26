@@ -31,7 +31,10 @@
 			<item href="startupParameters.html" name="Startup Parameters" />
 		</item>
 		<item href="security.html" name="Security" collapse="true">
-			<item href="jaasConfig.html" name="Modules" />
+			<item href="jaasConfig.html" name="Login Modules" />
+			<item href="projectPermissions.html" name="Project Permissions" />
+			<item href="globalPermissions.html" name="Global Permissions" />
+			<item href="userManagement.html" name="User Management" />
 		</item>
     </menu>        
 	<menu name="User Guide">
