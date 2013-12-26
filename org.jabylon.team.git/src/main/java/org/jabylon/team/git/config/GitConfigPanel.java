@@ -23,6 +23,7 @@ import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.ControlGroup;
+import org.jabylon.rest.ui.wicket.validators.UriValidator;
 import org.jabylon.team.git.GitConstants;
 import org.osgi.service.prefs.Preferences;
 
@@ -47,6 +48,7 @@ public class GitConfigPanel extends BasicPanel<Project> {
         ControlGroup uriGroup = new ControlGroup("uri-group", nls("repository.uri.label"), nls("repository.uri.help"));
         TextField<URI> uriField = new TextField<URI>("gitURI", repositoryURI);
         uriField.setType(URI.class);
+        uriField.add(new UriValidator());
         uriField.setConvertEmptyInputStringToNull(true);
         uriField.setRequired(true);
         uriGroup.add(uriField);
