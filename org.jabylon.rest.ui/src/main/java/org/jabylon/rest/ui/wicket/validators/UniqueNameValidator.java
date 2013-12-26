@@ -11,7 +11,6 @@
  */
 package org.jabylon.rest.ui.wicket.validators;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -74,9 +73,9 @@ public class UniqueNameValidator implements IValidator<String> {
     public void validate(IValidatable<String> validatable) {
         if(usedNames.contains(validatable.getValue()))
         {
-            String message = "The name {0} is already used.";
-            message = MessageFormat.format(message, validatable.getValue());
-            validatable.error(new ValidationError(message));
+            ValidationError error = new ValidationError(this);
+            error.getVariables().put("name", validatable.getValue());
+            validatable.error(error);
         }
 
     }
