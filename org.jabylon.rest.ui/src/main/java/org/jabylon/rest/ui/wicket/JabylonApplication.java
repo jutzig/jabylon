@@ -83,6 +83,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8"); 
         OSGiInjector injector = new OSGiInjector(this);
         getBehaviorInstantiationListeners().add(injector);
+        getApplicationSettings().setInternalErrorPage(CustomInternalErrorPage.class);
         getComponentInstantiationListeners().add(injector);
         getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());
         getAjaxRequestTargetListeners().add(new AjaxFeedbackListener());

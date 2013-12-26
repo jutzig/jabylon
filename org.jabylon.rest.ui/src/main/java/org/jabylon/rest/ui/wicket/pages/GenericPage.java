@@ -92,7 +92,7 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
         this.model = model;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected IModel<T> createModel(T object) {
         return new Model((Serializable) object);
     }
