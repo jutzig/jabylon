@@ -27,7 +27,7 @@ public class UserImagePanel extends Panel {
 
     private static final String GRAVATAR_BASE_URL = "https://www.gravatar.com/avatar/";
     private static final int DEFAULT_SIZE = 30;
-    private static final int LARGE_SIZE = 150;
+    private static final int LARGE_SIZE = 120;
     private int size = DEFAULT_SIZE;
 
     private static final long serialVersionUID = 1L;
@@ -44,7 +44,10 @@ public class UserImagePanel extends Panel {
             name.add(new AttributeAppender("style", "font-size: large;"));
             size = LARGE_SIZE;
         }
-        add(new Image("image", getImageUrl(model)));
+        Image image = new Image("image", getImageUrl(model));
+        if(large)
+        	image.add(new AttributeAppender("class","img-polaroid"));
+        add(image);
     }
 
 
