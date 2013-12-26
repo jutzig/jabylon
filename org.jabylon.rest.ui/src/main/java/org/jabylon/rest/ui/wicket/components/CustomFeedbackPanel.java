@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebSession;
 
 public class CustomFeedbackPanel extends Panel implements IFeedback {
@@ -271,23 +272,30 @@ public class CustomFeedbackPanel extends Panel implements IFeedback {
         return "alert-info alert alert-block ";
     }
 
-    protected String getMessageKind(FeedbackMessage message) {
+    protected IModel<String> getMessageKind(FeedbackMessage message) {
         int level = message.getLevel();
+        String key = null;
         switch (level) {
         case FeedbackMessage.SUCCESS:
-            return "Success!";
+        	key = "success";
+        	break;
         case FeedbackMessage.ERROR:
-            return "Error!";
+        	key = "error";
+        	break;
         case FeedbackMessage.FATAL:
-            return "Fatal!";
+        	key = "fatal";
+        	break;
         case FeedbackMessage.INFO:
-            return "Info!";
+        	key = "info";
+        	break;
         case FeedbackMessage.WARNING:
-            return "Warning";
+        	key = "warning";
+        	break;
         default:
             break;
         }
-        return "Info!";
+        return new StringResourceModel(key, this, null);
+
     }
 
     /**
