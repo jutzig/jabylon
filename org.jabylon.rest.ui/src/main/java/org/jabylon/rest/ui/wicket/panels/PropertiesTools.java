@@ -15,17 +15,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.tools.PropertyEditorTool;
 import org.jabylon.rest.ui.tools.PropertyToolTab;
 import org.jabylon.rest.ui.wicket.BasicPanel;
-import org.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
+import org.jabylon.rest.ui.wicket.components.BootstrapAjaxTabbedPanel;
 
 /**
  * TODO short description for PropertiesEditorToolbar.
@@ -41,7 +38,7 @@ public class PropertiesTools extends BasicPanel<PropertyPair> {
     @Inject
     private List<PropertyEditorTool> tools;
 
-    private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
+    private BootstrapAjaxTabbedPanel<PropertyToolTab> tabContainer;
 
     private List<PropertyToolTab> extensions;
 
@@ -52,7 +49,7 @@ public class PropertiesTools extends BasicPanel<PropertyPair> {
     @Override
     protected void construct() {
         extensions = createExtensions();
-        tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true, "propertiesTools");
+        tabContainer = new BootstrapAjaxTabbedPanel<PropertyToolTab>("tabs", extensions,"propertyTools/activeTab");
         add(tabContainer);
         PropertyPair pair = getModelObject();
         // int selected = tabContainer.getSelectedTab();
@@ -73,14 +70,6 @@ public class PropertiesTools extends BasicPanel<PropertyPair> {
             extensions.add(new PropertyToolTab(tool));
         }
         return extensions;
-    }
-
-    public void respond(AjaxRequestTarget target) {
-        List<WebMarkupContainer> tabContents = tabContainer.getTabContents();
-        for (WebMarkupContainer webMarkupContainer : tabContents) {
-            target.add(webMarkupContainer);
-        }
-
     }
 
 }

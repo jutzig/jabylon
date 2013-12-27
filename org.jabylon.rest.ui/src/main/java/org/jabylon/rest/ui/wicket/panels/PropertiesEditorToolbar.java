@@ -17,13 +17,9 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
@@ -31,7 +27,9 @@ import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.tools.PropertyEditorTool;
 import org.jabylon.rest.ui.tools.PropertyToolTab;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
-import org.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
+import org.jabylon.rest.ui.wicket.components.BootstrapAjaxTabbedPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -53,7 +51,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 
     private PropertyPersistenceService persistenceService;
 
-    private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
+    private BootstrapAjaxTabbedPanel<PropertyToolTab> tabContainer;
 
     private List<PropertyToolTab> extensions;
 
@@ -68,7 +66,7 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
     @Override
     protected void construct() {
         extensions = createExtensions();
-        tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions, true, "propertiesTools");
+        tabContainer = new BootstrapAjaxTabbedPanel<PropertyToolTab>("tabs", extensions,"propertyTools/activeTab");
         add(tabContainer);
     }
 
@@ -111,14 +109,6 @@ public class PropertiesEditorToolbar extends BasicResolvablePanel<PropertyFileDe
 
         }
         this.currentKey = key;
-    }
-
-    public void respond(AjaxRequestTarget target) {
-        List<WebMarkupContainer> tabContents = tabContainer.getTabContents();
-        for (WebMarkupContainer webMarkupContainer : tabContents) {
-            target.add(webMarkupContainer);
-        }
-
     }
 
 }

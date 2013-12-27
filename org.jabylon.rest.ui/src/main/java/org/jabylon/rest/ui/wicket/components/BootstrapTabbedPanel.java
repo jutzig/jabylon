@@ -22,20 +22,10 @@ public class BootstrapTabbedPanel<T extends ITab> extends TabbedPanel<T> {
 
     public BootstrapTabbedPanel(String id, List<T> tabs) {
         super(id, tabs);
-
-        commonInit();
     }
 
     public BootstrapTabbedPanel(String id, List<T> tabs, IModel<Integer> model) {
         super(id, tabs, model);
-
-        commonInit();
-    }
-
-    private void commonInit() {
-//        add(new BootstrapBaseBehavior(),
-//            new CssClassNameAppender("tabbable"),
-//            new AssertTagNameBehavior("div"));
     }
 
     @Override

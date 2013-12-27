@@ -14,16 +14,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.components.BootstrapTabbedPanel;
 import org.jabylon.rest.ui.wicket.pages.GenericPage;
-import org.jabylon.security.CommonPermissions;
 import org.jabylon.updatecenter.repository.OBRRepositoryService;
 import org.jabylon.updatecenter.repository.ResourceFilter;
 
@@ -43,7 +40,7 @@ public class UpdatecenterPage extends GenericPage<Serializable> implements Restr
     @Override
     protected void construct() {
         super.construct();
-        BootstrapTabbedPanel<ITab> panel = new BootstrapTabbedPanel<ITab>("tabs", createTabList());
+        BootstrapTabbedPanel<ITab> panel = new BootstrapTabbedPanel<ITab>("tabs", createTabList(), null);
         add(panel);
     }
 

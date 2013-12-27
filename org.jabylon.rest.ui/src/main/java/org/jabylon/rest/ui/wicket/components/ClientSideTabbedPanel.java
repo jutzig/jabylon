@@ -16,7 +16,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.PriorityHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -24,12 +23,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
 import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
 
 public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 
-    private List<T> tabs;
     private List<WebMarkupContainer> tabContents;
     private IModel<Integer> activeTab= Model.of(0);
 
@@ -45,7 +42,6 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
         }
         add(tabbable);
 
-        this.tabs = tabs;
         ListView<T> listView = new ListView<T>("tab-handles", tabs) {
 
             private static final long serialVersionUID = 1L;
