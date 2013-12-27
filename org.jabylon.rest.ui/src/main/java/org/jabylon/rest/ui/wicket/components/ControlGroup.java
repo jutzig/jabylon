@@ -112,6 +112,8 @@ public class ControlGroup extends Border {
 		FeedbackMessage worst = null;
 		int worstLevel = 0;
 		for (FormComponent<?> formComponent : components) {
+			if(!formComponent.hasFeedbackMessage())
+				continue;
 			FeedbackMessages messages = formComponent.getFeedbackMessages();
 			if(messages!=null)
 			{
