@@ -18,10 +18,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.CallbackParameter;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -35,16 +31,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.StringValue;
 import org.eclipse.emf.common.util.EList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
@@ -56,6 +44,11 @@ import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  *
@@ -165,48 +158,48 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
         editorToolbar.setOutputMarkupId(true);
         add(editorToolbar);
 
-
-        final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
-            protected void respond(final AjaxRequestTarget target) {
-                editorToolbar.respond(target);
-
-                StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
-                editorToolbar.setKey(parameter.toString(""));
-            }
-
-            public CharSequence getCallbackFunction(String functionName, CallbackParameter... extraParameters)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.append("function ");
-                sb.append(functionName);
-                sb.append(" (");
-                boolean first = true;
-                for (CallbackParameter curExtraParameter : extraParameters)
-                {
-                    if (curExtraParameter.getFunctionParameterName() != null)
-                    {
-                        if (!first)
-                            sb.append(',');
-                        else
-                            first = false;
-                        sb.append(curExtraParameter.getFunctionParameterName());
-                    }
-                }
-                sb.append(") {\n");
-                sb.append(getCallbackFunctionBody(extraParameters));
-                sb.append("}\n");
-                return sb;
-            }
-
-            @Override
-            public void renderHead(Component component, IHeaderResponse response) {
-                response.render(JavaScriptHeaderItem.forScript(getCallbackFunction("requestAid",CallbackParameter.explicit("key")), "requestAid"));
-                super.renderHead(component, response);
-            }
-
-        };
-
-        add(behave);
+//
+//        final AbstractDefaultAjaxBehavior behave = new AbstractDefaultAjaxBehavior() {
+//            protected void respond(final AjaxRequestTarget target) {
+//                editorToolbar.respond(target);
+//
+//                StringValue parameter = RequestCycle.get().getRequest().getRequestParameters().getParameterValue("key");
+//                editorToolbar.setKey(parameter.toString(""));
+//            }
+//
+//            public CharSequence getCallbackFunction(String functionName, CallbackParameter... extraParameters)
+//            {
+//                StringBuilder sb = new StringBuilder();
+//                sb.append("function ");
+//                sb.append(functionName);
+//                sb.append(" (");
+//                boolean first = true;
+//                for (CallbackParameter curExtraParameter : extraParameters)
+//                {
+//                    if (curExtraParameter.getFunctionParameterName() != null)
+//                    {
+//                        if (!first)
+//                            sb.append(',');
+//                        else
+//                            first = false;
+//                        sb.append(curExtraParameter.getFunctionParameterName());
+//                    }
+//                }
+//                sb.append(") {\n");
+//                sb.append(getCallbackFunctionBody(extraParameters));
+//                sb.append("}\n");
+//                return sb;
+//            }
+//
+//            @Override
+//            public void renderHead(Component component, IHeaderResponse response) {
+//                response.render(JavaScriptHeaderItem.forScript(getCallbackFunction("requestAid",CallbackParameter.explicit("key")), "requestAid"));
+//                super.renderHead(component, response);
+//            }
+//
+//        };
+//
+//        add(behave);
 
     }
 

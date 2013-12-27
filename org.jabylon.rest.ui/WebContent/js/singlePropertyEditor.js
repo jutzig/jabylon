@@ -41,39 +41,39 @@ $(document).ready(function() {
     });
 
     shortcut.add("Ctrl+1", function() {
-        $('#tooltabs li:eq(0) a').tab('show');
+        $('#tooltabs li:eq(0) a').click();
     });
 
     shortcut.add("Ctrl+2", function() {
-        $('#tooltabs li:eq(1) a').tab('show');
+        $('#tooltabs li:eq(1) a').click();
     });
 
     shortcut.add("Ctrl+3", function() {
-        $('#tooltabs li:eq(2) a').tab('show');
+        $('#tooltabs li:eq(2) a').click();
     });
 
     shortcut.add("Ctrl+4", function() {
-        $('#tooltabs li:eq(3) a').tab('show');
+        $('#tooltabs li:eq(3) a').click();
     });
 
     shortcut.add("Ctrl+5", function() {
-        $('#tooltabs li:eq(4) a').tab('show');
+        $('#tooltabs li:eq(4) a').click();
     });
 
     shortcut.add("Ctrl+6", function() {
-        $('#tooltabs li:eq(5) a').tab('show');
+        $('#tooltabs li:eq(5) a').click();
     });
 
     shortcut.add("Ctrl+7", function() {
-        $('#tooltabs li:eq(6) a').tab('show');
+        $('#tooltabs li:eq(6) a').click();
     });
 
     shortcut.add("Ctrl+8", function() {
-        $('#tooltabs li:eq(7) a').tab('show');
+        $('#tooltabs li:eq(7) a').click();
     });
 
     shortcut.add("Ctrl+9", function() {
-        $('#tooltabs li:eq(8) a').tab('show');
+        $('#tooltabs li:eq(8) a').click();
     });
 
     shortcut.add("tab", function() {
