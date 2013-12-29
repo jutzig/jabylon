@@ -19,7 +19,6 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -81,7 +80,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         EClass eclass = getEClassToCreate(pageParameters);
         if(eclass!=null)
         {
-            setModel(new AttachableWritableModel(eclass, getModel()));
+            setModel(new AttachableWritableModel<T>(eclass, getModel()));
         }
 
         T modelObject = getModelObject();
