@@ -225,7 +225,7 @@ public class PropertyListPanel
 
     protected String getLabelClass(Review review)
     {
-        if (review.getReviewType().equals(OK_LABEL))
+        if (OK_LABEL.equals(review.getReviewType()))
             return " label-success";
 
         Severity severity = review.getSeverity();

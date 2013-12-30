@@ -87,7 +87,7 @@ public class POHelper {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        boolean template = true;
+        boolean template = false;
         URL url = new URL("http://pootle.locamotion.org/export/terminology/de/essential.po");
         InputStream openStream = url.openStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(openStream, "UTF-8"));

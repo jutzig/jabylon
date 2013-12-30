@@ -13,14 +13,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
@@ -30,6 +28,7 @@ import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.ControlGroup;
+import org.jabylon.rest.ui.wicket.validators.TerminologyProjectValidator;
 import org.jabylon.rest.ui.wicket.validators.UniqueNameValidator;
 
 public class ProjectConfigSection extends BasicPanel<Project> {
@@ -63,6 +62,13 @@ public class ProjectConfigSection extends BasicPanel<Project> {
         DropDownChoice<String> teamProviderChoice = new DropDownChoice<String>("inputTeamProvider", teamProviderModel, teamProviders);
         teamproviderGroup.add(teamProviderChoice);
         add(teamproviderGroup);
+        
+        ControlGroup terminologyGroup = new ControlGroup("terminology-group", nls("ProjectConfigSection.terminology.label"), nls("ProjectConfigSection.terminology.description"));
+        EObjectPropertyModel<Boolean, Project> terminologyModel = new EObjectPropertyModel<Boolean, Project>(model, PropertiesPackage.Literals.PROJECT__TERMINOLOGY);
+        CheckBox terminology = new CheckBox("inputTerminology", terminologyModel);
+        terminology.add(new TerminologyProjectValidator(model));
+        add(terminologyGroup);
+        terminologyGroup.add(terminology);
     }
 
     private static Set<String> getUsedProjectNames(IModel<Project> model) {

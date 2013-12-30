@@ -134,6 +134,7 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
             review.setCreated(System.currentTimeMillis());
             review.setState(ReviewState.OPEN);
             review.setSeverity(Severity.ERROR);
+            review.setReviewType("Terminology");
             String message = "Template language contained the term ''{0}'' but the terminology translation ''{1}'' is missing";
             message = MessageFormat.format(message, next.getValue(),next.getKey());
             review.setMessage(message);
