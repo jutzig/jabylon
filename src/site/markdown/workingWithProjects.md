@@ -18,13 +18,13 @@ This will bring you to the configuration overview to access the different Jabylo
 
 In the next form you will get an overview of the projects you have so far. You edit and delete them here or download the project as a zip archive. The second tab (2) gives you a hint about the current size of the search index and allows you to rebuild it from scratch if needed.
  
-The _Add New_ button add the bottom allows you to create a new project.
+The _Add New_ button at the bottom allows you to create a new project.
  
 ![Workspace Settings](images/workspaceSettings.png "Workspace Settings")
  
 ## Configuring Projects
  
-The project configuration is split between several tabs. You can switch tabs without submitting and without data loss.
+The project configuration is split among several tabs. You can switch tabs without submitting and without data loss.
 
 
 ### General
@@ -33,16 +33,16 @@ In the _General_ tab you can enter the project name, decide on the team provider
  
 ![General Settings](images/generalProjectSettings.png "General Settings")
  
-The only two available types at the moment are **ENCODED_ISO** and **UNICODE**. **ENCODED_ISO** is for typical java projects that use iso encoded property files. If you are unsure, leave this setting. The other option **UNICODE** is for non standard property files that use **UTF-8** encoded files instead of unicode escapes.
+The only two available types at the moment are **ENCODED_ISO** and **UNICODE**. **ENCODED_ISO** is for typical java projects that use iso encoded property files. If you are unsure, leave this setting on its default. The other option **UNICODE** is for non standard property files that use **UTF-8** encoded files instead of unicode escapes.
  
 
 ### Scanning
 
 The _Scanning_ tab lets you configure which files are relevant for translation and how to interpret them. The exclude and include sections use the [file glob syntax](https://ant.apache.org/manual/dirtasks.html) known from Apache Ant.
 
-![General Settings](images/generalProjectSettings.png "General Settings")
+![General Settings](images/scanningProjectSettings.png "General Settings")
 
-The _Includes_ section (1) let's you configure which files are translation relevant. The default is `**/*.properties` which means all files ending in `.properties`. You can enter multiple inclusion patterns here by seperating them with a newline.
+The _Includes_ section (1) let's you configure which files are translation relevant. The default is `**/*.properties` which means all files ending in `.properties`. You can enter multiple inclusion patterns here by separating them with a new line.
 
 The _Excludes_ section (2) let's you exclude certain files even though they would be matched by an include rule. This is useful for instance to exclude configuration properties or unit test resources.
 
@@ -59,17 +59,17 @@ The next section configures automatic translation checks. These checks are autom
 
 ### Versions
 
-The version section gives you an overview about the versions that are configured in you project. Typically each version maps to a branch in your source code repository. If you have a team provider configured, then the name of the version decides which branch is checked out of the source code repository.
+The _Version_ section gives you an overview about the versions that are configured in your project. Typically each version maps to a branch in your source code repository. If you have a team provider configured, then the name of the version decides which branch is checked out of the source code repository.
 
 ![Version Settings](images/versionsConfig.png "Version Settings")
 
-Which buttons are visible and enable depends on the state of the version and the project configuration. (1) shows a project that uses a Git team provider configured and `master` branch is already checked out.
+Which buttons are visible and enabled depends on the state of the version and the project configuration. (1) Shows a project that uses a Git team provider configured and `master` branch is already checked out.
 You can
 
  * **edit** to add or remove languages
  * **rescan** to let Jabylon reparse all files in the project
      * please note that it is normally not necessary to do a rescan after you update the project. Jabylon will incrementally update itself when files are added or updated. 
- * **update** receives and code changes from e.g. Git and processes the diff incrementally to update the statistics
+ * **update** receives and code changes from your SCM and processes the diff incrementally to update the statistics
  * **commit** commits all translations to the source code repository (Git in this example). If you use Git as team provider this really means **Commit and Push**
  * **Delete** deletes this project and all files on the local disk. This operation is not reversable.
  
@@ -80,7 +80,7 @@ The _Add New_ button (3) can be used to create a new version of the project. If 
 
 ### Git
 
-The _Git_ section lets you configure a remote Git repository that contains your project sources. Please not that you need to select **Git** as the project's team provider and submit your change for this tab to become visible.
+The _Git_ section lets you configure a remote Git repository that contains your project sources. Please note that you need to select **Git** as the project's team provider and submit your change for this tab to become visible.
 
 ![Git Settings](images/gitConfig.png "Git Settings")
 

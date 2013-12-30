@@ -11,7 +11,7 @@ It provides a web ui for both developers and translators that can be seen as a [
 
 Currently Jabylon targets primarily developers of java applications that use [property files](http://en.wikipedia.org/wiki/.properties) to translate their software. However, the application is based on [OSGi](http://en.wikipedia.org/wiki/OSGi) and designed to be highly extensible. That means that other translation methods and formats will be supported in the future and you are free to create your own plugins.
 
-Jabylon can be a great help if you are working on a software project that needs to be translated into multiple languages. You can either use as a public server to enable your community to contribute translations to your software or in your intranet to simplify the translation collaboration in your company.
+Jabylon can be a great help if you are working on a software project that needs to be translated into multiple languages. You can either use it as a public server to enable your community to contribute translations to your software or in your intranet to simplify the translation collaboration in your company.
 
 
 ## Key Features

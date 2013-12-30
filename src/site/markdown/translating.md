@@ -52,7 +52,7 @@ On the top you will find two more buttons (4) _Save_ and _Reset_. You can use th
 
 ## Translation Checks
 
-If your project is confiured to execute automatic translation checks and the current translation fails for one ore more of those, you can see this in the upper left corner. In the example of the screenshot, the template language was _'Search {0}'_. The _{0}_ is an indicator that the application will insert a value at runtime into the string. The translation check now validates if the translation contains the right amount (and numbering) of replacement variables. In this case, it does not because the _{0}_ is missing in the translation.
+If your project is confiured to execute automatic translation checks and the current translation fails for one or more of those, you can see this in the upper left corner. In the example of the screenshot, the template language was _'Search {0}'_. The _{0}_ is an indicator that the application will insert a value at runtime into the string. The translation check now validates if the translation contains the right amount (and numbering) of replacement variables. In this case, it does not because the _{0}_ is missing in the translation.
 
 ![Translation Checks](images/reviewExample.png)
 
@@ -63,14 +63,14 @@ Jabylon offers an extensible set of translation tools to support translators in 
 
 ![Translation Tools](images/similarTranslations.png "Translation Tools")
 
-The tabs on the left side (1) allow you to switch between the different translation tools. You can also use [keyboard shortcuts](#shortcuts "Keyboard_Shortcuts")  to switch between the tabs. The translation tool that can be seen (2) in the screenshot offers a selection of alternatives on how similar strings have been translated within your projects so far. This can be very useful to get an idea on how other people translated certain terms/phrasings so far and to keep things consistent.
+The tabs on the left side (1) allow you to switch between the different translation tools. You can also use [keyboard shortcuts](#shortcuts "Keyboard_Shortcuts")  to switch between the tabs. The translation tool that can be seen (2) in the screenshot offers a selection of alternatives on how similar strings have been translated within your projects so far. This can be very useful to get an idea of how other people translated certain terms/phrasings so far and to keep things consistent.
 
 
 ## <a id="shortcuts" name="shortcuts"></a>Keyboard Shortcuts
 
 Since there is typically many translations in a software application, Jabylon is optimized for power users by providing keyboard shortcuts for the most common actions. The currently available shortcuts are:
 
-* **CTRL** + **Right Arrow** = _Save & Previous_
-* **CTRL** + **Right Arrow** = _Save & Previous_
+* **CTRL** + **Right Arrow** = _Save & Next_
+* **CTRL** + **Left Arrow** = _Save & Previous_
 * **CTRL** + **1** to **9** = open the respective translation tool tab 
  

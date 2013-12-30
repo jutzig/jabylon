@@ -1,7 +1,7 @@
 
 # Terminology
 
-One of the automatic translation checks shipped with Jabylon is the terminology check. It checks if the template string contains one of the terms defined in the terminology check and if so, checks if the translated string contains the proper translation for that term.
+One of the automatic translation checks shipped with Jabylon is the terminology check. It checks if the template string contains one of the terms defined in the terminology project and if so, checks if the translated string contains the proper translation for that term.
 
 This check is useful if you want to make sure that certain terms like e.g. _email_ or a company name are always translated uniformly into the target languages.
 

@@ -18,7 +18,7 @@ The amount of data you can edit on this page depends on the login type(1) of the
 
 To define access rights, switch to the _Roles_ tab(2) to assign roles to the user.
 
-The image in the upper right corner (3) is retrieved from the [Gravatar](https://gravatar.com/) by using a hash of the supplied email address of the user.
+The image in the upper right corner (3) is retrieved from [Gravatar](https://gravatar.com/) by using a hash of the supplied email address of the user.
 
 You can also _generate_ a new [API](./jsonAPI.html) token or _delete_ an existing one by pressing the respective button (4). Please note that you have to click the _Submit_ button in order to persist the new token.
 API tokens can be used as an alternative login means (instead of providing username and password). If a user logs in by API token he gets the same permissions as through a regular login.

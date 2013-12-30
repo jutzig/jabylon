@@ -14,8 +14,8 @@ To stop the server, execute
 
 `./jabylon stop`.
 
-For further configuration options see the [Installation Guide]./installation.html).
+For further configuration options see the [Installation Guide].(/installation.html).
 At this point, Jabylon is fully functional and you should be able to create a new project through the configuration interface.
-For details on how to work with projects check out the  [User Guide]./projectConfiguration.html)
+For details on how to work with projects check out the  [User Guide](./workingWithProjects.html)
  
 

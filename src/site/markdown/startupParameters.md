@@ -6,11 +6,11 @@ Jabylon can be configured by providing a set of parameters and system properties
 
 ## Command Line Parameters
 
-These parameters apply to the `jabylon.sh` script of the[standalone application](./download.html) 
+These parameters apply to the `jabylon.sh` script of the [standalone application](./download.html) 
 
- * **--port -p** same as org.eclipse.equinox.http.jetty.http.port
- * **--host -h** same as org.eclipse.equinox.http.jetty.http.host
- * **--data -d** same as osgi.instance.area
+ * _--port_ _-p_ same as org.eclipse.equinox.http.jetty.http.port
+ * _--host_ _-h_ same as org.eclipse.equinox.http.jetty.http.host
+ * _--data_ _-d_ same as osgi.instance.area
  
 
 ## System Properties
