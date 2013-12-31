@@ -95,10 +95,12 @@ public class BasicPanel<T>extends GenericPanel<T> {
     /**
      * creates a new StringResourceModel for the given key with <code>this</code> as the component
      * @param key
+     * @param parameters
+     * 	The parameters to substitute using a Java MessageFormat object
      * @return
      */
-    protected StringResourceModel nls(String key) {
-    	return new StringResourceModel(key, this, null);
+    protected StringResourceModel nls(String key, Object... parameters) {
+    	return new StringResourceModel(key, this, null, parameters);
     }
 
 
