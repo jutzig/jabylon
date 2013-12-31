@@ -28,6 +28,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.jabylon.common.util.FileUtil;
+import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Workspace;
@@ -36,6 +37,7 @@ import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.config.SettingsPage;
 import org.jabylon.rest.ui.wicket.config.SettingsPanel;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,8 +88,9 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
                 Project project = model.getObject();
                 CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
                 project = transaction.getObject(project);
-
+                Preferences preferences = PreferencesUtil.scopeFor(project);
                 try {
+                	PreferencesUtil.deleteNode(preferences);
                     File directory = new File(project.absolutPath().toFileString());
                     FileUtil.delete(directory);
                     project.getParent().getChildren().remove(project);
@@ -96,7 +99,10 @@ public class WorkspaceConfigSection extends GenericPanel<Workspace> {
                 } catch (CommitException e) {
                     logger.error("Commit failed",e);
                     getSession().error(e.getMessage());
-                } finally {
+                } catch (BackingStoreException e) {
+                	logger.error("Failed to delete project preferences",e);
+                    getSession().error(e.getMessage());
+				} finally {
                     transaction.close();
                 }
             }
