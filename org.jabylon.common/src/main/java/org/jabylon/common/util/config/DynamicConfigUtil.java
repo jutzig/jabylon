@@ -82,28 +82,6 @@ public class DynamicConfigUtil {
     }
 
     public static List<IConfigurationElement> getConfigTabs() {
-//		if (configTabs == null) {
-//			configTabs = new ArrayList<IConfigurationElement>();
-//			IConfigurationElement[] elements = RegistryFactory.getRegistry().getConfigurationElementsFor("org.jabylon.ui.configTab");
-//			for (IConfigurationElement iConfigurationElement : elements) {
-//				configTabs.add(iConfigurationElement);
-//			}
-//			Collections.sort(configTabs, new Comparator<IConfigurationElement>() {
-//
-//				@Override
-//				public int compare(IConfigurationElement element1, IConfigurationElement element2) {
-//					int precedence1 = 0;
-//					int precedence2 = 0;
-//					String pre1 = element1.getAttribute("precedence");
-//					String pre2 = element2.getAttribute("precedence");
-//					if (pre1 != null && !pre1.isEmpty())
-//						precedence1 = Integer.valueOf(pre1);
-//					if (pre2 != null && !pre2.isEmpty())
-//						precedence2 = Integer.valueOf(pre2);
-//					return precedence2 - precedence1;
-//				}
-//			});
-//		}
         return configTabs.get();
     }
 }

@@ -51,46 +51,52 @@
        point="org.jabylon.rest.ui.configTab">
     <tab
           name="General"
+          precedence="10"
           tabID="general">
     </tab>
     <tab
           name="Scanning"
+          precedence="20"
           tabID="scanning">
     </tab>
     <tab
           name="Checks"
+          precedence="30"
           tabID="checks">
     </tab>
     <tab
           name="Team"
+          precedence="40"
           tabID="team">
     </tab>
     <tab
           name="Versions"
+          precedence="50"
           tabID="versions">
     </tab>
     <tab
-          name="Checks"
-          tabID="checks">
-    </tab>
-    <tab
           name="Users"
+          precedence="60"
           tabID="users">
     </tab>
     <tab
           name="Groups"
+          precedence="70"
           tabID="groups">
     </tab>
     <tab
           name="Roles"
+          precedence="80"
           tabID="roles">
     </tab>
     <tab
           name="Permissions"
+          precedence="90"
           tabID="permissions">
     </tab>
     <tab
           name="Index"
+          precedence="100"
           tabID="index">
     </tab>
  </extension>

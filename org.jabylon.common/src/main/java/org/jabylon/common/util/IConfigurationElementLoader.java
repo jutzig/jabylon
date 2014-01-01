@@ -9,6 +9,8 @@
 package org.jabylon.common.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -25,6 +27,20 @@ public class IConfigurationElementLoader implements Function<String, List<IConfi
         for (IConfigurationElement iConfigurationElement : elements) {
             result.add(iConfigurationElement);
         }
+        Collections.sort(result, new Comparator<IConfigurationElement>() {
+        	@Override
+        	public int compare(IConfigurationElement o1, IConfigurationElement o2) {
+        		String precedence1 = o1.getAttribute("precedence");
+        		if(precedence1==null)
+        			precedence1 = "999999";
+        		
+        		String precedence2 = o2.getAttribute("precedence");
+        		if(precedence2==null)
+        			precedence2 = "999999";
+        		
+        		return Integer.parseInt(precedence1) - Integer.parseInt(precedence2);
+        	}
+		});
         return result;
     }
 }
