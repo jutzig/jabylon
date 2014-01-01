@@ -36,5 +36,9 @@ public class GlobalResources {
      * shows a confirmation dialog before leaving a page with modifications
      */
     public static final ResourceReference JS_WARN_WHEN_DIRTY = new WebContextUrlResourceReference("js/warnWhenDirty.js");
-
+    
+    public static final ResourceReference IMG_WORKSPACE_SETTINGS = new WebContextUrlResourceReference("img/icons/workspaceSettings.png");
+    public static final ResourceReference IMG_SYSTEM_SETTINGS = new WebContextUrlResourceReference("img/icons/systemSettings.gif");
+    public static final ResourceReference IMG_SECURITY_SETTINGS = new WebContextUrlResourceReference("img/icons/securitySettings.gif");
+    public static final ResourceReference IMG_LOG_SETTINGS = new WebContextUrlResourceReference("img/icons/logSettings.png");
 }
