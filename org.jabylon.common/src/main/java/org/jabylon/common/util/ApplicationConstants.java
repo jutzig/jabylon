@@ -15,4 +15,10 @@ public class ApplicationConstants {
     public static final String OLD_PLUGIN_ID = "de.jutzig.jabylon.common";
     public static final String CONFIG_NODE = PLUGIN_ID+"/config";
     public static final String USER_NODE = PLUGIN_ID+"/config/user";
+    /**
+     * jobs under this node will be processed by the scheduler
+     */
+    public static final String JOBS_NODE_NAME = "jobs";
+
+    
 }

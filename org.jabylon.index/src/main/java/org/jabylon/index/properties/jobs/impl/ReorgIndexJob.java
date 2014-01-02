@@ -16,6 +16,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -49,10 +51,27 @@ import org.slf4j.LoggerFactory;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@Component(enabled=true,immediate=true)
+@Service
 public class ReorgIndexJob implements JobExecution {
 
 
     private static final Logger logger = LoggerFactory.getLogger(ReorgIndexJob.class);
+    
+    
+    @org.apache.felix.scr.annotations.Property(value="true", name=JobExecution.PROP_JOB_ACTIVE)
+    private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
+    
+    /** at 2 am every day*/
+    @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
+    private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
+    
+    @org.apache.felix.scr.annotations.Property(value="Rebuild Index", name=JobExecution.PROP_JOB_NAME)
+    private String NAME = JobExecution.PROP_JOB_NAME;
+    
+    /** at 2 am every day*/
+    @org.apache.felix.scr.annotations.Property(value="Rebuilds the search index completely", name=JobExecution.PROP_JOB_DESCRIPTION)
+    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;     
 
     /**
      *

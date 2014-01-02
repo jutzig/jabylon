@@ -49,5 +49,4 @@ public class JobContextUtil {
     {
         return (RepositoryConnector) jobContext.get(JabylonJob.CONNECTOR_KEY);
     }
-
 }

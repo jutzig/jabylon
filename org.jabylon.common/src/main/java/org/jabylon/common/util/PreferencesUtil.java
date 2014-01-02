@@ -96,6 +96,15 @@ public class PreferencesUtil {
     {
         return scopeFor(null);
     }
+    
+    /**
+     * 
+     * @return the jabylon root preference node
+     */
+    public static Preferences rootScope()
+    {
+        return InstanceScope.INSTANCE.getNode(ApplicationConstants.PLUGIN_ID);
+    }
 
     public static void deleteNode(Preferences node) throws BackingStoreException
     {

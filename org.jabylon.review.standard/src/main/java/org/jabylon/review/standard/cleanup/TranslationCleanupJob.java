@@ -14,12 +14,11 @@ package org.jabylon.review.standard.cleanup;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
@@ -32,16 +31,35 @@ import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.review.standard.ReviewActivator;
 import org.jabylon.scheduler.JobContextUtil;
 import org.jabylon.scheduler.JobExecution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
+@Component(enabled=true,immediate=true)
+@Service
 public class TranslationCleanupJob implements JobExecution {
 
 
     private static final Logger logger = LoggerFactory.getLogger(TranslationCleanupJob.class);
-
+    
+    @org.apache.felix.scr.annotations.Property(value="false", name=JobExecution.PROP_JOB_ACTIVE)
+    private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
+    
+    /** at 2 am every day*/
+    @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
+    private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
+    
+    @org.apache.felix.scr.annotations.Property(value="Translation Cleanup", name=JobExecution.PROP_JOB_NAME)
+    private String NAME = JobExecution.PROP_JOB_NAME;
+    
+    /** at 2 am every day*/
+    @org.apache.felix.scr.annotations.Property(value="Deletes translations that are no longer referenced in the template file", name=JobExecution.PROP_JOB_DESCRIPTION)
+    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;    
+    
+    
     /**
      *
      */

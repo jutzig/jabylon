@@ -24,5 +24,25 @@ public interface JobExecution {
 
     boolean retryOnError();
 
+    
+    /**
+     * the property for the schedule (cron syntax)
+     */
+    public static final String PROP_JOB_SCHEDULE = "schedule";
+    
+    /**
+     * boolean property to decide if a job is active or inactive
+     */
+    public static final String PROP_JOB_ACTIVE = "active";
+    
+    /**
+     * a human readable description of this job
+     */
+    public static final String PROP_JOB_DESCRIPTION = "description";
 
+    /**
+     * a human readable name for this job
+     */
+    public static final String PROP_JOB_NAME = "name";
+    
 }
