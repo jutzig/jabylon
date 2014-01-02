@@ -22,9 +22,23 @@ public class AttachablePreferences implements Preferences, Serializable{
     private static final long serialVersionUID = 1L;
     private Map<String, Preferences> children;
     private Map<String, Object> values = new HashMap<String, Object>();
+    private Preferences parent;
+	private String name;
+    
+    public AttachablePreferences() {
+    	this(null,"attachable");
+	}
+    
+    public AttachablePreferences(Preferences parent, String name) {
+    	this.parent = parent;
+    	this.name = name;
+	}
+    
     @Override
     public String absolutePath() {
-        return "";
+    	if(parent!=null)
+    		return parent.absolutePath() + "/" + name();
+        return "/" + name();
     }
 
     @Override
@@ -56,43 +70,73 @@ public class AttachablePreferences implements Preferences, Serializable{
 
     @Override
     public boolean getBoolean(String arg0, boolean arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (Boolean) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+        {
+        	Object value = values.get(arg0);
+        	if (value instanceof String) {
+        		return Boolean.parseBoolean((String) value);
+			}
+        	return (Boolean)value;
+        }
         return arg1;
     }
 
     @Override
     public byte[] getByteArray(String arg0, byte[] arg1) {
-        if(values!=null && values.containsKey(arg1))
+        if(values!=null && values.containsKey(arg0))
             return (byte[]) values.get(arg0);
         return arg1;
     }
 
     @Override
     public double getDouble(String arg0, double arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (Double) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+        {
+        	Object value = values.get(arg0);
+        	if (value instanceof String) {
+        		return Double.parseDouble((String) value);
+			}
+        	return (Double)value;
+        }
         return arg1;
     }
 
     @Override
     public float getFloat(String arg0, float arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (Float) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+        {
+        	Object value = values.get(arg0);
+        	if (value instanceof String) {
+        		return Float.parseFloat((String) value);
+			}
+        	return (Float)value;
+        }
         return arg1;
     }
 
     @Override
     public int getInt(String arg0, int arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (Integer) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+        {
+        	Object value = values.get(arg0);
+        	if (value instanceof String) {
+        		return Integer.parseInt((String) value);
+			}
+        	return (Integer)value;
+        }
         return arg1;
     }
 
     @Override
     public long getLong(String arg0, long arg1) {
-        if(values!=null && values.containsKey(arg1))
-            return (Long) values.get(arg0);
+        if(values!=null && values.containsKey(arg0))
+        {
+        	Object value = values.get(arg0);
+        	if (value instanceof String) {
+        		return Long.parseLong((String) value);
+			}
+        	return (Long)value;
+        }
         return arg1;
     }
 
@@ -106,7 +150,7 @@ public class AttachablePreferences implements Preferences, Serializable{
 
     @Override
     public String name() {
-        return "attachable";
+        return name;
     }
 
     @Override
@@ -134,8 +178,7 @@ public class AttachablePreferences implements Preferences, Serializable{
 
     @Override
     public Preferences parent() {
-        // TODO Auto-generated method stub
-        return null;
+        return parent;
     }
 
     @Override
@@ -196,6 +239,11 @@ public class AttachablePreferences implements Preferences, Serializable{
     public void sync() throws BackingStoreException {
         // TODO Auto-generated method stub
 
+    }
+    
+    @Override
+    public String toString() {
+    	return absolutePath();
     }
 
 
