@@ -14,13 +14,14 @@ body {
 
 /** this is to allow nested paragraphs in the navbar (logout link) */
 .navbar .nav > li > p > a {
-  color: #777777;
+  color: #999999;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   /** text-shadow: 0 1px 0 #ffffff; */
 }
 
 .navbar .nav > li > p > a:focus,
 .navbar .nav > li > p > a:hover {
-  color: #333333;
+  color: white;
   text-decoration: none;
   background-color: transparent;
 }
