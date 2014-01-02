@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
+import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 
 import com.google.common.base.Function;
@@ -55,15 +56,16 @@ public class WritableEObjectModel<T extends CDOObject> extends EObjectModel<T> {
 
     }
 
-    private static final class LookupFunction<X> implements Serializable, Function<CDOID, X> {
+    private static final class LookupFunction<X> implements Serializable, Function<Long, X> {
 
         /** field <code>serialVersionUID</code> */
         private static final long serialVersionUID = -7243181664341900603L;
 
         @SuppressWarnings("unchecked")
         @Override
-        public X apply(CDOID from) {
-            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolveWithTransaction(from);
+        public X apply(Long from) {
+        	CDOID id = CDOIDUtil.createLong(from);
+            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolveWithTransaction(id);
             return (X) cdoObject;
         }
 

@@ -13,12 +13,12 @@ import java.io.Serializable;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
+import org.eclipse.emf.cdo.common.id.CDOIDUtil;
+import org.jabylon.rest.ui.Activator;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-
-import org.jabylon.rest.ui.Activator;
 
 
 public abstract class AbstractEMFModel<T extends CDOObject, R>
@@ -28,12 +28,12 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
     private static final long serialVersionUID = 1L;
 
     protected Supplier<T> modelSupplier;
-    protected CDOID id;
+    protected long id;
 
     public AbstractEMFModel(T model)
     {
         super();
-        id=model.cdoID();
+        id=CDOIDUtil.getLong(model.cdoID());
         this.modelSupplier = Suppliers.memoize(new LoadingSupplier<T>(model));
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
     }
 
-    private static final class LookupFunction<X> implements Serializable, Function<CDOID, X>
+    private static final class LookupFunction<X> implements Serializable, Function<Long, X>
     {
 
         /** field <code>serialVersionUID</code> */
@@ -63,9 +63,10 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
         @SuppressWarnings("unchecked")
         @Override
-        public X apply(CDOID from)
+        public X apply(Long from)
         {
-            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolve(from);
+        	CDOID id = CDOIDUtil.createLong(from);
+            CDOObject cdoObject = Activator.getDefault().getRepositoryLookup().resolve(id);
             return (X)cdoObject;
         }
     }
@@ -76,7 +77,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
         private static final long serialVersionUID = 1L;
         private transient T instance;
         private LookupFunction<T> function;
-        private CDOID id;
+        private long id;
 
 
 
@@ -86,7 +87,7 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
             function = new LookupFunction<T>();
         }
         
-        public LoadingSupplier(CDOID id) {
+        public LoadingSupplier(long id) {
             super();
             this.instance = null;
             this.id = id;
@@ -109,13 +110,13 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
     public boolean equals(Object obj) {
         if (obj instanceof AbstractEMFModel) {
             AbstractEMFModel other = (AbstractEMFModel) obj;
-            return other.id.equals(id);
+            return other.id ==  id;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return (int)id;
     }
 }
