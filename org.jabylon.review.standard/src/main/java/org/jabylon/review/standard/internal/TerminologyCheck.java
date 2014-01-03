@@ -168,11 +168,11 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 
     @Override
     public String getDescription() {
-        return "Checks that words that appear in the Terminology project in the template are properly translated";
+        return "%terminology.check.description";
     }
 
     @Override
     public String getName() {
-        return "Terminology Check";
+        return "%terminology.check.name";
     }
 }

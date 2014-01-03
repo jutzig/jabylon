@@ -89,12 +89,12 @@ public class ExistenceCheck implements ReviewParticipant {
 
     @Override
     public String getDescription() {
-        return "Checks if there is any keys in the translated files that are not available in the template";
+        return "%existance.check.description";
     }
 
     @Override
     public String getName() {
-        return "Existence Check";
+        return "%existance.check.name";
     }
 
 }

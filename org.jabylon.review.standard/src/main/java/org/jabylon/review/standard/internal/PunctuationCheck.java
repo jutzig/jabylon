@@ -149,12 +149,12 @@ public class PunctuationCheck implements ReviewParticipant {
 
     @Override
     public String getDescription() {
-        return "Checks if the punctuation between template and translation is consitent (brackets, braces, quotes, double quotes, parenthesis,..)";
+        return "%punctuation.check.description";
     }
 
     @Override
     public String getName() {
-        return "Punctuation Check";
+        return "%punctuation.check.name";
     }
 
 }

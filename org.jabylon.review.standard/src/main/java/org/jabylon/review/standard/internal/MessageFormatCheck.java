@@ -96,12 +96,12 @@ public class MessageFormatCheck implements ReviewParticipant {
 
 	@Override
 	public String getDescription() {
-		return "Checks if message format parameters ({0},{1},...) are consistent between template and translation";
+		return "%messageformat.check.description";
 	}
 
 	@Override
 	public String getName() {
-		return "MessageFormat Check";
+		return "%messageformat.check.name";
 	}
 
 //TODO: unit test for this:

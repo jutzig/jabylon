@@ -66,11 +66,11 @@ public class ReorgIndexJob implements JobExecution {
     @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
     private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
     
-    @org.apache.felix.scr.annotations.Property(value="Rebuild Index", name=JobExecution.PROP_JOB_NAME)
+    @org.apache.felix.scr.annotations.Property(value="%reorg.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
     
     /** at 2 am every day*/
-    @org.apache.felix.scr.annotations.Property(value="Rebuilds the search index completely", name=JobExecution.PROP_JOB_DESCRIPTION)
+    @org.apache.felix.scr.annotations.Property(value="%reorg.job.description", name=JobExecution.PROP_JOB_DESCRIPTION)
     private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;     
 
     /**

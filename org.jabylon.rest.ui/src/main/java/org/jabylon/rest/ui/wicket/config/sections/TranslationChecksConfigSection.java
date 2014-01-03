@@ -15,19 +15,18 @@ import javax.inject.Inject;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.rest.ui.model.BooleanPreferencesPropertyModel;
+import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.security.CommonPermissions;
+import org.osgi.service.prefs.Preferences;
 
-public class TranslationChecksConfigSection extends GenericPanel<Project> {
+public class TranslationChecksConfigSection extends BasicPanel<Project> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,9 +44,9 @@ public class TranslationChecksConfigSection extends GenericPanel<Project> {
 
                 BooleanPreferencesPropertyModel propertyModel = new BooleanPreferencesPropertyModel(prefs, participant.getID(), false);
                 CheckBox checkBox = new CheckBox("check",propertyModel);
-                container.add(new Label("check-label",participant.getName()));
+                container.add(new Label("check-label",nls(participant.getClass(),participant.getName())));
                 container.add(checkBox);
-                container.add(new Label("description",participant.getDescription()));
+                container.add(new Label("description",nls(participant.getClass(),participant.getDescription())));
             }
         }
         add(repeater);

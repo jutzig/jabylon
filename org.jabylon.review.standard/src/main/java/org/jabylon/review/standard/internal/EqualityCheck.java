@@ -61,12 +61,12 @@ public class EqualityCheck implements ReviewParticipant {
 
     @Override
     public String getDescription() {
-        return "Checks if the template and translation are identical (copy/paste)";
+        return "%equality.check.description";
     }
 
     @Override
     public String getName() {
-        return "Equality Check";
+        return "%equality.check.name";
     }
 
 }

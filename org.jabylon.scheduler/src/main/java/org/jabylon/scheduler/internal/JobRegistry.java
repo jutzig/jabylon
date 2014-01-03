@@ -245,7 +245,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			return;
 		TriggerKey triggerKey = new TriggerKey(jobID);
 		try {
-			if (scheduler.checkExists(triggerKey))
+			if (scheduler.isStarted() && scheduler.checkExists(triggerKey))
 				scheduler.unscheduleJob(triggerKey);
 		} catch (SchedulerException e) {
 			logger.error("Failed to delete job " + jobID, e);

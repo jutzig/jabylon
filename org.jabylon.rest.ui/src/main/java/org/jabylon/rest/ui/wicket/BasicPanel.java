@@ -17,6 +17,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -103,5 +104,18 @@ public class BasicPanel<T>extends GenericPanel<T> {
     	return new StringResourceModel(key, this, null, parameters);
     }
 
+
+    /**
+     * creates a new OSGiStringResourceModel for the given key with <code>this</code> as the component.
+     * 
+     * @param service the service implementation. Its bundle will be used to compute the localization
+     * @param key
+     * @param parameters
+     * 	The parameters to substitute using a Java MessageFormat object
+     * @return
+     */
+    protected StringResourceModel nls(Class<?> service, String key, Object... parameters) {
+    	return new OSGiStringResourceModel(service, key, this, null, parameters);
+    }
 
 }

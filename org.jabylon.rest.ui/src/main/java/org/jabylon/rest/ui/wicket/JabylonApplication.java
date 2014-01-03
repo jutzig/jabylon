@@ -35,6 +35,7 @@ import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EMFFactoryConverter;
+import org.jabylon.rest.ui.model.OSGiAwareBundleStringResourceLoader;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.LoginPage;
 import org.jabylon.rest.ui.security.PermissionBasedAuthorizationStrategy;
@@ -83,6 +84,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8"); 
         OSGiInjector injector = new OSGiInjector(this);
         getBehaviorInstantiationListeners().add(injector);
+        getResourceSettings().getStringResourceLoaders().add(new OSGiAwareBundleStringResourceLoader());
         getApplicationSettings().setInternalErrorPage(CustomInternalErrorPage.class);
         getComponentInstantiationListeners().add(injector);
         getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());

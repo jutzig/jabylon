@@ -52,11 +52,11 @@ public class TranslationCleanupJob implements JobExecution {
     @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
     private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
     
-    @org.apache.felix.scr.annotations.Property(value="Translation Cleanup", name=JobExecution.PROP_JOB_NAME)
+    @org.apache.felix.scr.annotations.Property(value="%cleanup.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
     
     /** at 2 am every day*/
-    @org.apache.felix.scr.annotations.Property(value="Deletes translations that are no longer referenced in the template file", name=JobExecution.PROP_JOB_DESCRIPTION)
+    @org.apache.felix.scr.annotations.Property(value="%cleanup.job.description", name=JobExecution.PROP_JOB_DESCRIPTION)
     private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;    
     
     
