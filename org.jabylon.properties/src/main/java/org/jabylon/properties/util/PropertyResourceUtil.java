@@ -125,13 +125,12 @@ public class PropertyResourceUtil {
                 }
             }
             // otherwise add it to the template language
-            else {
-                if (parent.getChild(descriptor.getName()) == null) {
-                    parent.getChildren().add(descriptor);
-                    descriptor.setName(descriptor.getLocation().lastSegment());
-                    version.getTemplate().getDescriptors().add(descriptor);
-                }
-            }
+			else if (parent.getChild(descriptor.getName()) == null) {
+				parent.getChildren().add(descriptor);
+				descriptor.setName(descriptor.getLocation().lastSegment());
+				version.getTemplate().getDescriptors().add(descriptor);
+				descriptor.updatePercentComplete();
+			}
         }
     }
 

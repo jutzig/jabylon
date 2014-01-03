@@ -157,9 +157,7 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
         }
         case COPY:
         case ADD: {
-
-            scanner.partialScan(new PartialScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,
-                    singleFile);
+            scanner.partialScan(new PartialScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,singleFile);
             break;
         }
         case MODIFY: {
