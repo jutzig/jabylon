@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.URI;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.URIHandler;
+import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.Workspace;
 
 /**
@@ -46,8 +47,6 @@ public class WorkspaceURIHandler implements URIHandler {
         CDOView view = session.openView();
         CDOResource workspaceResource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
         workspace = (Workspace) workspaceResource.getContents().get(0);
-//		CDOResource userResource = view.getResource(ServerConstants.USERS_RESOURCE);
-//		userManagement = (UserManagement) userResource.getContents().get(0);
     }
 
     @Deactivate
@@ -91,6 +90,21 @@ public class WorkspaceURIHandler implements URIHandler {
         if (uri==null || uri.isEmpty() || uri.segmentCount()==0)
             return true;
         return "workspace".equals(uri.segment(0));
+    }
+    
+    @Override
+    public boolean canHandle(Object o) {
+    	return o instanceof Resolvable;
+    }
+    
+    @SuppressWarnings("rawtypes")
+	@Override
+    public URI toURI(Object o) {
+    	if (o instanceof Resolvable) {
+			Resolvable r = (Resolvable) o;
+			return r.toURI();
+		}
+    	return null;
     }
 
 }

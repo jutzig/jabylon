@@ -68,11 +68,11 @@ public class ResourcePage<T extends Resolvable<?, ?>> extends GenericResolvableP
 
     @SuppressWarnings("unchecked")
     protected T doLookup(List<String> segments) {
-        List<String> modified = new ArrayList<String>(segments);
-        if(!segments.isEmpty() && !segments.get(0).equals("workspace"))
-            modified.add(0, "workspace");
+    	List<String> modified = new ArrayList<String>(segments);
+    	if(segments.isEmpty() || !segments.get(0).equals("workspace"))
+    		modified.add(0, "workspace");
+        
         URI uri = URI.createHierarchicalURI(modified.toArray(new String[modified.size()]), null, null);
-
         return (T) getLookup().resolve(uri);
     }
 

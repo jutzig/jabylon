@@ -100,9 +100,13 @@ public class GenericResolvablePage<T  extends CDOObject> extends GenericPage<T> 
     private String getURIPath(List<String> segments) {
         StringBuilder builder = new StringBuilder();
         for (String string : segments) {
-            builder.append("/");
             builder.append(URI.encodeSegment(string, true));
+            builder.append("/");
         }
+        if(builder.length()>0)
+        	builder.setLength(builder.length()-1);
+        else
+        	builder.append("workspace");
         return builder.toString();
     }
 

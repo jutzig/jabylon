@@ -13,18 +13,23 @@ package org.jabylon.common.util;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.URI;
+import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
-import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.ScanConfiguration;
-import org.jabylon.properties.Workspace;
-import org.jabylon.users.User;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -38,34 +43,46 @@ public class PreferencesUtil {
     public static final String SCAN_CONFIG_EXCLUDE = "exclude";
     public static final String SCAN_CONFIG_MASTER_LOCALE = "master.locale";
     public static final String NODE_CHECKS = "checks";
+    public static final Supplier<URIResolver> resolver = Suppliers.memoize(Suppliers.compose(new Function<BundleContext, URIResolver>() {
+    	@Override
+    	public URIResolver apply(BundleContext input) {
+    		ServiceReference<URIResolver> reference = input.getServiceReference(URIResolver.class);
+    		if(reference!=null)
+    			return input.getService(reference);
+    		return null;
+    	}
+	}, Suppliers.ofInstance(FrameworkUtil.getBundle(PreferencesUtil.class).getBundleContext())));
+
+	private static boolean isMigrated = false;
 
     private PreferencesUtil()
     {
         //hide utility class constructor
     }
 
-    @SuppressWarnings("rawtypes")
-	public static Preferences scopeFor(EObject eobject)
+	public static Preferences scopeFor(Object eobject)
     {
-        migrate();
+    	migrate();
+    	URI uri = resolver.get().getURI(eobject);
+    	String path = uri.toString();
         IEclipsePreferences rootNode = InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
-        if (eobject==null || eobject instanceof Workspace) {
-            return rootNode.node("root");
-        }
-        if (eobject instanceof User) {
-            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ApplicationConstants.USER_NODE);
-            User user = (User) eobject;
-            return node.node(user.getName());
-
-        }
-        else if (eobject instanceof Resolvable) {
-            Resolvable resolvable = (Resolvable) eobject;
-            return rootNode.node(resolvable.relativePath().path());
-        }
-        return rootNode;
+        return rootNode.node(path);
+    }
+    
+    /**
+     * converts a pref node path to a URI that can be resolved by an {@link URIResolver}
+     * @param prefs
+     * @return
+     */
+    public static URI toLookupURI(Preferences prefs) {
+    	String absolutePath = prefs.absolutePath();
+    	absolutePath = absolutePath.substring(ApplicationConstants.CONFIG_NODE.length());
+    	return URI.createURI(absolutePath);
     }
 
 	private static void migrate() {
+		if(isMigrated)
+			return;
 		IEclipsePreferences oldNode = InstanceScope.INSTANCE.getNode(ApplicationConstants.OLD_PLUGIN_ID);
         try {
 			if(oldNode.nodeExists("config"))
@@ -75,6 +92,17 @@ public class PreferencesUtil {
 				cloneNode(oldNode, newNode);
 				deleteNode(oldNode.node("config"));
 			}
+			IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
+			String[] childrenNames = node.childrenNames();
+			for (String child : childrenNames) {
+				if(child.equals("workspace") || child.equals("security"))
+					continue;
+				LOGGER.info("Migrating {} to {}",child,"workspace/"+child);
+				Preferences old = node.node(child);
+				cloneNode(old, node.node("workspace/"+child));
+				deleteNode(old);
+			}
+			isMigrated = true;
 		} catch (BackingStoreException e) {
 			LOGGER.error("Failed to check if old config needs to be migrated");
 		}
@@ -94,7 +122,7 @@ public class PreferencesUtil {
 
     public static Preferences workspaceScope()
     {
-        return scopeFor(null);
+        return InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE+"/workspace");
     }
     
     /**

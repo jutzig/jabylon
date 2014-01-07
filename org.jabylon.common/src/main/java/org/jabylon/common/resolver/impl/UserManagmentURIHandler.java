@@ -11,7 +11,9 @@
  */
 package org.jabylon.common.resolver.impl;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 
 import org.apache.felix.scr.annotations.Activate;
@@ -29,6 +31,7 @@ import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.resolver.URIHandler;
 import org.jabylon.users.UserManagement;
+import org.jabylon.users.UsersPackage;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -104,15 +107,27 @@ public class UserManagmentURIHandler implements URIHandler {
     private boolean matches(Object object, String segment) {
         if (object instanceof EObject) {
             EObject eobject = (EObject) object;
-            EStructuralFeature feature = eobject.eClass().getEStructuralFeature("name");
-            if(feature==null)
-                return false;
-            return segment.equals(eobject.eGet(feature));
+            String name = getSegmentName(eobject);
+            if(name==null)
+            	return false;
+            return name.equals(segment);
         }
         return false;
     }
 
-    public void bindRepositoryConnector(RepositoryConnector connector) {
+    private String getSegmentName(EObject object) {
+    	if (object instanceof UserManagement) {
+			return SECURITY_URI_PREFIX;
+			
+		}
+    	EStructuralFeature feature = object.eClass().getEStructuralFeature("name");
+        if(feature==null)
+            return null;
+        return (String) object.eGet(feature);
+		
+	}
+
+	public void bindRepositoryConnector(RepositoryConnector connector) {
         this.repositoryConnector = connector;
     }
 
@@ -125,6 +140,52 @@ public class UserManagmentURIHandler implements URIHandler {
         if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
             return false;
         return SECURITY_URI_PREFIX.equals(uri.segment(0));
+    }
+    
+    @Override
+    public boolean canHandle(Object o) {
+    	if (o instanceof EObject) {
+			EObject eobject = (EObject) o;
+			return eobject.eClass().getEPackage().equals(UsersPackage.eINSTANCE);
+		}
+    	if (o instanceof EStructuralFeature.Setting) {
+			EStructuralFeature.Setting setting = (EStructuralFeature.Setting) o;
+			return setting.getEStructuralFeature().getEType().getEPackage().equals(UsersPackage.eINSTANCE);
+		}
+    	return false;
+    }
+    
+    @Override
+    public URI toURI(Object o) {
+    	Deque<String> segments = new ArrayDeque<String>();
+    	if (o instanceof EStructuralFeature.Setting) {
+			EStructuralFeature.Setting setting = (EStructuralFeature.Setting) o;
+			o = setting.getEObject();
+			segments.add(setting.getEStructuralFeature().getName());
+		}
+    	if (o instanceof EObject) {
+			EObject object = (EObject) o;
+			while(true) {
+				segments.push(getSegmentName(object));
+				EStructuralFeature eContainingFeature = object.eContainingFeature();
+				if(eContainingFeature==null)
+					break;
+				else
+				{
+					segments.push(eContainingFeature.getName());
+					object = object.eContainer();
+				}
+			}
+			StringBuilder builder = new StringBuilder();
+			for (String segment : segments) {
+				builder.append(segment);
+				builder.append("/");
+			}
+			if(builder.length()>0)
+				builder.setLength(builder.length()-1);
+			return URI.createURI(builder.toString());
+		}
+    	return null;
     }
 
 }

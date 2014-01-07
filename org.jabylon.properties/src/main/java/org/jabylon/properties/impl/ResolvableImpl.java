@@ -293,7 +293,7 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
             object = object.eContainer();
         }
 
-        return URI.createHierarchicalURI(null, null, null, segments.toArray(new String[segments.size()]),null,null);
+        return URI.createHierarchicalURI(segments.toArray(new String[segments.size()]),null,null);
     }
 
     /**

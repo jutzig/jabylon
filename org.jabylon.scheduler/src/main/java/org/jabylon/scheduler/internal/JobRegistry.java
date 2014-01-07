@@ -234,8 +234,6 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	@Override
 	public void removed(NodeChangeEvent event) {
 		Preferences child = event.getChild();
-		IEclipsePreferences prefs = toEclipsePreferences(child);
-		prefs.removePreferenceChangeListener(this);
 		String jobID = child.name();
 		removeJob(jobID);
 	}
@@ -245,7 +243,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			return;
 		TriggerKey triggerKey = new TriggerKey(jobID);
 		try {
-			if (scheduler.isStarted() && scheduler.checkExists(triggerKey))
+			if (scheduler.isStarted() && !scheduler.isShutdown() && scheduler.checkExists(triggerKey))
 				scheduler.unscheduleJob(triggerKey);
 		} catch (SchedulerException e) {
 			logger.error("Failed to delete job " + jobID, e);

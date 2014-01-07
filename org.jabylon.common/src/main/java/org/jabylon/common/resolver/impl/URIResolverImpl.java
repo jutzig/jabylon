@@ -66,11 +66,42 @@ public class URIResolverImpl implements URIResolver {
     public Object resolve(URI uri) {
         for (URIHandler handler : handlers) {
             if(handler.canHandle(uri))
-                return handler.resolve(uri);
+            {
+            	Object resolved = handler.resolve(uri);
+//            	URI internal = internalGetURI(resolved);
+//				if(!internal.equals(uri))
+//					throw new IllegalStateException(internal + " != " + uri);   
+				return resolved;
+            }
         }
         return null;
 
     }
+    
+
+
+	public URI internalGetURI(Object o) {
+		for (URIHandler handler : handlers) {
+			if(handler.canHandle(o))
+			{
+				return handler.toURI(o);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public URI getURI(Object o) {
+		URI uri = internalGetURI(o);
+		if(uri==null)
+			return null;
+		//sanity check. Can be removed later
+//		Object resolved = resolve(uri);
+//		if(resolved == null)
+//			throw new IllegalStateException("handler is not sane");
+		return uri;
+		
+	}
 
     /*
      * (non-Javadoc)
@@ -115,6 +146,5 @@ public class URIResolverImpl implements URIResolver {
     public CDOObject resolveWithTransaction(CDOID id) {
         return session.openTransaction().getObject(id);
     }
-
 
 }

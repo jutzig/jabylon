@@ -15,5 +15,9 @@ public interface URIHandler {
     boolean canHandle(URI uri);
 
     Object resolve(URI uri);
+    
+    boolean canHandle(Object o);
+    
+    URI toURI(Object o);
 
 }

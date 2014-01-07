@@ -21,5 +21,5 @@ public interface URIResolver {
 
     CDOObject resolveWithTransaction(CDOID id);
 
-
+    URI getURI(Object o);
 }
