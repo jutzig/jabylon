@@ -69,7 +69,7 @@ public class JabylonFilter extends BridgeFilter {
 			target.mkdirs();
 			Set<String> paths = getServletContext().getResourcePaths(source);
 			for (String string : paths) {
-				log("copying "+string);
+				//log("copying "+string);
 				copyResources(string, new File(target, string.substring(source.length())));
 			}
 		} else {
@@ -86,9 +86,9 @@ public class JabylonFilter extends BridgeFilter {
 					read = stream.read(buffer);
 				}
 			} catch (FileNotFoundException e) {
-				log("Target file not found", e);
+				e.printStackTrace();
 			} catch (IOException e) {
-				log("failed to copy "+source, e);
+				e.printStackTrace();
 			} finally {
 				try {
 					if (stream != null)
