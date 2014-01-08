@@ -20,7 +20,7 @@ Jabylon can be a great help if you are working on a software project that needs 
  * automatic translation checks
  * tight integration with source code management systems to synchronize and automatically commit new translations
      * supports multiple branches
-     * built-in support for [Git](http://git-scm.com/) and [CVS](http://savannah.nongnu.org/projects/cvs) 
+     * built-in support for [Git](http://git-scm.com/), [Subversion](http://subversion.apache.org/) and [CVS](http://savannah.nongnu.org/projects/cvs) 
      * plug-in interface for other SCMs
  * full text search
  * fine grained access rights
