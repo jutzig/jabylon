@@ -86,7 +86,7 @@ public class ReorgIndexJob implements JobExecution {
     }
 
     @Override
-    public void run(Map<String, Object> jobContext) throws Exception {
+    public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
             RepositoryConnector connector = JobContextUtil.getRepositoryConnector(jobContext);
             indexWorkspace(connector, new NullProgressMonitor());
     }
@@ -166,5 +166,11 @@ public class ReorgIndexJob implements JobExecution {
          }
          long duration = (System.currentTimeMillis() - time) / 1000;
          logger.info("Search Index Reorg finished. Took {} seconds",duration);
-    }    
+    }
+
+
+	@Override
+	public String getID() {
+		return "job.reorg.index";
+	}    
 }

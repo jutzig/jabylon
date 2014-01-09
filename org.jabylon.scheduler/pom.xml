@@ -64,6 +64,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>resources</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
@@ -87,9 +92,9 @@
         	<groupId>org.eclipse.emf.cdo</groupId>
         	<artifactId>net4j</artifactId>
         </dependency>
-        <!-- <dependency> <groupId>javax.security</groupId> <artifactId>jaas</artifactId>
-            <version>1.0.01</version> </dependency> -->
-        <!-- <dependency> <groupId>org.eclipse.jetty.orbit</groupId> <artifactId>javax.security.auth.message</artifactId>
-            <version>1.0.0.v201108011116</version> <type>orbit</type> </dependency> -->
+        <dependency>
+        	<groupId>org.eclipse.equinox</groupId>
+        	<artifactId>common</artifactId>
+        </dependency>
     </dependencies>
 </project>

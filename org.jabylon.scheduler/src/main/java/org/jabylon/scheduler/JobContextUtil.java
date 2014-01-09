@@ -16,7 +16,6 @@ import java.util.Map;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
-
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.scheduler.internal.JabylonJob;
 
@@ -48,5 +47,11 @@ public class JobContextUtil {
     public static RepositoryConnector getRepositoryConnector(Map<String, Object> jobContext)
     {
         return (RepositoryConnector) jobContext.get(JabylonJob.CONNECTOR_KEY);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static <T> T getDomainObject(Map<String, Object> jobContext)
+    {
+    	return (T) jobContext.get(JabylonJob.DOMAIN_OBJECT_KEY);
     }
 }

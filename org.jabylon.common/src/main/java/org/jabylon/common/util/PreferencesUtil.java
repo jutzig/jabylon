@@ -187,4 +187,9 @@ public class PreferencesUtil {
         configuration.setMasterLocale(node.get(SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral()));
         return configuration;
     }
+    
+    public static Preferences getNodeForJob(Preferences context, String jobID)
+    {
+    	return context.node(ApplicationConstants.JOBS_NODE_NAME).node(jobID);
+    }
 }

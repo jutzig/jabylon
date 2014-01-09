@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -70,7 +71,7 @@ public class TranslationCleanupJob implements JobExecution {
      * @see org.jabylon.scheduler.JobExecution#run(java.util.Map)
      */
     @Override
-    public void run(Map<String, Object> jobContext) throws Exception {
+    public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
         logger.info("Starting translation cleanup job");
         CDOView view = JobContextUtil.openView(jobContext);
         try {
@@ -147,5 +148,10 @@ public class TranslationCleanupJob implements JobExecution {
     public boolean retryOnError() {
         return false;
     }
+
+	@Override
+	public String getID() {
+		return "job.translation.cleanup";
+	}
 
 }

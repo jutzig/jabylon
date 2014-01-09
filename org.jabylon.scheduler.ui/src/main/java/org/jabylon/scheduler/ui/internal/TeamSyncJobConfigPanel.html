@@ -1,0 +1,17 @@
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
+	<div wicket:id="update-cron-group">
+		<input type="text" wicket:id="update-cron"> <a target="_blank" href="http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger"><wicket:message key="cron.syntax.label"/></a>
+	</div>
+	<div wicket:id="update-cron-enabled-group">
+		<input type="checkbox" wicket:id="update-cron-enabled"> <wicket:message key="update.cron.enabled.label"/>
+	</div>
+ 	<div wicket:id="commit-cron-group">
+		<input type="text" wicket:id="commit-cron">  <a target="_blank" href="http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger"><wicket:message key="cron.syntax.label"/></a>
+	</div>
+	<div wicket:id="commit-cron-enabled-group">
+		<input type="checkbox" wicket:id="commit-cron-enabled"> <wicket:message key="commit.cron.enabled.label"/>
+	</div>
+</wicket:panel>
+</html>

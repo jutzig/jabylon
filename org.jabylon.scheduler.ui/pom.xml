@@ -1,12 +1,98 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>de.jutzig.jabylon.scheduler.ui</artifactId>
-    <packaging>eclipse-plugin</packaging>
+    <artifactId>scheduler.ui</artifactId>
+    <packaging>bundle</packaging>
 
     <parent>
-        <groupId>de.jutzig.jabylon</groupId>
+        <groupId>org.jabylon</groupId>
         <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+
+    <properties>
+        <bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
+        <bundle.namespace>${project.groupId}</bundle.namespace>
+        <swt.variant>unknown</swt.variant>
+    </properties>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory></directory>
+                <includes>
+                    <include>plugin.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cdo.connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>${project.groupId}</groupId>
+        	<artifactId>rest.ui</artifactId>
+        	<version>${project.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>${project.groupId}</groupId>
+        	<artifactId>scheduler</artifactId>
+        	<version>${project.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.quartz-scheduler</groupId>
+        	<artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.core</groupId>
+        	<artifactId>runtime</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.osgi</groupId>
+        	<artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf</groupId>
+        	<artifactId>cdo</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.eclipse.emf.cdo</groupId>
+        	<artifactId>net4j</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.wicket</groupId>
+        	<artifactId>wicket-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -81,6 +81,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.jabylon</groupId>
+            <artifactId>scheduler.ui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.jabylon</groupId>
 			<artifactId>rest.api</artifactId>

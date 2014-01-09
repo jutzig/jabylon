@@ -35,6 +35,7 @@
 		<module>org.jabylon.rest.ui</module>
 		<module>org.jabylon.review.standard</module>
 		<module>org.jabylon.scheduler</module>
+		<module>org.jabylon.scheduler.ui</module>
 		<module>org.jabylon.security</module>
 		<module>org.jabylon.team.git</module>
 		<module>org.jabylon.users</module>

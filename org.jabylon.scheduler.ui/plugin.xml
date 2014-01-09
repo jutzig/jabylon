@@ -2,24 +2,21 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.jutzig.jabylon.ui.configTab">
+         point="org.jabylon.rest.ui.configTab">
       <tab
             name="Jobs"
-            precedence="2"
-            tabID="de.jutzig.jabylon.scheduler.ui.job.config">
+            precedence="110"
+            tabID="jobs">
       </tab>
    </extension>
    <extension
-         point="de.jutzig.jabylon.ui.config">
-      <configSection
-            id="de.jutzig.jabylon.scheduler.ui.job.config.section"
-            objectClass="de.jutzig.jabylon.properties.Workspace"
-            section="de.jutzig.jabylon.scheduler.ui.internal.JobConfigSection"
-            tab="de.jutzig.jabylon.scheduler.ui.job.config">
-         <permission
-               requires="GLOBAL_EDIT_PROJECTS">
-         </permission>
-      </configSection>
+         point="org.jabylon.rest.ui.config">
+      <section
+            name="Team Scheduling"
+            objectClass="org.jabylon.properties.ProjectVersion"
+            section="org.jabylon.scheduler.ui.internal.TeamSyncJobConfigPanel$TeamSyncJobConfigSection"
+            tab="jobs">
+      </section>
    </extension>
 
 </plugin>

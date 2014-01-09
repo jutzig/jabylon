@@ -13,17 +13,14 @@ package org.jabylon.scheduler;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
 public interface JobExecution {
-
-    public void run(Map<String, Object> jobContext) throws Exception;
-
-    boolean retryOnError();
-
     
     /**
      * the property for the schedule (cron syntax)
@@ -45,4 +42,10 @@ public interface JobExecution {
      */
     public static final String PROP_JOB_NAME = "name";
     
+    
+    public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception;
+    
+    boolean retryOnError();
+    
+    public String getID();
 }

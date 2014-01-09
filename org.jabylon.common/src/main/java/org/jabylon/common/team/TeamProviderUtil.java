@@ -67,6 +67,4 @@ public class TeamProviderUtil {
         return null;
     }
 
-
-
 }
