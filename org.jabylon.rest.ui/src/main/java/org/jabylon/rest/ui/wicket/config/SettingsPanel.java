@@ -166,7 +166,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 			}
         };
 
-        ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions) {
+        ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions, false, "settings") {
 
             private static final long serialVersionUID = 1L;
 
@@ -255,7 +255,8 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         return user;
     }
 
-    private List<ITab> loadTabExtensions(Preferences preferences) {
+    @SuppressWarnings({ "unused", "unchecked", "rawtypes" })
+	private List<ITab> loadTabExtensions(Preferences preferences) {
 
         List<IConfigurationElement> configurationElements = DynamicConfigUtil.getConfigTabs();
         ArrayListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);
