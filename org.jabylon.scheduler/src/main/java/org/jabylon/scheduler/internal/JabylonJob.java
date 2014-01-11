@@ -14,7 +14,9 @@ package org.jabylon.scheduler.internal;
 import java.util.concurrent.TimeUnit;
 
 import org.jabylon.common.progress.DefaultProgression;
+import org.jabylon.common.progress.Progression;
 import org.jabylon.scheduler.JobExecution;
+import org.jabylon.scheduler.JobInstance;
 import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -27,10 +29,12 @@ import org.slf4j.LoggerFactory;
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class JabylonJob implements InterruptableJob {
+public class JabylonJob implements InterruptableJob, JobInstance {
 
     private static final String KEY_RETRY_COUNT = "count";
 	private Thread thread;
+	private DefaultProgression monitor;
+	private JobExecutionContext context;
     public static final String CONNECTOR_KEY = "repository.connector";
     /** the execution service instance */
     public static final String EXECUTION_KEY = "execution";
@@ -47,6 +51,7 @@ public class JabylonJob implements InterruptableJob {
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+    	this.context = context;
         this.thread = Thread.currentThread();
         long time = System.currentTimeMillis();
         JobDataMap dataMap = context.getMergedJobDataMap();
@@ -66,7 +71,7 @@ public class JabylonJob implements InterruptableJob {
         if(runnable==null)
         	throw new IllegalStateException("No Job Execution was found");
         try {
-        	DefaultProgression monitor = new DefaultProgression();
+        	monitor = new DefaultProgression();
         	context.setResult(monitor);
             runnable.run(monitor, context.getMergedJobDataMap().getWrappedMap());
             LOG.info("Job {} finished in {}ms",runnable,System.currentTimeMillis()-time);
@@ -84,6 +89,8 @@ public class JabylonJob implements InterruptableJob {
         		
         	}
             throw new JobExecutionException(e,runnable.retryOnError());
+        } finally{
+        	this.thread = null;
         }
 
     }
@@ -93,10 +100,29 @@ public class JabylonJob implements InterruptableJob {
      */
     @Override
     public void interrupt() throws UnableToInterruptJobException {
+    	if(monitor!=null)
+    		monitor.setCanceled(true);
         if(thread!=null)
             thread.interrupt();
 
     }
+
+	@Override
+	public String getID() {
+		return context.getJobDetail().getKey().getName();
+	}
+
+	@Override
+	public Progression getProgress() {
+		return monitor;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getDomainObject() {
+		JobDataMap dataMap = context.getMergedJobDataMap();
+		return (T) dataMap.get(DOMAIN_OBJECT_KEY);
+	}
     
 
 }

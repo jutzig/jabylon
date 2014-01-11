@@ -45,9 +45,9 @@ public class TeamUpdateJob implements JobExecution {
 	@org.apache.felix.scr.annotations.Property(value = "false", name = JobExecution.PROP_JOB_ACTIVE)
 	private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
 
-	/** at 2 am every day */
-	@Property(value = "0 2 0 * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
-	private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
+	/** every hour */
+	@Property(value = "0 0 * * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
+	public String DEFAULT_SCHEDULE = "0 0 * * * ?";
 
 	@Property(value = "%update.job.name", name = JobExecution.PROP_JOB_NAME)
 	private String NAME = JobExecution.PROP_JOB_NAME;

@@ -36,9 +36,9 @@ public class TeamCommitJob implements JobExecution {
 	@org.apache.felix.scr.annotations.Property(value = "false", name = JobExecution.PROP_JOB_ACTIVE)
 	private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
 
-	/** at 2 am every day */
-	@Property(value = "0 2 0 * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
-	private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
+	/** every hour, five minutes after the full hour */
+	@Property(value = "0 5 * * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
+	public String DEFAULT_SCHEDULE = "0 5 * * * ?";
 
 	@Property(value = "%commit.job.name", name = JobExecution.PROP_JOB_NAME)
 	private String NAME = JobExecution.PROP_JOB_NAME;

@@ -30,6 +30,7 @@ public class ControlGroup extends Border {
 	private Label help;
 	private FeedbackMessage feedback;
 	private Label feedbackLabel;
+	private Label extra;
 
 	public ControlGroup(final String id) {
 		this(id, Model.of(""), Model.of(""));
@@ -44,9 +45,16 @@ public class ControlGroup extends Border {
 
 		this.label = new Label("label", label);
 		this.help = new Label("help", help);
+		this.extra = new Label("extra-label", "");
+		extra.setVisible(false);
 		this.feedbackLabel = new Label("feedback", Model.of(""));
 
-		addToBorder(this.label, this.help, this.feedbackLabel);
+		addToBorder(this.label, this.help, this.feedbackLabel, this.extra);
+	}
+	
+	public void setExtraLabel(IModel<String> model) {
+		extra.setVisible(model.getObject()!=null && !model.getObject().isEmpty());
+		extra.setDefaultModel(model);
 	}
 
 	@Override

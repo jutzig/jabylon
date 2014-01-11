@@ -20,7 +20,6 @@ import org.eclipse.emf.cdo.view.CDOView;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.scheduler.internal.JabylonJob;
 import org.quartz.CronExpression;
-import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

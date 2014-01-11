@@ -11,7 +11,10 @@
  */
 package org.jabylon.scheduler.internal;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -23,6 +26,7 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
+import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
@@ -35,18 +39,25 @@ import org.jabylon.common.util.ApplicationConstants;
 import org.jabylon.common.util.AttachablePreferences;
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.scheduler.JobExecution;
+import org.jabylon.scheduler.JobInstance;
+import org.jabylon.scheduler.ScheduleServiceException;
+import org.jabylon.scheduler.SchedulerService;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +66,8 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Component(immediate = true, enabled = true)
-public class JobRegistry implements INodeChangeListener, IPreferenceChangeListener {
+@Service(SchedulerService.class)
+public class JobRegistry implements INodeChangeListener, IPreferenceChangeListener, SchedulerService {
 
 	private Scheduler scheduler;
 	
@@ -67,8 +79,17 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	@Reference
 	private URIResolver uriResolver;
 	
+	/**
+	 * jobDefinitions contains the actual service. Exactly one per service
+	 */
 	@Reference(referenceInterface=JobExecution.class,cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE,policy=ReferencePolicy.DYNAMIC,bind="bindJob",unbind="unbindJob")
 	private Map<String,JobExecution> jobDefinitions = new ConcurrentHashMap<String,JobExecution>();
+	
+	
+	/**
+	 * contains a mapping from job id to preference node that contains the settings.
+	 * There can be multiple instances per service in jobDefinitions as long as the each have a different preferences context
+	 */
 	private Map<String, Preferences> jobInstances = new ConcurrentHashMap<String, Preferences>();
 
 	public JobRegistry() {
@@ -165,11 +186,6 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			scheduler.scheduleJob(createJobDetails(node, jobID), trigger);
 		}
 	}
-
-	public void runNow(String jobID) throws SchedulerException {
-		scheduler.triggerJob(new JobKey(jobID));
-	}
-
 	private CronTrigger createSchedule(String jobID, Preferences prefs) {
 		String cron = prefs.get(JobExecution.PROP_JOB_SCHEDULE, null);
 		if (cron == null || cron.trim().isEmpty())
@@ -304,6 +320,55 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			return pref;
 		}
 		return null;
+	}
+
+	@Override
+	public Date nextExecution(Preferences jobConfig) throws ScheduleServiceException {
+		return nextExecution(jobConfig.absolutePath());
+	}
+
+	public Date nextExecution(String jobID) throws ScheduleServiceException {
+		Preferences settings = jobInstances.get(jobID);
+		if(settings!=null && settings.getBoolean(JobExecution.PROP_JOB_ACTIVE, false))
+		{
+			Trigger trigger;
+			try {
+				trigger = scheduler.getTrigger(new TriggerKey(jobID));
+				if(trigger!=null)
+					return trigger.getNextFireTime();
+			} catch (SchedulerException e) {
+				throw new ScheduleServiceException(e);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public List<JobInstance> getRunningJobs() throws ScheduleServiceException {
+		List<JobInstance> jobInstances = new ArrayList<JobInstance>();
+		try {
+			List<JobExecutionContext> jobs = scheduler.getCurrentlyExecutingJobs();
+			for (JobExecutionContext context : jobs) {
+				Job instance = context.getJobInstance();
+				if (instance instanceof JobInstance) {
+					JobInstance jobInstance = (JobInstance) instance;
+					jobInstances.add(jobInstance);
+				}
+			}
+		} catch (Exception e) {
+			throw new ScheduleServiceException(e);
+		}
+		return jobInstances;
+	}
+
+	@Override
+	public void trigger(Preferences jobConfig) throws ScheduleServiceException {
+		try {
+			scheduler.triggerJob(new JobKey(jobConfig.absolutePath()));
+		} catch (SchedulerException e) {
+			throw new ScheduleServiceException(e);
+		}
+		
 	}
 
 }

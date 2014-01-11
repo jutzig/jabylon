@@ -94,5 +94,9 @@
         	<groupId>org.apache.wicket</groupId>
         	<artifactId>wicket-core</artifactId>
         </dependency>
+        <dependency>
+        	<groupId>javax.inject</groupId>
+        	<artifactId>javax.inject</artifactId>
+        </dependency>
     </dependencies>
 </project>

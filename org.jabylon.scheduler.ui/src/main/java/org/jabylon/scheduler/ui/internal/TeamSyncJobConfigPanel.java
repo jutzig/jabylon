@@ -11,6 +11,13 @@
  */
 package org.jabylon.scheduler.ui.internal;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -27,10 +34,14 @@ import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.rest.ui.wicket.validators.CronValidator;
 import org.jabylon.scheduler.JobExecution;
+import org.jabylon.scheduler.ScheduleServiceException;
+import org.jabylon.scheduler.SchedulerService;
 import org.jabylon.scheduler.internal.jobs.TeamCommitJob;
 import org.jabylon.scheduler.internal.jobs.TeamUpdateJob;
 import org.jabylon.security.CommonPermissions;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -39,12 +50,18 @@ import org.osgi.service.prefs.Preferences;
 public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(TeamSyncJobConfigPanel.class);
+	
+	@Inject
+	private transient SchedulerService scheduler;
 
 	public TeamSyncJobConfigPanel(String id, IModel<ProjectVersion> model, Preferences root) {
 		super(id, model);
 		Preferences updateConfig = PreferencesUtil.getNodeForJob(root, TeamUpdateJob.JOB_ID);
 		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, "");
 		ControlGroup updateCronGroup = new ControlGroup("update-cron-group", nls("update.cron.label"), nls("update.cron.description"));
+		
 		TextField<String> updateCron = new TextField<String>("update-cron", updateModel);
 		updateCron.add(new CronValidator());
 		updateCron.setConvertEmptyInputStringToNull(true);
@@ -71,7 +88,33 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		CheckBox commitEnabledCron = new CheckBox("commit-cron-enabled", commitEnabledModel);
 		commitEnabledCronGroup.add(commitEnabledCron);
 		add(commitEnabledCronGroup);
+		
+		if(scheduler!=null) {
+			try {
+				Date nextExecution = scheduler.nextExecution(updateConfig);
+				if(nextExecution!=null)
+				{
+					updateCronGroup.setExtraLabel(nls("next.schedule.label",format(nextExecution)));
+				}
+				nextExecution = scheduler.nextExecution(commitConfig);
+				if(nextExecution!=null)
+				{
+					commitCronGroup.setExtraLabel(nls("next.schedule.label",format(nextExecution)));
+				}
+			} catch (ScheduleServiceException e) {
+				LOG.warn("failed to retrieve next job execution for {}",updateConfig.absolutePath());
+			}
+			
+		}
 
+	}
+
+	protected String format(Date nextExecution) {
+		long current = System.currentTimeMillis();
+		//if it's less than 15 hours away only show the time
+		if(nextExecution.getTime()-current<TimeUnit.HOURS.toMillis(23))
+			return SimpleDateFormat.getTimeInstance(DateFormat.SHORT,getLocale()).format(nextExecution);
+		return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT,SimpleDateFormat.SHORT,getLocale()).format(nextExecution);
 	}
 
 	public static class TeamSyncJobConfigSection extends AbstractConfigSection<ProjectVersion>{
@@ -119,8 +162,5 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		}
 		
 	}
-	
-
-	
 
 }
