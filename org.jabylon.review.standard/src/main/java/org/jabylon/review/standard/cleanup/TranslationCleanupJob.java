@@ -30,7 +30,7 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.review.standard.ReviewActivator;
-import org.jabylon.scheduler.JobContextUtil;
+import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class TranslationCleanupJob implements JobExecution {
     @Override
     public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
         logger.info("Starting translation cleanup job");
-        CDOView view = JobContextUtil.openView(jobContext);
+        CDOView view = JobUtil.openView(jobContext);
         try {
             Resource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
             Workspace workspace = (Workspace) resource.getContents().get(0);

@@ -11,6 +11,7 @@
  */
 package org.jabylon.scheduler;
 
+import java.text.ParseException;
 import java.util.Map;
 
 import org.eclipse.emf.cdo.session.CDOSession;
@@ -18,12 +19,14 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.scheduler.internal.JabylonJob;
+import org.quartz.CronExpression;
+import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class JobContextUtil {
+public class JobUtil {
 
 
     public static CDOSession openSession(Map<String, Object> jobContext)
@@ -53,5 +56,9 @@ public class JobContextUtil {
 	public static <T> T getDomainObject(Map<String, Object> jobContext)
     {
     	return (T) jobContext.get(JabylonJob.DOMAIN_OBJECT_KEY);
+    }
+    
+    public static void validateCron(String cronExpression) throws ParseException{
+    	CronExpression.validateExpression(cronExpression);
     }
 }

@@ -42,7 +42,7 @@ import org.jabylon.index.properties.impl.PropertyFileAnalyzer;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
-import org.jabylon.scheduler.JobContextUtil;
+import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +87,7 @@ public class ReorgIndexJob implements JobExecution {
 
     @Override
     public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
-            RepositoryConnector connector = JobContextUtil.getRepositoryConnector(jobContext);
+            RepositoryConnector connector = JobUtil.getRepositoryConnector(jobContext);
             indexWorkspace(connector, new NullProgressMonitor());
     }
 

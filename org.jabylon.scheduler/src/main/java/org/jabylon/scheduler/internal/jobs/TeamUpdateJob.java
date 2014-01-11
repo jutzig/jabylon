@@ -28,7 +28,7 @@ import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertyFileDiff;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
-import org.jabylon.scheduler.JobContextUtil;
+import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,14 +73,14 @@ public class TeamUpdateJob implements JobExecution {
 	@Override
 	public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
 		
-        ProjectVersion version = JobContextUtil.getDomainObject(jobContext);
+        ProjectVersion version = JobUtil.getDomainObject(jobContext);
         TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
         if(provider==null)
         {
         	logger.error("Team Provider "+version.getParent().getTeamProvider()+" was not available. Update canceled");
         	return;
         }
-        CDOTransaction transaction = JobContextUtil.openTransaction(jobContext);
+        CDOTransaction transaction = JobUtil.openTransaction(jobContext);
         try {
             version = transaction.getObject(version);
             SubMonitor subMonitor = SubMonitor.convert(monitor, "Updating", 100);

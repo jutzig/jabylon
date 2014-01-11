@@ -20,7 +20,7 @@ import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.team.TeamProviderUtil;
 import org.jabylon.properties.ProjectVersion;
-import org.jabylon.scheduler.JobContextUtil;
+import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,10 +50,10 @@ public class TeamCommitJob implements JobExecution {
 	@Override
 	public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
 
-		ProjectVersion version = JobContextUtil.getDomainObject(jobContext);
+		ProjectVersion version = JobUtil.getDomainObject(jobContext);
 		TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
 		
-		CDOTransaction transaction = JobContextUtil.openTransaction(jobContext);
+		CDOTransaction transaction = JobUtil.openTransaction(jobContext);
 		try {
 			version = transaction.getObject(version);
 			SubMonitor subMonitor = SubMonitor.convert(monitor, "Committing", 100);

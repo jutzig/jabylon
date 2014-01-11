@@ -25,6 +25,7 @@ import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
+import org.jabylon.rest.ui.wicket.validators.CronValidator;
 import org.jabylon.scheduler.JobExecution;
 import org.jabylon.scheduler.internal.jobs.TeamCommitJob;
 import org.jabylon.scheduler.internal.jobs.TeamUpdateJob;
@@ -45,6 +46,7 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, "");
 		ControlGroup updateCronGroup = new ControlGroup("update-cron-group", nls("update.cron.label"), nls("update.cron.description"));
 		TextField<String> updateCron = new TextField<String>("update-cron", updateModel);
+		updateCron.add(new CronValidator());
 		updateCron.setConvertEmptyInputStringToNull(true);
 		updateCronGroup.add(updateCron);
 		add(updateCronGroup);
@@ -60,6 +62,7 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		ControlGroup commitCronGroup = new ControlGroup("commit-cron-group", nls("commit.cron.label"), nls("commit.cron.description"));
 		TextField<String> commitCron = new TextField<String>("commit-cron", commitModel);
 		commitCron.setConvertEmptyInputStringToNull(true);
+		commitCron.add(new CronValidator());
 		commitCronGroup.add(commitCron);
 		add(commitCronGroup);
 
