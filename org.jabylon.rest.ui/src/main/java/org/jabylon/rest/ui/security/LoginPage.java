@@ -9,21 +9,34 @@
 package org.jabylon.rest.ui.security;
 
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.properties.Resolvable;
 import org.jabylon.rest.ui.wicket.pages.GenericPage;
 
 public class LoginPage extends GenericPage<Resolvable<?, ?>> {
 
-    public LoginPage(PageParameters parameters) {
+	private static final long serialVersionUID = 2083924576041565751L;
+
+
+	public LoginPage(PageParameters parameters) {
         super(parameters);
-        SignInPanel panel = new SignInPanel("sign-in", true);
+        SignInPanel panel = new BootstrapSignInPanel("sign-in", true);
         panel.addOrReplace(new Label("feedback",""));
         add(panel);
     }
+    
+    @Override
+    public void renderHead(IHeaderResponse response) {
+
+//        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
+//        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("bootstrap/js/bootstrap.min.js"))));
+//        response.render(CssHeaderItem.forReference(new WebContextUrlResourceReference("css/main.css")));
+        super.renderHead(response);
+    }
+
 
     @Override
     protected IModel<Resolvable<?, ?>> createModel(PageParameters params) {

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<wicket:panel>
+		<span wicket:id="feedback"></span>
+		<form wicket:id="signInForm" class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="username"><wicket:message key="username.label">[Username]</wicket:message></label>
+				<div class="controls">
+					<input type="text" id="username" wicket:id="username"
+						placeholder="Username">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password"><wicket:message key="password.label">[Password]</wicket:message></label>
+				<div class="controls">
+					<input type="password" id="password" wicket:id="password"
+						placeholder="Password">
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox" wicket:id="rememberMeRow"> <input
+						type="checkbox" wicket:id="rememberMe"> <wicket:message key="remember.me.label">[Remember me]</wicket:message>
+					</label>
+					<button type="submit" class="btn btn-primary"><wicket:message key="sign.in.label">[Sign In]</wicket:message></button>
+					<input type="reset" wicket:message="value:reset.label" class="btn"/>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>
