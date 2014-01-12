@@ -13,7 +13,8 @@ package org.jabylon.scheduler.internal;
 
 import java.util.concurrent.TimeUnit;
 
-import org.jabylon.common.progress.DefaultProgression;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.jabylon.common.progress.Progression;
 import org.jabylon.scheduler.JobExecution;
 import org.jabylon.scheduler.JobInstance;
@@ -31,9 +32,10 @@ import org.slf4j.LoggerFactory;
  */
 public class JabylonJob implements InterruptableJob, JobInstance {
 
-    private static final String KEY_RETRY_COUNT = "count";
+    private static final int MAX_RETRIES = 5;
+	private static final String KEY_RETRY_COUNT = "count";
 	private Thread thread;
-	private DefaultProgression monitor;
+	private ProgressionImpl monitor;
 	private JobExecutionContext context;
     public static final String CONNECTOR_KEY = "repository.connector";
     /** the execution service instance */
@@ -61,7 +63,7 @@ public class JabylonJob implements InterruptableJob, JobInstance {
         int count = dataMap.getIntValue(KEY_RETRY_COUNT);
 
         // allow 5 retries
-        if(count >= 5){
+        if(count >= MAX_RETRIES){
             JobExecutionException e = new JobExecutionException("Retries exceeded");
             //make sure it doesn't run again
             LOG.error("Job "+runnable+" failed 5 times in a row. Deactivating");
@@ -71,7 +73,7 @@ public class JabylonJob implements InterruptableJob, JobInstance {
         if(runnable==null)
         	throw new IllegalStateException("No Job Execution was found");
         try {
-        	monitor = new DefaultProgression();
+        	monitor = new ProgressionImpl();
         	context.setResult(monitor);
             runnable.run(monitor, context.getMergedJobDataMap().getWrappedMap());
             LOG.info("Job {} finished in {}ms",runnable,System.currentTimeMillis()-time);
@@ -86,11 +88,14 @@ public class JabylonJob implements InterruptableJob, JobInstance {
 				} catch (InterruptedException e1) {
 					//nothing to do
 				}
-        		
         	}
+        	monitor.setStatus(new Status(IStatus.ERROR, "org.jabylon.common", null,e));
+            
             throw new JobExecutionException(e,runnable.retryOnError());
         } finally{
         	this.thread = null;
+        	if(!runnable.retryOnError() || count >= MAX_RETRIES)
+        		monitor.done();
         }
 
     }

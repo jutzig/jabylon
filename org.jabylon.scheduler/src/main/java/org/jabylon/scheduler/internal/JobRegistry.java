@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -35,6 +36,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jabylon.cdo.connector.RepositoryConnector;
+import org.jabylon.common.progress.ProgressService;
+import org.jabylon.common.progress.Progression;
+import org.jabylon.common.progress.RunnableWithProgress;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.util.ApplicationConstants;
 import org.jabylon.common.util.AttachablePreferences;
@@ -67,13 +71,16 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Component(immediate = true, enabled = true)
-@Service(SchedulerService.class)
-public class JobRegistry implements INodeChangeListener, IPreferenceChangeListener, SchedulerService {
+@Service({ProgressService.class,SchedulerService.class})
+public class JobRegistry implements INodeChangeListener, IPreferenceChangeListener, SchedulerService, ProgressService {
+
+	protected static final String ONETIME_GROUP = "onetime";
 
 	private Scheduler scheduler;
 	
 	public static final String PLUGIN_ID = "org.jabylon.scheduler";
 	private static final Logger logger = LoggerFactory.getLogger(JobRegistry.class);
+	private AtomicLong oneTimeJobs = new AtomicLong();
 
 	@Reference
 	private RepositoryConnector repositoryConnector;
@@ -206,9 +213,9 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	}
 
 	private JobDetail createJobDetails(Preferences element, String jobID) {
-		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(element.absolutePath()).withDescription(element.get(JobExecution.PROP_JOB_DESCRIPTION,null))
-				.storeDurably(true);
 		Preferences defaults = defaultsFor(element.name());
+		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(element.absolutePath()).withDescription(element.get(JobExecution.PROP_JOB_DESCRIPTION,defaults.get(JobExecution.PROP_JOB_DESCRIPTION, null)))
+				.storeDurably(true);
 		try {
 			String[] keys = element.keys();
 			for (String string : keys) {
@@ -221,6 +228,14 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		extras.put(JabylonJob.CONNECTOR_KEY,repositoryConnector);
 		extras.put(JabylonJob.EXECUTION_KEY, jobDefinitions.get(element.name()));
 		extras.put(JabylonJob.DOMAIN_OBJECT_KEY, getDomainObject(element));
+		builder.usingJobData(extras);
+		return builder.build();
+	}
+	
+	private JobDetail createOneShotJobDetails(RunnableWithProgress task, String id) {
+		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(new JobKey(id,ONETIME_GROUP));
+		JobDataMap extras = new JobDataMap();
+		extras.put(JabylonJob.EXECUTION_KEY, new RunnableWithProgressWrapper(task,getScheduler(),id));
 		builder.usingJobData(extras);
 		return builder.build();
 	}
@@ -380,6 +395,68 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			scheduler.triggerJob(new JobKey(jobConfig.absolutePath()));
 		} catch (SchedulerException e) {
 			throw new ScheduleServiceException(e);
+		}
+		
+	}
+
+	@Override
+	public long schedule(RunnableWithProgress task) {
+		long id = oneTimeJobs.getAndIncrement();
+		try {
+			scheduler.scheduleJob(createOneShotJobDetails(task,Long.toString(id)), TriggerBuilder.newTrigger().startNow().build());
+		} catch (SchedulerException e) {
+			throw new RuntimeException("failed to schedule task",e);
+		}
+		return id;
+	}
+
+	@Override
+	public Progression progressionOf(long id) {
+		try {
+			JobKey stringId = new JobKey(Long.toString(id),ONETIME_GROUP);
+			JobDetail jobDetail = getScheduler().getJobDetail(stringId);
+			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
+			for (JobExecutionContext context : jobs) {
+				if(context.getJobDetail().getKey().equals(stringId)) {
+					JabylonJob job = (JabylonJob)context.getJobInstance();
+					return job.getProgress();
+				}
+			}
+			//the job is not started yet
+			if(jobDetail!=null)
+			{
+				ProgressionImpl fakeProgression = new ProgressionImpl();
+				return fakeProgression;				
+			}
+		} catch (SchedulerException e) {
+			throw new RuntimeException("Failed to retrieve progression for id "+id,e);
+		}
+		return null;
+	}
+
+	@Override
+	public void cancel(long id) {
+		try {
+			JobKey stringId = new JobKey(Long.toString(id),ONETIME_GROUP);
+			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
+			for (JobExecutionContext context : jobs) {
+				if(context.getJobDetail().getKey().equals(stringId)) {
+					JabylonJob job = (JabylonJob)context.getJobInstance();
+					job.interrupt();
+				}
+			}
+			getScheduler().deleteJob(stringId);
+		} catch (SchedulerException e) {
+			throw new RuntimeException("Failed to retrieve progression for id "+id,e);
+		}
+	}
+
+	@Override
+	public void shutdown() {
+		try {
+			deactivate();
+		} catch (SchedulerException e) {
+			logger.error("Shutdown failed",e);
 		}
 		
 	}
