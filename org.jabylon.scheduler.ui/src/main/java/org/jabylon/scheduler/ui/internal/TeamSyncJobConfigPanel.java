@@ -59,7 +59,7 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 	public TeamSyncJobConfigPanel(String id, IModel<ProjectVersion> model, Preferences root) {
 		super(id, model);
 		Preferences updateConfig = PreferencesUtil.getNodeForJob(root, TeamUpdateJob.JOB_ID);
-		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, "");
+		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, TeamUpdateJob.DEFAULT_SCHEDULE);
 		ControlGroup updateCronGroup = new ControlGroup("update-cron-group", nls("update.cron.label"), nls("update.cron.description"));
 		
 		TextField<String> updateCron = new TextField<String>("update-cron", updateModel);
@@ -75,7 +75,7 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		add(updateEnabledCronGroup);
 		
 		Preferences commitConfig = PreferencesUtil.getNodeForJob(root, TeamCommitJob.JOB_ID);
-		PreferencesPropertyModel commitModel = new PreferencesPropertyModel(commitConfig, JobExecution.PROP_JOB_SCHEDULE, "");
+		PreferencesPropertyModel commitModel = new PreferencesPropertyModel(commitConfig, JobExecution.PROP_JOB_SCHEDULE, TeamCommitJob.DEFAULT_SCHEDULE);
 		ControlGroup commitCronGroup = new ControlGroup("commit-cron-group", nls("commit.cron.label"), nls("commit.cron.description"));
 		TextField<String> commitCron = new TextField<String>("commit-cron", commitModel);
 		commitCron.setConvertEmptyInputStringToNull(true);

@@ -47,7 +47,7 @@ public class TeamUpdateJob implements JobExecution {
 
 	/** every hour */
 	@Property(value = "0 0 * * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
-	public String DEFAULT_SCHEDULE = "0 0 * * * ?";
+	public static final String DEFAULT_SCHEDULE = "0 0 * * * ?";
 
 	@Property(value = "%update.job.name", name = JobExecution.PROP_JOB_NAME)
 	private String NAME = JobExecution.PROP_JOB_NAME;

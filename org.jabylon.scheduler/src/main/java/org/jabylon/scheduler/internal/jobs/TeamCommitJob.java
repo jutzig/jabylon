@@ -38,7 +38,7 @@ public class TeamCommitJob implements JobExecution {
 
 	/** every hour, five minutes after the full hour */
 	@Property(value = "0 5 * * * ?", name = JobExecution.PROP_JOB_SCHEDULE)
-	public String DEFAULT_SCHEDULE = "0 5 * * * ?";
+	public static final String DEFAULT_SCHEDULE = "0 5 * * * ?";
 
 	@Property(value = "%commit.job.name", name = JobExecution.PROP_JOB_NAME)
 	private String NAME = JobExecution.PROP_JOB_NAME;
