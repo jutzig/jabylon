@@ -33,6 +33,7 @@ import org.jabylon.common.progress.RunnableWithProgress;
 @Service(ProgressService.class)
 public class ProgressServiceImpl implements ProgressService {
 
+	//TODO: unify this with the scheduler
     private AtomicLong id = new AtomicLong();
     private ExecutorService pool = Executors.newFixedThreadPool(10);
     private Cache<Long, RunnableWrapper> jobs = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS).build();

@@ -136,9 +136,15 @@ public class PreferencesUtil {
 
     public static void deleteNode(Preferences node) throws BackingStoreException
     {
-    	Preferences parent = node.parent();
+    	Preferences parent = null;
+    	try {
+			parent = node.parent();
+		} catch (Exception e) {
+			LOGGER.warn("Failed to retrieve parent node",e);
+		}
     	node.removeNode();
-    	parent.flush();;
+    	if(parent!=null)
+    		parent.flush();
     }    
     
     
