@@ -166,7 +166,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 			}
         };
 
-        ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions, false, "settings") {
+        ClientSideTabbedPanel<ITab> tabContainer = new ClientSideTabbedPanel<ITab>("tabs", extensions, false, "settings/"+model.getObject().getClass().getSimpleName()) {
 
             private static final long serialVersionUID = 1L;
 
