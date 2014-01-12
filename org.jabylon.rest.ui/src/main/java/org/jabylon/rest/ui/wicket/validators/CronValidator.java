@@ -31,7 +31,8 @@ public class CronValidator implements IValidator<String> {
 	public void validate(IValidatable<String> validatable) {
 		String cron = validatable.getValue();
 		try {
-			JobUtil.validateCron(cron);
+			if(cron!=null && !cron.isEmpty())
+				JobUtil.validateCron(cron);
 		} catch (ParseException e) {
 			validatable.error(new ValidationError(e.getLocalizedMessage()));
 		}

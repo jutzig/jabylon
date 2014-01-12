@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
@@ -115,11 +116,13 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	}
 
 	public void bindJob(JobExecution execution, Map<String,Object> properties) {
-		AttachablePreferences prefs = new AttachablePreferences(PreferencesUtil.workspaceScope().node(ApplicationConstants.JOBS_NODE_NAME),execution.getID());
+		
+		Preferences prefs = PreferencesUtil.getNodeForJob(PreferencesUtil.workspaceScope(), execution.getID());
+		Preferences defaultPrefs = defaultsFor(execution.getID());
 		jobDefinitions.put(execution.getID(),execution);
 		Set<Entry<String, Object>> entrySet = properties.entrySet();
 		for (Entry<String, Object> entry : entrySet) {
-			prefs.put(entry.getKey(), entry.getValue().toString());
+			defaultPrefs.put(entry.getKey(), entry.getValue().toString());
 		}
 		try {
 			updateJob(prefs);
@@ -173,7 +176,8 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			//not yet activated
 			return;
 		String jobID = node.absolutePath();
-		boolean active = node.getBoolean(JobExecution.PROP_JOB_ACTIVE, false);
+		Preferences defaults = defaultsFor(node.name());
+		boolean active = node.getBoolean(JobExecution.PROP_JOB_ACTIVE, defaults.getBoolean(JobExecution.PROP_JOB_ACTIVE, false));
 		CronTrigger trigger = null;
 		try {
 			trigger = createSchedule(jobID, node);
@@ -186,8 +190,15 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			scheduler.scheduleJob(createJobDetails(node, jobID), trigger);
 		}
 	}
+	
+	protected Preferences defaultsFor(String jobID) {
+		Preferences defaultPrefs = DefaultScope.INSTANCE.getNode("org.jabylon.scheduler");
+		return defaultPrefs.node(jobID);
+	}
+	
 	private CronTrigger createSchedule(String jobID, Preferences prefs) {
-		String cron = prefs.get(JobExecution.PROP_JOB_SCHEDULE, null);
+		Preferences defaults = defaultsFor(prefs.name());
+		String cron = prefs.get(JobExecution.PROP_JOB_SCHEDULE, defaults.get(JobExecution.PROP_JOB_SCHEDULE, null));
 		if (cron == null || cron.trim().isEmpty())
 			return null;
 		return TriggerBuilder.newTrigger().forJob(prefs.absolutePath()).withIdentity(prefs.absolutePath()).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
@@ -197,10 +208,11 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	private JobDetail createJobDetails(Preferences element, String jobID) {
 		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(element.absolutePath()).withDescription(element.get(JobExecution.PROP_JOB_DESCRIPTION,null))
 				.storeDurably(true);
+		Preferences defaults = defaultsFor(element.name());
 		try {
 			String[] keys = element.keys();
 			for (String string : keys) {
-				builder.usingJobData(string, element.get(string, null));
+				builder.usingJobData(string, element.get(string, defaults.get(string, null)));
 			}
 		} catch (BackingStoreException e) {
 			logger.error("Failed to retrieve properties of node "+element,e);
@@ -329,7 +341,8 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 
 	public Date nextExecution(String jobID) throws ScheduleServiceException {
 		Preferences settings = jobInstances.get(jobID);
-		if(settings!=null && settings.getBoolean(JobExecution.PROP_JOB_ACTIVE, false))
+		Preferences defaults = defaultsFor(jobID.substring(jobID.lastIndexOf("/")+1));
+		if(settings!=null && settings.getBoolean(JobExecution.PROP_JOB_ACTIVE, defaults.getBoolean(JobExecution.PROP_JOB_ACTIVE, false)))
 		{
 			Trigger trigger;
 			try {
@@ -372,3 +385,4 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	}
 
 }
+
