@@ -56,15 +56,18 @@ import org.slf4j.LoggerFactory;
 public class ReorgIndexJob implements JobExecution {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(ReorgIndexJob.class);
+    public static final String JOB_ID = "job.reorg.index";
+
+
+	private static final Logger logger = LoggerFactory.getLogger(ReorgIndexJob.class);
     
     
     @org.apache.felix.scr.annotations.Property(value="true", name=JobExecution.PROP_JOB_ACTIVE)
-    private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
+    public static final String DEFAULT_ACTIVE = "true";
     
     /** at 2 am every day*/
     @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
-    private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
+    public static final String DEFAULT_SCHEDULE = "0 2 0 * * ?";
     
     @org.apache.felix.scr.annotations.Property(value="%reorg.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
@@ -171,6 +174,6 @@ public class ReorgIndexJob implements JobExecution {
 
 	@Override
 	public String getID() {
-		return "job.reorg.index";
+		return JOB_ID;
 	}    
 }

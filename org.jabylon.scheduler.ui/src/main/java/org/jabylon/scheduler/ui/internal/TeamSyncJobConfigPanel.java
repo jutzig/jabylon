@@ -61,7 +61,6 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 		Preferences updateConfig = PreferencesUtil.getNodeForJob(root, TeamUpdateJob.JOB_ID);
 		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, TeamUpdateJob.DEFAULT_SCHEDULE);
 		ControlGroup updateCronGroup = new ControlGroup("update-cron-group", nls("update.cron.label"), nls("update.cron.description"));
-		
 		TextField<String> updateCron = new TextField<String>("update-cron", updateModel);
 		updateCron.add(new CronValidator());
 		updateCron.setConvertEmptyInputStringToNull(true);

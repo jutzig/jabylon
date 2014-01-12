@@ -2,25 +2,36 @@
 
 <wicket:panel>
 
-    <div class="well">
-        <h4><wicket:message key="settings.heading">Indexer Settings</wicket:message></h4>
-        <span wicket:id="summary"></span>
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-primary" wicket:id="update-index">
-                            <i class="icon-edit"></i> <wicket:message key="IndexingConfigSection.update.index">Rebuild Index</wicket:message>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div wicket:id="progress" style="width: 400px">[Progress]</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<div class="well">
+		<h4>
+			<wicket:message key="settings.heading">Indexer Settings</wicket:message>
+		</h4>
+		<div wicket:id="index-cron-group">
+			<input type="text" wicket:id="index-cron"> <a target="_blank"
+				href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-06"><wicket:message
+					key="cron.syntax.label" /></a>
+		</div>
+		<div>
+			<span wicket:id="summary"></span>
+		</div>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<button type="button" class="btn btn-primary"
+							wicket:id="update-index">
+							<i class="icon-edit"></i>
+							<wicket:message key="IndexingConfigSection.update.index">Rebuild Index</wicket:message>
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6">
+						<div wicket:id="progress" style="width: 400px">[Progress]</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </wicket:panel>
 </html>
