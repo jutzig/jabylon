@@ -8,21 +8,17 @@
  */
 package org.jabylon.properties.util.scanner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-import org.junit.Test;
-
-import org.jabylon.properties.Project;
-import org.jabylon.properties.ProjectVersion;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.ScanConfiguration;
-import org.jabylon.properties.Workspace;
 import org.jabylon.properties.types.impl.JavaPropertyScanner;
+import org.junit.Test;
 
 public class WorkspaceScannerTest {
 
@@ -39,7 +35,7 @@ public class WorkspaceScannerTest {
                 filenames.add(file.getName());
 
             }
-        }, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), null);
+        }, baseDir, new JavaPropertyScanner(), PropertiesFactory.eINSTANCE.createScanConfiguration(), new NullProgressMonitor());
         int index = 0;
         assertEquals("messages.properties", filenames.get(index++));
         assertEquals("messages2.properties", filenames.get(index++));
@@ -64,7 +60,7 @@ public class WorkspaceScannerTest {
                 filenames.add(file.getName());
 
             }
-        }, baseDir, new JavaPropertyScanner(), configuration, null);
+        }, baseDir, new JavaPropertyScanner(), configuration, new NullProgressMonitor());
         int index = 0;
         assertEquals("messages.properties", filenames.get(index++));
         assertEquals("messages2.properties", filenames.get(index++));
@@ -89,7 +85,7 @@ public class WorkspaceScannerTest {
                 filenames.add(file.getName());
 
             }
-        }, baseDir, new JavaPropertyScanner(), configuration, null);
+        }, baseDir, new JavaPropertyScanner(), configuration, new NullProgressMonitor());
         assertEquals(1, filenames.size());
         int index = 0;
         assertEquals("messages_en_CA.properties", filenames.get(index++));
