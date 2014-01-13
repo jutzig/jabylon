@@ -11,6 +11,7 @@ package org.jabylon.rest.ui.wicket.components;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,8 +20,8 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 import org.eclipse.core.runtime.IStatus;
-
 import org.jabylon.common.progress.Progression;
+import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.ProgressionModel;
 
 public class ProgressPanel extends Panel {
@@ -35,7 +36,7 @@ public class ProgressPanel extends Panel {
         this.model = model;
         feedbackPanel = new CustomFeedbackPanel("feedbackPanel"); //$NON-NLS-1$
         add(feedbackPanel);
-
+        
         container = new WebMarkupContainer("container"); //$NON-NLS-1$
         add(container);
         WebComponent bar = new WebComponent("bar"); //$NON-NLS-1$
@@ -46,6 +47,17 @@ public class ProgressPanel extends Panel {
         Label subtask = new Label("subtask", getSubTaskModel(model)); //$NON-NLS-1$
         container.add(subtask);
         setVisible(false);
+        container.add(new AjaxLink<Void>("cancel") {
+
+			private static final long serialVersionUID = 3623515953111747368L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				Activator.getDefault().getProgressService().cancel(ProgressPanel.this.model.getId());
+				
+			}
+        	
+		});
     }
 
     private IModel<String> getWidthModel(final IModel<Progression> model) {

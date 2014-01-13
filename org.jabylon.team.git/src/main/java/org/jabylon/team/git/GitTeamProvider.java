@@ -20,6 +20,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jgit.api.AddCommand;
@@ -104,7 +105,7 @@ public class GitTeamProvider implements TeamProvider {
             fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
             fetchCommand.call();
             ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getName()+"^{tree}");
-
+            
             DiffCommand diff = git.diff();
             subMon.subTask("Caculating Diff");
             diff.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(20)));
@@ -117,14 +118,17 @@ public class GitTeamProvider implements TeamProvider {
                 reader.release();
             }
             diff.setNewTree(p);
-
+            checkCanceled(subMon);
             List<DiffEntry> diffs = diff.call();
             for (DiffEntry diffEntry : diffs) {
+            	checkCanceled(subMon);
                 updatedFiles.add(convertDiffEntry(diffEntry));
                 LOGGER.trace(diffEntry.toString());
             }
             if(!updatedFiles.isEmpty())
             {
+            	checkCanceled(subMon);
+            	//no more cancel after this point
                 ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getName()+"^{commit}");
                 LOGGER.info("Merging remote commit {} to {}/{}", new Object[]{lastCommitID,project.getName(),project.getParent().getName()});
                 //TODO: use rebase here?
@@ -155,7 +159,13 @@ public class GitTeamProvider implements TeamProvider {
         return updatedFiles;
     }
 
-    private PropertyFileDiff convertDiffEntry(DiffEntry diffEntry) {
+    private void checkCanceled(IProgressMonitor monitor) {
+    	if(monitor.isCanceled())
+    		throw new OperationCanceledException();
+		
+	}
+
+	private PropertyFileDiff convertDiffEntry(DiffEntry diffEntry) {
         PropertyFileDiff diff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
         diff.setOldPath(diffEntry.getOldPath());
         diff.setNewPath(diffEntry.getNewPath());
@@ -212,7 +222,7 @@ public class GitTeamProvider implements TeamProvider {
             clone.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             clone.setURI(stripUserInfo(uri).toString());
             clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
-
+            
             clone.call();
             subMon.done();
             if (monitor != null)
@@ -230,11 +240,13 @@ public class GitTeamProvider implements TeamProvider {
     public void commit(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
         try {
             Repository repository = createRepository(project);
+            SubMonitor subMon = SubMonitor.convert(monitor, "Commit", 100);
             Git git = new Git(repository);
             // AddCommand addCommand = git.add();
-            List<String> changedFiles = addNewFiles(git);
+            List<String> changedFiles = addNewFiles(git, subMon.newChild(30));
             if (!changedFiles.isEmpty())
             {
+            	checkCanceled(subMon);
             	CommitCommand commit = git.commit();
                 Preferences node = PreferencesUtil.scopeFor(project.getParent());
                 String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
@@ -244,15 +256,20 @@ public class GitTeamProvider implements TeamProvider {
                 commit.setCommitter(username, email);
                 commit.setMessage(message);
                 for (String path : changedFiles) {
+                	checkCanceled(subMon);
                     commit.setOnly(path);
+                    
                 }
                 commit.call();	
+                subMon.worked(10);
             }
             else
             {
             	LOGGER.info("No changed files, skipping commit phase");
             }
+            checkCanceled(subMon);
             PushCommand push = git.push();
+            push.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(60)));
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             String refSpecString = "refs/heads/{0}:refs/heads/{0}";
             refSpecString = MessageFormat.format(refSpecString, project.getName());
@@ -281,12 +298,16 @@ public class GitTeamProvider implements TeamProvider {
             throw new TeamProviderException(e);
         } catch (GitAPIException e) {
             throw new TeamProviderException(e);
+        } finally {
+        	if(monitor!=null)
+        		monitor.done();
         }
     }
 
 
 
-    private List<String> addNewFiles(Git git) throws IOException, GitAPIException {
+    private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
+    	monitor.beginTask("Creating Diff", 100);
         DiffCommand diffCommand = git.diff();
         AddCommand addCommand = git.add();
         List<String> changedFiles = new ArrayList<String>();
@@ -295,20 +316,25 @@ public class GitTeamProvider implements TeamProvider {
         List<DiffEntry> result = diffCommand.call();
         //TODO: delete won't work
         for (DiffEntry diffEntry : result) {
+        	checkCanceled(monitor);
             if(diffEntry.getChangeType()==ChangeType.ADD)
             {
                 addCommand.addFilepattern(diffEntry.getNewPath());
                 newFiles.add(diffEntry.getNewPath());
+                monitor.subTask(diffEntry.getNewPath());
             }
             else if(diffEntry.getChangeType()==ChangeType.MODIFY)
             {
+            	monitor.subTask(diffEntry.getOldPath());
                 changedFiles.add(diffEntry.getOldPath());
             }
+            monitor.worked(0);
         }
         if(!newFiles.isEmpty())
             addCommand.call();
 
         changedFiles.addAll(newFiles);
+        monitor.done();
         return changedFiles;
     }
 

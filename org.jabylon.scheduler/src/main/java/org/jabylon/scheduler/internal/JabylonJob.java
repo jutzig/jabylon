@@ -14,6 +14,7 @@ package org.jabylon.scheduler.internal;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.jabylon.common.progress.Progression;
 import org.jabylon.scheduler.JobExecution;
@@ -78,7 +79,10 @@ public class JabylonJob implements InterruptableJob, JobInstance {
             runnable.run(monitor, context.getMergedJobDataMap().getWrappedMap());
             LOG.info("Job {} finished in {}ms",runnable,System.currentTimeMillis()-time);
             dataMap.put(KEY_RETRY_COUNT, 0);
-        } catch (Exception e) {
+        } catch (OperationCanceledException e) {
+        	monitor.setStatus(new Status(IStatus.CANCEL, "org.jabylon.common", null,e));
+        }
+        catch (Exception e) {
         	dataMap.put(KEY_RETRY_COUNT, count);    			
         	if(runnable.retryOnError()) {
         		try {
@@ -94,21 +98,52 @@ public class JabylonJob implements InterruptableJob, JobInstance {
             throw new JobExecutionException(e,runnable.retryOnError());
         } finally{
         	this.thread = null;
+        	if(monitor.isCanceled() && monitor.getStatus()!=null) {
+        		//lower the severity if it was canceled
+        		IStatus status = monitor.getStatus();
+        		IStatus newStatus = new Status(IStatus.CANCEL, status.getPlugin(), status.getMessage());
+        		monitor.setStatus(newStatus);
+        	}
+        	log(monitor.getStatus());
         	if(!runnable.retryOnError() || count >= MAX_RETRIES)
         		monitor.done();
         }
 
     }
 
-    /* (non-Javadoc)
+    private void log(IStatus status) {
+    	int severity = status.getSeverity();
+    	switch (severity) {
+    	case IStatus.OK:
+    		LOG.debug("finished job {} : {}", getID(), status.getMessage());
+    		break;
+		case IStatus.CANCEL:
+			LOG.debug("canceled job "+getID() + " : "+ status.getMessage(),status.getException());
+			break;
+		case IStatus.WARNING:
+			LOG.warn("job "+getID() + " finished with warning: "+ status.getMessage(),status.getException());
+			break;
+		case IStatus.ERROR:
+			LOG.error("job "+getID() + " failed: "+ status.getMessage(),status.getException());
+			break;
+
+
+		default:
+			break;
+		}
+		
+	}
+
+	/* (non-Javadoc)
      * @see org.quartz.InterruptableJob#interrupt()
      */
     @Override
     public void interrupt() throws UnableToInterruptJobException {
     	if(monitor!=null)
     		monitor.setCanceled(true);
-        if(thread!=null)
-            thread.interrupt();
+    	//this seems to choke up CDO pretty badly, so it's deactivated for now
+//        if(thread!=null)
+//            thread.interrupt();
 
     }
 

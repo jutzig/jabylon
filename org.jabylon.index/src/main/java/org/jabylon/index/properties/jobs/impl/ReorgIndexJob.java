@@ -163,7 +163,7 @@ public class ReorgIndexJob implements JobExecution {
              {
                  session.close();
              }
-             if (!closed && IndexWriter.isLocked(writer.getDirectory())) {
+             if (!closed && writer!=null && IndexWriter.isLocked(writer.getDirectory())) {
                  IndexWriter.unlock(writer.getDirectory());
              }
          }

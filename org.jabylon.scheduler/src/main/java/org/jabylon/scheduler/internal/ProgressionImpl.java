@@ -11,7 +11,6 @@ package org.jabylon.scheduler.internal;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-
 import org.jabylon.common.progress.Progression;
 
 public class ProgressionImpl implements Progression, IProgressMonitor {
@@ -46,9 +45,8 @@ public class ProgressionImpl implements Progression, IProgressMonitor {
 
     @Override
     public void beginTask(String arg0, int arg1) {
-        totalWork = arg1;
+    	totalWork = arg1;
         taskName = arg0;
-
     }
 
     @Override

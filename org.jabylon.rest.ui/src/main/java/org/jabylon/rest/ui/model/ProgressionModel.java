@@ -23,11 +23,13 @@ public class ProgressionModel implements IModel<Progression> {
 
     private static final long serialVersionUID = 1L;
     protected Supplier<Progression> modelSupplier;
+	private long id;
 
 
     public ProgressionModel(long id)
     {
         this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
+        this.id = id;
     }
 
     @Override
@@ -35,10 +37,15 @@ public class ProgressionModel implements IModel<Progression> {
         //nothing to do
 
     }
+    
+    public long getId() {
+		return id;
+	}
 
     public void setTaskID(long id)
     {
         this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
+        this.id = id;
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.selectors.SelectorUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.jabylon.properties.ScanConfiguration;
 import org.jabylon.properties.types.PropertyScanner;
@@ -41,6 +42,7 @@ public class WorkspaceScanner {
             String[] files = ds.getIncludedFiles();
             subMon.setWorkRemaining(files.length);
             for (String f : files) {
+            	checkCanceled(monitor);
                 File file = new File(baseDir, f);
                 if(scanner.isTemplate(file, config)) {
                     subMon.subTask(f);
@@ -53,7 +55,13 @@ public class WorkspaceScanner {
             monitor.done();
     }
 
-    public void partialScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
+    private void checkCanceled(IProgressMonitor monitor) {
+    	if(monitor.isCanceled())
+    		throw new OperationCanceledException();
+		
+	}
+
+	public void partialScan(PropertyFileAcceptor acceptor, File baseDir, PropertyScanner scanner, ScanConfiguration config, File singleFile) {
         Project antProject = new org.apache.tools.ant.Project();
         FileSet fs = createFileSet(config);
         String[] excludes = fs.mergeExcludes(antProject);

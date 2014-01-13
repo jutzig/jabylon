@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.jabylon.common.progress.RunnableWithProgress;
 import org.jabylon.scheduler.JobExecution;
 import org.quartz.JobKey;
