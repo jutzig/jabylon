@@ -19,8 +19,13 @@
 		<repository>
 			<id>jabylon</id>
 			<name>jabylon</name>
-			<url>scp://nordmar.esd4j.org:7332/srv/sites/esd4j/jabylon/repository</url>
+			<url>scp://web.jabylon.org:221/srv/sites/jabylon/maven</url>
 		</repository>
+		<site>
+			<id>jabylon</id>
+			<name>jabylon</name>
+			<url>scp://web.jabylon.org:221/srv/sites/jabylon</url>
+		</site>
 	</distributionManagement>
 
 	<modules>
@@ -893,7 +898,7 @@
 	<repositories>
 		<repository>
 			<id>eclipse-indigo</id>
-			<url>http://esd4j.org/jabylon/repository</url>
+			<url>http://www.jabylon.org/maven</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
