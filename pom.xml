@@ -898,7 +898,7 @@
 	<repositories>
 		<repository>
 			<id>eclipse-indigo</id>
-			<url>http://esd4j.org/jabylon/repository</url>
+			<url>http://www.jabylon.org/maven</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
