@@ -30,7 +30,7 @@ public class CustomInternalErrorPage extends AbstractErrorPage {
 
 	public CustomInternalErrorPage() {
 		add(homePageLink("home"));
-		add(new ExternalLink("log", WicketUtil.getContextPath() + "settings/log"));
+		add(new ExternalLink("log", WicketUtil.getContextPath() + "/settings/log"));
 	}
 	
     @Override
