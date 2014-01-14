@@ -38,7 +38,7 @@ public class RunnableWithProgressWrapper implements JobExecution {
 				((ProgressionImpl) monitor).setStatus(status);
 		} 
 		finally {
-			scheduler.deleteJob(new JobKey(JobRegistry.ONETIME_GROUP,id));
+			scheduler.deleteJob(new JobKey(id));
 		}
 
 	}

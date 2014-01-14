@@ -58,7 +58,7 @@ public class JabylonJob implements InterruptableJob, JobInstance {
         this.thread = Thread.currentThread();
         long time = System.currentTimeMillis();
         JobDataMap dataMap = context.getMergedJobDataMap();
-        JobExecution runnable = (JobExecution) dataMap.get(EXECUTION_KEY);
+        JobExecution runnable = getExecutionObject();
         if(!dataMap.containsKey(KEY_RETRY_COUNT))
         	dataMap.put(KEY_RETRY_COUNT, 0);
         int count = dataMap.getIntValue(KEY_RETRY_COUNT);
@@ -163,6 +163,15 @@ public class JabylonJob implements InterruptableJob, JobInstance {
 		JobDataMap dataMap = context.getMergedJobDataMap();
 		return (T) dataMap.get(DOMAIN_OBJECT_KEY);
 	}
-    
 
+	@Override
+	public String getDescription() {
+		return context.getJobDetail().getDescription();
+	}
+	
+	@Override
+	public JobExecution getExecutionObject() {
+		return (JobExecution) context.getMergedJobDataMap().get(EXECUTION_KEY);
+	}
+    
 }

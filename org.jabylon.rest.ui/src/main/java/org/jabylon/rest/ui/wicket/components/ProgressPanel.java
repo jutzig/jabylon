@@ -100,7 +100,6 @@ public class ProgressPanel extends Panel {
 
         setVisible(true);
         container.setVisible(true);
-
         add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 
             private static final long serialVersionUID = 1L;
@@ -115,10 +114,10 @@ public class ProgressPanel extends Panel {
                 callback.progressStart(target, model);
                 Progression progression = model.getObject();
 
-                if (progression.isDone()) {
+                if (progression==null || progression.isDone()) {
                     // stop the self update
                     stop(target);
-                    if (!progression.getStatus().isOK()) {
+                    if (progression!=null && !progression.getStatus().isOK()) {
                         addFeedbackMessage(progression.getStatus());
                         container.setVisible(false);
 
@@ -132,12 +131,41 @@ public class ProgressPanel extends Panel {
         });
         if (getParent() != null) {
             target.add(getParent());
-        } else {
+        } else if(target!=null){
             target.add(this);
         }
     }
 
-    protected void addFeedbackMessage(IStatus status) {
+    public void start() {
+        setVisible(true);
+        container.setVisible(true);
+        add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onPostProcessTarget(AjaxRequestTarget target) {
+                started = true;
+                ProgressionModel model = getModel();
+                Progression progression = model.getObject();
+
+                if (progression==null || progression.isDone()) {
+                    // stop the self update
+                    stop(target);
+                    if (!progression.getStatus().isOK()) {
+                        addFeedbackMessage(progression.getStatus());
+                        container.setVisible(false);
+
+                    } else
+                        ProgressPanel.this.setVisible(false);
+                }
+            }
+
+        });
+		
+	}
+
+	protected void addFeedbackMessage(IStatus status) {
         if (status == null)
             return;
         String message = status.getMessage();

@@ -27,7 +27,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.net4j.CDONet4jSession;
@@ -42,8 +42,8 @@ import org.jabylon.index.properties.impl.PropertyFileAnalyzer;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
-import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
+import org.jabylon.scheduler.JobUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,8 +66,8 @@ public class ReorgIndexJob implements JobExecution {
     public static final String DEFAULT_ACTIVE = "true";
     
     /** at 2 am every day*/
-    @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
-    public static final String DEFAULT_SCHEDULE = "0 2 0 * * ?";
+    @org.apache.felix.scr.annotations.Property(value="0 0 2 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
+    public static final String DEFAULT_SCHEDULE = "0 0 2 * * ?";
     
     @org.apache.felix.scr.annotations.Property(value="%reorg.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
@@ -82,16 +82,10 @@ public class ReorgIndexJob implements JobExecution {
     public ReorgIndexJob() {
     }
 
-    protected static IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
-        Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
-        return new IndexWriter(directory, config);
-    }
-
     @Override
     public void run(IProgressMonitor monitor, Map<String, Object> jobContext) throws Exception {
             RepositoryConnector connector = JobUtil.getRepositoryConnector(jobContext);
-            indexWorkspace(connector, new NullProgressMonitor());
+            indexWorkspace(connector, monitor);
     }
 
     @Override
@@ -102,7 +96,7 @@ public class ReorgIndexJob implements JobExecution {
     
     private static void indexWorkspace(Workspace workspace, IndexWriter writer, IProgressMonitor monitor) throws CorruptIndexException, IOException {    	
         EList<Project> projects = workspace.getChildren();
-        SubMonitor submon = SubMonitor.convert(monitor, projects.size()*10);
+        SubMonitor submon = SubMonitor.convert(monitor,"Rebuilding Index", projects.size()*10);
         PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
         try{
         	for (Project project : projects) {
@@ -112,6 +106,7 @@ public class ReorgIndexJob implements JobExecution {
         		submon.setTaskName(MessageFormat.format(message, project.getName()));
         		TreeIterator<EObject> contents = project.eAllContents();
         		while (contents.hasNext()) {
+        			checkCanceled(monitor);
         			EObject next = contents.next();
         			if (next instanceof PropertyFileDescriptor) {
         				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) next;
@@ -131,14 +126,19 @@ public class ReorgIndexJob implements JobExecution {
         }
     }
     
-    public static void indexWorkspace(RepositoryConnector connector, IProgressMonitor monitor) throws CorruptIndexException, IOException {
+    private static void checkCanceled(IProgressMonitor monitor) {
+    	if(monitor.isCanceled())
+    		throw new OperationCanceledException();
+		
+	}
+
+	public static void indexWorkspace(RepositoryConnector connector, IProgressMonitor monitor) throws CorruptIndexException, IOException {
     	 long time = System.currentTimeMillis();
          logger.info("Reorg of search index started");
          IndexWriter writer = null;
          CDONet4jSession session = null;
-         boolean closed = false;
          try {
-             writer = createIndexWriter();
+             writer = IndexActivator.getDefault().obtainIndexWriter();
              writer.deleteAll();
              session = connector.createSession();
              CDOView view = session.openView();
@@ -146,26 +146,23 @@ public class ReorgIndexJob implements JobExecution {
              Workspace workspace = (Workspace) resource.getContents().get(0);
              indexWorkspace(workspace, writer, monitor);
              writer.commit();
-             writer.close();
-             closed = true;
          } catch (OutOfMemoryError error) {
              logger.error("Out of memory during index reorg",error);
              //As suggested by lucene documentation
              writer.close();
-             closed = true;
          } catch (Exception e) {
              logger.error("Exception during index reorg. Rolling back",e);
              if (writer != null)
                  writer.rollback();
              throw new IllegalStateException("Failed to write index",e);
          } finally {
+        	 if(monitor!=null)
+        		 monitor.done();
              if(session!=null)
              {
                  session.close();
              }
-             if (!closed && writer!=null && IndexWriter.isLocked(writer.getDirectory())) {
-                 IndexWriter.unlock(writer.getDirectory());
-             }
+             IndexActivator.getDefault().returnIndexWriter(writer);
          }
          long duration = (System.currentTimeMillis() - time) / 1000;
          logger.info("Search Index Reorg finished. Took {} seconds",duration);

@@ -16,27 +16,23 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
-import org.apache.lucene.util.Version;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.common.notify.Notification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.index.properties.IndexActivator;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.resources.changes.PropertiesListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 @Service
@@ -50,13 +46,6 @@ public class PropertyIndex extends Job implements PropertiesListener {
         writes = new ArrayBlockingQueue<DocumentTuple>(50);
     }
 
-    protected IndexWriter createIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
-        Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
-
-        IndexWriterConfig c = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
-
-        return new IndexWriter(directory, c);
-    }
 
     @Override
     public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
@@ -100,7 +89,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
     protected IStatus run(IProgressMonitor monitor) {
         IndexWriter writer = null;
         try {
-            writer = createIndexWriter();
+            writer = IndexActivator.getDefault().obtainIndexWriter();
             while (true) {
                 DocumentTuple documentTuple = writes.poll(2l,TimeUnit.MINUTES);
                 if (documentTuple == null)
@@ -141,8 +130,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
         	logger.warn("Interrupted while waiting for new index events",e);
 		} finally {
             try {
-                if (writer != null)
-                    writer.close();
+                IndexActivator.getDefault().returnIndexWriter(writer);
             } catch (CorruptIndexException e) {
                 logger.error("Exception while closing index writer",e);
             } catch (IOException e) {

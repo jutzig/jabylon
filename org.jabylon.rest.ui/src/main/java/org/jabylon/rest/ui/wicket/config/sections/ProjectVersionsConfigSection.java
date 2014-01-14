@@ -81,7 +81,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
                 item.setOutputMarkupId(true);
                 item.add(new Label("name", item.getModelObject().getName()));
                 item.add(new Label("summary", new StringResourceModel("ProjectVersionsConfigSection.summary", item, null, item.getModel().getObject().getChildren().size())));
-                progressModel = new ProgressionModel(-1);
+                progressModel = new ProgressionModel("");
                 final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
 
                 item.add(progressPanel);
@@ -161,7 +161,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
 
             }
         };
-        return new ProgressShowingAjaxButton("update", progressPanel, runnable) {
+        return new ProgressShowingAjaxButton("update", progressPanel, runnable, nls("update.version.job.label",getModelObject().getName())) {
 
             private static final long serialVersionUID = 1L;
 
@@ -216,7 +216,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
                 return Status.OK_STATUS;
             }
         };
-        return new ProgressShowingAjaxButton("commit", progressPanel, runnable)
+        return new ProgressShowingAjaxButton("commit", progressPanel, runnable, nls("commit.version.job.label",getModelObject().getName()))
         {
 
             private static final long serialVersionUID = 1L;
@@ -265,7 +265,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
                 return Status.OK_STATUS;
             }
         };
-        return new ProgressShowingAjaxButton("checkout", progressPanel, runnable) {
+        return new ProgressShowingAjaxButton("checkout", progressPanel, runnable, nls("checkout.version.job.label",getModelObject().getName())) {
 
             private static final long serialVersionUID = 1L;
 
@@ -311,7 +311,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
                 return Status.OK_STATUS;
             }
         };
-        return new ProgressShowingAjaxButton("rescan", progressPanel, runnable) {
+        return new ProgressShowingAjaxButton("rescan", progressPanel, runnable, nls("rescan.version.job.label",getModelObject().getName())) {
 
             private static final long serialVersionUID = 1L;
 
@@ -326,7 +326,8 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
 
     }
 
-    public static class VersionsConfig extends AbstractConfigSection<Project> {
+
+	public static class VersionsConfig extends AbstractConfigSection<Project> {
 
         private static final long serialVersionUID = 1L;
 

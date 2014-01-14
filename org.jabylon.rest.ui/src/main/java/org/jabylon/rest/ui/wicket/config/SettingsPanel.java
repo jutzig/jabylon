@@ -19,6 +19,7 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -92,7 +93,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         // submit section
 
         @SuppressWarnings({ "rawtypes" })
-        Form form = new Form("form", getModel()) {
+        Form form = new StatelessForm("form", getModel()) {
 
             private static final long serialVersionUID = 1L;
 

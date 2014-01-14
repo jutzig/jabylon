@@ -522,7 +522,7 @@ class RoleRenderer implements IChoiceRenderer<IModel<Role>> {
 
     @Override
     public Object getDisplayValue(IModel<Role> object) {
-        return object.getObject().getName();
+        return object.getObject()==null ? "" : object.getObject().getName();
     }
 
     @Override

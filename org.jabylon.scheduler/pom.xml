@@ -23,6 +23,7 @@
                 <directory></directory>
                 <includes>
                     <include>plugin.xml</include>
+                    <include>OSGI-INF</include>
                 </includes>
             </resource>
         </resources>

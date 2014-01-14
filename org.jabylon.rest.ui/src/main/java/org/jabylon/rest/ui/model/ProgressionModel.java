@@ -23,10 +23,10 @@ public class ProgressionModel implements IModel<Progression> {
 
     private static final long serialVersionUID = 1L;
     protected Supplier<Progression> modelSupplier;
-	private long id;
+	private String id;
 
 
-    public ProgressionModel(long id)
+    public ProgressionModel(String id)
     {
         this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
         this.id = id;
@@ -38,11 +38,11 @@ public class ProgressionModel implements IModel<Progression> {
 
     }
     
-    public long getId() {
+    public String getId() {
 		return id;
 	}
 
-    public void setTaskID(long id)
+    public void setTaskID(String id)
     {
         this.modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction(), Suppliers.ofInstance(id)));
         this.id = id;
@@ -58,12 +58,12 @@ public class ProgressionModel implements IModel<Progression> {
         throw new UnsupportedOperationException("Readonly model"); //$NON-NLS-1$
 
     }
-    private static final class LookupFunction implements Serializable, Function<Long, Progression>
+    private static final class LookupFunction implements Serializable, Function<String, Progression>
     {
         private static final long serialVersionUID = 1L;
 
         @Override
-        public Progression apply(Long from)
+        public Progression apply(String from)
         {
             return Activator.getDefault().getProgressService().progressionOf(from);
         }

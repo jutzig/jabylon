@@ -71,13 +71,11 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Component(immediate = true, enabled = true)
-@Service({ProgressService.class,SchedulerService.class})
+@Service({ ProgressService.class, SchedulerService.class })
 public class JobRegistry implements INodeChangeListener, IPreferenceChangeListener, SchedulerService, ProgressService {
 
-	protected static final String ONETIME_GROUP = "onetime";
-
 	private Scheduler scheduler;
-	
+
 	public static final String PLUGIN_ID = "org.jabylon.scheduler";
 	private static final Logger logger = LoggerFactory.getLogger(JobRegistry.class);
 	private AtomicLong oneTimeJobs = new AtomicLong();
@@ -86,24 +84,24 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	private RepositoryConnector repositoryConnector;
 	@Reference
 	private URIResolver uriResolver;
-	
+
 	/**
 	 * jobDefinitions contains the actual service. Exactly one per service
 	 */
-	@Reference(referenceInterface=JobExecution.class,cardinality=ReferenceCardinality.OPTIONAL_MULTIPLE,policy=ReferencePolicy.DYNAMIC,bind="bindJob",unbind="unbindJob")
-	private Map<String,JobExecution> jobDefinitions = new ConcurrentHashMap<String,JobExecution>();
-	
-	
+	@Reference(referenceInterface = JobExecution.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindJob", unbind = "unbindJob")
+	private Map<String, JobExecution> jobDefinitions = new ConcurrentHashMap<String, JobExecution>();
+
 	/**
-	 * contains a mapping from job id to preference node that contains the settings.
-	 * There can be multiple instances per service in jobDefinitions as long as the each have a different preferences context
+	 * contains a mapping from job id to preference node that contains the
+	 * settings. There can be multiple instances per service in jobDefinitions
+	 * as long as the each have a different preferences context
 	 */
 	private Map<String, Preferences> jobInstances = new ConcurrentHashMap<String, Preferences>();
 
 	public JobRegistry() {
 
 	}
-	
+
 	public void bindUriResolver(URIResolver resolver) {
 		this.uriResolver = resolver;
 	}
@@ -111,9 +109,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	public void unbindUriResolver(URIResolver resolver) {
 		this.uriResolver = resolver;
 	}
-	
-	
-	
+
 	public void bindRepositoryConnector(RepositoryConnector connector) {
 		this.repositoryConnector = connector;
 	}
@@ -122,11 +118,11 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		this.repositoryConnector = null;
 	}
 
-	public void bindJob(JobExecution execution, Map<String,Object> properties) {
-		
+	public void bindJob(JobExecution execution, Map<String, Object> properties) {
+
 		Preferences prefs = PreferencesUtil.getNodeForJob(PreferencesUtil.workspaceScope(), execution.getID());
 		Preferences defaultPrefs = defaultsFor(execution.getID());
-		jobDefinitions.put(execution.getID(),execution);
+		jobDefinitions.put(execution.getID(), execution);
 		Set<Entry<String, Object>> entrySet = properties.entrySet();
 		for (Entry<String, Object> entry : entrySet) {
 			defaultPrefs.put(entry.getKey(), entry.getValue().toString());
@@ -134,7 +130,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		try {
 			updateJob(prefs);
 		} catch (SchedulerException e) {
-			logger.error("Failed to schedule job "+execution,e);
+			logger.error("Failed to schedule job " + execution, e);
 		}
 	}
 
@@ -143,19 +139,17 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		while (iterator.hasNext()) {
 			Map.Entry<String, Preferences> entry = (Map.Entry<String, Preferences>) iterator.next();
 			Preferences value = entry.getValue();
-			if(execution.getID().equals(value.name()))
-			{
+			if (execution.getID().equals(value.name())) {
 				iterator.remove();
 				removeJob(value.absolutePath());
 			}
-			
+
 		}
-		AttachablePreferences prefs = new AttachablePreferences(PreferencesUtil.workspaceScope().node(ApplicationConstants.JOBS_NODE_NAME),execution.getID());
+		AttachablePreferences prefs = new AttachablePreferences(PreferencesUtil.workspaceScope().node(ApplicationConstants.JOBS_NODE_NAME), execution.getID());
 		jobDefinitions.remove(execution.getID());
 		removeJob(prefs.absolutePath());
-		
-		
-	}	
+
+	}
 
 	@Activate
 	public void activate() throws SchedulerException {
@@ -179,8 +173,8 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	public void updateJob(Preferences node) throws SchedulerException {
 
 		jobInstances.put(node.absolutePath(), node);
-		if(scheduler==null)
-			//not yet activated
+		if (scheduler == null)
+			// not yet activated
 			return;
 		String jobID = node.absolutePath();
 		Preferences defaults = defaultsFor(node.name());
@@ -189,63 +183,63 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		try {
 			trigger = createSchedule(jobID, node);
 		} catch (Exception e) {
-			logger.error("Invalid cron expression for job "+node,e);
+			logger.error("Invalid cron expression for job " + node, e);
 		}
 		removeJob(jobID);
-		if(trigger!=null && active)
-		{
+		if (trigger != null && active) {
 			scheduler.scheduleJob(createJobDetails(node, jobID), trigger);
 		}
 	}
-	
+
 	protected Preferences defaultsFor(String jobID) {
 		Preferences defaultPrefs = DefaultScope.INSTANCE.getNode("org.jabylon.scheduler");
 		return defaultPrefs.node(jobID);
 	}
-	
+
 	private CronTrigger createSchedule(String jobID, Preferences prefs) {
 		Preferences defaults = defaultsFor(prefs.name());
 		String cron = prefs.get(JobExecution.PROP_JOB_SCHEDULE, defaults.get(JobExecution.PROP_JOB_SCHEDULE, null));
 		if (cron == null || cron.trim().isEmpty())
 			return null;
-		return TriggerBuilder.newTrigger().forJob(prefs.absolutePath()).withIdentity(prefs.absolutePath()).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
+		return TriggerBuilder.newTrigger().forJob(prefs.absolutePath()).withIdentity(prefs.absolutePath()).withSchedule(CronScheduleBuilder.cronSchedule(cron))
+				.build();
 
 	}
 
 	private JobDetail createJobDetails(Preferences element, String jobID) {
 		Preferences defaults = defaultsFor(element.name());
-		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(element.absolutePath()).withDescription(element.get(JobExecution.PROP_JOB_DESCRIPTION,defaults.get(JobExecution.PROP_JOB_DESCRIPTION, null)))
-				.storeDurably(true);
+		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(element.absolutePath())
+				.withDescription(element.get(JobExecution.PROP_JOB_DESCRIPTION, defaults.get(JobExecution.PROP_JOB_DESCRIPTION, null))).storeDurably(true);
 		try {
 			String[] keys = element.keys();
 			for (String string : keys) {
 				builder.usingJobData(string, element.get(string, defaults.get(string, null)));
 			}
 		} catch (BackingStoreException e) {
-			logger.error("Failed to retrieve properties of node "+element,e);
+			logger.error("Failed to retrieve properties of node " + element, e);
 		}
 		JobDataMap extras = new JobDataMap();
-		extras.put(JabylonJob.CONNECTOR_KEY,repositoryConnector);
+		extras.put(JabylonJob.CONNECTOR_KEY, repositoryConnector);
 		extras.put(JabylonJob.EXECUTION_KEY, jobDefinitions.get(element.name()));
 		extras.put(JabylonJob.DOMAIN_OBJECT_KEY, getDomainObject(element));
 		builder.usingJobData(extras);
 		return builder.build();
 	}
-	
-	private JobDetail createOneShotJobDetails(RunnableWithProgress task, String id) {
-		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(new JobKey(id,ONETIME_GROUP));
+
+	private JobDetail createOneShotJobDetails(RunnableWithProgress task, String id, String description) {
+		JobBuilder builder = JobBuilder.newJob(JabylonJob.class).withIdentity(new JobKey(id)).withDescription(description);
 		JobDataMap extras = new JobDataMap();
-		extras.put(JabylonJob.EXECUTION_KEY, new RunnableWithProgressWrapper(task,getScheduler(),id));
+		extras.put(JabylonJob.EXECUTION_KEY, new RunnableWithProgressWrapper(task, getScheduler(), id));
 		builder.usingJobData(extras);
 		return builder.build();
 	}
 
 	private Object getDomainObject(Preferences jobConfig) {
-		//up one node, and one more to leave the /jobs node
+		// up one node, and one more to leave the /jobs node
 		Preferences domainPrefs = jobConfig.parent().parent();
 		String domainPath = domainPrefs.absolutePath();
 		String prefix = InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE).absolutePath();
-		String path = domainPath.substring(prefix.length(),domainPath.length());
+		String path = domainPath.substring(prefix.length(), domainPath.length());
 		return uriResolver.resolve(path);
 	}
 
@@ -269,7 +263,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			try {
 				updateJob(event.getNode());
 			} catch (SchedulerException e) {
-				logger.error("Failed to update job "+event.getNode().absolutePath(),e);
+				logger.error("Failed to update job " + event.getNode().absolutePath(), e);
 			}
 		}
 	}
@@ -288,7 +282,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		try {
 			absorbNode(child);
 		} catch (SchedulerException e) {
-			logger.error("Failed to absorb node "+child,e);
+			logger.error("Failed to absorb node " + child, e);
 		}
 	}
 
@@ -297,7 +291,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	 * node (or a child) contains jobs
 	 * 
 	 * @param prefs
-	 * @throws SchedulerException 
+	 * @throws SchedulerException
 	 */
 	protected void absorbNode(Preferences prefs) throws SchedulerException {
 		IEclipsePreferences node = toEclipsePreferences(prefs);
@@ -310,10 +304,10 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 			try {
 				children = node.childrenNames();
 				for (String child : children) {
-					absorbNode(node.node(child));					
+					absorbNode(node.node(child));
 				}
 			} catch (BackingStoreException e) {
-				logger.error("Failed to absorb node "+node,e);
+				logger.error("Failed to absorb node " + node, e);
 			}
 		}
 
@@ -327,7 +321,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 	}
 
 	protected void removeJob(String jobID) {
-		if(scheduler==null)
+		if (scheduler == null)
 			return;
 		JobKey triggerKey = new JobKey(jobID);
 		try {
@@ -356,13 +350,12 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 
 	public Date nextExecution(String jobID) throws ScheduleServiceException {
 		Preferences settings = jobInstances.get(jobID);
-		Preferences defaults = defaultsFor(jobID.substring(jobID.lastIndexOf("/")+1));
-		if(settings!=null && settings.getBoolean(JobExecution.PROP_JOB_ACTIVE, defaults.getBoolean(JobExecution.PROP_JOB_ACTIVE, false)))
-		{
+		Preferences defaults = defaultsFor(jobID.substring(jobID.lastIndexOf("/") + 1));
+		if (settings != null && settings.getBoolean(JobExecution.PROP_JOB_ACTIVE, defaults.getBoolean(JobExecution.PROP_JOB_ACTIVE, false))) {
 			Trigger trigger;
 			try {
 				trigger = scheduler.getTrigger(new TriggerKey(jobID));
-				if(trigger!=null)
+				if (trigger != null)
 					return trigger.getNextFireTime();
 			} catch (SchedulerException e) {
 				throw new ScheduleServiceException(e);
@@ -370,7 +363,7 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<JobInstance> getRunningJobs() throws ScheduleServiceException {
 		List<JobInstance> jobInstances = new ArrayList<JobInstance>();
@@ -396,59 +389,18 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		} catch (SchedulerException e) {
 			throw new ScheduleServiceException(e);
 		}
-		
+
 	}
 
 	@Override
-	public long schedule(RunnableWithProgress task) {
+	public String schedule(RunnableWithProgress task, String description) {
 		long id = oneTimeJobs.getAndIncrement();
 		try {
-			scheduler.scheduleJob(createOneShotJobDetails(task,Long.toString(id)), TriggerBuilder.newTrigger().startNow().build());
+			scheduler.scheduleJob(createOneShotJobDetails(task, Long.toString(id), description), TriggerBuilder.newTrigger().startNow().build());
 		} catch (SchedulerException e) {
-			throw new RuntimeException("failed to schedule task",e);
+			throw new RuntimeException("failed to schedule task", e);
 		}
-		return id;
-	}
-
-	@Override
-	public Progression progressionOf(long id) {
-		try {
-			JobKey stringId = new JobKey(Long.toString(id),ONETIME_GROUP);
-			JobDetail jobDetail = getScheduler().getJobDetail(stringId);
-			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
-			for (JobExecutionContext context : jobs) {
-				if(context.getJobDetail().getKey().equals(stringId)) {
-					JabylonJob job = (JabylonJob)context.getJobInstance();
-					return job.getProgress();
-				}
-			}
-			//the job is not started yet
-			if(jobDetail!=null)
-			{
-				ProgressionImpl fakeProgression = new ProgressionImpl();
-				return fakeProgression;				
-			}
-		} catch (SchedulerException e) {
-			throw new RuntimeException("Failed to retrieve progression for id "+id,e);
-		}
-		return null;
-	}
-
-	@Override
-	public void cancel(long id) {
-		try {
-			JobKey stringId = new JobKey(Long.toString(id),ONETIME_GROUP);
-			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
-			for (JobExecutionContext context : jobs) {
-				if(context.getJobDetail().getKey().equals(stringId)) {
-					JabylonJob job = (JabylonJob)context.getJobInstance();
-					job.interrupt();
-				}
-			}
-			getScheduler().deleteJob(stringId);
-		} catch (SchedulerException e) {
-			throw new RuntimeException("Failed to retrieve progression for id "+id,e);
-		}
+		return Long.toString(id);
 	}
 
 	@Override
@@ -456,10 +408,50 @@ public class JobRegistry implements INodeChangeListener, IPreferenceChangeListen
 		try {
 			deactivate();
 		} catch (SchedulerException e) {
-			logger.error("Shutdown failed",e);
+			logger.error("Shutdown failed", e);
 		}
-		
+
+	}
+
+	@Override
+	public Progression progressionOf(String id) {
+		try {
+			JobKey key = new JobKey(id);
+			JobDetail jobDetail = getScheduler().getJobDetail(key);
+			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
+			for (JobExecutionContext context : jobs) {
+				if (context.getJobDetail().getKey().equals(key)) {
+					JabylonJob job = (JabylonJob) context.getJobInstance();
+					return job.getProgress();
+				}
+			}
+			// the job is not started yet
+			if (jobDetail != null) {
+				ProgressionImpl fakeProgression = new ProgressionImpl();
+				return fakeProgression;
+			}
+		} catch (SchedulerException e) {
+			throw new RuntimeException("Failed to retrieve progression for id " + id, e);
+		}
+		return null;
+	}
+
+
+	@Override
+	public void cancel(String id) {
+		try {
+			JobKey key = new JobKey(id);
+			List<JobExecutionContext> jobs = getScheduler().getCurrentlyExecutingJobs();
+			for (JobExecutionContext context : jobs) {
+				if (context.getJobDetail().getKey().equals(key)) {
+					JabylonJob job = (JabylonJob) context.getJobInstance();
+					job.interrupt();
+				}
+			}
+			getScheduler().deleteJob(key);
+		} catch (SchedulerException e) {
+			throw new RuntimeException("Failed to retrieve progression for id " + id, e);
+		}
 	}
 
 }
-

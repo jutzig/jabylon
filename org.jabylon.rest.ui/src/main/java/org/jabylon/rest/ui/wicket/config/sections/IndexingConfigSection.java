@@ -64,10 +64,18 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 	@Inject
 	private transient SchedulerService scheduler;
 
+	private Preferences config;
+
     public IndexingConfigSection(String id, IModel<Workspace> model, Preferences config) {
         super(id, model);
+        this.config = config;
+    }
+    
+    @Override
+    protected void construct() {
+    	super.construct();
         setOutputMarkupId(true);
-        progressModel = new ProgressionModel(-1);
+        progressModel = new ProgressionModel("");
         add(new Label("summary", new StringResourceModel("index.size.summary", this, null, getIndexSize())));
         final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
         add(progressPanel);
@@ -153,7 +161,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 
 			}
 		};
-		return new ProgressShowingAjaxButton("update-index", progressPanel, runnable);
+		return new ProgressShowingAjaxButton("update-index", progressPanel, runnable, nls("update.index.job.label"));
 	}  
 
     public static class IndexingConfig extends AbstractConfigSection<Workspace> {

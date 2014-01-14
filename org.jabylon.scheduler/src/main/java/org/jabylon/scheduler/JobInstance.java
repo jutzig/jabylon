@@ -18,4 +18,8 @@ public interface JobInstance {
 	
 	<T> T getDomainObject();
 	
+	String getDescription();
+	
+	JobExecution getExecutionObject();
+	
 }

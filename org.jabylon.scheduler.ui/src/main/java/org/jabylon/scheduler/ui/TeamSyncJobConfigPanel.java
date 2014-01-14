@@ -9,7 +9,7 @@
 /**
  *
  */
-package org.jabylon.scheduler.ui.internal;
+package org.jabylon.scheduler.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,8 +56,16 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 	@Inject
 	private transient SchedulerService scheduler;
 
+	private Preferences root;
+
 	public TeamSyncJobConfigPanel(String id, IModel<ProjectVersion> model, Preferences root) {
 		super(id, model);
+		this.root = root;
+	}
+	
+	@Override
+	protected void construct() {
+		super.construct();
 		Preferences updateConfig = PreferencesUtil.getNodeForJob(root, TeamUpdateJob.JOB_ID);
 		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(updateConfig, JobExecution.PROP_JOB_SCHEDULE, TeamUpdateJob.DEFAULT_SCHEDULE);
 		ControlGroup updateCronGroup = new ControlGroup("update-cron-group", nls("update.cron.label"), nls("update.cron.description"));
@@ -105,7 +113,6 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 			}
 			
 		}
-
 	}
 
 	protected String format(Date nextExecution) {

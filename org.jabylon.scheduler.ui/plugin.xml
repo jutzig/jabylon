@@ -14,7 +14,13 @@
       <section
             name="Team Scheduling"
             objectClass="org.jabylon.properties.ProjectVersion"
-            section="org.jabylon.scheduler.ui.internal.TeamSyncJobConfigPanel$TeamSyncJobConfigSection"
+            section="org.jabylon.scheduler.ui.TeamSyncJobConfigPanel$TeamSyncJobConfigSection"
+            tab="jobs">
+      </section>
+      <section
+            name="Job Overview"
+            objectClass="org.jabylon.properties.Workspace"
+            section="org.jabylon.scheduler.ui.JobOverviewPanel$JobOverviewConfigSection"
             tab="jobs">
       </section>
    </extension>

@@ -10,6 +10,7 @@ package org.jabylon.rest.ui.model;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -51,10 +52,13 @@ public class OSGiAwareBundleStringResourceLoader implements IStringResourceLoade
 					bundleName = "OSGI-INF/l10n/bundle";
 				String prefix = "/"+bundleName.substring(0, bundleName.lastIndexOf('/'));
 				Enumeration<URL> entries = bundle.findEntries(prefix, "*.properties", false);
-				List<URL> urls = new ArrayList<URL>();
-				while(entries.hasMoreElements()) {
-					URL url = entries.nextElement();
-					urls.add(url);
+				List<URL> urls = Collections.emptyList();
+				if(entries!=null) {
+					urls = new ArrayList<URL>();
+					while(entries.hasMoreElements()) {
+						URL url = entries.nextElement();
+						urls.add(url);
+					}
 				}
 				return new BundleClassloader(prefix,urls);
 			}

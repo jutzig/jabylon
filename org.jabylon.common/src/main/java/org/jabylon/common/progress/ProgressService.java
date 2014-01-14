@@ -10,13 +10,39 @@ package org.jabylon.common.progress;
 
 
 
+/**
+ * simplified version of the ScheduleService meant for one-time tasks
+ * @author jutzig.dev@googlemail.com
+ *
+ */
 public interface ProgressService {
 
-    long schedule(RunnableWithProgress task);
+	/**
+	 * use this to schedule a one-time task
+	 * @param task
+	 * @return the id of the task
+	 */
+	String schedule(RunnableWithProgress task, String description);
 
-    Progression progressionOf(long id);
+    /**
+     * retrieves a task currently executed with {@link #schedule(RunnableWithProgress)}
+     * @param id
+     * @return the progression of the task
+     * @throws RuntimeException if the progression cannot be obtained
+     */
+    Progression progressionOf(String id);
+    
 
-    void cancel(long id);
+    /**
+     * attempts to cancel the task with the given id
+     * @param id
+     */
+    void cancel(String id);
 
+
+    /**
+     * shuts the scheduler/progress service down. Tasks will no longer be executed after calling this method.
+     * The method is synchronous, so it will wait for the scheduler to be shutdown completely before returning
+     */
     void shutdown();
 }
