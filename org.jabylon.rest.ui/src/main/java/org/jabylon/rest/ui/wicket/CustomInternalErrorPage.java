@@ -41,5 +41,10 @@ public class CustomInternalErrorPage extends AbstractErrorPage {
         response.render(CssHeaderItem.forReference(new WebContextUrlResourceReference("css/main.css")));
         super.renderHead(response);
     }	
+    
+    @Override
+    public boolean isBookmarkable() {
+    	return false;
+    }
 	
 }
