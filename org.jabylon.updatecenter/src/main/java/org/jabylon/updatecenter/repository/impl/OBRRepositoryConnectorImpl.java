@@ -49,7 +49,7 @@ import org.jabylon.updatecenter.repository.ResourceFilter;
 @Service
 public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
-    private static final String DEFAULT_REPOSITORY = "file:///" + System.getProperty("user.home").replace("\\", "/") + "/.m2/repository/repository.xml";
+    private static final String DEFAULT_REPOSITORY = "http://jabylon.org/maven/repository.xml";
     @Reference
     private RepositoryAdmin admin;
 
