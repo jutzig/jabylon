@@ -10,6 +10,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+	<description>contains the security and auth related code and some initial login modules</description>
 
     <build>
         <resources>

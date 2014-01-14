@@ -10,6 +10,8 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+	<description>the JSON api servlet</description>
+
     <build>
         <plugins>
             <plugin>

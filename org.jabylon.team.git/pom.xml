@@ -9,6 +9,8 @@
         <artifactId>jabylon-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+    
+    <description>the team provider implementation for Git</description>
 
     <build>
         <resources>

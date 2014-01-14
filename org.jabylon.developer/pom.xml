@@ -4,6 +4,8 @@
     <artifactId>org.jabylon.developer</artifactId>
     <packaging>eclipse-plugin</packaging>
 
+	<description>contains developer resources like preferences, launch configs and the target platform definition for eclipse</description>
+
     <parent>
         <groupId>org.jabylon</groupId>
         <artifactId>jabylon-parent</artifactId>
