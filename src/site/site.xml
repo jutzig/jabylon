@@ -41,7 +41,9 @@
 		<item href="translating.html" name="Translating Resources" collapse="true">
 			<item href="terminology.html" name="Terminology" />	
 		</item>
-		<item href="workingWithProjects.html" name="Working with Projects" />
+		<item href="workingWithProjects.html" name="Working with Projects" collapse="true">
+			<item href="workingWithVersions.html" name="Project Versions" />
+		</item>
 		<item href="jsonAPI.html" name="JSON API" />
     </menu>        
 
