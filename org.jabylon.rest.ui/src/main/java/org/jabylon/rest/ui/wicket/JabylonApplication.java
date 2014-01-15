@@ -101,7 +101,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                     String path = (String) pathObject;
                     Class pageClass = service.getPageClass();
                     logger.info("Mounting new page {} at {}", pageClass, path); //$NON-NLS-1$
-                    mountPage(path, pageClass);
+                    mount(new ResouceAwareMountedMapper(path, pageClass));
 
                 } else {
                     logger.warn("Ignored Page {} because it was registered with invalid path property '{}'", service, pathObject); //$NON-NLS-1$
@@ -133,8 +133,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         });
         pageTracker.open();
 
-        mountPage("/login", LoginPage.class); //$NON-NLS-1$
-        mountPage("/settings", SettingsPage.class); //$NON-NLS-1$
+        mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
+        mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
 //		mountPage("/workspace", ResourcePage.class);
 
 

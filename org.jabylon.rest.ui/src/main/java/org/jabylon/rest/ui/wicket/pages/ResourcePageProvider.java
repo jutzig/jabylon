@@ -23,7 +23,7 @@ import org.jabylon.rest.ui.util.PageProvider;
 @Service(PageProvider.class)
 public class ResourcePageProvider implements PageProvider{
 
-    @Property(value="/workspace")
+    @Property(value="/")
     static final String PAGE_PATH = PageProvider.MOUNT_PATH_PROPERTY;
 
     /**
