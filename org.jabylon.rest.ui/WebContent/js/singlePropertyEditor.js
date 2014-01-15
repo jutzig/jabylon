@@ -17,14 +17,6 @@ $(document).ready(function() {
         currentFocus = this;
     });
 
-    //copy similar strings to translation area
-    $("#similarity-table i.icon-share").click(function () {
-    	var translation = $(this).prev("span");
-    	$("#translation").val(translation.text());
-    	markDirty();
-    });
-
-
     // initialize keyboard shortcuts
     shortcut.add("Ctrl+Left", function() {
         //shift the focus to make sure we adjust the modified attribute

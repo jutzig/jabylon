@@ -30,6 +30,8 @@ import org.jabylon.rest.ui.model.PropertyPair;
 @Service(value=PropertyEditorTool.class)
 public class OtherTranslationsTool implements PropertyEditorTool {
 
+	static final int PRECEDENCE = ReviewTool.PRECEDENCE +10;
+	
     private static final long serialVersionUID = 1L;
 
     /* (non-Javadoc)
@@ -42,12 +44,12 @@ public class OtherTranslationsTool implements PropertyEditorTool {
 
     @Override
     public String getName() {
-        return "Other Languages";
+        return "%other.translations.name";
     }
 
     @Override
     public int getPrecedence() {
-        return 110;
+        return PRECEDENCE;
     }
 
 }

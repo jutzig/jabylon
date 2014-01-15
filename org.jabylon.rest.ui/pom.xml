@@ -28,6 +28,10 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
+            <resource>
+                <directory>OSGI-INF</directory>
+                <targetPath>OSGI-INF</targetPath>
+            </resource>
         </resources>
 
         <plugins>

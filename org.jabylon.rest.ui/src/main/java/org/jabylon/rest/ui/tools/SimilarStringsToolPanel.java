@@ -36,6 +36,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.util.Version;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -71,13 +73,26 @@ public class SimilarStringsToolPanel
     @Inject
     private transient QueryService queryService;
 
+    /**
+     * copies similar strings to translation area
+     */
+    private static final String JS = 
+    "$(\"#similarity-table i.icon-share\").click(function () { " +
+    	"var translation = $(this).prev(\"span\");" +
+    	"$(\"#translation\").val(translation.text());" +
+    	"markDirty();" +
+    "});";
+    
     public SimilarStringsToolPanel(String id, IModel<PropertyPair> model)
     {
         super(id, model);
-        ;
-
     }
 
+    @Override
+    public void renderHead(IHeaderResponse response) {
+    	super.renderHead(response);
+    	response.render(OnDomReadyHeaderItem.forScript(JS));
+    }
 
     @Override
     protected void onBeforeRender()

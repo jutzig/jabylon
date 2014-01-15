@@ -28,6 +28,8 @@ import org.jabylon.rest.ui.model.PropertyPair;
 public class SimilarStringsTool implements PropertyEditorTool {
 
     private static final long serialVersionUID = 1L;
+    
+    static final int PRECEDENCE = 100;
 
     /* (non-Javadoc)
      * @see org.jabylon.rest.ui.wicket.PanelFactory#createPanel(org.apache.wicket.request.mapper.parameter.PageParameters, org.apache.wicket.model.IModel, java.lang.String)
@@ -39,12 +41,12 @@ public class SimilarStringsTool implements PropertyEditorTool {
 
     @Override
     public String getName() {
-        return "Similar Translations";
+        return "%similar.strings.name";
     }
 
     @Override
     public int getPrecedence() {
-        return 90;
+        return PRECEDENCE;
     }
 
 }

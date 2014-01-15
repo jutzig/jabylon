@@ -16,7 +16,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
+import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 import org.jabylon.rest.ui.model.PropertyPair;
 
 /**
@@ -42,7 +42,7 @@ public class PropertyToolTab implements ITab {
      */
     @Override
     public IModel<String> getTitle() {
-        return Model.of(tool.getName());
+        return new OSGiStringResourceModel(tool.getClass(),tool.getName(),null);
     }
 
     /* (non-Javadoc)
