@@ -14,8 +14,6 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.ecore.EObject;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import org.jabylon.rest.ui.model.EObjectModel;
@@ -25,6 +23,7 @@ import org.jabylon.users.Role;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersPackage;
+import org.osgi.service.prefs.Preferences;
 
 public class UserRolesConfigSection extends GenericPanel<User> {
 

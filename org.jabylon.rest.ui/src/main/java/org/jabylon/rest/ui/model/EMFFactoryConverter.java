@@ -13,7 +13,6 @@ import java.util.Locale;
 import org.apache.wicket.util.convert.IConverter;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
-
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 

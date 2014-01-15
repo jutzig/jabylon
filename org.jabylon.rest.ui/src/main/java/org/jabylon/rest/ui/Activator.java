@@ -8,14 +8,14 @@
  */
 package org.jabylon.rest.ui;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.progress.ProgressService;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.security.auth.AuthenticationService;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator implements BundleActivator {
 

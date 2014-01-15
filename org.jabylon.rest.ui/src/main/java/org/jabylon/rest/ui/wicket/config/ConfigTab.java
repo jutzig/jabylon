@@ -14,9 +14,8 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.properties.Resolvable;
+import org.osgi.service.prefs.Preferences;
 
 public class ConfigTab <T extends Resolvable<?, ?>> implements ITab {
 

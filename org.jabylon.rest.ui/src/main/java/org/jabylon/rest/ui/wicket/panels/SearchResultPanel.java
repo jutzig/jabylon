@@ -30,14 +30,13 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

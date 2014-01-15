@@ -28,6 +28,11 @@ public class GlobalResources {
     public static final ResourceReference JS_DATATABLES_CUSTOMSORT = new WebContextUrlResourceReference("js/datatables/custom.sorting.js");
 
     /**
+     * the javascript portion of bootstrap
+     */
+    public static final ResourceReference JS_BOOTSTRAP = new WebContextUrlResourceReference("bootstrap/js/bootstrap.min.js");
+    
+    /**
      * keyboard shortcuts JS library
      */
     public static final ResourceReference JS_SHORTCUTS = new WebContextUrlResourceReference("js/openjs/shortcuts.js");
@@ -36,6 +41,12 @@ public class GlobalResources {
      * shows a confirmation dialog before leaving a page with modifications
      */
     public static final ResourceReference JS_WARN_WHEN_DIRTY = new WebContextUrlResourceReference("js/warnWhenDirty.js");
+    
+    /**
+     * the main css file
+     */
+    public static final ResourceReference MAIN_CSS = new WebContextUrlResourceReference("css/main.css");
+    
     
     public static final ResourceReference IMG_WORKSPACE_SETTINGS = new WebContextUrlResourceReference("img/icons/workspaceSettings.png");
     public static final ResourceReference IMG_SYSTEM_SETTINGS = new WebContextUrlResourceReference("img/icons/systemSettings.gif");

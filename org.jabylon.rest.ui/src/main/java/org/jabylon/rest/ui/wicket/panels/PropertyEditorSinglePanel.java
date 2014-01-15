@@ -48,12 +48,6 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesFactory;
@@ -70,6 +64,11 @@ import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import org.jabylon.rest.ui.wicket.components.AnchorBookmarkablePageLink;
 import org.jabylon.security.CommonPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 
 public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFileDescriptor> implements RestrictedComponent{

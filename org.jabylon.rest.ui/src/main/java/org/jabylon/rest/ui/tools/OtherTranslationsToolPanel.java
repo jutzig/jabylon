@@ -40,9 +40,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.common.util.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
@@ -52,6 +49,8 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

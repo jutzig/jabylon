@@ -34,10 +34,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.resolver.impl.UserManagmentURIHandler;
 import org.jabylon.properties.Project;
@@ -52,6 +48,9 @@ import org.jabylon.users.Role;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProjectPermissionsConfigSection extends BasicPanel<Project> implements RestrictedComponent {
 

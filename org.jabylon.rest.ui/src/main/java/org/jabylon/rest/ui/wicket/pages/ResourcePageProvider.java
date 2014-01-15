@@ -15,7 +15,6 @@ import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.wicket.Page;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.rest.ui.util.PageProvider;
 

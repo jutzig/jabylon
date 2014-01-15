@@ -10,11 +10,10 @@ package org.jabylon.rest.ui.wicket.config.sections;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.properties.Workspace;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.security.CommonPermissions;
+import org.osgi.service.prefs.Preferences;
 
 public class GeneralWorkspaceConfig extends AbstractConfigSection<Workspace>{
 

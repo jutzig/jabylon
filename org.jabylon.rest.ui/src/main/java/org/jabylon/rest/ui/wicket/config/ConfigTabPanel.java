@@ -16,10 +16,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.CDOObject;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.users.User;
+import org.osgi.service.prefs.Preferences;
 
 public class ConfigTabPanel<T extends CDOObject> extends GenericPanel<T> {
 

@@ -21,10 +21,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -35,6 +31,9 @@ import org.jabylon.security.CommonPermissions;
 import org.jabylon.users.Role;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersPackage;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RoleUsersConfigSection extends GenericPanel<UserManagement> {
 

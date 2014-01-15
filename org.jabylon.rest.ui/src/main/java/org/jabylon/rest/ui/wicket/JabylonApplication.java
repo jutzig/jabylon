@@ -11,11 +11,11 @@
  */
 package org.jabylon.rest.ui.wicket;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
@@ -23,15 +23,11 @@ import org.apache.wicket.ThreadContext;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EMFFactoryConverter;
@@ -43,8 +39,15 @@ import org.jabylon.rest.ui.util.PageProvider;
 import org.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import org.jabylon.rest.ui.wicket.config.SettingsPage;
 import org.jabylon.rest.ui.wicket.injector.OSGiInjector;
+import org.jabylon.rest.ui.wicket.pages.ResourcePage;
 import org.jabylon.rest.ui.wicket.pages.StartupPage;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -64,10 +67,11 @@ public class JabylonApplication extends AuthenticatedWebApplication {
      */
     @Override
     public Class<? extends Page> getHomePage() {
-        URIResolver connector = Activator.getDefault().getRepositoryLookup();
-        if (connector != null)
+//    	if(startupPageMapped=)
+//        URIResolver connector = Activator.getDefault().getRepositoryLookup();
+//        if (connector != null)
             return WelcomePage.class;
-        return StartupPage.class;
+//        return StartupPage.class;
     }
 
     @Override
@@ -80,6 +84,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
+        mount(new ResouceAwareMountedMapper("/", StartupPage.class)); //$NON-NLS-1$
         getRequestCycleSettings().setResponseRequestEncoding("UTF-8"); 
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8"); 
         OSGiInjector injector = new OSGiInjector(this);
@@ -95,11 +100,21 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
             @Override
             public Object addingService(ServiceReference ref) {
+            	
                 PageProvider service = (PageProvider)bundleContext.getService(ref);
                 Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
                 if (pathObject instanceof String) {
                     String path = (String) pathObject;
                     Class pageClass = service.getPageClass();
+                    
+                    if(pageClass==ResourcePage.class) {
+                        //workaround so wicket doesn't choke because the thread context isn't filled (wront thread)
+                    	ThreadContext.setApplication(JabylonApplication.this);
+                    	ThreadContext.setSession(new WebSession(createFakeRequest()));
+                		//if the main page is ready, we can mount the rest of the pages
+                			initMainPages();
+                	}
+                    
                     logger.info("Mounting new page {} at {}", pageClass, path); //$NON-NLS-1$
                     mount(new ResouceAwareMountedMapper(path, pageClass));
 
@@ -109,7 +124,8 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                 return service;
             }
 
-            @Override
+
+			@Override
             public void modifiedService(ServiceReference arg0, Object arg1) {
                 // TODO Auto-generated method stub
 
@@ -120,24 +136,22 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                 Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
                 if (pathObject instanceof String) {
                     String path = (String) pathObject;
-                    Application application = ThreadContext.getApplication();
-                    if (application != null)
-                    {
-                        //otherwise wicket will throw an exception unfortunately
-                        //TODO: how can this be done cleanly?
-                        unmount(path);
-                    }
+                    //workaround so wicket doesn't choke because the thread context isn't filled (wront thread)
+                	ThreadContext.setApplication(JabylonApplication.this);
+                	ThreadContext.setSession(new WebSession(createFakeRequest()));
+                    unmount(path);
                 }
             }
 
         });
         pageTracker.open();
-
+    }
+    
+    private void initMainPages() {
+    	unmount("/");
         mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
         mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
-//		mountPage("/workspace", ResourcePage.class);
-
-
+    	
     }
 
 
@@ -160,4 +174,40 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         return LoginPage.class;
     }
 
+    
+	Request createFakeRequest()
+	{
+		return new Request()
+		{
+			@Override
+			public Url getUrl()
+			{
+				return new Url();
+			}
+
+			@Override
+			public Locale getLocale()
+			{
+				return Locale.getDefault();
+			}
+
+			@Override
+			public Object getContainerRequest()
+			{
+				return null;
+			}
+
+			@Override
+			public Url getClientUrl()
+			{
+				return null;
+			}
+
+			@Override
+			public Charset getCharset()
+			{
+				return null;
+			}
+		};
+	}
 }

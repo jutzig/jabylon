@@ -17,7 +17,6 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.wicket.Page;
-
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.rest.ui.util.PageProvider;
 

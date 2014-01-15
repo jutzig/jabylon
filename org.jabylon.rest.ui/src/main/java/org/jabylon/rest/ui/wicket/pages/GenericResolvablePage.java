@@ -22,7 +22,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.URI;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.IEObjectModel;

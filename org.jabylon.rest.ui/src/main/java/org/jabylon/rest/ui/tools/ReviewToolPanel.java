@@ -24,7 +24,6 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.common.util.EList;
-
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.properties.PropertyFileDescriptor;

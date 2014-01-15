@@ -19,7 +19,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.common.util.config.DynamicConfigUtil;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.Workspace;

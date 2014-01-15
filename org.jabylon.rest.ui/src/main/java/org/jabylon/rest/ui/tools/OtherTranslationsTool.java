@@ -16,7 +16,6 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.rest.ui.model.PropertyPair;
 
 /**

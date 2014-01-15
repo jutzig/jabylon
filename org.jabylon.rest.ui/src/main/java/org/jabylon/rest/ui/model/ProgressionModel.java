@@ -11,13 +11,12 @@ package org.jabylon.rest.ui.model;
 import java.io.Serializable;
 
 import org.apache.wicket.model.IModel;
+import org.jabylon.common.progress.Progression;
+import org.jabylon.rest.ui.Activator;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-
-import org.jabylon.common.progress.Progression;
-import org.jabylon.rest.ui.Activator;
 
 public class ProgressionModel implements IModel<Progression> {
 

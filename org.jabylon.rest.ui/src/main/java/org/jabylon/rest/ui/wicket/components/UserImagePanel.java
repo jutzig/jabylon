@@ -20,7 +20,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
-
 import org.jabylon.users.User;
 
 public class UserImagePanel extends Panel {

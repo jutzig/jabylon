@@ -47,12 +47,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
@@ -66,6 +60,11 @@ import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 
 public class PropertyListPanel

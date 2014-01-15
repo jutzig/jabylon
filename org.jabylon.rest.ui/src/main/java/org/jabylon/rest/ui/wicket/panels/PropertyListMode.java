@@ -10,10 +10,10 @@ package org.jabylon.rest.ui.wicket.panels;
 
 import java.util.Collection;
 
-import com.google.common.base.Predicate;
-
 import org.jabylon.properties.Review;
 import org.jabylon.rest.ui.model.PropertyPair;
+
+import com.google.common.base.Predicate;
 
 enum PropertyListMode implements Predicate<PropertyPair> {
 

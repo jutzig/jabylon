@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.eclipse.emf.cdo.common.id.CDOID;
-
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 

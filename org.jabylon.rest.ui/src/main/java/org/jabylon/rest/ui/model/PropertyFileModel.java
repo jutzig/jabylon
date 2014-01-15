@@ -15,13 +15,12 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
+import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyFileDescriptor;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-
-import org.jabylon.properties.Property;
-import org.jabylon.properties.PropertyFileDescriptor;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

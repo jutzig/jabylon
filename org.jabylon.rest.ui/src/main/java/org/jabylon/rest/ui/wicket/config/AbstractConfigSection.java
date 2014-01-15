@@ -14,10 +14,10 @@ package org.jabylon.rest.ui.wicket.config;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.osgi.service.prefs.Preferences;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.LoginPage;
 import org.jabylon.users.User;
+import org.osgi.service.prefs.Preferences;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)

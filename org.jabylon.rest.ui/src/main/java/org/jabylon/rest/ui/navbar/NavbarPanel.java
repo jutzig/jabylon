@@ -24,11 +24,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.PanelFactory;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NavbarPanel<T> extends BasicPanel<T> {
 

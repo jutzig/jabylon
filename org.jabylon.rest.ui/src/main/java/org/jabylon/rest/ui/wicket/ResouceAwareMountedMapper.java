@@ -13,21 +13,24 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.jabylon.rest.ui.wicket.pages.StartupPage;
 
 public class ResouceAwareMountedMapper extends MountedMapper {
 
 	private boolean isHomePage;
+	private boolean isStartupPage;
 
 
 	public ResouceAwareMountedMapper(String mountPath, Class<? extends IRequestablePage> pageClass) {
 		super(mountPath, pageClass);
 		isHomePage = pageClass == ResourcePage.class;
+		isStartupPage = pageClass == StartupPage.class;
 	}
 
 	
 	@Override
 	protected UrlInfo parseRequest(Request request) {
-		if(!isHomePage)
+		if(!isHomePage && !isStartupPage)
 			return super.parseRequest(request);
 		// get canonical url
 		final Url url = request.getUrl().canonical();

@@ -10,7 +10,6 @@ package org.jabylon.rest.ui.wicket;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.properties.Resolvable;
 import org.jabylon.rest.ui.model.EObjectModel;
 

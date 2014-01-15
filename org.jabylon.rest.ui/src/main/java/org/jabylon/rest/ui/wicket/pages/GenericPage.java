@@ -19,9 +19,8 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.jabylon.rest.ui.navbar.NavbarPanel;
-import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
+import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import org.jabylon.rest.ui.wicket.components.IAjaxFeedbackPage;
@@ -42,8 +41,8 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
     public void renderHead(IHeaderResponse response) {
 
         response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
-        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("bootstrap/js/bootstrap.min.js"))));
-        response.render(CssHeaderItem.forReference(new WebContextUrlResourceReference("css/main.css")));
+        response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP)));
+        response.render(CssHeaderItem.forReference(GlobalResources.MAIN_CSS));
         super.renderHead(response);
     }
 

@@ -12,9 +12,8 @@ import java.io.Serializable;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.osgi.service.prefs.Preferences;
-
 import org.jabylon.rest.ui.security.RestrictedComponent;
+import org.osgi.service.prefs.Preferences;
 
 public interface ConfigSection<T> extends Serializable, RestrictedComponent{
 

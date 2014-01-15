@@ -17,11 +17,10 @@ import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.jabylon.rest.ui.Activator;
 
 import com.google.common.base.Function;
 import com.google.common.base.Suppliers;
-
-import org.jabylon.rest.ui.Activator;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
