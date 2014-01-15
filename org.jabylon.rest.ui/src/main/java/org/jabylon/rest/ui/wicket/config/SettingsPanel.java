@@ -93,7 +93,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         // submit section
 
         @SuppressWarnings({ "rawtypes" })
-        Form form = new StatelessForm("form", getModel()) {
+        Form form = new Form("form", getModel()) {
 
             private static final long serialVersionUID = 1L;
 

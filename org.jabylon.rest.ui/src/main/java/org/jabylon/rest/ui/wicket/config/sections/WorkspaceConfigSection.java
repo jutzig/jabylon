@@ -69,6 +69,7 @@ public class WorkspaceConfigSection extends BasicPanel<Workspace> {
                 item.add(createDeleteAction(item.getModel()));
             }
         };
+        project.setReuseItems(true);
         add(project);
     }
 

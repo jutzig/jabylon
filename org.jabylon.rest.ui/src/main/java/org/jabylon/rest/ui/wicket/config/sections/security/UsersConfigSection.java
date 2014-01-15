@@ -79,6 +79,7 @@ public class UsersConfigSection extends GenericPanel<UserManagement> {
                 });
             }
         };
+        userList.setReuseItems(true);
         add(userList);
         add(buildAddNewLink(getModel()));
     }

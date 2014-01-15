@@ -76,6 +76,7 @@ public class RolesConfigSection extends GenericPanel<UserManagement> {
             }
         };
         add(roleList);
+        roleList.setReuseItems(true);
         add(buildAddNewLink(getModel()));
     }
 

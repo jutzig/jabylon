@@ -96,6 +96,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
             }
 
         };
+        project.setReuseItems(true);
         project.setOutputMarkupId(true);
         add(project);
     }
