@@ -10,7 +10,9 @@ package org.jabylon.rest.ui.tools;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -58,11 +60,24 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 	
 	private static final String JS = "$(\"#terminology-terms i.icon-share\").click(function() {"
 +	"var translation = $(this).prev(\"span\");"
-+	"var textarea = $(\"#translation\");"
-+	"textarea.val(textarea.val() + translation.text());"
-+	"markDirty();"
-+ "});";
-	
++	"var widget = $(\"#translation\");"
++   "if(widget.attr(\"readonly\")!=='readonly') {"
++		"widget.val(widget.val() + translation.text());"
++		"markDirty();"
++	"}"
++ "});"
++ "$('#translation').change(function() {"
++ "	  var widget = this;"
++ "	  $('#terminology-terms i.icon-share').prev('span').each(function(index){"
++ "		   var result = $(widget).val().indexOf($(this).text());"
++ "		   if(result>=0) {"
++ "			   $(this).siblings('.label').show();" 		   			   
++ "		   }" 
++ "		   else {"
++ "			   $(this).siblings('.label').hide();"
++ "		   }"
++ "	   });"
++ "});";	
 	public TerminologyAidToolPanel(String id, IModel<PropertyPair> model) {
 		super(id, model);
 		
@@ -89,6 +104,11 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 				item.add(new Label("term", translation.getTerm()));
 				Label translationLabel = new Label("translation", translation.getTranslation());
 				item.add(translationLabel);
+				Label label = new Label("label","OK");
+				item.add(label);
+				String currentTranslation = TerminologyAidToolPanel.this.getModelObject().getTranslated();
+				if(currentTranslation==null || !currentTranslation.contains(translation.getTranslation()))
+					label.add(new AttributeAppender("style","display: hidden;"));
 				if(translation.getComment()!=null)
 					translationLabel.add(new AttributeAppender("title", translation.getComment()));
 				
@@ -104,7 +124,7 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
         if(terminology==null || terminology.isEmpty())
             return translations;
         
-        List<String> tokens = getTokens(pair.getObject().getTemplate().getValue(), terminology);
+        Collection<String> tokens = getTokens(pair.getObject().getTemplate().getValue(), terminology);
         for (String term : tokens) {
 			Property property = terminology.get(term);
 			if(property==null)
@@ -117,8 +137,8 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
      
     }
 	
-    private List<String> getTokens(String value, Map<String, Property> terminology) {
-    	List<String> tokens = new ArrayList<String>();
+    private Collection<String> getTokens(String value, Map<String, Property> terminology) {
+    	Collection<String> tokens = new LinkedHashSet<String>();
     	if(value==null)
     		return tokens;
     	StringTokenizer tokenizer = new StringTokenizer(value, TERMINOLOGY_DELIMITER);
