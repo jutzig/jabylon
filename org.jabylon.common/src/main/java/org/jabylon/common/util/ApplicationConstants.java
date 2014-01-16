@@ -18,6 +18,8 @@ public class ApplicationConstants {
      * jobs under this node will be processed by the scheduler
      */
     public static final String JOBS_NODE_NAME = "jobs";
+    
+    public static final String WORKSPACE_NAME = "workspace";
 
     
 }
