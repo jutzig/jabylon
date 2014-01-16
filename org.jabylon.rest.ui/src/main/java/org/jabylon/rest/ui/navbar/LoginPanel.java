@@ -14,10 +14,12 @@ package org.jabylon.rest.ui.navbar;
 import java.io.Serializable;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -72,7 +74,24 @@ public class LoginPanel<T> extends BasicPanel<T> {
             }
             else {
 
-                BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class);
+                Link<String> link = new StatelessLink<String>("link") {
+                	
+					private static final long serialVersionUID = 1L;
+
+					@Override
+                	public void onClick() {
+						if (getSession() instanceof CDOAuthenticatedSession) {
+							CDOAuthenticatedSession session = (CDOAuthenticatedSession) getSession();
+							if(session.getUser()!=null)
+								return;
+							
+						}
+                		throw new RestartResponseAtInterceptPageException(LoginPage.class);
+                		
+                	}
+                	
+				}; 
+                	
                 link.add(new Label("link-label", new StringResourceModel(LOGIN_KEY, this,null)));
                 add(link);
                 userLink.setVisible(false);
