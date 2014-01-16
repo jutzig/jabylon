@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -50,6 +51,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.Project;
+import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
@@ -58,6 +60,7 @@ import org.jabylon.properties.Review;
 import org.jabylon.properties.Severity;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.model.PropertyPair;
+import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
@@ -80,6 +83,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     IModel<PropertyPair> mainModel;
     IModel<PropertyPair> nextModel;
     IModel<Boolean> modified;
+    boolean readOnly = false;
 
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
@@ -97,7 +101,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     @Override
     protected void construct() {
     	super.construct();
-        
+        readOnly = isReadOnly();
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>() {
 
@@ -112,7 +116,20 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         
     }
 
-    @Override
+    private boolean isReadOnly() {
+    	ProjectVersion version = getModel().getObject().getProjectLocale().getParent();
+    	if(version.isReadOnly())
+    		return true;
+    	Session session = getSession();
+    	if (session instanceof CDOAuthenticatedSession) {
+    		Project project = version.getParent();
+			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+			return !authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT));
+		}
+		return true;
+	}
+
+	@Override
     public void renderHead(IHeaderResponse response)
     {
         response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_WARN_WHEN_DIRTY));
@@ -221,11 +238,11 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
                     setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
                     return;
             	}
-
-                PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
-                PropertyFile file = loadProperties(descriptor);
-                Map<String, Property> map = file.asMap();
-                if(modified.getObject()) {
+            	
+                if(!readOnly && modified.getObject()) {
+                	PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
+                	PropertyFile file = loadProperties(descriptor);
+                	Map<String, Property> map = file.asMap();
                     Property translation = getModelObject();
                     if (translation != null) {
                         if (map.containsKey(translation.getKey())) {
@@ -319,12 +336,15 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
         TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(main, "original"));
         templatePanel.add(textArea);
+        textArea.setEnabled(!readOnly);
 
         textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(main, "originalComment"));
         templatePanel.add(textArea);
 
         textArea = new TextArea<PropertyPair>("translation-comment", new PropertyModel<PropertyPair>(main, "translatedComment"));
         translationPanel.add(textArea);
+        if(readOnly)
+        	textArea.add(new AttributeModifier("readonly", "readonly"));
 
         textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(main, "translated"));
         textArea.add(new AttributeModifier("lang", new AbstractReadOnlyModel<String>() {
@@ -337,6 +357,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             }
         }));
         textArea.add(new AttributeModifier("translate", "no"));
+        if(readOnly)
+        	textArea.add(new AttributeModifier("readonly", "readonly"));
         translationPanel.add(textArea);
 
         pairForm.add(nextButton);
@@ -393,7 +415,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     @Override
     public String getRequiredPermission() {
         Project project = getModel().getObject().getProjectLocale().getParent().getParent();
-        return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT);
+        return CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_VIEW);
     }
 
 

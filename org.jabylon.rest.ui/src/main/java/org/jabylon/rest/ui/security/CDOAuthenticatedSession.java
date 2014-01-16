@@ -63,6 +63,14 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
             userManagementModel.detach();
     }
 
+    public boolean hasPermission(String permission) {
+    	User user = getUser();
+    	if(user==null)
+    		user = getAnonymousUser();
+    	if(user!=null)
+    		return user.hasPermission(permission);
+    	return false;
+    }
 
     private UserManagement getUserManagement()
     {

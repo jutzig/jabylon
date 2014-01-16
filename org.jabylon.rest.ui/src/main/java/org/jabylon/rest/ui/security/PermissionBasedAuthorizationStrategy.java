@@ -42,6 +42,8 @@ public class PermissionBasedAuthorizationStrategy implements IAuthorizationStrat
             if(session.getUser()==null)
             {
                 User anonymousUser = session.getAnonymousUser();
+                if(anonymousUser==null)
+                	return false;
                 boolean allowed = anonymousUser.hasPermission(permission);
                 if(allowed)
                     return true;

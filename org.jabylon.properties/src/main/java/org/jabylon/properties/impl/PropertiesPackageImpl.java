@@ -490,6 +490,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProjectVersion_ReadOnly() {
+		return (EAttribute)projectVersionEClass.getEStructuralFeatures().get(1);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -922,6 +931,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
 		createEReference(projectVersionEClass, PROJECT_VERSION__TEMPLATE);
+		createEAttribute(projectVersionEClass, PROJECT_VERSION__READ_ONLY);
 
 		projectLocaleEClass = createEClass(PROJECT_LOCALE);
 		createEAttribute(projectLocaleEClass, PROJECT_LOCALE__LOCALE);
@@ -1125,6 +1135,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		initEClass(projectVersionEClass, ProjectVersion.class, "ProjectVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProjectVersion_Template(), this.getProjectLocale(), null, "template", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProjectVersion_ReadOnly(), ecorePackage.getEBoolean(), "readOnly", null, 0, 1, ProjectVersion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(projectVersionEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);

@@ -79,8 +79,10 @@ public class SimilarStringsToolPanel
     private static final String JS = 
     "$(\"#similarity-table i.icon-share\").click(function () { " +
     	"var translation = $(this).prev(\"span\");" +
-    	"$(\"#translation\").val(translation.text());" +
-    	"markDirty();" +
+    	"var widget = $(\"#translation\");" +
+    	"if(widget.attr(\"readonly\")!=='readonly') {" +
+    	"widget.val(translation.text());" +
+    	"markDirty()};" +
     "});";
     
     public SimilarStringsToolPanel(String id, IModel<PropertyPair> model)

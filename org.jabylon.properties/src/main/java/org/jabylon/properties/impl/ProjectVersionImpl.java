@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -40,6 +41,7 @@ import org.jabylon.properties.util.scanner.WorkspaceScanner;
  * The following features are implemented:
  * <ul>
  *   <li>{@link org.jabylon.properties.impl.ProjectVersionImpl#getTemplate <em>Template</em>}</li>
+ *   <li>{@link org.jabylon.properties.impl.ProjectVersionImpl#isReadOnly <em>Read Only</em>}</li>
  * </ul>
  * </p>
  *
@@ -48,6 +50,16 @@ import org.jabylon.properties.util.scanner.WorkspaceScanner;
 public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> implements ProjectVersion {
 
     /**
+	 * The default value of the '{@link #isReadOnly() <em>Read Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isReadOnly()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean READ_ONLY_EDEFAULT = false;
+
+				/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -65,6 +77,17 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public NotificationChain basicSetParent(Project newParent, NotificationChain msgs) {
+		return super.basicSetParent(newParent, msgs);
+	}
+
+				/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -89,6 +112,24 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isReadOnly() {
+		return (Boolean)eDynamicGet(PropertiesPackage.PROJECT_VERSION__READ_ONLY, PropertiesPackage.Literals.PROJECT_VERSION__READ_ONLY, true, true);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setReadOnly(boolean newReadOnly) {
+		eDynamicSet(PropertiesPackage.PROJECT_VERSION__READ_ONLY, PropertiesPackage.Literals.PROJECT_VERSION__READ_ONLY, newReadOnly);
+	}
+
+				/**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -207,6 +248,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
 				if (resolve) return getTemplate();
 				return basicGetTemplate();
+			case PropertiesPackage.PROJECT_VERSION__READ_ONLY:
+				return isReadOnly();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -220,6 +263,9 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		switch (featureID) {
 			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
 				setTemplate((ProjectLocale)newValue);
+				return;
+			case PropertiesPackage.PROJECT_VERSION__READ_ONLY:
+				setReadOnly((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -235,6 +281,9 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
 				setTemplate((ProjectLocale)null);
 				return;
+			case PropertiesPackage.PROJECT_VERSION__READ_ONLY:
+				setReadOnly(READ_ONLY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -248,6 +297,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
 		switch (featureID) {
 			case PropertiesPackage.PROJECT_VERSION__TEMPLATE:
 				return basicGetTemplate() != null;
+			case PropertiesPackage.PROJECT_VERSION__READ_ONLY:
+				return isReadOnly() != READ_ONLY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

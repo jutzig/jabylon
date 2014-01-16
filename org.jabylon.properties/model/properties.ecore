@@ -97,6 +97,7 @@
       <eParameters name="fileDiff" eType="#//PropertyFileDiff"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="template" eType="#//ProjectLocale"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//Resolvable">
       <eTypeArguments eClassifier="#//Project"/>
       <eTypeArguments eClassifier="#//ProjectLocale"/>

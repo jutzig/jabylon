@@ -9,10 +9,13 @@
 				wicket:message="placeholder:VersionConfigSection.name.placeholder"
 				placeholder="Name">
 		</div>
+		<div wicket:id="readonly-group">
+			<input type="checkbox" wicket:id="readonly" /> <wicket:message key="readonly.label">[readonly]</wicket:message>
+		</div>
 	</div>
 	<div class="row" wicket:id="rowPanel">
+		<div class="span6">
 		<form wicket:id="locale-form">
-			<div class="span6">
 				<div class="control-group">
 					<label class="control-label" for="inputLanguage"><wicket:message
 							key="VersionConfigSection.language">Language</wicket:message></label>
@@ -40,8 +43,8 @@
 						</span>
 					</div>
 				</div>
-			</div>
 		</form>
+		</div>
 		<div class="span6">
 
 			<select wicket:id="children"></select>

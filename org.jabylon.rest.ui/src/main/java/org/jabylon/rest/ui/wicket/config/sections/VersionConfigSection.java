@@ -21,12 +21,12 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
@@ -39,6 +39,8 @@ import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
+import org.jabylon.rest.ui.wicket.BasicPanel;
+import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.rest.ui.wicket.validators.UniqueNameValidator;
 import org.jabylon.security.CommonPermissions;
@@ -46,7 +48,7 @@ import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VersionConfigSection extends GenericPanel<ProjectVersion> {
+public class VersionConfigSection extends BasicPanel<ProjectVersion> {
 
     private static final String TEMPLATE_ID = "template";
 
@@ -54,12 +56,17 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
 
 	private ListModel<String> choiceModel;
 
-    public VersionConfigSection(String id, IModel<ProjectVersion> model, ListModel<String> locales) {
+    public VersionConfigSection(String id, IModel<ProjectVersion> model, ListModel<String> locales, Preferences prefs) {
         super(id, model);
         IModel<String> nameProperty = new EObjectPropertyModel<String, ProjectVersion>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
         field.add(UniqueNameValidator.fromCollection(getBranches(model),PropertiesPackage.Literals.RESOLVABLE__NAME,model.getObject()));
         add(field);
+        
+        ControlGroup readOnlyGroup = new ControlGroup("readonly-group",null, nls("readonly.help"));
+        CheckBox readonly = new CheckBox("readonly", new EObjectPropertyModel<Boolean, ProjectVersion>(model, PropertiesPackage.Literals.PROJECT_VERSION__READ_ONLY));
+        readOnlyGroup.add(readonly);
+        add(readOnlyGroup);
         
         // add(buildAddNewLink(getModel()));
         final WebMarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
@@ -199,7 +206,7 @@ public class VersionConfigSection extends GenericPanel<ProjectVersion> {
         @Override
         public WebMarkupContainer doCreateContents(String id, IModel<ProjectVersion> input, Preferences prefs) {
         	locales = createListModel(input);
-            return new VersionConfigSection(id, input, locales);
+            return new VersionConfigSection(id, input, locales,prefs);
         }
 
         @Override

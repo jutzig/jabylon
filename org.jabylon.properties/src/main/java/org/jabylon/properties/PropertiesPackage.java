@@ -484,13 +484,22 @@ public interface PropertiesPackage extends EPackage {
     int PROJECT_VERSION__TEMPLATE = RESOLVABLE_FEATURE_COUNT + 0;
 
     /**
+	 * The feature id for the '<em><b>Read Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT_VERSION__READ_ONLY = RESOLVABLE_FEATURE_COUNT + 1;
+
+				/**
 	 * The number of structural features of the '<em>Project Version</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 1;
+    int PROJECT_VERSION_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 2;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
@@ -1273,6 +1282,17 @@ public interface PropertiesPackage extends EPackage {
     EReference getProjectVersion_Template();
 
     /**
+	 * Returns the meta object for the attribute '{@link org.jabylon.properties.ProjectVersion#isReadOnly <em>Read Only</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Read Only</em>'.
+	 * @see org.jabylon.properties.ProjectVersion#isReadOnly()
+	 * @see #getProjectVersion()
+	 * @generated
+	 */
+	EAttribute getProjectVersion_ReadOnly();
+
+				/**
 	 * Returns the meta object for class '{@link org.jabylon.properties.ProjectLocale <em>Project Locale</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1947,6 +1967,14 @@ public interface PropertiesPackage extends EPackage {
         EReference PROJECT_VERSION__TEMPLATE = eINSTANCE.getProjectVersion_Template();
 
         /**
+		 * The meta object literal for the '<em><b>Read Only</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT_VERSION__READ_ONLY = eINSTANCE.getProjectVersion_ReadOnly();
+
+								/**
 		 * The meta object literal for the '{@link org.jabylon.properties.impl.ProjectLocaleImpl <em>Project Locale</em>}' class.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
