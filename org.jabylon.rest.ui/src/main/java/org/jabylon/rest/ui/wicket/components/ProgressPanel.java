@@ -67,7 +67,8 @@ public class ProgressPanel extends Panel {
 
             @Override
             public String getObject() {
-                return "width: " + model.getObject().getCompletion() + "%;"; //$NON-NLS-1$ //$NON-NLS-2$
+            	int width = model.getObject() == null ? 0 : model.getObject().getCompletion();
+                return "width: " + width + "%;"; //$NON-NLS-1$ //$NON-NLS-2$
             }
         };
     }
@@ -79,7 +80,9 @@ public class ProgressPanel extends Panel {
 
             @Override
             public String getObject() {
-                return model.getObject().getTaskName();
+            	if(model.getObject()!=null)
+            		return model.getObject().getTaskName();
+            	return "";
             }
         };
     }
@@ -91,7 +94,9 @@ public class ProgressPanel extends Panel {
 
             @Override
             public String getObject() {
-                return model.getObject().getSubTaskName();
+            	if(model.getObject()!=null)
+            		return model.getObject().getSubTaskName();
+            	return "";
             }
         };
     }
