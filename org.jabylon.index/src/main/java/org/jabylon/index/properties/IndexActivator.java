@@ -88,7 +88,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
     	indexWriterCount++;
     	if(indexWriter==null) {
     		IndexWriterConfig c = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
-    		indexWriter = new IndexWriter(directory, c);
+    		indexWriter = new IndexWriter(getOrCreateDirectory(), c);
     	}
     	return indexWriter;
     }
