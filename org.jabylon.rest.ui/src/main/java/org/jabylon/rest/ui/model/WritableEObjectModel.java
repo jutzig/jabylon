@@ -40,6 +40,11 @@ public class WritableEObjectModel<T extends CDOObject> extends EObjectModel<T> {
     @Override
     protected T getDomainObject() {
         T result = super.getDomainObject();
+        if(result==null){
+        	modelSupplier = Suppliers.memoize(Suppliers.compose(new LookupFunction<T>(), Suppliers.ofInstance(id)));
+        	result = modelSupplier.get();
+        }
+        
         if (result.cdoView() instanceof CDOTransaction) {
             transaction = (CDOTransaction) result.cdoView();
         }

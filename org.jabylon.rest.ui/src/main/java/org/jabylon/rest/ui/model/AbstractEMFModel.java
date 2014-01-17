@@ -15,6 +15,8 @@ import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.jabylon.rest.ui.Activator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
@@ -27,6 +29,8 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
     private static final long serialVersionUID = 1L;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEMFModel.class);
+    
     protected Supplier<T> modelSupplier;
     protected long id;
 
@@ -40,7 +44,14 @@ public abstract class AbstractEMFModel<T extends CDOObject, R>
 
     protected T getDomainObject()
     {
-        return modelSupplier.get();
+        T t = modelSupplier.get();
+        if(t==null) {
+        	LOGGER.warn("Lost for some reason the model supplier. Trying to recover");
+        	modelSupplier = Suppliers.memoize(new LoadingSupplier<T>(id));
+        	t = modelSupplier.get();
+        	LOGGER.warn("Recovered to "+t);
+        }
+        return t;
     }
 
     protected void setDomainObject(T domainObject) {

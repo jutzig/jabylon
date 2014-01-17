@@ -162,6 +162,12 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
                 user.detach();
             }
         }
+        if(assignableRoles!=null)
+        {
+            for (IModel<Role> role : assignableRoles) {
+                role.detach();
+            }
+        }
         super.onDetach();
     }
 
