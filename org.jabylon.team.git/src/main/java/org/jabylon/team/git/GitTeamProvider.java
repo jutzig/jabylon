@@ -52,7 +52,9 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
@@ -275,8 +277,18 @@ public class GitTeamProvider implements TeamProvider {
             refSpecString = MessageFormat.format(refSpecString, project.getName());
             RefSpec spec = new RefSpec(refSpecString);
             push.setRefSpecs(spec);
-            // push.setPushAll();
-            push.call();
+            
+            Iterable<PushResult> result = push.call();
+            for (PushResult r : result) {           
+            	for(RemoteRefUpdate rru : r.getRemoteUpdates()) {
+            		if(rru.getStatus() != RemoteRefUpdate.Status.OK && rru.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
+            			String error = "Push failed: "+rru.getStatus();
+            			LOGGER.error(error);
+            			throw new TeamProviderException(error);
+            		}
+            	}
+            }
+            
             Ref ref = repository.getRef(project.getName());
             if(ref!=null)
             {
