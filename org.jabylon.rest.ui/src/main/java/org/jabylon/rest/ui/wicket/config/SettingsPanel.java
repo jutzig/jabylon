@@ -262,7 +262,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
         List<IConfigurationElement> configurationElements = DynamicConfigUtil.getConfigTabs();
         ArrayListMultimap<String, ConfigSection<?>> sections = ArrayListMultimap.create(configurationElements.size(), 5);
         allSections = new ArrayList<ConfigSection<?>>();
-        List<IConfigurationElement> elements = DynamicConfigUtil.getApplicableElements(getModelObject(), getUser());
+        List<IConfigurationElement> elements = DynamicConfigUtil.getApplicableElements(getModelObject());
         for (IConfigurationElement element : elements) {
             String id = element.getAttribute("tab");
             ConfigSection<?> extension;

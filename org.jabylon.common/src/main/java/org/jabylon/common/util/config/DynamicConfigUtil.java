@@ -12,12 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.jabylon.common.util.IConfigurationElementLoader;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-
-import org.jabylon.common.util.IConfigurationElementLoader;
-import org.jabylon.users.User;
 
 public class DynamicConfigUtil {
 
@@ -32,20 +30,6 @@ public class DynamicConfigUtil {
 
     private DynamicConfigUtil() {
         // hide utility constructor
-    }
-
-    public static List<IConfigurationElement> getApplicableElements(Object domainObject, User user) {
-
-        List<IConfigurationElement> configSections = getConfigSections();
-        List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
-        for (IConfigurationElement child : configSections) {
-
-            if (isApplicable(child, domainObject)) {
-                applicable.add(child);
-            }
-
-        }
-        return applicable;
     }
 
     public static List<IConfigurationElement> getApplicableElements(Object domainObject) {
