@@ -12,6 +12,7 @@
 package org.jabylon.rest.ui.navbar;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -45,19 +46,22 @@ public class SettingsNavBarPanel<T> extends BasicPanel<T> {
 			Resolvable r = (Resolvable) object.getObject();
 			params = WicketUtil.buildPageParametersFor(r);
 		}
-		T domain = object.getObject();
-		List<?> applicable = DynamicConfigUtil.getApplicableElements(domain);
-		if (domain instanceof Resolvable) {
-			//traverse up until we find something configurable
-			//https://github.com/jutzig/jabylon/issues/82
-			Resolvable resolvable = (Resolvable) domain;
-			while (resolvable != null && applicable.isEmpty()) {
-				resolvable = resolvable.getParent();
-				applicable = DynamicConfigUtil.getApplicableElements(resolvable);
-			}
-			if(resolvable!=domain)
-				params = WicketUtil.buildPageParametersFor(resolvable);
-		}	
+		List<?> applicable = Collections.emptyList();
+		if(object!=null) {
+			T domain = object.getObject();
+			applicable = DynamicConfigUtil.getApplicableElements(domain);
+			if (domain instanceof Resolvable) {
+				//traverse up until we find something configurable
+				//https://github.com/jutzig/jabylon/issues/82
+				Resolvable resolvable = (Resolvable) domain;
+				while (resolvable != null && applicable.isEmpty()) {
+					resolvable = resolvable.getParent();
+					applicable = DynamicConfigUtil.getApplicableElements(resolvable);
+				}
+				if(resolvable!=domain)
+					params = WicketUtil.buildPageParametersFor(resolvable);
+			}				
+		}
 		
 		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", SettingsPage.class, params); //$NON-NLS-1$
 
