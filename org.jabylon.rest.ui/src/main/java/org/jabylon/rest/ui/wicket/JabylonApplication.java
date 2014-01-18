@@ -24,9 +24,11 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.IExceptionMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.util.IProvider;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.Activator;
@@ -173,6 +175,22 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     protected Class<? extends WebPage> getSignInPageClass() {
         return LoginPage.class;
     }
+    
+	public IProvider<IExceptionMapper> getExceptionMapperProvider()
+	{
+		
+		return new CustomExceptionMapperProvider();
+	}
+
+	private static class CustomExceptionMapperProvider implements IProvider<IExceptionMapper>
+	{
+		@Override
+		public IExceptionMapper get()
+		{
+			return new CustomExceptionMapper();
+		}
+	}
+
 
     
 	Request createFakeRequest()
