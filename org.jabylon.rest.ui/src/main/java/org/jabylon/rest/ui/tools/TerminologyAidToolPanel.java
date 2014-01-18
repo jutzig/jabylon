@@ -108,7 +108,7 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 				item.add(label);
 				String currentTranslation = TerminologyAidToolPanel.this.getModelObject().getTranslated();
 				if(currentTranslation==null || !currentTranslation.contains(translation.getTranslation()))
-					label.add(new AttributeAppender("style","display: hidden;"));
+					label.add(new AttributeAppender("style","display: none;"));
 				if(translation.getComment()!=null)
 					translationLabel.add(new AttributeAppender("title", translation.getComment()));
 				
