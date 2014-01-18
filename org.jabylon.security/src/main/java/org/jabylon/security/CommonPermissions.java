@@ -37,6 +37,7 @@ public class CommonPermissions {
     public static final String WILDCARD = "*";
 
     public static final String ROLE_ANONYMOUS = "Anonymous";
+    public static final String ROLE_REGISTERED = "Registered";
     public static final String ROLE_ADMINISTRATOR = "Administrator";
 
     public static final String USER_ANONYMOUS = ROLE_ANONYMOUS;
@@ -46,10 +47,26 @@ public class CommonPermissions {
     public static final String WORKSPACE = "Workspace";
     public static final String USER = "User";
     public static final String SYSTEM = "System";
-
+    
+    /**
+     * enables to edit resources
+     */
     public static final String ACTION_EDIT = "edit";
+    
+    /**
+     * grants read-only access
+     */
     public static final String ACTION_VIEW = "view";
+    
+    /**
+     * grants access to configuration
+     */
     public static final String ACTION_CONFIG = "config";
+    
+    /**
+     * permission to not directly edit translations, but at least make suggestions
+     */
+    public static final String ACTION_SUGGEST = "suggest";
 
 
     public static final String PROJECT_GLOBAL_CONFIG = PROJECT + ":" + WILDCARD + ":" + ACTION_CONFIG;
@@ -163,6 +180,10 @@ public class CommonPermissions {
         }
         user.getPermissions().add(selfEditPermission);
 
+        Role registeredRole = userManagement.findRoleByName(ROLE_REGISTERED);
+        if(registeredRole==null)
+            throw new RuntimeException("Registered role must always exist");
+        user.getRoles().add(registeredRole);
         Role anonymousRole = userManagement.findRoleByName(ROLE_ANONYMOUS);
         if(anonymousRole==null)
             throw new RuntimeException("Anonymous role must always exist");

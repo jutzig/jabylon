@@ -10,7 +10,9 @@ package org.jabylon.rest.ui.util;
 
 import java.text.MessageFormat;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.request.Request;
@@ -18,6 +20,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
+import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Resolvable;
@@ -36,6 +39,17 @@ public class WicketUtil {
                 segments.push(name);
             part = part.getParent();
         }
+        int count = 0;
+        for (String string : segments) {
+            params.set(count++, string);
+        }
+        return params;
+    }
+    
+    public static PageParameters buildPageParametersFor(URI uri)
+    {
+        PageParameters params = new PageParameters();
+        List<String> segments = new ArrayList<String>(uri.segmentsList());
         int count = 0;
         for (String string : segments) {
             params.set(count++, string);

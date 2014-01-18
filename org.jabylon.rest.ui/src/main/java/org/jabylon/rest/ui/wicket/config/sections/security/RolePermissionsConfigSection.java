@@ -9,7 +9,6 @@
 package org.jabylon.rest.ui.wicket.config.sections.security;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,8 +24,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.jabylon.cdo.connector.Modification;
+import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.util.ApplicationConstants;
 import org.jabylon.properties.Project;
@@ -45,12 +47,16 @@ import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
 import org.jabylon.users.UsersPackage;
 import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RolePermissionsConfigSection extends BasicPanel<Role> {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private transient URIResolver resolver;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(RolePermissionsConfigSection.class);
 
 	@SuppressWarnings("rawtypes")
 	public RolePermissionsConfigSection(String id, IModel<Role> model) {
@@ -66,9 +72,8 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 		UserManagement management = null;
 		if (model instanceof AttachableModel) {
 			AttachableModel m = (AttachableModel) model;
-			management = (UserManagement) m.getParent();
-		}
-		else {
+			management = (UserManagement) m.getParent().getObject();
+		} else {
 			management = (UserManagement) container;
 		}
 		Set<String> usedRolenames = new HashSet<String>();
@@ -76,16 +81,15 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 			if (other != role)
 				usedRolenames.add(other.getName());
 		}
-			
-		PermissionSettingModel selected = new PermissionSettingModel(model, management);
-		IModel<Collection<? extends String>> available = Model.of(computePossiblePermissions(management));
 
+		PermissionSettingModel selected = new PermissionSettingModel(model, management);
+		IModel<List<? extends String>> available = Model.ofList(computePossiblePermissions(management));
 		rolename.add(new UniqueNameValidator(usedRolenames));
 		Palette<String> palette = new Palette<String>("palette", selected, available, new Renderer(), 10, false);
 		add(palette);
 	}
-	
-	public Collection<String> computePossiblePermissions(UserManagement management) {
+
+	public List<String> computePossiblePermissions(UserManagement management) {
 		Workspace workspace = (Workspace) resolver.resolve(ApplicationConstants.WORKSPACE_NAME);
 		Set<String> permissions = new TreeSet<String>();
 		EList<Permission> available = management.getPermissions();
@@ -97,12 +101,16 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 			String name = project.getName();
 			permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, name, CommonPermissions.ACTION_CONFIG));
 			permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, name, CommonPermissions.ACTION_EDIT));
+			permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, name, CommonPermissions.ACTION_SUGGEST));
 			permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, name, CommonPermissions.ACTION_VIEW));
 		}
-		return permissions;
+		permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, "*", CommonPermissions.ACTION_CONFIG));
+		permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, "*", CommonPermissions.ACTION_EDIT));
+		permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, "*", CommonPermissions.ACTION_SUGGEST));
+		permissions.add(CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, "*", CommonPermissions.ACTION_VIEW));
+		return new ArrayList<String>(permissions);
 	}
 
-	
 	public static class RolePermissionsConfigSectionContributor extends AbstractConfigSection<Role> {
 
 		private static final long serialVersionUID = 1L;
@@ -115,7 +123,6 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 
 		@Override
 		public void commit(IModel<Role> input, Preferences config) {
-
 		}
 
 		@Override
@@ -145,23 +152,16 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 
 		private static final long serialVersionUID = 1L;
 		private IModel<Role> model;
-		
 
 		public PermissionSettingModel(IModel<Role> model, UserManagement management) {
 			super(management);
-	        this.model = model;
-		}
-		
-		@Override
-		public void detach() {
-			super.detach();
-			model.detach();
+			this.model = model;
 		}
 
 		@Override
-		public List<String> getObject() { 
-			
-			EList<Permission> permissions = getDomainObject().getPermissions();
+		public List<String> getObject() {
+
+			EList<Permission> permissions = model.getObject().getPermissions();
 			List<String> names = new ArrayList<String>(permissions.size());
 			for (Permission permission : permissions) {
 				names.add(permission.getName());
@@ -172,26 +172,39 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 		@Override
 		public void setObject(List<? extends String> object) {
 			Role role = model.getObject();
-			//get a user management in the transaction
-			UserManagement management = role.cdoView().getObject(getDomainObject());
+
+			UserManagement management = getDomainObject();
 			EList<Permission> permissions = management.getPermissions();
 			Map<String, Permission> permissionMap = new HashMap<String, Permission>();
 			for (Permission permission : permissions) {
 				permissionMap.put(permission.getName(), permission);
 			}
-			
+			final List<Permission> missingPermissions = new ArrayList<Permission>();
+			role.getPermissions().clear();
 			for (String selected : object) {
 				Permission permission = permissionMap.get(selected);
-				if(permission==null) {
+				if (permission == null) {
 					permission = UsersFactory.eINSTANCE.createPermission();
 					permission.setName(selected);
-					management.getPermissions().add(permission);
+					missingPermissions.add(permission);
 				}
 				role.getPermissions().add(permission);
-				
 			}
-			
-			
+			if(!missingPermissions.isEmpty())
+			{
+				try {
+					TransactionUtil.commit(management, new Modification<UserManagement, UserManagement>() {
+						@Override
+						public UserManagement apply(UserManagement object) {
+							
+							object.getPermissions().addAll(missingPermissions);
+							return object;
+						}
+					});
+				} catch (CommitException e) {
+					LOG.error("Failed to add missing permissions: "+missingPermissions,e);
+				}
+			}
 		}
 	}
 }

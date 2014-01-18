@@ -134,10 +134,24 @@ public class Activator implements BundleActivator {
 
 		addAvailablePermissions(userManagement);
 		Role adminRole = addOrUpdateAdminRole(userManagement);
+		addOrUpdateRegisteredRole(userManagement);
 		addOrUpdateAnonymousRole(userManagement);
 		addAdminUserIfMissing(adminRole, userManagement);
 		transaction.commit();
 
+	}
+
+	private Role addOrUpdateRegisteredRole(UserManagement userManagement) {
+		Role role = userManagement.findRoleByName("Registered");
+		if (role == null) {
+			role = UsersFactory.eINSTANCE.createRole();
+			role.setName("Registered");
+			addPermission(userManagement, role, "Workspace:view");
+			addPermission(userManagement, role, "Project:*:view");
+			addPermission(userManagement, role, "Project:*:suggest");
+			userManagement.getRoles().add(role);
+		}
+		return role;
 	}
 
 	private void addOrUpdateAnonymousRole(UserManagement userManagement) {
@@ -156,9 +170,13 @@ public class Activator implements BundleActivator {
 	}
 
 	private void addPermission(UserManagement userManagement, Role role, String permissionName) {
-		Permission readWorkspace = getPermission(userManagement.getPermissions(), permissionName);
-		if (readWorkspace != null)
-			role.getPermissions().add(readWorkspace);
+		Permission permission = getPermission(userManagement.getPermissions(), permissionName);
+		if(permission==null) {
+			permission = UsersFactory.eINSTANCE.createPermission();
+			permission.setName(permissionName);
+			userManagement.getPermissions().add(permission);
+		}
+		role.getPermissions().add(permission);
 	}
 
 	private Role addOrUpdateAdminRole(UserManagement userManagement) {

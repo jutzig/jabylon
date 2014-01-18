@@ -142,6 +142,7 @@ public class UserConfigSection extends BasicPanel<User> {
 					// (new user)
 					UserManagement userManagement = (UserManagement) container;
 					CommonPermissions.addDefaultPermissions(userManagement, user);
+					CommonPermissions.addDefaultPermissions(userManagement, user);
 				} else
 					logger.error("Failed to obtain usermanagement for " + user + ". Default permissions will not be initialized");
 			}
