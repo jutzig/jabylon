@@ -77,7 +77,6 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
              *  instead
              */
             getPageParameters().remove(segments.size()-1);
-            getPageParameters().add("tab", segments.get(segments.size()-1));
             return doLookup(segments.subList(0, segments.size()-1));
         }
     }

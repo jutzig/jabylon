@@ -47,9 +47,13 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.jabylon.cdo.connector.Modification;
+import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.util.URLUtil;
+import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
@@ -57,6 +61,7 @@ import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Review;
+import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.model.PropertyPair;
@@ -67,6 +72,7 @@ import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import org.jabylon.rest.ui.wicket.components.AnchorBookmarkablePageLink;
 import org.jabylon.security.CommonPermissions;
+import org.jabylon.users.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +89,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     IModel<PropertyPair> mainModel;
     IModel<PropertyPair> nextModel;
     IModel<Boolean> modified;
-    boolean readOnly = false;
+    EditKind editKind = EditKind.EDIT;
 
     @Inject
     private transient PropertyPersistenceService propertyPersistence;
@@ -101,7 +107,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
     @Override
     protected void construct() {
     	super.construct();
-        readOnly = isReadOnly();
+        editKind = computeEditKind();
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>() {
 
@@ -116,17 +122,20 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
         
     }
 
-    private boolean isReadOnly() {
+    private EditKind computeEditKind() {
     	ProjectVersion version = getModel().getObject().getProjectLocale().getParent();
     	if(version.isReadOnly())
-    		return true;
+    		return EditKind.READONLY;
     	Session session = getSession();
     	if (session instanceof CDOAuthenticatedSession) {
     		Project project = version.getParent();
 			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
-			return !authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT));
+			if(authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_EDIT)))
+				return EditKind.EDIT;
+			if(authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT,project.getName(),CommonPermissions.ACTION_SUGGEST)))
+				return EditKind.SUGGEST;
 		}
-		return true;
+		return EditKind.READONLY;
 	}
 
 	@Override
@@ -233,66 +242,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             private static final long serialVersionUID = 1L;
 
             protected void onSubmit() {
-            	IFormSubmitter submitter = findSubmittingButton();
-            	if(submitter instanceof Button && ((Button)submitter).getId().equals("reset")) {
-                    setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
-                    return;
-            	}
-            	
-                if(!readOnly && modified.getObject()) {
-                	PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
-                	PropertyFile file = loadProperties(descriptor);
-                	Map<String, Property> map = file.asMap();
-                    Property translation = getModelObject();
-                    if (translation != null) {
-                        if (map.containsKey(translation.getKey())) {
-                            Property property = map.get(translation.getKey());
-                            property.setComment(translation.getComment());
-                            property.setValue(translation.getValue());
-                        } else if (!isEmpty(translation.getValue())) {
-                            file.getProperties().add(translation);
-                        }
-                    }
-
-                    propertyPersistence.saveProperties(descriptor, file);
-                    /*
-                     * see https://github.com/jutzig/jabylon/issues/112
-                     * for now we deactivate the successful message to not bother the user
-                     * getSession().info("Saved successfully");
-                     */
-                }
-
-                if (submitter instanceof Button) {
-                    Button button = (Button) submitter;
-                    if (button.getId().equals("next"))
-                    {
-                        if (nextModel != null && nextModel.getObject() != null)
-                            setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));
-                        else
-                        {
-                        	// there is no next. go to overview
-                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
-                        }
-
-                    } else if (button.getId().equals("previous")) {
-                    	if (previousModel != null && previousModel.getObject() != null)
-                    		setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
-                    	else
-                        {
-                        	// there is no next. go to overview
-                        	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
-                        }
-                    } else {
-                        setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
-                    }
-
-                }
+            	doSubmit(this);
             }
-
-            private boolean isEmpty(String string) {
-                return string == null || string.isEmpty();
-            }
-
         };
 
         //this will let us know if the user actually changed anything
@@ -302,13 +253,37 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
         add(pairForm);
 
+        IModel<String> saveLabel = editKind == EditKind.EDIT ? nls("PropertyEditorSinglePanel.save.button") : nls("PropertyEditorSinglePanel.suggest.button");
         Button saveButton = new Button("save");
+        saveButton.setVisibilityAllowed(editKind!=EditKind.READONLY);
+        saveButton.add(new Label("label",saveLabel));
         pairForm.add(saveButton);
         Button resetButton = new Button("reset");
+        resetButton.setVisibilityAllowed(editKind!=EditKind.READONLY);
         pairForm.add(resetButton);
 
         Button nextButton = new Button("next");
+        
         Button previousButton = new Button("previous");
+
+        String nextButtonLabelKey = "PropertyEditorSinglePanel.next.button";
+        String previousButtonLabelKey = "PropertyEditorSinglePanel.previous.button";
+        
+        switch (editKind) {
+		case EDIT:
+			break;
+		case SUGGEST:
+			nextButtonLabelKey += ".suggest";
+			previousButtonLabelKey += ".suggest";
+			break;
+		case READONLY:
+			nextButtonLabelKey += ".readonly";
+			previousButtonLabelKey += ".readonly";			
+			break;
+		}
+        
+        nextButton.add(new Label("label", nls(nextButtonLabelKey)));
+        previousButton.add(new Label("label", nls(previousButtonLabelKey)));
 
         Property template = main.getTemplate();
         String key = null;
@@ -336,14 +311,14 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
         TextArea<PropertyPair> textArea = new TextArea<PropertyPair>("template", new PropertyModel<PropertyPair>(main, "original"));
         templatePanel.add(textArea);
-        textArea.setEnabled(!readOnly);
+        textArea.setEnabled(editKind!=EditKind.READONLY);
 
         textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(main, "originalComment"));
         templatePanel.add(textArea);
 
         textArea = new TextArea<PropertyPair>("translation-comment", new PropertyModel<PropertyPair>(main, "translatedComment"));
         translationPanel.add(textArea);
-        if(readOnly)
+        if(editKind==EditKind.READONLY)
         	textArea.add(new AttributeModifier("readonly", "readonly"));
 
         textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(main, "translated"));
@@ -357,7 +332,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             }
         }));
         textArea.add(new AttributeModifier("translate", "no"));
-        if(readOnly)
+        if(editKind==EditKind.READONLY)
         	textArea.add(new AttributeModifier("readonly", "readonly"));
         translationPanel.add(textArea);
 
@@ -379,7 +354,141 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
     }
 
-    private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
+    protected void doSubmit(Form<Property> form) {
+    	IFormSubmitter submitter = form.findSubmittingButton();
+    	if(submitter instanceof Button && ((Button)submitter).getId().equals("reset")) {
+            setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
+            return;
+    	}
+    	
+    	if(modified.getObject()) {
+    		if(editKind==EditKind.EDIT) {
+    			PropertyFileDescriptor descriptor = PropertyEditorSinglePanel.this.getModelObject();
+    			PropertyFile file = loadProperties(descriptor);
+    			Map<String, Property> map = file.asMap();
+    			Property translation = form.getModelObject();
+    			if (translation != null) {
+    				if (map.containsKey(translation.getKey())) {
+    					Property property = map.get(translation.getKey());
+    					property.setComment(translation.getComment());
+    					property.setValue(translation.getValue());
+    				} else if (!isEmpty(translation.getValue())) {
+    					file.getProperties().add(translation);
+    				}
+    			}
+    			
+    			propertyPersistence.saveProperties(descriptor, file);
+    			
+    			if(translation.getValue()!=null) {
+    				//see if we can close a manual review because we accepted the suggestion
+    				Multimap<String, Review> reviewMap = reviewModel.getObject();
+    				Collection<Review> reviews = reviewMap.get(translation.getKey());
+    				for (Review review : reviews) {
+    					if(review.getState()==ReviewState.OPEN && Review.KIND_SUGGESTION.equals(review.getReviewType())) {
+    						if(translation.getValue().equals(review.getMessage()))
+    						{
+    							try {
+									TransactionUtil.commit(review, new Modification<Review, Review>() {
+										@Override
+										public Review apply(Review object) {
+											object.setState(ReviewState.RESOLVED);
+											return object;
+										}
+									});
+								} catch (CommitException e) {
+									logger.error("Failed to commit review resolution",e);
+								}
+    						}
+    					}
+    				}    				
+    			}
+    			
+    			/*
+    			 * see https://github.com/jutzig/jabylon/issues/112
+    			 * for now we deactivate the successful message to not bother the user
+    			 * getSession().info("Saved successfully");
+    			 */
+    		}
+    		else if(editKind==EditKind.SUGGEST) {
+    			Property translation = form.getModelObject();
+    			IModel<PropertyFileDescriptor> model = getModel();
+    			PropertyFileDescriptor descriptor = model.getObject();
+    			
+    			final Review review = PropertiesFactory.eINSTANCE.createReview();
+    			review.setCreated(System.currentTimeMillis());
+    			review.setKey(translation.getKey());
+    			review.setMessage(translation.getValue());
+    			review.setSeverity(Severity.INFO);
+    			review.setReviewType(Review.KIND_SUGGESTION);
+    			
+    			String username = CommonPermissions.USER_ANONYMOUS;
+    			Session session = getSession();
+    			if (session instanceof CDOAuthenticatedSession) {
+					CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+					User user = authSession.getUser();
+					if(user!=null)
+						username = user.getName();
+					
+				}
+    			review.setUser(username);
+    			
+    			if(translation.getComment()!=null && !translation.getComment().isEmpty()) {
+    				Comment comment = PropertiesFactory.eINSTANCE.createComment();
+    				comment.setUser(username);
+    				comment.setCreated(review.getCreated());
+    				comment.setMessage(translation.getComment());
+    				review.getComments().add(comment);
+    			}
+    			try {
+					TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
+						@Override
+						public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
+							
+							object.getReviews().add(review);
+							return object;
+						}
+						
+					});
+				} catch (CommitException e) {
+					logger.error("Commit of suggestion failed",e);
+				}
+    		}
+    		
+    	}
+    	
+
+        if (submitter instanceof Button) {
+            Button button = (Button) submitter;
+            if (button.getId().equals("next"))
+            {
+                if (nextModel != null && nextModel.getObject() != null)
+                    setResponsePage(getPage().getClass(), getPageParameters().set("key", nextModel.getObject().getKey()));
+                else
+                {
+                	// there is no next. go to overview
+                	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
+                }
+
+            } else if (button.getId().equals("previous")) {
+            	if (previousModel != null && previousModel.getObject() != null)
+            		setResponsePage(getPage().getClass(), getPageParameters().set("key", previousModel.getObject().getKey()));
+            	else
+                {
+                	// there is no next. go to overview
+                	setResponsePage(getPage().getClass(), getPageParameters().set("key", null));
+                }
+            } else {
+                setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
+            }
+        }
+		
+	}
+    
+    private boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
+	private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object) {
         EList<Review> reviews = object.getReviews();
         Multimap<String, Review> reviewMap = ArrayListMultimap.create(reviews.size(), 2);
         for (Review review : reviews) {
@@ -429,6 +538,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		Collection<Review> reviews = reviewModel.getObject().get(propertyPair.getObject().getKey());
 		DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, getSession().getLocale());
 		for (Review review : reviews) {
+			if(review.getState()==ReviewState.INVALID || review.getState()==ReviewState.RESOLVED)
+				continue;
 			Label label = new Label(view.newChildId(), review.getReviewType());
 			label.add(new AttributeAppender("class", getLabelClass(review)));
 			StringBuilder title = new StringBuilder();
@@ -465,5 +576,9 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
             default:
                 return "";
         }
+    }
+    
+    private static enum EditKind {
+    	READONLY, SUGGEST, EDIT;
     }
 }

@@ -127,7 +127,13 @@ public class PropertyReviewService implements PropertiesListener {
 
     }
 
+    /**
+     * deletes all review for the given property key
+     * @param key
+     * @param reviews
+     */
     private void removeKey(String key, List<Review> reviews) {
+    	//TODO: is it wise to delete all reviews?
         Iterator<Review> it = reviews.iterator();
         while (it.hasNext()) {
             Review review = (Review) it.next();

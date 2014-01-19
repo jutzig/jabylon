@@ -37,6 +37,7 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.ResourceFolder;
 import org.jabylon.properties.Review;
+import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertiesSwitch;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
@@ -127,7 +128,12 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
             if(keys>0)
             {
                 EList<Review> reviews = descriptor.getReviews();
-                yellowWidth = (int) (reviews.size()*100/(double)keys);
+                int activeReviews = 0;
+                for (Review review : reviews) {
+					if(review.getState()==ReviewState.OPEN || review.getState()==ReviewState.REOPENED)
+						activeReviews++;
+				}
+                yellowWidth = (int) (activeReviews*100/(double)keys);
                 greenWidth -= yellowWidth;
             }
         }

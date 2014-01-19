@@ -53,6 +53,7 @@ import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Review;
+import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.model.EClassSortState;
@@ -172,6 +173,8 @@ public class PropertyListPanel
         DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT,getSession().getLocale());
         for (Review review : reviews)
         {
+        	if(review.getState()==ReviewState.INVALID || review.getState()==ReviewState.RESOLVED)
+				continue;
             Label label = new Label(view.newChildId(), review.getReviewType());
             label.add(new AttributeAppender("class", getLabelClass(review)));
             StringBuilder title = new StringBuilder();

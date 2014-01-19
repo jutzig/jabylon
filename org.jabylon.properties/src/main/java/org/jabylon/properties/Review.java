@@ -137,8 +137,7 @@ public interface Review extends CDOObject {
 	 * Returns the value of the '<em><b>Review Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Review Type</em>' attribute isn't clear,
-     * there really should be more of a description here...
+     * The kind of the review (human readable)
      * </p>
      * <!-- end-user-doc -->
 	 * @return the value of the '<em>Review Type</em>' attribute.
@@ -152,6 +151,7 @@ public interface Review extends CDOObject {
     /**
 	 * Sets the value of the '{@link org.jabylon.properties.Review#getReviewType <em>Review Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * The kind of the review (human readable)
      * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Review Type</em>' attribute.
 	 * @see #getReviewType()
@@ -163,8 +163,7 @@ public interface Review extends CDOObject {
 	 * Returns the value of the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Key</em>' attribute isn't clear,
-     * there really should be more of a description here...
+     * The property key that this review applies to
      * </p>
      * <!-- end-user-doc -->
 	 * @return the value of the '<em>Key</em>' attribute.
@@ -178,6 +177,7 @@ public interface Review extends CDOObject {
     /**
 	 * Sets the value of the '{@link org.jabylon.properties.Review#getKey <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * The property key that this review applies to
      * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Key</em>' attribute.
 	 * @see #getKey()
@@ -218,8 +218,7 @@ public interface Review extends CDOObject {
 	 * Returns the value of the '<em><b>Created</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Created</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * when this review was created
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Created</em>' attribute.
@@ -233,6 +232,7 @@ public interface Review extends CDOObject {
 				/**
 	 * Sets the value of the '{@link org.jabylon.properties.Review#getCreated <em>Created</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * when this review was created
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Created</em>' attribute.
 	 * @see #getCreated()
@@ -240,4 +240,6 @@ public interface Review extends CDOObject {
 	 */
 	void setCreated(long value);
 
+	
+	static final String KIND_SUGGESTION = "Suggestion";
 } // Review

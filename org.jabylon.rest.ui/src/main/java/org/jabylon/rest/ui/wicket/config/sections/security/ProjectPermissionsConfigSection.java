@@ -275,28 +275,14 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
                     it.remove();
             }
 
-            switch (permission.getPermission()) {
-            case CONFIG:
-                Permission perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
+            PermissionSetting permSetting = permission.getPermission();
+            if(permSetting!=PermissionSetting.NONE) {
+            	Permission perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), permSetting.getPermissionName()),
                         management);
                 user.getPermissions().add(perm);
-            case EDIT:
-                perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
-                        management);
-                user.getPermissions().add(perm);
-            case READ:
-                perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
-                        management);
-                user.getPermissions().add(perm);
-                break;
-            case NONE:
-                // nothing to do
             }
         }
-
         //now the roles
         for (RolePermission permission : rolePermissions) {
             Role role = permission.getRegistrant().getObject();
@@ -315,31 +301,14 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
                     it.remove();
             }
 
-            switch (permission.getPermission()) {
-            case CONFIG:
-                Permission perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_CONFIG),
+            PermissionSetting permSetting = permission.getPermission();
+            if(permSetting!=PermissionSetting.NONE) {
+            	Permission perm = getOrCreatePermission(
+                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), permSetting.getPermissionName()),
                         management);
-                if (!hasPermission(role, perm.getName()))
-                    role.getPermissions().add(perm);
-            case EDIT:
-                perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_EDIT),
-                        management);
-                if (!hasPermission(role,perm.getName()))
-                    role.getPermissions().add(perm);
-            case READ:
-                perm = getOrCreatePermission(
-                        CommonPermissions.constructPermissionName(CommonPermissions.PROJECT, getModel().getObject().getName(), CommonPermissions.ACTION_VIEW),
-                        management);
-                if (!hasPermission(role,perm.getName()))
-                    role.getPermissions().add(perm);
-                break;
-            case NONE:
-                //nothing to do
+                role.getPermissions().add(perm);
             }
         }
-
         CDOTransaction transaction = (CDOTransaction) management.cdoView();
         try {
             transaction.commit();
@@ -480,7 +449,17 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 }
 
 enum PermissionSetting {
-    NONE, READ, EDIT, CONFIG;
+    NONE(null), READ(CommonPermissions.ACTION_VIEW), SUGGEST(CommonPermissions.ACTION_SUGGEST), EDIT(CommonPermissions.ACTION_EDIT), CONFIG(CommonPermissions.ACTION_CONFIG);
+    
+    String permissionName;
+    
+    private PermissionSetting(String permissionName) {
+    	this.permissionName = permissionName;
+	}
+    
+    public String getPermissionName() {
+		return permissionName;
+	}
 }
 
 class PermissionSettingRenderer implements IChoiceRenderer<PermissionSetting> {
@@ -493,6 +472,8 @@ class PermissionSettingRenderer implements IChoiceRenderer<PermissionSetting> {
             return "None";
         case READ:
             return "View";
+        case SUGGEST:
+            return "Suggest";
         case EDIT:
             return "Edit";
         case CONFIG:
