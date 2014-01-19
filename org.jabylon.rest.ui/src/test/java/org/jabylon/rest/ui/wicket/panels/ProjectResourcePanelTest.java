@@ -13,14 +13,15 @@ import static org.mockito.Mockito.*;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.Review;
+import org.jabylon.properties.ReviewState;
 
 public class ProjectResourcePanelTest {
 
@@ -73,9 +74,8 @@ public class ProjectResourcePanelTest {
         PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
         when(mock.getKeys()).thenReturn(100);
         when(mock.getPercentComplete()).thenReturn(80);
-        @SuppressWarnings("unchecked")
-        EList<Review> reviews = mock(EList.class);
-        when(reviews.size()).thenReturn(10);
+
+        EList<Review> reviews = newReviewList(10);
         when(mock.getReviews()).thenReturn(reviews);
 
         Triplet result = fixture.computeProgressBars(mock);
@@ -92,9 +92,7 @@ public class ProjectResourcePanelTest {
         PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
         when(mock.getKeys()).thenReturn(100);
         when(mock.getPercentComplete()).thenReturn(100);
-        @SuppressWarnings("unchecked")
-        EList<Review> reviews = mock(EList.class);
-        when(reviews.size()).thenReturn(10);
+        EList<Review> reviews = newReviewList(10);
         when(mock.getReviews()).thenReturn(reviews);
         Triplet result = fixture.computeProgressBars(mock);
         assertEquals("Must subtract the 'dirty' keys from the total percentage", 90, result.getSuccess());
@@ -102,9 +100,33 @@ public class ProjectResourcePanelTest {
         assertEquals(0, result.getDanger());
     }
 
+    
+    @Test
+    public void computeProgressBarsDescriptorCompleteWithClosedReviews() {
+        PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
+        when(mock.getKeys()).thenReturn(100);
+        when(mock.getPercentComplete()).thenReturn(100);
+        EList<Review> reviews = newReviewList(10);
+        reviews.get(2).setState(ReviewState.RESOLVED);
+        reviews.get(8).setState(ReviewState.INVALID);
+        when(mock.getReviews()).thenReturn(reviews);
+        Triplet result = fixture.computeProgressBars(mock);
+        assertEquals("Must subtract count closed reviews as fine", 92, result.getSuccess());
+        assertEquals(8, result.getWarning());
+        assertEquals(0, result.getDanger());
+    }
 
 
-    /**
+
+    private EList<Review> newReviewList(int size) {
+    	EList<Review> reviews = new BasicEList<Review>(10);
+    	for (int i = 0; i < size; i++) {
+			reviews.add(PropertiesFactory.eINSTANCE.createReview());
+		}
+		return reviews;
+	}
+
+	/**
      * also see https://github.com/jutzig/jabylon/wiki/Progress-Bar-TestCases
      */
     @Test
@@ -115,9 +137,7 @@ public class ProjectResourcePanelTest {
         when(master.getKeys()).thenReturn(100);
         when(mock.getMaster()).thenReturn(master);
         when(mock.getPercentComplete()).thenReturn(80);
-        @SuppressWarnings("unchecked")
-        EList<Review> reviews = mock(EList.class);
-        when(reviews.size()).thenReturn(10);
+        EList<Review> reviews = newReviewList(10);
         when(mock.getReviews()).thenReturn(reviews);
         Triplet result = fixture.computeProgressBars(mock);
         assertEquals("Must subtract the 'dirty' keys from the amount of master keys", 70, result.getSuccess());
@@ -149,9 +169,7 @@ public class ProjectResourcePanelTest {
         PropertyFileDescriptor mock = mock(PropertyFileDescriptor.class);
         when(mock.getKeys()).thenReturn(100);
         when(mock.getPercentComplete()).thenReturn(95);
-        @SuppressWarnings("unchecked")
-        EList<Review> reviews = mock(EList.class);
-        when(reviews.size()).thenReturn(10);
+        EList<Review> reviews = newReviewList(10);
         when(mock.getReviews()).thenReturn(reviews);
         Triplet result = fixture.computeProgressBars(mock);
         assertEquals(85, result.getSuccess());
