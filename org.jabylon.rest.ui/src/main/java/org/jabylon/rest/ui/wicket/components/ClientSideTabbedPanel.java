@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.jabylon.rest.ui.util.WebContextUrlResourceReference;
+import org.jabylon.rest.ui.util.GlobalResources;
 
 public class ClientSideTabbedPanel<T extends ITab> extends Panel {
 
@@ -64,7 +64,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
             @Override
             protected void populateItem(ListItem<T> item) {
                 int index = item.getIndex();
-                if (index == 0)
+                if (index == activeTab.getObject())
                     item.add(new AttributeAppender("class", " active"));
                 item.setMarkupId(id + index);
                 Object object = item.getDefaultModelObject();
@@ -91,7 +91,7 @@ public class ClientSideTabbedPanel<T extends ITab> extends Panel {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-        response.render(JavaScriptHeaderItem.forReference(new WebContextUrlResourceReference("js/persistentTabs.js")));
+        response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_PERSISTENT_TABS));
     }
 
     public List<WebMarkupContainer> getTabContents() {

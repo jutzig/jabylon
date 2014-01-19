@@ -16,13 +16,13 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.CDOState;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.UserImagePanel;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
 import org.jabylon.rest.ui.wicket.config.SettingsPage;
@@ -36,7 +36,7 @@ import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UsersConfigSection extends GenericPanel<UserManagement> {
+public class UsersConfigSection extends BasicPanel<UserManagement> {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(UsersConfigSection.class);

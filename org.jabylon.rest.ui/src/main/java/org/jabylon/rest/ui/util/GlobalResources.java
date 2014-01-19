@@ -43,6 +43,11 @@ public class GlobalResources {
     public static final ResourceReference JS_WARN_WHEN_DIRTY = new WebContextUrlResourceReference("js/warnWhenDirty.js");
     
     /**
+     * automatically activates the last used tab (for ClientSideTabbedPanel
+     */
+    public static final ResourceReference JS_PERSISTENT_TABS = new WebContextUrlResourceReference("js/persistentTabs.js");
+    
+    /**
      * the main css file
      */
     public static final ResourceReference MAIN_CSS = new WebContextUrlResourceReference("css/main.css");

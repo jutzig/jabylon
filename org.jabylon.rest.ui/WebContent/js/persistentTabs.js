@@ -12,7 +12,7 @@
  *
  * Tabs are persisted in the Browser's sessionStorage.
  */
-$('body').ready(function(e) {
+$(document).ready(function(e) {
   if (window.sessionStorage) {
         $('[data-tabsheet]').each(function(idx, el) {
             var tabsheet = $(el).data('tabsheet');
@@ -24,7 +24,7 @@ $('body').ready(function(e) {
         });
     };
 
-    $('body').on('shown', '[data-toggle="tab"]', function(e) {
+    $(document).on('shown', '[data-toggle="tab"]', function(e) {
         if (window.sessionStorage) {
             var $tab = $(e.target);
             var tabsheet = $tab.closest('[data-tabsheet]').data('tabsheet');
