@@ -19,6 +19,7 @@ Jabylon can be a great help if you are working on a software project that needs 
  * powerful web based translation editor
  * automatic translation checks
  * terminology support
+ * translation memory
  * tight integration with source code management systems to synchronize and automatically commit new translations
      * supports multiple branches
      * built-in support for [Git](http://git-scm.com/), [Subversion](http://subversion.apache.org/) and [CVS](http://savannah.nongnu.org/projects/cvs) 
@@ -27,6 +28,7 @@ Jabylon can be a great help if you are working on a software project that needs 
  * fine grained access rights
  * LDAP support
  * JSON API for programmatic access
+ * update center to update and install plug-ins
      
 # Deployment
 
