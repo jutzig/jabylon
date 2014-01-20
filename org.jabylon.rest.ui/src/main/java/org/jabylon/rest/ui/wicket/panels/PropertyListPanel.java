@@ -251,7 +251,8 @@ public class PropertyListPanel
         Multimap<String, Review> reviewMap = ArrayListMultimap.create(reviews.size(), 2);
         for (Review review : reviews)
         {
-            reviewMap.put(review.getKey(), review);
+        	if(review.getState()==ReviewState.OPEN || review.getState()==ReviewState.REOPENED)
+        		reviewMap.put(review.getKey(), review);
         }
         return reviewMap;
     }
