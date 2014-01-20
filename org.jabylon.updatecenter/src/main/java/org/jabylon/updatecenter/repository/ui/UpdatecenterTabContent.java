@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.felix.bundlerepository.Reason;
 import org.apache.felix.bundlerepository.Resource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -88,7 +87,10 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
                 Resource resource = resourceWrapper.getResource();
                 String name = resource.getSymbolicName();
                 item.add(new Label("name", name));
-                item.add(new Label("description", resource.getPresentationName()));
+                String description = (String) resource.getProperties().get(Resource.DESCRIPTION);
+                if(description==null)
+                	description = resource.getPresentationName();
+                item.add(new Label("description", description));
                 item.add(new Label("version", resource.getVersion().toString()));
                 item.add(new CheckBox("install",new PropertyModel<Boolean>(item.getModel(),"checked")));
             }
