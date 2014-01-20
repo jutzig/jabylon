@@ -19,12 +19,12 @@
 		<repository>
 			<id>jabylon</id>
 			<name>jabylon</name>
-			<url>scp://web.jabylon.org:221/srv/sites/jabylon/maven</url>
+			<url>scp://web.jabylon.org:23/srv/sites/jabylon/maven</url>
 		</repository>
 		<site>
 			<id>jabylon</id>
 			<name>jabylon</name>
-			<url>scp://web.jabylon.org:221/srv/sites/jabylon</url>
+			<url>scp://web.jabylon.org:23/srv/sites/jabylon</url>
 		</site>
 	</distributionManagement>
 
