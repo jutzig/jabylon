@@ -14,45 +14,45 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.felix.bundlerepository.Reason;
 import org.apache.felix.bundlerepository.Resource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.rest.ui.wicket.BasicPanel;
+import org.jabylon.updatecenter.repository.OBRException;
+import org.jabylon.updatecenter.repository.OBRRepositoryService;
+import org.jabylon.updatecenter.repository.ResourceFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-
-import org.jabylon.rest.ui.model.ComputableModel;
-import org.jabylon.rest.ui.wicket.BasicPanel;
-import org.jabylon.updatecenter.repository.OBRRepositoryService;
-import org.jabylon.updatecenter.repository.ResourceFilter;
 
 public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
 
     private static final long serialVersionUID = 1L;
     @Inject
     private transient OBRRepositoryService repositoryConnector;
-    private IModel<List<ResourceWrapper>> resources;
+    private IModel<List<? extends ResourceWrapper>> resources;
     private static final Logger logger = LoggerFactory.getLogger(UpdatecenterTabContent.class);
 
     public UpdatecenterTabContent(String id, IModel<ResourceFilter> model, PageParameters parameters) {
         super(id, model, parameters);
-        resources = new ComputableModel<IModel<ResourceFilter>, List<ResourceWrapper>>(new LoadBundlesFunction(),model);
-        Form<Void> form = new StatelessForm<Void>("form") {
+        resources = Model.ofList(new LoadBundlesFunction().apply(model));
+        Form<Void> form = new Form<Void>("form") {
 
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit() {
                 super.onSubmit();
-                List<ResourceWrapper> list = resources.getObject();
+                List<? extends ResourceWrapper> list = resources.getObject();
                 List<Resource> toBeChanged = new ArrayList<Resource>();
                 for (ResourceWrapper wrapper : list) {
                     if(!wrapper.isChecked())
@@ -63,7 +63,17 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
                         toBeChanged.add(resource2);
                     }
                 }
-                repositoryConnector.install(toBeChanged.toArray(new Resource[toBeChanged.size()]));
+                try {
+					repositoryConnector.install(toBeChanged.toArray(new Resource[toBeChanged.size()]));
+				} catch (OBRException e) {
+					getSession().error(e.getMessage());
+				}
+                if(!toBeChanged.isEmpty()) {
+                	//get rid of the page version to get a full refresh
+                	PageParameters parameters = new PageParameters();
+                	parameters.set(0, "settings");
+                	setResponsePage(getPage().getClass(),parameters);
+                }
             }
         };
         add(form);
@@ -83,6 +93,7 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
                 item.add(new CheckBox("install",new PropertyModel<Boolean>(item.getModel(),"checked")));
             }
         };
+        resourceView.setReuseItems(true);
         form.add(resourceView);
     }
 
@@ -134,6 +145,10 @@ class ResourceWrapper implements Serializable
     public boolean isChecked() {
         return checked;
     }
+    
+    public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
 
     public String getId() {
         return id;

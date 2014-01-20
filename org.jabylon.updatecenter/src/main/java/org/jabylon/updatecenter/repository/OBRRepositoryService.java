@@ -21,8 +21,8 @@ public interface OBRRepositoryService {
 
     Resource[] findResources(String id);
 
-    void install(String resourceId);
+    void install(String resourceId) throws OBRException;
 
-    void install(Resource... resource);
+    void install(Resource... resource) throws OBRException;
 
 }

@@ -11,6 +11,13 @@
  */
 package org.jabylon.updatecenter.repository.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.text.Collator;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -21,12 +28,19 @@ import java.util.List;
 
 import org.apache.felix.bundlerepository.Repository;
 import org.apache.felix.bundlerepository.RepositoryAdmin;
-import org.apache.felix.bundlerepository.Resolver;
 import org.apache.felix.bundlerepository.Resource;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.jabylon.cdo.server.ServerConstants;
+import org.jabylon.common.util.PreferencesUtil;
+import org.jabylon.updatecenter.repository.OBRException;
+import org.jabylon.updatecenter.repository.OBRRepositoryService;
+import org.jabylon.updatecenter.repository.ResourceFilter;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.prefs.Preferences;
@@ -37,24 +51,35 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 
-import org.jabylon.common.util.PreferencesUtil;
-import org.jabylon.updatecenter.repository.OBRRepositoryService;
-import org.jabylon.updatecenter.repository.ResourceFilter;
-
 /**
  * @author jutzig.dev@googlemail.com
  *
  */
-@Component
+@Component(enabled=true,immediate=true)
 @Service
 public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
     private static final String DEFAULT_REPOSITORY = "http://jabylon.org/maven/repository.xml";
-    @Reference
+    @Reference(bind="bindAdmin")
     private RepositoryAdmin admin;
 
     private static final Logger logger = LoggerFactory.getLogger(OBRRepositoryConnectorImpl.class);
+    
+    /**
+     * where we download plugins
+     */
+    private File pluginDir;
 
+    private BundleContext context;
+    
+    @Activate
+    public void activate() {
+    	pluginDir = new File(new File(ServerConstants.WORKING_DIR),"addons");
+    	Bundle bundle = FrameworkUtil.getBundle(getClass());
+    	context = bundle.getBundleContext();
+    	deployAddons(pluginDir);
+    }
+    
     /*
      * (non-Javadoc)
      *
@@ -63,12 +88,48 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
      */
     @Override
     public List<Bundle> listInstalledBundles() {
-        Bundle bundle = FrameworkUtil.getBundle(getClass());
-        List<Bundle> resources = Arrays.asList(bundle.getBundleContext().getBundles());
+        
+        List<Bundle> resources = Arrays.asList(context.getBundles());
         return resources;
     }
+    
+    public void bindAdmin(RepositoryAdmin admin) {
+    	this.admin = admin;
+    }
+    
+    
 
-    @Override
+    private void deployAddons(File pluginDir) {
+    	File[] addons = pluginDir.listFiles();
+    	if(addons==null)
+    		return;
+    	List<Bundle> bundles = new ArrayList<Bundle>();
+    	for (File addon : addons) {
+			try {
+				String uri = addon.toURI().toString();
+				Bundle bundle = context.getBundle(uri);
+				if(bundle==null)
+				{
+					logger.info("Installing Addon {}",addon.getName());
+					bundle = context.installBundle(uri);
+				}
+				bundles.add(bundle);
+			} catch (BundleException e) {
+				logger.error("Failed to deploy addon "+addon.getName());
+			}
+		}
+    	
+    	for (Bundle bundle : bundles) {
+			try {
+				bundle.start();
+			} catch (BundleException e) {
+				logger.error("Failed to start addon "+bundle.getSymbolicName());
+			}
+		}
+		
+	}
+
+	@Override
     public List<Resource> getAvailableResources(ResourceFilter filter) {
         List<Resource> filteredResources = new ArrayList<Resource>();
         List<Bundle> bundles = listInstalledBundles();
@@ -145,8 +206,9 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     }
 
     @Override
-    public void install(String resourceId) {
+    public void install(String resourceId) throws OBRException {
         Resource[] resources;
+        
         String filter = MessageFormat.format("({0}={1})", Resource.ID, resourceId);
         try {
             resources = admin.discoverResources(filter);
@@ -161,17 +223,79 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     }
 
     @Override
-    public void install(Resource... resources) {
-        Resolver resolver = admin.resolver();
-        for (Resource resource : resources) {
-            resolver.add(resource);
-        }
-        if (resolver.resolve()) {
-            resolver.deploy(0);
-        }
+    public void install(Resource... resources) throws OBRException {
+        List<Bundle> bundles = new ArrayList<Bundle>();
+    	for (Resource resource : resources) {
+    		try {
+    			
+				Bundle bundle = context.installBundle(downloadBundle(resource));
+				bundles.add(bundle);
+			} catch (BundleException e) {
+				OBRException exception = new OBRException("Failed to start bundle "+ resource,e);
+				logger.error("Plugin Installation failed",e);
+				throw exception;
+			} catch (MalformedURLException e) {
+				OBRException exception = new OBRException("Incorrect URI for bundle "+ resource,e);
+				logger.error("Plugin Installation failed",e);
+				throw exception;
+			} catch (IOException e) {
+				OBRException exception =  new OBRException("Failed to download bundle "+ resource,e);
+				logger.error("Plugin Installation failed",e);
+				throw exception;
+			}
+		}
+    	for (Bundle bundle : bundles) {
+			logger.info("Starting Bundle "+bundle);
+			try {
+				bundle.start();
+			} catch (BundleException e) {
+				throw new OBRException("Failed to start bundle "+ bundle.getSymbolicName(),e);
+			}
+		}
+        
+        // for some reason this doesn't work in jetty
+//        for (Resource resource : resources) {
+//        	resolver.add(resource);
+//        }
+//        
+//        if (resolver.resolve(Resolver.NO_OPTIONAL_RESOURCES)) {
+//            resolver.deploy(Resolver.START);
+//        }
+//        else {
+//        	Reason[] reasons = resolver.getUnsatisfiedRequirements();
+//        	for (Reason reason : reasons) {
+//        		logger.error("Failed to install "+reason.getResource() + " missing : " +reason.getRequirement());
+//			}
+//        	throw new OBRException("Installation Failed", reasons);
+//        }
     }
 
-    @Override
+    private String downloadBundle(Resource resource) throws MalformedURLException, IOException {
+    	String uriString = resource.getURI();
+    	URI uri = URI.create(uriString);
+    	InputStream stream = null;
+    	OutputStream out = null;
+    	File destination;
+		try {
+			stream = uri.toURL().openStream();
+			pluginDir.mkdirs();
+			destination = new File(pluginDir,resource.getSymbolicName()+"_"+resource.getVersion()+".jar");
+			out = new FileOutputStream(destination);
+			byte[] buffer = new byte[4096];
+			int read = 0;
+			while((read=stream.read(buffer))!=-1) {
+				out.write(buffer,0,read);
+			}
+		} finally {
+			if(out!=null)
+				out.close();
+			if(stream!=null)
+				stream.close();
+		}
+		return destination.toURI().toString();
+	}
+
+	@Override
     public Resource[] findResources(String id) {
         // String filter = "(&(SYMBOLIC_NAME={0})(VERSION={1}))";
         String filter = "({0}={1})";

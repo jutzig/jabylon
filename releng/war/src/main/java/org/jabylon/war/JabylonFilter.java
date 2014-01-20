@@ -54,12 +54,14 @@ public class JabylonFilter extends BridgeFilter {
 	}
 
 	private void internalInit() {
+		if(System.getenv().containsKey("JABYLON_HOME")) {
+			System.setProperty("JABYLON_HOME", System.getenv("JABYLON_HOME"));
+		}
 		File homeDir = new File(new File(System.getProperty("user.home")), "jabylon");
 		jabylonHome = System.getProperty("JABYLON_HOME", homeDir.getAbsolutePath());
 		launchProperties.put("JABYLON_HOME", jabylonHome);
 		launchProperties.put("osgi.instance.area", homeDir.toURI().toString());
 		launchProperties.put("osgi.configuration.area", new File(homeDir, "configuration").toURI().toString());
-		launchProperties.put("osgi.clean", "true");
 		System.getProperties().putAll(launchProperties);
 		copyResources("/WEB-INF/eclipse/configuration/", new File(homeDir, "configuration"));
 	}
