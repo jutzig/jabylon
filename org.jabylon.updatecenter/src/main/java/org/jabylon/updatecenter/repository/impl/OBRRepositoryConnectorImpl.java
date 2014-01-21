@@ -23,8 +23,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.felix.bundlerepository.Repository;
 import org.apache.felix.bundlerepository.RepositoryAdmin;
@@ -43,6 +48,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.Version;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +70,8 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     private RepositoryAdmin admin;
 
     private static final Logger logger = LoggerFactory.getLogger(OBRRepositoryConnectorImpl.class);
+    
+    private static final Pattern BUNDLE_PATTERN = Pattern.compile("(.*?)_(.*?)\\.jar");
     
     /**
      * where we download plugins
@@ -103,19 +111,22 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     	File[] addons = pluginDir.listFiles();
     	if(addons==null)
     		return;
+    	List<String> bundleFiles = getHighestBundleVersions(pluginDir.list());
+    	
     	List<Bundle> bundles = new ArrayList<Bundle>();
-    	for (File addon : addons) {
+    	for (String addonName : bundleFiles) {
 			try {
+				File addon = new File(pluginDir,addonName);
 				String uri = addon.toURI().toString();
 				Bundle bundle = context.getBundle(uri);
 				if(bundle==null)
 				{
-					logger.info("Installing Addon {}",addon.getName());
+					logger.info("Installing Addon {}",addonName);
 					bundle = context.installBundle(uri);
 				}
 				bundles.add(bundle);
 			} catch (BundleException e) {
-				logger.error("Failed to deploy addon "+addon.getName());
+				logger.error("Failed to deploy addon "+addonName);
 			}
 		}
     	
@@ -127,6 +138,40 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 			}
 		}
 		
+	}
+
+	protected List<String> getHighestBundleVersions(String... filenames) {
+		if(filenames==null)
+			return Collections.emptyList();
+		SortedSetMultimap<String, String> map = TreeMultimap.create(Collator.getInstance(), new VersionComparator());
+		for (String string : filenames) {
+			Matcher matcher = BUNDLE_PATTERN.matcher(string);
+			if(matcher.matches()) {
+				String name = matcher.group(1);
+				String version = matcher.group(2);
+				map.put(name, version);
+			}
+			else {
+				logger.warn("{} does not match the pattern {}. Skipping",string,BUNDLE_PATTERN);
+			}
+		}
+		Set<Entry<String, Collection<String>>> entrySet = map.asMap().entrySet();
+		List<String> result = new ArrayList<String>(entrySet.size());
+		for (Entry<String, Collection<String>> entry : entrySet) {
+			result.add(entry.getKey()+"_"+entry.getValue().iterator().next()+".jar");
+		}
+		return result;
+	}
+	
+	protected String getHighestVersion(List<String> versions) {
+		String versionName = versions.get(0);
+		Version highest = Version.parseVersion(versionName);
+		for (String currentName : versions) {
+			Version current = Version.parseVersion(currentName);
+			if(current.compareTo(highest)>0)
+				highest = current;
+		}
+		return highest.toString();
 	}
 
 	@Override
@@ -248,6 +293,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 			logger.info("Starting Bundle "+bundle);
 			try {
 				bundle.start();
+				checkIfUpdate(bundle);
 			} catch (BundleException e) {
 				throw new OBRException("Failed to start bundle "+ bundle.getSymbolicName(),e);
 			}
@@ -270,7 +316,31 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 //        }
     }
 
-    private String downloadBundle(Resource resource) throws MalformedURLException, IOException {
+    /**
+     * checks if the bundle updates an existing one, and if so, deactivates any others with the same name
+     * @param bundle
+     */
+    private void checkIfUpdate(Bundle bundle) {
+    	Bundle[] bundles = context.getBundles();
+    	for (Bundle other : bundles) {
+			if(other==bundle)
+				continue;
+			if(other.getSymbolicName().equals(bundle.getSymbolicName())) {
+				if(other.getState()==Bundle.ACTIVE || other.getState()==Bundle.STARTING) {
+					logger.info("Stopping {}:{} due to an update",other.getSymbolicName(),other.getVersion());
+					try {
+						other.stop();
+					} catch (BundleException e) {
+						logger.error("Failed to stop "+other,e);
+					}
+				}
+					
+			}
+		}
+		
+	}
+
+	private String downloadBundle(Resource resource) throws MalformedURLException, IOException {
     	String uriString = resource.getURI();
     	URI uri = URI.create(uriString);
     	InputStream stream = null;
@@ -314,8 +384,40 @@ class BundleVersionComparator implements Comparator<Bundle> {
 
     @Override
     public int compare(Bundle o1, Bundle o2) {
-        // to have the highest version at the beginning
-        return -(o1.getVersion().compareTo(o2.getVersion()));
+    	Version v1 = o1.getVersion();
+    	Version v2 = o2.getVersion();
+    	return compare(v1, v2);
     }
+    
+    public static int compare(Version v1, Version v2) {
+    	if("SNAPSHOT".equals(v1.getQualifier()))
+    	{
+    		if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+    			//we consider SNAPSHOT < release
+    			return 1;
+    		}
+    	}
+    	else if("SNAPSHOT".equals(v2.getQualifier()))
+    	{
+    		if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+    			//we consider SNAPSHOT < release
+    			return -1;
+    		}
+    	}
+    	// to have the highest version at the beginning
+    	return -(v1.compareTo(v2));    	
+    }
+    
+}
 
+class VersionComparator implements Comparator<String> {
+
+	
+    @Override
+    public int compare(String o1, String o2) {
+
+    	Version v1 = Version.parseVersion(o1);
+    	Version v2 = Version.parseVersion(o2);
+    	return BundleVersionComparator.compare(v1, v2);
+    }
 }
