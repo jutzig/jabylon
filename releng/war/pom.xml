@@ -5,6 +5,8 @@
 	<artifactId>jabylon.war</artifactId>
 	<packaging>jar</packaging>
 
+	<description>Jabylon packaged as a WAR</description>
+	
 	<parent>
 		<groupId>org.jabylon</groupId>
 		<artifactId>jabylon-parent</artifactId>

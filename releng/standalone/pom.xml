@@ -4,6 +4,8 @@
 
     <artifactId>jabylon.product</artifactId>
     <packaging>pom</packaging>
+    
+    <description>Jabylon packaged as a standalone application</description>
 
     <parent>
         <groupId>org.jabylon</groupId>
