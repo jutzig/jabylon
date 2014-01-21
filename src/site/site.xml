@@ -1,53 +1,70 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Jabylon">
 	<skin>
-    	<groupId>org.apache.maven.skins</groupId>
-    	<artifactId>maven-fluido-skin</artifactId>
-    	<version>1.3.0</version>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.3.0</version>
 	</skin>
-<!--   <bannerLeft>
-    <name>Maven</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
-    <href>http://maven.apache.org/</href>
-  </bannerLeft>
-  <bannerRight>
-    <src>http://maven.apache.org/images/maven-small.gif</src>
-  </bannerRight> -->
-  <body>
-    <!-- <links>
-      <item name="Apache" href="http://www.apache.org/" />
-      <item name="Maven 1.x" href="http://maven.apache.org/maven-1.x/"/>
-      <item name="Maven 2" href="http://maven.apache.org/"/>
-    </links> -->
-	<menu name="Introduction">
-		<item href="index.html" name="About"/>
-		<item href="quickstart.html" name="Quickstart"/>
-		<item href="download.html" name="Download"/>
-    </menu>
-	<menu name="Administration guide">
-		<item href="installation.html" name="Installation" collapse="true">
-			<item href="warInstallation.html" name="As a WAR" />
-			<item href="standaloneInstallation.html" name="Standalone" />
-			<item href="startupParameters.html" name="Startup Parameters" />
-		</item>
-		<item href="security.html" name="Security" collapse="true">
-			<item href="jaasConfig.html" name="Login Modules" />
-			<item href="projectPermissions.html" name="Project Permissions" />
-			<item href="globalPermissions.html" name="Global Permissions" />
-			<item href="userManagement.html" name="User Management" />
-		</item>
-    </menu>        
-	<menu name="User Guide">
-		<item href="translating.html" name="Translating Resources" collapse="true">
-			<item href="terminology.html" name="Terminology" />	
-		</item>
-		<item href="workingWithProjects.html" name="Working with Projects" collapse="true">
-			<item href="workingWithVersions.html" name="Project Versions" />
-		</item>
-		<item href="jsonAPI.html" name="JSON API" />
-    </menu>        
 
-    <menu ref="reports"/>
+	<custom>
+		<fluidoSkin>
+<!-- 			<gitHub>
+				<projectId>jutzig/jabylon</projectId>
+				<ribbonOrientation>right</ribbonOrientation>
+				<ribbonColor>darkblue</ribbonColor>
+			</gitHub> -->
+			<ohloh>
+				<projectId>701087</projectId>
+				<widget>thin-badge</widget>
+			</ohloh>
+		</fluidoSkin>
+	</custom>
 
-  </body>
+	<poweredBy>
+		<logo name=""
+			href="https://buildhive.cloudbees.com/job/jutzig/job/jabylon/"
+			img="https://buildhive.cloudbees.com/job/jutzig/job/jabylon/badge/icon"></logo>
+	</poweredBy>
+	<!-- <bannerLeft> <name>Maven</name> <src>http://maven.apache.org/images/apache-maven-project.png</src> 
+		<href>http://maven.apache.org/</href> </bannerLeft> <bannerRight> <src>http://maven.apache.org/images/maven-small.gif</src> 
+		</bannerRight> -->
+	<body>
+		<!-- <links> <item name="Apache" href="http://www.apache.org/" /> <item 
+			name="Maven 1.x" href="http://maven.apache.org/maven-1.x/"/> <item name="Maven 
+			2" href="http://maven.apache.org/"/> </links> -->
+		<menu name="Introduction">
+			<item href="index.html" name="About" />
+			<item href="quickstart.html" name="Quickstart" />
+			<item href="screenshots.html" name="Screenshots" />
+			<item href="download.html" name="Download" />
+		</menu>
+		<menu name="Administration guide">
+			<item href="installation.html" name="Installation" collapse="true">
+				<item href="warInstallation.html" name="As a WAR" />
+				<item href="standaloneInstallation.html" name="Standalone" />
+				<item href="startupParameters.html" name="Startup Parameters" />
+			</item>
+			<item href="security.html" name="Security" collapse="true">
+				<item href="jaasConfig.html" name="Login Modules" />
+				<item href="projectPermissions.html" name="Project Permissions" />
+				<item href="globalPermissions.html" name="Global Permissions" />
+				<item href="userManagement.html" name="User Management" />
+			</item>
+		</menu>
+		<menu name="User Guide">
+			<item href="translating.html" name="Translating Resources"
+				collapse="true">
+				<item href="terminology.html" name="Terminology" />
+			</item>
+			<item href="workingWithProjects.html" name="Working with Projects"
+				collapse="true">
+				<item href="workingWithVersions.html" name="Project Versions" />
+			</item>
+			<item href="jsonAPI.html" name="JSON API" />
+		</menu>
+
+		<menu ref="reports" />
+
+	</body>
+
 </project>

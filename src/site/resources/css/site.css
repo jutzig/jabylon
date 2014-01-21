@@ -1,0 +1,7 @@
+/* You can override this file with your own styles */
+.gallery-title {
+	font-size: x-large;
+	font-weight: bold;
+	margin-bottom: 7px;
+	margin-top: 7px;
+}
