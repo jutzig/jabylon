@@ -65,7 +65,10 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
                 try {
 					repositoryConnector.install(toBeChanged.toArray(new Resource[toBeChanged.size()]));
 				} catch (OBRException e) {
-					getSession().error(e.getMessage());
+					if(e.getCause()!=null)
+						getSession().error(e.getCause().getMessage());
+					else
+						getSession().error(e.getMessage());
 				}
                 if(!toBeChanged.isEmpty()) {
                 	//get rid of the page version to get a full refresh

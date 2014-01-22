@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.jabylon.common.util.IConfigurationElementLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -22,10 +25,24 @@ public class DynamicConfigUtil {
     private static Supplier<List<IConfigurationElement>> configSections;
     private static Supplier<List<IConfigurationElement>> configTabs;
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(DynamicConfigUtil.class);
+    
     static{
-        configTabs = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("org.jabylon.rest.ui.configTab"))));
-        configSections = Suppliers.memoize(Suppliers.synchronizedSupplier(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("org.jabylon.rest.ui.config"))));
+    	createSuppliers();
+    }
+    
+    private static synchronized void createSuppliers() {
+    	configTabs = Suppliers.memoize(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("org.jabylon.rest.ui.configTab")));
+    	configSections = Suppliers.memoize(Suppliers.compose(new IConfigurationElementLoader(), Suppliers.ofInstance("org.jabylon.rest.ui.config")));
+    	
+    }
+    
+    /**
+     * clears the cache of config tabs
+     */
+    public static void refresh() {
+    	LOG.info("Refreshing config contributions");
+    	createSuppliers();
     }
 
     private DynamicConfigUtil() {
@@ -34,16 +51,26 @@ public class DynamicConfigUtil {
 
     public static List<IConfigurationElement> getApplicableElements(Object domainObject) {
 
+    	
         List<IConfigurationElement> configSections = getConfigSections();
-        List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
-        for (IConfigurationElement child : configSections) {
+        
+        try {
+			List<IConfigurationElement> applicable = new ArrayList<IConfigurationElement>();
+			for (IConfigurationElement child : configSections) {
 
-            if (isApplicable(child, domainObject)) {
-                applicable.add(child);
-            }
-
-        }
-        return applicable;
+			    if (isApplicable(child, domainObject)) {
+			        applicable.add(child);
+			    }
+			    
+			}
+			return applicable;
+		} catch (InvalidRegistryObjectException e) {
+			LOG.warn("Failed to retrieve config extensions. Reloading",e);
+			createSuppliers();
+			List<IConfigurationElement> applicableElements = getApplicableElements(domainObject);
+			LOG.warn("Reload complete",e);
+			return applicableElements;
+		}
     }
 
     private static boolean isApplicable(IConfigurationElement child, Object domainElement) {

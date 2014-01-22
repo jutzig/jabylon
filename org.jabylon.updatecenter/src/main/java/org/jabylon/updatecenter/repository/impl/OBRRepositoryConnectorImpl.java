@@ -40,6 +40,7 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.util.PreferencesUtil;
+import org.jabylon.common.util.config.DynamicConfigUtil;
 import org.jabylon.updatecenter.repository.OBRException;
 import org.jabylon.updatecenter.repository.OBRRepositoryService;
 import org.jabylon.updatecenter.repository.ResourceFilter;
@@ -49,6 +50,7 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.Version;
+import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -228,6 +230,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
             return false;
         case INSTALLABLE: {
             // can install anything that isn't installed yet
+        	//TODO: only show the latest
             return !bundles.containsKey(resource.getSymbolicName());
         }
         case UPDATEABLE:
@@ -236,7 +239,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
                 return false;
             // updateable if the latest installed version is less than
             // resource.getVersion
-            return installed.iterator().next().getVersion().compareTo(resource.getVersion()) < 0;
+            return BundleVersionComparator.compare(installed.iterator().next().getVersion(), resource.getVersion()) >0;
         case INSTALLED:
             Collection<Bundle> available = bundles.get(resource.getSymbolicName());
             for (Bundle bundle : available) {
@@ -289,15 +292,30 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 				throw exception;
 			}
 		}
+    	boolean needRefresh = false;
     	for (Bundle bundle : bundles) {
 			logger.info("Starting Bundle "+bundle);
 			try {
+				needRefresh |= checkIfUpdate(bundle);
 				bundle.start();
-				checkIfUpdate(bundle);
 			} catch (BundleException e) {
+				logger.error("Failed to start bundle "+ bundle.getSymbolicName(),e);
 				throw new OBRException("Failed to start bundle "+ bundle.getSymbolicName(),e);
 			}
 		}
+    	if(!bundles.isEmpty()){
+        	DynamicConfigUtil.refresh();
+        }
+        if(needRefresh)
+        {
+        	Bundle systemBundle = context.getBundle(0);
+        	FrameworkWiring wiring = systemBundle.adapt(FrameworkWiring.class);
+        	if(wiring!=null){
+        		logger.info("Executing package refresh after update");
+        		wiring.refreshBundles(null);
+        	}
+        	
+        }
         
         // for some reason this doesn't work in jetty
 //        for (Resource resource : resources) {
@@ -319,25 +337,38 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     /**
      * checks if the bundle updates an existing one, and if so, deactivates any others with the same name
      * @param bundle
+     * @param <code>true</code> if one or more bundles had to be stopped/uninstalled because they are updated
      */
-    private void checkIfUpdate(Bundle bundle) {
-    	Bundle[] bundles = context.getBundles();
-    	for (Bundle other : bundles) {
-			if(other==bundle)
+	private boolean checkIfUpdate(Bundle bundle) {
+		Bundle[] bundles = context.getBundles();
+		boolean updated = false;
+		for (Bundle other : bundles) {
+			if (other == bundle)
 				continue;
-			if(other.getSymbolicName().equals(bundle.getSymbolicName())) {
-				if(other.getState()==Bundle.ACTIVE || other.getState()==Bundle.STARTING) {
-					logger.info("Stopping {}:{} due to an update",other.getSymbolicName(),other.getVersion());
-					try {
+			if (other.getSymbolicName().equals(bundle.getSymbolicName())) {
+				try {
+					if (other.getState() == Bundle.UNINSTALLED)
+						break;
+					updated = true;
+					if (isSingleton(other)) {
+						logger.info("{}:{} is a singleton. Uninstalling due to an update", other.getSymbolicName(), other.getVersion());
+						other.uninstall();
+					} else {
+						logger.info("Stopping {}:{} due to an update", other.getSymbolicName(), other.getVersion());
 						other.stop();
-					} catch (BundleException e) {
-						logger.error("Failed to stop "+other,e);
 					}
+				} catch (BundleException e) {
+					logger.error("Failed to stop " + other, e);
 				}
-					
+
 			}
 		}
-		
+		return updated;
+	}
+
+	private boolean isSingleton(Bundle other) {
+		String string = other.getHeaders().get("Bundle-SymbolicName");
+		return string!=null && string.contains("singleton:=true");
 	}
 
 	private String downloadBundle(Resource resource) throws MalformedURLException, IOException {
@@ -390,19 +421,21 @@ class BundleVersionComparator implements Comparator<Bundle> {
     }
     
     public static int compare(Version v1, Version v2) {
-    	if("SNAPSHOT".equals(v1.getQualifier()))
-    	{
-    		if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
-    			//we consider SNAPSHOT < release
-    			return 1;
+    	if(!("SNAPSHOT".equals(v1.getQualifier()) && "SNAPSHOT".equals(v2.getQualifier()))){
+    		if("SNAPSHOT".equals(v1.getQualifier()))
+    		{
+    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+    				//we consider SNAPSHOT < release
+    				return 1;
+    			}
     		}
-    	}
-    	else if("SNAPSHOT".equals(v2.getQualifier()))
-    	{
-    		if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
-    			//we consider SNAPSHOT < release
-    			return -1;
-    		}
+    		else if("SNAPSHOT".equals(v2.getQualifier()))
+    		{
+    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+    				//we consider SNAPSHOT < release
+    				return -1;
+    			}
+    		}    		
     	}
     	// to have the highest version at the beginning
     	return -(v1.compareTo(v2));    	
