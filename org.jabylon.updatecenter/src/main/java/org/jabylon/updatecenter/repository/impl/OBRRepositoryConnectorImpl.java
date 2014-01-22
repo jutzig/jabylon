@@ -75,6 +75,9 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     
     private static final Pattern BUNDLE_PATTERN = Pattern.compile("(.*?)_(.*?)\\.jar");
     
+    private static final Comparator<Version> COMPARATOR = new OSGiVersionComparator();
+	
+    
     /**
      * where we download plugins
      */
@@ -190,13 +193,32 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
                     filteredResources.add(resource);
             }
 
+            if(filter==ResourceFilter.PLUGIN) {
+            	//for update we only want to see the latest version of everything updateable
+            	filteredResources = removeOldVersions(filteredResources);
+            }
+
         } catch (Exception e) {
             logger.error("Failed to discover resources with filter " + filter, e);
         }
         return filteredResources;
     }
 
-    private Multimap<String, Bundle> buildMap(List<Bundle> bundles) {
+    private List<Resource> removeOldVersions(List<Resource> resources) {
+        SortedSetMultimap<String, Resource> map = TreeMultimap.create(Collator.getInstance(), new ResourceComparator());
+        for (Resource bundle : resources) {
+            map.put(bundle.getSymbolicName(), bundle);
+        }
+        resources.clear();
+		Set<Entry<String, Collection<Resource>>> entries = map.asMap().entrySet();
+		for (Entry<String, Collection<Resource>> entry : entries) {
+			//add the highest version
+			resources.add(entry.getValue().iterator().next());
+		}
+		return resources;
+	}
+
+	private Multimap<String, Bundle> buildMap(List<Bundle> bundles) {
         SortedSetMultimap<String, Bundle> result = TreeMultimap.create(Collator.getInstance(), new BundleVersionComparator());
         for (Bundle bundle : bundles) {
             result.put(bundle.getSymbolicName(), bundle);
@@ -230,7 +252,6 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
             return false;
         case INSTALLABLE: {
             // can install anything that isn't installed yet
-        	//TODO: only show the latest
             return !bundles.containsKey(resource.getSymbolicName());
         }
         case UPDATEABLE:
@@ -239,7 +260,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
                 return false;
             // updateable if the latest installed version is less than
             // resource.getVersion
-            return BundleVersionComparator.compare(installed.iterator().next().getVersion(), resource.getVersion()) >0;
+            return COMPARATOR.compare(installed.iterator().next().getVersion(), resource.getVersion()) >0;
         case INSTALLED:
             Collection<Bundle> available = bundles.get(resource.getSymbolicName());
             for (Bundle bundle : available) {
@@ -409,48 +430,67 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
         return new Resource[0];
     }
 
-}
+	private static class BundleVersionComparator implements Comparator<Bundle> {
+		
+	    @Override
+	    public int compare(Bundle o1, Bundle o2) {
+	    	Version v1 = o1.getVersion();
+	    	Version v2 = o2.getVersion();
+	    	return COMPARATOR.compare(v1, v2);
+	    }
+	   
+	    
+	}
 
-class BundleVersionComparator implements Comparator<Bundle> {
+	private static class OSGiVersionComparator implements Comparator<Version> {
 
-    @Override
-    public int compare(Bundle o1, Bundle o2) {
-    	Version v1 = o1.getVersion();
-    	Version v2 = o2.getVersion();
-    	return compare(v1, v2);
-    }
-    
-    public static int compare(Version v1, Version v2) {
-    	if(!("SNAPSHOT".equals(v1.getQualifier()) && "SNAPSHOT".equals(v2.getQualifier()))){
-    		if("SNAPSHOT".equals(v1.getQualifier()))
-    		{
-    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
-    				//we consider SNAPSHOT < release
-    				return 1;
-    			}
-    		}
-    		else if("SNAPSHOT".equals(v2.getQualifier()))
-    		{
-    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
-    				//we consider SNAPSHOT < release
-    				return -1;
-    			}
-    		}    		
-    	}
-    	// to have the highest version at the beginning
-    	return -(v1.compareTo(v2));    	
-    }
-    
-}
+		
+	    @Override
+	    public int compare(Version v1, Version v2) {
 
-class VersionComparator implements Comparator<String> {
+	       	if(!("SNAPSHOT".equals(v1.getQualifier()) && "SNAPSHOT".equals(v2.getQualifier()))){
+	    		if("SNAPSHOT".equals(v1.getQualifier()))
+	    		{
+	    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+	    				//we consider SNAPSHOT < release
+	    				return 1;
+	    			}
+	    		}
+	    		else if("SNAPSHOT".equals(v2.getQualifier()))
+	    		{
+	    			if(v1.getMajor()==v2.getMajor() && v1.getMicro()==v2.getMicro() && v1.getMinor()==v2.getMinor()) {
+	    				//we consider SNAPSHOT < release
+	    				return -1;
+	    			}
+	    		}    		
+	    	}
+	    	// to have the highest version at the beginning
+	    	return -(v1.compareTo(v2)); 
+	    }
+	    
+	}
 
+	private static class VersionComparator implements Comparator<String> {
+
+	    @Override
+	    public int compare(String o1, String o2) {
+
+	    	Version v1 = Version.parseVersion(o1);
+	    	Version v2 = Version.parseVersion(o2);
+	    	return COMPARATOR.compare(v1, v2);
+	    }
+	}
 	
-    @Override
-    public int compare(String o1, String o2) {
+	private static class ResourceComparator implements Comparator<Resource> {
 
-    	Version v1 = Version.parseVersion(o1);
-    	Version v2 = Version.parseVersion(o2);
-    	return BundleVersionComparator.compare(v1, v2);
-    }
+	    @Override
+	    public int compare(Resource o1, Resource o2) {
+
+	    	Version v1 = o1.getVersion();
+	    	Version v2 = o2.getVersion();
+	    	return COMPARATOR.compare(v1, v2);
+	    }
+	}
+	
 }
+
