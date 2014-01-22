@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.wicket.Component;
@@ -39,6 +40,10 @@ public class OSGiAwareBundleStringResourceLoader implements IStringResourceLoade
 	private final BundleContext context;
 	private LoadingCache<Integer, ClassLoader> cache;
 	private Logger logger = LoggerFactory.getLogger(OSGiAwareBundleStringResourceLoader.class);
+	/**
+	 * to make sure it always reverts to the base bundle instead of the system default locale
+	 */
+	private static final Control CONTROL = ResourceBundle.Control.getNoFallbackControl(Control.FORMAT_PROPERTIES);
 	
 	public OSGiAwareBundleStringResourceLoader() {
 		context = FrameworkUtil.getBundle(getClass()).getBundleContext();
@@ -83,7 +88,8 @@ public class OSGiAwareBundleStringResourceLoader implements IStringResourceLoade
 				String bundleName = bundle.getHeaders().get("Bundle-Localisation");
 				if(bundleName==null)
 					bundleName = "OSGI-INF/l10n/bundle";
-				return ResourceBundle.getBundle(bundleName, locale,cache.get(bundleId)).getString(key.substring(keyStart+1));
+				
+				return ResourceBundle.getBundle(bundleName, locale,cache.get(bundleId),CONTROL).getString(key.substring(keyStart+1));
 			}
 			else if(key.startsWith("|"))
 			{
