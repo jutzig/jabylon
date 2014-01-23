@@ -17,16 +17,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
@@ -112,29 +112,9 @@ public class ReviewToolPanel extends BasicPanel<PropertyPair> {
 				} else
 					item.add(new Label("notes", ""));
 				final IModel<Review> reviewModel = new EObjectModel<Review>(review);
-				// TODO: hide if no permissions
 				
-				AjaxFallbackLink<String> rejectButton = new AjaxFallbackLink<String>("reject", nls("reject.action")) {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						Review theReview = reviewModel.getObject();
-						target.add(ReviewToolPanel.this);
-						try {
-							TransactionUtil.commit(theReview, new Modification<Review, Review>() {
-								@Override
-								public Review apply(Review object) {
-									object.setState(ReviewState.INVALID);
-									return object;
-								}
-							});
-						} catch (CommitException e) {
-							LOG.error("Failed to commit updated review state",e);
-						}		
-					}
-				};
+				StatelessLink<Review> rejectButton = new RejectLink("reject", reviewModel, getPageParameters());
+//				rejectButton.setBody(nls("reject.action"));
 				DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, getSession().getLocale());
 				item.add(rejectButton);
 				String created = review.getCreated() > 0 ? formatter.format(new Date(review.getCreated())) : "";
@@ -203,5 +183,37 @@ public class ReviewToolPanel extends BasicPanel<PropertyPair> {
 			}
 		}
 		return null;
+	}
+	
+	private static class RejectLink extends StatelessLink<Review> {
+
+		private static final long serialVersionUID = 1L;
+		private IModel<Review> model;
+		private PageParameters returnAddress;
+		
+		public RejectLink(String id, IModel<Review> model, PageParameters returnAddress) {
+			super(id);
+			this.model = model;
+			this.returnAddress = returnAddress;
+		}
+		
+		
+
+		@Override
+		public void onClick() {
+			Review theReview = model.getObject();
+			try {
+				TransactionUtil.commit(theReview, new Modification<Review, Review>() {
+					@Override
+					public Review apply(Review object) {
+						object.setState(ReviewState.INVALID);
+						return object;
+					}
+				});
+				setResponsePage(getPage().getPageClass(), returnAddress);
+			} catch (CommitException e) {
+				LOG.error("Failed to commit updated review state",e);
+			}
+		}
 	}
 }

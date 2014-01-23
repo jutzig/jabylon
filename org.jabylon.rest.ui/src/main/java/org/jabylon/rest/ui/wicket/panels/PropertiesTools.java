@@ -22,7 +22,7 @@ import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.tools.PropertyEditorTool;
 import org.jabylon.rest.ui.tools.PropertyToolTab;
 import org.jabylon.rest.ui.wicket.BasicPanel;
-import org.jabylon.rest.ui.wicket.components.BootstrapAjaxTabbedPanel;
+import org.jabylon.rest.ui.wicket.components.ClientSideTabbedPanel;
 
 /**
  * TODO short description for PropertiesEditorToolbar.
@@ -38,7 +38,7 @@ public class PropertiesTools extends BasicPanel<PropertyPair> {
     @Inject
     private List<PropertyEditorTool> tools;
 
-    private BootstrapAjaxTabbedPanel<PropertyToolTab> tabContainer;
+    private ClientSideTabbedPanel<PropertyToolTab> tabContainer;
 
     private List<PropertyToolTab> extensions;
 
@@ -49,7 +49,7 @@ public class PropertiesTools extends BasicPanel<PropertyPair> {
     @Override
     protected void construct() {
         extensions = createExtensions();
-        tabContainer = new BootstrapAjaxTabbedPanel<PropertyToolTab>("tabs", extensions,"propertyTools/activeTab");
+        tabContainer = new ClientSideTabbedPanel<PropertyToolTab>("tabs", extensions,true,"propertyTools/activeTab");
         add(tabContainer);
         PropertyPair pair = getModelObject();
         // int selected = tabContainer.getSelectedTab();
