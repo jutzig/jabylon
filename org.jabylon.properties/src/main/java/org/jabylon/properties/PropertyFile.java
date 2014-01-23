@@ -84,6 +84,8 @@ public interface PropertyFile extends CDOObject {
 
     /**
 	 * <!-- begin-user-doc -->
+	 * Returns a map view of the properties file.
+	 * If possible this will be a cached version
      * <!-- end-user-doc -->
 	 * @model
 	 * @generated

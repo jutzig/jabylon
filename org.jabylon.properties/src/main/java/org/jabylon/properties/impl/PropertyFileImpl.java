@@ -9,8 +9,9 @@
 package org.jabylon.properties.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -46,6 +47,7 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
 	 * @ordered
 	 */
     protected static final String LICENSE_HEADER_EDEFAULT = null;
+	private transient ConcurrentMap<String, Property> map;
 
     /**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -125,8 +127,11 @@ public class PropertyFileImpl extends CDOObjectImpl implements PropertyFile {
      */
     public Map<String, Property> asMap() {
         EList<Property> properties = getProperties();
+        if(map!=null && properties.size()==map.size()) {
+        	return map;
+        }
         synchronized (properties) {
-            Map<String, Property> map = new HashMap<String, Property>(properties.size());
+            map = new ConcurrentHashMap<String, Property>(properties.size());
             for (Property property : getProperties()) {
                 map.put(property.getKey(), property);
             }
