@@ -26,7 +26,7 @@ version before adding at least one translation for the new target locale, the ne
 
 If you have a team provider configured in your project, you will also see a tab _Jobs_ that allows you to configure automatic actions that should be executed according to a customizable schedule.
 
-![Automatic Update/Commit](automaticUpdate.png) 
+![Automatic Update/Commit](images/automaticUpdate.png) 
 
 Jabylon allows you to automatically update your project versions from the source code repository and commit new translations into the repository. The activate this automatic synchronization you need  to enable the checkbox for _Automatic Update_ and/or _Automatic Commit_.
 

@@ -26,6 +26,6 @@ Currently the `?type=file` parameter will only work for single property files, i
 
 You can also upload new property files through the API. To do so, execute a **PUT** request on the path where you want the properties file to be stored:
 
-	jabylon/api/testproject/master/en_EN/some/path/Messages.properties
+	/api/testproject/master/en_EN/some/path/Messages.properties
 
 If the resource already exists, it will be replaced with the uploaded one, otherwise the resource will be created. However, this will only create property files. Project, branch and version cannot be created by a PUT (yet) and need to exist prior to the call.

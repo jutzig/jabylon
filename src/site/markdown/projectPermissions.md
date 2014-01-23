@@ -11,4 +11,6 @@ Your changes will not become effective until you press the _Submit_ button.
 
 Please note that permissions are cumulative so you can not reduce the permissions on a per-user level if said user already inherited certain permissions by a role.
 
-You should also note that _Configure_, _Edit_ and _View_ subsume each other in that order, i.e. if a user has the _Configure_ permission, he automatically is able to _Edit_ and _View_ the project as well.
+You should also note that _Configure_, _Edit_, _Suggest_ and _View_ subsume each other in that order, i.e. if a user has the _Configure_ permission, he automatically is able to _Edit_ and _View_ the project as well.
+
+If a user has the _Suggest_ but not the _Edit_ permission, he can modify translations, but the new translations will not directly be saved to disc, instead the changes will be converted into a _Suggestion_ that can be applied or rejected by users with the _Edit_ permission. Please see [User Suggestions](userSuggestions.html) for details.  

@@ -54,6 +54,7 @@
 		<menu name="User Guide">
 			<item href="translating.html" name="Translating Resources"
 				collapse="true">
+				<item href="userSuggestions.html" name="User Suggestions" />
 				<item href="terminology.html" name="Terminology" />
 			</item>
 			<item href="workingWithProjects.html" name="Working with Projects"
