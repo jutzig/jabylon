@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>jabylon.war</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<description>Jabylon packaged as a WAR</description>
-	
+
 	<parent>
 		<groupId>org.jabylon</groupId>
 		<artifactId>jabylon-parent</artifactId>
@@ -16,6 +16,20 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<inherited>false</inherited>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -83,12 +97,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.jabylon</groupId>
-            <artifactId>scheduler.ui</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
+		<dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>scheduler.ui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jabylon</groupId>
 			<artifactId>rest.api</artifactId>
@@ -136,10 +150,10 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.jabylon</groupId>
-            <artifactId>log.viewer</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+			<groupId>org.jabylon</groupId>
+			<artifactId>log.viewer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 
 		<dependency>
@@ -151,9 +165,9 @@
 		</dependency>
 
 		<!-- war specific -->
-		<!-- <dependency> <groupId>org.eclipse.equinox</groupId> <artifactId>servletbridge</artifactId>
+		<!-- <dependency> <groupId>org.eclipse.equinox</groupId> <artifactId>servletbridge</artifactId> 
 			<version>1.0.0-v20070523</version> <scope>provided</scope> </dependency> -->
-		<!-- <dependency> <groupId>org.eclipse.equinox.http</groupId> <artifactId>servletbridge</artifactId>
+		<!-- <dependency> <groupId>org.eclipse.equinox.http</groupId> <artifactId>servletbridge</artifactId> 
 			<version>1.0.0-v20070523</version> </dependency> -->
 
 		<dependency>
@@ -199,13 +213,13 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/src/main/web/lib/org.eclipse.equinox.servletbridge_1.2.0.201008301518.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>servlet</artifactId>
 			<scope>provided</scope>
-		</dependency>		
-		
+		</dependency>
+
 	</dependencies>
 
 </project>
