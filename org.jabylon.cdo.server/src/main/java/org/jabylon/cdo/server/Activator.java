@@ -194,6 +194,7 @@ public class Activator implements BundleActivator {
 		User anonymous = UsersFactory.eINSTANCE.createUser();
 		anonymous.setName("Anonymous");
 		anonymous.setPassword("ThereIsNoPasswordForAnonymous");
+		anonymous.setType("DB");
 		return anonymous;
 	}
 
@@ -201,6 +202,7 @@ public class Activator implements BundleActivator {
 		User admin = UsersFactory.eINSTANCE.createUser();
 		admin.setName("Administrator");
 		admin.setPassword("changeme");
+		admin.setType("DB");
 		return admin;
 	}
 

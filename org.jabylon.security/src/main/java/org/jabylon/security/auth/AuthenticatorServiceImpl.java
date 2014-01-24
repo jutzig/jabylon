@@ -12,9 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.security.auth.Subject;
@@ -66,7 +63,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	protected Subject doAuthenticate(final String username, final String password) {
 
-		Map<String, ILoginContext> contexts = createLoginContexts(new CallbackHandler() {
+		ILoginContext context = createLoginContext(new CallbackHandler() {
 
 			@Override
 			public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
@@ -80,21 +77,21 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 				}
 			}
 		});
-		for (Entry<String, ILoginContext> entry : contexts.entrySet()) {
-			try {
-				entry.getValue().login();
-				final Subject subject = entry.getValue().getSubject();
-				Set<String> credentials = subject.getPublicCredentials(String.class);
-				//in case it was an auth token, the username was null but now we know the right one
-				String actualUsername = credentials.isEmpty() ? username : credentials.iterator().next(); 
-				logger.info("{} Login for user {} successful", entry.getKey(), actualUsername);
-				return subject;
 
-			} catch (LoginException e) {
-				logger.error(entry.getKey() + " Login for user " + username + " failed: " + e.getMessage());
-				continue;
-			}
+		try {
+			context.login();
+			final Subject subject = context.getSubject();
+			Set<String> credentials = subject.getPublicCredentials(String.class);
+			// in case it was an auth token, the username was null but now we
+			// know the right one
+			String actualUsername = credentials.isEmpty() ? username : credentials.iterator().next();
+			logger.info("Login for user {} successful", actualUsername);
+			return subject;
+
+		} catch (LoginException e) {
+			logger.error("Login for user " + username + " failed: " + e.getMessage());
 		}
+
 		return null;
 	}
 
@@ -152,13 +149,10 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	}
 
-	private Map<String, ILoginContext> createLoginContexts(CallbackHandler callbackHandler) {
+	private ILoginContext createLoginContext(CallbackHandler callbackHandler) {
 
 		URL configUrl = getJAASConfig();
-		Map<String, ILoginContext> contexts = new LinkedHashMap<String, ILoginContext>();
-		contexts.put("DB", LoginContextFactory.createContext("DB", configUrl, callbackHandler));
-		contexts.put("LDAP", LoginContextFactory.createContext("LDAP", configUrl, callbackHandler));
-		return contexts;
+		return LoginContextFactory.createContext("Jabylon", configUrl, callbackHandler);
 	}
 
 	private URL getJAASConfig() {

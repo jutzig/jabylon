@@ -24,12 +24,14 @@ import javax.security.auth.spi.LoginModule;
 import org.eclipse.emf.cdo.view.CDOView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.cdo.server.ServerConstants;
+import org.jabylon.security.CommonPermissions;
 import org.jabylon.security.JabylonSecurityBundle;
+import org.jabylon.security.SubjectAttribute;
 import org.jabylon.users.Permission;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
+import org.jabylon.users.UsersPackage;
 
 public class DBLoginModule implements LoginModule {
 	static final String EMPTY_STRING = "";
@@ -113,11 +115,18 @@ public class DBLoginModule implements LoginModule {
 				}
 			} else {
 				user = userManagement.findUserByName(userName);
-				valid = pw != null && user!=null && pw.equals(user.getPassword());
+				valid = pw != null && !pw.isEmpty() && user!=null && pw.equals(user.getPassword());
+				if(valid && !CommonPermissions.AUTH_TYPE_DB.equals(user.getType())) {
+					logger.warn("User {} does not have the auth type DB set");
+					subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__TYPE, CommonPermissions.AUTH_TYPE_DB));
+				}
 			}
-			if (user == null || !valid)
+			if (user == null || !valid) {
+				logger.info("DB Login failed for user {}", userName);
 				return false;
+			}
 			permissions = user.getAllPermissions();
+			logger.info("DB Login for user {} successful", userName);
 			return true;
 
 		} catch (Exception e) {

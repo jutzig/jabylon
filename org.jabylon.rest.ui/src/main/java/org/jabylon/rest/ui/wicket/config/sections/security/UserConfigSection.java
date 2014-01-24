@@ -134,6 +134,8 @@ public class UserConfigSection extends BasicPanel<User> {
 		public void commit(IModel<User> input, Preferences config) {
 			User user = input.getObject();
 			if (input instanceof AttachableModel) {
+				//newly created users are always of type DB
+				user.setType(CommonPermissions.AUTH_TYPE_DB);
 				@SuppressWarnings("rawtypes")
 				AttachableModel<?> model = (AttachableModel) input;
 				Object container = model.getParent().getObject();
