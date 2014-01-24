@@ -315,6 +315,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tag>v${project.version}</tag>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -359,19 +360,21 @@
 				</file>
 			</activation>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>2.3.1</version>
-						<configuration>
-							<archive>
-								<manifestFile>META-INF/MANIFEST.MF</manifestFile>
-								<addMavenDescriptor>false</addMavenDescriptor>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jar-plugin</artifactId>
+							<version>2.3.1</version>
+							<configuration>
+								<archive>
+									<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+									<addMavenDescriptor>false</addMavenDescriptor>
+								</archive>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
 			</build>
 		</profile>
 	</profiles>
