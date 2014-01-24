@@ -310,6 +310,13 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tag>v${project.version}</tag>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
