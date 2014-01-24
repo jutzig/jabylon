@@ -50,6 +50,7 @@
 				<item href="globalPermissions.html" name="Global Permissions" />
 				<item href="userManagement.html" name="User Management" />
 			</item>
+			<item href="updateCenter.html" name="Installing Plug-Ins" />
 		</menu>
 		<menu name="User Guide">
 			<item href="translating.html" name="Translating Resources"
