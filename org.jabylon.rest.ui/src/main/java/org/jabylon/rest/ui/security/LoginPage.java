@@ -24,10 +24,11 @@ public class LoginPage extends GenericPage<Resolvable<?, ?>> {
 	public LoginPage(PageParameters parameters) {
         super(parameters);
         SignInPanel panel = new BootstrapSignInPanel("sign-in", true);
+        panel.setRememberMe(false);
         panel.addOrReplace(new Label("feedback",""));
         add(panel);
     }
-    
+
     @Override
     public void renderHead(IHeaderResponse response) {
 
