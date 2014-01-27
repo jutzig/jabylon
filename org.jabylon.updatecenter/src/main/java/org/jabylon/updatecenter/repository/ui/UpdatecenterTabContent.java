@@ -37,7 +37,7 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
 
     private static final long serialVersionUID = 1L;
     @Inject
-    private transient OBRRepositoryService repositoryConnector;
+    private OBRRepositoryService repositoryConnector;
     private IModel<List<? extends ResourceWrapper>> resources;
     private static final Logger logger = LoggerFactory.getLogger(UpdatecenterTabContent.class);
 

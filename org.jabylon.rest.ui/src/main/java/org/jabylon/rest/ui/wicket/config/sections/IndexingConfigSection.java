@@ -55,14 +55,14 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
     private static final long serialVersionUID = 1L;
     
     @Inject
-    private transient QueryService queryService;
+    private QueryService queryService;
     
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexingConfigSection.class);
 
 	private ProgressionModel progressModel;
 
 	@Inject
-	private transient SchedulerService scheduler;
+	private SchedulerService scheduler;
 
 	private Preferences config;
 

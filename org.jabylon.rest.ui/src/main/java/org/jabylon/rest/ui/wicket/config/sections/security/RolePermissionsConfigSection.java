@@ -54,7 +54,7 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private transient URIResolver resolver;
+	private URIResolver resolver;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RolePermissionsConfigSection.class);
 

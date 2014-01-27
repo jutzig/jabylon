@@ -67,7 +67,7 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
     IModel<Multimap<String, Review>> reviewModel;
 
     @Inject
-    private transient PropertyPersistenceService propertyPersistence;
+    private PropertyPersistenceService propertyPersistence;
 
     public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
         super("content", object, parameters);

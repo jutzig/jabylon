@@ -53,10 +53,10 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(TerminologyAidToolPanel.class);
 
 	@Inject
-	private transient URIResolver resolver;
+	private URIResolver resolver;
 	
 	@Inject
-	private transient PropertyPersistenceService propertyPersistence;
+	private PropertyPersistenceService propertyPersistence;
 	
 	private static final String JS = "$(\"#terminology-terms i.icon-share\").click(function() {"
 +	"var translation = $(this).prev(\"span\");"

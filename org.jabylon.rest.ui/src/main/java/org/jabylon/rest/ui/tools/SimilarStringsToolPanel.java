@@ -71,7 +71,7 @@ public class SimilarStringsToolPanel
     private static final long serialVersionUID = 1L;
     private static Logger logger = LoggerFactory.getLogger(SimilarStringsToolPanel.class);
     @Inject
-    private transient QueryService queryService;
+    private QueryService queryService;
 
     /**
      * copies similar strings to translation area

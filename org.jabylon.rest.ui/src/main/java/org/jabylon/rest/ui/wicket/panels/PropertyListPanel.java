@@ -79,7 +79,7 @@ public class PropertyListPanel
     private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
 
     @Inject
-    private transient PropertyPersistenceService propertyPersistence;
+    private PropertyPersistenceService propertyPersistence;
 	private PropertyListMode mode;
 
 

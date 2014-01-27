@@ -42,7 +42,7 @@ public class SearchPage extends GenericPage<String> {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private transient QueryService queryService;
+    private QueryService queryService;
 
     private static final Logger logger = LoggerFactory.getLogger(SearchPage.class);
 

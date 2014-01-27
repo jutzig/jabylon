@@ -65,7 +65,7 @@ public class ReviewToolPanel extends BasicPanel<PropertyPair> {
     "});";
 
 	@Inject
-	private transient URIResolver resolver;
+	private URIResolver resolver;
 
 	public ReviewToolPanel(String id, IModel<PropertyPair> model) {
 		super(id, model);

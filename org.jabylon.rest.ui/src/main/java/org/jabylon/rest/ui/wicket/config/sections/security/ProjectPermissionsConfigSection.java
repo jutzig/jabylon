@@ -57,7 +57,7 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(ProjectPermissionsConfigSection.class);
     @Inject
-    private transient URIResolver resolver;
+    private URIResolver resolver;
     private IModel<UserManagement> userManagement;
     private List<UserPermission> userPermissions;
     private List<IModel<User>> assignableUsers;

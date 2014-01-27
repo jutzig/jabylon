@@ -36,7 +36,7 @@ public class GenericResolvablePage<T  extends CDOObject> extends GenericPage<T> 
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private transient URIResolver lookup;
+    private URIResolver lookup;
 
     public GenericResolvablePage(PageParameters parameters) {
         super(parameters);

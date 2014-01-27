@@ -54,7 +54,7 @@ public class TeamSyncJobConfigPanel extends BasicPanel<ProjectVersion> {
 	private static final Logger LOG = LoggerFactory.getLogger(TeamSyncJobConfigPanel.class);
 	
 	@Inject
-	private transient SchedulerService scheduler;
+	private SchedulerService scheduler;
 
 	private Preferences root;
 

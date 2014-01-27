@@ -64,7 +64,7 @@ public class InstalledSoftwareTab extends BasicPanel<String> implements Restrict
     }
 
     @Inject
-    private transient OBRRepositoryService repositoryConnector;
+    private OBRRepositoryService repositoryConnector;
 
     private static final Logger logger = LoggerFactory.getLogger(InstalledSoftwareTab.class);
 

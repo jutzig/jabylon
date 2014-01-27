@@ -61,10 +61,10 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
     private static final long serialVersionUID = 1L;
     private static Logger logger = LoggerFactory.getLogger(OtherTranslationsToolPanel.class);
     @Inject
-    private transient QueryService queryService;
+    private QueryService queryService;
 
     @Inject
-    private transient URIResolver resolver;
+    private URIResolver resolver;
 
     public OtherTranslationsToolPanel(String id, IModel<PropertyPair> model) {
         super(id, model);

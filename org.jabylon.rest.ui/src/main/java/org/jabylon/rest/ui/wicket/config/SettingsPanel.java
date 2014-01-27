@@ -75,7 +75,7 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 	private List<ConfigSection<?>> allSections;
 
 	@Inject
-	private transient URIResolver resolver;
+	private URIResolver resolver;
 
 	@SuppressWarnings("unchecked")
 	public SettingsPanel(String id, IModel<T> model, PageParameters pageParameters) {

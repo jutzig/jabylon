@@ -19,11 +19,10 @@ import javax.inject.Inject;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.injection.IFieldValueFactory;
 import org.apache.wicket.proxy.IProxyTargetLocator;
-import org.apache.wicket.proxy.LazyInitProxyFactory;
 
 public class OSGiFieldValueFactory implements IFieldValueFactory {
 
-    boolean wrapInProxies = false;
+    boolean wrapInProxies = true;
 
     @Override
     public Object getFieldValue(Field field, Object fieldOwner) {
@@ -33,6 +32,8 @@ public class OSGiFieldValueFactory implements IFieldValueFactory {
             try {
 
                 Class<?> type = field.getType();
+                if(!type.isInterface())
+                	throw new IllegalArgumentException("Can only inject interfaces, not classes: "+field + " type: "+type);
                 boolean isList = isCollection(field);
                 if(isList)
                     type = extractType(field);
@@ -40,9 +41,7 @@ public class OSGiFieldValueFactory implements IFieldValueFactory {
                 final IProxyTargetLocator locator = new OSGiProxyTargetLocator(type, isList);
 
                 if (wrapInProxies) {
-                    // TODO need net.sf.cglib.proxy.Callback to make this work
-                    // it seems
-                    target = LazyInitProxyFactory.createProxy(type, locator);
+                    target = OSGiProxy.wrap(locator, field.getType());
                 } else {
                     target = locator.locateProxyTarget();
                 }

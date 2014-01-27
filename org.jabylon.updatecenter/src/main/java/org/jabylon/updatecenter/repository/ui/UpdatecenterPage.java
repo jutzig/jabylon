@@ -30,7 +30,7 @@ public class UpdatecenterPage extends GenericPage<Serializable> implements Restr
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private transient OBRRepositoryService repositoryConnector;
+    private OBRRepositoryService repositoryConnector;
 
 
     public UpdatecenterPage(PageParameters parameters) {

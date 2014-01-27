@@ -31,7 +31,7 @@ public class TranslationChecksConfigSection extends BasicPanel<Project> {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private transient List<ReviewParticipant> participants;
+    private List<ReviewParticipant> participants;
 
     public TranslationChecksConfigSection(String id, IModel<Project> model, Preferences prefs) {
         super(id, model);
