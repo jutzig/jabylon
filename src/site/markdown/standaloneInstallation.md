@@ -26,7 +26,7 @@ Here is an example on how to configure these settings in a command line:
 
 There is currently no startup script for windows available so you will need to start the launcher jar directly. To do so, open a terminal and `cd` to the directory where you extracted Jabylon. To start with default settings (Port 8080) execute
 
-`java -jar plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar`
+`java -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar`
 
 To adjust the defaults you can set these system properties:
 
@@ -37,5 +37,5 @@ To adjust the defaults you can set these system properties:
  
  The resulting command line could look like this:
  
- `java -Dosgi.instance.area=C:\Jabylon -jar plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar`      
+ `java -Dosgi.instance.area=C:\Jabylon -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar`      
 
