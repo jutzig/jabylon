@@ -9,7 +9,8 @@
 package org.jabylon.properties.util;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,15 +20,14 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
-import org.junit.Before;
-import org.junit.Test;
-
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
-import org.jabylon.properties.PropertyType;
+import org.jabylon.properties.types.impl.JavaPropertyScanner;
+import org.jabylon.properties.types.impl.JavaPropertyScannerUTF8;
+import org.junit.Before;
+import org.junit.Test;
 
 
 public class PropertiesResourceImplTest
@@ -155,7 +155,7 @@ public class PropertiesResourceImplTest
         file.getProperties().add(property);
         getFixture().getContents().add(file);
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(PropertiesResourceImpl.OPTION_FILEMODE, PropertyType.UNICODE);
+        options.put(PropertiesResourceImpl.OPTION_FILEMODE, JavaPropertyScannerUTF8.TYPE);
         getFixture().doSave(out, options);
         ByteOrderMark mark = ByteOrderMark.read(new ByteArrayInputStream(out.toByteArray()));
         assertEquals("Must write a BOM in unicode mode", ByteOrderMark.UTF_8, mark);
@@ -174,7 +174,7 @@ public class PropertiesResourceImplTest
         file.getProperties().add(property);
         getFixture().getContents().add(file);
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(PropertiesResourceImpl.OPTION_FILEMODE, PropertyType.ENCODED_ISO);
+        options.put(PropertiesResourceImpl.OPTION_FILEMODE, JavaPropertyScanner.TYPE);
         getFixture().doSave(out, options);
         ByteOrderMark mark = ByteOrderMark.read(new ByteArrayInputStream(out.toByteArray()));
         assertNull("Must not write a BOM in iso mode", mark);

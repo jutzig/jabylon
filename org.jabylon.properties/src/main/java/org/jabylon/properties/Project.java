@@ -59,7 +59,6 @@ public interface Project extends Resolvable<Workspace, ProjectVersion> {
 
     /**
 	 * Returns the value of the '<em><b>Property Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.jabylon.properties.PropertyType}.
 	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Property Type</em>' attribute isn't clear,
@@ -67,26 +66,24 @@ public interface Project extends Resolvable<Workspace, ProjectVersion> {
      * </p>
      * <!-- end-user-doc -->
 	 * @return the value of the '<em>Property Type</em>' attribute.
-	 * @see org.jabylon.properties.PropertyType
-	 * @see #setPropertyType(PropertyType)
+	 * @see #setPropertyType(String)
 	 * @see org.jabylon.properties.PropertiesPackage#getProject_PropertyType()
 	 * @model
 	 * @generated
 	 */
-    PropertyType getPropertyType();
+    String getPropertyType();
 
     /**
 	 * Sets the value of the '{@link org.jabylon.properties.Project#getPropertyType <em>Property Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Property Type</em>' attribute.
-	 * @see org.jabylon.properties.PropertyType
 	 * @see #getPropertyType()
 	 * @generated
 	 */
-    void setPropertyType(PropertyType value);
+	void setPropertyType(String value);
 
-    /**
+				/**
 	 * Returns the value of the '<em><b>Team Provider</b></em>' attribute.
 	 * <!-- begin-user-doc -->
      * <p>

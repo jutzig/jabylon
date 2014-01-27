@@ -9,12 +9,13 @@
 /**
  *
  */
-package org.jabylon.properties.util;
+package org.jabylon.properties.types.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -23,14 +24,16 @@ import java.util.regex.Pattern;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
+import org.jabylon.properties.types.PropertyConverter;
+import org.jabylon.properties.util.PropertiesResourceImpl;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
  *
  */
-public class POHelper {
+public class POHelper implements PropertyConverter{
 
-
+//FIXME: create unit tests for the cases described in https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/PO-Files.html
     private static final Pattern ID_PATTERN = Pattern.compile("msgid \"(.*)\"");
     private static final Pattern VALUE_PATTERN = Pattern.compile("msgstr \"(.*)\"");
 
@@ -105,5 +108,23 @@ public class POHelper {
         resource.save(new HashMap<Object, Object>());
 
     }
+
+	@Override
+	public void writeProperty(Writer writer, Property property) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getLicenseHeader() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

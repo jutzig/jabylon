@@ -8,6 +8,7 @@
  */
 package org.jabylon.properties.impl;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -60,6 +61,17 @@ public class WorkspaceImpl extends ResolvableImpl<Workspace, Project> implements
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public NotificationChain basicSetParent(Workspace newParent, NotificationChain msgs) {
+		return super.basicSetParent(newParent, msgs);
+	}
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated

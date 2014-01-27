@@ -25,7 +25,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
-import org.jabylon.properties.PropertyType;
+import org.jabylon.properties.types.PropertyConverter;
+import org.jabylon.properties.types.PropertyScanner;
+import org.jabylon.properties.types.impl.JavaPropertyScanner;
+import org.jabylon.properties.types.impl.PropertiesHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,33 +59,20 @@ public class PropertiesResourceImpl extends ResourceImpl {
     @Override
     protected void doLoad(InputStream inputStream, Map<?, ?> options)
             throws IOException {
-        PropertiesHelper helper;
-        PropertyType type = getPropertyType(options);
-
-        if(type==PropertyType.ENCODED_ISO)
-            helper = new PropertiesHelper(true, getURI());
-        else
-            helper = new PropertiesHelper(false, getURI());
-
+        String type = getPropertyType(options);
+        PropertyScanner scanner = PropertyResourceUtil.createScanner(type);
+        PropertyConverter converter = scanner.createConverter(getURI());
         InputStream in = inputStream;
         if(!in.markSupported())
             in = new BufferedInputStream(in);
         //TODO: should we do anything with the bom? Set to Unicode?
-        helper.checkForBom(in);
+        PropertiesHelper.checkForBom(in);
 
-        BufferedReader reader = null;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in,scanner.getEncoding()));
         PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
         try {
-            if(type==PropertyType.ENCODED_ISO)
-            {
-                reader = new BufferedReader(new InputStreamReader(in,"ISO-8859-1"));
-            }
-            if(type==PropertyType.UNICODE)
-            {
-                reader = new BufferedReader(new InputStreamReader(in,"UTF-8")); //TODO: use encoding property
-            }
             Property p = null;
-            while((p = helper.readProperty(reader))!=null)
+            while((p = converter.readProperty(reader))!=null)
             {
                 file.getProperties().add(p);
             }
@@ -90,16 +80,16 @@ public class PropertiesResourceImpl extends ResourceImpl {
             if(reader!=null)
                 reader.close();
         }
-        file.setLicenseHeader(helper.getLicenseHeader());
+        file.setLicenseHeader(converter.getLicenseHeader());
         getContents().add(file);
     }
 
-    private PropertyType getPropertyType(Map<?, ?> options) {
+    private String getPropertyType(Map<?, ?> options) {
         if(options!=null && options.containsKey(OPTION_FILEMODE))
         {
-            return (PropertyType) options.get(OPTION_FILEMODE);
+            return (String) options.get(OPTION_FILEMODE);
         }
-        return PropertyType.ENCODED_ISO;
+        return JavaPropertyScanner.TYPE;
     }
 
 
@@ -107,34 +97,27 @@ public class PropertiesResourceImpl extends ResourceImpl {
     protected void doSave(OutputStream outputStream, Map<?, ?> options)
             throws IOException {
         savedProperties = 0;
-        PropertyType type = getPropertyType(options);
+        String type = getPropertyType(options);
         BufferedWriter writer;
-        boolean escapeUnicode;
-        if(type==PropertyType.ENCODED_ISO)
-        {
-            escapeUnicode = true;
-            writer = new BufferedWriter(new OutputStreamWriter(outputStream, "ISO-8859-1"));
-        }
-        else
-        {
-            escapeUnicode = false;
-            //see https://github.com/jutzig/jabylon/issues/5
+        PropertyScanner scanner = PropertyResourceUtil.createScanner(type);
+        String encoding = scanner.getEncoding();
+        if("UTF-8".equals(encoding)) {
+        	//see https://github.com/jutzig/jabylon/issues/5
             //write BOMs in unicode mode
             outputStream.write(ByteOrderMark.UTF_8.bytes());
-            writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-
         }
+        PropertyConverter converter = scanner.createConverter(getURI());		
+        writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
         try {
-            PropertiesHelper helper = new PropertiesHelper(escapeUnicode);
             PropertyFile file = (PropertyFile) getContents().get(0);
-            helper.writeLicenseHeader(writer, file.getLicenseHeader());
+            converter.writeLicenseHeader(writer, file.getLicenseHeader());
             Iterator<Property> it = file.getProperties().iterator();
             while (it.hasNext()) {
                 Property property = (Property) it.next();
                 //eliminate all empty property entries
                 if(isFilled(property))
                 {
-                    helper.writeProperty(writer, property);
+                	converter.writeProperty(writer, property);
                     savedProperties++;
                 }
 

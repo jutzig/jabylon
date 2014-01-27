@@ -17,4 +17,18 @@
             genModel="model/properties.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated properties -->
+      <package
+            uri="http://uri.jabylon.org/properties"
+            class="org.jabylon.properties.PropertiesPackage"
+            genModel="model/properties.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated properties -->
+      <parser
+            type="properties"
+            class="org.jabylon.properties.util.PropertiesResourceFactoryImpl"/>
+   </extension>
 </plugin>

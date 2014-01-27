@@ -57,7 +57,6 @@ import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertiesResourceImpl;
 import org.jabylon.resources.changes.PropertiesListener;
@@ -444,7 +443,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
                 && descriptor.getProjectLocale().getParent().getParent() != null) {
             ProjectVersion version = descriptor.getProjectLocale().getParent();
             Project project = version.getParent();
-            PropertyType propertyType = project.getPropertyType();
+            String propertyType = project.getPropertyType();
             options.put(PropertiesResourceImpl.OPTION_FILEMODE, propertyType);
         }
         return options;

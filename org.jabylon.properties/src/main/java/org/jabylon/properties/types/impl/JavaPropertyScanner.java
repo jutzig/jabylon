@@ -15,15 +15,25 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Service;
+import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.ScanConfiguration;
+import org.jabylon.properties.types.PropertyConverter;
 import org.jabylon.properties.types.PropertyScanner;
 
+@Component(enabled=true,immediate=true)
+@Service
 public class JavaPropertyScanner implements PropertyScanner {
 
-
+	@Property(name=PropertyScanner.TYPE, value="PROPERTIES_ENCODED")
+	public  static final String TYPE = "PROPERTIES_ENCODED";
     private static final Pattern LOCALE_PATTERN = Pattern.compile("(.+?)((?:_\\w\\w){0,3})(\\..+)");
+    private static final String[] DEFAULT_EXCLUDES = {"**/build.properties"};
+    private static final String[] DEFAULT_INCLUDES = {"**/*.properties"};
 
     @Override
     public boolean isTemplate(File propertyFile, ScanConfiguration config) {
@@ -122,5 +132,30 @@ public class JavaPropertyScanner implements PropertyScanner {
         String newName = matcher.group(1) + "_" + translationLocale.toString() + matcher.group(3);
         return new File(template.getParentFile(),newName);
     }
+
+	@Override
+	public boolean isBilingual() {
+		return false;
+	}
+
+	@Override
+	public PropertyConverter createConverter(URI resource) {
+		return new PropertiesHelper(true, resource);
+	}
+	
+	@Override
+	public String[] getDefaultIncludes() {
+		return DEFAULT_INCLUDES;
+	}
+	
+	@Override
+	public String[] getDefaultExcludes() {
+		return DEFAULT_EXCLUDES;
+	}
+	
+	@Override
+	public String getEncoding(){
+		return "ISO-8859-1";
+	}
 
 }

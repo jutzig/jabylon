@@ -72,7 +72,7 @@
         <details key="columnLength" value="1024"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="#//PropertyType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamProvider" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/CDO/DBStore">
         <details key="columnType" value="VARCHAR"/>
@@ -179,10 +179,6 @@
         <details key="columnLength" value="255"/>
       </eAnnotations>
     </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="PropertyType">
-    <eLiterals name="ENCODED_ISO"/>
-    <eLiterals name="UNICODE" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScanConfiguration">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludes" upperBound="-1"

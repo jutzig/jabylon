@@ -79,6 +79,17 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 	}
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public NotificationChain basicSetParent(ProjectVersion newParent, NotificationChain msgs) {
+		return super.basicSetParent(newParent, msgs);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */

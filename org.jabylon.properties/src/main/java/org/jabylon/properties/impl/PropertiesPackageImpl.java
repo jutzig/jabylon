@@ -33,7 +33,6 @@ import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.ResourceFolder;
 import org.jabylon.properties.Review;
@@ -139,13 +138,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	 * @generated
 	 */
     private EClass resourceFolderEClass = null;
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    private EEnum propertyTypeEEnum = null;
 
     /**
 	 * <!-- begin-user-doc -->
@@ -817,15 +809,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EEnum getPropertyType() {
-		return propertyTypeEEnum;
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
     public EEnum getSeverity() {
 		return severityEEnum;
 	}
@@ -977,7 +960,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		resourceFolderEClass = createEClass(RESOURCE_FOLDER);
 
 		// Create enums
-		propertyTypeEEnum = createEEnum(PROPERTY_TYPE);
 		severityEEnum = createEEnum(SEVERITY);
 		reviewStateEEnum = createEEnum(REVIEW_STATE);
 		diffKindEEnum = createEEnum(DIFF_KIND);
@@ -1126,7 +1108,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
 		initEClass(projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProject_RepositoryURI(), this.getURI(), "repositoryURI", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProject_PropertyType(), this.getPropertyType(), "propertyType", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProject_PropertyType(), ecorePackage.getEString(), "propertyType", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_TeamProvider(), ecorePackage.getEString(), "teamProvider", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_Terminology(), ecorePackage.getEBoolean(), "terminology", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1225,10 +1207,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEOperation(resourceFolderEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(propertyTypeEEnum, PropertyType.class, "PropertyType");
-		addEEnumLiteral(propertyTypeEEnum, PropertyType.ENCODED_ISO);
-		addEEnumLiteral(propertyTypeEEnum, PropertyType.UNICODE);
-
 		initEEnum(severityEEnum, Severity.class, "Severity");
 		addEEnumLiteral(severityEEnum, Severity.INFO);
 		addEEnumLiteral(severityEEnum, Severity.WARNING);

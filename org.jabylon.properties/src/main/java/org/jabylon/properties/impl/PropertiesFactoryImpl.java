@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.jabylon.properties.*;
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.DiffKind;
 import org.jabylon.properties.Project;
@@ -30,7 +29,6 @@ import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.ResourceFolder;
 import org.jabylon.properties.Review;
 import org.jabylon.properties.ReviewState;
@@ -107,8 +105,6 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case PropertiesPackage.PROPERTY_TYPE:
-				return createPropertyTypeFromString(eDataType, initialValue);
 			case PropertiesPackage.SEVERITY:
 				return createSeverityFromString(eDataType, initialValue);
 			case PropertiesPackage.REVIEW_STATE:
@@ -134,8 +130,6 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case PropertiesPackage.PROPERTY_TYPE:
-				return convertPropertyTypeToString(eDataType, instanceValue);
 			case PropertiesPackage.SEVERITY:
 				return convertSeverityToString(eDataType, instanceValue);
 			case PropertiesPackage.REVIEW_STATE:
@@ -271,26 +265,6 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
     public ResourceFolder createResourceFolder() {
 		ResourceFolderImpl resourceFolder = new ResourceFolderImpl();
 		return resourceFolder;
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    public PropertyType createPropertyTypeFromString(EDataType eDataType, String initialValue) {
-		PropertyType result = PropertyType.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    public String convertPropertyTypeToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
 	}
 
     /**

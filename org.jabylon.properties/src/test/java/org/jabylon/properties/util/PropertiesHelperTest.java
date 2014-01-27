@@ -31,9 +31,9 @@ import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.types.impl.PropertiesHelper;
 
 public class PropertiesHelperTest {
 

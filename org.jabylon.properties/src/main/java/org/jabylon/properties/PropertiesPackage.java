@@ -950,16 +950,6 @@ public interface PropertiesPackage extends EPackage {
     int RESOURCE_FOLDER_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 0;
 
     /**
-	 * The meta object id for the '{@link org.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @see org.jabylon.properties.PropertyType
-	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
-	 * @generated
-	 */
-    int PROPERTY_TYPE = 13;
-
-    /**
 	 * The meta object id for the '{@link org.jabylon.properties.Severity <em>Severity</em>}' enum.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -967,7 +957,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
 	 * @generated
 	 */
-    int SEVERITY = 14;
+    int SEVERITY = 13;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.ReviewState <em>Review State</em>}' enum.
@@ -977,7 +967,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
 	 * @generated
 	 */
-    int REVIEW_STATE = 15;
+    int REVIEW_STATE = 14;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.DiffKind <em>Diff Kind</em>}' enum.
@@ -987,7 +977,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getDiffKind()
 	 * @generated
 	 */
-    int DIFF_KIND = 16;
+    int DIFF_KIND = 15;
 
     /**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -997,7 +987,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-    int LOCALE = 17;
+    int LOCALE = 16;
 
 
     /**
@@ -1008,7 +998,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-    int URI = 18;
+    int URI = 17;
 
 
     /**
@@ -1019,7 +1009,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getInputStream()
 	 * @generated
 	 */
-    int INPUT_STREAM = 19;
+    int INPUT_STREAM = 18;
 
 
     /**
@@ -1670,16 +1660,6 @@ public interface PropertiesPackage extends EPackage {
     EClass getResourceFolder();
 
     /**
-	 * Returns the meta object for enum '{@link org.jabylon.properties.PropertyType <em>Property Type</em>}'.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Property Type</em>'.
-	 * @see org.jabylon.properties.PropertyType
-	 * @generated
-	 */
-    EEnum getPropertyType();
-
-    /**
 	 * Returns the meta object for enum '{@link org.jabylon.properties.Severity <em>Severity</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2269,16 +2249,6 @@ public interface PropertiesPackage extends EPackage {
 		 * @generated
 		 */
         EClass RESOURCE_FOLDER = eINSTANCE.getResourceFolder();
-
-        /**
-		 * The meta object literal for the '{@link org.jabylon.properties.PropertyType <em>Property Type</em>}' enum.
-		 * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-		 * @see org.jabylon.properties.PropertyType
-		 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getPropertyType()
-		 * @generated
-		 */
-        EEnum PROPERTY_TYPE = eINSTANCE.getPropertyType();
 
         /**
 		 * The meta object literal for the '{@link org.jabylon.properties.Severity <em>Severity</em>}' enum.

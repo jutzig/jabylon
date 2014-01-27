@@ -32,7 +32,7 @@ import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.ScanConfiguration;
-import org.jabylon.properties.util.POHelper;
+import org.jabylon.properties.types.impl.POHelper;
 import org.jabylon.properties.util.PropertiesResourceImpl;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;

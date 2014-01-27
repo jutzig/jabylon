@@ -8,12 +8,12 @@
  */
 package org.jabylon.properties.impl;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.ScanConfiguration;
 import org.jabylon.properties.Workspace;
 
@@ -53,7 +53,7 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 	 * @generated
 	 * @ordered
 	 */
-    protected static final PropertyType PROPERTY_TYPE_EDEFAULT = PropertyType.ENCODED_ISO;
+    protected static final String PROPERTY_TYPE_EDEFAULT = null;
 
 
     /**
@@ -99,6 +99,17 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public NotificationChain basicSetParent(Workspace newParent, NotificationChain msgs) {
+		return super.basicSetParent(newParent, msgs);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -120,20 +131,20 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
      * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public PropertyType getPropertyType() {
-		return (PropertyType)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, true, true);
+    public String getPropertyType() {
+		return (String)eDynamicGet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, true, true);
 	}
 
     /**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public void setPropertyType(PropertyType newPropertyType) {
+	public void setPropertyType(String newPropertyType) {
 		eDynamicSet(PropertiesPackage.PROJECT__PROPERTY_TYPE, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE, newPropertyType);
 	}
 
-    /**
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -228,7 +239,7 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 				setRepositoryURI((URI)newValue);
 				return;
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-				setPropertyType((PropertyType)newValue);
+				setPropertyType((String)newValue);
 				return;
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				setTeamProvider((String)newValue);
@@ -275,7 +286,7 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 			case PropertiesPackage.PROJECT__REPOSITORY_URI:
 				return REPOSITORY_URI_EDEFAULT == null ? getRepositoryURI() != null : !REPOSITORY_URI_EDEFAULT.equals(getRepositoryURI());
 			case PropertiesPackage.PROJECT__PROPERTY_TYPE:
-				return getPropertyType() != PROPERTY_TYPE_EDEFAULT;
+				return PROPERTY_TYPE_EDEFAULT == null ? getPropertyType() != null : !PROPERTY_TYPE_EDEFAULT.equals(getPropertyType());
 			case PropertiesPackage.PROJECT__TEAM_PROVIDER:
 				return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
 			case PropertiesPackage.PROJECT__TERMINOLOGY:

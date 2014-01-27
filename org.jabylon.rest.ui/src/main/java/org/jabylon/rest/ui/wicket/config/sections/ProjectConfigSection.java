@@ -22,8 +22,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.common.team.TeamProviderUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.Workspace;
+import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -45,8 +45,8 @@ public class ProjectConfigSection extends BasicPanel<Project> {
         add(nameGroup);
 
         ControlGroup typeGroup = new ControlGroup("type-group",nls("ProjectConfigSection.project.type.choice"));
-        EObjectPropertyModel<PropertyType, Project> typeModel = new EObjectPropertyModel<PropertyType, Project>(model, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE);
-        DropDownChoice<PropertyType> typeChoice = new DropDownChoice<PropertyType>("inputType", typeModel, PropertyType.VALUES);
+        EObjectPropertyModel<String, Project> typeModel = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE);
+        DropDownChoice<String> typeChoice = new DropDownChoice<String>("inputType", typeModel, new ArrayList<String>(PropertyResourceUtil.getPropertyScanners().keySet()));
         typeGroup.add(typeChoice);
         add(typeGroup);
 

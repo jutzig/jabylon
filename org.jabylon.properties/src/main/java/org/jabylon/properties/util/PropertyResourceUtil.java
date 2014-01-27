@@ -9,7 +9,11 @@
 package org.jabylon.properties.util;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -22,28 +26,91 @@ import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
-import org.jabylon.properties.PropertyType;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.ResourceFolder;
 import org.jabylon.properties.types.PropertyScanner;
 import org.jabylon.properties.types.impl.JavaPropertyScanner;
+import org.jabylon.properties.types.impl.JavaPropertyScannerUTF8;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PropertyResourceUtil {
 
+	private static ConcurrentMap<String, PropertyScanner> PROPERTY_SCANNERS;
+	private static final Logger LOG = LoggerFactory.getLogger(PropertyResourceUtil.class);
+
+	static {
+		PROPERTY_SCANNERS = new ConcurrentHashMap<String, PropertyScanner>();
+		Bundle bundle = FrameworkUtil.getBundle(PropertyResourceUtil.class);
+		if(bundle==null){
+			//fallback for unit tests
+			PROPERTY_SCANNERS.put(JavaPropertyScanner.TYPE, new JavaPropertyScanner());
+			PROPERTY_SCANNERS.put(JavaPropertyScannerUTF8.TYPE, new JavaPropertyScannerUTF8());
+		}
+		else {
+			final BundleContext context = FrameworkUtil.getBundle(PropertyResourceUtil.class).getBundleContext();
+			ServiceTracker<PropertyScanner, PropertyScanner> tracker = new ServiceTracker<PropertyScanner, PropertyScanner>(context, PropertyScanner.class, new ServiceTrackerCustomizer<PropertyScanner, PropertyScanner>() {
+				
+				@Override
+				public PropertyScanner addingService(ServiceReference<PropertyScanner> reference){
+					
+					Object value = reference.getProperty(PropertyScanner.TYPE);
+					PropertyScanner service = context.getService(reference);
+					if (value instanceof String) {
+						String type = (String) value;
+						PROPERTY_SCANNERS.put(type, service);
+						LOG.debug("Added property type {} {}",type,service);
+					}
+					else
+						LOG.error("PropertyScanner has no valid type {}",service);
+					return service;
+				}
+				
+				@Override
+				public void removedService(ServiceReference<PropertyScanner> reference, PropertyScanner service) {
+					Object value = reference.getProperty(PropertyScanner.TYPE);
+					context.ungetService(reference);
+					if(value!=null)
+						PROPERTY_SCANNERS.remove(value);
+					LOG.debug("Removed property type {} {}",value);				
+				}
+				
+				@Override
+				public void modifiedService(ServiceReference<PropertyScanner> reference, PropertyScanner service) {
+					// nothing to do
+					
+				}
+				
+			});
+			tracker.open(true);
+		}
+	}
 
     public static PropertyScanner createScanner(ProjectVersion version)
     {
-        //TODO: make this more dynamic to support property types as a service
-        Project project = version.getParent();
-        PropertyType propertyType = project.getPropertyType();
-        switch (propertyType) {
-        case ENCODED_ISO:
-            return new JavaPropertyScanner();
-        case UNICODE:
-            return new JavaPropertyScanner();
-        default:
-            throw new UnsupportedOperationException("unsupported property type: "+propertyType);
-        }
+    	Project project = version.getParent();
+    	String propertyType = project.getPropertyType();
+    	return createScanner(propertyType);
+    }
+    
+    public static PropertyScanner createScanner(String propertyType)
+    {
+    	PropertyScanner scanner = PROPERTY_SCANNERS.get(propertyType);
+    	if(scanner==null)
+    		throw new UnsupportedOperationException("unsupported property type: "+propertyType);
+    	return scanner;
+        
+    }
+    
+    public static Map<String,PropertyScanner> getPropertyScanners()
+    {
+    	return Collections.unmodifiableMap(PROPERTY_SCANNERS);
     }
 
     public static void createMissingDescriptorEntries(ProjectVersion parent, IProgressMonitor monitor) {
