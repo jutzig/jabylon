@@ -189,6 +189,7 @@ public class LDAPLoginModule implements LoginModule {
 
         } else {
             subj.getPublicCredentials().remove(user);
+            return false;
         }
         return true;
     }

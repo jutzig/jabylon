@@ -62,6 +62,7 @@ public class DBLoginModule implements LoginModule {
 			subj.getPublicCredentials().remove(user);
 			subj.getPrivateCredentials().removeAll(permissions);
 			permissions = new ArrayList<Permission>();
+			return false;
 		}
 		return true;
 	}
