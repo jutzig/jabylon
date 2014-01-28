@@ -109,6 +109,7 @@ public class PropertiesHelper {
                 if(parts == null || parts[0]==null) //invalid property
                 {
                     logger.error("Invalid line \"{}\" in property file \"{}\". Skipping", propertyValue, uri);
+                    propertyValue.setLength(0);
                     continue;
                 }
                 property.setKey(parts[0]);

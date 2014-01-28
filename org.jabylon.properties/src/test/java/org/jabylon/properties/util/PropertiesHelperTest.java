@@ -186,7 +186,7 @@ public class PropertiesHelperTest {
 		assertEquals("key = test\\\ntest\n", writer.toString());
 
 	}
-	
+
 
 	@Test
 	public void testWritePropertyWindowsMultiline() throws IOException {
@@ -196,7 +196,7 @@ public class PropertiesHelperTest {
 		fixture.writeProperty(writer, property);
 		assertEquals("key = test\\\r\ntest\n", writer.toString());
 
-	}	
+	}
 
 	@Test
 	public void testWritePropertyKeyMultiline() throws IOException {
@@ -207,7 +207,7 @@ public class PropertiesHelperTest {
 		assertEquals("key\\\nkey = test\n", writer.toString());
 
 	}
-	
+
 	@Test
 	public void testReadPropertyWindowsMultiline() throws IOException {
 		BufferedReader reader = asReader("key = test\\\r\ntest\n");
@@ -215,7 +215,7 @@ public class PropertiesHelperTest {
 		assertEquals("key", property.getKey());
 		//TODO: could be discussed how this could be handled differently
 		assertEquals("Currently all linefeeds are read as \n","test\ntest", property.getValue());
-	}	
+	}
 
 	@Test
 	public void testWritePropertyMultilineComment() throws IOException {
@@ -262,18 +262,18 @@ public class PropertiesHelperTest {
 		assertEquals("The reader must contain everything after the bom", "test", reader.readLine());
 
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testCheckForBomWrongStream() throws Exception {
 		InputStream in = Mockito.mock(InputStream.class);
 		when(in.markSupported()).thenReturn(false);
 		fixture.checkForBom(in);
 	}
-	
+
 	/**
 	 * tests that files that contain only a newline are handled correctly
 	 * http://github.com/jutzig/jabylon/issues/issue/104
-	 * @throws IOException 
+	 * @throws IOException
 	 */
     @Test
 	public void testEmptyFile() throws IOException {
@@ -281,10 +281,10 @@ public class PropertiesHelperTest {
     	Property property = fixture.readProperty(new BufferedReader(new InputStreamReader(in)));
     	assertNull(property);
 	}
-    
+
     /**
      * tests that unicode non breakable space (\u00A0)is preserved
-     * see https://github.com/jutzig/jabylon/issues/149 
+     * see https://github.com/jutzig/jabylon/issues/149
      * @throws IOException
      */
 	@Test
@@ -295,10 +295,10 @@ public class PropertiesHelperTest {
 		fixture.writeProperty(writer, property);
 		assertEquals("key = test\\u00a0\n", writer.toString());
 	}
-	
+
 	/**
      * tests that unicode non breakable space (\u00A0)is preserved
-     * see https://github.com/jutzig/jabylon/issues/149 
+     * see https://github.com/jutzig/jabylon/issues/149
      * @throws IOException
      */
 	@Test
@@ -309,11 +309,11 @@ public class PropertiesHelperTest {
 		property.setValue("test\u00A0");
 		fixture.writeProperty(writer, property);
 		assertEquals("key = test\u00A0\n", writer.toString());
-	}	
+	}
 
     /**
      * tests that unicode non breakable space (\u00A0)is preserved
-     * see https://github.com/jutzig/jabylon/issues/149 
+     * see https://github.com/jutzig/jabylon/issues/149
      * @throws IOException
      */
 	@Test
@@ -327,11 +327,11 @@ public class PropertiesHelperTest {
 			if (reader != null)
 				reader.close();
 		}
-	}	
+	}
 
     /**
      * tests that unicode non breakable space (\u00A0)is preserved
-     * see https://github.com/jutzig/jabylon/issues/149 
+     * see https://github.com/jutzig/jabylon/issues/149
      * @throws IOException
      */
 	@Test
@@ -346,8 +346,73 @@ public class PropertiesHelperTest {
 			if (reader != null)
 				reader.close();
 		}
-	}	
-	
+	}
+
+    /**
+     * tests that quotes in comments are handled properly
+     * see https://github.com/jutzig/jabylon/issues/183
+     * @throws IOException
+     */
+    @Test
+    public void testQuotesInComments() throws IOException {
+        fixture = new PropertiesHelper(false);
+        BufferedReader reader = new BufferedReader(new StringReader("# Processes \"display\" button\r\n"
+                                                                    +"PROC_INST_DISPLAY_IMG=dashb_display_12.gif"));
+
+        try {
+            Property property = fixture.readProperty(reader);
+            assertEquals("dashb_display_12.gif", property.getValue());
+            assertEquals("PROC_INST_DISPLAY_IMG", property.getKey());
+            assertEquals("Processes \"display\" button", property.getComment());
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+
+    /**
+     * tests that quotes in comments are handled properly
+     * see https://github.com/jutzig/jabylon/issues/183
+     * @throws IOException
+     */
+    @Test
+    public void testQuotesInExclamationComments() throws IOException {
+        fixture = new PropertiesHelper(false);
+        BufferedReader reader = new BufferedReader(new StringReader("! Processes \"display\" button\r\n"
+                                                                    +"PROC_INST_DISPLAY_IMG=dashb_display_12.gif"));
+
+        try {
+            Property property = fixture.readProperty(reader);
+            assertEquals("dashb_display_12.gif", property.getValue());
+            assertEquals("PROC_INST_DISPLAY_IMG", property.getKey());
+            assertEquals("Processes \"display\" button", property.getComment());
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+
+    /**
+     * tests that the parser resets a key when the newline is not escaped
+     * see https://github.com/jutzig/jabylon/issues/183
+     * @throws IOException
+     */
+    @Test
+    public void testMultilineHandling() throws IOException {
+        fixture = new PropertiesHelper(false);
+        BufferedReader reader = new BufferedReader(new StringReader("// foo\n\r"
+                                                                    +"PROC_INST_DISPLAY_IMG=dashb_display_12.gif"));
+
+        try {
+            Property property = fixture.readProperty(reader);
+            assertEquals("dashb_display_12.gif", property.getValue());
+            assertEquals("PROC_INST_DISPLAY_IMG", property.getKey());
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+
     protected BufferedReader asReader(String string)
     {
     	return new BufferedReader(new StringReader(string));
