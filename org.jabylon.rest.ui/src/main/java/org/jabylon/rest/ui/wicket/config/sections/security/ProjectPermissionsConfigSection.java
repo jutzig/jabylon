@@ -95,6 +95,8 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
                     // user already has permissions
                     if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
                         highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
+                    if (permissionName.endsWith(CommonPermissions.ACTION_SUGGEST))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.SUGGEST.ordinal())];
                     else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
                         highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
                     else
@@ -126,6 +128,8 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
                     // user already has permissions
                     if (permissionName.endsWith(CommonPermissions.ACTION_EDIT))
                         highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.EDIT.ordinal())];
+                    else if (permissionName.endsWith(CommonPermissions.ACTION_SUGGEST))
+                        highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.SUGGEST.ordinal())];
                     else if (permissionName.endsWith(CommonPermissions.ACTION_VIEW))
                         highestSetting = PermissionSetting.values()[Math.max(highestSetting.ordinal(),PermissionSetting.READ.ordinal())];
                     else
@@ -450,13 +454,13 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 
 enum PermissionSetting {
     NONE(null), READ(CommonPermissions.ACTION_VIEW), SUGGEST(CommonPermissions.ACTION_SUGGEST), EDIT(CommonPermissions.ACTION_EDIT), CONFIG(CommonPermissions.ACTION_CONFIG);
-    
+
     String permissionName;
-    
+
     private PermissionSetting(String permissionName) {
     	this.permissionName = permissionName;
 	}
-    
+
     public String getPermissionName() {
 		return permissionName;
 	}
