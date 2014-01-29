@@ -29,8 +29,26 @@
                 </executions>
                 <configuration>
                     <descriptor>src/main/assembly/distribution.xml</descriptor>
+                    <finalName>jabylon-standalone</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptor>src/main/assembly/distribution.xml</descriptor>
+					<attach>true</attach>
                 </configuration>
             </plugin>
+                      
+			<plugin>
+				<groupId>de.jutzig</groupId>
+				<artifactId>github-release-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>upload</id>
+						<inherited>false</inherited>
+						<configuration>
+							<artifact>${project.build.directory}/jabylon-standalone.zip</artifact>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>            
         </plugins>
     </build>
 

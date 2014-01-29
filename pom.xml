@@ -12,6 +12,8 @@
 		<bundle.namespace>${project.groupId}</bundle.namespace>
 		<swt.variant>unknown</swt.variant>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<release.version>1.0.1</release.version>
+		<release.tag>v1.0.1</release.tag>
 	</properties>
 
 	<distributionManagement>
@@ -310,8 +312,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
-					<tag>v${project.version}</tag>
+					<tag>${release.tag}</tag>
+					<releaseVersion>${release.version}</releaseVersion>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
@@ -370,6 +374,16 @@
 								</archive>
 							</configuration>
 						</plugin>
+						<plugin>
+							<groupId>de.jutzig</groupId>
+							<artifactId>github-release-plugin</artifactId>
+							<version>1.0.0</version>
+							<configuration>
+								<description>See http://www.jabylon.org for details</description>
+								<releaseName>${release.version}</releaseName>
+								<tag>${release.tag}</tag>
+							</configuration>
+						</plugin>
 					</plugins>
 				</pluginManagement>
 			</build>
@@ -398,6 +412,13 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+ 			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-changes-plugin</artifactId>
+        		<version>2.9</version>
+        		<configuration>
+        		</configuration>
+      		</plugin>			
 		</plugins>
 	</reporting>
 
