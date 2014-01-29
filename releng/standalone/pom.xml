@@ -41,6 +41,10 @@
 				<artifactId>github-release-plugin</artifactId>
 				<executions>
 					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>release</goal>
+						</goals>
 						<id>upload</id>
 						<inherited>false</inherited>
 						<configuration>
