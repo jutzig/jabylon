@@ -15,6 +15,13 @@
 		<release.version>1.0.1</release.version>
 		<release.tag>v1.0.1</release.tag>
 	</properties>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jabylon-plugins</id>
+			<url>http:///jabylon.org/maven</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<distributionManagement>
 		<repository>
