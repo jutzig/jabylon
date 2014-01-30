@@ -69,6 +69,11 @@
 		</plugins>
 	</build>
 
+	<scm>
+		<url>https://github.com/jutzig/jabylon</url>
+		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
+		<developerConnection>scm:git:https://github.com/jutzig/jabylon.git</developerConnection>
+	</scm>
 
 	<dependencies>
 		<dependency>
