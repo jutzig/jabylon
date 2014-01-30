@@ -19,7 +19,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>jabylon-plugins</id>
-			<url>http:///jabylon.org/maven</url>
+			<url>http://jabylon.org/maven</url>
 		</pluginRepository>
 	</pluginRepositories>
 
