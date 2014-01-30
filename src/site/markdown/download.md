@@ -13,11 +13,11 @@ This version requires a **JRE 6 or higher**
 
 ### WAR 
  
-Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.0.1/jabylon-1.0.1.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
+Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.0.1/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
 
 ### Standalone
 
-Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.0.1/jabylon-1.0.1.zip) to run Jabylon without a servlet container.
+Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.0.1/jabylon-standalone.zip) to run Jabylon without a servlet container.
 
 
 ### Source
