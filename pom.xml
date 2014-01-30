@@ -391,7 +391,7 @@
 						<plugin>
 							<groupId>de.jutzig</groupId>
 							<artifactId>github-release-plugin</artifactId>
-							<version>1.0.0</version>
+							<version>1.0.1</version>
 							<configuration>
 								<description>See http://www.jabylon.org for details</description>
 								<releaseName>${release.version}</releaseName>
