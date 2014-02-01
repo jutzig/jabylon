@@ -66,7 +66,7 @@ public class PropertiesHelperTest {
 			assertEquals("The backslash below tells the application to continue reading\nthe value onto the next line.",
 					property.getComment());
 			assertEquals("message", property.getKey());
-			assertEquals("Welcome to \nWikipedia!", property.getValue());
+			assertEquals("Welcome to Wikipedia!", property.getValue());
 
 			property = fixture.readProperty(reader);
 			assertEquals("Add spaces to the key", property.getComment());
@@ -183,7 +183,7 @@ public class PropertiesHelperTest {
 		property.setKey("key");
 		property.setValue("test\ntest");
 		fixture.writeProperty(writer, property);
-		assertEquals("key = test\\\ntest\n", writer.toString());
+		assertEquals("key = test\\ntest\n", writer.toString());
 
 	}
 
@@ -194,7 +194,7 @@ public class PropertiesHelperTest {
 		property.setKey("key");
 		property.setValue("test\r\ntest");
 		fixture.writeProperty(writer, property);
-		assertEquals("key = test\\\r\ntest\n", writer.toString());
+		assertEquals("key = test\\r\\ntest\n", writer.toString());
 
 	}
 
@@ -213,8 +213,15 @@ public class PropertiesHelperTest {
 		BufferedReader reader = asReader("key = test\\\r\ntest\n");
 		Property property = fixture.readProperty(reader);
 		assertEquals("key", property.getKey());
-		//TODO: could be discussed how this could be handled differently
-		assertEquals("Currently all linefeeds are read as \n","test\ntest", property.getValue());
+		assertEquals("With the leading \\ we need to read into the next line","testtest", property.getValue());
+	}
+	
+	@Test
+	public void testReadPropertyMultilineLeadingSpaces() throws IOException {
+		BufferedReader reader = asReader("key = test\\\n   test\n");
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		assertEquals("With the leading \\ we need to read into the next line and also ignore leading whitespace there","testtest", property.getValue());
 	}
 
 	@Test
@@ -439,6 +446,48 @@ public class PropertiesHelperTest {
 		Property property = fixture.readProperty(reader);
 		assertEquals("key", property.getKey());
 		assertEquals(" value", property.getValue());
+
+	}
+	
+    /**
+     * tests that newlines are converted to \n
+     * see https://github.com/jutzig/jabylon/issues/185
+     * @throws IOException
+     */
+	@Test
+	public void testLFWrite() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue("test\ntest");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = test\\ntest\n", writer.toString());
+	}
+	
+	/**
+     * tests that CRLFs are converted to \r\n
+     * see https://github.com/jutzig/jabylon/issues/185
+     * @throws IOException
+     */
+	@Test
+	public void testCRLFWrite() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue("test\r\ntest");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = test\\r\\ntest\n", writer.toString());
+	}
+	
+    /**
+     * tests that \n and \r are replaced with actual values during reading
+     * see https://github.com/jutzig/jabylon/issues/186
+     * @throws IOException
+     */
+	@Test
+	public void testCRLFRead() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("key = value\\r\\n"));
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		assertEquals("value\r\n", property.getValue());
 
 	}
 

@@ -97,7 +97,7 @@ public class PropertiesHelper {
                 propertyValue.append(NativeToAsciiConverter.convertEncodedToUnicode(line));
                 if(line.endsWith("\\"))
                 {
-                    propertyValue.append("\n");
+                    //if the line ends with a \ we need to continue reading in the next line
                     continue;
                 }
                 property = PropertiesFactory.eINSTANCE.createProperty();
@@ -184,7 +184,8 @@ public class PropertiesHelper {
         	//see https://github.com/jutzig/jabylon/issues/186
         	if(value.startsWith(" "))
         		value = "\\"+value;
-            value = value.replaceAll("(\r?\n)", "\\\\$1");
+            value = value.replace("\r", "\\r");
+            value = value.replace("\n", "\\n");
             if(unicodeEscaping)
                 value = NativeToAsciiConverter.convertUnicodeToEncoded(value, true);
             writer.write(value);
