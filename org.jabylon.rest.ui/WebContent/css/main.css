@@ -186,7 +186,8 @@ table.palette td.pane {
 }
 
 table.palette td.pane select {
-    width: 200px;
+	min-width: 200px;
+    width: auto;
 }
 
 table.palette td.buttons {
@@ -197,5 +198,5 @@ table.palette td.buttons {
 
 table.palette td.buttons button {
     height: 30px;
-    width: 25px;
+    width: 30px;
 }
