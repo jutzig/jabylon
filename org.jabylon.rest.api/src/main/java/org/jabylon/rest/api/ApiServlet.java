@@ -13,13 +13,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
+import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -30,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.emf.cdo.util.CommitException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.util.PreferencesUtil;
@@ -129,14 +130,19 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
             if (child instanceof PropertyFileDescriptor) {
                 serveFile((PropertyFileDescriptor) child, resp);
             }
+            else {
+            	serveArchive(child, resp);
+            }
         }
-        // TODO: use appendable
-        emitter.serialize(child, result, depth);
-        resp.getOutputStream().print(result.toString());
+        else {
+        	// TODO: use appendable
+        	emitter.serialize(child, result, depth);
+        	resp.getOutputStream().print(result.toString());        	
+        }
         resp.getOutputStream().close();
     }
 
-    protected Resolvable getObject(String path) throws IOException {
+	protected Resolvable getObject(String path) throws IOException {
         String info = path;
         if (info == null)
             info = "";
@@ -314,35 +320,75 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
     private void serveFile(PropertyFileDescriptor fileDescriptor, HttpServletResponse resp) throws IOException {
 
         URI path = fileDescriptor.absolutPath();
-        File file = new File(path.toFileString());
+        File file = new File(path.path());
         ServletOutputStream outputStream = resp.getOutputStream();
         if (!file.exists()) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + fileDescriptor.fullPath() + " does not exist");
         } else {
-            BufferedInputStream in = null;
-            try {
-                in = new BufferedInputStream(new FileInputStream(file));
-                resp.setContentLength((int) file.length());
-                resp.setContentType("application/octet-stream");
-                byte[] buffer = new byte[1024];
-                while (true) {
-                    int read = in.read(buffer);
-                    if (read <= 0)
-                        break;
-                    outputStream.write(buffer, 0, read);
-                }
-
-            } finally {
-                if (in != null)
-                    in.close();
-            }
+        	resp.setContentLength((int) file.length());
+            resp.setContentType("application/octet-stream");
+            writeFileToStream(file, outputStream);
 
         }
         outputStream.flush();
     }
+    
+    protected void writeFileToStream(File file, OutputStream out) throws IOException {
+        BufferedInputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(file));
+            
+            byte[] buffer = new byte[1024];
+            while (true) {
+                int read = in.read(buffer);
+                if (read <= 0)
+                    break;
+                out.write(buffer, 0, read);
+            }
 
-    /**
+        } finally {
+            if (in != null)
+                in.close();
+        }
+    }
+    
+    /** 
+     * creates an archive that includes all children of the resolvable
+     * @param parent
+     * @param resp
+     * @throws IOException 
+     */
+    private void serveArchive(Resolvable<?,?> parent, HttpServletResponse resp) throws IOException {
+    	resp.setContentType("application/zip");
+    	resp.setHeader("Content-disposition",MessageFormat.format("attachment;filename={0}.zip",parent.getName()));
+    	ZipOutputStream out = new  ZipOutputStream(resp.getOutputStream());
+    	addChildrenToArchive(out,parent);
+    	out.close();
+    	resp.flushBuffer();
+		
+	}
+
+    @SuppressWarnings("unchecked")
+	private void addChildrenToArchive(ZipOutputStream out, Resolvable<?, ?> parent) throws IOException {
+		EList<Resolvable<?, ?>> children = (EList<Resolvable<?, ?>>) parent.getChildren();
+		for (Resolvable<?, ?> child : children) {
+			if (child instanceof PropertyFileDescriptor) {
+				PropertyFileDescriptor descriptor = (PropertyFileDescriptor) child;
+				
+				File file = new File(descriptor.absoluteFilePath().path());
+				if(!file.exists())
+					continue;
+				out.putNextEntry(new ZipEntry(((PropertyFileDescriptor) child).getLocation().path()));
+				writeFileToStream(file, out);
+			}
+			else
+				addChildrenToArchive(out, child);
+		}
+		
+	}
+
+	/**
      * @see javax.servlet.Servlet#getServletInfo()
      */
     @Override

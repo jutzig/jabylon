@@ -19,7 +19,7 @@ This is the content of the `de` locale in branch `master` of project `Jabylon`. 
 By default, a query on a model object will only serialize one depth level of the given object. To obtain more data at once, the query parameter `depth` can be used (just like in the Jenkins API). 
 
 This [query](http://demo-jabylon.rhcloud.com/api/Jabylon/master/de/org.jabylon.log.viewer/src/main/java/org/jabylon/log/viewer/pages/LogViewerPage_de.properties?depth=3) returns the first level properties for this file (statistic, locale, location,…) as well as the properties of its child objects (the actual key/value pairs and review information). Since it is sometimes easier to just download the properties file then parsing a JSON output, the query parameter `type=file` will instead allow you to [query](http://demo-jabylon.rhcloud.com/api/Jabylon/master/de/org.jabylon.log.viewer/src/main/java/org/jabylon/log/viewer/pages/LogViewerPage_de.properties?type=file) the properties file directly.
-Currently the `?type=file` parameter will only work for single property files, i.e. not on locales, projects, or branches, although that might be a useful addition for the future.
+If you use the `?type=file` parameter on a version, locale or folder the contents will be downloaded as a zip archive. 
 
 
 ## Uploading Property Files

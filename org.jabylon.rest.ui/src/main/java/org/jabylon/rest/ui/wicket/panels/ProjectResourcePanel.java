@@ -57,6 +57,10 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
     public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
         super("content", object, parameters);
         add(new Label("header", new LabelSwitch(getLocale()).doSwitch(object)));
+        String href = WicketUtil.getContextPath() + "/api/"+ getModelObject().toURI().appendQuery("type=file");
+        ExternalLink downloadLink = new ExternalLink("download.link", href);
+        downloadLink.setVisible(object != null && !(object instanceof Workspace) && !(object instanceof Project));
+        add(downloadLink);
     }
 
     @Override
