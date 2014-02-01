@@ -180,6 +180,10 @@ public class PropertiesHelper {
         String value = property.getValue();
         if(value!=null)
         {
+        	//leading spaces need to be masked
+        	//see https://github.com/jutzig/jabylon/issues/186
+        	if(value.startsWith(" "))
+        		value = "\\"+value;
             value = value.replaceAll("(\r?\n)", "\\\\$1");
             if(unicodeEscaping)
                 value = NativeToAsciiConverter.convertUnicodeToEncoded(value, true);

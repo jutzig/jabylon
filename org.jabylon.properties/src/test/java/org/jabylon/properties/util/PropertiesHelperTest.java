@@ -412,6 +412,35 @@ public class PropertiesHelperTest {
                 reader.close();
         }
     }
+    
+    /**
+     * tests that leading spaces are properly escaped
+     * see https://github.com/jutzig/jabylon/issues/186
+     * @throws IOException
+     */
+	@Test
+	public void testLeadingSpacesWrite() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setKey("key");
+		property.setValue(" test");
+		fixture.writeProperty(writer, property);
+		assertEquals("key = \\ test\n", writer.toString());
+	}
+	
+
+    /**
+     * tests that leading spaces are preserved during parsing
+     * see https://github.com/jutzig/jabylon/issues/186
+     * @throws IOException
+     */
+	@Test
+	public void testLeadingSpacesRead() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("key = \\ value"));
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		assertEquals(" value", property.getValue());
+
+	}
 
     protected BufferedReader asReader(String string)
     {
