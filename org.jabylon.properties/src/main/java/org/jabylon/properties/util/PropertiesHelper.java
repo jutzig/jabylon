@@ -39,6 +39,8 @@ public class PropertiesHelper {
     private boolean checkedForHeader;
     /** to be able to log the path */
     private URI uri;
+    /** current line number */
+    private long lineNo = 0;
 
     final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 
@@ -71,6 +73,7 @@ public class PropertiesHelper {
         StringBuilder propertyValue = new StringBuilder();
         while((line = reader.readLine())!=null)
         {
+            lineNo++;
             line=line.trim();
             if(line.length()==0)
             {
@@ -108,7 +111,7 @@ public class PropertiesHelper {
                 String[] parts = split(propertyValue.toString());
                 if(parts == null || parts[0]==null) //invalid property
                 {
-                    logger.error("Invalid line \"{}\" in property file \"{}\". Skipping", propertyValue, uri);
+                    logger.error("Invalid line {}: \"{}\" in property file \"{}\". Skipping", lineNo, propertyValue, uri);
                     propertyValue.setLength(0);
                     continue;
                 }
@@ -180,10 +183,10 @@ public class PropertiesHelper {
         String value = property.getValue();
         if(value!=null)
         {
-        	//leading spaces need to be masked
-        	//see https://github.com/jutzig/jabylon/issues/186
-        	if(value.startsWith(" "))
-        		value = "\\"+value;
+            //leading spaces need to be masked
+            //see https://github.com/jutzig/jabylon/issues/186
+            if(value.startsWith(" "))
+                value = "\\"+value;
             value = value.replace("\r", "\\r");
             value = value.replace("\n", "\\n");
             if(unicodeEscaping)
