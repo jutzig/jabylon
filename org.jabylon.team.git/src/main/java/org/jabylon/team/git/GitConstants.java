@@ -26,4 +26,12 @@ public class GitConstants {
     public static final String KEY_PASSWORD = "git.password";
     public static final String KEY_EMAIL = "git.email";
     public static final String KEY_MESSAGE = "git.message";
+    /**
+     * the refspec used for pushes
+     */
+    public static final String KEY_PUSH_REFSPEC = "git.push.refspec";
+    /**
+     * the default for the refspec
+     */
+    public static final String DEFAULT_PUSH_REFSPEC = "refs/heads/{0}:refs/heads/{0}";
 }

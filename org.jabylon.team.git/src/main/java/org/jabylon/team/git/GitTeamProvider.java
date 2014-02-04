@@ -273,9 +273,8 @@ public class GitTeamProvider implements TeamProvider {
             PushCommand push = git.push();
             push.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(60)));
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
-            String refSpecString = "refs/heads/{0}:refs/heads/{0}";
-            refSpecString = MessageFormat.format(refSpecString, project.getName());
-            RefSpec spec = new RefSpec(refSpecString);
+            
+            RefSpec spec = createRefSpec(project);
             push.setRefSpecs(spec);
             
             Iterable<PushResult> result = push.call();
@@ -316,9 +315,14 @@ public class GitTeamProvider implements TeamProvider {
         }
     }
 
+    private RefSpec createRefSpec(ProjectVersion version) {
+        Preferences node = PreferencesUtil.scopeFor(version);
+        String refSpecString = node.get(GitConstants.KEY_PUSH_REFSPEC, GitConstants.DEFAULT_PUSH_REFSPEC);
+        refSpecString = MessageFormat.format(refSpecString, version.getName());
+		return new RefSpec(refSpecString);
+	}
 
-
-    private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
+	private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
     	monitor.beginTask("Creating Diff", 100);
         DiffCommand diffCommand = git.diff();
         AddCommand addCommand = git.add();
