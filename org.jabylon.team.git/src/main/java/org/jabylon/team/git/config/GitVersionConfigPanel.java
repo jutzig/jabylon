@@ -53,7 +53,7 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
 
         Project getProject(IModel<ProjectVersion> model) {
             if (model instanceof AttachableModel) {
-                AttachableModel<ProjectVersion> m = (AttachableModel<ProjectVersion>) getModel();
+                AttachableModel<ProjectVersion> m = (AttachableModel<ProjectVersion>) model;
                 return (Project) m.getParent().getObject();
             }
             return model.getObject().getParent();
