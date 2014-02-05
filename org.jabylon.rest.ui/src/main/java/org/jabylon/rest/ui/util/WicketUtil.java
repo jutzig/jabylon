@@ -114,6 +114,8 @@ public class WicketUtil {
             return "catalonia"; //official language in andorra (AD), but also other places. Use catalonia for now
         else if("zh".equals(language))
             return "cn";
+        else if("en".equals(language)) //english
+            return "gb"; //use GB as the flag
         return language.toLowerCase(); //this works in many cases, but is wrong in some
     }
 
