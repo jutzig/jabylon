@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CleanCommand;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.DiffCommand;
@@ -32,6 +34,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRefNameException;
@@ -46,16 +50,22 @@ import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.jabylon.common.team.TeamProvider;
@@ -325,6 +335,7 @@ public class GitTeamProvider implements TeamProvider {
 	private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
     	monitor.beginTask("Creating Diff", 100);
         DiffCommand diffCommand = git.diff();
+        
         AddCommand addCommand = git.add();
         List<String> changedFiles = new ArrayList<String>();
         List<String> newFiles = new ArrayList<String>();
@@ -359,6 +370,126 @@ public class GitTeamProvider implements TeamProvider {
 
         // TODO Auto-generated method stub
     }
+    
+	@Override
+	public Collection<PropertyFileDiff> reset(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
+		
+		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
+        try {
+			Repository repository = createRepository(project);
+			SubMonitor subMon = SubMonitor.convert(monitor, "Reset", 100);
+			Git git = new Git(repository);
+			subMon.subTask("Calculating Diff");
+			DiffCommand diffCommand = git.diff();
+			diffCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(30)));
+			diffCommand.setOldTree(prepareTreeParser(repository, "refs/remotes/origin/"+project.getName()));
+			diffCommand.setNewTree(null);
+			List<DiffEntry> diffs = diffCommand.call();
+			for (DiffEntry diffEntry : diffs) {
+	        	checkCanceled(monitor);
+	        	PropertyFileDiff fileDiff = createDiff(diffEntry, monitor);
+	        	revertDiff(fileDiff);
+	            updatedFiles.add(fileDiff);
+			}
+			
+			subMon.subTask("Executing Reset");
+			ResetCommand reset = git.reset();
+			reset.setMode(ResetType.HARD);
+			reset.setRef("refs/remotes/origin/"+project.getName());
+			reset.call();
+			
+			
+			CleanCommand clean = git.clean();
+			clean.setCleanDirectories(true);
+			Set<String> call = clean.call();
+			LOGGER.info("cleaned "+call);
+			
+		} catch (IOException e) {
+			LOGGER.error("reset failed",e);
+			throw new TeamProviderException(e);
+		} catch (GitAPIException e) {
+			LOGGER.error("reset failed",e);
+			throw new TeamProviderException(e);
+		}
+        return updatedFiles;
+	}
+	
+	private PropertyFileDiff createDiff(DiffEntry diffEntry, IProgressMonitor monitor) {
+		PropertyFileDiff fileDiff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
+		switch (diffEntry.getChangeType()) {
+		case ADD:
+			monitor.subTask(diffEntry.getNewPath());
+        	fileDiff.setKind(DiffKind.ADD);
+        	fileDiff.setNewPath(diffEntry.getNewPath());
+			return fileDiff;
+		case COPY:
+			monitor.subTask(diffEntry.getNewPath());
+        	fileDiff.setKind(DiffKind.COPY);
+        	fileDiff.setNewPath(diffEntry.getNewPath());
+        	fileDiff.setOldPath(diffEntry.getOldPath());
+			return fileDiff;
+		case DELETE:
+			monitor.subTask(diffEntry.getOldPath());
+        	fileDiff.setKind(DiffKind.REMOVE);
+        	fileDiff.setOldPath(diffEntry.getOldPath());
+			return fileDiff;
+		case MODIFY:
+			monitor.subTask(diffEntry.getNewPath());
+        	fileDiff.setKind(DiffKind.MODIFY);
+        	fileDiff.setOldPath(diffEntry.getOldPath());
+        	fileDiff.setNewPath(diffEntry.getNewPath());
+			return fileDiff;			
+		case RENAME:
+			monitor.subTask(diffEntry.getNewPath());
+        	fileDiff.setKind(DiffKind.MOVE);
+        	fileDiff.setOldPath(diffEntry.getOldPath());
+        	fileDiff.setNewPath(diffEntry.getOldPath());
+			return fileDiff;			
+		default:
+			break;
+		}
+		return fileDiff;
+	}
+
+	/**
+	 * inverts the direction of a diff
+	 * @param diff
+	 */
+	private void revertDiff(PropertyFileDiff diff) {
+		String path1 = diff.getNewPath();
+		String path2 = diff.getOldPath();
+		diff.setOldPath(path1);
+		diff.setNewPath(path2);
+		switch (diff.getKind()) {
+		case REMOVE:
+			diff.setKind(DiffKind.ADD);
+			break;
+		case ADD:
+			diff.setKind(DiffKind.REMOVE);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private static AbstractTreeIterator prepareTreeParser(Repository repository, String ref) throws IOException, MissingObjectException,
+			IncorrectObjectTypeException {
+		// from the commit we can build the tree which allows us to construct
+		// the TreeParser
+		Ref head = repository.getRef(ref);
+		RevWalk walk = new RevWalk(repository);
+		RevCommit commit = walk.parseCommit(head.getObjectId());
+		RevTree tree = walk.parseTree(commit.getTree().getId());
+
+		CanonicalTreeParser oldTreeParser = new CanonicalTreeParser();
+		ObjectReader oldReader = repository.newObjectReader();
+		try {
+			oldTreeParser.reset(oldReader, tree.getId());
+		} finally {
+			oldReader.release();
+		}
+		return oldTreeParser;
+	}
 
     public static void main(String[] args) throws IOException, JGitInternalException, RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException {
         Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
@@ -393,4 +524,5 @@ public class GitTeamProvider implements TeamProvider {
         }
         return uri;
     }
+
 }

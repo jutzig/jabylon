@@ -90,6 +90,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
                 item.add(createCheckoutAction(progressPanel, item.getModel()));
                 item.add(createRescanAction(progressPanel, item.getModel()));
                 item.add(createUpdateAction(progressPanel, item.getModel()));
+                item.add(createResetAction(progressPanel, item.getModel()));
                 item.add(createCommitAction(progressPanel, item.getModel()));
                 item.add(createDeleteAction(progressPanel, item.getModel()));
 
@@ -178,6 +179,61 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
 
     }
 
+    protected Component createResetAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model) {
+        RunnableWithProgress runnable = new RunnableWithProgress() {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public IStatus run(IProgressMonitor monitor) {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+                try {
+                    version = transaction.getObject(version);
+                    SubMonitor subMonitor = SubMonitor.convert(monitor, "Resetting", 100);
+                    Collection<PropertyFileDiff> updates = provider.reset(version, subMonitor.newChild(50));
+                    subMonitor.setWorkRemaining(updates.size() * 2);
+                    subMonitor.subTask("Processing diff");
+                    for (PropertyFileDiff updatedFile : updates) {
+                        version.partialScan(PreferencesUtil.getScanConfigForProject(getModelObject()), updatedFile);
+                        subMonitor.worked(1);
+                    }
+                    subMonitor.setTaskName("Database Sync");
+                    transaction.commit(subMonitor.newChild(updates.size()));
+                } catch (TeamProviderException e) {
+                    logger.error("Update failed",e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Reset failed",e);
+                } catch (CommitException e) {
+                    logger.error("Failed to commit the transaction",e);
+                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to commit the transaction",e);
+                } finally {
+                	transaction.close();
+                	PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
+                	if(persistenceService!=null)
+                		persistenceService.clearCache();
+                	else
+                		logger.error("Could not obtain property persistence service");
+                }
+                return Status.OK_STATUS;
+
+            }
+        };
+        return new ProgressShowingAjaxButton("reset", progressPanel, runnable, nls("reset.version.job.label",getModelObject().getName())) {
+
+            private static final long serialVersionUID = 1L;
+
+            public boolean isVisible() {
+                ProjectVersion version = model.getObject();
+                TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
+                if (provider == null)
+                    return false;
+                File file = new File(version.absoluteFilePath().toFileString());
+                return (file.isDirectory());
+            };
+        };
+
+    }
 
     protected Component createCommitAction(ProgressPanel progressPanel, final IModel<ProjectVersion> model)
     {

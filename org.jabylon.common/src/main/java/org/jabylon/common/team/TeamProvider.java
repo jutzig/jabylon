@@ -41,4 +41,13 @@ public interface TeamProvider {
 
     void commit(PropertyFileDescriptor descriptor, IProgressMonitor monitor) throws TeamProviderException;
 
+    /**
+     * resets the version to the state of the remote repository, discarding any local commits and or modifcations
+     * @param project
+     * @param monitor
+     * @return the diff created by the reset
+     * @throws TeamProviderException
+     */
+    Collection<PropertyFileDiff> reset(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException;
+    
 }
