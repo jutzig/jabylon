@@ -40,6 +40,7 @@
 			<item href="index.html" name="About" />
 			<item href="quickstart.html" name="Quickstart" />
 			<item href="screenshots.html" name="Screenshots" />
+			<item href="releaseNotes.html" name="Release Notes" />
 			<item href="download.html" name="Download" />
 		</menu>
 		<menu name="Administration guide">
