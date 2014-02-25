@@ -6,6 +6,11 @@
 		<version>1.3.1</version>
 	</skin>
 
+	<bannerLeft>
+    	<name>Jabylon</name>
+    	<src>images/logos/jabylon-darker.png</src>
+    	<href>http://www.jabylon.org</href>
+  	</bannerLeft>
 	<custom>
 		<fluidoSkin>
 <!-- 			<gitHub>

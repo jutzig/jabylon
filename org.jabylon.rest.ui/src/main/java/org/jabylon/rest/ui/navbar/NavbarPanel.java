@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -24,6 +25,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.PanelFactory;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
@@ -39,7 +41,10 @@ public class NavbarPanel<T> extends BasicPanel<T> {
     @SuppressWarnings("rawtypes")
 	public NavbarPanel(String id, IModel<T> model, PageParameters parameters) {
         super(id, model, parameters);
-        add(new BookmarkablePageLink<String>("jabylon",WelcomePage.class)); //$NON-NLS-1$
+        
+        BookmarkablePageLink<String> homeLink = new BookmarkablePageLink<String>("jabylon",WelcomePage.class); //$NON-NLS-1$
+        homeLink.add(new Image("logo", GlobalResources.IMG_JABYLON_LOGO));
+        add(homeLink);
         Map<PanelFactory, Boolean> data = loadNavBarExtensions();
 
         List<PanelFactory> items = new ArrayList<PanelFactory>();

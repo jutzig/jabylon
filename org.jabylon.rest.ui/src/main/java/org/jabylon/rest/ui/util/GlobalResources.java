@@ -57,4 +57,8 @@ public class GlobalResources {
     public static final ResourceReference IMG_SYSTEM_SETTINGS = new WebContextUrlResourceReference("img/icons/systemSettings.gif");
     public static final ResourceReference IMG_SECURITY_SETTINGS = new WebContextUrlResourceReference("img/icons/securitySettings.gif");
     public static final ResourceReference IMG_LOG_SETTINGS = new WebContextUrlResourceReference("img/icons/logSettings.png");
+    /**
+     * the jabylon logo 
+     */
+    public static final ResourceReference IMG_JABYLON_LOGO = new WebContextUrlResourceReference("img/jabylon-logo.png");
 }
