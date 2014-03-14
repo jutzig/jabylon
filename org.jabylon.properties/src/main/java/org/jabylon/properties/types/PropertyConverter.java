@@ -8,24 +8,50 @@
  */
 package org.jabylon.properties.types;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyFile;
 
 public interface PropertyConverter {
-
-	public abstract Property readProperty(BufferedReader reader) throws IOException;
-
-	public abstract void writeProperty(Writer writer, Property property) throws IOException;
-
+	
 	/**
-	 *
-	 * @return the license header in the file or <code>null</code> if not available
+	 * loads the given input stream and transform it into a {@link PropertyFile}
+	 * <p>
+	 * The implementation is expected to close the stream upon completion
+	 * @param in
+	 * @param encoding hint about which encoding to use
+	 * @return
+	 * @throws IOException
 	 */
-	public abstract String getLicenseHeader();
+	PropertyFile load(InputStream in, String encoding) throws IOException;
+	
+	/**
+	 * serializes the given {@link PropertyFile} into the output steam
+	 * <p>
+	 * The implementation is expected to close the stream upon completion
+	 * <p>
+	 * The implementation is free to optimize the output by removing empty translations.
+	 * 
+	 * @param out
+	 * @param file
+	 * @param encoding hint about which encoding to use
+	 * @return number of translated (non-empty) keys 
+	 * @throws IOException
+	 */
+	int write(OutputStream out, PropertyFile file, String encoding) throws IOException;
 
-	public abstract void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException;
+//	Property readProperty(BufferedReader reader) throws IOException;
+//
+//	void writeProperty(Writer writer, Property property) throws IOException;
+//
+//	/**
+//	 *
+//	 * @return the license header in the file or <code>null</code> if not available
+//	 */
+//	String getLicenseHeader();
+//
+//	void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException;
 
 }

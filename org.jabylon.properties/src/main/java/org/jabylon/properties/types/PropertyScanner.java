@@ -33,7 +33,7 @@ public interface PropertyScanner {
 	 * @param config
 	 * @return
 	 */
-    boolean isTemplate(File propertyFile, ScanConfiguration config);
+    boolean isTemplate(File propertyFile, String masterLocale);
 
     /**
      * checks if the given file is a translation file

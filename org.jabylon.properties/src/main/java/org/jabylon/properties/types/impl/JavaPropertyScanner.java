@@ -27,24 +27,13 @@ import org.jabylon.properties.types.PropertyScanner;
 
 @Component(enabled=true,immediate=true)
 @Service
-public class JavaPropertyScanner implements PropertyScanner {
+public class JavaPropertyScanner extends AbstractPropertyScanner implements PropertyScanner {
 
 	@Property(name=PropertyScanner.TYPE, value="PROPERTIES_ENCODED")
 	public  static final String TYPE = "PROPERTIES_ENCODED";
-    private static final Pattern LOCALE_PATTERN = Pattern.compile("(.+?)((?:_\\w\\w){0,3})(\\..+)");
+    static final Pattern LOCALE_PATTERN = Pattern.compile("(.+?)((?:_\\w\\w){0,3})(\\..+)");
     private static final String[] DEFAULT_EXCLUDES = {"**/build.properties"};
     private static final String[] DEFAULT_INCLUDES = {"**/*.properties"};
-
-    @Override
-    public boolean isTemplate(File propertyFile, ScanConfiguration config) {
-        return matchesLocale(propertyFile.getName(), config.getMasterLocale());
-    }
-
-    @Override
-    public boolean isTranslation(File propertyFile, ScanConfiguration config) {
-        Locale locale = getLocale(propertyFile);
-        return locale!=null && !locale.toString().equals(config.getMasterLocale());
-    }
 
     @Override
     public File findTemplate(File propertyFile, ScanConfiguration config) {
@@ -64,25 +53,6 @@ public class JavaPropertyScanner implements PropertyScanner {
     }
 
 
-
-    private boolean matchesLocale(String f, String desiredLocale) {
-
-        if (desiredLocale == null)
-        {
-            Matcher matcher = LOCALE_PATTERN.matcher(f);
-            return matcher.matches() && matcher.group(2).isEmpty();
-        }
-
-        Matcher matcher = LOCALE_PATTERN.matcher(f);
-        if (matcher.matches()) {
-            String actualLocale = matcher.group(2);
-            if(actualLocale==null || actualLocale.isEmpty())
-                return false;
-            actualLocale = actualLocale.substring(1);
-            return actualLocale.equals(desiredLocale);
-        }
-        return false;
-    }
 
     @Override
     public Locale getLocale(File propertyFile) {

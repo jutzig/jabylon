@@ -15,7 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -110,21 +110,16 @@ public class POHelper implements PropertyConverter{
     }
 
 	@Override
-	public void writeProperty(Writer writer, Property property) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getLicenseHeader() {
+	public PropertyFile load(InputStream in, String encoding) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException {
+	public int write(OutputStream out, PropertyFile file, String encoding) throws IOException {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
+
 
 }

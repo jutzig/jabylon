@@ -11,7 +11,6 @@ package org.jabylon.users.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.jabylon.users.*;
 import org.jabylon.users.AuthType;
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;

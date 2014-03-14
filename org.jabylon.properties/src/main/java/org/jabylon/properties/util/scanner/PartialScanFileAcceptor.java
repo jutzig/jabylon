@@ -34,7 +34,7 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
     @Override
     public void newMatch(File file) {
 
-        if(getPropertyScanner().isTemplate(file, getScanConfig()))
+        if(getPropertyScanner().isTemplate(file, getScanConfig().getMasterLocale()))
             newTemplateMatch(file);
         else if(getPropertyScanner().isTranslation(file, getScanConfig()))
             newTranslationMatch(file);

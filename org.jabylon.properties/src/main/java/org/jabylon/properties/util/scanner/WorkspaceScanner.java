@@ -44,7 +44,7 @@ public class WorkspaceScanner {
             for (String f : files) {
             	checkCanceled(monitor);
                 File file = new File(baseDir, f);
-                if(scanner.isTemplate(file, config)) {
+                if(scanner.isTemplate(file, config.getMasterLocale())) {
                     subMon.subTask(f);
                     acceptor.newMatch(file);
                     subMon.worked(1);

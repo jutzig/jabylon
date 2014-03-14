@@ -122,7 +122,7 @@ public class PropertyResourceUtil {
                 continue;
             if (locale != null && locale.getLocale() != null)
                 monitor.subTask("Add missing entries for " + locale.getLocale().getDisplayName());
-            createMissingChildren(template, locale, locale);
+            createMissingChildren(template, locale);
             monitor.worked(1);
         }
         monitor.subTask("");
@@ -208,7 +208,7 @@ public class PropertyResourceUtil {
         ProjectVersion version = locale.getParent();
         ProjectLocale templateLocale = version.getTemplate();
         URI templateResourceLocation = computeTemplateResourceLocation(locale.getLocale(), descriptor.getLocation(),
-                templateLocale.getLocale());
+                templateLocale.getLocale(),version);
         Resolvable<?, ?> resolved = templateLocale.resolveChild(templateResourceLocation);
         PropertyFileDescriptor template = null;
         if (resolved instanceof PropertyFileDescriptor) {
@@ -240,42 +240,26 @@ public class PropertyResourceUtil {
             template.setName("template");
             version.getChildren().add(template);
         }
-        createMissingChildren(template, locale, locale);
+        createMissingChildren(template, locale);
     }    
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private static void createMissingChildren(Resolvable<?, ?> template, Resolvable locale, ProjectLocale variant) {
-        // TODO: this algorithm isn't very efficient unfortunately
-        for (Resolvable<?, ?> child : template.getChildren()) {
-            String name = child.getName();
-            if (child instanceof PropertyFileDescriptor) {
-                // for properties we need the locale specific name
-                PropertyFileDescriptor descriptor = (PropertyFileDescriptor) child;
-                URI derivedLocation = computeLocaleResourceLocation(variant.getLocale(), variant.getParent(), descriptor.getLocation());
-                name = URI.decode(derivedLocation.lastSegment());
-            }
-            Resolvable<?, ?> localeChild = locale.getChild(name);
-            if (localeChild == null) {
-                if (child instanceof PropertyFileDescriptor) {
-                    PropertyFileDescriptor templateDescriptor = (PropertyFileDescriptor) child;
-                    PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-                    localeDescriptor.setMaster(templateDescriptor);
-                    localeDescriptor.setVariant(variant.getLocale());
-                    localeDescriptor.computeLocation();
-                    localeDescriptor.setProjectLocale(variant);
-                    localeChild = localeDescriptor;
-
-                } else if (child instanceof ResourceFolder) {
-                    ResourceFolder folder = (ResourceFolder) child;
-                    ResourceFolder localeFolder = PropertiesFactory.eINSTANCE.createResourceFolder();
-                    localeFolder.setName(folder.getName());
-                    localeChild = localeFolder;
-                }
-                locale.getChildren().add(localeChild);
-            }
-            createMissingChildren(child, localeChild, variant);
-        }
-
+    private static void createMissingChildren(ProjectLocale template, ProjectLocale other) {
+    	
+    	EList<PropertyFileDescriptor> descriptors = template.getDescriptors();
+    	for (PropertyFileDescriptor descriptor : descriptors) {
+    		URI derivedLocation = computeLocaleResourceLocation(other.getLocale(), other.getParent(), descriptor.getLocation());
+    		Resolvable<?, ?> child = other.resolveChild(derivedLocation);
+    		if(child==null){
+    			Resolvable<?, ?> folder = getOrCreateFolder(other, derivedLocation.trimSegments(1).segments());
+                PropertyFileDescriptor localeDescriptor = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
+                localeDescriptor.setMaster(descriptor);
+                localeDescriptor.setVariant(other.getLocale());
+                localeDescriptor.setLocation(derivedLocation);
+                localeDescriptor.setProjectLocale(other);
+                localeDescriptor.setParent(folder);
+                localeDescriptor.setName(derivedLocation.lastSegment());
+    		}
+		}
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -288,6 +272,7 @@ public class PropertyResourceUtil {
             Resolvable child = currentParent.getChild(segment);
             if (child == null) {
                 child = PropertiesFactory.eINSTANCE.createResourceFolder();
+                child.setName(segment);
                 currentParent.getChildren().add(child);
             }
             currentParent = child;
@@ -296,25 +281,19 @@ public class PropertyResourceUtil {
 
     }
 
-    public static URI computeTemplateResourceLocation(Locale locale, URI location, Locale masterLocale) {
+    public static URI computeTemplateResourceLocation(Locale locale, URI translationLocation, Locale masterLocale, ProjectVersion version) {
 
-        String filename = location.lastSegment();
-        String extension = location.fileExtension();
+        PropertyScanner scanner = createScanner(version);
+        URI parentPath = version.absoluteFilePath();
+        File path = scanner.findTemplate(new File(parentPath.path()+translationLocation.toString()), null);
 
-        if (extension != null) {
-            filename = filename.substring(0, filename.length() - extension.length() - 1);
-
-            filename = filename.substring(0, filename.length() - (locale.toString().length() + 1));
-            // if the master has a locale as well (i.e.
-            // messages_en_EN.properties) we must add that portion
-            if (masterLocale != null) {
-                filename += "_";
-                filename += masterLocale.toString();
-            }
-            filename += ".";
-            filename += extension;
-        }
-        return location.trimSegments(1).appendSegment(filename);
+        URI location = URI.createFileURI(path.getAbsolutePath());
+        URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
+        for (int i = parentPath.segmentCount()+1; i < location.segmentCount(); i++) {
+			//append the other segments
+        	trimmedLocation = trimmedLocation.appendSegment(location.segment(i));
+		}
+        return trimmedLocation;
 
     }
 

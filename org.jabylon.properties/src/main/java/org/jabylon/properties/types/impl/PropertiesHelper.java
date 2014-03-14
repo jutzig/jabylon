@@ -11,16 +11,23 @@
  */
 package org.jabylon.properties.types.impl;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Iterator;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.types.PropertyConverter;
 import org.jabylon.properties.util.NativeToAsciiConverter;
 import org.slf4j.Logger;
@@ -67,10 +74,7 @@ public class PropertiesHelper implements PropertyConverter {
         this.uri = uri;
     }
 
-    /* (non-Javadoc)
-	 * @see org.jabylon.properties.util.PropertyConverter#readProperty(java.io.BufferedReader)
-	 */
-    @Override
+    
 	public Property readProperty(BufferedReader reader) throws IOException
     {
         String line = null;
@@ -175,10 +179,6 @@ public class PropertiesHelper implements PropertyConverter {
         return (line.startsWith("#") || line.startsWith("!"));
     }
 
-    /* (non-Javadoc)
-	 * @see org.jabylon.properties.util.PropertyConverter#writeProperty(java.io.Writer, org.jabylon.properties.Property)
-	 */
-    @Override
 	public void writeProperty(Writer writer, Property property) throws IOException
     {
         if(property.eIsSet(PropertiesPackage.Literals.PROPERTY__COMMENT))
@@ -234,18 +234,10 @@ public class PropertiesHelper implements PropertyConverter {
         return bom;
     }
 
-    /* (non-Javadoc)
-	 * @see org.jabylon.properties.util.PropertyConverter#getLicenseHeader()
-	 */
-    @Override
 	public String getLicenseHeader() {
         return licenseHeader;
     }
 
-    /* (non-Javadoc)
-	 * @see org.jabylon.properties.util.PropertyConverter#writeLicenseHeader(java.io.Writer, java.lang.String)
-	 */
-    @Override
 	public void writeLicenseHeader(Writer writer, String licenseHeader) throws IOException {
         if(licenseHeader==null || licenseHeader.isEmpty())
             return;
@@ -253,4 +245,70 @@ public class PropertiesHelper implements PropertyConverter {
         writer.write('\n');
     }
 
+    @Override
+    public int write(OutputStream out, PropertyFile file, String encoding) throws IOException {
+        int savedProperties = 0;
+        BufferedWriter writer;
+        if("UTF-8".equals(encoding)) {
+        	//see https://github.com/jutzig/jabylon/issues/5
+            //write BOMs in unicode mode
+            out.write(ByteOrderMark.UTF_8.bytes());
+        }	
+        
+        writer = new BufferedWriter(new OutputStreamWriter(out, encoding));
+        try {
+                        
+            writeLicenseHeader(writer, file.getLicenseHeader());
+            Iterator<Property> it = file.getProperties().iterator();
+            while (it.hasNext()) {
+                Property property = (Property) it.next();
+                //eliminate all empty property entries
+                if(isFilled(property))
+                {
+                	writeProperty(writer, property);
+                    savedProperties++;
+                }
+
+            }
+
+        }
+        finally{
+            writer.close();
+        }
+    	return savedProperties;
+    }
+
+    private boolean isFilled(Property property) {
+        if(property==null)
+            return false;
+        if(property.getKey()==null || property.getKey().length()==0)
+            return false;
+        return !(property.getValue()==null || property.getValue().length()==0);
+    }
+ 
+
+	@Override
+    public PropertyFile load(InputStream in, String encoding) throws IOException {
+        if(!in.markSupported())
+            in = new BufferedInputStream(in);
+        //TODO: should we do anything with the bom? Set to Unicode?
+        PropertiesHelper.checkForBom(in);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in,encoding));
+        PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
+        try {
+            Property p = null;
+            while((p = readProperty(reader))!=null)
+            {
+                file.getProperties().add(p);
+            }
+        } finally{
+            if(reader!=null)
+                reader.close();
+        }
+        file.setLicenseHeader(getLicenseHeader());
+        return file;
+    }
+    
+    
 }

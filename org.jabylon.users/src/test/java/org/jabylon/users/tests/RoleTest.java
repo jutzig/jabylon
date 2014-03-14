@@ -8,13 +8,12 @@
  */
 package org.jabylon.users.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
 import org.jabylon.users.UsersFactory;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
