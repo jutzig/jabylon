@@ -11,7 +11,6 @@ package org.jabylon.properties.types.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,9 +44,9 @@ public class JavaPropertyScannerTest {
 	public void testIsTemplate() {
 		ScanConfiguration configuration = mock(ScanConfiguration.class);
 		when(configuration.getMasterLocale()).thenReturn("de");
-		assertTrue(getFixture().isTemplate(new File("test_de.properties"), configuration));
-		assertFalse(getFixture().isTemplate(new File("test.properties"), configuration));
-		assertFalse(getFixture().isTemplate(new File("test_en.properties"), configuration));
+		assertTrue(getFixture().isTemplate(new File("test_de.properties"), configuration.getMasterLocale()));
+		assertFalse(getFixture().isTemplate(new File("test.properties"), configuration.getMasterLocale()));
+		assertFalse(getFixture().isTemplate(new File("test_en.properties"), configuration.getMasterLocale()));
 	}
 
 	@Test
