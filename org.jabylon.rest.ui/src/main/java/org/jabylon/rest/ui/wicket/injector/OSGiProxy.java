@@ -31,9 +31,9 @@ public class OSGiProxy implements InvocationHandler, Serializable {
 
 	private Supplier<Object> supplier;
 			
-			public OSGiProxy(IProxyTargetLocator locator) {
-				supplier = Suppliers.memoize(Suppliers.compose(new LoadingFunction(), Suppliers.ofInstance(locator)));
-			}
+	public OSGiProxy(IProxyTargetLocator locator) {
+		supplier = Suppliers.memoize(Suppliers.compose(new LoadingFunction(), Suppliers.ofInstance(locator)));
+	}
 
 	@Override
 	public Object invoke(Object proxy, Method arg1, Object[] arg2) throws Throwable {

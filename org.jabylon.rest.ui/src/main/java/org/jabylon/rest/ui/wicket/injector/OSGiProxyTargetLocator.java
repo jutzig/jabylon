@@ -80,7 +80,7 @@ public class OSGiProxyTargetLocator implements IProxyTargetLocator {
         ServiceReference<?> reference = context.getServiceReference(typeName);
         if(reference!=null)
             return context.getService(reference);
-        return null;
+        throw new IllegalStateException("Service "+typeName+" is not available");
     }
 
 }
