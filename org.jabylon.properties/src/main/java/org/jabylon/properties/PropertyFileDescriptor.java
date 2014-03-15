@@ -115,17 +115,6 @@ public interface PropertyFileDescriptor extends Resolvable<Resolvable<?, ?>, Pro
 
     /**
 	 * <!-- begin-user-doc -->
-     * Computes the location according to the current locale and the location of the master.
-     * Does nothing if this is the master, or there is no master available
-     *
-     * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-    void computeLocation();
-
-    /**
-	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @model inDataType="org.jabylon.properties.InputStream"
 	 * @generated

@@ -137,39 +137,6 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
 //		fail();
     }
 
-    /**
-     * Tests the '{@link org.jabylon.properties.PropertyFileDescriptor#computeLocation() <em>Compute Location</em>}' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.jabylon.properties.PropertyFileDescriptor#computeLocation()
-     * @generated NOT
-     */
-    public void testComputeLocation() {
-        PropertyFileDescriptor master = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-        master.setLocation(URI.createURI("file://project/dir/master.properties"));
-        getFixture().setVariant(new Locale("de", "DE"));
-        getFixture().computeLocation(); //must not fail if no master is available
-        assertNull(getFixture().getLocation());
-        getFixture().setMaster(master);
-        getFixture().computeLocation();
-        assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
-    }
-
-    public void testComputeLocationWithLocaledMaster() {
-        PropertyFileDescriptor master = PropertiesFactory.eINSTANCE.createPropertyFileDescriptor();
-        master.setLocation(URI.createURI("file://project/dir/master_en_EN.properties"));
-        master.setVariant(new Locale("en_EN"));
-        getFixture().setVariant(new Locale("de", "DE"));
-        getFixture().setMaster(master);
-        getFixture().computeLocation();
-        assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
-
-
-        master.setLocation(URI.createURI("file://project/dir/master_en_EN_FO.properties"));
-        master.setVariant(new Locale("en","EN","FO"));
-        getFixture().computeLocation();
-        assertEquals("file://project/dir/master_de_DE.properties", getFixture().getLocation().toString());
-    }
 
     public void testFullPathWithParent() {
         Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
