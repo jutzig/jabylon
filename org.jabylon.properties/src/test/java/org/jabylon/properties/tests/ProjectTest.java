@@ -16,7 +16,6 @@ import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
@@ -39,56 +38,56 @@ import org.jabylon.properties.Workspace;
 public class ProjectTest extends ResolvableTest {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(ProjectTest.class);
-    }
+		TestRunner.run(ProjectTest.class);
+	}
 
     /**
-     * Constructs a new Project test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Project test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ProjectTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Returns the fixture for this Project test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Project test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected Project getFixture() {
-        return (Project)fixture;
-    }
+		return (Project)fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createProject());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createProject());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
     /**
      * Tests the '{@link org.jabylon.properties.Project#fullScan(org.jabylon.properties.ScanConfiguration) <em>Full Scan</em>}' operation.

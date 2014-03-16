@@ -18,13 +18,12 @@ import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.junit.Ignore;
-
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Resolvable;
+import org.junit.Ignore;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,7 +34,7 @@ import org.jabylon.properties.Resolvable;
  * <ul>
  *   <li>{@link org.jabylon.properties.PropertyFileDescriptor#isMaster() <em>Is Master</em>}</li>
  *   <li>{@link org.jabylon.properties.PropertyFileDescriptor#loadProperties() <em>Load Properties</em>}</li>
- *   <li>{@link org.jabylon.properties.PropertyFileDescriptor#computeLocation() <em>Compute Location</em>}</li>
+ *   <li>{@link org.jabylon.properties.PropertyFileDescriptor#loadProperties(java.io.InputStream) <em>Load Properties</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -43,56 +42,56 @@ import org.jabylon.properties.Resolvable;
 public class PropertyFileDescriptorTest extends ResolvableTest {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(PropertyFileDescriptorTest.class);
-    }
+		TestRunner.run(PropertyFileDescriptorTest.class);
+	}
 
     /**
-     * Constructs a new Property File Descriptor test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Property File Descriptor test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public PropertyFileDescriptorTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Returns the fixture for this Property File Descriptor test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Property File Descriptor test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected PropertyFileDescriptor getFixture() {
-        return (PropertyFileDescriptor)fixture;
-    }
+		return (PropertyFileDescriptor)fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createPropertyFileDescriptor());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createPropertyFileDescriptor());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
     /**
      * Tests the '{@link org.jabylon.properties.PropertyFileDescriptor#isMaster() <em>Master</em>}' feature getter.
@@ -128,7 +127,7 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see org.jabylon.properties.PropertyFileDescriptor#loadProperties()
-     * @generated
+     * @generated NOT
      */
     @Ignore
     public void testLoadProperties() {
@@ -138,7 +137,20 @@ public class PropertyFileDescriptorTest extends ResolvableTest {
     }
 
 
-    public void testFullPathWithParent() {
+    /**
+	 * Tests the '{@link org.jabylon.properties.PropertyFileDescriptor#loadProperties(java.io.InputStream) <em>Load Properties</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.PropertyFileDescriptor#loadProperties(java.io.InputStream)
+	 * @generated NOT
+	 */
+	public void testLoadProperties__InputStream() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+//		fail();
+	}
+
+	public void testFullPathWithParent() {
         Resolvable parent = mock(Resolvable.class,withSettings().extraInterfaces(InternalEObject.class));
         getFixture().setName("blubb");
         when(parent.fullPath()).thenReturn(URI.createURI("foo"));

@@ -8,24 +8,16 @@
  */
 package org.jabylon.properties.tests;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
-
 import java.util.Locale;
 
-import org.apache.tools.ant.property.GetProperty;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.junit.Ignore;
+import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
-import org.jabylon.properties.Resolvable;
-
-import junit.textui.TestRunner;
+import org.junit.Ignore;
 
 /**
  * <!-- begin-user-doc -->
@@ -124,7 +116,7 @@ public class ProjectVersionTest extends ResolvableTest {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see org.jabylon.properties.ProjectVersion#fullScan(org.jabylon.properties.ScanConfiguration)
-     * @generated
+     * @generated NOT
      */
     @Ignore
     public void testFullScan__ScanConfiguration() {

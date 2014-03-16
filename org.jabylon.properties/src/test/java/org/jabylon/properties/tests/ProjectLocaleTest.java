@@ -10,24 +10,17 @@ package org.jabylon.properties.tests;
 
 import java.util.Locale;
 
-import org.eclipse.emf.common.util.URI;
+import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Project Locale</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following features are tested:
- * <ul>
- *   <li>{@link org.jabylon.properties.ProjectLocale#getProjectVersion() <em>Project Version</em>}</li>
- * </ul>
- * </p>
  * <p>
  * The following operations are tested:
  * <ul>
@@ -39,56 +32,56 @@ import junit.textui.TestRunner;
 public class ProjectLocaleTest extends ResolvableTest {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(ProjectLocaleTest.class);
-    }
+		TestRunner.run(ProjectLocaleTest.class);
+	}
 
     /**
-     * Constructs a new Project Locale test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Project Locale test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ProjectLocaleTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Returns the fixture for this Project Locale test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Project Locale test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected ProjectLocale getFixture() {
-        return (ProjectLocale)fixture;
-    }
+		return (ProjectLocale)fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createProjectLocale());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createProjectLocale());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
     /**
      * Tests the '{@link org.jabylon.properties.ProjectLocale#getProjectVersion() <em>Project Version</em>}' feature getter.

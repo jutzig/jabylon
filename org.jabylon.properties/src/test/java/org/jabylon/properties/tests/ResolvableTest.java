@@ -15,9 +15,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.junit.Ignore;
-
 import org.jabylon.properties.Resolvable;
+import org.junit.Ignore;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +29,10 @@ import org.jabylon.properties.Resolvable;
  *   <li>{@link org.jabylon.properties.Resolvable#relativePath() <em>Relative Path</em>}</li>
  *   <li>{@link org.jabylon.properties.Resolvable#absolutPath() <em>Absolut Path</em>}</li>
  *   <li>{@link org.jabylon.properties.Resolvable#updatePercentComplete() <em>Update Percent Complete</em>}</li>
+ *   <li>{@link org.jabylon.properties.Resolvable#resolveChild(org.eclipse.emf.common.util.URI) <em>Resolve Child</em>}</li>
+ *   <li>{@link org.jabylon.properties.Resolvable#absoluteFilePath() <em>Absolute File Path</em>}</li>
+ *   <li>{@link org.jabylon.properties.Resolvable#toURI() <em>To URI</em>}</li>
+ *   <li>{@link org.jabylon.properties.Resolvable#getChild(java.lang.String) <em>Get Child</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -37,42 +40,42 @@ import org.jabylon.properties.Resolvable;
 public abstract class ResolvableTest extends TestCase {
 
     /**
-     * The fixture for this Resolvable test case.
-     * <!-- begin-user-doc -->
+	 * The fixture for this Resolvable test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
-    protected Resolvable fixture = null;
+	 * @generated
+	 */
+    protected Resolvable<?, ?> fixture = null;
 
     /**
-     * Constructs a new Resolvable test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Resolvable test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ResolvableTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Sets the fixture for this Resolvable test case.
-     * <!-- begin-user-doc -->
+	 * Sets the fixture for this Resolvable test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
-    protected void setFixture(Resolvable fixture) {
-        this.fixture = fixture;
-    }
+	 * @generated
+	 */
+    protected void setFixture(Resolvable<?, ?> fixture) {
+		this.fixture = fixture;
+	}
 
     /**
-     * Returns the fixture for this Resolvable test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Resolvable test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
-    protected Resolvable getFixture() {
-        return fixture;
-    }
+	 * @generated
+	 */
+    protected Resolvable<?, ?> getFixture() {
+		return fixture;
+	}
 
     /**
      * Tests the '{@link org.jabylon.properties.Resolvable#fullPath() <em>Full Path</em>}' operation.
@@ -117,31 +120,83 @@ public abstract class ResolvableTest extends TestCase {
     }
 
     /**
-     * Tests the '{@link org.jabylon.properties.Resolvable#absolutPath() <em>Absolut Path</em>}' operation.
-     * <!-- begin-user-doc -->
+	 * Tests the '{@link org.jabylon.properties.Resolvable#absolutPath() <em>Absolut Path</em>}' operation.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.jabylon.properties.Resolvable#absolutPath()
-     * @generated
-     */
+	 * @see org.jabylon.properties.Resolvable#absolutPath()
+	 * @generated NOT
+	 */
     @Ignore
     public void testAbsolutPath() {
-        // TODO: implement this operation test method
-        // Ensure that you remove @generated or mark it @generated NOT
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
 //		fail();
-    }
+	}
 
     /**
-     * Tests the '{@link org.jabylon.properties.Resolvable#updatePercentComplete() <em>Update Percent Complete</em>}' operation.
-     * <!-- begin-user-doc -->
+	 * Tests the '{@link org.jabylon.properties.Resolvable#updatePercentComplete() <em>Update Percent Complete</em>}' operation.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.jabylon.properties.Resolvable#updatePercentComplete()
-     * @generated
-     */
+	 * @see org.jabylon.properties.Resolvable#updatePercentComplete()
+	 * @generated NOT
+	 */
     @Ignore
     public void testUpdatePercentComplete() {
-        // TODO: implement this operation test method
-        // Ensure that you remove @generated or mark it @generated NOT
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
 //		fail();
-    }
+	}
+
+				/**
+	 * Tests the '{@link org.jabylon.properties.Resolvable#resolveChild(org.eclipse.emf.common.util.URI) <em>Resolve Child</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Resolvable#resolveChild(org.eclipse.emf.common.util.URI)
+	 * @generated NOT
+	 */
+	public void testResolveChild__URI() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+//		fail();
+	}
+
+				/**
+	 * Tests the '{@link org.jabylon.properties.Resolvable#absoluteFilePath() <em>Absolute File Path</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Resolvable#absoluteFilePath()
+	 * @generated NOT
+	 */
+	public void testAbsoluteFilePath() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+//		fail();
+	}
+
+				/**
+	 * Tests the '{@link org.jabylon.properties.Resolvable#toURI() <em>To URI</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Resolvable#toURI()
+	 * @generated NOT
+	 */
+	public void testToURI() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+//		fail();
+	}
+
+				/**
+	 * Tests the '{@link org.jabylon.properties.Resolvable#getChild(java.lang.String) <em>Get Child</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Resolvable#getChild(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testGetChild__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+//		fail();
+	}
 
 } //ResolvableTest

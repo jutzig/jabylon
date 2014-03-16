@@ -26,6 +26,7 @@ import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
@@ -92,6 +93,7 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 			case PropertiesPackage.COMMENT: return (EObject)createComment();
 			case PropertiesPackage.PROPERTY_FILE_DIFF: return (EObject)createPropertyFileDiff();
 			case PropertiesPackage.RESOURCE_FOLDER: return (EObject)createResourceFolder();
+			case PropertiesPackage.PROPERTY_ANNOTATION: return (EObject)createPropertyAnnotation();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -268,6 +270,16 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PropertyAnnotation createPropertyAnnotation() {
+		PropertyAnnotationImpl propertyAnnotation = new PropertyAnnotationImpl();
+		return propertyAnnotation;
+	}
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated

@@ -10,7 +10,6 @@ package org.jabylon.properties.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import junit.textui.TestRunner;
 
 /**
@@ -22,38 +21,39 @@ import junit.textui.TestRunner;
 public class PropertiesTests extends TestSuite {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
+		TestRunner.run(suite());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static Test suite() {
-        TestSuite suite = new PropertiesTests("properties Tests");
-        suite.addTestSuite(PropertyFileTest.class);
-        suite.addTestSuite(PropertyFileDescriptorTest.class);
-        suite.addTestSuite(ProjectTest.class);
-        suite.addTestSuite(ProjectVersionTest.class);
-        suite.addTestSuite(ProjectLocaleTest.class);
-        suite.addTestSuite(WorkspaceTest.class);
-        suite.addTestSuite(ScanConfigurationTest.class);
-        return suite;
-    }
+		TestSuite suite = new PropertiesTests("properties Tests");
+		suite.addTestSuite(PropertyFileTest.class);
+		suite.addTestSuite(PropertyTest.class);
+		suite.addTestSuite(PropertyFileDescriptorTest.class);
+		suite.addTestSuite(ProjectTest.class);
+		suite.addTestSuite(ProjectVersionTest.class);
+		suite.addTestSuite(ProjectLocaleTest.class);
+		suite.addTestSuite(WorkspaceTest.class);
+		suite.addTestSuite(ScanConfigurationTest.class);
+		return suite;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public PropertiesTests(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
 } //PropertiesTests

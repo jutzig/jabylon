@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.types.PropertyConverter;
 import org.jabylon.properties.util.NativeToAsciiConverter;
@@ -181,8 +182,7 @@ public class PropertiesHelper implements PropertyConverter {
 
 	public void writeProperty(Writer writer, Property property) throws IOException
     {
-        if(property.eIsSet(PropertiesPackage.Literals.PROPERTY__COMMENT))
-            writeComment(writer,property.getComment());
+		writeCommentAndAnnotations(writer, property);
         String key = property.getKey();
         key = key.replaceAll("([ :=\n])", "\\\\$1");
         if(unicodeEscaping)
@@ -207,7 +207,21 @@ public class PropertiesHelper implements PropertyConverter {
 
     }
 
-
+	private void writeCommentAndAnnotations(Writer writer, Property property) throws IOException {
+        if(property.eIsSet(PropertiesPackage.Literals.PROPERTY__COMMENT) || property.getAnnotations().size()>0)
+        {
+        	StringBuilder builder = new StringBuilder();
+        	for (PropertyAnnotation annotation : property.getAnnotations()) {
+				builder.append(annotation);
+			}
+        	if(builder.length()>0)
+        	{
+        		builder.append("\n");
+        	}
+        	builder.append(property.getCommentWithoutAnnotations());
+        	writeComment(writer,builder.toString());
+        }
+	}
 
     private void writeComment(Writer writer, String comment) throws IOException {
         comment = comment.replace("\n", "\n#");

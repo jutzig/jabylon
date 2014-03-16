@@ -17,6 +17,7 @@ import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
@@ -164,6 +165,12 @@ public class PropertiesSwitch<T> extends Switch<T> {
 				ResourceFolder resourceFolder = (ResourceFolder)theEObject;
 				T result = caseResourceFolder(resourceFolder);
 				if (result == null) result = caseResolvable(resourceFolder);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertiesPackage.PROPERTY_ANNOTATION: {
+				PropertyAnnotation propertyAnnotation = (PropertyAnnotation)theEObject;
+				T result = casePropertyAnnotation(propertyAnnotation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -367,6 +374,21 @@ public class PropertiesSwitch<T> extends Switch<T> {
 	}
 
     /**
+	 * Returns the result of interpreting the object as an instance of '<em>Property Annotation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Property Annotation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePropertyAnnotation(PropertyAnnotation object) {
+		return null;
+	}
+
+				/**
 	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
      * This implementation returns null;

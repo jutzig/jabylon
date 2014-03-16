@@ -18,6 +18,7 @@ import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
@@ -134,6 +135,10 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseResourceFolder(ResourceFolder object) {
 				return createResourceFolderAdapter();
+			}
+			@Override
+			public Adapter casePropertyAnnotation(PropertyAnnotation object) {
+				return createPropertyAnnotationAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -338,6 +343,20 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
 	}
 
     /**
+	 * Creates a new adapter for an object of class '{@link org.jabylon.properties.PropertyAnnotation <em>Property Annotation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.jabylon.properties.PropertyAnnotation
+	 * @generated
+	 */
+	public Adapter createPropertyAnnotationAdapter() {
+		return null;
+	}
+
+				/**
 	 * Creates a new adapter for the default case.
 	 * <!-- begin-user-doc -->
      * This default implementation returns null.

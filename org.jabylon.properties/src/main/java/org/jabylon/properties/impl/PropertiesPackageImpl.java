@@ -30,6 +30,7 @@ import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
@@ -140,6 +141,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
     private EClass resourceFolderEClass = null;
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass propertyAnnotationEClass = null;
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -328,6 +336,24 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProperty_Annotations() {
+		return (EReference)propertyEClass.getEStructuralFeatures().get(3);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProperty_CommentWithoutAnnotations() {
+		return (EAttribute)propertyEClass.getEStructuralFeatures().get(4);
+	}
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -806,6 +832,33 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPropertyAnnotation() {
+		return propertyAnnotationEClass;
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyAnnotation_Name() {
+		return (EAttribute)propertyAnnotationEClass.getEStructuralFeatures().get(0);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPropertyAnnotation_Values() {
+		return (EAttribute)propertyAnnotationEClass.getEStructuralFeatures().get(1);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -894,6 +947,8 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(propertyEClass, PROPERTY__KEY);
 		createEAttribute(propertyEClass, PROPERTY__VALUE);
 		createEAttribute(propertyEClass, PROPERTY__COMMENT);
+		createEReference(propertyEClass, PROPERTY__ANNOTATIONS);
+		createEAttribute(propertyEClass, PROPERTY__COMMENT_WITHOUT_ANNOTATIONS);
 
 		propertyFileDescriptorEClass = createEClass(PROPERTY_FILE_DESCRIPTOR);
 		createEAttribute(propertyFileDescriptorEClass, PROPERTY_FILE_DESCRIPTOR__VARIANT);
@@ -958,6 +1013,10 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(propertyFileDiffEClass, PROPERTY_FILE_DIFF__KIND);
 
 		resourceFolderEClass = createEClass(RESOURCE_FOLDER);
+
+		propertyAnnotationEClass = createEClass(PROPERTY_ANNOTATION);
+		createEAttribute(propertyAnnotationEClass, PROPERTY_ANNOTATION__NAME);
+		createEAttribute(propertyAnnotationEClass, PROPERTY_ANNOTATION__VALUES);
 
 		// Create enums
 		severityEEnum = createEEnum(SEVERITY);
@@ -1085,6 +1144,11 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getProperty_Key(), ecorePackage.getEString(), "key", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProperty_Value(), ecorePackage.getEString(), "value", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProperty_Comment(), ecorePackage.getEString(), "comment", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProperty_Annotations(), this.getPropertyAnnotation(), null, "annotations", null, 0, -1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProperty_CommentWithoutAnnotations(), ecorePackage.getEString(), "commentWithoutAnnotations", null, 0, 1, Property.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+
+		op = addEOperation(propertyEClass, this.getPropertyAnnotation(), "findAnnotation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(propertyFileDescriptorEClass, PropertyFileDescriptor.class, "PropertyFileDescriptor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPropertyFileDescriptor_Variant(), this.getLocale(), "variant", null, 0, 1, PropertyFileDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1100,8 +1164,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		addEOperation(propertyFileDescriptorEClass, ecorePackage.getEBoolean(), "isMaster", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(propertyFileDescriptorEClass, this.getPropertyFile(), "loadProperties", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		addEOperation(propertyFileDescriptorEClass, null, "computeLocation", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(propertyFileDescriptorEClass, this.getPropertyFile(), "loadProperties", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getInputStream(), "in", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1205,6 +1267,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEClass(resourceFolderEClass, ResourceFolder.class, "ResourceFolder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		addEOperation(resourceFolderEClass, this.getProjectLocale(), "getProjectLocale", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(propertyAnnotationEClass, PropertyAnnotation.class, "PropertyAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPropertyAnnotation_Name(), ecorePackage.getEString(), "name", null, 0, 1, PropertyAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(ecorePackage.getEMap());
+		g2 = createEGenericType(ecorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(ecorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		initEAttribute(getPropertyAnnotation_Values(), g1, "values", null, 0, 1, PropertyAnnotation.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(severityEEnum, Severity.class, "Severity");

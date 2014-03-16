@@ -8,83 +8,99 @@
  */
 package org.jabylon.properties.tests;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
-
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.jabylon.properties.PropertiesFactory;
-import org.jabylon.properties.Resolvable;
-import org.jabylon.properties.Workspace;
-
-import junit.framework.TestCase;
-
 import junit.textui.TestRunner;
+
+import org.jabylon.properties.Project;
+import org.jabylon.properties.ProjectVersion;
+import org.jabylon.properties.PropertiesFactory;
+import org.jabylon.properties.Workspace;
 
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Workspace</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link org.jabylon.properties.Workspace#getTerminology() <em>Get Terminology</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class WorkspaceTest extends ResolvableTest {
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(WorkspaceTest.class);
-    }
+		TestRunner.run(WorkspaceTest.class);
+	}
 
     /**
-     * Constructs a new Workspace test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Workspace test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public WorkspaceTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Returns the fixture for this Workspace test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Workspace test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected Workspace getFixture() {
-        return (Workspace)fixture;
-    }
+		return (Workspace)fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createWorkspace());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createWorkspace());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
 
-    @Override
+    /**
+	 * Tests the '{@link org.jabylon.properties.Workspace#getTerminology() <em>Get Terminology</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Workspace#getTerminology()
+	 * @generated NOT
+	 */
+	public void testGetTerminology() {
+		assertNull(getFixture().getTerminology());
+		Project project = PropertiesFactory.eINSTANCE.createProject();
+		ProjectVersion version = PropertiesFactory.eINSTANCE.createProjectVersion();
+		project.getChildren().add(version);
+		getFixture().getChildren().add(project);
+		assertNull(getFixture().getTerminology());
+		project.setTerminology(true);
+		assertSame(version,getFixture().getTerminology());
+	}
+
+				@Override
     public void testRelativePath() {
         assertNull(getFixture().relativePath());
 

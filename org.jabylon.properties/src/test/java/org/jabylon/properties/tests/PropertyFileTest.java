@@ -8,14 +8,12 @@
  */
 package org.jabylon.properties.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
-import org.jabylon.properties.util.scanner.PropertyFileAcceptor;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,6 +23,7 @@ import junit.textui.TestRunner;
  * The following operations are tested:
  * <ul>
  *   <li>{@link org.jabylon.properties.PropertyFile#getProperty(java.lang.String) <em>Get Property</em>}</li>
+ *   <li>{@link org.jabylon.properties.PropertyFile#asMap() <em>As Map</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -32,73 +31,73 @@ import junit.textui.TestRunner;
 public class PropertyFileTest extends TestCase {
 
     /**
-     * The fixture for this Property File test case.
-     * <!-- begin-user-doc -->
+	 * The fixture for this Property File test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected PropertyFile fixture = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(PropertyFileTest.class);
-    }
+		TestRunner.run(PropertyFileTest.class);
+	}
 
     /**
-     * Constructs a new Property File test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Property File test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public PropertyFileTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Sets the fixture for this Property File test case.
-     * <!-- begin-user-doc -->
+	 * Sets the fixture for this Property File test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected void setFixture(PropertyFile fixture) {
-        this.fixture = fixture;
-    }
+		this.fixture = fixture;
+	}
 
     /**
-     * Returns the fixture for this Property File test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Property File test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected PropertyFile getFixture() {
-        return fixture;
-    }
+		return fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createPropertyFile());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createPropertyFile());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
 
     /**
@@ -118,7 +117,7 @@ public class PropertyFileTest extends TestCase {
         assertSame(property, getFixture().getProperty("foo"));
     }
 
-    public void testDummy()
+				public void testDummy()
     {
         //prevent warning for missing tests
     }

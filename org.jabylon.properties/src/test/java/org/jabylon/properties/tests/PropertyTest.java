@@ -8,95 +8,143 @@
  */
 package org.jabylon.properties.tests;
 
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Property</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are tested:
+ * <ul>
+ *   <li>{@link org.jabylon.properties.Property#getAnnotations() <em>Annotations</em>}</li>
+ *   <li>{@link org.jabylon.properties.Property#getCommentWithoutAnnotations() <em>Comment Without Annotations</em>}</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link org.jabylon.properties.Property#findAnnotation(java.lang.String) <em>Find Annotation</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class PropertyTest extends TestCase {
 
     /**
-     * The fixture for this Property test case.
-     * <!-- begin-user-doc -->
+	 * The fixture for this Property test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected Property fixture = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(PropertyTest.class);
-    }
+		TestRunner.run(PropertyTest.class);
+	}
 
     /**
-     * Constructs a new Property test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Property test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public PropertyTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Sets the fixture for this Property test case.
-     * <!-- begin-user-doc -->
+	 * Sets the fixture for this Property test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected void setFixture(Property fixture) {
-        this.fixture = fixture;
-    }
+		this.fixture = fixture;
+	}
 
     /**
-     * Returns the fixture for this Property test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Property test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected Property getFixture() {
-        return fixture;
-    }
+		return fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createProperty());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createProperty());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
+		setFixture(null);
+	}
 
 
-    public void testDummy()
-    {
-        //prevent warning for missing tests
-    }
+    /**
+	 * Tests the '{@link org.jabylon.properties.Property#getAnnotations() <em>Annotations</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Property#getAnnotations()
+	 * @generated NOT
+	 */
+	public void testGetAnnotations() {
+		assertEquals(0,getFixture().getAnnotations().size());
+		getFixture().getAnnotations().add(PropertiesFactory.eINSTANCE.createPropertyAnnotation());
+		assertEquals(1,getFixture().getAnnotations().size());
+	}
 
+				/**
+	 * Tests the '{@link org.jabylon.properties.Property#getCommentWithoutAnnotations() <em>Comment Without Annotations</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Property#getCommentWithoutAnnotations()
+	 * @generated NOT
+	 */
+	public void testGetCommentWithoutAnnotations() {
+		getFixture().setComment("foo");
+		assertEquals("foo", getFixture().getCommentWithoutAnnotations());
+		
+		getFixture().setComment("@foo(blah=\"blubb\")@foobar(test=\"test\")comment");
+		assertEquals("comment", getFixture().getCommentWithoutAnnotations());
+	}
+
+				/**
+	 * Tests the '{@link org.jabylon.properties.Property#findAnnotation(java.lang.String) <em>Find Annotation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.Property#findAnnotation(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindAnnotation__String() {
+		getFixture().setComment("@foo(blah=\"blubb\")@foobar(test=\"test\")comment");
+		assertEquals("foo", getFixture().findAnnotation("foo").getName());
+		assertEquals("foobar", getFixture().findAnnotation("foobar").getName());
+		assertNull(getFixture().findAnnotation("test"));
+	}
 
 } //PropertyTest

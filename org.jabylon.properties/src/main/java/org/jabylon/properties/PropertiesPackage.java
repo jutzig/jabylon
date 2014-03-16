@@ -148,13 +148,31 @@ public interface PropertiesPackage extends EPackage {
     int PROPERTY__COMMENT = 2;
 
     /**
+	 * The feature id for the '<em><b>Annotations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY__ANNOTATIONS = 3;
+
+				/**
+	 * The feature id for the '<em><b>Comment Without Annotations</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY__COMMENT_WITHOUT_ANNOTATIONS = 4;
+
+				/**
 	 * The number of structural features of the '<em>Property</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int PROPERTY_FEATURE_COUNT = 3;
+    int PROPERTY_FEATURE_COUNT = 5;
 
     /**
 	 * The feature id for the '<em><b>Percent Complete</b></em>' attribute.
@@ -950,6 +968,43 @@ public interface PropertiesPackage extends EPackage {
     int RESOURCE_FOLDER_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 0;
 
     /**
+	 * The meta object id for the '{@link org.jabylon.properties.impl.PropertyAnnotationImpl <em>Property Annotation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.jabylon.properties.impl.PropertyAnnotationImpl
+	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getPropertyAnnotation()
+	 * @generated
+	 */
+	int PROPERTY_ANNOTATION = 13;
+
+				/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_ANNOTATION__NAME = 0;
+
+				/**
+	 * The feature id for the '<em><b>Values</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_ANNOTATION__VALUES = 1;
+
+				/**
+	 * The number of structural features of the '<em>Property Annotation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_ANNOTATION_FEATURE_COUNT = 2;
+
+				/**
 	 * The meta object id for the '{@link org.jabylon.properties.Severity <em>Severity</em>}' enum.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -957,7 +1012,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getSeverity()
 	 * @generated
 	 */
-    int SEVERITY = 13;
+    int SEVERITY = 14;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.ReviewState <em>Review State</em>}' enum.
@@ -967,7 +1022,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getReviewState()
 	 * @generated
 	 */
-    int REVIEW_STATE = 14;
+    int REVIEW_STATE = 15;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.DiffKind <em>Diff Kind</em>}' enum.
@@ -977,7 +1032,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getDiffKind()
 	 * @generated
 	 */
-    int DIFF_KIND = 15;
+    int DIFF_KIND = 16;
 
     /**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -987,7 +1042,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getLocale()
 	 * @generated
 	 */
-    int LOCALE = 16;
+    int LOCALE = 17;
 
 
     /**
@@ -998,7 +1053,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getURI()
 	 * @generated
 	 */
-    int URI = 17;
+    int URI = 18;
 
 
     /**
@@ -1009,7 +1064,7 @@ public interface PropertiesPackage extends EPackage {
 	 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getInputStream()
 	 * @generated
 	 */
-    int INPUT_STREAM = 18;
+    int INPUT_STREAM = 19;
 
 
     /**
@@ -1088,6 +1143,28 @@ public interface PropertiesPackage extends EPackage {
     EAttribute getProperty_Comment();
 
     /**
+	 * Returns the meta object for the reference list '{@link org.jabylon.properties.Property#getAnnotations <em>Annotations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Annotations</em>'.
+	 * @see org.jabylon.properties.Property#getAnnotations()
+	 * @see #getProperty()
+	 * @generated
+	 */
+	EReference getProperty_Annotations();
+
+				/**
+	 * Returns the meta object for the attribute '{@link org.jabylon.properties.Property#getCommentWithoutAnnotations <em>Comment Without Annotations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Comment Without Annotations</em>'.
+	 * @see org.jabylon.properties.Property#getCommentWithoutAnnotations()
+	 * @see #getProperty()
+	 * @generated
+	 */
+	EAttribute getProperty_CommentWithoutAnnotations();
+
+				/**
 	 * Returns the meta object for class '{@link org.jabylon.properties.PropertyFileDescriptor <em>Property File Descriptor</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1660,6 +1737,38 @@ public interface PropertiesPackage extends EPackage {
     EClass getResourceFolder();
 
     /**
+	 * Returns the meta object for class '{@link org.jabylon.properties.PropertyAnnotation <em>Property Annotation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Property Annotation</em>'.
+	 * @see org.jabylon.properties.PropertyAnnotation
+	 * @generated
+	 */
+	EClass getPropertyAnnotation();
+
+				/**
+	 * Returns the meta object for the attribute '{@link org.jabylon.properties.PropertyAnnotation#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.jabylon.properties.PropertyAnnotation#getName()
+	 * @see #getPropertyAnnotation()
+	 * @generated
+	 */
+	EAttribute getPropertyAnnotation_Name();
+
+				/**
+	 * Returns the meta object for the attribute '{@link org.jabylon.properties.PropertyAnnotation#getValues <em>Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Values</em>'.
+	 * @see org.jabylon.properties.PropertyAnnotation#getValues()
+	 * @see #getPropertyAnnotation()
+	 * @generated
+	 */
+	EAttribute getPropertyAnnotation_Values();
+
+				/**
 	 * Returns the meta object for enum '{@link org.jabylon.properties.Severity <em>Severity</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1805,6 +1914,22 @@ public interface PropertiesPackage extends EPackage {
         EAttribute PROPERTY__COMMENT = eINSTANCE.getProperty_Comment();
 
         /**
+		 * The meta object literal for the '<em><b>Annotations</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY__ANNOTATIONS = eINSTANCE.getProperty_Annotations();
+
+								/**
+		 * The meta object literal for the '<em><b>Comment Without Annotations</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY__COMMENT_WITHOUT_ANNOTATIONS = eINSTANCE.getProperty_CommentWithoutAnnotations();
+
+								/**
 		 * The meta object literal for the '{@link org.jabylon.properties.impl.PropertyFileDescriptorImpl <em>Property File Descriptor</em>}' class.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -2251,6 +2376,32 @@ public interface PropertiesPackage extends EPackage {
         EClass RESOURCE_FOLDER = eINSTANCE.getResourceFolder();
 
         /**
+		 * The meta object literal for the '{@link org.jabylon.properties.impl.PropertyAnnotationImpl <em>Property Annotation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.jabylon.properties.impl.PropertyAnnotationImpl
+		 * @see org.jabylon.properties.impl.PropertiesPackageImpl#getPropertyAnnotation()
+		 * @generated
+		 */
+		EClass PROPERTY_ANNOTATION = eINSTANCE.getPropertyAnnotation();
+
+								/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_ANNOTATION__NAME = eINSTANCE.getPropertyAnnotation_Name();
+
+								/**
+		 * The meta object literal for the '<em><b>Values</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROPERTY_ANNOTATION__VALUES = eINSTANCE.getPropertyAnnotation_Values();
+
+								/**
 		 * The meta object literal for the '{@link org.jabylon.properties.Severity <em>Severity</em>}' enum.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->

@@ -9,11 +9,17 @@
 package org.jabylon.properties.impl;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,6 +39,9 @@ import org.jabylon.properties.Property;
 public class PropertyImpl extends CDOObjectImpl implements Property, Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    private static final Pattern ANNOTATION_PARSER = Pattern.compile("@(\\w+)(\\((.*?)\\))?");
+    private static final Pattern ANNOTATION_VALUE_PARSER = Pattern.compile("(\\w+)=\"(.*?)\"");
 
     /**
 	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
@@ -65,6 +74,16 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
     protected static final String COMMENT_EDEFAULT = null;
 
     /**
+	 * The default value of the '{@link #getCommentWithoutAnnotations() <em>Comment Without Annotations</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCommentWithoutAnnotations()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COMMENT_WITHOUT_ANNOTATIONS_EDEFAULT = null;
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -141,13 +160,79 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
     /**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
     public void setComment(String newComment) {
-		eDynamicSet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, newComment);
+    	String result = parseAnnotations(newComment);
+		eDynamicSet(PropertiesPackage.PROPERTY__COMMENT, PropertiesPackage.Literals.PROPERTY__COMMENT, result);
 	}
 
     /**
+     * parses a comment for annotations
+     * @param newComment
+     */
+    private String parseAnnotations(String string) {
+    	getAnnotations().clear();
+    	if(string==null)
+    		return string;
+    	Matcher matcher = ANNOTATION_PARSER.matcher(string);
+    	String remainder = string;
+    	while(matcher.find())
+    	{
+    		PropertyAnnotation annotation = PropertiesFactory.eINSTANCE.createPropertyAnnotation();
+    		parseAnnotationValues(annotation,matcher.group(3));
+    		annotation.setName(matcher.group(1));
+    		getAnnotations().add(annotation);
+    	}
+    	return remainder;
+		
+	}
+
+	private void parseAnnotationValues(PropertyAnnotation annotation, String contents) {
+		if(contents==null)
+			return;
+		Matcher matcher = ANNOTATION_VALUE_PARSER.matcher(contents);
+		while(matcher.find()) {
+			annotation.getValues().put(matcher.group(1), matcher.group(2));
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<PropertyAnnotation> getAnnotations() {
+		return (EList<PropertyAnnotation>)eDynamicGet(PropertiesPackage.PROPERTY__ANNOTATIONS, PropertiesPackage.Literals.PROPERTY__ANNOTATIONS, true, true);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public String getCommentWithoutAnnotations() {
+		String comment = getComment();
+		if(comment==null)
+			return null;
+		return ANNOTATION_PARSER.matcher(comment).replaceAll("");
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public PropertyAnnotation findAnnotation(String name) {
+		for (PropertyAnnotation annotation : getAnnotations()) {
+			if(name.equals(annotation.getName()))
+				return annotation;
+		}
+		return null;
+	}
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -161,6 +246,10 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 				return getValue();
 			case PropertiesPackage.PROPERTY__COMMENT:
 				return getComment();
+			case PropertiesPackage.PROPERTY__ANNOTATIONS:
+				return getAnnotations();
+			case PropertiesPackage.PROPERTY__COMMENT_WITHOUT_ANNOTATIONS:
+				return getCommentWithoutAnnotations();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -170,7 +259,8 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
+    @SuppressWarnings("unchecked")
+				@Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case PropertiesPackage.PROPERTY__KEY:
@@ -181,6 +271,10 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 				return;
 			case PropertiesPackage.PROPERTY__COMMENT:
 				setComment((String)newValue);
+				return;
+			case PropertiesPackage.PROPERTY__ANNOTATIONS:
+				getAnnotations().clear();
+				getAnnotations().addAll((Collection<? extends PropertyAnnotation>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -203,6 +297,9 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 			case PropertiesPackage.PROPERTY__COMMENT:
 				setComment(COMMENT_EDEFAULT);
 				return;
+			case PropertiesPackage.PROPERTY__ANNOTATIONS:
+				getAnnotations().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -221,6 +318,10 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 				return VALUE_EDEFAULT == null ? getValue() != null : !VALUE_EDEFAULT.equals(getValue());
 			case PropertiesPackage.PROPERTY__COMMENT:
 				return COMMENT_EDEFAULT == null ? getComment() != null : !COMMENT_EDEFAULT.equals(getComment());
+			case PropertiesPackage.PROPERTY__ANNOTATIONS:
+				return !getAnnotations().isEmpty();
+			case PropertiesPackage.PROPERTY__COMMENT_WITHOUT_ANNOTATIONS:
+				return COMMENT_WITHOUT_ANNOTATIONS_EDEFAULT == null ? getCommentWithoutAnnotations() != null : !COMMENT_WITHOUT_ANNOTATIONS_EDEFAULT.equals(getCommentWithoutAnnotations());
 		}
 		return super.eIsSet(featureID);
 	}

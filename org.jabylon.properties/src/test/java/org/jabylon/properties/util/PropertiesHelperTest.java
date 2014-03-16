@@ -28,12 +28,13 @@ import java.io.StringWriter;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
+import org.jabylon.properties.PropertiesFactory;
+import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
+import org.jabylon.properties.types.impl.PropertiesHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.jabylon.properties.PropertiesFactory;
-import org.jabylon.properties.Property;
-import org.jabylon.properties.types.impl.PropertiesHelper;
 
 public class PropertiesHelperTest {
 
@@ -489,6 +490,42 @@ public class PropertiesHelperTest {
 		assertEquals("key", property.getKey());
 		assertEquals("value\r\n", property.getValue());
 
+	}
+	
+	/**
+     * tests that annotations are written correctly
+     * @throws IOException
+     */
+	@Test
+	public void testWritePropertyWithAnnotation() throws IOException {
+		Property property = PropertiesFactory.eINSTANCE.createProperty();
+		property.setComment("comment");
+		PropertyAnnotation ann1 = PropertiesFactory.eINSTANCE.createPropertyAnnotation();
+		ann1.setName("foo");
+		ann1.getValues().put("test", "value");
+		property.getAnnotations().add(ann1);
+		
+		PropertyAnnotation ann2 = PropertiesFactory.eINSTANCE.createPropertyAnnotation();
+		ann2.setName("bar");
+		property.getAnnotations().add(ann2);
+		property.setKey("key");
+		property.setValue("test");
+		fixture.writeProperty(writer, property);
+		assertEquals("#@foo(test=\"value\")@bar\n#comment\nkey = test\n", writer.toString());
+	}
+	
+    /**
+     * tests that annotations are read correctly
+     * @throws IOException
+     */
+	@Test
+	public void testReadPropertyWithAnnotation() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("#@foo(test=\"value\")@bar\nkey = value"));
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		assertEquals("value", property.getValue());
+		assertEquals(2, property.getAnnotations().size());
+		assertEquals("foo", property.getAnnotations().get(0).getName());
 	}
 
     protected BufferedReader asReader(String string)

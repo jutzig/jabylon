@@ -9,6 +9,7 @@
 package org.jabylon.properties;
 
 import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,8 +87,7 @@ public interface Property extends CDOObject, java.io.Serializable{
 	 * Returns the value of the '<em><b>Comment</b></em>' attribute.
 	 * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Comment</em>' attribute isn't clear,
-     * there really should be more of a description here...
+     * The translation comment associated with the comment. If the comment contains any annotations, they are extracted automatically
      * </p>
      * <!-- end-user-doc -->
 	 * @return the value of the '<em>Comment</em>' attribute.
@@ -107,5 +107,44 @@ public interface Property extends CDOObject, java.io.Serializable{
 	 * @generated
 	 */
     void setComment(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Annotations</b></em>' reference list.
+	 * The list contents are of type {@link org.jabylon.properties.PropertyAnnotation}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Annotations</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Annotations</em>' reference list.
+	 * @see org.jabylon.properties.PropertiesPackage#getProperty_Annotations()
+	 * @model derived="true"
+	 * @generated
+	 */
+	EList<PropertyAnnotation> getAnnotations();
+
+	/**
+	 * Returns the value of the '<em><b>Comment Without Annotations</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This is the comment of the property minus any annotations found
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Comment Without Annotations</em>' attribute.
+	 * @see org.jabylon.properties.PropertiesPackage#getProperty_CommentWithoutAnnotations()
+	 * @model transient="true" changeable="false" volatile="true" derived="true"
+	 * @generated
+	 */
+	String getCommentWithoutAnnotations();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Tries to find an annotation of the given name and returns it. If none is found, <code>null</code> is returned
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	PropertyAnnotation findAnnotation(String name);
 
 } // Property

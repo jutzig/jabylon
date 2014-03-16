@@ -8,14 +8,12 @@
  */
 package org.jabylon.properties.tests;
 
-import org.junit.Assert;
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.ScanConfiguration;
-
-import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
+import org.junit.Assert;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,83 +31,73 @@ import junit.textui.TestRunner;
 public class ScanConfigurationTest extends TestCase {
 
     /**
-     * The fixture for this Scan Configuration test case.
-     * <!-- begin-user-doc -->
+	 * The fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ScanConfiguration fixture = null;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public static void main(String[] args) {
-        TestRunner.run(ScanConfigurationTest.class);
-    }
+		TestRunner.run(ScanConfigurationTest.class);
+	}
 
     /**
-     * Constructs a new Scan Configuration test case with the given name.
-     * <!-- begin-user-doc -->
+	 * Constructs a new Scan Configuration test case with the given name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScanConfigurationTest(String name) {
-        super(name);
-    }
+		super(name);
+	}
 
     /**
-     * Sets the fixture for this Scan Configuration test case.
-     * <!-- begin-user-doc -->
+	 * Sets the fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected void setFixture(ScanConfiguration fixture) {
-        this.fixture = fixture;
-    }
+		this.fixture = fixture;
+	}
 
     /**
-     * Returns the fixture for this Scan Configuration test case.
-     * <!-- begin-user-doc -->
+	 * Returns the fixture for this Scan Configuration test case.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ScanConfiguration getFixture() {
-        return fixture;
-    }
+		return fixture;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#setUp()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
     @Override
     protected void setUp() throws Exception {
-        setFixture(PropertiesFactory.eINSTANCE.createScanConfiguration());
-    }
+		setFixture(PropertiesFactory.eINSTANCE.createScanConfiguration());
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see junit.framework.TestCase#tearDown()
-     * @generated
-     */
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
     @Override
     protected void tearDown() throws Exception {
-        setFixture(null);
-    }
-
-    /**
-     * Tests the '{@link org.jabylon.properties.ScanConfiguration#getExcludes() <em>Excludes</em>}' feature getter.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.jabylon.properties.ScanConfiguration#getExcludes()
-     * @generated
-     */
-    public void testGetExcludes() {
-    }
+		setFixture(null);
+	}
 
     public void testGetExcludesWithDefault() {
         assertEquals(0, getFixture().getExcludes().size());
@@ -135,15 +123,6 @@ public class ScanConfigurationTest extends TestCase {
         Assert.assertArrayEquals(new String[]{"A","B","C"}, getFixture().getExcludes().toArray(new String[0]));
     }
 
-    /**
-     * Tests the '{@link org.jabylon.properties.ScanConfiguration#getIncludes() <em>Includes</em>}' feature getter.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.jabylon.properties.ScanConfiguration#getIncludes()
-     * @generated
-     */
-    public void testGetIncludes() {
-    }
 
     public void testGetIncludesWithDefault() {
         assertEquals(1, getFixture().getIncludes().size());

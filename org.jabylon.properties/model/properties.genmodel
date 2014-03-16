@@ -3,16 +3,12 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/properties/src/main/java" editDirectory="/org.jabylon.properties.edit/src/main/java"
     modelPluginID="org.jabylon.properties" templateDirectory="" modelName="Properties"
     rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
-    testsDirectory="/org.jabylon.properties/src/test/java" importerID="org.eclipse.emf.importer.ecore"
+    testsDirectory="/properties/src/test/java" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>properties.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
   <genPackages prefix="Properties" basePackage="org.jabylon" resource="Basic" disposableProviderFactory="true"
       ecorePackage="properties.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//PropertyType">
-      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/ENCODED_ISO"/>
-      <genEnumLiterals ecoreEnumLiteral="properties.ecore#//PropertyType/UNICODE"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="properties.ecore#//Severity">
       <genEnumLiterals ecoreEnumLiteral="properties.ecore#//Severity/INFO"/>
       <genEnumLiterals ecoreEnumLiteral="properties.ecore#//Severity/WARNING"/>
@@ -46,6 +42,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/key"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Property/comment"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//Property/annotations"/>
+      <genOperations ecoreOperation="properties.ecore#//Property/findAnnotation">
+        <genParameters ecoreParameter="properties.ecore#//Property/findAnnotation/name"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//PropertyFileDescriptor">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyFileDescriptor/variant"/>
@@ -59,7 +59,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//PropertyFileDescriptor/derivedDescriptors"/>
       <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/isMaster"/>
       <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/loadProperties"/>
-      <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/computeLocation"/>
       <genOperations ecoreOperation="properties.ecore#//PropertyFileDescriptor/loadProperties.1">
         <genParameters ecoreParameter="properties.ecore#//PropertyFileDescriptor/loadProperties.1/in"/>
       </genOperations>
@@ -75,6 +74,7 @@
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//ProjectVersion">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ProjectVersion/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//ProjectVersion/readOnly"/>
       <genOperations ecoreOperation="properties.ecore#//ProjectVersion/fullScan">
         <genParameters ecoreParameter="properties.ecore#//ProjectVersion/fullScan/configuration"/>
       </genOperations>
@@ -145,6 +145,10 @@
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//ResourceFolder">
       <genOperations ecoreOperation="properties.ecore#//ResourceFolder/getProjectLocale"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//PropertyAnnotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyAnnotation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//PropertyAnnotation/values"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
