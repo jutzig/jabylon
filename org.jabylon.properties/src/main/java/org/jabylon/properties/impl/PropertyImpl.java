@@ -40,7 +40,7 @@ public class PropertyImpl extends CDOObjectImpl implements Property, Serializabl
 
     private static final long serialVersionUID = 1L;
     
-    private static final Pattern ANNOTATION_PARSER = Pattern.compile("@(\\w+)(\\((.*?)\\))?");
+    private static final Pattern ANNOTATION_PARSER = Pattern.compile("@([\\w-]+)(\\((.*?)\\))?");
     private static final Pattern ANNOTATION_VALUE_PARSER = Pattern.compile("(\\w+)=\"(.*?)\"");
 
     /**

@@ -146,5 +146,10 @@ public class PropertyTest extends TestCase {
 		assertEquals("foobar", getFixture().findAnnotation("foobar").getName());
 		assertNull(getFixture().findAnnotation("test"));
 	}
+	
+	public void testParseAnnotationsWithSlash() {
+		getFixture().setComment("@foo-bar");
+		assertEquals("foo-bar", getFixture().findAnnotation("foo-bar").getName());
+	}
 
 } //PropertyTest
