@@ -13,16 +13,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.common.team.TeamProviderUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Workspace;
+import org.jabylon.properties.types.PropertyScanner;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
@@ -37,6 +41,7 @@ public class ProjectConfigSection extends BasicPanel<Project> {
     
     public ProjectConfigSection(String id, IModel<Project> model) {
         super(id, model, new PageParameters());
+        setOutputMarkupId(true);
         ControlGroup nameGroup = new ControlGroup("name-group",nls("ProjectConfigSection.name.label"));
         IModel<String> nameProperty = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
@@ -47,6 +52,7 @@ public class ProjectConfigSection extends BasicPanel<Project> {
         ControlGroup typeGroup = new ControlGroup("type-group",nls("ProjectConfigSection.project.type.choice"));
         EObjectPropertyModel<String, Project> typeModel = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.PROJECT__PROPERTY_TYPE);
         DropDownChoice<String> typeChoice = new DropDownChoice<String>("inputType", typeModel, new ArrayList<String>(PropertyResourceUtil.getPropertyScanners().keySet()));
+        
         typeGroup.add(typeChoice);
         add(typeGroup);
 
@@ -69,6 +75,34 @@ public class ProjectConfigSection extends BasicPanel<Project> {
         terminology.add(new TerminologyProjectValidator(model));
         add(terminologyGroup);
         terminologyGroup.add(terminology);
+        
+        ListView<String> defaultIncludes = new ListView<String>("default-includes",new ArrayList<String>(PropertyResourceUtil.getPropertyScanners().keySet())) {
+
+			private static final long serialVersionUID = 9179714969731553212L;
+
+			@Override
+			protected void populateItem(ListItem<String> item) {
+				item.add(new AttributeAppender("type", item.getModelObject()));
+				PropertyScanner scanner = PropertyResourceUtil.getPropertyScanners().get(item.getModelObject());
+				String[] includes = scanner.getDefaultIncludes();
+				StringBuilder builder = new StringBuilder();
+				for (String include : includes) {
+					builder.append(include);
+					builder.append("\n");
+				}
+				item.add(new AttributeAppender("include", builder.toString()));
+				String[] excludes = scanner.getDefaultExcludes();
+				builder = new StringBuilder();
+				for (String exclude : excludes) {
+					builder.append(exclude);
+					builder.append("\n");
+				}
+				item.add(new AttributeAppender("exclude", builder.toString()));
+				
+			}
+        	
+		};
+		add(defaultIncludes);
     }
 
     private static Set<String> getUsedProjectNames(IModel<Project> model) {

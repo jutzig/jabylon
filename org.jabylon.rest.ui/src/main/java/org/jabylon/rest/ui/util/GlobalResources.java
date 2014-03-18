@@ -47,6 +47,12 @@ public class GlobalResources {
      */
     public static final ResourceReference JS_PERSISTENT_TABS = new WebContextUrlResourceReference("js/persistentTabs.js");
     
+
+    /**
+     * sets the default excludes/includes when a new project type is selected
+     */
+    public static final ResourceReference JS_PROJECT_CONFIG = new WebContextUrlResourceReference("js/projectConfig.js");
+    
     /**
      * the main css file
      */

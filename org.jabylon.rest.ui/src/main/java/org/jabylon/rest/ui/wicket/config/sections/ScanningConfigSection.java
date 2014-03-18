@@ -8,6 +8,8 @@
  */
 package org.jabylon.rest.ui.wicket.config.sections;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -16,6 +18,7 @@ import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
+import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.ControlGroup;
 import org.jabylon.rest.ui.wicket.config.AbstractConfigSection;
@@ -42,6 +45,12 @@ public class ScanningConfigSection extends BasicPanel<Project> {
         PreferencesPropertyModel templateLocaleModel = new PreferencesPropertyModel(config, PreferencesUtil.SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral());
         templateGroup.add(new TextField<String>("inputTemplateLocale",templateLocaleModel));
         add(templateGroup);
+    }
+    
+    @Override
+    public void renderHead(IHeaderResponse response) {
+    	super.renderHead(response);
+    	response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_PROJECT_CONFIG));
     }
 
     public static class ScanningConfig extends AbstractConfigSection<Project> {
