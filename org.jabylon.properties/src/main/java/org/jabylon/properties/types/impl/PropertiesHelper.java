@@ -140,7 +140,12 @@ public class PropertiesHelper implements PropertyConverter {
         return property;
     }
 
-    private String[] split(String propertyValue) {
+	/**
+	 * splits the property line into a key and value part
+	 * @param propertyValue
+	 * @return
+	 */
+    protected String[] split(String propertyValue) {
         boolean escape = false;
         StringBuilder buffer = new StringBuilder(propertyValue.length());
         String[] result = new String[2];
@@ -176,7 +181,7 @@ public class PropertiesHelper implements PropertyConverter {
         return result;
     }
 
-    private boolean isComment(String line) {
+    protected boolean isComment(String line) {
         return (line.startsWith("#") || line.startsWith("!"));
     }
 
@@ -207,7 +212,7 @@ public class PropertiesHelper implements PropertyConverter {
 
     }
 
-	private void writeCommentAndAnnotations(Writer writer, Property property) throws IOException {
+	protected void writeCommentAndAnnotations(Writer writer, Property property) throws IOException {
         if(property.eIsSet(PropertiesPackage.Literals.PROPERTY__COMMENT) || property.getAnnotations().size()>0)
         {
         	StringBuilder builder = new StringBuilder();
@@ -223,7 +228,7 @@ public class PropertiesHelper implements PropertyConverter {
         }
 	}
 
-    private void writeComment(Writer writer, String comment) throws IOException {
+    protected void writeComment(Writer writer, String comment) throws IOException {
         comment = comment.replace("\n", "\n#");
         writer.write("#");
         writer.write(comment);
@@ -292,7 +297,7 @@ public class PropertiesHelper implements PropertyConverter {
     	return savedProperties;
     }
 
-    private boolean isFilled(Property property) {
+    protected boolean isFilled(Property property) {
         if(property==null)
             return false;
         if(property.getKey()==null || property.getKey().length()==0)
@@ -324,5 +329,9 @@ public class PropertiesHelper implements PropertyConverter {
         return file;
     }
     
+	
+	public boolean isUnicodeEscaping() {
+		return unicodeEscaping;
+	}
     
 }
