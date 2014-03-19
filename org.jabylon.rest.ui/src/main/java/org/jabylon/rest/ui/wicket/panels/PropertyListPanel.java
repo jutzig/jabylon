@@ -28,12 +28,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -46,8 +48,16 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.jabylon.cdo.connector.Modification;
+import org.jabylon.cdo.connector.TransactionUtil;
+import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.util.URLUtil;
+import org.jabylon.properties.Project;
+import org.jabylon.properties.ProjectLocale;
+import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
@@ -55,12 +65,17 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Review;
 import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
+import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.model.EClassSortState;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.PropertyPair;
+import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import org.jabylon.rest.ui.wicket.components.ConfirmBehaviour;
+import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.jabylon.security.CommonPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,6 +168,11 @@ public class PropertyListPanel
             link.add(new AttributeAppender("class", Model.of("disabled")));
         }
         add(link);
+        
+        StatelessLink<Void> deleteLink = new DeleteLink("remove.button");
+		deleteLink.add(new ConfirmBehaviour(nls("confirm.remove")));
+		deleteLink.setVisible(canConfigure());
+		add(deleteLink);
     }
 
     protected void fillStatusColumn(PropertyPair propertyPair,
@@ -243,6 +263,23 @@ public class PropertyListPanel
                 return "";
         }
     }
+    
+    /**
+     * checks if the user has permissions to configure this project
+     * @return
+     */
+	private boolean canConfigure() {
+		ProjectVersion version = getModel().getObject().getProjectLocale().getParent();
+		if (version.isReadOnly())
+			return false;
+		Session session = getSession();
+		if (session instanceof CDOAuthenticatedSession) {
+			Project project = version.getParent();
+			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+			return authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName(), CommonPermissions.ACTION_CONFIG));
+		}
+		return false;
+	}
 
 
     private Multimap<String, Review> buildReviewMap(PropertyFileDescriptor object)
@@ -397,4 +434,60 @@ class PropertyPairListDataProvider
 
 }
 
+class DeleteLink extends StatelessLink<Void>{
+
+	
+	private static final long serialVersionUID = 8205155656605708520L;
+
+	@Inject
+	private URIResolver resolver;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(DeleteLink.class);
+
+    public DeleteLink(String id) {
+		super(id);
+	}
+
+	
+	@Override
+	public void onClick() {
+		PropertyFileDescriptor descriptor = getModel(getPage().getPageParameters());
+		if(descriptor!=null){
+			try {
+			ProjectLocale locale = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, ProjectLocale>() {
+				public ProjectLocale apply(PropertyFileDescriptor object) {
+					ProjectLocale locale = object.getProjectLocale();
+					if(!object.isMaster())
+						object = object.getMaster();
+					if(object!=null)
+						PropertyResourceUtil.removeDescriptor(object);
+					return locale;
+				};
+			});
+			URI uri = resolver.getURI(locale);
+			PageParameters params = new PageParameters();
+			for(int i=0;i<uri.segmentCount();i++) {
+				params.set(i, uri.segment(i));
+			}
+			//go to the parent locale
+			setResponsePage(ResourcePage.class, params);
+		} catch (CommitException e) {
+			error(e.getMessage());
+			LOG.error("Failed to delete descriptor",e);
+		}
+		}
+		
+	}
+
+
+	private PropertyFileDescriptor getModel(PageParameters pageParameters) {
+		URI uri = URI.createURI("/");
+		for(int i=0;i<pageParameters.getIndexedCount();i++){
+			uri = uri.appendSegment(pageParameters.get(i).toString());
+		}
+		
+		return (PropertyFileDescriptor) resolver.resolve(uri);
+	}
+	
+}
 

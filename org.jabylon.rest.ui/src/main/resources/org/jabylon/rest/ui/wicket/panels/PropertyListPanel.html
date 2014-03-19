@@ -2,30 +2,50 @@
 <html xmlns:wicket="http://wicket.apache.org">
 
 <body>
-    <wicket:panel>
-        <ul class="nav nav-pills">
-            <li wicket:id="view-mode"><a wicket:id="link">Show Missing</a></li>
-        </ul>
-            <table
-                class="table table-striped table-hover dataview table-condensed"
-                id="table">
-                <thead>
-                    <tr>
-                        <th width="45%"><wicket:message key="PropertyEditorPanel.key.column">Key</wicket:message></th>
-                        <th width="45%"><wicket:message key="PropertyEditorPanel.translation.column">Translation</wicket:message></th>
-                        <th width="10%"><wicket:message key="PropertyEditorPanel.status.column">Status</wicket:message></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr wicket:id="repeater">
-                        <td><a wicket:id="edit" class="btn btn-primary btn-mini">edit</a> <span title="template" wicket:id="key"></span></td>
-                        <td><span wicket:id="translation"></span></td>
-                        <td><span wicket:id="reviews" class="label">Label</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            <p/>
-            <a class="btn btn-primary" wicket:id="download.link" href="#"><i class="icon-download-alt icon-white"></i> <wicket:message key="download.action">Download</wicket:message></a>
-    </wicket:panel>
+	<wicket:panel>
+		<ul class="nav nav-pills">
+			<li wicket:id="view-mode"><a wicket:id="link">Show Missing</a></li>
+		</ul>
+		<table
+			class="table table-striped table-hover dataview table-condensed"
+			id="table">
+			<thead>
+				<tr>
+					<th width="45%"><wicket:message
+							key="PropertyEditorPanel.key.column">Key</wicket:message></th>
+					<th width="45%"><wicket:message
+							key="PropertyEditorPanel.translation.column">Translation</wicket:message></th>
+					<th width="10%"><wicket:message
+							key="PropertyEditorPanel.status.column">Status</wicket:message></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="repeater">
+					<td><a wicket:id="edit" class="btn btn-primary btn-mini">edit</a>
+						<span title="template" wicket:id="key"></span></td>
+					<td><span wicket:id="translation"></span></td>
+					<td><span wicket:id="reviews" class="label">Label</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<p />
+		
+			<table>
+				<tbody>
+					<tr>
+						<td><a class="btn btn-primary" wicket:id="download.link"
+							href="#"><i class="icon-download-alt icon-white"></i> <wicket:message
+									key="download.action">Download</wicket:message></a></td>
+						<td>
+							<a class="btn btn-danger" wicket:id="remove.button">
+								<i class="icon-remove icon-white"></i>
+								<wicket:message key="remove.action">Remove</wicket:message>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		
+	</wicket:panel>
 </body>
 </html>
