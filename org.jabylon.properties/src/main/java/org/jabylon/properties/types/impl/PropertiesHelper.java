@@ -310,8 +310,17 @@ public class PropertiesHelper implements PropertyConverter {
     public PropertyFile load(InputStream in, String encoding) throws IOException {
         if(!in.markSupported())
             in = new BufferedInputStream(in);
-        //TODO: should we do anything with the bom? Set to Unicode?
-        PropertiesHelper.checkForBom(in);
+        ByteOrderMark bom = PropertiesHelper.checkForBom(in);
+        String derivedEncoding = deriveEncoding(bom);
+        if(derivedEncoding!=null){
+        	if(encoding.equals("UTF-16") && derivedEncoding.startsWith("UTF-16"))
+        		//the derived encoding will know if it's BE or LE
+        		encoding = derivedEncoding;
+        	else if(!encoding.equals(derivedEncoding)){
+        		logger.warn("Encoding was specified as {} but according to the BOM it is {}. Using the value from the BOM instead",encoding,derivedEncoding);
+        		encoding = derivedEncoding;
+        	}
+        }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in,encoding));
         PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
@@ -330,6 +339,21 @@ public class PropertiesHelper implements PropertyConverter {
     }
     
 	
+	protected String deriveEncoding(ByteOrderMark bom) {
+		if(bom==null)
+			return null;
+		switch (bom) {
+		case UTF_16BE:
+			return "UTF-16BE";
+
+		case UTF_16LE:
+			return "UTF-16LE";
+		case UTF_8:
+			return "UTF-8";
+		}
+		return null;
+	}
+
 	public boolean isUnicodeEscaping() {
 		return unicodeEscaping;
 	}
