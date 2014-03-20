@@ -104,7 +104,7 @@ public class PropertiesHelper implements PropertyConverter {
                 if(comment.length()>0) //there's already a comment, so now we have a new line
                     comment.append("\n");
                 if(line.length()>1) //otherwise it's just an empty comment
-                    comment.append(line.substring(1).trim());
+                    comment.append(parseComment(line));
             }
             else
             {
@@ -139,6 +139,15 @@ public class PropertiesHelper implements PropertyConverter {
             return null;
         return property;
     }
+
+	/**
+	 * extracts the comment from the given line
+	 * @param line
+	 * @return the comment content
+	 */
+	protected String parseComment(String line) {
+		return line.substring(1).trim();
+	}
 
 	/**
 	 * splits the property line into a key and value part
