@@ -12,8 +12,8 @@
 		<bundle.namespace>${project.groupId}</bundle.namespace>
 		<swt.variant>unknown</swt.variant>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<release.version>1.0.2</release.version>
-		<release.tag>v1.0.2</release.tag>
+		<release.version>1.1.0</release.version>
+		<release.tag>v1.1.0</release.tag>
 	</properties>
 
 	<pluginRepositories>
