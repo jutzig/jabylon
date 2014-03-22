@@ -67,4 +67,5 @@ public class GlobalResources {
      * the jabylon logo 
      */
     public static final ResourceReference IMG_JABYLON_LOGO = new WebContextUrlResourceReference("img/jabylon-logo.png");
+    public static final ResourceReference IMG_JABYLON_FAVICON = new WebContextUrlResourceReference("favicon.ico");
 }

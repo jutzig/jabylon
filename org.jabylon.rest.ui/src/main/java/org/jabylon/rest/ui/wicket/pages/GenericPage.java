@@ -21,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.rest.ui.navbar.NavbarPanel;
 import org.jabylon.rest.ui.util.GlobalResources;
+import org.jabylon.rest.ui.wicket.FaviconHeaderItem;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.rest.ui.wicket.components.CustomFeedbackPanel;
 import org.jabylon.rest.ui.wicket.components.IAjaxFeedbackPage;
@@ -43,6 +44,7 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
         response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
         response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP)));
         response.render(CssHeaderItem.forReference(GlobalResources.MAIN_CSS));
+        response.render(new FaviconHeaderItem(GlobalResources.IMG_JABYLON_FAVICON));
         super.renderHead(response);
     }
 
