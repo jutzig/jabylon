@@ -27,7 +27,7 @@
                 <configuration>
                     <instructions>
                         <Fragment-Host>com.googlecode.flyway.core</Fragment-Host>
-                        <Import-Package>!com.googlecode.flyway*,*</Import-Package>
+                        <Import-Package>!com.googlecode.flyway*,org.slf4j;version=!,*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
