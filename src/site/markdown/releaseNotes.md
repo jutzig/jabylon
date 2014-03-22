@@ -1,6 +1,21 @@
 
 # Release Notes
 
+## Jabylon 1.1.0
+
+Jabylon 1.1.0 was released on the **23th March 2014** and is available for [download](download.html). 
+
+Starting from this release iOS and Android projects.
+
+ * [193](https://github.com/jutzig/jabylon/issues/193) - Use terminology in equality check
+ * [192](https://github.com/jutzig/jabylon/issues/192) - Add a remove action 
+ * [191](https://github.com/jutzig/jabylon/issues/192) - support for iOS
+ * [190](https://github.com/jutzig/jabylon/issues/190) - Jabylon needs a logo
+ * [177](https://github.com/jutzig/jabylon/issues/177) - Add support for Android
+ * [28](https://github.com/jutzig/jabylon/issues/28) - add annotation support for properties
+ 
+For a full list see [here](https://github.com/jutzig/jabylon/issues?milestone=5&amp;page=1&amp;state=closed "Issue List")  
+  
 
 ## Jabylon 1.0.2
 

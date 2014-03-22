@@ -32,3 +32,7 @@ For the latest greatest you can try out the nightly built 1.2.0-SNAPSHOT
  * Download [WAR](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.war/lastSuccessfulBuild/artifact/org.jabylon/jabylon.war/1.2.0-SNAPSHOT/jabylon.war-1.2.0-SNAPSHOT.war)
  * Download [Standalone](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.product/lastSuccessfulBuild/artifact/org.jabylon/jabylon.product/1.2.0-SNAPSHOT/jabylon.product-1.2.0-SNAPSHOT.zip)
  * [Sources](https://github.com/jutzig/jabylon) 
+ 
+ ## Older Releases
+ 
+ You can download older releases from [here](https://github.com/jutzig/jabylon/releases).
