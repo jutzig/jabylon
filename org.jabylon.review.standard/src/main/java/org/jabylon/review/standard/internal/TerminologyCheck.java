@@ -12,36 +12,25 @@
 package org.jabylon.review.standard.internal;
 
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.EList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-
 import org.jabylon.common.review.ReviewParticipant;
-import org.jabylon.properties.ProjectLocale;
-import org.jabylon.properties.ProjectVersion;
+import org.jabylon.common.review.TerminologyProvider;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Review;
 import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
-import org.jabylon.properties.Workspace;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -53,30 +42,13 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 
     private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 
-    private static ThreadLocal<PropertyFileDescriptor> currentDescriptor = new ThreadLocal<PropertyFileDescriptor>();
-
-    private LoadingCache<Locale, Map<String, Property>> terminologyCache;
-
-    private static final Logger logger = LoggerFactory.getLogger(TerminologyCheck.class);
+    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private TerminologyProvider terminologyProvider;
 
     /**
      *
      */
     public TerminologyCheck() {
-
-        terminologyCache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).concurrencyLevel(1).build(new CacheLoader<Locale, Map<String, Property>>() {
-
-            @Override
-            public Map<String, Property> load(Locale key) throws Exception {
-                PropertyFileDescriptor descriptor = currentDescriptor.get();
-                if(descriptor==null)
-                    return Collections.emptyMap();
-                PropertyFileDescriptor terminology = getTerminology(descriptor);
-                if(terminology==null)
-                    return Collections.emptyMap();
-                return terminology.loadProperties().asMap();
-            }
-        });
     }
 
     /* (non-Javadoc)
@@ -85,16 +57,9 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
     @Override
     public Review review(PropertyFileDescriptor descriptor, Property master, Property slave) {
         Locale variant = descriptor.getVariant();
-        currentDescriptor.set(descriptor);
         if(variant==null)
             return null;
-        Map<String, Property> terminology;
-        try {
-            terminology = terminologyCache.get(variant);
-        } catch (ExecutionException e) {
-            logger.error("Failed to retrieve termininology from cache. Skipping check.",e);
-            return null;
-        }
+        Map<String, Property> terminology = terminologyProvider.getTerminology(variant);
         return analyze(master, slave, terminology);
 
     }
@@ -102,7 +67,7 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 
     private Review analyze(Property master, Property slave, Map<String, Property> terminology) {
 
-        if(master==null || slave==null)
+        if(master==null || slave==null || terminology.isEmpty())
             return null;
         String masterValue = master.getValue();
         String slaveValue = slave.getValue();
@@ -144,21 +109,14 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
         return null;
 
     }
+    
+    public void bindTerminologyProvider(TerminologyProvider provider) {
+        this.terminologyProvider = provider;
+    }
 
-    private PropertyFileDescriptor getTerminology(PropertyFileDescriptor descriptor)
-    {
-        Locale locale = descriptor.getProjectLocale().getLocale();
-        Workspace workspace = descriptor.getProjectLocale().getParent().getParent().getParent();
-        ProjectVersion terminology = workspace.getTerminology();
-        if(terminology==null)
-            return null;
-        ProjectLocale projectLocale = terminology.getProjectLocale(locale);
-        if(projectLocale==null)
-            return null;
-        EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-        if(descriptors.isEmpty())
-            return null;
-        return descriptors.get(0);
+    public void unbindTerminologyProvider(TerminologyProvider provider) {
+        if(terminologyProvider==provider)
+        	terminologyProvider = null;
     }
 
     @Override

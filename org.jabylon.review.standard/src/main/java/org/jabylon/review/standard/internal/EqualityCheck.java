@@ -11,10 +11,14 @@
  */
 package org.jabylon.review.standard.internal;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Service;
+import java.util.Map;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.Service;
 import org.jabylon.common.review.ReviewParticipant;
+import org.jabylon.common.review.TerminologyProvider;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFileDescriptor;
@@ -28,6 +32,9 @@ import org.jabylon.properties.Severity;
 @Component
 @Service
 public class EqualityCheck implements ReviewParticipant {
+	
+    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private TerminologyProvider terminologyProvider;
 
     /* (non-Javadoc)
      * @see org.jabylon.common.review.ReviewParticipant#review(org.jabylon.properties.PropertyFileDescriptor, org.jabylon.properties.Property, org.jabylon.properties.Property)
@@ -42,6 +49,13 @@ public class EqualityCheck implements ReviewParticipant {
         {
             if(masterValue.equals(slaveValue))
             {
+            	Map<String, Property> terminology = terminologyProvider.getTerminology(descriptor.getVariant());
+            	Property terminologyEntry = terminology.get(slave.getValue());
+            	if(terminologyEntry!=null && slave.getValue().equals(terminologyEntry.getValue())){
+            		// equality is ok if it is like that in terminology. That could be the case for e.g. a product name
+            		// or short terms like "OK"
+            		return null;
+            	}
                 Review review = PropertiesFactory.eINSTANCE.createReview();
                 review.setCreated(System.currentTimeMillis());
                 review.setMessage("Template and translated string are identical");
@@ -54,6 +68,15 @@ public class EqualityCheck implements ReviewParticipant {
         return null;
     }
 
+    public void bindTerminologyProvider(TerminologyProvider provider) {
+        this.terminologyProvider = provider;
+    }
+
+    public void unbindTerminologyProvider(TerminologyProvider provider) {
+        if(terminologyProvider==provider)
+        	terminologyProvider = null;
+    }
+    
     @Override
     public String getID() {
         return "EqualityCheck";
