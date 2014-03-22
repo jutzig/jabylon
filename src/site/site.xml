@@ -62,6 +62,7 @@
 				<item href="userManagement.html" name="User Management" />
 			</item>
 			<item href="updateCenter.html" name="Installing Plug-Ins" />
+			<item href="plugins.html" name="Available Plug-Ins" />
 		</menu>
 		<menu name="User Guide">
 			<item href="translating.html" name="Translating Resources"

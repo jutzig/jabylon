@@ -7,28 +7,28 @@ Jabylon is distributed under the [Eclipse Public License 1.0](http://opensource.
 
 ## Release
 
-The current stable release of Jabylon is version [1.0.2](https://github.com/jutzig/jabylon/releases/latest) .
+The current stable release of Jabylon is version [1.1.0](https://github.com/jutzig/jabylon/releases/latest) .
 This version requires a **JRE 6 or higher**
 
 
 ### WAR 
  
-Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.0.2/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
+Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.1.0/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
 
 ### Standalone
 
-Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.0.2/jabylon-standalone.zip) to run Jabylon without a servlet container.
+Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.1.0/jabylon-standalone.zip) to run Jabylon without a servlet container.
 
 
 ### Source
 
-Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/v1.0.2.zip).
+Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/v1.1.0.zip).
 
 
 ## Nightly Build
 
-For the latest greatest you can try out the nightly built 1.1.0-SNAPSHOT
+For the latest greatest you can try out the nightly built 1.2.0-SNAPSHOT
 
- * Download [WAR](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.war/lastSuccessfulBuild/artifact/org.jabylon/jabylon.war/1.1.0-SNAPSHOT/jabylon.war-1.1.0-SNAPSHOT.war)
- * Download [Standalone](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.product/lastSuccessfulBuild/artifact/org.jabylon/jabylon.product/1.1.0-SNAPSHOT/jabylon.product-1.1.0-SNAPSHOT.zip)
+ * Download [WAR](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.war/lastSuccessfulBuild/artifact/org.jabylon/jabylon.war/1.2.0-SNAPSHOT/jabylon.war-1.2.0-SNAPSHOT.war)
+ * Download [Standalone](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.product/lastSuccessfulBuild/artifact/org.jabylon/jabylon.product/1.2.0-SNAPSHOT/jabylon.product-1.2.0-SNAPSHOT.zip)
  * [Sources](https://github.com/jutzig/jabylon) 

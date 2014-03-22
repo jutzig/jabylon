@@ -33,7 +33,9 @@ In the _General_ tab you can enter the project name, decide on the team provider
  
 ![General Settings](images/generalProjectSettings.png "General Settings")
  
-The only two available types at the moment are **ENCODED_ISO** and **UNICODE**. **ENCODED_ISO** is for typical java projects that use iso encoded property files. If you are unsure, leave this setting on its default. The other option **UNICODE** is for non standard property files that use **UTF-8** encoded files instead of unicode escapes.
+By default two types of projects are available: **PROPERTIES_ENCODED** and **PROPERTIES_UTF-8**. **PROPERTIES_ENCODED** is for typical java projects that use iso encoded property files. If you are unsure, leave this setting on its default. The other option **PROPERTIES_UTF-8** is for non standard property files that use **UTF-8** encoded files instead of unicode escapes.
+
+Other project types, like **ANDROID** and **iOS** become available by installing additional [plug-ins](./plugins.html).
  
 
 ### Scanning
