@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -110,7 +111,8 @@ public class PropertyResourceUtil {
     
     public static Map<String,PropertyScanner> getPropertyScanners()
     {
-    	return Collections.unmodifiableMap(PROPERTY_SCANNERS);
+    	TreeMap<String, PropertyScanner> sortedMap = new TreeMap<String, PropertyScanner>(PROPERTY_SCANNERS);
+    	return Collections.unmodifiableMap(sortedMap);
     }
 
     public static void createMissingDescriptorEntries(ProjectVersion parent, IProgressMonitor monitor) {
