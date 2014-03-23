@@ -29,8 +29,8 @@ Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/
 
 For the latest greatest you can try out the nightly built 1.2.0-SNAPSHOT
 
- * Download [WAR](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.war/lastSuccessfulBuild/artifact/org.jabylon/jabylon.war/1.2.0-SNAPSHOT/jabylon.war-1.2.0-SNAPSHOT.war)
- * Download [Standalone](https://buildhive.cloudbees.com/job/jutzig/job/jabylon/org.jabylon%24jabylon.product/lastSuccessfulBuild/artifact/org.jabylon/jabylon.product/1.2.0-SNAPSHOT/jabylon.product-1.2.0-SNAPSHOT.zip)
+ * Download [WAR](http://jenkins-jabylon.rhcloud.com/job/jabylon/lastSuccessfulBuild/artifact/releng/war/target/jabylon.war)
+ * Download [Standalone](http://jenkins-jabylon.rhcloud.com/job/jabylon/lastSuccessfulBuild/artifact/releng/standalone/target/jabylon-standalone.zip)
  * [Sources](https://github.com/jutzig/jabylon) 
  
  ## Older Releases
