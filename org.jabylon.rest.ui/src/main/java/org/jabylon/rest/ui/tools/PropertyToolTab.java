@@ -15,9 +15,12 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 import org.jabylon.rest.ui.model.PropertyPair;
+import org.jabylon.rest.ui.wicket.CustomWebRequest;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -50,6 +53,15 @@ public class PropertyToolTab implements ITab {
      */
     @Override
     public WebMarkupContainer getPanel(String containerId) {
+    	Request request = RequestCycle.get().getRequest();
+    	if (request instanceof CustomWebRequest) {
+			CustomWebRequest cwr = (CustomWebRequest) request;
+			//performance optimization. We don't need the tools on a post request
+			//https://github.com/jutzig/jabylon/issues/197
+			if(cwr.isPost())
+				return new WebMarkupContainer(containerId);
+			
+		}
         return tool.createPanel(new PageParameters(), model, containerId);
     }
 
