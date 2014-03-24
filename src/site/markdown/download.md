@@ -33,6 +33,6 @@ For the latest greatest you can try out the nightly built 1.2.0-SNAPSHOT
  * Download [Standalone](http://jenkins-jabylon.rhcloud.com/job/jabylon/lastSuccessfulBuild/artifact/releng/standalone/target/jabylon-standalone.zip)
  * [Sources](https://github.com/jutzig/jabylon) 
  
- ## Older Releases
+## Older Releases
  
  You can download older releases from [here](https://github.com/jutzig/jabylon/releases).
