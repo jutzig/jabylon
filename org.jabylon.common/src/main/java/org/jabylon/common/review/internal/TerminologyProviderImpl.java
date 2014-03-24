@@ -45,60 +45,60 @@ import com.google.common.cache.LoadingCache;
 @Service(value=TerminologyProvider.class)
 public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Property>> implements TerminologyProvider, Supplier<ProjectVersion> {
 
-	private LoadingCache<Locale, Map<String, Property>> terminologyCache;
-	private CDONet4jSession session;
-	private CDOView view;
-	private Supplier<ProjectVersion> version;
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+    private LoadingCache<Locale, Map<String, Property>> terminologyCache;
+    private CDONet4jSession session;
+    private CDOView view;
+    private Supplier<ProjectVersion> version;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
     private RepositoryConnector repositoryConnector;
-	
-	@Activate
-	public void activate() {
-		terminologyCache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).concurrencyLevel(2).build(this);
-		version = Suppliers.memoize((Supplier<ProjectVersion>) this);
-	}
-	
-	@Override
-	public Map<String, Property> getTerminology(Locale locale) {
-		try {
-			return terminologyCache.get(locale);
-		} catch (ExecutionException e) {
-			logger.error("Failed to retrieve termininology from cache. Skipping check.",e);
-			return Collections.emptyMap();
-		}
-	}
 
-	@Override
-	public Map<String, Property> load(Locale locale) throws Exception {
-		if(version.get()==null){
-			//recreate the supplier in case we have terminology later
-			version  = Suppliers.memoize((Supplier<ProjectVersion>) this);
-		}
-		ProjectVersion projectVersion = version.get();
-		if(projectVersion!=null){
-			ProjectLocale projectLocale = projectVersion.getProjectLocale(locale);
-	        if(projectLocale!=null) {
-	            EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-	            if(!descriptors.isEmpty()) {
-	            	PropertyFileDescriptor descriptor = descriptors.get(0);
-	            	return descriptor.loadProperties().asMap();
-	            }
-	        }
-		}
-		return Collections.emptyMap();
-	}
-	
-	@Override
-	public ProjectVersion get() {
-		if(view!=null)
-			return null;
-		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
-		Workspace workspace = (Workspace) resource.getContents().get(0);
-		return workspace.getTerminology();
-	}
-    
+    @Activate
+    public void activate() {
+        terminologyCache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).concurrencyLevel(2).build(this);
+        version = Suppliers.memoize((Supplier<ProjectVersion>) this);
+    }
+
+    @Override
+    public Map<String, Property> getTerminology(Locale locale) {
+        try {
+            return terminologyCache.get(locale);
+        } catch (ExecutionException e) {
+            logger.error("Failed to retrieve termininology from cache. Skipping check.",e);
+            return Collections.emptyMap();
+        }
+    }
+
+    @Override
+    public Map<String, Property> load(Locale locale) throws Exception {
+        if(version.get()==null){
+            //recreate the supplier in case we have terminology later
+            version  = Suppliers.memoize((Supplier<ProjectVersion>) this);
+        }
+        ProjectVersion projectVersion = version.get();
+        if(projectVersion!=null){
+            ProjectLocale projectLocale = projectVersion.getProjectLocale(locale);
+            if(projectLocale!=null) {
+                EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
+                if(!descriptors.isEmpty()) {
+                    PropertyFileDescriptor descriptor = descriptors.get(0);
+                    return descriptor.loadProperties().asMap();
+                }
+            }
+        }
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public ProjectVersion get() {
+        if(view!=null)
+            return null;
+        CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
+        Workspace workspace = (Workspace) resource.getContents().get(0);
+        return workspace.getTerminology();
+    }
+
     public void bindRepositoryConnector(RepositoryConnector connector) {
         session = connector.createSession();
         view = session.openView();
@@ -120,5 +120,5 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
     }
 
 
-	
+
 }
