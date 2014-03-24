@@ -944,7 +944,7 @@
 
 	<repositories>
 		<repository>
-			<id>eclipse-indigo</id>
+			<id>jabylon</id>
 			<url>http://www.jabylon.org/maven</url>
 			<releases>
 				<enabled>true</enabled>
