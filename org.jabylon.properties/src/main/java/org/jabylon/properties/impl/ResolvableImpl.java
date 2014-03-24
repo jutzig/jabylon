@@ -259,7 +259,7 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
                 logger.error("found child with 'null' name during resolve at "+fullPath());
                 continue;
             }
-            if (name.equals(pathSegments.get(0)))
+            if (name.equals(URI.decode(pathSegments.get(0))))
                 return child.resolveChild(pathSegments.subList(1, pathSegments.size()));
         }
         return null;

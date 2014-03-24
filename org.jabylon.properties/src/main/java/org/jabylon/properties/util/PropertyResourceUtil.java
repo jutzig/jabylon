@@ -259,7 +259,7 @@ public class PropertyResourceUtil {
                 localeDescriptor.setLocation(derivedLocation);
                 localeDescriptor.setProjectLocale(other);
                 localeDescriptor.setParent(folder);
-                localeDescriptor.setName(derivedLocation.lastSegment());
+                localeDescriptor.setName(URI.decode(derivedLocation.lastSegment()));
     		}
 		}
     }
@@ -271,6 +271,9 @@ public class PropertyResourceUtil {
         if (segments == null)
             return parent;
         for (String segment : segments) {
+        	//in case there was encoded characters in the segment
+        	//see https://github.com/jutzig/jabylon/issues/195
+        	segment = URI.decode(segment);
             Resolvable child = currentParent.getChild(segment);
             if (child == null) {
                 child = PropertiesFactory.eINSTANCE.createResourceFolder();
@@ -303,7 +306,7 @@ public class PropertyResourceUtil {
 
         PropertyScanner scanner = createScanner(version);
         URI parentPath = version.absoluteFilePath();
-        File path = scanner.computeTranslationPath(new File(parentPath.path()+templateLocation.toString()), version.getTemplate().getLocale(), locale);
+        File path = scanner.computeTranslationPath(new File(URI.decode(parentPath.path())+URI.decode(templateLocation.path())), version.getTemplate().getLocale(), locale);
 
         URI location = URI.createFileURI(path.getAbsolutePath());
         URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
@@ -314,7 +317,7 @@ public class PropertyResourceUtil {
         return trimmedLocation;
 
     }
-
+    
     public static void removeDescriptor(PropertyFileDescriptor descriptor) {
 
         if (descriptor.isMaster()) {
