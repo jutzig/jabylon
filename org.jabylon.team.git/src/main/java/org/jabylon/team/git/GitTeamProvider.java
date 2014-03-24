@@ -114,6 +114,7 @@ public class GitTeamProvider implements TeamProvider {
             RefSpec spec = new RefSpec(refspecString);
             fetchCommand.setRefSpecs(spec);
             subMon.subTask("Fetching from remote");
+            fetchCommand.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
             fetchCommand.call();
             ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getName()+"^{tree}");
