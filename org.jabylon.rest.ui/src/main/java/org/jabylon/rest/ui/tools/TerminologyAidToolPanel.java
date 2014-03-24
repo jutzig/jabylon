@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -28,19 +27,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.eclipse.emf.common.util.EList;
-import org.jabylon.common.resolver.URIResolver;
-import org.jabylon.properties.ProjectLocale;
-import org.jabylon.properties.ProjectVersion;
+import org.jabylon.common.review.TerminologyProvider;
 import org.jabylon.properties.Property;
-import org.jabylon.properties.PropertyFile;
-import org.jabylon.properties.PropertyFileDescriptor;
-import org.jabylon.properties.Workspace;
-import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.wicket.BasicPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 
@@ -49,14 +39,10 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 	
 	private static final Map<String, Property> EMPTY_MAP = new HashMap<String, Property>(0);
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(TerminologyAidToolPanel.class);
 
-	@Inject
-	private URIResolver resolver;
 	
 	@Inject
-	private PropertyPersistenceService propertyPersistence;
+	private TerminologyProvider terminologyProvider;
 	
 	private static final String JS = "$(\"#terminology-terms i.icon-share\").click(function() {"
 +	"var translation = $(this).prev(\"span\");"
@@ -150,24 +136,9 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 
 	private Map<String,Property> getTerminology(Locale locale)
     {
-    	Workspace workspace = (Workspace) resolver.resolve("workspace");
-        ProjectVersion terminology = workspace.getTerminology();
-        if(terminology==null)
-            return null;
-        ProjectLocale projectLocale = terminology.getProjectLocale(locale);
-        if(projectLocale==null)
-            return null;
-        EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
-        if(descriptors.isEmpty())
-            return null;
-        PropertyFileDescriptor descriptor = descriptors.get(0);
-        try {
-			PropertyFile propertyFile = propertyPersistence.loadProperties(descriptor);
-			return propertyFile.asMap();
-		} catch (ExecutionException e) {
-			LOGGER.error("Failed to load terminology project",e);
-		}
-        return EMPTY_MAP;
+		if(terminologyProvider==null)
+			return EMPTY_MAP;
+		return terminologyProvider.getTerminology(locale);
     }
 
 	private static class TerminologyTranslation implements Serializable {

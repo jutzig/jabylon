@@ -92,7 +92,7 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
 
     @Override
     public ProjectVersion get() {
-        if(view!=null)
+        if(view==null)
             return null;
         CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
         Workspace workspace = (Workspace) resource.getContents().get(0);
