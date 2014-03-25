@@ -9,6 +9,8 @@
 package org.jabylon.rest.ui.security;
 
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
+import org.apache.wicket.request.flow.RedirectToUrlException;
+import org.apache.wicket.util.string.StringValue;
 
 public class BootstrapSignInPanel extends SignInPanel {
 
@@ -20,5 +22,14 @@ public class BootstrapSignInPanel extends SignInPanel {
 
 	public BootstrapSignInPanel(String id, boolean includeRememberMe) {
 		super(id, includeRememberMe);
+	}
+	
+	@Override
+	protected void onSignInSucceeded() {
+		StringValue destination = getPage().getPageParameters().get("target");
+		if(!destination.isEmpty()) {
+			throw new RedirectToUrlException(destination.toString());
+		}
+		super.onSignInSucceeded();
 	}
 }

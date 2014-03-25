@@ -23,6 +23,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.LoginPage;
@@ -47,7 +49,11 @@ public class LoginPanel<T> extends BasicPanel<T> {
     public LoginPanel(String id, IModel<T> object, PageParameters parameters) {
         super(id, object, parameters);
 
-
+    }
+    
+    @Override
+    protected void onInitialize() {
+    	super.onInitialize();
         String username = "Anonymous";
         Session theSession = getSession();
         PageParameters userLinkParams = new PageParameters();
@@ -71,7 +77,9 @@ public class LoginPanel<T> extends BasicPanel<T> {
 
             }
             else {
-            	BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class);
+            	Url returnUrl = RequestCycle.get().mapUrlFor(getPage().getClass(), getPage().getPageParameters());
+            	
+            	BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class, new PageParameters().set("target", returnUrl));
                 	
                 link.add(new Label("link-label", new StringResourceModel(LOGIN_KEY, this,null)));
                 add(link);
@@ -81,7 +89,6 @@ public class LoginPanel<T> extends BasicPanel<T> {
 
         userLink.setBody(Model.of(username));
         add(userLink);
-
     }
 
     public static class LoginPanelFactory implements PanelFactory<Object>, Serializable {
