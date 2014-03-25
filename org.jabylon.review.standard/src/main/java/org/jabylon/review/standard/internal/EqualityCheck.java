@@ -16,6 +16,7 @@ import java.util.Map;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.review.TerminologyProvider;
@@ -33,7 +34,7 @@ import org.jabylon.properties.Severity;
 @Service
 public class EqualityCheck implements ReviewParticipant {
 	
-    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    @Reference(cardinality=ReferenceCardinality.OPTIONAL_UNARY,policy=ReferencePolicy.DYNAMIC)
     private TerminologyProvider terminologyProvider;
 
     /* (non-Javadoc)
@@ -49,12 +50,14 @@ public class EqualityCheck implements ReviewParticipant {
         {
             if(masterValue.equals(slaveValue))
             {
-            	Map<String, Property> terminology = terminologyProvider.getTerminology(descriptor.getVariant());
-            	Property terminologyEntry = terminology.get(slave.getValue());
-            	if(terminologyEntry!=null && slave.getValue().equals(terminologyEntry.getValue())){
-            		// equality is ok if it is like that in terminology. That could be the case for e.g. a product name
-            		// or short terms like "OK"
-            		return null;
+            	if(terminologyProvider!=null) {
+            		Map<String, Property> terminology = terminologyProvider.getTerminology(descriptor.getVariant());
+            		Property terminologyEntry = terminology.get(slave.getValue());
+            		if(terminologyEntry!=null && slave.getValue().equals(terminologyEntry.getValue())){
+            			// equality is ok if it is like that in terminology. That could be the case for e.g. a product name
+            			// or short terms like "OK"
+            			return null;
+            		}            		
             	}
                 Review review = PropertiesFactory.eINSTANCE.createReview();
                 review.setCreated(System.currentTimeMillis());

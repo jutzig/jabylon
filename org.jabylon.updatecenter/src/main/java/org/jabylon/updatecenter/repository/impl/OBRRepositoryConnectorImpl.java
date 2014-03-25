@@ -63,7 +63,7 @@ import com.google.common.collect.TreeMultimap;
  * @author jutzig.dev@googlemail.com
  *
  */
-@Component(enabled=true,immediate=true)
+@Component(enabled=true)
 @Service
 public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
@@ -87,10 +87,18 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     
     @Activate
     public void activate() {
-    	pluginDir = new File(new File(ServerConstants.WORKING_DIR),"addons");
     	Bundle bundle = FrameworkUtil.getBundle(getClass());
     	context = bundle.getBundleContext();
-    	deployAddons(pluginDir);
+    	Thread t = new Thread(new Runnable() {
+			//this is expensive so we should do it in a thread instead
+			@Override
+			public void run() {
+				pluginDir = new File(new File(ServerConstants.WORKING_DIR),"addons");
+				deployAddons(pluginDir);
+				
+			}
+		},"Addon Deployment");
+    	t.start();
     }
     
     /*

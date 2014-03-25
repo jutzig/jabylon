@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.jabylon.common.review.ReviewParticipant;
@@ -37,12 +38,12 @@ import org.jabylon.properties.Severity;
  *
  */
 @Component
-@Service
+@Service(value=ReviewParticipant.class)
 public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 
     private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
 
-    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY,policy=ReferencePolicy.DYNAMIC)
     private TerminologyProvider terminologyProvider;
 
     /**
