@@ -12,6 +12,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.eclipse.emf.cdo.common.revision.CDORevision;
 import org.eclipse.emf.cdo.net4j.CDONet4jSession;
 import org.eclipse.emf.cdo.net4j.CDONet4jSessionConfiguration;
 import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
@@ -103,7 +104,7 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
         config.setConnector(connector);
         config.setRepositoryName(REPOSITORY_NAME);
         CDONet4jSession theSession = config.openNet4jSession();
-        theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(0, 300));
+        theSession.options().setCollectionLoadingPolicy (CDOUtil.createCollectionLoadingPolicy(CDORevision.UNCHUNKED, CDORevision.UNCHUNKED));
         theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
         theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
         return theSession;
