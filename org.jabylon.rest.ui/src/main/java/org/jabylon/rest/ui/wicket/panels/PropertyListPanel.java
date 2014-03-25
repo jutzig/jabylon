@@ -157,7 +157,7 @@ public class PropertyListPanel
         add(properties);
 
         String contextPath = WicketUtil.getContextPath();
-        String href = contextPath + "/api"+ getModelObject().toURI().appendQuery("type=file");
+        String href = contextPath + "/api/"+ getModelObject().toURI().appendQuery("type=file");
         ExternalLink link = new ExternalLink("download.link", href);
         File file = new File(getModelObject().absoluteFilePath().toFileString());
         boolean enabled = file.isFile();
