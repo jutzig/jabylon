@@ -35,7 +35,7 @@ public class UpdatecenterPageProvider implements PageProvider {
      * mounted before the query service is available
      */
     @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
-    private RepositoryAdmin service;
+    private RepositoryAdmin repositoryAdminService;
 
     /* (non-Javadoc)
      * @see org.jabylon.rest.ui.util.PageProvider#getPageClass()
@@ -45,12 +45,14 @@ public class UpdatecenterPageProvider implements PageProvider {
         return UpdatecenterPage.class;
     }
 
-    public void bindQueryService(RepositoryAdmin service) {
-        this.service = service;
+    public void bindRepositoryAdminService(RepositoryAdmin service) {
+        this.repositoryAdminService = service;
     }
 
-    public void unbindQueryService(RepositoryAdmin service) {
-        this.service = service;
+    public void unbindRepositoryAdminService(RepositoryAdmin service) {
+        this.repositoryAdminService = service;
     }
+    
+    
 
 }
