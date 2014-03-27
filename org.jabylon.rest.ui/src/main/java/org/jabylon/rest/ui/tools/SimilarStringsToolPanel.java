@@ -148,7 +148,7 @@ public class SimilarStringsToolPanel
         query.addTerms(pair.getOriginal(), QueryService.FIELD_VALUE, 0.6f, 3);
         //make sure we only look for templates, not translations
         query.addTerms(QueryService.MASTER, QueryService.FIELD_LOCALE, 0.99f, 3);
-        SearchResult result = queryService.search(query, 20);
+        SearchResult result = queryService.search(query, 10);
 
         if (result == null)
             return Collections.emptyList();
