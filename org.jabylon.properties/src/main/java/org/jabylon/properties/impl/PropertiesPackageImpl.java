@@ -490,6 +490,15 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProject_Announcement() {
+		return (EAttribute)projectEClass.getEStructuralFeatures().get(4);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -966,6 +975,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		createEAttribute(projectEClass, PROJECT__PROPERTY_TYPE);
 		createEAttribute(projectEClass, PROJECT__TEAM_PROVIDER);
 		createEAttribute(projectEClass, PROJECT__TERMINOLOGY);
+		createEAttribute(projectEClass, PROJECT__ANNOUNCEMENT);
 
 		projectVersionEClass = createEClass(PROJECT_VERSION);
 		createEReference(projectVersionEClass, PROJECT_VERSION__TEMPLATE);
@@ -1173,6 +1183,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 		initEAttribute(getProject_PropertyType(), ecorePackage.getEString(), "propertyType", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_TeamProvider(), ecorePackage.getEString(), "teamProvider", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProject_Terminology(), ecorePackage.getEBoolean(), "terminology", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProject_Announcement(), ecorePackage.getEString(), "announcement", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(projectEClass, null, "fullScan", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getScanConfiguration(), "configuration", 0, 1, IS_UNIQUE, IS_ORDERED);

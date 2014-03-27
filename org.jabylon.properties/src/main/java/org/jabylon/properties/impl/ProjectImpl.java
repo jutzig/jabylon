@@ -28,6 +28,7 @@ import org.jabylon.properties.Workspace;
  *   <li>{@link org.jabylon.properties.impl.ProjectImpl#getPropertyType <em>Property Type</em>}</li>
  *   <li>{@link org.jabylon.properties.impl.ProjectImpl#getTeamProvider <em>Team Provider</em>}</li>
  *   <li>{@link org.jabylon.properties.impl.ProjectImpl#isTerminology <em>Terminology</em>}</li>
+ *   <li>{@link org.jabylon.properties.impl.ProjectImpl#getAnnouncement <em>Announcement</em>}</li>
  * </ul>
  * </p>
  *
@@ -79,6 +80,17 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 
 
     /**
+	 * The default value of the '{@link #getAnnouncement() <em>Announcement</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAnnouncement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ANNOUNCEMENT_EDEFAULT = null;
+
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -181,6 +193,24 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getAnnouncement() {
+		return (String)eDynamicGet(PropertiesPackage.PROJECT__ANNOUNCEMENT, PropertiesPackage.Literals.PROJECT__ANNOUNCEMENT, true, true);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAnnouncement(String newAnnouncement) {
+		eDynamicSet(PropertiesPackage.PROJECT__ANNOUNCEMENT, PropertiesPackage.Literals.PROJECT__ANNOUNCEMENT, newAnnouncement);
+	}
+
+				/**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
@@ -223,6 +253,8 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 				return getTeamProvider();
 			case PropertiesPackage.PROJECT__TERMINOLOGY:
 				return isTerminology();
+			case PropertiesPackage.PROJECT__ANNOUNCEMENT:
+				return getAnnouncement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -246,6 +278,9 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 				return;
 			case PropertiesPackage.PROJECT__TERMINOLOGY:
 				setTerminology((Boolean)newValue);
+				return;
+			case PropertiesPackage.PROJECT__ANNOUNCEMENT:
+				setAnnouncement((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -271,6 +306,9 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 			case PropertiesPackage.PROJECT__TERMINOLOGY:
 				setTerminology(TERMINOLOGY_EDEFAULT);
 				return;
+			case PropertiesPackage.PROJECT__ANNOUNCEMENT:
+				setAnnouncement(ANNOUNCEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -291,6 +329,8 @@ public class ProjectImpl extends ResolvableImpl<Workspace, ProjectVersion> imple
 				return TEAM_PROVIDER_EDEFAULT == null ? getTeamProvider() != null : !TEAM_PROVIDER_EDEFAULT.equals(getTeamProvider());
 			case PropertiesPackage.PROJECT__TERMINOLOGY:
 				return isTerminology() != TERMINOLOGY_EDEFAULT;
+			case PropertiesPackage.PROJECT__ANNOUNCEMENT:
+				return ANNOUNCEMENT_EDEFAULT == null ? getAnnouncement() != null : !ANNOUNCEMENT_EDEFAULT.equals(getAnnouncement());
 		}
 		return super.eIsSet(featureID);
 	}

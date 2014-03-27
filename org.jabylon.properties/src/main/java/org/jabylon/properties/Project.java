@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.URI;
  *   <li>{@link org.jabylon.properties.Project#getPropertyType <em>Property Type</em>}</li>
  *   <li>{@link org.jabylon.properties.Project#getTeamProvider <em>Team Provider</em>}</li>
  *   <li>{@link org.jabylon.properties.Project#isTerminology <em>Terminology</em>}</li>
+ *   <li>{@link org.jabylon.properties.Project#getAnnouncement <em>Announcement</em>}</li>
  * </ul>
  * </p>
  *
@@ -136,6 +137,32 @@ public interface Project extends Resolvable<Workspace, ProjectVersion> {
     void setTerminology(boolean value);
 
     /**
+	 * Returns the value of the '<em><b>Announcement</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Announcement</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Announcement</em>' attribute.
+	 * @see #setAnnouncement(String)
+	 * @see org.jabylon.properties.PropertiesPackage#getProject_Announcement()
+	 * @model
+	 * @generated
+	 */
+	String getAnnouncement();
+
+				/**
+	 * Sets the value of the '{@link org.jabylon.properties.Project#getAnnouncement <em>Announcement</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Announcement</em>' attribute.
+	 * @see #getAnnouncement()
+	 * @generated
+	 */
+	void setAnnouncement(String value);
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @model

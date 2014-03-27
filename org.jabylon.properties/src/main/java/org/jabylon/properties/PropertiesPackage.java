@@ -438,13 +438,22 @@ public interface PropertiesPackage extends EPackage {
     int PROJECT__TERMINOLOGY = RESOLVABLE_FEATURE_COUNT + 3;
 
     /**
+	 * The feature id for the '<em><b>Announcement</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROJECT__ANNOUNCEMENT = RESOLVABLE_FEATURE_COUNT + 4;
+
+				/**
 	 * The number of structural features of the '<em>Project</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 4;
+    int PROJECT_FEATURE_COUNT = RESOLVABLE_FEATURE_COUNT + 5;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
@@ -1328,6 +1337,17 @@ public interface PropertiesPackage extends EPackage {
     EAttribute getProject_Terminology();
 
     /**
+	 * Returns the meta object for the attribute '{@link org.jabylon.properties.Project#getAnnouncement <em>Announcement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Announcement</em>'.
+	 * @see org.jabylon.properties.Project#getAnnouncement()
+	 * @see #getProject()
+	 * @generated
+	 */
+	EAttribute getProject_Announcement();
+
+				/**
 	 * Returns the meta object for class '{@link org.jabylon.properties.ProjectVersion <em>Project Version</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2054,6 +2074,14 @@ public interface PropertiesPackage extends EPackage {
         EAttribute PROJECT__TERMINOLOGY = eINSTANCE.getProject_Terminology();
 
         /**
+		 * The meta object literal for the '<em><b>Announcement</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROJECT__ANNOUNCEMENT = eINSTANCE.getProject_Announcement();
+
+								/**
 		 * The meta object literal for the '{@link org.jabylon.properties.impl.ProjectVersionImpl <em>Project Version</em>}' class.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->

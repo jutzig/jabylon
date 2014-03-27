@@ -17,6 +17,7 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -103,6 +104,13 @@ public class ProjectConfigSection extends BasicPanel<Project> {
         	
 		};
 		add(defaultIncludes);
+		
+
+        ControlGroup announceGroup = new ControlGroup("announce-group",nls("ProjectConfigSection.project.announce.label"),nls("ProjectConfigSection.project.announce.help"));
+        EObjectPropertyModel<String, Project> announceModel = new EObjectPropertyModel<String, Project>(model, PropertiesPackage.Literals.PROJECT__ANNOUNCEMENT);
+        TextArea<String> announceField = new TextArea<String>("inputAnnounce", announceModel);
+        announceGroup.add(announceField);
+        add(announceGroup);
     }
 
     private static Set<String> getUsedProjectNames(IModel<Project> model) {
