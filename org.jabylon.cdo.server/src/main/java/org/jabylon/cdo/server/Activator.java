@@ -101,7 +101,19 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		plugin = this;
-		initialize();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					//this is quite expensive so we do it in a thread
+					initialize();
+				} catch (CommitException e) {
+					logger.error("Failed to start CDO",e);
+				}
+				
+			}
+		},"starting database").start();
 
 	}
 
