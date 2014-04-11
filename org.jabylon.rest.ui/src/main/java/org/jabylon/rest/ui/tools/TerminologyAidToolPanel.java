@@ -35,15 +35,15 @@ import org.jabylon.rest.ui.wicket.BasicPanel;
 public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 
 	private static final long serialVersionUID = -7220757882567413172L;
-	
+
 	private static final String TERMINOLOGY_DELIMITER = " \t\n\r\f.,;:(){}\"'<>?-";
-	
+
 	private static final Map<String, Property> EMPTY_MAP = new HashMap<String, Property>(0);
 
-	
+
 	@Inject
 	private TerminologyProvider terminologyProvider;
-	
+
 	private static final String JS = "$(\"#terminology-terms i.icon-share\").click(function() {"
 +	"var translation = $(this).prev(\"span\");"
 +	"var widget = $(\"#translation\");"
@@ -57,31 +57,31 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 + "	  $('#terminology-terms i.icon-share').prev('span').each(function(index){"
 + "		   var result = $(widget).val().indexOf($(this).text());"
 + "		   if(result>=0) {"
-+ "			   $(this).siblings('.label').show();" 		   			   
-+ "		   }" 
++ "			   $(this).siblings('.label').show();"
++ "		   }"
 + "		   else {"
 + "			   $(this).siblings('.label').hide();"
 + "		   }"
 + "	   });"
-+ "});";	
++ "});";
 	public TerminologyAidToolPanel(String id, IModel<PropertyPair> model) {
 		super(id, model);
-		
+
 	}
-	
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(OnDomReadyHeaderItem.forScript(JS));
 	}
-	
+
 	@Override
 	protected void construct() {
 		super.construct();
 		Map<String, Property> terminology = getTerminology(getModelObject().getLanguage());
 		List<TerminologyTranslation> result = analyze(getModel(), terminology);
 		ListView<TerminologyTranslation> list = new ListView<TerminologyTranslation>("terms", result) {
-			
+
 			private static final long serialVersionUID = 8716974286032849509L;
 
 			@Override
@@ -97,19 +97,20 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 					label.add(new AttributeAppender("style","display: none;"));
 				if(translation.getComment()!=null)
 					translationLabel.add(new AttributeAppender("title", translation.getComment()));
-				
+
 			}
 		};
 		add(list);
-		
+
 	}
 
     private List<TerminologyTranslation> analyze(IModel<PropertyPair> pair, Map<String, Property> terminology) {
 
     	List<TerminologyTranslation> translations = new ArrayList<TerminologyTranslation>();
-        if(terminology==null || terminology.isEmpty())
+        if(terminology==null || terminology.isEmpty() || pair==null || pair.getObject()==null
+                        || pair.getObject().getTemplate() == null)
             return translations;
-        
+
         Collection<String> tokens = getTokens(pair.getObject().getTemplate().getValue(), terminology);
         for (String term : tokens) {
 			Property property = terminology.get(term);
@@ -120,9 +121,9 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 			}
 		}
         return translations;
-     
+
     }
-	
+
     private Collection<String> getTokens(String value, Map<String, Property> terminology) {
     	Collection<String> tokens = new LinkedHashSet<String>();
     	if(value==null)
@@ -144,7 +145,7 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 	private static class TerminologyTranslation implements Serializable {
 
 		private static final long serialVersionUID = 8661310521341467528L;
-		
+
 		private String term, translation, comment;
 
 		public TerminologyTranslation(String term, String translation, String comment) {
@@ -161,7 +162,7 @@ public class TerminologyAidToolPanel extends BasicPanel<PropertyPair>{
 		public String getTranslation() {
 			return translation;
 		}
-		
+
 		public String getComment() {
 			return comment;
 		}
