@@ -45,7 +45,7 @@ public class WicketUtil {
         }
         return params;
     }
-    
+
     public static PageParameters buildPageParametersFor(URI uri)
     {
         PageParameters params = new PageParameters();
@@ -116,6 +116,8 @@ public class WicketUtil {
             return "cn";
         else if("en".equals(language)) //english
             return "gb"; //use GB as the flag
+        else if("in".equals(language)) //indonesia see https://github.com/jutzig/jabylon/issues/205
+            return "id"; //use indonesian flag
         return language.toLowerCase(); //this works in many cases, but is wrong in some
     }
 
