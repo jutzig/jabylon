@@ -329,6 +329,8 @@ public class GitTeamProvider implements TeamProvider {
     private RefSpec createRefSpec(ProjectVersion version) {
         Preferences node = PreferencesUtil.scopeFor(version);
         String refSpecString = node.get(GitConstants.KEY_PUSH_REFSPEC, GitConstants.DEFAULT_PUSH_REFSPEC);
+        if(refSpecString.isEmpty())
+        	refSpecString = GitConstants.DEFAULT_PUSH_REFSPEC;
         refSpecString = MessageFormat.format(refSpecString, version.getName());
 		return new RefSpec(refSpecString);
 	}

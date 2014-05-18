@@ -38,7 +38,7 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
         TextField<String> refspecTextField = new TextField<String>("push-refspec",pushRefspecModel);
         refspecTextField.add(new RefspecValidator());
         refspecTextField.setRequired(false);
-        refspecTextField.setConvertEmptyInputStringToNull(true);
+        refspecTextField.setConvertEmptyInputStringToNull(false);
         pushRefspecGroup.add(refspecTextField);
         add(pushRefspecGroup);
     }
