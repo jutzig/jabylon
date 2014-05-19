@@ -34,6 +34,9 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.RebaseCommand;
+import org.eclipse.jgit.api.RebaseCommand.Operation;
+import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
@@ -102,7 +105,7 @@ public class GitTeamProvider implements TeamProvider {
     @Override
     public Collection<PropertyFileDiff> update(ProjectVersion project, IProgressMonitor monitor)
         throws TeamProviderException {
-
+    	
         SubMonitor subMon = SubMonitor.convert(monitor,100);
         List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
         try {
@@ -145,13 +148,32 @@ public class GitTeamProvider implements TeamProvider {
                 ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getName()+"^{commit}");
                 LOGGER.info("Merging remote commit {} to {}/{}", new Object[]{lastCommitID,project.getName(),project.getParent().getName()});
                 //TODO: use rebase here?
-                MergeCommand merge = git.merge();
-
-
-                merge.include(lastCommitID);
-                MergeResult mergeResult = merge.call();
-                
-                LOGGER.info("Merge finished: {}",mergeResult.getMergeStatus());
+                if(isRebase(project))
+                {
+                	RebaseCommand rebase = git.rebase();
+                	rebase.setUpstream("refs/remotes/origin/"+project.getName());
+                	RebaseResult result = rebase.call();
+                	if(result.getStatus().isSuccessful())
+                	{
+                		LOGGER.info("Rebase finished: {}",result.getStatus());
+                	}
+                	else
+                	{
+                		LOGGER.error("Rebase of {} failed. Attempting abort",project.relativePath());
+                		rebase = git.rebase();
+                		rebase.setOperation(Operation.ABORT);
+                		result = rebase.call();
+                		LOGGER.error("Abort finished with {}",result.getStatus());
+                	}
+                }
+                else
+                {
+                	MergeCommand merge = git.merge();
+                	merge.include(lastCommitID);
+                	MergeResult mergeResult = merge.call();
+                	
+                	LOGGER.info("Merge finished: {}",mergeResult.getMergeStatus());                	
+                }
             }
             else
             	LOGGER.info("Update finished successfully. Nothing to merge, already up to date");
@@ -334,6 +356,11 @@ public class GitTeamProvider implements TeamProvider {
         refSpecString = MessageFormat.format(refSpecString, version.getName());
 		return new RefSpec(refSpecString);
 	}
+    
+    private boolean isRebase(ProjectVersion version) {
+        Preferences node = PreferencesUtil.scopeFor(version);
+        return node.getBoolean(GitConstants.KEY_REBASE, GitConstants.DEFAULT_REBASE);
+	}    
 
 	private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
     	monitor.beginTask("Creating Diff", 100);

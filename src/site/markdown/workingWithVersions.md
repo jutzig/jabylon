@@ -35,3 +35,11 @@ When this actions will be performed depends on the schedule you configured. The 
 The default schedule for automatic update is `0 0 * * * ?` which translates to **once every hour**. 
 
 The default schedule for automatic commit is `0 5 * * * ?` which is very similar to the _update_ schedule and translates to **five minutes past the hour**, so five minutes after the update (if activated). On the right of the schedule expression you can see when the next execution of this job is scheduled.
+
+## Git
+
+If you configured the git team provider for your project you can adjust some advanced settings per version. 
+
+The **refspec** can be adjusted if you want to push to a branch other than the remote branch. The access the name of the current branch insert the placeholder `{0}` into the refspec. It will be replaced with the actual name of the version when a push operation is performed.
+
+The **rebase** setting is active by default. It causes Jabylon to attempt a rebase when necessary. Deactivating this setting will create merge commits instead.

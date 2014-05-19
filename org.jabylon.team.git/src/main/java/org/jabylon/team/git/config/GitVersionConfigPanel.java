@@ -9,6 +9,7 @@
 package org.jabylon.team.git.config;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidatable;
@@ -18,6 +19,7 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.rest.ui.model.AttachableModel;
+import org.jabylon.rest.ui.model.BooleanPreferencesPropertyModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.components.ControlGroup;
@@ -41,6 +43,12 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
         refspecTextField.setConvertEmptyInputStringToNull(false);
         pushRefspecGroup.add(refspecTextField);
         add(pushRefspecGroup);
+        
+        BooleanPreferencesPropertyModel rebase = new BooleanPreferencesPropertyModel(config, GitConstants.KEY_REBASE, false);
+        ControlGroup rebaseGroup = new ControlGroup("rebase-group", nls("rebase.label"),nls("rebase.help"));
+        CheckBox rebaseCheckbox = new CheckBox("rebase",rebase);
+        rebaseGroup.add(rebaseCheckbox);
+        add(rebaseGroup);
     }
 
     public static class GitVersionConfigSection extends AbstractConfigSection<ProjectVersion>{

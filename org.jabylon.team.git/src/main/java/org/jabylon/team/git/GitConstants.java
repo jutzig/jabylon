@@ -34,4 +34,14 @@ public class GitConstants {
      * the default for the refspec
      */
     public static final String DEFAULT_PUSH_REFSPEC = "refs/heads/{0}:refs/heads/{0}";
+    
+    /**
+     * use rebase or merge
+     */
+	public static final String KEY_REBASE = "git.rebase";
+	
+	/**
+	 * the default for the rebase setting. Default is <code>true</code> (merge)
+	 */
+	public static final boolean DEFAULT_REBASE = true;
 }
