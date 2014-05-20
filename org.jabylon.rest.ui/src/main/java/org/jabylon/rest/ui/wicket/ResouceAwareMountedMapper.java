@@ -19,12 +19,14 @@ public class ResouceAwareMountedMapper extends MountedMapper {
 
 	private boolean isHomePage;
 	private boolean isStartupPage;
+	private String mountPath;
 
 
 	public ResouceAwareMountedMapper(String mountPath, Class<? extends IRequestablePage> pageClass) {
 		super(mountPath, pageClass);
 		isHomePage = pageClass == ResourcePage.class;
 		isStartupPage = pageClass == StartupPage.class;
+		this.mountPath = mountPath;
 	}
 
 	
@@ -43,6 +45,10 @@ public class ResouceAwareMountedMapper extends MountedMapper {
 		}
 
 		return super.parseRequest(request);
+	}
+	
+	public String getMountPath() {
+		return mountPath;
 	}
 	
 }

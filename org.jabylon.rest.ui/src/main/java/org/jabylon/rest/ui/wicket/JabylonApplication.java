@@ -12,10 +12,12 @@
 package org.jabylon.rest.ui.wicket;
 
 import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
@@ -25,9 +27,12 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.IExceptionMapper;
+import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.mapper.CompoundRequestMapper;
+import org.apache.wicket.request.mapper.ICompoundRequestMapper;
 import org.apache.wicket.util.IProvider;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.PropertiesPackage;
@@ -110,9 +115,9 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                     Class pageClass = service.getPageClass();
                     
                     if(pageClass==ResourcePage.class) {
-                        //workaround so wicket doesn't choke because the thread context isn't filled (wront thread)
+                        //workaround so wicket doesn't choke because the thread context isn't filled (wrong thread)
                     	ThreadContext.setApplication(JabylonApplication.this);
-                    	ThreadContext.setSession(new WebSession(createFakeRequest()));
+                    	ThreadContext.setSession(new WebSession(createFakeRequest(null)));
                 		//if the main page is ready, we can mount the rest of the pages
                 			initMainPages();
                 	}
@@ -138,15 +143,41 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                 Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
                 if (pathObject instanceof String) {
                     String path = (String) pathObject;
-                    //workaround so wicket doesn't choke because the thread context isn't filled (wront thread)
-                	ThreadContext.setApplication(JabylonApplication.this);
-                	ThreadContext.setSession(new WebSession(createFakeRequest()));
-                    unmount(path);
+                    internalUmount(path);
                 }
             }
 
         });
         pageTracker.open();
+    }
+    
+    private void internalUmount(String path){
+        //workaround so wicket doesn't choke because the thread context isn't filled (wrong thread)
+        if(Application.get()==null)
+        	ThreadContext.setApplication(JabylonApplication.this);
+    	if(CDOAuthenticatedSession.get()==null)
+    		ThreadContext.setSession(new WebSession(createFakeRequest(null)));
+//        unmount(path);
+    	/*
+    	 * umount seems to be greedy, e.g. a prefix match is enough. 
+    	 * That's troublesome because umount /settings/log will also umount /settings
+    	 */
+    	ICompoundRequestMapper rootRequestMapperAsCompound = getRootRequestMapperAsCompound();
+    	if (rootRequestMapperAsCompound instanceof CompoundRequestMapper) {
+			CompoundRequestMapper compound = (CompoundRequestMapper) rootRequestMapperAsCompound;
+			Iterator<IRequestMapper> it = compound.iterator();
+			while (it.hasNext()) {
+				IRequestMapper iRequestMapper = (IRequestMapper) it.next();
+				if (iRequestMapper instanceof ResouceAwareMountedMapper) {
+					ResouceAwareMountedMapper mapper = (ResouceAwareMountedMapper) iRequestMapper;
+					if(path.equals(mapper.getMountPath()))
+					{
+						logger.info("Unmounting  {}",path);
+						getRootRequestMapperAsCompound().remove(mapper);
+					}
+				}
+			}
+		}
     }
     
     private void initMainPages() {
@@ -193,14 +224,16 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
 
     
-	Request createFakeRequest()
+	Request createFakeRequest(final Url url)
 	{
 		return new Request()
 		{
 			@Override
 			public Url getUrl()
 			{
-				return new Url();
+				if(url==null)
+					return new Url();
+				return url;
 			}
 
 			@Override
