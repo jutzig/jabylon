@@ -101,7 +101,6 @@ public class APIComponent
         httpService.unregister(getWebContext(context.getProperties()));
         logger.info("Shutting down Jabylon REST API");
         view.close();
-        getRepositoryConnector().close();
     }
 
 
