@@ -44,7 +44,7 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
         pushRefspecGroup.add(refspecTextField);
         add(pushRefspecGroup);
         
-        BooleanPreferencesPropertyModel rebase = new BooleanPreferencesPropertyModel(config, GitConstants.KEY_REBASE, false);
+        BooleanPreferencesPropertyModel rebase = new BooleanPreferencesPropertyModel(config, GitConstants.KEY_REBASE, true);
         ControlGroup rebaseGroup = new ControlGroup("rebase-group", nls("rebase.label"),nls("rebase.help"));
         CheckBox rebaseCheckbox = new CheckBox("rebase",rebase);
         rebaseGroup.add(rebaseCheckbox);
