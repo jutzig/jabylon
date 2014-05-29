@@ -21,6 +21,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -86,14 +87,14 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 //    	https://github.com/jutzig/jabylon/issues/47
     	return new CustomWebRequest(servletRequest, filterPath);
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected void init() {
         super.init();
         mount(new ResouceAwareMountedMapper("/", StartupPage.class)); //$NON-NLS-1$
-        getRequestCycleSettings().setResponseRequestEncoding("UTF-8"); 
-        getMarkupSettings().setDefaultMarkupEncoding("UTF-8"); 
+        getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
+        getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
         OSGiInjector injector = new OSGiInjector(this);
         getBehaviorInstantiationListeners().add(injector);
         getResourceSettings().getStringResourceLoaders().add(new OSGiAwareBundleStringResourceLoader());
@@ -107,13 +108,13 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 
             @Override
             public Object addingService(ServiceReference ref) {
-            	
+
                 PageProvider service = (PageProvider)bundleContext.getService(ref);
                 Object pathObject = ref.getProperty(PageProvider.MOUNT_PATH_PROPERTY);
                 if (pathObject instanceof String) {
                     String path = (String) pathObject;
                     Class pageClass = service.getPageClass();
-                    
+
                     if(pageClass==ResourcePage.class) {
                         //workaround so wicket doesn't choke because the thread context isn't filled (wrong thread)
                     	ThreadContext.setApplication(JabylonApplication.this);
@@ -121,7 +122,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
                 		//if the main page is ready, we can mount the rest of the pages
                 			initMainPages();
                 	}
-                    
+
                     logger.info("Mounting new page {} at {}", pageClass, path); //$NON-NLS-1$
                     mount(new ResouceAwareMountedMapper(path, pageClass));
 
@@ -150,16 +151,17 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         });
         pageTracker.open();
     }
-    
+
     private void internalUmount(String path){
         //workaround so wicket doesn't choke because the thread context isn't filled (wrong thread)
-        if(Application.get()==null)
+		Application application = ThreadContext.getApplication();
+		if (application == null)
         	ThreadContext.setApplication(JabylonApplication.this);
-    	if(CDOAuthenticatedSession.get()==null)
+    	if(ThreadContext.getSession()==null)
     		ThreadContext.setSession(new WebSession(createFakeRequest(null)));
 //        unmount(path);
     	/*
-    	 * umount seems to be greedy, e.g. a prefix match is enough. 
+    	 * umount seems to be greedy, e.g. a prefix match is enough.
     	 * That's troublesome because umount /settings/log will also umount /settings
     	 */
     	ICompoundRequestMapper rootRequestMapperAsCompound = getRootRequestMapperAsCompound();
@@ -179,12 +181,12 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 			}
 		}
     }
-    
+
     private void initMainPages() {
     	unmount("/");
         mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
         mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
-    	
+
     }
 
 
@@ -206,10 +208,10 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     protected Class<? extends WebPage> getSignInPageClass() {
         return LoginPage.class;
     }
-    
+
 	public IProvider<IExceptionMapper> getExceptionMapperProvider()
 	{
-		
+
 		return new CustomExceptionMapperProvider();
 	}
 
@@ -223,7 +225,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 	}
 
 
-    
+
 	Request createFakeRequest(final Url url)
 	{
 		return new Request()
