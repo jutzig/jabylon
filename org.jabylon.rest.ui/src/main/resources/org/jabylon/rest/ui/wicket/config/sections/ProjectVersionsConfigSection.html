@@ -5,57 +5,36 @@
     <div class="well" wicket:id="versions">
         <h4 wicket:id="name"></h4>
         <span wicket:id="summary"></span>
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-primary" wicket:id="edit">
-                            <i class="icon-edit"></i> <wicket:message key="ProjectVersionsConfigSection.edit.action">Edit</wicket:message>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn" wicket:id="rescan">
-                            <i class="icon-refresh"></i> <wicket:message key="ProjectVersionsConfigSection.rescan.action">Rescan</wicket:message>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn" wicket:id="checkout">
-                            <i class="icon-download"></i> <wicket:message key="ProjectVersionsConfigSection.checkout.action">Checkout</wicket:message>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn" wicket:id="update">
-                            <i class="icon-download"></i> <wicket:message key="ProjectVersionsConfigSection.update.action">Update</wicket:message>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn" wicket:id="commit">
-                            <i class="icon-upload"></i> <wicket:message key="ProjectVersionsConfigSection.commit.action">Commit</wicket:message>
-                        </button>
-                    </td>
-					<td>
-                        <button type="button" class="btn" wicket:id="reset" wicket:message="title:reset.tooltip">
-                            <i class="icon-repeat"></i> <wicket:message key="ProjectVersionsConfigSection.reset.action">[Update]</wicket:message>
-                        </button>
-                    </td>                    
-                    <!-- 					<td>
-                        <button type="button" class="btn">
-                            <i class="icon-download-alt"></i> Download
-                        </button>
-                    </td> -->
-                    <td>
-                        <button type="button" class="btn btn-danger" wicket:id="delete">
-                            <i class="icon-remove"></i> <wicket:message key="ProjectVersionsConfigSection.delete.action">Delete</wicket:message>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div wicket:id="progress" style="width: 400px">[Progress]</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div>
+        <div class="row">
+        	<div class="span8">
+             <button type="button" class="btn btn-primary" wicket:id="edit">
+                 <i class="icon-edit"></i> <wicket:message key="ProjectVersionsConfigSection.edit.action">Edit</wicket:message>
+             </button>
+             <button type="button" class="btn" wicket:id="rescan">
+                 <i class="icon-refresh"></i> <wicket:message key="ProjectVersionsConfigSection.rescan.action">Rescan</wicket:message>
+             </button>
+             <button type="button" class="btn" wicket:id="checkout">
+                <i class="icon-download"></i> <wicket:message key="ProjectVersionsConfigSection.checkout.action">Checkout</wicket:message>
+             </button>
+             <button type="button" class="btn" wicket:id="update">
+                <i class="icon-download"></i> <wicket:message key="ProjectVersionsConfigSection.update.action">Update</wicket:message>
+             </button>
+             <button type="button" class="btn" wicket:id="commit">
+                <i class="icon-upload"></i> <wicket:message key="ProjectVersionsConfigSection.commit.action">Commit</wicket:message>
+             </button>
+             <button type="button" class="btn" wicket:id="reset" wicket:message="title:reset.tooltip">
+                <i class="icon-repeat"></i> <wicket:message key="ProjectVersionsConfigSection.reset.action">[Update]</wicket:message>
+             </button>
+             <button type="button" class="btn btn-danger" wicket:id="delete">
+                <i class="icon-remove"></i> <wicket:message key="ProjectVersionsConfigSection.delete.action">Delete</wicket:message>
+             </button>
+             </div>
+        </div>
+        <div class="row">
+        	<div class="span8" wicket:id="progress" style="width: 400px">[Progress]</div>
+        </div>
+        </div>
     </div>
     <p>
         <a wicket:id="addNew" href="#" class="btn btn-primary"><i class="icon-align-left icon-plus"></i> <wicket:message key="ProjectVersionsConfigSection.add.new.action">Add New</wicket:message></a>

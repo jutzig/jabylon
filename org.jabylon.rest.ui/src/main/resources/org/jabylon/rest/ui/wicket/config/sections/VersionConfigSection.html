@@ -9,24 +9,28 @@
 				wicket:message="placeholder:VersionConfigSection.name.placeholder"
 				placeholder="Name">
 		</div>
-		<div wicket:id="readonly-group">
-			<input type="checkbox" wicket:id="readonly" /> <wicket:message key="readonly.label">[readonly]</wicket:message>
-		</div>
+	</div>
+	<div wicket:id="readonly-group">
+		<input type="checkbox" wicket:id="readonly" /> <wicket:message key="readonly.label">[readonly]</wicket:message>
 	</div>
 	<div class="row" wicket:id="rowPanel">
 		<div class="span6">
 		<form wicket:id="locale-form">
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 2px;">
 					<label class="control-label" for="inputLanguage"><wicket:message
 							key="VersionConfigSection.language">Language</wicket:message></label>
 					<div class="controls">
 						<input type="text" wicket:id="inputLanguage" id="inputLanguage">
 					</div>
+				</div>
+				<div class="control-group" style="margin-bottom: 2px;">
 					<label class="control-label" for="inputCountry"><wicket:message
 							key="VersionConfigSection.country">Country</wicket:message></label>
 					<div class="controls">
 						<input type="text" wicket:id="inputCountry" id="inputCountry">
 					</div>
+				</div>
+				<div class="control-group">
 					<label class="control-label" for="inputVariant"><wicket:message
 							key="VersionConfigSection.variant">Variant</wicket:message></label>
 					<div class="controls">
