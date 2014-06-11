@@ -30,6 +30,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.URI;
+import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.properties.ProjectVersion;
@@ -73,12 +74,13 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
                     String projectLocale = document.get(QueryService.FIELD_LOCALE);
                     String descriptorURI = document.get(QueryService.FIELD_URI);
                     PageParameters params = new PageParameters();
-                    params.set(0, projectName);
-                    params.set(1, projectVersion);
-                    params.set(2, projectLocale);
+                    int startParam = 0;
+                    params.set(startParam++, ServerConstants.WORKSPACE_RESOURCE);
+                    params.set(startParam++, projectName);
+                    params.set(startParam++, projectVersion);
+                    params.set(startParam++, projectLocale);
                     URI uri = URI.createURI(descriptorURI);
 
-                    int startParam = 3;
                     for (int i = startParam; i < uri.segmentCount()+startParam; i++) {
                         params.set(i, uri.segment(i-startParam));
                     }
@@ -87,7 +89,7 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
                     item.add(link);
                     projectLabel = MessageFormat.format(projectLabel, projectName, projectVersion);
 
-                    BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("project-link", ResourcePage.class, createPageParams(projectName,projectVersion));
+                    BookmarkablePageLink<ResourcePage<ProjectVersion>> projectVersionLink = new BookmarkablePageLink<ResourcePage<ProjectVersion>>("project-link", ResourcePage.class, createPageParams(ServerConstants.WORKSPACE_RESOURCE,projectName,projectVersion));
                     projectVersionLink.add(new Label("project", projectLabel));
                     item.add(projectVersionLink);
 
