@@ -70,38 +70,49 @@ public class PartialScanFileAcceptor extends AbstractScanFileAcceptor {
         descriptor.updatePercentComplete();
     }
 
-    private void newTemplateMatch(File file) {
-        URI location = calculateLocation(file);
-        if (getProjectVersion().getTemplate() == null) {
-            getProjectVersion().setTemplate(PropertiesFactory.eINSTANCE.createProjectLocale());
-            getProjectVersion().getTemplate().setName("template");
-            getProjectVersion().getChildren().add(getProjectVersion().getTemplate());
-        }
-        PropertyFileDescriptor descriptor = createDescriptor(getProjectVersion().getTemplate(), location);
-        getProjectVersion().getTemplate().getDescriptors().add(descriptor);
+	private void newTemplateMatch(File file) {
+		URI location = calculateLocation(file);
+		if (getProjectVersion().getTemplate() == null) {
+			getProjectVersion().setTemplate(PropertiesFactory.eINSTANCE.createProjectLocale());
+			getProjectVersion().getTemplate().setName("template");
+			getProjectVersion().getChildren().add(getProjectVersion().getTemplate());
+		}
 
-        // load file to initialize statistics;
-        PropertyFile propertyFile = descriptor.loadProperties();
-        descriptor.setKeys(propertyFile.getProperties().size());
-        descriptor.updatePercentComplete();
+		PropertyFileDescriptor descriptor = (PropertyFileDescriptor) getProjectVersion().getTemplate().resolveChild(location);
+		// Test if this descriptor is already available
+		boolean exists = descriptor != null;
+		if (!exists) {
+			descriptor = createDescriptor(getProjectVersion().getTemplate(),location);
+			getProjectVersion().getTemplate().getDescriptors().add(descriptor);
+		}
 
-        Locale locale = getPropertyScanner().getLocale(file);
-        if (locale!=null) {
-            descriptor.setVariant(locale);
-        }
+		// load file to initialize statistics;
+		PropertyFile propertyFile = descriptor.loadProperties();
+		descriptor.setKeys(propertyFile.getProperties().size());
+		descriptor.updatePercentComplete();
 
-        Map<Locale, File> translations = getPropertyScanner().findTranslations(file, getScanConfig());
-        Set<Entry<Locale, File>> set = translations.entrySet();
-        for (Entry<Locale, File> entry : set) {
-            ProjectLocale projectLocale = getOrCreateProjectLocale(entry.getKey());
-            URI childURI = calculateLocation(entry.getValue());
-            PropertyFileDescriptor fileDescriptor = createDescriptor(projectLocale, childURI);
-            fileDescriptor.setMaster(descriptor);
+		Locale locale = getPropertyScanner().getLocale(file);
+		if (locale != null) {
+			descriptor.setVariant(locale);
+		}
 
-
-        }
-        PropertyResourceUtil.addNewTemplateDescriptor(descriptor, getProjectVersion());
-    }
+		Map<Locale, File> translations = getPropertyScanner().findTranslations(file, getScanConfig());
+		Set<Entry<Locale, File>> set = translations.entrySet();
+		for (Entry<Locale, File> entry : set) {
+			ProjectLocale projectLocale = getOrCreateProjectLocale(entry.getKey());
+			URI childURI = calculateLocation(entry.getValue());
+	        //Test if this child descriptor is already available
+	        PropertyFileDescriptor fileDescriptor = (PropertyFileDescriptor) projectLocale.resolveChild(childURI);
+	        if(fileDescriptor==null)
+	        {
+	        	fileDescriptor = createDescriptor(projectLocale, childURI);
+	        }
+			fileDescriptor.setMaster(descriptor);
+		}
+		if (!exists) {
+			PropertyResourceUtil.addNewTemplateDescriptor(descriptor,getProjectVersion());
+		}
+	}
 
 
     public ProjectLocale getOrCreateProjectLocale(Locale locale) {

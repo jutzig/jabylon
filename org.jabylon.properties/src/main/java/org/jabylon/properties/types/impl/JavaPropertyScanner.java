@@ -80,6 +80,8 @@ public class JavaPropertyScanner extends AbstractPropertyScanner implements Prop
         Pattern filePattern = buildPatternFrom(template.getName());
         File folder = template.getParentFile();
         File[] files = folder.listFiles();
+        if(files==null)
+        	return results;
         for (File file : files) {
             if(file.equals(template))
                 continue;
@@ -112,17 +114,17 @@ public class JavaPropertyScanner extends AbstractPropertyScanner implements Prop
 	public PropertyConverter createConverter(URI resource) {
 		return new PropertiesHelper(true, resource);
 	}
-	
+
 	@Override
 	public String[] getDefaultIncludes() {
 		return DEFAULT_INCLUDES;
 	}
-	
+
 	@Override
 	public String[] getDefaultExcludes() {
 		return DEFAULT_EXCLUDES;
 	}
-	
+
 	@Override
 	public String getEncoding(){
 		return "ISO-8859-1";
