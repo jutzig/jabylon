@@ -371,7 +371,7 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
 		 * see https://github.com/jutzig/jabylon/issues/215
 		 */
 		if(isMaster() && getProjectLocale()!=null)
-			getProjectLocale().setPropertyCount(newKeys);
+			getProjectLocale().updatePercentComplete();
 	}
 
     /**

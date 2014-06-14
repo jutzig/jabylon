@@ -229,11 +229,11 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
     public int updatePercentComplete() {
         Resolvable<?, ?> parent = getParent();
         int percentComplete = internalUpdatePercentComplete();
+        
         if (percentComplete != getPercentComplete()) {
             setPercentComplete(percentComplete);
-            while (parent != null) {
+            if (parent != null) {
                 parent.updatePercentComplete();
-                parent = parent.getParent();
             }
         }
         return percentComplete;

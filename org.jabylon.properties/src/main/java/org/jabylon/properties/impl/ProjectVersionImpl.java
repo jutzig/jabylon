@@ -234,8 +234,8 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
         //first normalize the path
         String path = diffPath.replace('\\', '/');
         if(diffPath.startsWith("/"))
-            return URI.createURI(diffPath);
-        return URI.createURI("/"+path);
+            return URI.createURI(diffPath,false);
+        return URI.createURI("/"+path,false);
     }
 
     /**
