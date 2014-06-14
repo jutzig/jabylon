@@ -360,11 +360,18 @@ public class PropertyFileDescriptorImpl extends ResolvableImpl<Resolvable<?, ?>,
     /**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
     @Override
     public void setKeys(int newKeys) {
 		eDynamicSet(PropertiesPackage.PROPERTY_FILE_DESCRIPTOR__KEYS, PropertiesPackage.Literals.PROPERTY_FILE_DESCRIPTOR__KEYS, newKeys);
+		/*
+		 * master is always "complete" so the propagation mechanism doesn't work correctly.
+		 * In that case we need to tell the locale specifically that we have a new number of keys
+		 * see https://github.com/jutzig/jabylon/issues/215
+		 */
+		if(isMaster() && getProjectLocale()!=null)
+			getProjectLocale().setPropertyCount(newKeys);
 	}
 
     /**
