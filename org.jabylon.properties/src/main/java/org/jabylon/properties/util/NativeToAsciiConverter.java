@@ -73,6 +73,10 @@ public class NativeToAsciiConverter {
                         aChar = '\f';
                     } else if (aChar == 'u') {
                         outBuffer.append("\\"); //$NON-NLS-1$
+                    } else {
+                    	// might be an escaped special char, we mustn't omit it
+                    	//see https://github.com/jutzig/jabylon/issues/212
+                    	outBuffer.append("\\"); //$NON-NLS-1$
                     }
                     outBuffer.append(aChar);
                 }

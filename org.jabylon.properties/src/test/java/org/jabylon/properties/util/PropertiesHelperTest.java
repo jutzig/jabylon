@@ -94,7 +94,7 @@ public class PropertiesHelperTest {
 		BufferedReader reader = null;
 		try {
 			InputStream stream = new BufferedInputStream(loadFileAsStream("Buttons_en.seenls"));
-			fixture.checkForBom(stream);
+			PropertiesHelper.checkForBom(stream);
 			reader = new BufferedReader(new InputStreamReader(stream));
 			Property property = fixture.readProperty(reader);
 			assertEquals("DTM.CASCADE_SESSION_FRAMES_TEXT", property.getKey());
@@ -254,7 +254,7 @@ public class PropertiesHelperTest {
 		out.write("test".getBytes());
 
 		ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
-		ByteOrderMark bom = fixture.checkForBom(stream);
+		ByteOrderMark bom = PropertiesHelper.checkForBom(stream);
 		assertEquals(ByteOrderMark.UTF_16BE, bom);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		assertEquals("The reader must contain everything after the bom", "test", reader.readLine());
@@ -264,7 +264,7 @@ public class PropertiesHelperTest {
 	@Test
 	public void testCheckForBomNoBom() throws Exception {
 		ByteArrayInputStream stream = new ByteArrayInputStream("test".getBytes());
-		ByteOrderMark bom = fixture.checkForBom(stream);
+		ByteOrderMark bom = PropertiesHelper.checkForBom(stream);
 		assertNull(bom);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		assertEquals("The reader must contain everything after the bom", "test", reader.readLine());
@@ -275,7 +275,7 @@ public class PropertiesHelperTest {
 	public void testCheckForBomWrongStream() throws Exception {
 		InputStream in = Mockito.mock(InputStream.class);
 		when(in.markSupported()).thenReturn(false);
-		fixture.checkForBom(in);
+		PropertiesHelper.checkForBom(in);
 	}
 
 	/**
@@ -527,6 +527,28 @@ public class PropertiesHelperTest {
 		assertEquals(2, property.getAnnotations().size());
 		assertEquals("foo", property.getAnnotations().get(0).getName());
 	}
+	
+
+    /**
+     * tests that annotations are read correctly
+     * @throws IOException
+     */
+	@Test
+	public void testColonInKey() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("Name\\: = Name\\:"));
+		Property property = fixture.readProperty(reader);
+		assertEquals("Name:", property.getKey());
+		assertEquals("Name:", property.getValue());
+	}
+	
+	@Test
+	public void testColonInKey2() throws IOException {
+		BufferedReader reader = new BufferedReader(new StringReader("Name\\: = Name:"));
+		Property property = fixture.readProperty(reader);
+		assertEquals("Name:", property.getKey());
+		assertEquals("Name:", property.getValue());
+	}
+	
 
     protected BufferedReader asReader(String string)
     {
