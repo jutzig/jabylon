@@ -96,7 +96,14 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	public PropertyEditorSinglePanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
 		mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
-		targetKey = parameters.get("key").toString(null);
+		targetKey = fixKeyName(parameters.get("key").toString(null));
+	}
+
+	private String fixKeyName(String string) {
+		//workaround for https://github.com/jutzig/jabylon/issues/211
+		if(string!=null && string.endsWith("../"))
+			return string.substring(0, string.length()-1);
+		return string;
 	}
 
 	@Override
