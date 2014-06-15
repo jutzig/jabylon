@@ -9,6 +9,7 @@
 package org.jabylon.properties.impl;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,12 +28,16 @@ import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.PropertyFileDiff;
 import org.jabylon.properties.Resolvable;
+import org.jabylon.properties.Review;
 import org.jabylon.properties.ScanConfiguration;
 import org.jabylon.properties.types.PropertyScanner;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.properties.util.scanner.FullScanFileAcceptor;
 import org.jabylon.properties.util.scanner.PartialScanFileAcceptor;
 import org.jabylon.properties.util.scanner.WorkspaceScanner;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -148,25 +153,42 @@ public class ProjectVersionImpl extends ResolvableImpl<Project, ProjectLocale> i
     }
 
     public void fullScan(ScanConfiguration configuration, IProgressMonitor monitor) {
-        getChildren().clear();
+    	Multimap<URI, Review> reviews = ArrayListMultimap.create();
+    	/*
+    	 * we need to save all manual reviews (suggestions) as they will not
+    	 * be recreated automatically.
+    	 * see https://github.com/jutzig/jabylon/issues/214
+    	 */
+    	for (ProjectLocale locale : getChildren()) {
+			for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
+				for (Review review : descriptor.getReviews()) {
+					if (Review.KIND_SUGGESTION.equals(review.getReviewType()))
+						reviews.put(descriptor.getLocation(), review);
+				}
+			}
+		}
+    	getChildren().clear();
         setTemplate(null);
         WorkspaceScanner scanner = new WorkspaceScanner();
         File baseDir = new File(absolutPath().path()).getAbsoluteFile();
         SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
         PropertyScanner propertyScanner = PropertyResourceUtil.createScanner(this);
-        scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration,
-                subMonitor.newChild(50));
-
-        for (ProjectLocale projectLocale : getChildren()) {
-            for (PropertyFileDescriptor descriptor : projectLocale.getDescriptors()) {
-                descriptor.updatePercentComplete();
-            }
-        }
+        scanner.fullScan(new FullScanFileAcceptor(this, propertyScanner, configuration), baseDir, propertyScanner, configuration, subMonitor.newChild(50));
 
         PropertyResourceUtil.createMissingDescriptorEntries(this, subMonitor.newChild(50));
+
+        for (ProjectLocale locale : getChildren()) {
+			for (PropertyFileDescriptor descriptor : locale.getDescriptors()) {
+				Collection<Review> currentReviews = reviews.get(descriptor.getLocation());
+				descriptor.getReviews().addAll(currentReviews);
+				descriptor.updatePercentComplete();
+			}
+		}
     }
 
-    public ProjectLocale getProjectLocale(Locale locale) {
+	public ProjectLocale getProjectLocale(Locale locale) {
+		if(locale==null)
+			return getTemplate();
         EList<ProjectLocale> locales = getChildren();
         for (ProjectLocale projectLocale : locales) {
             if (locale.equals(projectLocale.getLocale()))
