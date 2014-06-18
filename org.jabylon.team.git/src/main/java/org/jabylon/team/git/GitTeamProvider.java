@@ -112,6 +112,9 @@ public class GitTeamProvider implements TeamProvider {
             Repository repository = createRepository(project);
             Git git = Git.wrap(repository);
             FetchCommand fetchCommand = git.fetch();
+            URI uri = project.getParent().getRepositoryURI();
+            if(uri!=null)
+            	fetchCommand.setRemote(stripUserInfo(uri).toString());
             String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
             refspecString = MessageFormat.format(refspecString, project.getName());
             RefSpec spec = new RefSpec(refspecString);
@@ -304,6 +307,9 @@ public class GitTeamProvider implements TeamProvider {
             }
             checkCanceled(subMon);
             PushCommand push = git.push();
+            URI uri = project.getParent().getRepositoryURI();
+            if(uri!=null)
+            	push.setRemote(stripUserInfo(uri).toString());
             push.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(60)));
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             
