@@ -71,6 +71,14 @@ $(document).ready(function() {
     shortcut.add("tab", function() {
         traverseFocus();
     });
+    
+    //allows suggestions to be applied directly from the badge
+    $(".label[data-suggestion]").click(function(){
+    	var suggestion = $(this).data('suggestion');
+    	var widget = $("#translation");
+    	widget.val(suggestion);
+    	markDirty();
+    });
 });
 
 function traverseFocus() {

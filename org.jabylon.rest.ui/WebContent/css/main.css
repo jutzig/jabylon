@@ -205,3 +205,8 @@ table.palette td.buttons button {
     height: 30px;
     width: 30px;
 }
+
+/* makes suggestion links appear clickable*/
+span.label[data-suggestion] {
+	cursor: pointer;
+}] 

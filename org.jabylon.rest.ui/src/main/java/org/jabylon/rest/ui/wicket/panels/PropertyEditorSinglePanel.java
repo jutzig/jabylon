@@ -396,6 +396,10 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 				continue;
 			Label label = new Label(view.newChildId(), review.getReviewType());
 			label.add(new AttributeAppender("class", getLabelClass(review)));
+			if(editKind==EditKind.EDIT && Review.KIND_SUGGESTION.equals(review.getReviewType())) {
+				//allow the label to be clicked to apply the suggestion
+				label.add(new AttributeAppender("data-suggestion", review.getMessage()));	
+			}
 			StringBuilder title = new StringBuilder();
 			if (review.getMessage() != null)
 				title.append(review.getMessage());
@@ -488,7 +492,6 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 						}
 					}
 
-					getPropertyPersistence().saveProperties(descriptor, file);
 
 					if (translation.getValue() != null) {
 						// see if we can close a manual review because we
@@ -513,6 +516,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 							}
 						}
 					}
+					getPropertyPersistence().saveProperties(descriptor, file);
 
 					/*
 					 * see https://github.com/jutzig/jabylon/issues/112 for now
