@@ -7,22 +7,22 @@ Jabylon is distributed under the [Eclipse Public License 1.0](http://opensource.
 
 ## Release
 
-The current stable release of Jabylon is version [1.1.1](https://github.com/jutzig/jabylon/releases/latest) .
+The current stable release of Jabylon is version [1.1.2](https://github.com/jutzig/jabylon/releases/latest) .
 This version requires a **JRE 6 or higher**
 
 
 ### WAR 
  
-Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.1.1/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
+Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/v1.1.2/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
 
 ### Standalone
 
-Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.1.1/jabylon-standalone.zip) to run Jabylon without a servlet container.
+Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/v1.1.2/jabylon-standalone.zip) to run Jabylon without a servlet container.
 
 
 ### Source
 
-Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/v1.1.1.zip).
+Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/v1.1.2.zip).
 
 
 ## Nightly Build

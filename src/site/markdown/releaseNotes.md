@@ -1,6 +1,16 @@
 
 # Release Notes
 
+## Jabylon 1.1.2
+
+Jabylon 1.1.2 was released on the **1st July 2014** and is available for [download](download.html).
+
+The release includes bugfixes and provides a quicker qay to accept user suggestions 
+
+ * [217](https://github.com/jutzig/jabylon/issues/217) - easier access to accept suggestions
+ 
+For a full list see [here](https://github.com/jutzig/jabylon/issues?milestone=7&amp;page=1&amp;state=closed "Issue List") 
+
 ## Jabylon 1.1.1
 
 Jabylon 1.1.1 was released on the **20th May 2014** and is available for [download](download.html).
