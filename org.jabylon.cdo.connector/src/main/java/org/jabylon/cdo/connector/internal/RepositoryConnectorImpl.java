@@ -26,6 +26,7 @@ import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.container.IPluginContainer;
 import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 import org.jabylon.cdo.connector.RepositoryConnector;
+import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.users.UsersPackage;
 
@@ -84,13 +85,13 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
      * @return the transaction
      */
     public CDOTransaction openTransaction() {
-        return getSession().openTransaction();
+        return configureView(getSession().openTransaction());
 
     }
 
     @Override
     public CDOView openView() {
-        return getSession().openView();
+        return configureView(getSession().openView());
     }
 
     @Override
@@ -108,6 +109,15 @@ public class RepositoryConnectorImpl implements RepositoryConnector {
         theSession.getPackageRegistry().putEPackage(PropertiesPackage.eINSTANCE);
         theSession.getPackageRegistry().putEPackage(UsersPackage.eINSTANCE);
         return theSession;
+    }
+
+
+    public CDOView openView(CDONet4jSession session) {
+    	return configureView(session.openView());
+    }
+
+    public <T extends CDOView> T configureView(T view){
+    	return TransactionUtil.configureView(view);
     }
 
 }

@@ -24,4 +24,17 @@ public interface RepositoryConnector {
 
     void close();
 
+
+    /**
+     * opens a view for the session and configures the default options
+     * @param session
+     */
+    public CDOView openView(CDONet4jSession session);
+
+    /**
+     * configures the default options for a view
+     * @param view
+     */
+    public <T extends CDOView> T configureView(T view);
+
 }

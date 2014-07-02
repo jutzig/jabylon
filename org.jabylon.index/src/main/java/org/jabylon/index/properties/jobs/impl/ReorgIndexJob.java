@@ -60,21 +60,21 @@ public class ReorgIndexJob implements JobExecution {
 
 
 	private static final Logger logger = LoggerFactory.getLogger(ReorgIndexJob.class);
-    
-    
+
+
     @org.apache.felix.scr.annotations.Property(value="true", name=JobExecution.PROP_JOB_ACTIVE)
     public static final String DEFAULT_ACTIVE = "true";
-    
+
     /** at 2 am every day*/
     @org.apache.felix.scr.annotations.Property(value="0 0 2 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
     public static final String DEFAULT_SCHEDULE = "0 0 2 * * ?";
-    
+
     @org.apache.felix.scr.annotations.Property(value="%reorg.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
-    
+
     /** at 2 am every day*/
     @org.apache.felix.scr.annotations.Property(value="%reorg.job.description", name=JobExecution.PROP_JOB_DESCRIPTION)
-    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;     
+    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;
 
     /**
      *
@@ -93,8 +93,8 @@ public class ReorgIndexJob implements JobExecution {
         // retry if the index is currently locked
         return true;
     }
-    
-    private static void indexWorkspace(Workspace workspace, IndexWriter writer, IProgressMonitor monitor) throws CorruptIndexException, IOException {    	
+
+    private static void indexWorkspace(Workspace workspace, IndexWriter writer, IProgressMonitor monitor) throws CorruptIndexException, IOException {
         EList<Project> projects = workspace.getChildren();
         SubMonitor submon = SubMonitor.convert(monitor,"Rebuilding Index", projects.size()*10);
         PropertyFileAnalyzer analyzer = new PropertyFileAnalyzer();
@@ -117,7 +117,7 @@ public class ReorgIndexJob implements JobExecution {
         				}
         				mon.worked(1);
         			}
-        		}        	
+        		}
 				mon.done();
 			}
         }
@@ -125,11 +125,11 @@ public class ReorgIndexJob implements JobExecution {
         	monitor.done();
         }
     }
-    
+
     private static void checkCanceled(IProgressMonitor monitor) {
     	if(monitor.isCanceled())
     		throw new OperationCanceledException();
-		
+
 	}
 
 	public static void indexWorkspace(RepositoryConnector connector, IProgressMonitor monitor) throws CorruptIndexException, IOException {
@@ -141,7 +141,7 @@ public class ReorgIndexJob implements JobExecution {
              writer = IndexActivator.getDefault().obtainIndexWriter();
              writer.deleteAll();
              session = connector.createSession();
-             CDOView view = session.openView();
+             CDOView view = connector.openView(session);
              CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
              Workspace workspace = (Workspace) resource.getContents().get(0);
              indexWorkspace(workspace, writer, monitor);
@@ -172,5 +172,5 @@ public class ReorgIndexJob implements JobExecution {
 	@Override
 	public String getID() {
 		return JOB_ID;
-	}    
+	}
 }

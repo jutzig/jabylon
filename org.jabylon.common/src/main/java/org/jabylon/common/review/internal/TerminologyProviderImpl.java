@@ -101,7 +101,7 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
 
     public void bindRepositoryConnector(RepositoryConnector connector) {
         session = connector.createSession();
-        view = session.openView();
+        view = connector.openView(session);
     }
 
     public void unbindRepositoryConnector(RepositoryConnector connector) {

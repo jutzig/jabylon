@@ -44,7 +44,7 @@ public class WorkspaceURIHandler implements URIHandler {
     @Activate
     public void activate() {
         session = repositoryConnector.createSession();
-        CDOView view = session.openView();
+        CDOView view = repositoryConnector.openView(session);
         CDOResource workspaceResource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
         workspace = (Workspace) workspaceResource.getContents().get(0);
     }
@@ -91,12 +91,12 @@ public class WorkspaceURIHandler implements URIHandler {
             return true;
         return "workspace".equals(uri.segment(0));
     }
-    
+
     @Override
     public boolean canHandle(Object o) {
     	return o instanceof Resolvable;
     }
-    
+
     @SuppressWarnings("rawtypes")
 	@Override
     public URI toURI(Object o) {
