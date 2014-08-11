@@ -12,6 +12,7 @@
 package org.jabylon.team.git.config;
 
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -77,7 +78,7 @@ public class GitConfigPanel extends BasicPanel<Project> {
         
         PreferencesPropertyModel messageModel = new PreferencesPropertyModel(config, GitConstants.KEY_MESSAGE, "");
         ControlGroup messageGroup = new ControlGroup("message-group", nls("message.label"), nls("message.help"));
-        TextField<String> messageField = new TextField<String>("gitCommitMessage", messageModel);
+        TextArea<String> messageField = new TextArea<String>("gitCommitMessage", messageModel);
         messageField.setRequired(false);
         messageGroup.add(messageField);
         add(messageGroup);
