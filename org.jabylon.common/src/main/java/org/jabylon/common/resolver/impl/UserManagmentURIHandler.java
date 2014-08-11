@@ -50,7 +50,7 @@ public class UserManagmentURIHandler implements URIHandler {
     @Activate
     public void activate() {
         session = repositoryConnector.createSession();
-        CDOView view = session.openView();
+        CDOView view = repositoryConnector.openView(session);
         CDOResource userResource = view.getResource(ServerConstants.USERS_RESOURCE);
         userManagment = (UserManagement) userResource.getContents().get(0);
     }
@@ -118,13 +118,13 @@ public class UserManagmentURIHandler implements URIHandler {
     private String getSegmentName(EObject object) {
     	if (object instanceof UserManagement) {
 			return SECURITY_URI_PREFIX;
-			
+
 		}
     	EStructuralFeature feature = object.eClass().getEStructuralFeature("name");
         if(feature==null)
             return null;
         return (String) object.eGet(feature);
-		
+
 	}
 
 	public void bindRepositoryConnector(RepositoryConnector connector) {
@@ -141,7 +141,7 @@ public class UserManagmentURIHandler implements URIHandler {
             return false;
         return SECURITY_URI_PREFIX.equals(uri.segment(0));
     }
-    
+
     @Override
     public boolean canHandle(Object o) {
     	if (o instanceof EObject) {
@@ -154,7 +154,7 @@ public class UserManagmentURIHandler implements URIHandler {
 		}
     	return false;
     }
-    
+
     @Override
     public URI toURI(Object o) {
     	Deque<String> segments = new ArrayDeque<String>();

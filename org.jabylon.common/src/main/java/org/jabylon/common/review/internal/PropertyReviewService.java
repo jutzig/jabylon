@@ -26,7 +26,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.properties.Project;
@@ -77,7 +77,7 @@ public class PropertyReviewService implements PropertiesListener {
         PropertyFile slaveProperties = descriptor.loadProperties();
         PropertyFile masterProperties = descriptor.getMaster().loadProperties();
 
-        CDOTransaction transaction = descriptor.cdoView().getSession().openTransaction();
+        CDOTransaction transaction = TransactionUtil.configureView(descriptor.cdoView().getSession().openTransaction());
         descriptor = transaction.getObject(descriptor);
         Set<String> allProperties = new HashSet<String>();
         for (Property prop : slaveProperties.getProperties()) {
@@ -158,7 +158,7 @@ public class PropertyReviewService implements PropertiesListener {
         List<ReviewParticipant> activeReviews = getActiveReviews(project);
         if (activeReviews.isEmpty())
             return;
-        CDOTransaction transaction = descriptor.cdoView().getSession().openTransaction();
+        CDOTransaction transaction = TransactionUtil.configureView(descriptor.cdoView().getSession().openTransaction());
         descriptor = transaction.getObject(descriptor);
         PropertyFile masterProperties = null;
         if (!descriptor.isMaster())

@@ -70,14 +70,14 @@ public class URIResolverImpl implements URIResolver {
             	Object resolved = handler.resolve(uri);
 //            	URI internal = internalGetURI(resolved);
 //				if(!internal.equals(uri))
-//					throw new IllegalStateException(internal + " != " + uri);   
+//					throw new IllegalStateException(internal + " != " + uri);
 				return resolved;
             }
         }
         return null;
 
     }
-    
+
 
 
 	public URI internalGetURI(Object o) {
@@ -89,7 +89,7 @@ public class URIResolverImpl implements URIResolver {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public URI getURI(Object o) {
 		URI uri = internalGetURI(o);
@@ -100,7 +100,7 @@ public class URIResolverImpl implements URIResolver {
 //		if(resolved == null)
 //			throw new IllegalStateException("handler is not sane");
 		return uri;
-		
+
 	}
 
     /*
@@ -118,8 +118,9 @@ public class URIResolverImpl implements URIResolver {
     }
 
     public void bindRepositoryConnector(RepositoryConnector connector) {
+    	repositoryConnector = connector;
         session = connector.createSession();
-        view = session.openView();
+        view = connector.openView(session);
     }
 
     public void unbindRepositoryConnector(RepositoryConnector connector) {
@@ -144,7 +145,7 @@ public class URIResolverImpl implements URIResolver {
 
     @Override
     public CDOObject resolveWithTransaction(CDOID id) {
-        return session.openTransaction().getObject(id);
+        return repositoryConnector.configureView(session.openTransaction()).getObject(id);
     }
 
 }

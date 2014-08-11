@@ -76,9 +76,9 @@ import com.google.common.cache.LoadingCache;
 @Service(PropertyPersistenceService.class)
 public class PropertiesPersistenceServiceImpl implements PropertyPersistenceService, Runnable {
 
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesPersistenceServiceImpl.class);
-	
+
     private final class ListeningAdapter extends EContentAdapter {
 		@Override
 		public void notifyChanged(Notification notification) {
@@ -290,15 +290,15 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 	private void hookListener(final RepositoryConnector repositoryConnector) {
 		CDONet4jSession session = repositoryConnector.createSession();
 		session.options().setPassiveUpdateMode(PassiveUpdateMode.ADDITIONS);
-		
-		CDOView view = session.openView();
+
+		CDOView view = repositoryConnector.openView(session);
 		view.options().addChangeSubscriptionPolicy(CDOAdapterPolicy.ALL);
 		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 		workspace = (Workspace) resource.getContents().get(0);
-		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(20000).weigher(new PropertySizeWeigher()).recordStats().build(new PropertyFileCacheLoader(workspace.cdoView()));	
-		
-		
-		//this is very expensive, so don't do it during the bind phase 
+		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(20000).weigher(new PropertySizeWeigher()).recordStats().build(new PropertyFileCacheLoader(workspace.cdoView()));
+
+
+		//this is very expensive, so don't do it during the bind phase
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -315,7 +315,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
         	CDOView view = workspace.cdoView();
         	org.eclipse.emf.cdo.session.CDOSession session = view.getSession();
         	LifecycleUtil.deactivate(view);
-        	LifecycleUtil.deactivate(session);        	
+        	LifecycleUtil.deactivate(session);
         	session = null;
         }
 
@@ -490,10 +490,10 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
     @Override
     public void clearCache() {
     	cache.invalidateAll();
-    	
+
     }
-    
-    
+
+
 }
 
 class PropertyTuple {
