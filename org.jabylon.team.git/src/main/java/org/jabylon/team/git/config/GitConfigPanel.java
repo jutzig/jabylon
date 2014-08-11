@@ -11,6 +11,7 @@
  */
 package org.jabylon.team.git.config;
 
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -20,6 +21,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesPackage;
+import org.jabylon.rest.ui.model.BooleanPreferencesPropertyModel;
 import org.jabylon.rest.ui.model.EObjectPropertyModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -82,6 +84,12 @@ public class GitConfigPanel extends BasicPanel<Project> {
         messageField.setRequired(false);
         messageGroup.add(messageField);
         add(messageGroup);
+        
+        BooleanPreferencesPropertyModel changeIdModel = new BooleanPreferencesPropertyModel(config, GitConstants.KEY_INSERT_CHANGE_ID, false);
+        ControlGroup changeIdGroup = new ControlGroup("changeId-group", nls("changeId.label"), nls("changeId.help"));
+        CheckBox changeIdCheckbox = new CheckBox("changeId", changeIdModel);
+        changeIdGroup.add(changeIdCheckbox);
+        add(changeIdGroup);
     }
 
 }

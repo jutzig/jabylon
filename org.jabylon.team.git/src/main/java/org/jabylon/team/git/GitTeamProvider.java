@@ -290,8 +290,10 @@ public class GitTeamProvider implements TeamProvider {
                 String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
                 String email = node.get(GitConstants.KEY_EMAIL, "jabylon@example.org");
                 String message = node.get(GitConstants.KEY_MESSAGE, "Auto Sync-up by Jabylon");
+                boolean insertChangeId = node.getBoolean(GitConstants.KEY_INSERT_CHANGE_ID, false);
                 commit.setAuthor(username, email);
                 commit.setCommitter(username, email);
+                commit.setInsertChangeId(insertChangeId);
                 commit.setMessage(message);
                 for (String path : changedFiles) {
                 	checkCanceled(subMon);
@@ -560,5 +562,4 @@ public class GitTeamProvider implements TeamProvider {
         }
         return uri;
     }
-
 }

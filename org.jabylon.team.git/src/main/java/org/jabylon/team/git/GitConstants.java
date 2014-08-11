@@ -16,7 +16,8 @@ package org.jabylon.team.git;
  *
  */
 public class GitConstants {
-    private GitConstants() {
+
+	private GitConstants() {
         // hide utility constructor
     }
 
@@ -26,6 +27,7 @@ public class GitConstants {
     public static final String KEY_PASSWORD = "git.password";
     public static final String KEY_EMAIL = "git.email";
     public static final String KEY_MESSAGE = "git.message";
+    public static final String KEY_INSERT_CHANGE_ID = "git.changeId";
     /**
      * the refspec used for pushes
      */
