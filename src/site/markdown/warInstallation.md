@@ -3,7 +3,7 @@
 
 Jabylon can be deployed into any Java EE application server. This document will show an example on how to do that in Tomcat 7 which can be downloaded [here](http://tomcat.apache.org/download-70.cgi) and Jetty 9 which can be downloaded [here](http://download.eclipse.org/jetty/).
 
-## Deploying Archiva in Tomcat 7
+## Deploying Jabylon in Tomcat 7
 
 [Download](./download.html) the Jabylon WAR and copy it into `tomcat/webapps`.
 Now you can run tomcat with e.g `bin/startup.sh`. Jabylon should automatically get deployed and be available at [http://localhost:8080/jabylon](http://localhost:8080/jabylon).
@@ -12,7 +12,7 @@ Jabylon needs a working directory to store the translation projects and the embe
 
 The logs will be placed to `logs/jabylon.log` by default. To change this location you can set the system property `jabylon.log` (this can be done in `conf/catalina.properties` again).
 
-## Deploying Archiva in Jetty
+## Deploying Jabylon in Jetty
 
 [Download](./download.html) the Jabylon WAR and copy it into `jetty/webapps`.
 Now you can run jetty with `java -jar start.jar`. Jabylon should automatically get deployed and be available at [http://localhost:8080/jabylon](http://localhost:8080/jabylon).
