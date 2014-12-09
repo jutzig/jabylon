@@ -231,9 +231,9 @@
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>servletbridge</artifactId>
-			<version>1.2.0.201008301518</version>
+			<version>1.3.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/src/main/web/lib/org.eclipse.equinox.servletbridge_1.2.0.201008301518.jar</systemPath>
+			<systemPath>${basedir}/src/main/web/lib/org.eclipse.equinox.servletbridge-1.3.0-SNAPSHOT.jar</systemPath>
 		</dependency>
 
 		<dependency>
