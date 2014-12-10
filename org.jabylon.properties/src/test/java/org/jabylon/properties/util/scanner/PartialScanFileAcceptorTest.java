@@ -148,9 +148,9 @@ public class PartialScanFileAcceptorTest {
     public void testComputeLocationWindows3()
     {
     	ProjectVersion projectVersion = Mockito.mock(ProjectVersion.class);
-    	Mockito.when(projectVersion.absolutPath()).thenReturn(URI.createFileURI("\\C:\\tests\\jabylon\\workspace\\test\\master\\"));
+    	Mockito.when(projectVersion.absolutPath()).thenReturn(URI.createFileURI("C:\\tests\\jabylon\\workspace\\test\\master\\"));
     	PartialScanFileAcceptor acceptor = new PartialScanFileAcceptor(projectVersion, null, null);
-    	URI location = acceptor.calculateLocation(new File("c:/tests/jabylon/workspace/test/master/core/build/internalartifacts.properties"));
+    	URI location = acceptor.calculateLocation(new File("/c:/tests/jabylon/workspace/test/master/core/build/internalartifacts.properties"));
     	assertEquals("back slash or forward slash should not matter","core/build/internalartifacts.properties", location.toString());
     }
 

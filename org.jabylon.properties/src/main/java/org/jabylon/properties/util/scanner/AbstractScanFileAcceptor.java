@@ -40,10 +40,17 @@ public abstract class AbstractScanFileAcceptor implements PropertyFileAcceptor{
 
 
     protected URI calculateLocation(File file) {
+    	String versionPathString = versionPath.toFileString();
+    	String absolutePath = file.getAbsolutePath();
+    	//normalize
+    	if(!(absolutePath.startsWith("/") ||  absolutePath.startsWith("\\")))
+    			absolutePath = "/"+absolutePath;
+    	if(!(versionPathString.startsWith("/") ||  versionPathString.startsWith("\\")))
+    			versionPathString = "/"+versionPathString;
     	/*
     	 * we need to get rid of the base directory and version
     	 */
-    	String relativePath = file.getAbsolutePath().substring(versionPath.toFileString().length());
+    	String relativePath = absolutePath.substring(versionPathString.length());
     	if(relativePath.startsWith("/") || relativePath.startsWith("\\"))
     		relativePath = relativePath.substring(1);
     	URI location = URI.createFileURI(relativePath);
