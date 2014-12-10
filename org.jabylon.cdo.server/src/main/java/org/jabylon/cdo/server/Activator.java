@@ -272,18 +272,23 @@ public class Activator implements BundleActivator {
 
 	private void initializeWorkspace(CDOTransaction transaction) throws CommitException {
 
-		if (!transaction.hasResource(ServerConstants.WORKSPACE_RESOURCE)) {
-			CDOResource resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
-			Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
-			URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
-			File root = new File(ServerConstants.WORKSPACE_DIR);
-			if (!root.exists())
-				root.mkdirs();
-			workspace.setRoot(uri);
-			resource.getContents().add(workspace);
-			transaction.commit();
-
+		CDOResource resource = null;
+		if (transaction.hasResource(ServerConstants.WORKSPACE_RESOURCE)) {
+			resource = transaction.getResource(ServerConstants.WORKSPACE_RESOURCE);
 		}
+		else {
+			resource = transaction.createResource(ServerConstants.WORKSPACE_RESOURCE);
+			Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
+			resource.getContents().add(workspace);
+		}
+		//even if workspace was already present, let's initialize the root again in case we got copied around
+		Workspace workspace = (Workspace) resource.getContents().get(0);
+		URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
+		File root = new File(ServerConstants.WORKSPACE_DIR);
+		if (!root.exists())
+			root.mkdirs();
+		workspace.setRoot(uri);
+		transaction.commit();
 
 	}
 
