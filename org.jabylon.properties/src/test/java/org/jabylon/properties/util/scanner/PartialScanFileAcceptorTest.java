@@ -25,6 +25,7 @@ import org.jabylon.properties.types.impl.JavaPropertyScanner;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class PartialScanFileAcceptorTest {
 
@@ -111,6 +112,47 @@ public class PartialScanFileAcceptorTest {
 		assertEquals("Must be added",2,template.getChild("foo").getChildren().size());
 		assertEquals("Must be added",2,translation.getChild("foo").getChildren().size());
 	}
+
+
+
+    /**
+     * see https://github.com/jutzig/jabylon/issues/225
+     */
+    @Test
+    public void testComputeLocationWindows()
+    {
+    	ProjectVersion projectVersion = Mockito.mock(ProjectVersion.class);
+    	Mockito.when(projectVersion.absolutPath()).thenReturn(URI.createFileURI("/C:/tests/jabylon/workspace/test/master"));
+    	PartialScanFileAcceptor acceptor = new PartialScanFileAcceptor(projectVersion, null, null);
+    	URI location = acceptor.calculateLocation(new File("/c:/tests/jabylon/workspace/test/master/core/build/internalartifacts.properties"));
+    	assertEquals("windows FS is case insensitive","core/build/internalartifacts.properties", location.toString());
+    }
+
+    /**
+     * see https://github.com/jutzig/jabylon/issues/225
+     */
+    @Test
+    public void testComputeLocationWindows2()
+    {
+    	ProjectVersion projectVersion = Mockito.mock(ProjectVersion.class);
+    	Mockito.when(projectVersion.absolutPath()).thenReturn(URI.createFileURI("C:/tests/jabylon/workspace/test/master/"));
+    	PartialScanFileAcceptor acceptor = new PartialScanFileAcceptor(projectVersion, null, null);
+    	URI location = acceptor.calculateLocation(new File("/c:/tests/jabylon/workspace/test/master/core/build/internalartifacts.properties"));
+    	assertEquals("must not matter if there was a trailing slash or not","core/build/internalartifacts.properties", location.toString());
+    }
+
+    /**
+     * see https://github.com/jutzig/jabylon/issues/225
+     */
+    @Test
+    public void testComputeLocationWindows3()
+    {
+    	ProjectVersion projectVersion = Mockito.mock(ProjectVersion.class);
+    	Mockito.when(projectVersion.absolutPath()).thenReturn(URI.createFileURI("\\C:\\tests\\jabylon\\workspace\\test\\master\\"));
+    	PartialScanFileAcceptor acceptor = new PartialScanFileAcceptor(projectVersion, null, null);
+    	URI location = acceptor.calculateLocation(new File("c:/tests/jabylon/workspace/test/master/core/build/internalartifacts.properties"));
+    	assertEquals("back slash or forward slash should not matter","core/build/internalartifacts.properties", location.toString());
+    }
 
 	public PartialScanFileAcceptor getFixture() {
 		return fixture;
