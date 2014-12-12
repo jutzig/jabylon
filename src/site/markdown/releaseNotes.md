@@ -1,11 +1,19 @@
 
 # Release Notes
 
+## Jabylon 1.1.3
+
+Jabylon 1.1.3 was released on the **12th December 2014** and is available for [download](download.html).
+
+The release includes bugfixes comes with a batch script to start the standalone version on windows and provides better support for integrating with [Gerrit](https://code.google.com/p/gerrit/)  
+ 
+For a full list see [here](https://github.com/jutzig/jabylon/issues?q=milestone%3A1.1.3+is%3Aclosed) 
+
 ## Jabylon 1.1.2
 
 Jabylon 1.1.2 was released on the **1st July 2014** and is available for [download](download.html).
 
-The release includes bugfixes and provides a quicker qay to accept user suggestions 
+The release includes bugfixes and provides a quicker way to accept user suggestions 
 
  * [217](https://github.com/jutzig/jabylon/issues/217) - easier access to accept suggestions
  
