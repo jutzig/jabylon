@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -41,11 +42,13 @@ import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertiesSwitch;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import org.jabylon.security.CommonPermissions;
+import org.jabylon.users.User;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -90,6 +93,8 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
             protected void populateItem(Item<Resolvable<?, ?>> item) {
                 Resolvable<?, ?> resolvable = item.getModelObject();
 
+				Session session = getSession();
+				item.setVisible(canView(resolvable));
                 if (resolvable instanceof ProjectLocale) {
                     // hide the template language by default
                     ProjectLocale locale = (ProjectLocale) resolvable;
@@ -123,7 +128,18 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         add(dataView);
     }
 
-    /**
+    protected boolean canView(Resolvable<?, ?> resolvable) {
+    	Session session = getSession();
+    	if (session instanceof CDOAuthenticatedSession) {
+			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+			User user = authSession.getUser();
+			if(user!=null)
+				return CommonPermissions.hasViewPermission(user, resolvable);
+		}
+		return false;
+	}
+
+	/**
      * computes the width of the two stacked progress bars
      * @param resolvable
      * @return
