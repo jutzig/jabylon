@@ -428,4 +428,9 @@ public class UserImpl extends CDOObjectImpl implements User {
 		return super.eIsSet(featureID);
 	}
 
+    @Override
+    public String toString() {
+    	return getName();
+    }
+    
 } //UserImpl

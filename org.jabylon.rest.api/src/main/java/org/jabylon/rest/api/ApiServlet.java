@@ -48,6 +48,7 @@ import org.jabylon.properties.Resolvable;
 import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.jabylon.rest.api.json.DefaultPermissionCallback;
 import org.jabylon.rest.api.json.JSONEmitter;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.security.auth.AuthenticationService;
@@ -119,25 +120,27 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
         	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
         }
-        JSONEmitter emitter = new JSONEmitter();
-        StringBuilder result = new StringBuilder();
-        String depthString = req.getParameter("depth");
-        int depth = 1;
-        if (depthString != null)
-            depth = Integer.valueOf(depthString);
-        String type = req.getParameter("type");
-        if ("file".equals(type)) {
-            if (child instanceof PropertyFileDescriptor) {
-                serveFile((PropertyFileDescriptor) child, resp);
-            }
-            else {
-            	serveArchive(child, resp);
-            }
-        }
         else {
-        	// TODO: use appendable
-        	emitter.serialize(child, result, depth);
-        	resp.getOutputStream().print(result.toString());        	
+        	JSONEmitter emitter = new JSONEmitter(new DefaultPermissionCallback(getUser(req)));
+        	StringBuilder result = new StringBuilder();
+        	String depthString = req.getParameter("depth");
+        	int depth = 1;
+        	if (depthString != null)
+        		depth = Integer.valueOf(depthString);
+        	String type = req.getParameter("type");
+        	if ("file".equals(type)) {
+        		if (child instanceof PropertyFileDescriptor) {
+        			serveFile((PropertyFileDescriptor) child, resp);
+        		}
+        		else {
+        			serveArchive(child, resp);
+        		}
+        	}
+        	else {
+        		// TODO: use appendable
+        		emitter.serialize(child, result, depth);
+        		resp.getOutputStream().print(result.toString());        	
+        	}        	
         }
         resp.getOutputStream().close();
     }
@@ -185,30 +188,32 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
         		resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
         		resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
         	}
-            ProjectVersion projectVersion = (ProjectVersion) version;
-            URI descriptorLocation = URI.createHierarchicalURI(descriptorPart, null, null);
-            File folder = new File(projectVersion.absoluteFilePath().toFileString());
-            File propertyFile = new File(folder, descriptorLocation.path());
-            final PropertyFileDiff diff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
-            diff.setKind(propertyFile.isFile() ? DiffKind.MODIFY : DiffKind.ADD);
-            updateFile(propertyFile, req.getInputStream());
-            diff.setNewPath(descriptorLocation.path());
-            diff.setOldPath(descriptorLocation.path());
-            try {
-                TransactionUtil.commit(projectVersion, new Modification<ProjectVersion, ProjectVersion>() {
-                    @Override
-                    public ProjectVersion apply(ProjectVersion object) {
-
-                        object.partialScan(PreferencesUtil.getScanConfigForProject(object.getParent()), diff);
-                        return object;
-                    }
-                });
-                //TODO: why not use persistence service to store it instead?
-                persistence.clearCache();
-            } catch (CommitException e) {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Commit failed: " + e.getMessage());
-                logger.error("Commit failed", e);
-            }
+        	else {
+        		ProjectVersion projectVersion = (ProjectVersion) version;
+        		URI descriptorLocation = URI.createHierarchicalURI(descriptorPart, null, null);
+        		File folder = new File(projectVersion.absoluteFilePath().toFileString());
+        		File propertyFile = new File(folder, descriptorLocation.path());
+        		final PropertyFileDiff diff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
+        		diff.setKind(propertyFile.isFile() ? DiffKind.MODIFY : DiffKind.ADD);
+        		updateFile(propertyFile, req.getInputStream());
+        		diff.setNewPath(descriptorLocation.path());
+        		diff.setOldPath(descriptorLocation.path());
+        		try {
+        			TransactionUtil.commit(projectVersion, new Modification<ProjectVersion, ProjectVersion>() {
+        				@Override
+        				public ProjectVersion apply(ProjectVersion object) {
+        					
+        					object.partialScan(PreferencesUtil.getScanConfigForProject(object.getParent()), diff);
+        					return object;
+        				}
+        			});
+        			//TODO: why not use persistence service to store it instead?
+        			persistence.clearCache();
+        		} catch (CommitException e) {
+        			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Commit failed: " + e.getMessage());
+        			logger.error("Commit failed", e);
+        		}		
+        	}
         } else
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource " + projectURI.path() + " does not exist");
 
@@ -223,7 +228,7 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
             	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
                 resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
             }
-            if (version.getChild(uri.lastSegment()) == null) {
+            else if (version.getChild(uri.lastSegment()) == null) {
                 try {
                     TransactionUtil.commit(version, new Modification<ProjectVersion, ProjectVersion>() {
                         @Override
@@ -254,7 +259,7 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
             	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
                 resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
             }
-            if (project.getChild(uri.lastSegment()) == null) {
+            else if (project.getChild(uri.lastSegment()) == null) {
                 try {
                     TransactionUtil.commit(project, new Modification<Project, Project>() {
                         @Override
@@ -283,18 +288,20 @@ public class ApiServlet extends HttpServlet implements Function<String, User>
         	resp.setHeader("WWW-Authenticate", BASIC_AUTH_REALM);  
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);  
         }
-        try {
-            TransactionUtil.commit(workspace, new Modification<Workspace, Workspace>() {
-                @Override
-                public Workspace apply(Workspace object) {
-                    Project child = PropertiesFactory.eINSTANCE.createProject();
-                    child.setName(uri.lastSegment());
-                    object.getChildren().add(child);
-                    return object;
-                }
-            });
-        } catch (CommitException e) {
-            logger.error("Commit failed", e);
+        else {
+        	try {
+        		TransactionUtil.commit(workspace, new Modification<Workspace, Workspace>() {
+        			@Override
+        			public Workspace apply(Workspace object) {
+        				Project child = PropertiesFactory.eINSTANCE.createProject();
+        				child.setName(uri.lastSegment());
+        				object.getChildren().add(child);
+        				return object;
+        			}
+        		});
+        	} catch (CommitException e) {
+        		logger.error("Commit failed", e);
+        	}        	
         }
 
     }

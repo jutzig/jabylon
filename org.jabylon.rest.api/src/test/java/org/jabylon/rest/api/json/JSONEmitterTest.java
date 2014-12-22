@@ -13,23 +13,29 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.emf.common.util.URI;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.eclipse.emf.ecore.EObject;
+import org.jabylon.properties.Project;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
+import org.jabylon.properties.Workspace;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 public class JSONEmitterTest {
 
     private JSONEmitter fixture;
+    private PermissionCallback callback;
 
     @Before
     public void setup()
     {
-        fixture = new JSONEmitter();
+    	callback = mock(PermissionCallback.class);
+    	when(callback.isAuthorized(Mockito.any(EObject.class))).thenReturn(true);
+        fixture = new JSONEmitter(callback);
     }
 
     @Test
@@ -135,6 +141,27 @@ public class JSONEmitterTest {
 
     }
 
+    @Test
+    public void testSerializeRestrictedProject(){
+    	Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
+    	Project project1 = PropertiesFactory.eINSTANCE.createProject();
+    	Project project2 = PropertiesFactory.eINSTANCE.createProject();
+    	Project project3 = PropertiesFactory.eINSTANCE.createProject();
+    	project1.setName("project1");
+    	project2.setName("project2");
+    	project3.setName("project3");
+    	workspace.getChildren().add(project1);
+    	workspace.getChildren().add(project2);
+    	workspace.getChildren().add(project3);
+        String expected = "{\"children\":[{\"name\":\"project2\"},{\"name\":\"project3\"}],\"name\":\"workspace\"}";
+        when(callback.isAuthorized(project2)).thenReturn(true);
+        when(callback.isAuthorized(project3)).thenReturn(true);
+        when(callback.isAuthorized(project1)).thenReturn(false);
+        StringBuilder result = new StringBuilder();
+        getFixture().serialize(workspace, result, 2);
+        assertEquals(expected, result.toString());
+
+    }
 
     public JSONEmitter getFixture() {
         return fixture;

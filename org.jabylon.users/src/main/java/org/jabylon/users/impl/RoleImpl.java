@@ -227,5 +227,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 		return super.eIsSet(featureID);
 	}
 
+    @Override
+    public String toString() {
+    	return getName();
+    }
 
 } //RoleImpl

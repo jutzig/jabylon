@@ -16,14 +16,24 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 
 
 public class JSONEmitter
 {
-    public void serialize(EObject resolvable, StringBuilder result, int depth)
+	
+	private PermissionCallback permissionCallback;
+	
+	
+	
+    public JSONEmitter(PermissionCallback permissionCallback) {
+		super();
+		this.permissionCallback = permissionCallback;
+	}
+
+
+	public void serialize(EObject resolvable, StringBuilder result, int depth)
     {
         writeObject(resolvable, result, depth);
     }
@@ -71,9 +81,11 @@ public class JSONEmitter
             }
             else
             {
-                writeSingle(object, eAttribute, result, depth);
-                didWriteSeparator = true;
-                result.append(",");
+            	if(writeSingle(object, eAttribute, result, depth)) {
+            		didWriteSeparator = true;
+            		result.append(",");            		
+            	}
+                
             }
         }
 
@@ -96,14 +108,14 @@ public class JSONEmitter
     }
 
 
-    private void writeSingle(EObject object, EStructuralFeature eAttribute, StringBuilder result, int depth)
+    private boolean writeSingle(EObject object, EStructuralFeature eAttribute, StringBuilder result, int depth)
     {
-        writeSingleValue(object.eGet(eAttribute), eAttribute, result, depth);
+        return writeSingleValue(object.eGet(eAttribute), eAttribute, result, depth);
 
     }
 
 
-    private void writeSingleValue(Object value, EStructuralFeature attribute, StringBuilder result, int depth)
+    private boolean writeSingleValue(Object value, EStructuralFeature attribute, StringBuilder result, int depth)
     {
 
         if (value instanceof String)
@@ -112,15 +124,17 @@ public class JSONEmitter
             result.append("\"");
             result.append(string);
             result.append("\"");
-
+            return true;
         }
         else if (value instanceof Boolean)
         {
             result.append(value);
+            return true;
         }
         else if (value instanceof Number)
         {
             result.append(value);
+            return true;
         }
         else if (attribute instanceof EAttribute)
         {
@@ -132,16 +146,23 @@ public class JSONEmitter
             result.append("\"");
             result.append(newValue);
             result.append("\"");
+            return true;
 
         }
         else if (attribute instanceof EReference)
         {
             EReference ref = (EReference)attribute;
             if (!ref.isContainment())
-                return;
-            writeObject((EObject)value, result, depth - 1);
+                return false;
+           
+            if (value instanceof EObject) {
+            	if(permissionCallback.isAuthorized((EObject) value)) {
+            		writeObject((EObject)value, result, depth - 1);				
+            		return true;
+            	}
+			}
         }
-
+        return false;
     }
 
 
@@ -155,8 +176,8 @@ public class JSONEmitter
             Collection values = (Collection)value;
             for (Object singleValue : values)
             {
-                writeSingleValue(singleValue, eAttribute, result, depth);
-                result.append(",");
+                if(writeSingleValue(singleValue, eAttribute, result, depth))
+                	result.append(",");
             }
             if (!values.isEmpty())
                 result.setLength(result.length() - 1); // remove the last ','
