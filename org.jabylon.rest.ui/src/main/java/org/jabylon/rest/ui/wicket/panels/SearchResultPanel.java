@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -34,8 +35,12 @@ import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.properties.ProjectVersion;
+import org.jabylon.properties.PropertiesPackage;
+import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
+import org.jabylon.security.CommonPermissions;
+import org.jabylon.users.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +61,7 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
         super(id);
 
         List<ScoreDoc> list = Arrays.asList(result.getTopDocs().scoreDocs);
+    	
         ListView<ScoreDoc> repeater = new ListView<ScoreDoc>("results", list) {
 
             private static final long serialVersionUID = 1L;
@@ -70,6 +76,14 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
                     item.add(new Label("value", document.get(QueryService.FIELD_VALUE)));
                     String projectLabel = "{0} ({1})";
                     String projectName = document.get(QueryService.FIELD_PROJECT);
+                	Session session = getSession();
+                    User user = null;
+                	if (session instanceof CDOAuthenticatedSession) {
+            			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+            			user = authSession.getUser();
+                	}
+                    if(user==null || !CommonPermissions.hasPermission(user,CommonPermissions.constructPermissionName(PropertiesPackage.Literals.PROJECT.getName(), projectName, CommonPermissions.ACTION_VIEW)))
+                    	item.setVisible(false);
                     String projectVersion = document.get(QueryService.FIELD_VERSION);
                     String projectLocale = document.get(QueryService.FIELD_LOCALE);
                     String descriptorURI = document.get(QueryService.FIELD_URI);
