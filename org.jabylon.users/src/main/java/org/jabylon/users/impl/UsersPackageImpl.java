@@ -244,6 +244,15 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 
     /**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRole_Type() {
+		return (EAttribute)roleEClass.getEStructuralFeatures().get(3);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -374,6 +383,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		createEAttribute(roleEClass, ROLE__NAME);
 		createEReference(roleEClass, ROLE__PARENT);
 		createEReference(roleEClass, ROLE__PERMISSIONS);
+		createEAttribute(roleEClass, ROLE__TYPE);
 
 		permissionEClass = createEClass(PERMISSION);
 		createEAttribute(permissionEClass, PERMISSION__NAME);
@@ -438,6 +448,7 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 		initEAttribute(getRole_Name(), ecorePackage.getEString(), "name", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRole_Parent(), this.getRole(), null, "parent", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRole_Permissions(), this.getPermission(), null, "permissions", null, 0, -1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRole_Type(), ecorePackage.getEString(), "type", null, 0, 1, Role.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(roleEClass, this.getPermission(), "getAllPermissions", 0, -1, IS_UNIQUE, IS_ORDERED);
 
@@ -481,77 +492,84 @@ public class UsersPackageImpl extends EPackageImpl implements UsersPackage {
 	 * @generated
 	 */
 	protected void createDBStoreAnnotations() {
-		String source = "http://www.eclipse.org/CDO/DBStore";		
+		String source = "http://www.eclipse.org/CDO/DBStore";	
 		addAnnotation
 		  (getUser_Name(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getUser_Password(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getUser_DisplayName(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getUser_Type(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getUser_Email(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getUser_Token(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "32"
-		   });		
+		   });	
 		addAnnotation
 		  (getRole_Name(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
+		addAnnotation
+		  (getRole_Type(), 
+		   source, 
+		   new String[] {
+			 "columnType", "VARCHAR",
+			 "columnLength", "255"
+		   });	
 		addAnnotation
 		  (getPermission_Name(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getPermission_Description(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "1024"
-		   });		
+		   });	
 		addAnnotation
 		  (getAuthType_Name(), 
 		   source, 
 		   new String[] {
 			 "columnType", "VARCHAR",
 			 "columnLength", "255"
-		   });		
+		   });	
 		addAnnotation
 		  (getAuthType_AuthModule(), 
 		   source, 

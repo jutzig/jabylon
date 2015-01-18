@@ -10,9 +10,11 @@ package org.jabylon.security.internal;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -33,8 +35,8 @@ import javax.security.auth.spi.LoginModule;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.jabylon.security.CommonPermissions;
+import org.jabylon.security.GroupMemberAttribute;
 import org.jabylon.security.SubjectAttribute;
 import org.jabylon.users.UsersPackage;
 
@@ -56,6 +58,9 @@ public class LDAPLoginModule implements LoginModule {
     public static final String KEY_MANAGER = "manager";
     /** the ldap manager password */
     public static final String KEY_MANAGER_PASSWORD = "manager.password";
+    
+    /** the attribute that determines what groups a user is in */
+    public static final String KEY_MEMBER_OF = "member.of";
     private Subject subj;
     private CallbackHandler cbHandler;
     private Map<String, ?> options;
@@ -65,6 +70,7 @@ public class LDAPLoginModule implements LoginModule {
     private DirContext ctx;
     private String email;
     private String fullName;
+    private Set<String> groups;
 
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
@@ -143,6 +149,21 @@ public class LDAPLoginModule implements LoginModule {
                 if(attribute!=null)
                     fullName = (String) attribute.get();
             }
+            if(options.get(KEY_USER_FULL_NAME) instanceof String) {
+            	Attribute attribute = attributes.get(((String)options.get(KEY_MEMBER_OF)));
+            	if(attribute!=null) {
+            		NamingEnumeration<?> groupsEnum = attribute.getAll();
+            		groups = new HashSet<String>();
+            		while (groupsEnum.hasMoreElements()) {
+						Object object = (Object) groupsEnum.nextElement();
+						if (object instanceof String) {
+							String groupName = (String) object;
+							groups.add(groupName);
+						}
+					}
+            	}
+            }
+                
             return userId;
         }
         return null;
@@ -155,6 +176,8 @@ public class LDAPLoginModule implements LoginModule {
             attributes.add((String) options.get(KEY_USER_MAIL));
         if(options.get(KEY_USER_FULL_NAME) instanceof String)
             attributes.add((String) options.get(KEY_USER_FULL_NAME));
+        if(options.get(KEY_MEMBER_OF) instanceof String)
+            attributes.add((String) options.get(KEY_MEMBER_OF));
         return attributes.toArray(new String[attributes.size()]);
     }
 
@@ -185,6 +208,8 @@ public class LDAPLoginModule implements LoginModule {
                 subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__EMAIL, email));
             if(fullName!=null && !fullName.isEmpty())
                 subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__DISPLAY_NAME, fullName));
+            if(groups!=null && !groups.isEmpty())
+            	subj.getPublicCredentials().add(new GroupMemberAttribute(groups));
             subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__TYPE, CommonPermissions.AUTH_TYPE_LDAP));
 
         } else {

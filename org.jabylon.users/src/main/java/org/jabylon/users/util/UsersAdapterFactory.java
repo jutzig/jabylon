@@ -12,6 +12,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.jabylon.users.*;
 import org.jabylon.users.AuthType;
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;

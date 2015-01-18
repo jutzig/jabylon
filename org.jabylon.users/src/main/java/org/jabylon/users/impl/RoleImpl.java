@@ -27,6 +27,7 @@ import org.jabylon.users.UsersPackage;
  *   <li>{@link org.jabylon.users.impl.RoleImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.jabylon.users.impl.RoleImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link org.jabylon.users.impl.RoleImpl#getPermissions <em>Permissions</em>}</li>
+ *   <li>{@link org.jabylon.users.impl.RoleImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -44,6 +45,16 @@ public class RoleImpl extends CDOObjectImpl implements Role {
     protected static final String NAME_EDEFAULT = null;
 
     /**
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TYPE_EDEFAULT = null;
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
@@ -133,6 +144,24 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 	}
 
     /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getType() {
+		return (String)eDynamicGet(UsersPackage.ROLE__TYPE, UsersPackage.Literals.ROLE__TYPE, true, true);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setType(String newType) {
+		eDynamicSet(UsersPackage.ROLE__TYPE, UsersPackage.Literals.ROLE__TYPE, newType);
+	}
+
+				/**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
@@ -161,6 +190,8 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 				return basicGetParent();
 			case UsersPackage.ROLE__PERMISSIONS:
 				return getPermissions();
+			case UsersPackage.ROLE__TYPE:
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -184,6 +215,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 				getPermissions().clear();
 				getPermissions().addAll((Collection<? extends Permission>)newValue);
 				return;
+			case UsersPackage.ROLE__TYPE:
+				setType((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -205,6 +239,9 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 			case UsersPackage.ROLE__PERMISSIONS:
 				getPermissions().clear();
 				return;
+			case UsersPackage.ROLE__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -223,6 +260,8 @@ public class RoleImpl extends CDOObjectImpl implements Role {
 				return basicGetParent() != null;
 			case UsersPackage.ROLE__PERMISSIONS:
 				return !getPermissions().isEmpty();
+			case UsersPackage.ROLE__TYPE:
+				return TYPE_EDEFAULT == null ? getType() != null : !TYPE_EDEFAULT.equals(getType());
 		}
 		return super.eIsSet(featureID);
 	}

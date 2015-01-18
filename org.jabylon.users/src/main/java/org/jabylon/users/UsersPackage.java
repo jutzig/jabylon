@@ -190,13 +190,22 @@ public interface UsersPackage extends EPackage {
     int ROLE__PERMISSIONS = 2;
 
     /**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROLE__TYPE = 3;
+
+				/**
 	 * The number of structural features of the '<em>Role</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int ROLE_FEATURE_COUNT = 3;
+    int ROLE_FEATURE_COUNT = 4;
 
     /**
 	 * The meta object id for the '{@link org.jabylon.users.impl.PermissionImpl <em>Permission</em>}' class.
@@ -462,6 +471,17 @@ public interface UsersPackage extends EPackage {
     EReference getRole_Permissions();
 
     /**
+	 * Returns the meta object for the attribute '{@link org.jabylon.users.Role#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.jabylon.users.Role#getType()
+	 * @see #getRole()
+	 * @generated
+	 */
+	EAttribute getRole_Type();
+
+				/**
 	 * Returns the meta object for class '{@link org.jabylon.users.Permission <em>Permission</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -699,6 +719,14 @@ public interface UsersPackage extends EPackage {
         EReference ROLE__PERMISSIONS = eINSTANCE.getRole_Permissions();
 
         /**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROLE__TYPE = eINSTANCE.getRole_Type();
+
+								/**
 		 * The meta object literal for the '{@link org.jabylon.users.impl.PermissionImpl <em>Permission</em>}' class.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->

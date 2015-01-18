@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.jabylon.users.Role#getName <em>Name</em>}</li>
  *   <li>{@link org.jabylon.users.Role#getParent <em>Parent</em>}</li>
  *   <li>{@link org.jabylon.users.Role#getPermissions <em>Permissions</em>}</li>
+ *   <li>{@link org.jabylon.users.Role#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -100,6 +101,32 @@ public interface Role extends CDOObject {
     EList<Permission> getPermissions();
 
     /**
+	 * Returns the value of the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see #setType(String)
+	 * @see org.jabylon.users.UsersPackage#getRole_Type()
+	 * @model annotation="http://www.eclipse.org/CDO/DBStore columnType='VARCHAR' columnLength='255'"
+	 * @generated
+	 */
+	String getType();
+
+				/**
+	 * Sets the value of the '{@link org.jabylon.users.Role#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type</em>' attribute.
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(String value);
+
+				/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @model kind="operation"

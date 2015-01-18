@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.jabylon.users.*;
 import org.jabylon.users.AuthType;
 import org.jabylon.users.Permission;
 import org.jabylon.users.Role;
@@ -36,7 +37,7 @@ public class UsersFactoryImpl extends EFactoryImpl implements UsersFactory {
 	 */
     public static UsersFactory init() {
 		try {
-			UsersFactory theUsersFactory = (UsersFactory)EPackage.Registry.INSTANCE.getEFactory("http://uri.jabylon.org/users"); 
+			UsersFactory theUsersFactory = (UsersFactory)EPackage.Registry.INSTANCE.getEFactory(UsersPackage.eNS_URI);
 			if (theUsersFactory != null) {
 				return theUsersFactory;
 			}

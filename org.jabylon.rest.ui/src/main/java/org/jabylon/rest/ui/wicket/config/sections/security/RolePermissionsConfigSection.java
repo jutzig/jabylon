@@ -20,8 +20,10 @@ import javax.inject.Inject;
 
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.eclipse.emf.cdo.util.CommitException;
@@ -32,6 +34,7 @@ import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.util.ApplicationConstants;
 import org.jabylon.properties.Project;
+import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Workspace;
 import org.jabylon.rest.ui.model.AbstractEMFModel;
 import org.jabylon.rest.ui.model.AttachableModel;
@@ -68,6 +71,17 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 		add(rolenameGroup);
 		Role role = model.getObject();
 		EObject container = role.eContainer();
+		
+		ControlGroup typeGroup = new ControlGroup("type-group", nls("role.type"), nls("type.help.block"));
+		List<String> typeChoices = new ArrayList<String>();
+		typeChoices.add(CommonPermissions.AUTH_TYPE_DB);
+		typeChoices.add(CommonPermissions.AUTH_TYPE_LDAP);
+		EObjectPropertyModel<String, Role> typeModel = new EObjectPropertyModel<String, Role>(model, UsersPackage.Literals.ROLE__TYPE);
+		DropDownChoice<String> typeChoice = new DropDownChoice<String>("type", typeModel, typeChoices);
+		
+		typeChoice.setEnabled(false);
+		typeGroup.add(typeChoice);
+		add(typeGroup);
 
 		UserManagement management = null;
 		if (model instanceof AttachableModel) {
