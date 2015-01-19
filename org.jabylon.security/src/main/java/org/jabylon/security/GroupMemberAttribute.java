@@ -1,3 +1,11 @@
+/**
+ * (C) Copyright 2013 Jabylon (http://www.jabylon.org) and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 package org.jabylon.security;
 
 import java.util.Collection;
@@ -15,7 +23,7 @@ public class GroupMemberAttribute extends SubjectAttribute {
 	public GroupMemberAttribute(Collection<String> groups) {
 		super(UsersPackage.Literals.USER__ROLES, groups);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void applyTo(EObject eobject) {
@@ -42,7 +50,7 @@ public class GroupMemberAttribute extends SubjectAttribute {
 							roles.add(role);
 					}
 				}
-				
+
 			}
 		}
 	}
