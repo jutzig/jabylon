@@ -77,7 +77,7 @@ public class Activator implements BundleActivator {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -102,7 +102,7 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		plugin = this;
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -111,7 +111,7 @@ public class Activator implements BundleActivator {
 				} catch (CommitException e) {
 					logger.error("Failed to start CDO",e);
 				}
-				
+
 			}
 		},"starting database").start();
 
@@ -284,6 +284,7 @@ public class Activator implements BundleActivator {
 		//even if workspace was already present, let's initialize the root again in case we got copied around
 		Workspace workspace = (Workspace) resource.getContents().get(0);
 		URI uri = URI.createFileURI(ServerConstants.WORKSPACE_DIR);
+		logger.debug("Adjust workspace to root: "+uri.toFileString());
 		File root = new File(ServerConstants.WORKSPACE_DIR);
 		if (!root.exists())
 			root.mkdirs();
@@ -342,7 +343,7 @@ public class Activator implements BundleActivator {
 
 	/**
 	 * Create and initialize/configure a repository
-	 * 
+	 *
 	 * @return the CDO repository created
 	 */
 	private IRepository createRepository() {

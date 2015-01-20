@@ -10,9 +10,13 @@ package org.jabylon.cdo.server;
 
 import java.io.File;
 
-public class ServerConstants {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	/** jabylon home dir */
+public class ServerConstants {
+    private static final Logger LOG = LoggerFactory.getLogger(ServerConstants.class);
+
+    /** jabylon home dir */
     public static final String WORKING_DIR;
     public static final String REPOSITORY_NAME = "jabylon";
     /** where the work data goes */
@@ -23,19 +27,22 @@ public class ServerConstants {
     static {
         String tmpWorkingDir;
         try {
-        	//try in order JABYLON_HOME, -DJABYLON_HOME, osgi.instance.area and user.home/jabylon
-        	String path = System.getenv("JABYLON_HOME");
-        	if(path==null)
-        		path = System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon"));
+            //try in order JABYLON_HOME, -DJABYLON_HOME, osgi.instance.area and user.home/jabylon
+            String path = System.getenv("JABYLON_HOME");
+            if(path==null)
+                path = System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon"));
             if(path.startsWith("file:")) //eclipse does this when using variables in a launch config
                 path = path.substring("file:".length());
             File instanceArea = new File(path);
             tmpWorkingDir = instanceArea.getCanonicalPath();
         } catch (Exception e) {
+            LOG.warn("Error while trying to use configured working dir. Fallback to <user.home>/jabylon. Reason: "+e.getMessage(), e);
             tmpWorkingDir = System.getProperty("user.home") + "/jabylon";
         }
         WORKING_DIR = tmpWorkingDir;
         WORKSPACE_DIR = WORKING_DIR+"/workspace";
+        LOG.info("Working dir set to: "+WORKING_DIR);
+        LOG.info("Workspace dir  set to: "+WORKSPACE_DIR);
         new File(WORKSPACE_DIR).mkdirs();
     }
 }
