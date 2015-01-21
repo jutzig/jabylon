@@ -33,16 +33,16 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.security.GroupMemberAttribute;
 import org.jabylon.security.SubjectAttribute;
 import org.jabylon.users.UsersPackage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LDAPLoginModule implements LoginModule {
 
-	/** the ldap server url */
+    /** the ldap server url */
     public static final String KEY_LDAP = "ldap";
     /** the ldap server port */
     public static final String KEY_LDAP_PORT = "ldap.port";
@@ -58,9 +58,12 @@ public class LDAPLoginModule implements LoginModule {
     public static final String KEY_MANAGER = "manager";
     /** the ldap manager password */
     public static final String KEY_MANAGER_PASSWORD = "manager.password";
-    
+
     /** the attribute that determines what groups a user is in */
     public static final String KEY_MEMBER_OF = "member.of";
+    /** the attribute that determines how the group is named */
+    public static final String KEY_GROUP_NAME = "group.name";
+
     private Subject subj;
     private CallbackHandler cbHandler;
     private Map<String, ?> options;
@@ -77,7 +80,6 @@ public class LDAPLoginModule implements LoginModule {
         this.subj = subject;
         this.cbHandler = callbackHandler;
         this.options = options;
-
     }
 
     @Override
@@ -150,25 +152,36 @@ public class LDAPLoginModule implements LoginModule {
                     fullName = (String) attribute.get();
             }
             if(options.get(KEY_USER_FULL_NAME) instanceof String) {
-            	Attribute attribute = attributes.get(((String)options.get(KEY_MEMBER_OF)));
-            	if(attribute!=null) {
-            		NamingEnumeration<?> groupsEnum = attribute.getAll();
-            		groups = new HashSet<String>();
-            		while (groupsEnum.hasMoreElements()) {
-						Object object = (Object) groupsEnum.nextElement();
-						if (object instanceof String) {
-							String groupName = (String) object;
-							groups.add(groupName);
-						}
-					}
-            	}
+                Attribute attribute = attributes.get(((String)options.get(KEY_MEMBER_OF)));
+                if(attribute!=null) {
+                    NamingEnumeration<?> groupsEnum = attribute.getAll();
+                    groups = new HashSet<String>();
+                    while (groupsEnum.hasMoreElements()) {
+                        Object object = groupsEnum.nextElement();
+                        if (object instanceof String) {
+                            String groupName = (String) object;
+                            groups.add(lookupGroupName(ctx, groupName));
+                        }
+                    }
+                }
             }
-                
+
             return userId;
         }
         return null;
     }
 
+    private String lookupGroupName(DirContext ctx, String groupName) throws NamingException
+    {
+        try {
+            String nameWithoutRootDn = groupName.substring(0, groupName.indexOf((String)options.get(KEY_ROOT_DN))-1);
+            Attributes attr = ctx.getAttributes(nameWithoutRootDn, new String[] {(String)options.get(KEY_GROUP_NAME)});
+            String groupDisplayName = (String)attr.get((String)options.get(KEY_GROUP_NAME)).get();
+            return groupDisplayName;
+        } catch (Exception e) {
+            return groupName;
+        }
+    }
 
     private String[] getUserAttributes() {
         List<String> attributes = new ArrayList<String>();
@@ -209,7 +222,7 @@ public class LDAPLoginModule implements LoginModule {
             if(fullName!=null && !fullName.isEmpty())
                 subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__DISPLAY_NAME, fullName));
             if(groups!=null && !groups.isEmpty())
-            	subj.getPublicCredentials().add(new GroupMemberAttribute(groups));
+                subj.getPublicCredentials().add(new GroupMemberAttribute(groups));
             subj.getPublicCredentials().add(new SubjectAttribute(UsersPackage.Literals.USER__TYPE, CommonPermissions.AUTH_TYPE_LDAP));
 
         } else {

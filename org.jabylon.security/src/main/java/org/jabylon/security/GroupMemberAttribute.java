@@ -32,7 +32,7 @@ public class GroupMemberAttribute extends SubjectAttribute {
 			List<Role> roles = user.getRoles();
 			Iterator<Role> it = roles.iterator();
 			while (it.hasNext()) {
-				Role role = (Role) it.next();
+				Role role = it.next();
 				if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
 				{
 					it.remove();
@@ -46,7 +46,7 @@ public class GroupMemberAttribute extends SubjectAttribute {
 				for (Role role : allRoles) {
 					if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
 					{
-						if(groups.contains(role))
+						if(groups.contains(role.getName()))
 							roles.add(role);
 					}
 				}
