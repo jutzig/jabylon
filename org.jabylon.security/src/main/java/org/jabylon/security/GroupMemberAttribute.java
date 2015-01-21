@@ -16,43 +16,57 @@ import org.eclipse.emf.ecore.EObject;
 import org.jabylon.users.Role;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
+import org.jabylon.users.UsersFactory;
 import org.jabylon.users.UsersPackage;
 
 public class GroupMemberAttribute extends SubjectAttribute {
 
-	public GroupMemberAttribute(Collection<String> groups) {
-		super(UsersPackage.Literals.USER__ROLES, groups);
-	}
+    public GroupMemberAttribute(Collection<String> groups) {
+        super(UsersPackage.Literals.USER__ROLES, groups);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void applyTo(EObject eobject) {
-		if (eobject instanceof User) {
-			User user = (User) eobject;
-			List<Role> roles = user.getRoles();
-			Iterator<Role> it = roles.iterator();
-			while (it.hasNext()) {
-				Role role = it.next();
-				if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
-				{
-					it.remove();
-				}
-			}
-			Collection<String> groups = (Collection<String>) getValue();
-			EObject container = user.eContainer();
-			if (container instanceof UserManagement) {
-				UserManagement management = (UserManagement) container;
-				List<Role> allRoles = management.getRoles();
-				for (Role role : allRoles) {
-					if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
-					{
-						if(groups.contains(role.getName()))
-							roles.add(role);
-					}
-				}
+    @SuppressWarnings("unchecked")
+    @Override
+    public void applyTo(EObject eobject) {
+        if (eobject instanceof User) {
+            User user = (User) eobject;
+            List<Role> roles = user.getRoles();
+            Iterator<Role> it = roles.iterator();
+            while (it.hasNext()) {
+                Role role = it.next();
+                if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
+                {
+                    it.remove();
+                }
+            }
+            Collection<String> groups = (Collection<String>) getValue();
+            EObject container = user.eContainer();
+            if (container instanceof UserManagement) {
+                UserManagement management = (UserManagement) container;
+                roles.add(checkLdapRegisteredRole(management));
+                List<Role> allRoles = management.getRoles();
+                for (Role role : allRoles) {
+                    if(CommonPermissions.AUTH_TYPE_LDAP.equals(role.getType()))
+                    {
+                        if(groups.contains(role.getName()));
+                            roles.add(role);
+                    }
+                }
 
-			}
-		}
-	}
+            }
+        }
+    }
+
+    private Role checkLdapRegisteredRole(UserManagement management)
+    {
+        Role ldapRegistered = management.findRoleByName(CommonPermissions.ROLE_LDAP_REGISTERED);
+        if(ldapRegistered==null) {
+            ldapRegistered = UsersFactory.eINSTANCE.createRole();
+            ldapRegistered.setName(CommonPermissions.ROLE_LDAP_REGISTERED);
+            ldapRegistered.setType(CommonPermissions.AUTH_TYPE_LDAP);
+            management.getRoles().add(ldapRegistered);
+        }
+        return ldapRegistered;
+    }
 
 }

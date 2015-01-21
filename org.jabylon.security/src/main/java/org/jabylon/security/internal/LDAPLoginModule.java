@@ -156,6 +156,7 @@ public class LDAPLoginModule implements LoginModule {
                 if(attribute!=null) {
                     NamingEnumeration<?> groupsEnum = attribute.getAll();
                     groups = new HashSet<String>();
+                    groups.add(CommonPermissions.ROLE_LDAP_REGISTERED);
                     while (groupsEnum.hasMoreElements()) {
                         Object object = groupsEnum.nextElement();
                         if (object instanceof String) {

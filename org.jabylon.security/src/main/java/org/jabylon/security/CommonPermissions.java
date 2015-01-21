@@ -38,6 +38,7 @@ public class CommonPermissions {
 
     public static final String ROLE_ANONYMOUS = "Anonymous";
     public static final String ROLE_REGISTERED = "Registered";
+    public static final String ROLE_LDAP_REGISTERED = "LdapRegistered";
     public static final String ROLE_ADMINISTRATOR = "Administrator";
 
     public static final String USER_ANONYMOUS = ROLE_ANONYMOUS;
@@ -47,22 +48,22 @@ public class CommonPermissions {
     public static final String WORKSPACE = "Workspace";
     public static final String USER = "User";
     public static final String SYSTEM = "System";
-    
+
     /**
      * enables to edit resources
      */
     public static final String ACTION_EDIT = "edit";
-    
+
     /**
      * grants read-only access
      */
     public static final String ACTION_VIEW = "view";
-    
+
     /**
      * grants access to configuration
      */
     public static final String ACTION_CONFIG = "config";
-    
+
     /**
      * permission to not directly edit translations, but at least make suggestions
      */
@@ -94,32 +95,32 @@ public class CommonPermissions {
 
     private static final String PERMISSION_PATTERN = "{0}:{1}:{2}";
     private static final String WORKSPACE_PERMISSION_PATTERN = "{0}:{1}";
-    
+
 	private static final Set<EClass> KNOWN_TARGETS;
 	static {
 		KNOWN_TARGETS = new HashSet<EClass>();
 		KNOWN_TARGETS.add(PropertiesPackage.Literals.WORKSPACE);
 		KNOWN_TARGETS.add(PropertiesPackage.Literals.PROJECT);
 	}
-	
+
     /**
      * computes something known to us that we can use to construct a proper permission.
      * e.g. we don't have permissions on per descriptor level, so we need to walk up the
-     * hierarchy until we find something known 
+     * hierarchy until we find something known
      * @param target
-     * @return 	
+     * @return
      */
     private static Resolvable<?, ?> getActualTarget(Resolvable<?, ?> target) {
     	Resolvable<?, ?> current = target;
     	while(current!=null && !KNOWN_TARGETS.contains(current.eClass()))
     		current = current.getParent();
 		return current;
-	}	
+	}
 
     public static String constructPermissionName(String kind, String scope, String action){
         return MessageFormat.format(PERMISSION_PATTERN, kind,scope,action);
     }
-    
+
     public static String constructPermissionName(Resolvable<?, ?> r, String action){
     	Resolvable<?, ?> rightsContainer = getActualTarget(r);
     	if (rightsContainer instanceof Workspace) {
