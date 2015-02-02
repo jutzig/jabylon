@@ -57,10 +57,10 @@ public class PropertyResourceUtil {
 		else {
 			final BundleContext context = FrameworkUtil.getBundle(PropertyResourceUtil.class).getBundleContext();
 			ServiceTracker<PropertyScanner, PropertyScanner> tracker = new ServiceTracker<PropertyScanner, PropertyScanner>(context, PropertyScanner.class, new ServiceTrackerCustomizer<PropertyScanner, PropertyScanner>() {
-				
+
 				@Override
 				public PropertyScanner addingService(ServiceReference<PropertyScanner> reference){
-					
+
 					Object value = reference.getProperty(PropertyScanner.TYPE);
 					PropertyScanner service = context.getService(reference);
 					if (value instanceof String) {
@@ -72,22 +72,22 @@ public class PropertyResourceUtil {
 						LOG.error("PropertyScanner has no valid type {}",service);
 					return service;
 				}
-				
+
 				@Override
 				public void removedService(ServiceReference<PropertyScanner> reference, PropertyScanner service) {
 					Object value = reference.getProperty(PropertyScanner.TYPE);
 					context.ungetService(reference);
 					if(value!=null)
 						PROPERTY_SCANNERS.remove(value);
-					LOG.debug("Removed property type {} {}",value);				
+					LOG.debug("Removed property type {} {}",value);
 				}
-				
+
 				@Override
 				public void modifiedService(ServiceReference<PropertyScanner> reference, PropertyScanner service) {
 					// nothing to do
-					
+
 				}
-				
+
 			});
 			tracker.open(true);
 		}
@@ -99,16 +99,16 @@ public class PropertyResourceUtil {
     	String propertyType = project.getPropertyType();
     	return createScanner(propertyType);
     }
-    
+
     public static PropertyScanner createScanner(String propertyType)
     {
     	PropertyScanner scanner = PROPERTY_SCANNERS.get(propertyType);
     	if(scanner==null)
     		throw new UnsupportedOperationException("unsupported property type: "+propertyType);
     	return scanner;
-        
+
     }
-    
+
     public static Map<String,PropertyScanner> getPropertyScanners()
     {
     	TreeMap<String, PropertyScanner> sortedMap = new TreeMap<String, PropertyScanner>(PROPERTY_SCANNERS);
@@ -243,10 +243,10 @@ public class PropertyResourceUtil {
             version.getChildren().add(template);
         }
         createMissingChildren(template, locale);
-    }    
+    }
 
     private static void createMissingChildren(ProjectLocale template, ProjectLocale other) {
-    	
+
     	EList<PropertyFileDescriptor> descriptors = template.getDescriptors();
     	for (PropertyFileDescriptor descriptor : descriptors) {
     		URI derivedLocation = computeLocaleResourceLocation(other.getLocale(), other.getParent(), descriptor.getLocation());
@@ -306,7 +306,10 @@ public class PropertyResourceUtil {
 
         PropertyScanner scanner = createScanner(version);
         URI parentPath = version.absoluteFilePath();
-        File path = scanner.computeTranslationPath(new File(URI.decode(parentPath.path())+URI.decode(templateLocation.path())), version.getTemplate().getLocale(), locale);
+        String childPath = templateLocation.path();
+        if(childPath!=null && !childPath.startsWith("/"))
+        	childPath = "/" + childPath;
+        File path = scanner.computeTranslationPath(new File(URI.decode(parentPath.path())+URI.decode(childPath)), version.getTemplate().getLocale(), locale);
 
         URI location = URI.createFileURI(path.getAbsolutePath());
         URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
@@ -317,7 +320,7 @@ public class PropertyResourceUtil {
         return trimmedLocation;
 
     }
-    
+
     public static void removeDescriptor(PropertyFileDescriptor descriptor) {
 
         if (descriptor.isMaster()) {
@@ -331,9 +334,9 @@ public class PropertyResourceUtil {
                 	parent.updatePercentComplete();
                 	if(parent.getChildren().size()==1 && parent instanceof ResourceFolder)
                 	{
-                		
+
                 		deleteFolder((ResourceFolder) parent);
-                	}                	
+                	}
                 }
 
                 EcoreUtil.remove(derived);
