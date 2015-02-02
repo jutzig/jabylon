@@ -72,6 +72,9 @@ public class UserImagePanel extends Panel {
     }
 
     private String normalize(String email) {
+        if(email==null)
+            return "";
+
         return email.trim().toLowerCase(getSession().getLocale());
     }
 
@@ -86,8 +89,9 @@ public class UserImagePanel extends Panel {
 class MD5Util {
     public static String hex(byte[] array) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < array.length; ++i) {
-            sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+        for (byte element : array)
+        {
+            sb.append(Integer.toHexString((element & 0xFF) | 0x100).substring(1, 3));
         }
         return sb.toString();
     }
