@@ -43,7 +43,7 @@ public class RetryingStaleReferencePolicy implements CDOStaleReferencePolicy {
 		try {
 			LOG.warn("Processing stale reference {} feature {}",source,feature);
 			return CDOStaleReferencePolicy.DEFAULT.processStaleReference(source, feature, index, target);
-		} catch (IllegalArgumentException e) {
+		} catch (Exception e) {
 			LOG.warn("failed to process stale reference. Falling back to different classloader",e);
 			final EClassifier type = feature.getEType();
 			InvocationHandler handler = new InvocationHandler() {
