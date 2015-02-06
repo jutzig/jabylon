@@ -75,7 +75,7 @@ public class PropertiesHelper implements PropertyConverter {
         this.uri = uri;
     }
 
-    
+
 	public Property readProperty(BufferedReader reader) throws IOException
     {
         String line = null;
@@ -281,11 +281,11 @@ public class PropertiesHelper implements PropertyConverter {
         	//see https://github.com/jutzig/jabylon/issues/5
             //write BOMs in unicode mode
             out.write(ByteOrderMark.UTF_8.bytes());
-        }	
-        
+        }
+
         writer = new BufferedWriter(new OutputStreamWriter(out, encoding));
         try {
-                        
+
             writeLicenseHeader(writer, file.getLicenseHeader());
             Iterator<Property> it = file.getProperties().iterator();
             while (it.hasNext()) {
@@ -313,7 +313,7 @@ public class PropertiesHelper implements PropertyConverter {
             return false;
         return !(property.getValue()==null || property.getValue().length()==0);
     }
- 
+
 
 	@Override
     public PropertyFile load(InputStream in, String encoding) throws IOException {
@@ -341,13 +341,15 @@ public class PropertiesHelper implements PropertyConverter {
             }
         } finally{
             if(reader!=null)
-                reader.close();
+            {
+            	reader.close();
+            }
         }
         file.setLicenseHeader(getLicenseHeader());
         return file;
     }
-    
-	
+
+
 	protected String deriveEncoding(ByteOrderMark bom) {
 		if(bom==null)
 			return null;
@@ -366,5 +368,5 @@ public class PropertiesHelper implements PropertyConverter {
 	public boolean isUnicodeEscaping() {
 		return unicodeEscaping;
 	}
-    
+
 }

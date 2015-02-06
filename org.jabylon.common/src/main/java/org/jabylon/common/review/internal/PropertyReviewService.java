@@ -23,9 +23,6 @@ import org.apache.felix.scr.annotations.Service;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.notify.Notification;
-import org.osgi.service.prefs.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.PreferencesUtil;
@@ -35,6 +32,10 @@ import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Review;
 import org.jabylon.resources.changes.PropertiesListener;
+import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.osgi.service.prefs.Preferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Johannes Utzig (jutzig.dev@googlemail.com)
@@ -46,6 +47,9 @@ public class PropertyReviewService implements PropertiesListener {
 
     @Reference(referenceInterface=ReviewParticipant.class,bind="addParticipant",unbind="removeParticipant",cardinality=ReferenceCardinality.MANDATORY_MULTIPLE)
     private List<ReviewParticipant> participants = Collections.synchronizedList(new ArrayList<ReviewParticipant>());
+
+    @Reference(referenceInterface=PropertyPersistenceService.class,bind="setPersistenceService",unbind="unsetPersistenceService",cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private PropertyPersistenceService propertyPersistence;
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyReviewService.class);
 
@@ -65,6 +69,16 @@ public class PropertyReviewService implements PropertiesListener {
         participants.remove(pariticpant);
     }
 
+    protected void setPersistenceService(PropertyPersistenceService persistence)
+    {
+    	this.propertyPersistence = persistence;
+    }
+
+    protected void unsetPersistenceService(PropertyPersistenceService persistence)
+    {
+    	this.propertyPersistence = null;
+    }
+
     @Override
     public void propertyFileAdded(PropertyFileDescriptor descriptor, boolean autoSync) {
         if (descriptor.isMaster()) // TODO: or does the master language need to
@@ -74,8 +88,16 @@ public class PropertyReviewService implements PropertiesListener {
         List<ReviewParticipant> activeReviews = getActiveReviews(project);
         if (activeReviews.isEmpty())
             return;
-        PropertyFile slaveProperties = descriptor.loadProperties();
-        PropertyFile masterProperties = descriptor.getMaster().loadProperties();
+        PropertyFile slaveProperties = null;
+        PropertyFile masterProperties = null;
+
+        try {
+			slaveProperties = propertyPersistence.loadProperties(descriptor);
+			masterProperties = propertyPersistence.loadProperties(descriptor.getMaster());
+		} catch (Exception e1) {
+			logger.error("failed to load properties for "+descriptor.getLocation(),e1);
+			return;
+		}
 
         CDOTransaction transaction = TransactionUtil.configureView(descriptor.cdoView().getSession().openTransaction());
         descriptor = transaction.getObject(descriptor);
@@ -162,7 +184,15 @@ public class PropertyReviewService implements PropertiesListener {
         descriptor = transaction.getObject(descriptor);
         PropertyFile masterProperties = null;
         if (!descriptor.isMaster())
-            masterProperties = descriptor.getMaster().loadProperties();
+        {
+        	try {
+				masterProperties = propertyPersistence.loadProperties(descriptor.getMaster());
+			} catch (Exception e) {
+				logger.error("failed to load properties for "+descriptor.getMaster().getLocation(),e);
+				return;
+			}
+
+        }
         for (Notification change : changes) {
             Object notifier = change.getNotifier();
             if (notifier instanceof Property) {

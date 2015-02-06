@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -154,7 +155,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		PropertyFileDescriptor descriptor = model.getObject();
 		Multimap<String, Review> reviews = reviewModel.getObject();
 		PropertyFileDescriptor master = descriptor.getMaster();
-		Map<String, Property> translated = loadProperties(descriptor).asMap();
+		Map<String, Property> translated = new HashMap<String, Property>(loadProperties(descriptor).asMap());
 		PropertyFile templateFile = loadProperties(master);
 		total = templateFile.getProperties().size();
 
@@ -398,7 +399,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			label.add(new AttributeAppender("class", getLabelClass(review)));
 			if(editKind==EditKind.EDIT && Review.KIND_SUGGESTION.equals(review.getReviewType())) {
 				//allow the label to be clicked to apply the suggestion
-				label.add(new AttributeAppender("data-suggestion", review.getMessage()));	
+				label.add(new AttributeAppender("data-suggestion", review.getMessage()));
 			}
 			StringBuilder title = new StringBuilder();
 			if (review.getMessage() != null)

@@ -30,8 +30,8 @@ import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.review.standard.ReviewActivator;
-import org.jabylon.scheduler.JobUtil;
 import org.jabylon.scheduler.JobExecution;
+import org.jabylon.scheduler.JobUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,22 +45,22 @@ public class TranslationCleanupJob implements JobExecution {
 
 
     private static final Logger logger = LoggerFactory.getLogger(TranslationCleanupJob.class);
-    
+
     @org.apache.felix.scr.annotations.Property(value="false", name=JobExecution.PROP_JOB_ACTIVE)
     private String ACTIVE = JobExecution.PROP_JOB_ACTIVE;
-    
+
     /** at 2 am every day*/
     @org.apache.felix.scr.annotations.Property(value="0 2 0 * * ?",name=JobExecution.PROP_JOB_SCHEDULE)
     private String DEFAULT_SCHEDULE = JobExecution.PROP_JOB_SCHEDULE;
-    
+
     @org.apache.felix.scr.annotations.Property(value="%cleanup.job.name", name=JobExecution.PROP_JOB_NAME)
     private String NAME = JobExecution.PROP_JOB_NAME;
-    
+
     /** at 2 am every day*/
     @org.apache.felix.scr.annotations.Property(value="%cleanup.job.description", name=JobExecution.PROP_JOB_DESCRIPTION)
-    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;    
-    
-    
+    private String DESCRIPTION = JobExecution.PROP_JOB_DESCRIPTION;
+
+
     /**
      *
      */
@@ -120,25 +120,30 @@ public class TranslationCleanupJob implements JobExecution {
     }
 
     private void cleanup(PropertyFileDescriptor descriptor) {
-        PropertyFile masterProperties = descriptor.getMaster().loadProperties();
-        Map<String, Property> map = masterProperties.asMap();
-        PropertyFile properties = descriptor.loadProperties();
-        Iterator<Property> iterator = properties.getProperties().iterator();
-        boolean hadDeletes = false;
-        while (iterator.hasNext()) {
-            Property property = (Property) iterator.next();
-            if(!map.containsKey(property.getKey()))
-            {
-                iterator.remove();
-                logger.info("Removed unused translation {} in {}",property.getKey(), descriptor.fullPath());
-                hadDeletes = true;
-            }
-        }
-        if(hadDeletes)
-        {
-            PropertyPersistenceService propertyPersistenceService = ReviewActivator.getDefault().getPersistenceService();
-            propertyPersistenceService.saveProperties(descriptor, properties);
-        }
+    	PropertyPersistenceService persistenceService = ReviewActivator.getDefault().getPersistenceService();
+        try {
+			PropertyFile masterProperties = persistenceService.loadProperties(descriptor.getMaster());
+			Map<String, Property> map = masterProperties.asMap();
+			PropertyFile properties = descriptor.loadProperties();
+			Iterator<Property> iterator = properties.getProperties().iterator();
+			boolean hadDeletes = false;
+			while (iterator.hasNext()) {
+			    Property property = (Property) iterator.next();
+			    if(!map.containsKey(property.getKey()))
+			    {
+			        iterator.remove();
+			        logger.info("Removed unused translation {} in {}",property.getKey(), descriptor.fullPath());
+			        hadDeletes = true;
+			    }
+			}
+			if(hadDeletes)
+			{
+			    PropertyPersistenceService propertyPersistenceService = ReviewActivator.getDefault().getPersistenceService();
+			    propertyPersistenceService.saveProperties(descriptor, properties);
+			}
+		} catch (Exception e) {
+			logger.error("Translation cleanup failed for property "+descriptor.getLocation(),e);
+		}
     }
 
     /* (non-Javadoc)

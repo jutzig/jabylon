@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -104,11 +105,11 @@ public class PropertyListPanel
         mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
     }
 
-    
+
     @Override
     protected void construct() {
     	super.construct();
-        
+
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>()
         {
@@ -168,7 +169,7 @@ public class PropertyListPanel
             link.add(new AttributeAppender("class", Model.of("disabled")));
         }
         add(link);
-        
+
         StatelessLink<Void> deleteLink = new DeleteLink("remove.button");
 		deleteLink.add(new ConfirmBehaviour(nls("confirm.remove")));
 		deleteLink.setVisible(canConfigure());
@@ -233,7 +234,7 @@ public class PropertyListPanel
         if (pair.getTranslated() == null || pair.getTranslated().isEmpty())
         {
             Review review = PropertiesFactory.eINSTANCE.createReview();
-            String message = new StringResourceModel("review.missing.translation",this,null,pair.getKey()).getString(); 
+            String message = new StringResourceModel("review.missing.translation",this,null,pair.getKey()).getString();
             review.setMessage(MessageFormat.format(message, pair.getKey()));
             review.setReviewType(getString("review.missing.translation.type"));
             review.setSeverity(Severity.ERROR);
@@ -263,7 +264,7 @@ public class PropertyListPanel
                 return "";
         }
     }
-    
+
     /**
      * checks if the user has permissions to configure this project
      * @return
@@ -366,7 +367,7 @@ class PropertyPairListDataProvider
         PropertyFileDescriptor descriptor = model.getObject();
         Multimap<String, Review> reviews = reviewModel.getObject();
         PropertyFileDescriptor master = descriptor.getMaster();
-        Map<String, Property> translated = loadProperties(descriptor).asMap();
+        Map<String, Property> translated = new HashMap<String, Property>(loadProperties(descriptor).asMap());
         PropertyFile templateFile = loadProperties(master);;
 
         List<PropertyPair> contents = new ArrayList<PropertyPair>();
@@ -436,19 +437,19 @@ class PropertyPairListDataProvider
 
 class DeleteLink extends StatelessLink<Void>{
 
-	
+
 	private static final long serialVersionUID = 8205155656605708520L;
 
 	@Inject
 	private URIResolver resolver;
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(DeleteLink.class);
 
     public DeleteLink(String id) {
 		super(id);
 	}
 
-	
+
 	@Override
 	public void onClick() {
 		PropertyFileDescriptor descriptor = getModel(getPage().getPageParameters());
@@ -476,7 +477,7 @@ class DeleteLink extends StatelessLink<Void>{
 			LOG.error("Failed to delete descriptor",e);
 		}
 		}
-		
+
 	}
 
 
@@ -485,9 +486,9 @@ class DeleteLink extends StatelessLink<Void>{
 		for(int i=0;i<pageParameters.getIndexedCount();i++){
 			uri = uri.appendSegment(pageParameters.get(i).toString());
 		}
-		
+
 		return (PropertyFileDescriptor) resolver.resolve(uri);
 	}
-	
+
 }
 

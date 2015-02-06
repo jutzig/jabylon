@@ -14,11 +14,10 @@ package org.jabylon.resources.persistence.internal;
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.cdo.view.CDOView;
-
-import com.google.common.cache.CacheLoader;
-
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
+
+import com.google.common.cache.CacheLoader;
 
 /**
  * @author jutzig.dev@googlemail.com
@@ -38,7 +37,8 @@ public class PropertyFileCacheLoader extends CacheLoader<CDOID, PropertyFile> {
         CDOObject object = view.getObject(key);
         if (object instanceof PropertyFileDescriptor) {
             PropertyFileDescriptor descriptor = (PropertyFileDescriptor) object;
-            return descriptor.loadProperties();
+            PropertyFile properties = descriptor.loadProperties();
+            return properties;
         }
         throw new IllegalArgumentException("Object is not a PropertyFileDescriptor: "+object);
     }

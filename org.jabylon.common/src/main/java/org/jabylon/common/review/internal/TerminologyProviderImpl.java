@@ -30,8 +30,10 @@ import org.jabylon.common.review.TerminologyProvider;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
 import org.jabylon.properties.Workspace;
+import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,9 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
     private Supplier<ProjectVersion> version;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Reference(referenceInterface=PropertyPersistenceService.class,bind="setPersistenceService",unbind="unsetPersistenceService",cardinality=ReferenceCardinality.MANDATORY_UNARY)
+    private PropertyPersistenceService propertyPersistence;
+
     @Reference(cardinality=ReferenceCardinality.MANDATORY_UNARY)
     private RepositoryConnector repositoryConnector;
 
@@ -58,6 +63,16 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
     public void activate() {
         terminologyCache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).concurrencyLevel(2).build(this);
         version = Suppliers.memoize((Supplier<ProjectVersion>) this);
+    }
+
+    protected void setPersistenceService(PropertyPersistenceService persistence)
+    {
+    	this.propertyPersistence = persistence;
+    }
+
+    protected void unsetPersistenceService(PropertyPersistenceService persistence)
+    {
+    	this.propertyPersistence = null;
     }
 
     @Override
@@ -83,7 +98,8 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
                 EList<PropertyFileDescriptor> descriptors = projectLocale.getDescriptors();
                 if(!descriptors.isEmpty()) {
                     PropertyFileDescriptor descriptor = descriptors.get(0);
-                    return descriptor.loadProperties().asMap();
+                    PropertyFile properties = propertyPersistence.loadProperties(descriptor);
+                    return properties.asMap();
                 }
             }
         }
