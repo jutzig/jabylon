@@ -72,6 +72,7 @@ import org.jabylon.rest.ui.model.EClassSortState;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
+import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import org.jabylon.rest.ui.wicket.components.ConfirmBehaviour;
@@ -85,7 +86,7 @@ import com.google.common.collect.Multimap;
 
 
 public class PropertyListPanel
-    extends BasicResolvablePanel<PropertyFileDescriptor>
+    extends BasicResolvablePanel<PropertyFileDescriptor> implements RestrictedComponent
 {
 
     private static final long serialVersionUID = 1L;
@@ -175,6 +176,12 @@ public class PropertyListPanel
 		deleteLink.setVisible(canConfigure());
 		add(deleteLink);
     }
+    
+	@Override
+	public String getRequiredPermission() {
+		Project project = getModel().getObject().getProjectLocale().getParent().getParent();
+		return CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName(), CommonPermissions.ACTION_VIEW);
+	}
 
     protected void fillStatusColumn(PropertyPair propertyPair,
                                     Collection<Review> reviewCollection,
