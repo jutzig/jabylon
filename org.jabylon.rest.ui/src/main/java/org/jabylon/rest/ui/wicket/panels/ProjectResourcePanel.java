@@ -133,6 +133,8 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
     	if (session instanceof CDOAuthenticatedSession) {
 			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
 			User user = authSession.getUser();
+			if(user==null)
+				user = authSession.getAnonymousUser();
 			if(user!=null)
 				return CommonPermissions.hasViewPermission(user, resolvable);
 		}
