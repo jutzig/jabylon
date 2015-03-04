@@ -1,6 +1,14 @@
 
 # Release Notes
 
+## Jabylon 1.1.4
+
+Jabylon 1.1.4 was released on the **4th March 2015** and is available for [download](download.html).
+
+The release includes support for LDAP groups as well as several bugfixes and security fixes.  
+ 
+For a full list see [here](https://github.com/jutzig/jabylon/issues?q=milestone%3A1.1.4+is%3Aclosed) 
+
 ## Jabylon 1.1.3
 
 Jabylon 1.1.3 was released on the **12th December 2014** and is available for [download](download.html).
