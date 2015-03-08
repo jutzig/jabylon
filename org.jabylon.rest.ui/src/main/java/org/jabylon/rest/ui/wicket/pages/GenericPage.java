@@ -18,7 +18,9 @@ import org.apache.wicket.markup.head.PriorityHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 import org.jabylon.rest.ui.navbar.NavbarPanel;
 import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.wicket.FaviconHeaderItem;
@@ -120,6 +122,32 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
         target.add(feedbackPanel);
         target.appendJavaScript("$('#" + feedbackPanel.getMarkupId() + "').addClass('ajax')" +
                 ".clearQueue().show().slideDown().delay(5000).slideUp().end().hide();");
+    }
+    
+    
+    /**
+     * creates a new StringResourceModel for the given key with <code>this</code> as the component
+     * @param key
+     * @param parameters
+     * 	The parameters to substitute using a Java MessageFormat object
+     * @return
+     */
+    protected StringResourceModel nls(String key, Object... parameters) {
+    	return new StringResourceModel(key, this, null, parameters);
+    }
+
+
+    /**
+     * creates a new OSGiStringResourceModel for the given key with <code>this</code> as the component.
+     * 
+     * @param service the service implementation. Its bundle will be used to compute the localization
+     * @param key
+     * @param parameters
+     * 	The parameters to substitute using a Java MessageFormat object
+     * @return
+     */
+    protected StringResourceModel nls(Class<?> service, String key, Object... parameters) {
+    	return new OSGiStringResourceModel(service, key, this, null, parameters);
     }
 
 }

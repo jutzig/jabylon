@@ -149,8 +149,14 @@ public class Activator implements BundleActivator {
 		addOrUpdateRegisteredRole(userManagement);
 		addOrUpdateAnonymousRole(userManagement);
 		addAdminUserIfMissing(adminRole, userManagement);
+		addAdditionalPermissions(userManagement);
 		transaction.commit();
 
+	}
+
+	private void addAdditionalPermissions(UserManagement userManagement) {
+		addPermission(userManagement, null, "User:register");
+		
 	}
 
 	private Role addOrUpdateRegisteredRole(UserManagement userManagement) {
@@ -188,7 +194,8 @@ public class Activator implements BundleActivator {
 			permission.setName(permissionName);
 			userManagement.getPermissions().add(permission);
 		}
-		role.getPermissions().add(permission);
+		if(role!=null)
+			role.getPermissions().add(permission);
 	}
 
 	private Role addOrUpdateAdminRole(UserManagement userManagement) {

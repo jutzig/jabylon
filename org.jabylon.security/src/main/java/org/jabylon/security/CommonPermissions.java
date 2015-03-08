@@ -86,6 +86,11 @@ public class CommonPermissions {
     public static final String USER_GLOBAL_CONFIG = "User:*:config";
 
     /**
+     * right to register as a new user
+     */
+    public static final String USER_REGISTER = "User:register";
+
+    /**
      * basic right to access configuration in general
      * Deprecation: do we still need this?
      * Settings page no longer requires it

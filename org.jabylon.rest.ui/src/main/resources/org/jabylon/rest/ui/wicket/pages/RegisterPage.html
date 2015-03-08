@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<p/>
+	<wicket:extend>
+		<form wicket:id="form" class="form-horizontal" autocomplete="off">
+			<div class="row">
+				<div class="span10">
+					<div wicket:id="username-group">
+						<input wicket:id="username" id="username" type="text"
+							placeholder="Username" class="input-xlarge">
+					</div>
+					<div wicket:id="password-group">
+						<input wicket:id="userpassword" id="userpassword" type="password"
+							placeholder="**************" class="input-xlarge">
+					</div>
+					<div wicket:id="password-repeat-group">
+						<input wicket:id="userpassword-repeat" id="userpassword-repeat" type="password" class="input-xlarge">
+					</div>
+					<div wicket:id="displayname-group">
+						<input wicket:id="displayName" id="displayName" type="text"
+							placeholder="John Doe" class="input-xlarge">
+					</div>
+					<div wicket:id="email-group">
+						<input wicket:id="email" id="email" type="text"
+							placeholder="JohnDoe@example.org" class="input-xlarge">
+					</div>
+					<div wicket:id="submit-group">
+						<input type="submit" wicket:id="submit" class="btn btn-primary">
+					</div>
+				</div>
+			</div>
+		</form>
+	</wicket:extend>
+</body>
+</html>
