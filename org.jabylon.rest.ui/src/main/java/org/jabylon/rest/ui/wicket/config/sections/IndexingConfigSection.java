@@ -8,9 +8,11 @@
  */
 package org.jabylon.rest.ui.wicket.config.sections;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -21,12 +23,17 @@ import org.apache.lucene.store.Directory;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.MultiFileUploadField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.progress.RunnableWithProgress;
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.index.properties.IndexActivator;
@@ -112,8 +119,9 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 			} catch (ScheduleServiceException e) {
 				LOGGER.warn("failed to retrieve next job execution for {}",indexJobConfig.absolutePath());
 			}
-			
 		}
+		Form<Void> uploadForm = new FileUploadForm("tmx-upload-form");
+		add(uploadForm);
     }
     
 	protected String format(Date nextExecution) {
@@ -187,5 +195,69 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
                 projectName = getDomainObject().getName();
             return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,projectName,CommonPermissions.ACTION_CONFIG);
         }
+    }
+    
+    private class FileUploadForm extends Form<Void>
+    {
+
+		private static final long serialVersionUID = -3653084217384164795L;
+		
+		private final ArrayList<FileUpload> uploads;
+    	
+		public FileUploadForm(String id) {
+			super(id);
+	           // set this form to multipart mode (always needed for uploads!)
+            setMultiPart(true);
+            uploads = new ArrayList<FileUpload>();
+
+            // Add one multi-file upload field
+            IModel<ArrayList<FileUpload>> model = new Model<ArrayList<FileUpload>>(uploads);
+            add(new MultiFileUploadField("tmx-upload",model));
+
+            // Set maximum size to 100K for demo purposes
+//            setMaxSize(Bytes.kilobytes(100));
+		}
+		
+		@Override
+		protected void onSubmit() {
+			super.onSubmit();
+			File home = new File(ServerConstants.WORKING_DIR);
+			File tmx = new File(home,"tmx");
+			tmx.mkdirs();
+			boolean didSomething = false;
+			for (FileUpload fileUpload : uploads) {
+				File target = new File(tmx,fileUpload.getClientFileName());
+				try {
+					target.createNewFile();
+					fileUpload.writeTo(target);
+					didSomething = true;
+				} catch (IOException e) {
+					LOGGER.error("Failed to upload TMX file "+target,e);
+				}
+			}
+			if(didSomething)
+			{
+				RunnableWithProgress runnable = new RunnableWithProgress() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public IStatus run(IProgressMonitor monitor) {
+						Activator.getDefault().getRepositoryConnector();
+						try {
+							queryService.rebuildIndex(monitor);
+						} catch (CorruptIndexException e) {
+							return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to rebuild index",e);
+						} catch (IOException e) {
+							return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Failed to rebuild index",e);
+						}
+						return Status.OK_STATUS;
+
+					}
+				};
+				Activator.getDefault().getProgressService().schedule(runnable, nls("update.index.job.label").getString());
+			}
+		}
+    	
     }
 }

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tmx version="1.4">
+  <header creationtool="SDL Language Platform" creationtoolversion="8.0" o-tmf="SDL TM8 Format" datatype="xml" segtype="sentence" adminlang="en-US" srclang="en-US" creationdate="20140509T212434Z" creationid="JULIO-PC\Julio">
+    <prop type="x-Recognizers">RecognizeAll</prop>
+    <prop type="x-TMName">TheLootCastle</prop>
+  </header>
+  <body>
+    <tu creationdate="20140506T201003Z" creationid="JULIO-PC\Julio" changedate="20140506T201003Z" changeid="JULIO-PC\Julio" lastusagedate="20140529T130837Z" usagecount="6">
+      <prop type="x-Context">0, 0</prop>
+      <prop type="x-Origin">TM</prop>
+      <prop type="x-ConfirmationLevel">Translated</prop>
+      <tuv xml:lang="en-US">
+        <seg>Start Game</seg>
+      </tuv>
+      <tuv xml:lang="es-MX">
+        <seg>Iniciar el juego</seg>
+      </tuv>
+    </tu>
+    <tu creationdate="20140506T201019Z" creationid="JULIO-PC\Julio" changedate="20140506T201019Z" changeid="JULIO-PC\Julio" lastusagedate="20140529T130837Z" usagecount="1">
+      <prop type="x-Context">3370197139874123, 3245640055275827812</prop>
+      <prop type="x-Context">3370197139874123, 6756856807407198040</prop>
+      <prop type="x-Origin">TM</prop>
+      <prop type="x-ConfirmationLevel">Translated</prop>
+      <tuv xml:lang="es-MX">
+        <seg>Opciones</seg>
+      </tuv>
+      <tuv xml:lang="en-US">
+        <seg>Options</seg>
+      </tuv>
+    </tu>
+    <tu creationdate="20140506T201023Z" creationid="JULIO-PC\Julio" changedate="20140506T201023Z" changeid="JULIO-PC\Julio" lastusagedate="20140529T130837Z" usagecount="1">
+      <prop type="x-Context">3513393889963, 3513378190106</prop>
+      <prop type="x-Origin">TM</prop>
+      <prop type="x-ConfirmationLevel">Translated</prop>
+      <tuv xml:lang="en-US">
+        <seg>Credits</seg>
+      </tuv>
+      <tuv xml:lang="es-MX">
+        <seg>Creditos</seg>
+      </tuv>
+    </tu>
+    <tu creationdate="20140506T201030Z" creationid="JULIO-PC\Julio" changedate="20140506T201030Z" changeid="JULIO-PC\Julio" lastusagedate="20140529T130837Z" usagecount="3">
+      <prop type="x-Context">3502787096743, 3502787096743</prop>
+      <prop type="x-Context">4410193695090372460, -4660993381962853198</prop>
+      <prop type="x-Context">4410193695090372460, -869932872523108584</prop>
+      <prop type="x-Origin">TM</prop>
+      <prop type="x-ConfirmationLevel">Translated</prop>
+      <tuv xml:lang="en-US">
+        <seg>Exit</seg>
+      </tuv>
+      <tuv xml:lang="es-MX">
+        <seg>Salir</seg>
+      </tuv>
+    </tu>
+    <tu creationdate="20140506T201033Z" creationid="JULIO-PC\Julio" changedate="20140506T201033Z" changeid="JULIO-PC\Julio" lastusagedate="20140529T130837Z" usagecount="1">
+      <prop type="x-Context">3646969890, 113435712337</prop>
+      <prop type="x-Origin">TM</prop>
+      <prop type="x-ConfirmationLevel">Translated</prop>
+      <tuv xml:lang="en-US">
+        <seg>Resume</seg>
+      </tuv>
+      <tuv xml:lang="es-MX">
+        <seg>Reanudar</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

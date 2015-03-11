@@ -36,6 +36,7 @@ public interface QueryService {
     String FIELD_COMMENT = "comment";
     String FIELD_MASTER_COMMENT = "masterComment";
     String FIELD_LOCALE = "locale";
+    
     String FIELD_VERSION = "version";
     String FIELD_PROJECT = "project";
     String FIELD_CDO_ID = "cdoID";
@@ -46,8 +47,21 @@ public interface QueryService {
      */
     String FIELD_TEMPLATE_LOCATION = "templatePath";
     String MASTER = "master";
-
-
+    /**
+     * if the value is true, marks that the document was produced by a tmx file and not a normal project
+     */
+    String FIELD_TMX = "tmx";
+    /**
+     * when dealing with tmx we have src and target language in one file.
+     * The locale is "template" and the other locale is stored in this field
+     */
+    String FIELD_TMX_LOCALE = "target.locale";
+    /**
+     * when dealing with tmx we have src and target language in one file.
+     * The normal value represents the template value and the translated value is stored here
+     */
+    String FIELD_TMX_VALUE = "tmx.locale";
+    
     SearchResult search(String search, String scopeURI);
 
     SearchResult search(Query query, int maxHits);

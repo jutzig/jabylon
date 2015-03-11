@@ -65,6 +65,13 @@ Jabylon offers an extensible set of translation tools to support translators in 
 
 The tabs on the left side (1) allow you to switch between the different translation tools. You can also use [keyboard shortcuts](#shortcuts "Keyboard_Shortcuts")  to switch between the tabs. The translation tool that can be seen (2) in the screenshot offers a selection of alternatives on how similar strings have been translated within your projects so far. This can be very useful to get an idea of how other people translated certain terms/phrasings so far and to keep things consistent.
 
+### Translation Memory
+
+The translation tool available under "Similar Strings" grants access to Jabylons translation memory. It searches for strings that are similar to the one that is currently being translated and offers suggestions on
+how those have been previously translated into the target language. The translation memory fills automatically as you import projects or translate resources. 
+
+However if you already have a prexisting translation memory available in the [TMX format](http://en.wikipedia.org/wiki/Translation_Memory_eXchange) you can import it into Jabylon.
+To do so, enter the `Index` configuration and upload your TMX files. Please note that it can take a few minutes before the new suggestions become available.   
 
 ## <a id="shortcuts" name="shortcuts"></a>Keyboard Shortcuts
 

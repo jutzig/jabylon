@@ -215,6 +215,10 @@ public class SimilarStringsToolPanel
     private Similarity createSimilarity(Document masterDoc, Locale language, int score, int hitNumber, Project originalProject)
         throws CorruptIndexException, IOException
     {
+		if("true".equals(masterDoc.get(QueryService.FIELD_TMX)))
+		{
+			return createTMXSimilarity(masterDoc,language,score,hitNumber);
+		}
 		PropertyFileDescriptor descriptor = queryService.getDescriptor(masterDoc);
 		if (descriptor == null)
 			return null;
@@ -236,21 +240,36 @@ public class SimilarStringsToolPanel
 		property.setComment(translationDoc.get(QueryService.FIELD_COMMENT));
 		PropertyFileDescriptor slave = queryService.getDescriptor(translationDoc);
 		if (slave == null)
+		{
 			return null;
+		}
+		
 		PropertyPair pair = getModelObject();
 		// that would mean we found the current property, which is (of course) similar :-)
 		if (pair.getKey().equals(key) && slave.cdoID().equals(pair.getDescriptorID()))
 			return null;
 		URI originalProjectPath = originalProject.fullPath();
 		String resultPath = masterDoc.get(QueryService.FIELD_FULL_PATH);
-		boolean isSameProject = resultPath.startsWith(originalProjectPath.path() + "/");
+		boolean isSameProject = resultPath!=null && resultPath.startsWith(originalProjectPath.path() + "/");
 		Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE), translationDoc.get(QueryService.FIELD_VALUE), score,
 				masterDoc.get(QueryService.FIELD_FULL_PATH), slave.toURI().toString(), key, hitNumber, isSameProject);
 		return similarity;
 
     }
 
-    public static class Similarity
+
+	private Similarity createTMXSimilarity(Document masterDoc, Locale language, int score, int hitNumber) throws IOException {
+		if(!language.toString().equals(masterDoc.get(QueryService.FIELD_TMX_LOCALE)))
+			return null;
+		
+		String key = masterDoc.get(QueryService.FIELD_KEY);
+		Similarity similarity = new Similarity(masterDoc.get(QueryService.FIELD_VALUE), masterDoc.get(QueryService.FIELD_TMX_VALUE), score,
+				masterDoc.get(QueryService.FIELD_FULL_PATH), masterDoc.get(QueryService.FIELD_TEMPLATE_LOCATION), key, hitNumber, false);
+		return similarity;
+	}
+
+
+	public static class Similarity
         implements Serializable, Comparable<Similarity>
     {
 
