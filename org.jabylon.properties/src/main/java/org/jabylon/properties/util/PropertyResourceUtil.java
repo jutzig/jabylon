@@ -302,24 +302,28 @@ public class PropertyResourceUtil {
 
     }
 
-    public static URI computeLocaleResourceLocation(Locale locale, ProjectVersion version, URI templateLocation) {
+	public static URI computeLocaleResourceLocation(Locale locale,
+			ProjectVersion version, URI templateLocation) {
 
-        PropertyScanner scanner = createScanner(version);
-        URI parentPath = version.absoluteFilePath();
-        String childPath = templateLocation.path();
-        if(childPath!=null && !childPath.startsWith("/"))
-        	childPath = "/" + childPath;
-        File path = scanner.computeTranslationPath(new File(URI.decode(parentPath.path())+URI.decode(childPath)), version.getTemplate().getLocale(), locale);
+		PropertyScanner scanner = createScanner(version);
+		URI parentPath = version.absoluteFilePath();
+		String childPath = templateLocation.path();
+		if (childPath != null && !childPath.startsWith("/"))
+			childPath = "/" + childPath;
+		File path = scanner.computeTranslationPath(new File(URI.decode(parentPath.path()) + URI.decode(childPath)), version.getTemplate().getLocale(), locale);
 
-        URI location = URI.createFileURI(path.getAbsolutePath());
-        URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
-        for (int i = parentPath.segmentCount()+1; i < location.segmentCount(); i++) {
-			//append the other segments
-        	trimmedLocation = trimmedLocation.appendSegment(location.segment(i));
+		/*
+		 * workaround for https://github.com/jutzig/jabylon/issues/238 certain
+		 * issues seem to trigger a bug in EMFs createFileURI
+		 */
+		URI location = URI.createURI(path.getAbsolutePath().replace('\\','/'));
+		URI trimmedLocation = URI.createURI(location.segment(parentPath.segmentCount()));
+		for (int i = parentPath.segmentCount() + 1; i < location.segmentCount(); i++) {
+			// append the other segments
+			trimmedLocation = trimmedLocation.appendSegment(location.segment(i));
 		}
-        return trimmedLocation;
-
-    }
+		return trimmedLocation;
+	}
 
     public static void removeDescriptor(PropertyFileDescriptor descriptor) {
 
