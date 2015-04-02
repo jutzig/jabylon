@@ -26,6 +26,7 @@ import org.jabylon.properties.types.PropertyConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -47,7 +48,10 @@ public class TMXConverter implements PropertyConverter {
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
 			PropertyFile file = PropertiesFactory.eINSTANCE.createPropertyFile();
-			parser.parse(in, new TMXHandler(file));
+			TMXHandler handler = new TMXHandler(file);
+			parser.getXMLReader().setEntityResolver(handler);
+			parser.getXMLReader().setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			parser.parse(in, handler);
 			return file;
 		} catch (ParserConfigurationException e) {
 			throw new IOException(e);
@@ -156,6 +160,11 @@ public class TMXConverter implements PropertyConverter {
 				
 		}
 		
+		
+		@Override
+		public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException {
+			return null;
+		}
 	}
 	
 }
