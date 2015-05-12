@@ -91,7 +91,7 @@ public class PropertyIndex extends Job implements PropertiesListener {
         try {
             writer = IndexActivator.getDefault().obtainIndexWriter();
             while (true) {
-                DocumentTuple documentTuple = writes.poll(2l,TimeUnit.MINUTES);
+                DocumentTuple documentTuple = writes.poll(20,TimeUnit.SECONDS);
                 if (documentTuple == null)
                     break;
                 List<Document> documents = documentTuple.getDocuments();

@@ -13,6 +13,7 @@ package org.jabylon.index.properties;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
@@ -41,6 +42,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
     private static final Logger logger = LoggerFactory.getLogger(IndexActivator.class);
     private int indexWriterCount = 0;
 	private IndexWriter indexWriter;
+	private ReentrantLock lock = new ReentrantLock();
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -84,7 +86,8 @@ public class IndexActivator extends Plugin implements BundleActivator {
      * @throws LockObtainFailedException
      * @throws IOException
      */
-    public synchronized IndexWriter obtainIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
+    public IndexWriter obtainIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
+    	lock.lock();
     	indexWriterCount++;
     	if(indexWriter==null) {
     		IndexWriterConfig c = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
@@ -92,7 +95,7 @@ public class IndexActivator extends Plugin implements BundleActivator {
     	}
     	return indexWriter;
     }
-    
+
     /**
      * call this method once you are done with the index writer.
      * Once all consumers have returned their instance, the writer will be closed and disposed
@@ -100,17 +103,27 @@ public class IndexActivator extends Plugin implements BundleActivator {
      * @throws CorruptIndexException
      * @throws IOException
      */
-    public synchronized void returnIndexWriter(IndexWriter writer) throws CorruptIndexException, IOException {
+    public void returnIndexWriter(IndexWriter writer) throws CorruptIndexException, IOException {
     	if(writer!=indexWriter)
     		throw new IllegalStateException("The given index writer is not the current index writer");
     	indexWriterCount--;
     	if(indexWriterCount==0 && indexWriter!=null)
     	{
-    		indexWriter.close();
-    		indexWriter = null;
+			try {
+				indexWriter.close();
+			} finally {
+				indexWriter = null;
+				try {
+					if (IndexWriter.isLocked(directory)) {
+						IndexWriter.unlock(directory);
+					}
+				} finally {
+					lock.unlock();
+				}
+			}
     	}
     }
-    
+
     public static IndexActivator getDefault() {
         return INSTANCE;
     }
