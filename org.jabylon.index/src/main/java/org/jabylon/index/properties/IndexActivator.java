@@ -40,7 +40,6 @@ public class IndexActivator extends Plugin implements BundleActivator {
     private FSDirectory directory;
     public static final String PLUGIN_ID = "org.jabylon.index";
     private static final Logger logger = LoggerFactory.getLogger(IndexActivator.class);
-    private int indexWriterCount = 0;
 	private IndexWriter indexWriter;
 	private ReentrantLock lock = new ReentrantLock();
 
@@ -88,7 +87,6 @@ public class IndexActivator extends Plugin implements BundleActivator {
      */
     public IndexWriter obtainIndexWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
     	lock.lock();
-    	indexWriterCount++;
     	if(indexWriter==null) {
     		IndexWriterConfig c = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
     		indexWriter = new IndexWriter(getOrCreateDirectory(), c);
@@ -104,10 +102,11 @@ public class IndexActivator extends Plugin implements BundleActivator {
      * @throws IOException
      */
     public void returnIndexWriter(IndexWriter writer) throws CorruptIndexException, IOException {
+    	if(!lock.isHeldByCurrentThread())
+    		throw new IllegalStateException("The calling thread isn't the one that obtained the writer initially");
     	if(writer!=indexWriter)
     		throw new IllegalStateException("The given index writer is not the current index writer");
-    	indexWriterCount--;
-    	if(indexWriterCount==0 && indexWriter!=null)
+    	if(indexWriter!=null)
     	{
 			try {
 				indexWriter.close();
