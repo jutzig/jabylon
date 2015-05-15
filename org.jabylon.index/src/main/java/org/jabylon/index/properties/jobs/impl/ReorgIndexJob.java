@@ -126,7 +126,7 @@ public class ReorgIndexJob implements JobExecution {
         	monitor.done();
         }
     }
-    
+
     /**
      * analyzes the TMX directory
      * @param writer
@@ -137,6 +137,8 @@ public class ReorgIndexJob implements JobExecution {
 		File workingDir = new File(ServerConstants.WORKING_DIR);
 		File tmx = new File(workingDir,"tmx");
 		File[] files = tmx.listFiles();
+		if(files==null)
+			return;
 		for (File file : files) {
 
 			TMXConverter converter = new TMXConverter();
@@ -146,14 +148,14 @@ public class ReorgIndexJob implements JobExecution {
 				for (Document document : documents) {
 					writer.addDocument(document);
 				}
-				
+
 			} catch (FileNotFoundException e) {
 				logger.error("Could not load TMX file", e);
 			} catch (IOException e) {
 				logger.error("Could not load TMX file", e);
 			}
 		}
-		
+
 	}
 
     private static void checkCanceled(IProgressMonitor monitor) {
