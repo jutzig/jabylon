@@ -29,23 +29,36 @@
 			</tbody>
 		</table>
 		<p />
-		
-			<table>
-				<tbody>
-					<tr>
-						<td><a class="btn btn-primary" wicket:id="download.link"
-							href="#"><i class="icon-download-alt icon-white"></i> <wicket:message
-									key="download.action">Download</wicket:message></a></td>
-						<td>
-							<a class="btn btn-danger" wicket:id="remove.button">
-								<i class="icon-remove icon-white"></i>
-								<wicket:message key="remove.action">Remove</wicket:message>
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		
+
+		<table>
+			<tbody>
+				<tr>
+					<td><a class="btn btn-primary" wicket:id="download.link"
+						href="#"><i class="icon-download-alt icon-white"></i> <wicket:message
+								key="download.action">Download</wicket:message></a>
+					    <a class="btn btn-danger" wicket:id="remove.button"> <i
+							class="icon-remove icon-white"></i> <wicket:message
+								key="remove.action">Remove</wicket:message>
+					    </a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<form wicket:id="translation-upload-form">
+							<p/>
+							<h6>
+								<wicket:message key="upload.action">Upload Translation</wicket:message>
+							</h6>
+							<p>
+							<input wicket:id="upload" type="file" class="btn" name="fileField" />
+							<!-- <div wicket:id="upload" class="mfuex"></div> -->
+							</p>
+							<input type="submit" />
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</wicket:panel>
 </body>
 </html>

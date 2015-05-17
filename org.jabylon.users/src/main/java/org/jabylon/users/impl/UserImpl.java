@@ -293,6 +293,9 @@ public class UserImpl extends CDOObjectImpl implements User {
         if(availablePermission.getName()==null || availablePermission.getName().isEmpty())
             return false;
         String permissionRegex = availablePermission.getName().replace("*", ".*");
+        permissionRegex = permissionRegex.replace(":config", ":((config)|(edit)|(suggest)|(view))");
+        permissionRegex = permissionRegex.replace(":edit", ":((edit)|(suggest)|(view))");
+        permissionRegex = permissionRegex.replace(":suggest", ":((suggest)|(view))");
         permissionRegex += ".*";
         return Pattern.matches(permissionRegex, requestedPermission);
     }

@@ -138,5 +138,44 @@ public class UserTest extends TestCase {
         assertSame(userPermission, getFixture().getAllPermissions().get(0));
         assertSame(rolePermission, getFixture().getAllPermissions().get(1));
     }
+    
+    public void testHasPermission()
+    {
+        Role role = UsersFactory.eINSTANCE.createRole();
+        getFixture().getRoles().add(role);
+        Permission rolePermission = UsersFactory.eINSTANCE.createPermission();
+        rolePermission.setName("foo:bar:edit");
+        role.getPermissions().add(rolePermission);
+        assertTrue(getFixture().hasPermission("foo:bar:edit"));
+        assertFalse(getFixture().hasPermission("foo:bar:config"));
+        assertFalse(getFixture().hasPermission("foo:bar2:edit"));
+    }
+    
+    
+    public void testHasPermissionActionInherit()
+    {
+        Role role = UsersFactory.eINSTANCE.createRole();
+        getFixture().getRoles().add(role);
+        Permission rolePermission = UsersFactory.eINSTANCE.createPermission();
+        rolePermission.setName("foo:bar:config");
+        role.getPermissions().add(rolePermission);
+        assertTrue(getFixture().hasPermission("foo:bar:config"));
+        assertTrue(getFixture().hasPermission("foo:bar:edit"));
+        assertTrue(getFixture().hasPermission("foo:bar:suggest"));
+        assertTrue(getFixture().hasPermission("foo:bar:view"));
+    }
+    
+    public void testHasPermissionActionInherit2()
+    {
+        Role role = UsersFactory.eINSTANCE.createRole();
+        getFixture().getRoles().add(role);
+        Permission rolePermission = UsersFactory.eINSTANCE.createPermission();
+        rolePermission.setName("foo:bar:suggest");
+        role.getPermissions().add(rolePermission);
+        assertFalse(getFixture().hasPermission("foo:bar:config"));
+        assertFalse(getFixture().hasPermission("foo:bar:edit"));
+        assertTrue(getFixture().hasPermission("foo:bar:suggest"));
+        assertTrue(getFixture().hasPermission("foo:bar:view"));
+    }
 
 } //UserTest

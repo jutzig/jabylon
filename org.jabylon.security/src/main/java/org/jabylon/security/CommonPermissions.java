@@ -148,6 +148,11 @@ public class CommonPermissions {
         return user.hasPermission(constructPermissionName(r, ACTION_EDIT));
     }
 
+    public static boolean hasSuggestPermission(User user, Resolvable<?, ?> r) {
+        return user.hasPermission(constructPermissionName(r, ACTION_SUGGEST));
+    }
+
+    
     public static boolean hasViewPermission(User user, Resolvable<?, ?> r) {
         return user.hasPermission(constructPermissionName(r, ACTION_VIEW));
     }

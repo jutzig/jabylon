@@ -10,6 +10,7 @@ package org.jabylon.rest.ui.wicket.panels;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,9 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.StatelessLink;
@@ -56,6 +60,7 @@ import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.common.util.URLUtil;
+import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
@@ -68,6 +73,7 @@ import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EClassSortState;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.PropertyPair;
@@ -78,6 +84,7 @@ import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
 import org.jabylon.rest.ui.wicket.components.ConfirmBehaviour;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
 import org.jabylon.security.CommonPermissions;
+import org.jabylon.users.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,12 +176,16 @@ public class PropertyListPanel
             link.add(new AttributeAppender("disabled", Model.of("disabled")));
             link.add(new AttributeAppender("class", Model.of("disabled")));
         }
-        add(link);
-
+        add(link); 
+        
         StatelessLink<Void> deleteLink = new DeleteLink("remove.button");
 		deleteLink.add(new ConfirmBehaviour(nls("confirm.remove")));
 		deleteLink.setVisible(canConfigure());
 		add(deleteLink);
+		
+		FileUploadForm uploadForm = new FileUploadForm("translation-upload-form", getModel());
+		uploadForm.setVisible(canSuggest());
+		add(uploadForm);
     }
     
 	@Override
@@ -277,14 +288,25 @@ public class PropertyListPanel
      * @return
      */
 	private boolean canConfigure() {
-		ProjectVersion version = getModel().getObject().getProjectLocale().getParent();
+		return hasPermission(getModel().getObject(), getSession(), CommonPermissions.ACTION_CONFIG);
+	}
+	
+	/**
+     * checks if the user has permissions to make suggestions to this project
+     * @return
+     */
+	private boolean canSuggest() {
+		return hasPermission(getModel().getObject(), getSession(), CommonPermissions.ACTION_SUGGEST);
+	}
+	
+	private static boolean hasPermission(PropertyFileDescriptor model, Session session, String permission) {
+		ProjectVersion version = model.getProjectLocale().getParent();
 		if (version.isReadOnly())
 			return false;
-		Session session = getSession();
 		if (session instanceof CDOAuthenticatedSession) {
 			Project project = version.getParent();
 			CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
-			return authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName(), CommonPermissions.ACTION_CONFIG));
+			return authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName(), permission));
 		}
 		return false;
 	}
@@ -325,6 +347,155 @@ public class PropertyListPanel
         };
         add(mode);
 
+    }
+    
+
+    private static class FileUploadForm extends StatelessForm<PropertyFileDescriptor>
+    {
+
+		private static final long serialVersionUID = -3653084217384164795L;
+		private static final Logger LOG = LoggerFactory.getLogger(FileUploadForm.class);
+		
+		private final ArrayList<FileUpload> uploads;
+		private FileUploadField fileUploadField;
+    	
+		public FileUploadForm(String id, IModel<PropertyFileDescriptor> model) {
+			super(id,model);
+	           // set this form to multipart mode (always needed for uploads!)
+            setMultiPart(true);
+            uploads = new ArrayList<FileUpload>();
+            
+            // Add one multi-file upload field
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+//            IModel<List<FileUpload>> fileModel = new Model<ArrayList<FileUpload>>(uploads);
+			IModel<List<FileUpload>> fileModel = new Model(uploads);
+            fileUploadField = new FileUploadField("upload",fileModel);
+            add(fileUploadField);
+
+            // Set maximum size to 100K for demo purposes
+//            setMaxSize(Bytes.kilobytes(100));
+		}
+		
+		@Override
+		protected void onSubmit() {
+			super.onSubmit();
+			
+			for (FileUpload fileUpload : fileUploadField.getFileUploads()) {
+				PropertyFileDescriptor descriptor = getModel().getObject();
+	            try {
+					PropertyFile file = descriptor.loadProperties(fileUpload.getInputStream());
+					persist(file);
+					
+				} catch (IOException e) {
+					LOG.error("Failed to retrieve uploaded file for"+descriptor.getLocation(),e);
+				}
+			}
+		}
+
+		private void persist(PropertyFile file) {
+			PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();	
+			try {
+				PropertyFile original = persistenceService.loadProperties(getModelObject());
+				PropertyFile master = persistenceService.loadProperties(getModelObject().getMaster());
+				Map<String, Property> originalProperties = original.asMap();
+				
+				for(Property prop : master.getProperties())
+				{
+					if(!originalProperties.containsKey(prop.getKey()))
+					{
+						Property newProperty = PropertiesFactory.eINSTANCE.createProperty();
+						newProperty.setKey(prop.getKey());
+						original.getProperties().add(newProperty);
+					}
+				}
+				originalProperties = original.asMap();
+				EList<Property> newProperties = file.getProperties();
+				if(hasPermission(getModelObject(), getSession(), CommonPermissions.ACTION_EDIT))
+				{
+					boolean hadChanges = false;
+					for (Property newProp : newProperties) {
+						Property origProp = originalProperties.get(newProp.getKey());
+						if(origProp==null)
+							continue;
+						if(newProp.getValue()!=null && !newProp.getValue().isEmpty() && !newProp.getValue().equals(origProp.getValue()))
+						{
+							hadChanges = true;
+							origProp.setValue(newProp.getValue());
+							origProp.setComment(newProp.getComment());
+						}
+					}
+					if(hadChanges)
+						persistenceService.saveProperties(getModelObject(), original);
+				}
+				else if(hasPermission(getModelObject(), getSession(), CommonPermissions.ACTION_SUGGEST)) {
+					final List<Review> reviews = new ArrayList<Review>();
+					for (Property newProp : newProperties) {
+						Property origProp = originalProperties.get(newProp.getKey());
+						if(origProp==null)
+							continue;
+						if(newProp.getValue()!=null && !newProp.getValue().isEmpty() && !newProp.getValue().equals(origProp.getValue()))
+						{
+
+							final Review review = PropertiesFactory.eINSTANCE.createReview();
+							review.setCreated(System.currentTimeMillis());
+							review.setKey(newProp.getKey());
+							review.setMessage(newProp.getValue());
+							review.setSeverity(Severity.INFO);
+							review.setReviewType(Review.KIND_SUGGESTION);
+
+							String username = CommonPermissions.USER_ANONYMOUS;
+							Session session = getSession();
+							if (session instanceof CDOAuthenticatedSession) {
+								CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+								User user = authSession.getUser();
+								if (user != null)
+									username = user.getName();
+
+							}
+							review.setUser(username);
+
+							if (newProp.getComment() != null && !newProp.getComment().isEmpty()) {
+								Comment comment = PropertiesFactory.eINSTANCE.createComment();
+								comment.setUser(username);
+								comment.setCreated(review.getCreated());
+								comment.setMessage(newProp.getComment());
+								review.getComments().add(comment);
+							}
+							reviews.add(review);
+						}
+					}
+					if (!reviews.isEmpty()) {
+
+						TransactionUtil.commit(getModelObject(), new Modification<PropertyFileDescriptor, PropertyFileDescriptor>() {
+							@Override
+							public PropertyFileDescriptor apply(PropertyFileDescriptor object) {
+
+								object.getReviews().addAll(reviews);
+								return object;
+							}
+
+						});
+
+					}
+				}
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+				
+				}
+				getSession().success(new StringResourceModel("message.upload.successfull", this, null).getString());
+				setResponsePage(ResourcePage.class, getPage().getPageParameters());
+			} catch (ExecutionException e) {
+				LOG.error("Failed to merge uploaded properties with "+getModelObject().getLocation(),e);
+				getSession().success(new StringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
+			}
+			catch (CommitException e) {
+				logger.error("Commit of suggestion failed", e);
+				getSession().success(new StringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
+			}						
+			
+		}
+    	
     }
 
 
@@ -375,7 +546,7 @@ class PropertyPairListDataProvider
         Multimap<String, Review> reviews = reviewModel.getObject();
         PropertyFileDescriptor master = descriptor.getMaster();
         Map<String, Property> translated = new HashMap<String, Property>(loadProperties(descriptor).asMap());
-        PropertyFile templateFile = loadProperties(master);;
+        PropertyFile templateFile = loadProperties(master);
 
         List<PropertyPair> contents = new ArrayList<PropertyPair>();
         for (Property property : templateFile.getProperties())
@@ -496,6 +667,6 @@ class DeleteLink extends StatelessLink<Void>{
 
 		return (PropertyFileDescriptor) resolver.resolve(uri);
 	}
-
 }
+
 
