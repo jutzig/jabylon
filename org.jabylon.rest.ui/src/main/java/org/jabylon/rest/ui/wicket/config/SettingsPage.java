@@ -64,11 +64,13 @@ public class SettingsPage extends GenericResolvablePage<CDOObject> implements Re
     	response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JabylonApplication.get().getJavaScriptLibrarySettings().getJQueryReference())));
     	super.renderHead(response);
     }
-    
+
     protected CDOObject doLookup(List<String> segments) {
 
         try {
             CDOObject resolvable = super.doLookup(segments);
+            if(resolvable==null)
+            	return null;
             CDOView cdoView = resolvable.cdoView();
             if (cdoView instanceof CDOTransaction) {
                 return resolvable;
