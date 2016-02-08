@@ -6,13 +6,15 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.jabylon.properties.xliff;
+package org.jabylon.properties.types;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.jabylon.properties.Property;
+import org.jabylon.properties.xliff.PropertyWrapper;
+import org.jabylon.properties.xliff.XliffResourceImpl;
 
 /**
  * Basic converter interface for Bilingual translation resources.<br>

@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.resource.IResource;
@@ -55,7 +56,7 @@ public class XliffDownloadForm extends Form<Void> {
 
 	/**
 	 * Constructs *this* form. <br>
-	 * 
+	 *
 	 * @param languages
 	 *            Languages to serve as basis for {@link Component} data.<br>
 	 */
@@ -63,14 +64,14 @@ public class XliffDownloadForm extends Form<Void> {
 		/* Retrieve language selection panel form elements. */
 		List<XliffLanguageTupleSelectionPanel> languageSelectionTupels = getLanguageSelectionPanels(languages);
 
-		add(new Label(LABEL_TARGETLANG_ID, "Target"));
-		add(new Label(LABEL_SOURCELANG_ID, "Source"));
+		add(new Label(LABEL_TARGETLANG_ID, new StringResourceModel("label.source.language",this,null)));
+		add(new Label(LABEL_SOURCELANG_ID, new StringResourceModel("label.target.language",this,null)));
 		add(new DropDownChoice<PropertyListMode>(SELECT_FILTER_ID, //
 				new PropertyModel<PropertyListMode>(this, "filter"), //
 				Arrays.asList(PropertyListMode.values()), //
 				new EnumChoiceRenderer<PropertyListMode>(this)));
 
-		this.add(new ListView<XliffLanguageTupleSelectionPanel>(COMPONENT_LIST_ID, languageSelectionTupels) {
+		add(new ListView<XliffLanguageTupleSelectionPanel>(COMPONENT_LIST_ID, languageSelectionTupels) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -83,7 +84,7 @@ public class XliffDownloadForm extends Form<Void> {
 	/**
 	 * Construct a {@link XliffLanguageTupleSelectionPanel} for each language, filter out the template as
 	 * we don't want to offer this as a selection choice in our form.<br>
-	 * 
+	 *
 	 * @return {@link List} of populated {@link XliffLanguageTupleSelectionPanel}s, for each language
 	 *         passed.<br>
 	 */
@@ -115,13 +116,13 @@ public class XliffDownloadForm extends Form<Void> {
 		final Map<Language, Language> resultAsMap = processSelection(result);
 
 		getRequestCycle().scheduleRequestHandlerAfterCurrent(new IRequestHandler() {
-			
+
 			@Override
 			public void respond(IRequestCycle requestCycle) {
 				XliffDownloadResource downloadResource = new XliffDownloadResource(resultAsMap, projectVersion, filter);
 				downloadResource.respond(new IResource.Attributes(requestCycle.getRequest(), requestCycle.getResponse()));
 			}
-			
+
 			@Override
 			public void detach(IRequestCycle requestCycle) {
 				// nothing to do.
@@ -132,9 +133,9 @@ public class XliffDownloadForm extends Form<Void> {
 	/**
 	 * Presumably *not* the "WICKET way" of doing things, as we're abusing a {@link Panel} object as
 	 * a storage POJO, but it works fine for now, is clear enough and hassle-free. ;-)<br>
-	 * 
+	 *
 	 * Iterates *this* forms children, retrieving selected child {@link Panel}s.<br>
-	 * 
+	 *
 	 * @return a {@link List} of {@link XliffLanguageTupleSelectionPanel}s, which represent
 	 *         {@link Language} tuples (source and target).<br>
 	 */

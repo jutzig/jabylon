@@ -46,7 +46,6 @@ import org.jabylon.rest.ui.util.PageProvider;
 import org.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import org.jabylon.rest.ui.wicket.config.SettingsPage;
 import org.jabylon.rest.ui.wicket.injector.OSGiInjector;
-import org.jabylon.rest.ui.wicket.pages.XliffDownloadPage;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
 import org.jabylon.rest.ui.wicket.pages.StartupPage;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
@@ -186,7 +185,6 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     	unmount("/");
         mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
         mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
-		mount(new ResouceAwareMountedMapper("/xliff", XliffDownloadPage.class)); //$NON-NLS-1$
     }
 
 

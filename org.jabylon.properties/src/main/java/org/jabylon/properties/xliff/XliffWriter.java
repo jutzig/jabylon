@@ -29,17 +29,18 @@ import org.jabylon.properties.Property;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.jabylon.properties.xliff.XliffXMLConstants.*;
 /**
  * @author c.samulski (2016-01-30)
  */
-public final class XliffWriter implements XliffXMLConstants {
+public final class XliffWriter {
 
 	private XliffWriter() {} // no instantiation necessary
 
 	/**
 	 * Basically Main() for this class. Writes an XLIFF 1.2 xml document filled with source/target
 	 * properties passed via the corresponding {@link PropertyWrapper}s to the {@link OutputStream}.<br>
-	 * 
+	 *
 	 */
 	public static final void write(OutputStream out, PropertyWrapper filteredSource, PropertyWrapper filteredTarget,
 			String encoding) throws IOException {
@@ -60,7 +61,7 @@ public final class XliffWriter implements XliffXMLConstants {
 	/**
 	 * Creates a {@link Document}, writes source/target {@link Property}s to document, adhering to
 	 * XLIFF 1.2 schemas.<br>
-	 * 
+	 *
 	 * @return a populated "xliff" root {@link Element}.<br>
 	 */
 	private static Element writeDocument(PropertyWrapper filteredSource, PropertyWrapper filteredTarget) throws IOException {
@@ -149,16 +150,11 @@ public final class XliffWriter implements XliffXMLConstants {
 		return value == null ? "" : value.getValue() != null ? value.getValue() : "";
 	}
 
-	/**
-	 * TODO: Come up with a better solution. Dirty.
-	 */
+
 	private static String getLanguageCode(Locale locale) {
 		if (locale == null) {
-			return "template";
+			return "en";
 		}
-		/* e.g. de_DE or en_US => try to split at _ */
-		String[] code = locale.getLanguage().split("_");
-		/* e.g. de or en, ISO3 as last resort */
-		return code.length > 0 ? code[0] : locale.getISO3Country();
+		return locale.toLanguageTag();
 	}
 }

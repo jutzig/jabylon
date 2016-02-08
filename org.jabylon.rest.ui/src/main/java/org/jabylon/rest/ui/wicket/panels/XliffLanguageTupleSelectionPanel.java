@@ -8,7 +8,9 @@
  */
 package org.jabylon.rest.ui.wicket.panels;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -37,8 +39,22 @@ public class XliffLanguageTupleSelectionPanel extends Panel {
 		this.targetLanguage = targetLanguage;
 		/* add UI components */
 		add(new Label(LABEL_ID, this.targetLanguage.toString()));
-		add(new DropDownChoice<Language>(SELECT_ID, new PropertyModel<Language>(this, "sourceLanguage"), languages));
+		List<Language> sourceChoices = new ArrayList<Language>(languages.size());
+		for (Language language : languages) {
+			// no point in using the same source and target
+			if(!safeEquals(language.getLocale(),targetLanguage.getLocale()))
+				sourceChoices.add(language);
+		}
+		add(new DropDownChoice<Language>(SELECT_ID, new PropertyModel<Language>(this, "sourceLanguage"), sourceChoices));
 		add(new CheckBox(CHECKBOX_ID, new PropertyModel<Boolean>(this, "selected")));
+	}
+
+	private boolean safeEquals(Locale locale1, Locale locale2) {
+		if(locale1==locale2)
+			return true;
+		if(locale1==null || locale2==null)
+			return false;
+		return locale1.equals(locale2);
 	}
 
 	public Language getSourceLanguage() {

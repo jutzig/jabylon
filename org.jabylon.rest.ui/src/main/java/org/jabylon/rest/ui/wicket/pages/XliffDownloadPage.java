@@ -12,11 +12,14 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.PriorityHeaderItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.properties.Project;
 import org.jabylon.properties.Resolvable;
+import org.jabylon.properties.Workspace;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.rest.ui.wicket.panels.BreadcrumbPanel;
 import org.jabylon.rest.ui.wicket.panels.XliffDownloadPanel;
+import org.jabylon.security.CommonPermissions;
 
 /**
  * @author c.samulski (20156-01-26)
@@ -39,7 +42,14 @@ public class XliffDownloadPage extends GenericResolvablePage<Resolvable<?, ?>> i
 
 	@Override
 	public String getRequiredPermission() {
-		return null;
+        Resolvable<?, ?> object = getModelObject();
+        while(object!=null) {
+            if (object instanceof Project) {
+                return CommonPermissions.constructPermissionName(object, CommonPermissions.ACTION_VIEW);
+            }
+            object = object.getParent();
+        }
+        return null;
 	}
 
 	@Override

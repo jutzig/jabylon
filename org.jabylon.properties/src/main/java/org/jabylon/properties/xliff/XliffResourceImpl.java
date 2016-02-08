@@ -13,19 +13,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.jabylon.properties.Property;
+import org.jabylon.properties.types.BilingualPropertyResource;
 
 /**
  * @author c.samulski (2016-02-01)
  */
 public class XliffResourceImpl implements BilingualPropertyResource {
-
-	private XliffResourceImpl() {} // no instantiation necessary.
-
-	private static final XliffResourceImpl INSTANCE = new XliffResourceImpl(); // stateless.
-
-	public static final XliffResourceImpl getInstance() {
-		return INSTANCE;
-	}
 
 	/**
 	 * Reads an XLIFF (1.2) resource from the {@link InputStream}, converts to {@link Property}s,

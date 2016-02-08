@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -35,8 +36,8 @@ import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.wicket.panels.PropertyListMode;
 
 /**
- * TODO Use {@link PropertyPersistenceService}, via {@link Activator}.<br>
- * 
+ * Exports a project as an archive containing xliff files
+ *
  * @author c.samulski (29.01.2016)
  */
 public final class XliffDownloadHelper {
@@ -82,6 +83,10 @@ public final class XliffDownloadHelper {
 		this.filter = filter;
 	}
 
+	public PropertyPersistenceService getPersistenceService() {
+		return Activator.getDefault().getPersistenceService();
+	}
+
 	/**
 	 * Basically Main() for this class. The only public method.<br>
 	 * Calls "Properties to XLIFF Conversion" for every source/target language tuple, write to ZIP
@@ -93,6 +98,10 @@ public final class XliffDownloadHelper {
 				convertAndZip(tuple);
 			}
 			zipOut.finish();
+		} catch (ExecutionException e) {
+			if(e.getCause() instanceof IOException)
+				throw (IOException)e.getCause();
+			throw new IOException("Failed to load property values",e);
 		} finally {
 			zipOut.close();
 		}
@@ -103,19 +112,20 @@ public final class XliffDownloadHelper {
 	 * language module files, passes them to
 	 * {@link #writeZipEntry(PropertyFileDescriptor, PropertyFileDescriptor, String, PropertyListMode, ZipOutputStream)}
 	 * for XLIFF conversion and the writing of a ZIP entry to the stream.<br>
+	 * @throws ExecutionException
 	 */
-	private void convertAndZip(Map.Entry<Language, Language> tuple) throws IOException {
+	private void convertAndZip(Map.Entry<Language, Language> tuple) throws IOException, ExecutionException {
 		Locale targetLocale = getLocale(tuple.getKey());
 		Locale sourceLocale = getLocale(tuple.getValue());
 
 		Map<String, PropertyFileDescriptor> targetDescriptors = loadDescriptorsForLocale(targetLocale);
 		Map<String, PropertyFileDescriptor> sourceDescriptors = loadDescriptorsForLocale(sourceLocale);
-		
+
 		/* Iterate over target descriptors. */
 		for (Map.Entry<String, PropertyFileDescriptor> target : targetDescriptors.entrySet()) {
-			String modulePrefix = target.getKey();
+			String templatePath = target.getKey();
 			PropertyFileDescriptor targetDescriptor = target.getValue();
-			PropertyFileDescriptor sourceDescriptor = sourceDescriptors.get(modulePrefix);
+			PropertyFileDescriptor sourceDescriptor = sourceDescriptors.get(templatePath);
 			writeZipEntry(targetDescriptor, sourceDescriptor, targetLocale, sourceLocale);
 		}
 	}
@@ -124,42 +134,50 @@ public final class XliffDownloadHelper {
 	/**
 	 * Write a single XLIFF file as {@link ZipEntry} to our {@link ZipOutputStream}.<br>
 	 * Conversion from source/target {@link PropertyFileDescriptor}s to XLIFF is done on the fly.<br>
+	 * @throws ExecutionException
 	 */
 	private void writeZipEntry(PropertyFileDescriptor targetDescriptor, PropertyFileDescriptor sourceDescriptor,
-			Locale targetLocale, Locale sourceLocale) throws IOException {
-		/**
+			Locale targetLocale, Locale sourceLocale) throws IOException, ExecutionException {
+		/*
 		 * 1. Target language: Retrieve filtered list of properties.<br>
 		 * 2. Source language: Retrieve filtered list based on filtered target language keys.<br>
 		 */
-		PropertyWrapper target = new PropertyWrapper(targetLocale, filterTarget(targetDescriptor));
-		PropertyWrapper source = new PropertyWrapper(sourceLocale, filterSource(sourceDescriptor, target.getPropertyFile().keySet()));
-		/**
-		 * 3. Retrieve properly formatted filename. (module_srcLang_trgLang.xml) <br>
-		 * 4. Create new ZipEntry.<br>
-		 */
-		String fileNameWithPath = getXliffFileName(sourceDescriptor, targetDescriptor);
-		ZipEntry entry = new ZipEntry(fileNameWithPath);
-		zipOut.putNextEntry(entry);
-		/**
-		 * 5. Call Property to XLIFF converter (will write to stream).<br>
-		 */
-		XliffResourceImpl.getInstance().write(source, target, zipOut);
-		zipOut.closeEntry();
+		try {
+			PropertyWrapper target = new PropertyWrapper(targetLocale, filterTarget(targetDescriptor));
+			PropertyWrapper source = new PropertyWrapper(sourceLocale, filterSource(sourceDescriptor, target.getPropertyFile().keySet()));
+			/*
+			 * 3. Retrieve properly formatted filename. (module_srcLang_trgLang.xml) <br>
+			 * 4. Create new ZipEntry.<br>
+			 */
+			String fileNameWithPath = getXliffFileName(sourceDescriptor, targetDescriptor);
+			ZipEntry entry = new ZipEntry(fileNameWithPath);
+			zipOut.putNextEntry(entry);
+			/*
+			 * 5. Call Property to XLIFF converter (will write to stream).<br>
+			 */
+			new XliffResourceImpl().write(source, target, zipOut);
+			zipOut.closeEntry();
+		} catch (ExecutionException e) {
+			if(e.getCause() instanceof IOException)
+				throw (IOException)e.getCause();
+			throw new IOException("Failed to load property values",e);
+		}
 	}
 
 	/**
 	 * Helper to reduce the Map of {@link Property}s retrieved from the passed
 	 * {@link PropertyFileDescriptor} to match the passed keys.<br>
-	 * 
+	 *
 	 * (Could frankly be omitted for now, as we only get via keys later on anyway. (just for
 	 * clarity).<br>
-	 * 
+	 *
 	 * 1. Load complete Map of source language properties.<br>
 	 * 2. Filter them according to the keySet parameter and return the reduced map.<br>
+	 * @throws ExecutionException
 	 */
-	private static Map<String, Property> filterSource(PropertyFileDescriptor sourceDescriptor, Set<String> keySet) {
-		Map<String, Property> filtered = new LinkedHashMap<String, Property>();
-		Map<String, Property> sourceProperties = sourceDescriptor.loadProperties().asMap();
+	private Map<String, Property> filterSource(PropertyFileDescriptor sourceDescriptor, Set<String> keySet) throws ExecutionException {
+		Map<String, Property> filtered = new LinkedHashMap<String, Property>(keySet.size(),1f);
+		Map<String, Property> sourceProperties = getPersistenceService().loadProperties(sourceDescriptor).asMap();
 
 		for (String key : keySet) {
 			Property value = sourceProperties.get(key);
@@ -172,24 +190,26 @@ public final class XliffDownloadHelper {
 	/**
 	 * Filters the {@link Property}s retrieved via the passed {@link PropertyFileDescriptor}
 	 * according to the passed {@link PropertyListMode}.<br>
-	 * 
+	 *
 	 * @return {@link Map} of filtered {@link Property}s.
+	 * @throws ExecutionException
 	 */
-	private Map<String, Property> filterTarget(PropertyFileDescriptor descriptor) {
-		/**
+	private Map<String, Property> filterTarget(PropertyFileDescriptor descriptor) throws ExecutionException {
+		/*
 		 * 1. Instantiate the return collection. Retain order.<br>
 		 */
 		Map<String, Property> filtered = new LinkedHashMap<String, Property>();
-		/**
+		/*
 		 * 2. Get master properties and this locale descriptor's reviews.<br>
 		 */
 		Map<String, List<Review>> reviews = reviewsAsMap(descriptor.getReviews());
-		List<Property> templateProperties = descriptor.getMaster().loadProperties().getProperties();
-		/**
+		PropertyFileDescriptor master = descriptor.getMaster();
+		List<Property> templateProperties = getPersistenceService().loadProperties(master).getProperties();
+		/*
 		 * 3. Load translated properties.<br>
 		 */
-		Map<String, Property> translated = descriptor.loadProperties().asMap();
-		/**
+		Map<String, Property> translated = getPersistenceService().loadProperties(descriptor).asMap();
+		/*
 		 * 4. Iterate over template properties, check if the given filter applies, add to our return
 		 * collection if true.<br>
 		 */
@@ -205,17 +225,15 @@ public final class XliffDownloadHelper {
 	}
 
 	/**
-	 * Helper method. Create Map with K=ModuleName, V=Descriptor.<br>
-	 * 
-	 * This is a dirty way to match Java Property files (JPFs) for the same module. For our specific
-	 * use case, we need to convert JPFs to XLIFF, and our JPFs for various modules are stored in a
-	 * flat folder structure (i.e. the same folder).<br>
+	 * Helper method. Create Map with K=Template Name, V=Descriptor.<br>
+	 *
+	 * This associates a property descriptor with the path of its respective template for faster lookups.<br>
 	 */
 	private Map<String, PropertyFileDescriptor> loadDescriptorsForLocale(Locale locale) {
 		Map<String, PropertyFileDescriptor> ret = new LinkedHashMap<String, PropertyFileDescriptor>();
 		List<PropertyFileDescriptor> descriptors = null;
 
-		/**
+		/*
 		 * Load the List of descriptors available for this locale.<br>
 		 * Note that a null locale implies that either no source language was selected, or the
 		 * selected source language is the template language.<br>
@@ -227,22 +245,9 @@ public final class XliffDownloadHelper {
 		}
 
 		for (PropertyFileDescriptor descriptor : descriptors) {
-			String modulePrefix = getModuleNameFromFileName(descriptor.getName(), locale);
-			ret.put(modulePrefix, descriptor);
+			ret.put(descriptor.isMaster() ? descriptor.getLocation().toString() : descriptor.getMaster().getLocation().toString(), descriptor);
 		}
 		return ret;
-	}
-
-	/**
-	 * TODO: Find a better way to match modules. This *wont* work for android translation files for
-	 * example. (My bad)<br>
-	 */
-	private static String getModuleNameFromFileName(String fileName, Locale locale) {
-		if (locale == null) { // we know this is a template file.
-			return fileName.split("\\.")[0]; // e.g. module.properties
-		} else {
-			return fileName.split("_")[0]; // e.g. module_en.properties
-		}
 	}
 
 	/**
