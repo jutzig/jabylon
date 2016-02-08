@@ -21,7 +21,6 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -47,6 +46,7 @@ import org.jabylon.rest.ui.util.PageProvider;
 import org.jabylon.rest.ui.wicket.components.AjaxFeedbackListener;
 import org.jabylon.rest.ui.wicket.config.SettingsPage;
 import org.jabylon.rest.ui.wicket.injector.OSGiInjector;
+import org.jabylon.rest.ui.wicket.pages.XliffDownloadPage;
 import org.jabylon.rest.ui.wicket.pages.ResourcePage;
 import org.jabylon.rest.ui.wicket.pages.StartupPage;
 import org.jabylon.rest.ui.wicket.pages.WelcomePage;
@@ -169,7 +169,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
 			CompoundRequestMapper compound = (CompoundRequestMapper) rootRequestMapperAsCompound;
 			Iterator<IRequestMapper> it = compound.iterator();
 			while (it.hasNext()) {
-				IRequestMapper iRequestMapper = (IRequestMapper) it.next();
+				IRequestMapper iRequestMapper = it.next();
 				if (iRequestMapper instanceof ResouceAwareMountedMapper) {
 					ResouceAwareMountedMapper mapper = (ResouceAwareMountedMapper) iRequestMapper;
 					if(path.equals(mapper.getMountPath()))
@@ -186,11 +186,12 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     	unmount("/");
         mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
         mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
-
+		mount(new ResouceAwareMountedMapper("/xliff", XliffDownloadPage.class)); //$NON-NLS-1$
     }
 
 
-    protected IConverterLocator newConverterLocator() {
+    @Override
+	protected IConverterLocator newConverterLocator() {
         ConverterLocator converterLocator = new ConverterLocator();
         converterLocator.set(URI.class, new EMFFactoryConverter<URI>(PropertiesPackage.Literals.URI.getName()));
         converterLocator.set(Locale.class, new EMFFactoryConverter<Locale>(PropertiesPackage.Literals.LOCALE.getName()));
@@ -209,6 +210,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         return LoginPage.class;
     }
 
+	@Override
 	public IProvider<IExceptionMapper> getExceptionMapperProvider()
 	{
 

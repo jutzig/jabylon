@@ -15,7 +15,7 @@ import org.jabylon.rest.ui.model.PropertyPair;
 
 import com.google.common.base.Predicate;
 
-enum PropertyListMode implements Predicate<PropertyPair> {
+public enum PropertyListMode implements Predicate<PropertyPair> {
 
     ALL {
         @Override
@@ -44,7 +44,8 @@ enum PropertyListMode implements Predicate<PropertyPair> {
 
     public abstract boolean apply(PropertyPair pair, Collection<Review> reviews);
 
-    public boolean apply(PropertyPair pair){
+    @Override
+	public boolean apply(PropertyPair pair){
         return apply(pair,null);
     }
 

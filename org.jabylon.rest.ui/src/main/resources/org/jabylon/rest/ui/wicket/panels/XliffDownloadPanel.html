@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+	<wicket:panel>
+		<form wicket:id="mdf-languageselect">
+			<table align="center" cellpadding="5" cellspacing="5">
+				<tr>
+					<td colspan="2"><h2><span class="lead" wicket:id="mdf-label-targetlang"></span></h2></td>
+					<td><h2><span class="lead" wicket:id="mdf-label-sourcelang"></span></h2></td>
+				</tr>
+				<wicket:container wicket:id="mdf-components">
+					<wicket:container wicket:id="stlsp-panel" />
+				</wicket:container>
+				<tr>
+					<td colspan="2"><input class="btn btn-primary" value="Export" name="export" type="submit" /></td>
+					<td><select wicket:id="mdf-select-filter"></select></td>
+				</tr>
+			</table>
+		</form>
+	</wicket:panel>
+</body>
+</html>

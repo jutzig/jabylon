@@ -22,6 +22,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -47,6 +48,7 @@ import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.util.GlobalResources;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicResolvablePanel;
+import org.jabylon.rest.ui.wicket.pages.XliffDownloadPage;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.users.User;
 
@@ -57,7 +59,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 
     private static final long serialVersionUID = 1L;
 
-    public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
+	public ProjectResourcePanel(Resolvable<?, ?> object, PageParameters parameters) {
         super("content", object, parameters);
         if (object instanceof Project) {
 			Project project = (Project) object;
@@ -70,6 +72,11 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         ExternalLink downloadLink = new ExternalLink("download.link", href);
         downloadLink.setVisible(object != null && !(object instanceof Workspace) && !(object instanceof Project));
         add(downloadLink);
+
+		BookmarkablePageLink<String> downloadXliff = new BookmarkablePageLink<String>(
+				"link-download-xliff", XliffDownloadPage.class, parameters); //$NON-NLS-1$
+		downloadXliff.setVisible(object instanceof ProjectVersion);
+		add(downloadXliff);
     }
 
     @Override
@@ -77,7 +84,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_JQUERY_DATATABLES));
         response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_BOOTSTRAP_DATATABLES));
         response.render(JavaScriptHeaderItem.forReference(GlobalResources.JS_DATATABLES_CUSTOMSORT));
-        super.renderHead(response);
+		super.renderHead(response);
     }
 
     @Override
@@ -93,7 +100,6 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
             protected void populateItem(Item<Resolvable<?, ?>> item) {
                 Resolvable<?, ?> resolvable = item.getModelObject();
 
-				Session session = getSession();
 				item.setVisible(canView(resolvable));
                 if (resolvable instanceof ProjectLocale) {
                     // hide the template language by default
@@ -181,7 +187,7 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         else
             hrefBuilder.append(endsOnSlash ? resolvable.getName() : resolvable.getParent().getName() + "/" + resolvable.getName());
 
-        Resolvable<?, ?> folder = (Resolvable<?, ?>) resolvable;
+        Resolvable<?, ?> folder = resolvable;
         if(folder instanceof ResourceFolder)
         {
             // if it is a folder, squash more children, if there is only one

@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -32,9 +33,19 @@ public class BreadcrumbPanel<T> extends BasicPanel<T> {
 
     private static final long serialVersionUID = 1L;
     private IModel<String> rootLabel = Model.of("Home");
+    private final Class<? extends Page> pageClass;
 
     public BreadcrumbPanel(String id, IModel<T> object, PageParameters parameters) {
         super(id, object, parameters);
+        pageClass = null;
+    }
+
+    /**
+     * Allow the base {@link Page} {@link Class} (and hence link root) to be overridden.<br>
+     */
+    public BreadcrumbPanel(String id, IModel<T> object, PageParameters parameters, Class<? extends Page> pageClass) {
+        super(id, object, parameters);
+        this.pageClass = pageClass;
     }
 
     @Override
@@ -53,13 +64,13 @@ public class BreadcrumbPanel<T> extends BasicPanel<T> {
             protected void populateItem(ListItem<String> item) {
                 BookmarkablePageLink<String> link;
                 if(item.getModelObject()==null || item.getModelObject().isEmpty()) {
-                     link = new BookmarkablePageLink<String>("link", getPage().getClass());
+                    link = new BookmarkablePageLink<String>("link", getPageClass());
                      link.setBody(rootLabel);
                 }
                 else
                 {
                     crumbParams.set(item.getIndex()-1, item.getModelObject());
-                    link = new BookmarkablePageLink<String>("link", getPage().getClass(), new PageParameters(crumbParams));
+                    link = new BookmarkablePageLink<String>("link", getPageClass(), new PageParameters(crumbParams));
                     link.setBody(item.getModel());
                 }
                 if(item.getIndex()==segments.size()-1)
@@ -71,9 +82,13 @@ public class BreadcrumbPanel<T> extends BasicPanel<T> {
 
     }
 
+    private Class<? extends Page> getPageClass() {
+        return pageClass != null ? pageClass : getPage().getClass();
+    }
+
     private List<String> computeSegments(PageParameters pageParameters) {
-    	if(pageParameters==null)
-    		return Collections.emptyList();
+        if (pageParameters == null)
+            return Collections.emptyList();
         int size = pageParameters.getIndexedCount();
         List<String> segments = new ArrayList<String>(size+1);
         //add a null to go to the root
