@@ -1003,4 +1003,13 @@
 			<id>svogt</id>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Christopher Samulski</name>
+			<url>https://github.com/csamulski</url>
+			<email>dev@samulski.com</email>
+			<organization>SEEBURGER AG</organization>
+			<organizationUrl>http://www.seeburger.com</organizationUrl>
+		</contributor>
+	</contributors>
 </project>
