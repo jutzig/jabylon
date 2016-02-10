@@ -64,8 +64,8 @@ public class XliffDownloadForm extends StatelessForm<Void> {
 		/* Retrieve language selection panel form elements. */
 		List<XliffLanguageTupleSelectionPanel> languageSelectionTupels = getLanguageSelectionPanels(languages);
 
-		add(new Label(LABEL_TARGETLANG_ID, new StringResourceModel("label.source.language",this,null)));
-		add(new Label(LABEL_SOURCELANG_ID, new StringResourceModel("label.target.language",this,null)));
+		add(new Label(LABEL_TARGETLANG_ID, new StringResourceModel("label.target.language", this, null)));
+		add(new Label(LABEL_SOURCELANG_ID, new StringResourceModel("label.source.language", this, null)));
 		add(new DropDownChoice<PropertyListMode>(SELECT_FILTER_ID, //
 				new PropertyModel<PropertyListMode>(this, "filter"), //
 				Arrays.asList(PropertyListMode.values()), //
