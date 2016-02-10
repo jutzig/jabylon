@@ -19,7 +19,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -36,7 +36,7 @@ import org.jabylon.rest.ui.wicket.panels.XliffLanguageTupleSelectionPanel;
 /**
  * @author c.samulski (2016-01-28)
  */
-public class XliffDownloadForm extends Form<Void> {
+public class XliffDownloadForm extends StatelessForm<Void> {
 
 	private static final long serialVersionUID = -7727556253068015509L;
 	private static final String FORM_ID = "mdf-languageselect";
