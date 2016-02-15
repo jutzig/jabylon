@@ -256,7 +256,7 @@ public final class XliffDownloadHelper {
 	 * Format will be [moduleName]_[targetLangISO].properties.xml
 	 */
 	private static String getXliffFileName(PropertyFileDescriptor sourceDescriptor, PropertyFileDescriptor targetDescriptor) {
-		return targetDescriptor.getLocation().path() + ".xml";
+		return targetDescriptor.getLocation().path() + ".xlf";
 	}
 
 	/**
