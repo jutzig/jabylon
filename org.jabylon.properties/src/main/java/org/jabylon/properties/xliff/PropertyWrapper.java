@@ -36,7 +36,7 @@ public class PropertyWrapper implements Serializable {
 		return locale;
 	}
 
-	public Map<String, Property> getPropertyFile() {
+	public Map<String, Property> getProperties() {
 		return properties;
 	}
 }

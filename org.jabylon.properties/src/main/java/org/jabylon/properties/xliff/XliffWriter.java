@@ -70,8 +70,8 @@ public final class XliffWriter {
 		Element fileElement = createFileElement(doc, rootElement, filteredSource.getLocale(), filteredTarget.getLocale());
 		Element bodyElement = doc.createElement(TAG_BODY);
 
-		Set<Map.Entry<String, Property>> targetEntries = filteredTarget.getPropertyFile().entrySet();
-		Map<String, Property> sourceEntries = filteredSource.getPropertyFile();
+		Set<Map.Entry<String, Property>> targetEntries = filteredTarget.getProperties().entrySet();
+		Map<String, Property> sourceEntries = filteredSource.getProperties();
 
 		/* Retrieve source and target translation values. */
 		for (Map.Entry<String, Property> targetEntry : targetEntries) {

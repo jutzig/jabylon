@@ -20,6 +20,7 @@ public interface XliffXMLConstants {
 	String TAG_BODY = "body";
 	String TAG_SOURCE = "source";
 	String TAG_TARGET = "target";
+	String TAG_MRK = "mrk";
 	
 	String ATT_XMLNS = "xmlns";
 	String ATT_SOURCE_LANGUAGE = "source-language";

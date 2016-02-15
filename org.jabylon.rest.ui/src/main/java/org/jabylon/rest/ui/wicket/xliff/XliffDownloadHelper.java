@@ -144,7 +144,7 @@ public final class XliffDownloadHelper {
 		 */
 		try {
 			PropertyWrapper target = new PropertyWrapper(targetLocale, filterTarget(targetDescriptor));
-			PropertyWrapper source = new PropertyWrapper(sourceLocale, filterSource(sourceDescriptor, target.getPropertyFile().keySet()));
+			PropertyWrapper source = new PropertyWrapper(sourceLocale, filterSource(sourceDescriptor, target.getProperties().keySet()));
 			/*
 			 * 3. Retrieve properly formatted filename. (module_srcLang_trgLang.xml) <br>
 			 * 4. Create new ZipEntry.<br>
@@ -256,7 +256,7 @@ public final class XliffDownloadHelper {
 	 * Format will be [moduleName]_[targetLangISO].properties.xml
 	 */
 	private static String getXliffFileName(PropertyFileDescriptor sourceDescriptor, PropertyFileDescriptor targetDescriptor) {
-		return targetDescriptor.getLocation().path() + ".xml";
+		return targetDescriptor.getLocation().path() + ".xlf";
 	}
 
 	/**

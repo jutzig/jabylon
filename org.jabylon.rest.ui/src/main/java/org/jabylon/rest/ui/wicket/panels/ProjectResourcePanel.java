@@ -77,6 +77,10 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
 				"link-download-xliff", XliffDownloadPage.class, parameters); //$NON-NLS-1$
 		downloadXliff.setVisible(object instanceof ProjectVersion);
 		add(downloadXliff);
+
+		XliffUploadPanel panel = new XliffUploadPanel("panel-upload-xliff", getModel(), parameters);
+		panel.setVisible(uploadPanelVisible(object));
+		add(panel);
     }
 
     @Override
@@ -218,6 +222,32 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
         }
         return null;
     }
+
+	/**
+	 * @return true if the user is allowed to upload/import XLIFF files for this
+	 *         {@link ProjectVersion}.<br>
+	 */
+	private boolean uploadPanelVisible(Resolvable<?, ?> object) {
+		if (!(object instanceof ProjectVersion)) {
+			return false;
+		}
+
+		ProjectVersion version = (ProjectVersion) object;
+		if (version.isReadOnly()) {
+			return false;
+		}
+
+		Session session = getSession();
+
+		if (!(session instanceof CDOAuthenticatedSession)) {
+			return false;
+		}
+
+		Project project = version.getParent();
+		CDOAuthenticatedSession authSession = (CDOAuthenticatedSession) session;
+		return authSession.hasPermission(CommonPermissions.constructPermission(CommonPermissions.PROJECT, project.getName(),
+				CommonPermissions.ACTION_EDIT));
+	}
 }
 
 class LinkTarget
@@ -373,8 +403,9 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
         item.add(image);
         return item;
     }
-
 }
+
+
 
 class Triplet
 {
