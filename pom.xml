@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jabylon</groupId>
@@ -88,11 +89,11 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.5.1</version>
 				</plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.4</version>
-                </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
@@ -204,22 +205,6 @@
 				<inherited>false</inherited>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-scr-plugin</artifactId>
-				<version>1.8.0</version>
-				<executions>
-					<execution>
-						<id>generate-components</id>
-						<goals>
-							<goal>scr</goal>
-						</goals>
-						<inherited>true</inherited>
-						<!-- <configuration> <outputDirectory>${project.build.directory}/../</outputDirectory>
-							</configuration> -->
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.8</version>
 				<configuration>
@@ -243,7 +228,21 @@
 
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-scr-scrdescriptor</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/scr-plugin-generated</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -287,7 +286,13 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<copy file="${project.build.directory}/scr-plugin-generated/OSGI-INF/serviceComponents.xml" toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr" />
+								<copy toDir="${basedir}/OSGI-INF" failonerror="false"
+									overwrite="tr">
+									<fileset
+										dir="${project.build.directory}/scr-plugin-generated/OSGI-INF"
+										includes="*.xml">
+									</fileset>
+								</copy>
 							</tasks>
 						</configuration>
 						<goals>
@@ -419,24 +424,24 @@
 					<reportSet>
 						<reports>
 							<!-- <report>dependencies</report> -->
-              				<report>project-team</report>
-              				<report>mailing-list</report>
-              				<report>cim</report>
-              				<report>issue-tracking</report>
-              				<report>license</report>
-              				<report>scm</report>
-              				<report>modules</report>
-              				<report>summary</report>
+							<report>project-team</report>
+							<report>mailing-list</report>
+							<report>cim</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+							<report>modules</report>
+							<report>summary</report>
 						</reports>
 					</reportSet>
 				</reportSets>
 			</plugin>
- 			<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-changes-plugin</artifactId>
-        		<version>2.9</version>
-        		<inherited>false</inherited>
-      		</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<version>2.9</version>
+				<inherited>false</inherited>
+			</plugin>
 		</plugins>
 	</reporting>
 
@@ -774,7 +779,7 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.scr.annotations</artifactId>
-				<version>1.9.6</version>
+				<version>1.9.12</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -966,8 +971,8 @@
 		<url>https://github.com/jutzig/jabylon</url>
 		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
 		<developerConnection>scm:git:https://github.com/jutzig/jabylon.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<issueManagement>
 		<system>Github</system>
 		<url>https://github.com/jutzig/jabylon/issues</url>

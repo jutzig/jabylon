@@ -68,23 +68,23 @@ import com.google.common.collect.TreeMultimap;
 public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
     private static final String DEFAULT_REPOSITORY = "http://jabylon.org/maven/repository.xml";
-    @Reference(bind="bindAdmin")
-    private RepositoryAdmin admin;
+    @Reference
+    RepositoryAdmin admin;
 
     private static final Logger logger = LoggerFactory.getLogger(OBRRepositoryConnectorImpl.class);
-    
+
     private static final Pattern BUNDLE_PATTERN = Pattern.compile("(.*?)_(.*?)\\.jar");
-    
+
     private static final Comparator<Version> COMPARATOR = new OSGiVersionComparator();
-	
-    
+
+
     /**
      * where we download plugins
      */
     private File pluginDir;
 
     private BundleContext context;
-    
+
     @Activate
     public void activate() {
     	Bundle bundle = FrameworkUtil.getBundle(getClass());
@@ -95,12 +95,12 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 			public void run() {
 				pluginDir = new File(new File(ServerConstants.WORKING_DIR),"addons");
 				deployAddons(pluginDir);
-				
+
 			}
 		},"Addon Deployment");
     	t.start();
     }
-    
+
     /*
      * (non-Javadoc)
      *
@@ -109,23 +109,19 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
      */
     @Override
     public List<Bundle> listInstalledBundles() {
-        
+
         List<Bundle> resources = Arrays.asList(context.getBundles());
         return resources;
     }
-    
-    public void bindAdmin(RepositoryAdmin admin) {
-    	this.admin = admin;
-    }
-    
-    
+
+
 
     private void deployAddons(File pluginDir) {
     	File[] addons = pluginDir.listFiles();
     	if(addons==null)
     		return;
     	List<String> bundleFiles = getHighestBundleVersions(pluginDir.list());
-    	
+
     	List<Bundle> bundles = new ArrayList<Bundle>();
     	for (String addonName : bundleFiles) {
 			try {
@@ -142,7 +138,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 				logger.error("Failed to deploy addon "+addonName);
 			}
 		}
-    	
+
     	for (Bundle bundle : bundles) {
 			try {
 				bundle.start();
@@ -150,7 +146,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 				logger.error("Failed to start addon "+bundle.getSymbolicName());
 			}
 		}
-		
+
 	}
 
 	protected List<String> getHighestBundleVersions(String... filenames) {
@@ -175,7 +171,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 		}
 		return result;
 	}
-	
+
 	protected String getHighestVersion(List<String> versions) {
 		String versionName = versions.get(0);
 		Version highest = Version.parseVersion(versionName);
@@ -285,7 +281,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     @Override
     public void install(String resourceId) throws OBRException {
         Resource[] resources;
-        
+
         String filter = MessageFormat.format("({0}={1})", Resource.ID, resourceId);
         try {
             resources = admin.discoverResources(filter);
@@ -304,7 +300,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
         List<Bundle> bundles = new ArrayList<Bundle>();
     	for (Resource resource : resources) {
     		try {
-    			
+
 				Bundle bundle = context.installBundle(downloadBundle(resource));
 				bundles.add(bundle);
 			} catch (BundleException e) {
@@ -343,14 +339,14 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
         		logger.info("Executing package refresh after update");
         		wiring.refreshBundles(null);
         	}
-        	
+
         }
-        
+
         // for some reason this doesn't work in jetty
 //        for (Resource resource : resources) {
 //        	resolver.add(resource);
 //        }
-//        
+//
 //        if (resolver.resolve(Resolver.NO_OPTIONAL_RESOURCES)) {
 //            resolver.deploy(Resolver.START);
 //        }
@@ -439,20 +435,20 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
     }
 
 	private static class BundleVersionComparator implements Comparator<Bundle> {
-		
+
 	    @Override
 	    public int compare(Bundle o1, Bundle o2) {
 	    	Version v1 = o1.getVersion();
 	    	Version v2 = o2.getVersion();
 	    	return COMPARATOR.compare(v1, v2);
 	    }
-	   
-	    
+
+
 	}
 
 	private static class OSGiVersionComparator implements Comparator<Version> {
 
-		
+
 	    @Override
 	    public int compare(Version v1, Version v2) {
 
@@ -470,12 +466,12 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 	    				//we consider SNAPSHOT < release
 	    				return -1;
 	    			}
-	    		}    		
+	    		}
 	    	}
 	    	// to have the highest version at the beginning
-	    	return -(v1.compareTo(v2)); 
+	    	return -(v1.compareTo(v2));
 	    }
-	    
+
 	}
 
 	private static class VersionComparator implements Comparator<String> {
@@ -488,7 +484,7 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 	    	return COMPARATOR.compare(v1, v2);
 	    }
 	}
-	
+
 	private static class ResourceComparator implements Comparator<Resource> {
 
 	    @Override
@@ -499,6 +495,6 @@ public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 	    	return COMPARATOR.compare(v1, v2);
 	    }
 	}
-	
+
 }
 
