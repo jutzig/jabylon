@@ -10,14 +10,13 @@ package org.jabylon.rest.ui.wicket.xliff;
 
 /**
  * Keys for localized messages to be displayed after an XLIFF file upload.<br>
- * 
+ *
  * @author c.samulski (2016-02-14)
  */
-public interface XliffUploadResultMessageKeys {
-	String NO_FILE_MATCH = "xliff.upload.error.nofilematch";
-	String PARSE_SAX = "xliff.upload.error.sax";
-	String UNPARSABLE = "xliff.upload.error.unparsable";
-	String INVALID_FILENAME = "xliff.error.upload.invalid.filename";
-	String SUCCESS = "xliff.upload.success";
-	String NO_PROPERTIES_UPDATED = "xliff.upload.no.properties.updated";
+public class XliffUploadResultMessageKeys {
+	public static String NO_FILE_MATCH = "xliff.upload.error.nofilematch";
+	public static String PARSE_SAX = "xliff.upload.error.sax";
+	public static String UNPARSABLE = "xliff.upload.error.unparsable";
+	public static String INVALID_FILENAME = "xliff.error.upload.invalid.filename";
+	public static String SUCCESS = "xliff.upload.success";
 }

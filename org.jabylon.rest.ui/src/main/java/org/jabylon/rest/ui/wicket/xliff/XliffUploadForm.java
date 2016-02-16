@@ -20,12 +20,14 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.jabylon.properties.Resolvable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the UI form used for uploading XLIFF documents.<br>
  * Calls {@link XliffUploadHelper} to process subsequent upload/import processing via
  * {@link #onSubmit()}.<br>
- * 
+ *
  * @author c.samulski (2016-02-08)
  */
 public class XliffUploadForm extends StatelessForm<Resolvable<?, ?>> {
@@ -37,6 +39,7 @@ public class XliffUploadForm extends StatelessForm<Resolvable<?, ?>> {
 	private static final String INPUT_UPLOAD_XLIFF = "xuf-input-upload";
 
 	private FileUploadField fileUpload = new FileUploadField(INPUT_UPLOAD_XLIFF);
+	private static final Logger LOG = LoggerFactory.getLogger(XliffUploadForm.class);
 
 	public XliffUploadForm(String id, IModel<Resolvable<?, ?>> model) {
 		super(id, model);
@@ -71,20 +74,46 @@ public class XliffUploadForm extends StatelessForm<Resolvable<?, ?>> {
 	 * during the import process.<br>
 	 */
 	private void handleNotification(List<XliffUploadResult> results) {
+
+		XliffUploadResult mostSevereResult = null;
+		boolean hadSuccess = false;
 		for (XliffUploadResult result : results) {
 			switch (result.getLevel()) {
 			case INFO:
-				getSession().success(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				hadSuccess = true;
+				LOG.info(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				if(mostSevereResult==null || result.getLevel().ordinal()<mostSevereResult.getLevel().ordinal())
+					mostSevereResult = result;
 				break;
 			case WARNING:
-				getSession().warn(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				LOG.warn(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				if(mostSevereResult==null || result.getLevel().ordinal()<mostSevereResult.getLevel().ordinal())
+					mostSevereResult = result;
 				break;
 			case ERROR:
-				getSession().error(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				LOG.error(MessageFormat.format(getString(result.getKey()), result.getParameters()));
+				mostSevereResult = result;
 				break;
 			default:
 				break;
 			}
 		}
+		if(mostSevereResult!=null)
+		{
+			switch (mostSevereResult.getLevel()) {
+			case INFO:
+				break;
+			case WARNING:
+				getSession().warn(MessageFormat.format(getString(mostSevereResult.getKey()), mostSevereResult.getParameters()));
+				break;
+			case ERROR:
+				getSession().error(MessageFormat.format(getString(mostSevereResult.getKey()), mostSevereResult.getParameters()));
+				break;
+			default:
+				break;
+			}
+		}
+		if(hadSuccess)
+			getSession().success(getString("xliff.upload.general.success"));
 	}
 }

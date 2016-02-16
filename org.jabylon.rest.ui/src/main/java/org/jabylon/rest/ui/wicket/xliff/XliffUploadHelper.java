@@ -37,6 +37,8 @@ import org.jabylon.rest.ui.wicket.panels.PropertyListPanel;
 import org.jabylon.rest.ui.wicket.xliff.XliffUploadResult.Level;
 import org.xml.sax.SAXException;
 
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.*;
+
 /**
  * Processes the upload of a ZIP archive containing multiple XLIFF documents.<br>
  * {@link #handleUpload()} is basically Main() and will return a {@link List} of
@@ -45,7 +47,7 @@ import org.xml.sax.SAXException;
  *
  * @author c.samulski (2016-02-09)
  */
-public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
+public final class XliffUploadHelper  {
 	/**
 	 * The {@link ProjectVersion} we are are parsing the uploaded XLIFF file for.<br>
 	 */
@@ -73,18 +75,18 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 		this.in = new XliffZipInputStream(new BufferedInputStream(in));
 		this.version = (ProjectVersion) projectVersion.getObject();
 	}
-	
+
 	/**
 	 * Basically Main() for this class. Work order:<br>
-	 * 
+	 *
 	 * 1. Consume request {@link InputStream}, read the ZIP contents into {@link PropertyWrapper}s.<br>
-	 * 
+	 *
 	 * 2. Load matching {@link PropertyFileDescriptor}s.<br>
-	 * 
+	 *
 	 * 3. Merge retrieved {@link Property}s into existing {@link PropertyFileDescriptor}.<br>
-	 * 
+	 *
 	 * 4. Persist via {@link PropertyPersistenceService}.<br>
-	 * 
+	 *
 	 * @return a {@link Map} of file names for {@link ZipEntry}s which could not be parsed or
 	 *         matched to existing {@link PropertyFileDescriptor}s.<br>
 	 */
@@ -120,7 +122,7 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 				continue; // we only pass files to the parser.
 			}
 
-			String key = entry.getName(); 
+			String key = entry.getName();
 			try {
 				ret.put(key, XliffReader.read(in, StandardCharsets.UTF_8.displayName()));
 			} catch (IOException e) {
@@ -145,7 +147,7 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 			uploadResult.add(new XliffUploadResult(INVALID_FILENAME, Level.ERROR, entry.getKey()));
 			return;
 		}
-		
+
 		Locale locale = entry.getValue().getLocale();
 		Map<String, Property> properties = entry.getValue().getProperties();
 		/*
@@ -158,12 +160,8 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 		for (PropertyFileDescriptor descriptor : descriptors) {
 			if (fileName.equals(descriptor.getLocation().path())) {
 				int updated = merge(properties, descriptor);
-
-				if (updated == 0) { // no properties were updated!
-					uploadResult.add(new XliffUploadResult(NO_PROPERTIES_UPDATED, Level.WARNING, fileName));
-				} else { // we had matches!
+				if (updated > 0)
 					uploadResult.add(new XliffUploadResult(SUCCESS, Level.INFO, fileName, String.valueOf(updated)));
-				}
 				return;
 			}
 		}
@@ -186,7 +184,7 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 	/**
 	 * Merges a {@link Map} of {@link Property}s into the existing {@link PropertyFileDescriptor}.<br>
 	 * TODO: Possibly merge with persist logic in {@link PropertyListPanel}.<br>
-	 * 
+	 *
 	 * @return count of updated properties.<br>
 	 */
 	private static int merge(Map<String, Property> newProperties, PropertyFileDescriptor descriptor)
@@ -223,7 +221,7 @@ public final class XliffUploadHelper implements XliffUploadResultMessageKeys {
 	 * If we make it here, we know that the {@link Property} exists in the master
 	 * {@link PropertyFileDescriptor}, but we don't know if a corresponding {@link Property} exists
 	 * for the existing {@link PropertyFile}. If it does not, we create a new {@link Property}.<br>
-	 * 
+	 *
 	 * Hence perform a quick check, and create a new {@link Property} which we add to this
 	 * {@link PropertyFileDescriptor} if it does not yet exist.<br>
 	 */
