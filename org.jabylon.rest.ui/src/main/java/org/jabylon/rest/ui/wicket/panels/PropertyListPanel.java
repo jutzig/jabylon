@@ -112,7 +112,6 @@ public class PropertyListPanel
     public PropertyListPanel(PropertyFileDescriptor object, PageParameters parameters)
     {
         super("content", object, parameters);
-		mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
     }
 
 
@@ -120,7 +119,9 @@ public class PropertyListPanel
     protected void construct() {
     	super.construct();
 
-        addLinkList(mode);
+    	List<ReviewParticipant> activeReviews = PropertyListModeFactory.filterActiveReviews(getModel().getObject().getProjectLocale().getParent().getParent(),reviewParticipants);
+		mode = PropertyListModeFactory.allAsMap(activeReviews).get(getPageParameters().get("mode").toString());
+        addLinkList(activeReviews,mode);
         reviewModel = new LoadableDetachableModel<Multimap<String, Review>>()
         {
 
@@ -178,18 +179,18 @@ public class PropertyListPanel
             link.add(new AttributeAppender("disabled", Model.of("disabled")));
             link.add(new AttributeAppender("class", Model.of("disabled")));
         }
-        add(link); 
-        
+        add(link);
+
         StatelessLink<Void> deleteLink = new DeleteLink("remove.button");
 		deleteLink.add(new ConfirmBehaviour(nls("confirm.remove")));
 		deleteLink.setVisible(canConfigure());
 		add(deleteLink);
-		
+
 		FileUploadForm uploadForm = new FileUploadForm("translation-upload-form", getModel());
 		uploadForm.setVisible(canSuggest());
 		add(uploadForm);
     }
-    
+
 	@Override
 	public String getRequiredPermission() {
 		Project project = getModel().getObject().getProjectLocale().getParent().getParent();
@@ -292,7 +293,7 @@ public class PropertyListPanel
 	private boolean canConfigure() {
 		return hasPermission(getModel().getObject(), getSession(), CommonPermissions.ACTION_CONFIG);
 	}
-	
+
 	/**
      * checks if the user has permissions to make suggestions to this project
      * @return
@@ -300,7 +301,7 @@ public class PropertyListPanel
 	private boolean canSuggest() {
 		return hasPermission(getModel().getObject(), getSession(), CommonPermissions.ACTION_SUGGEST);
 	}
-	
+
 	private static boolean hasPermission(PropertyFileDescriptor model, Session session, String permission) {
 		ProjectVersion version = model.getProjectLocale().getParent();
 		if (version.isReadOnly())
@@ -327,9 +328,9 @@ public class PropertyListPanel
     }
 
 
-    private void addLinkList(final PropertyListMode currentMode)
+    private void addLinkList(List<ReviewParticipant> activeReviews, final PropertyListMode currentMode)
     {
-		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
+		List<PropertyListMode> values = PropertyListModeFactory.all(activeReviews);
         ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values)
         {
 
@@ -341,32 +342,36 @@ public class PropertyListPanel
             {
 				String mode = item.getModelObject().name();
                 BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).set("mode", mode));
-                link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
+                ReviewParticipant participant = item.getModel().getObject().getParticipant();
+                if(participant!=null)
+                	link.setBody(nls(participant.getClass(),participant.getName()));
+                else
+                	link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
                 item.add(link);
-                if (item.getModelObject() == currentMode)
+                if (item.getModelObject().equals(currentMode))
                     item.add(new AttributeModifier("class", "active"));
             }
         };
         add(mode);
 
     }
-    
+
 
     private static class FileUploadForm extends StatelessForm<PropertyFileDescriptor>
     {
 
 		private static final long serialVersionUID = -3653084217384164795L;
 		private static final Logger LOG = LoggerFactory.getLogger(FileUploadForm.class);
-		
+
 		private final ArrayList<FileUpload> uploads;
 		private FileUploadField fileUploadField;
-    	
+
 		public FileUploadForm(String id, IModel<PropertyFileDescriptor> model) {
 			super(id,model);
 	           // set this form to multipart mode (always needed for uploads!)
             setMultiPart(true);
             uploads = new ArrayList<FileUpload>();
-            
+
             // Add one multi-file upload field
             @SuppressWarnings({ "unchecked", "rawtypes" })
 //            IModel<List<FileUpload>> fileModel = new Model<ArrayList<FileUpload>>(uploads);
@@ -377,17 +382,17 @@ public class PropertyListPanel
             // Set maximum size to 100K for demo purposes
 //            setMaxSize(Bytes.kilobytes(100));
 		}
-		
+
 		@Override
 		protected void onSubmit() {
 			super.onSubmit();
-			
+
 			for (FileUpload fileUpload : fileUploadField.getFileUploads()) {
 				PropertyFileDescriptor descriptor = getModel().getObject();
 	            try {
 					PropertyFile file = descriptor.loadProperties(fileUpload.getInputStream());
 					persist(file);
-					
+
 				} catch (IOException e) {
 					LOG.error("Failed to retrieve uploaded file for"+descriptor.getLocation(),e);
 				}
@@ -395,12 +400,12 @@ public class PropertyListPanel
 		}
 
 		private void persist(PropertyFile file) {
-			PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();	
+			PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
 			try {
 				PropertyFile original = persistenceService.loadProperties(getModelObject());
 				PropertyFile master = persistenceService.loadProperties(getModelObject().getMaster());
 				Map<String, Property> originalProperties = original.asMap();
-				
+
 				for(Property prop : master.getProperties())
 				{
 					if(!originalProperties.containsKey(prop.getKey()))
@@ -483,7 +488,7 @@ public class PropertyListPanel
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-				
+
 				}
 				getSession().success(new StringResourceModel("message.upload.successfull", this, null).getString());
 				setResponsePage(ResourcePage.class, getPage().getPageParameters());
@@ -494,10 +499,10 @@ public class PropertyListPanel
 			catch (CommitException e) {
 				logger.error("Commit of suggestion failed", e);
 				getSession().success(new StringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
-			}						
-			
+			}
+
 		}
-    	
+
     }
 
 

@@ -17,16 +17,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.jabylon.common.review.ReviewParticipant;
+import org.jabylon.common.util.PreferencesUtil;
+import org.jabylon.properties.Project;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.Review;
 import org.jabylon.rest.ui.model.PropertyPair;
+import org.osgi.service.prefs.Preferences;
 
 /**
  * Replaces the old PropertyListMode ENUM.<br>
  * Allows for dynamically adding {@link PropertyListMode}s based on {@link ReviewParticipant}s.<br>
  * The "old" default {@link PropertyListMode}s are still there:<br>
  * {@link #ALL}, {@link #MISSING} and {@link #FUZZY}.<br>
- * 
+ *
  * @author c.samulski
  */
 public final class PropertyListModeFactory {
@@ -125,13 +128,18 @@ public final class PropertyListModeFactory {
 				}
 				return false;
 			}
+
+			@Override
+			public ReviewParticipant getParticipant() {
+				return participant;
+			}
 		};
 	}
 
 	/**
 	 * Return populated {@link Map} filled with the default {@link PropertyListMode}s AND the passed
 	 * {@link ReviewParticipant}s as {@link PropertyListMode}s.<br>
-	 * 
+	 *
 	 * Note: We subclass {@link LinkedHashMap} to override {@link Map#get(Object)} to allow
 	 * returning the default {@link PropertyListModeFactory#ALL} instead of null if
 	 * {@link LinkedHashMap#get(Object)} returns null.<br>
@@ -201,4 +209,20 @@ public final class PropertyListModeFactory {
 			}
 		});
 	}
+
+	/**
+	 * filters the given participant lists depending on which of them are active for the project in question
+	 * @param project
+	 * @param participants
+	 * @return filtered list of active participants
+	 */
+    public static List<ReviewParticipant> filterActiveReviews(Project project, List<ReviewParticipant> participants) {
+        List<ReviewParticipant> activeParticipants = new ArrayList<ReviewParticipant>();
+        Preferences node = PreferencesUtil.scopeFor(project).node(PreferencesUtil.NODE_CHECKS);
+        for (ReviewParticipant participant : participants) {
+            if (node.getBoolean(participant.getID(), false))
+                activeParticipants.add(participant);
+        }
+        return activeParticipants;
+    }
 }

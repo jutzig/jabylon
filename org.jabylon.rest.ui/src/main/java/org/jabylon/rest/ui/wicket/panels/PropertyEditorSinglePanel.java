@@ -100,7 +100,6 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 	public PropertyEditorSinglePanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
-		mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
 		targetKey = fixKeyName(parameters.get("key").toString(null));
 	}
 
@@ -115,7 +114,9 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	protected void construct() {
 		super.construct();
 		editKind = computeEditKind();
-		addLinkList(mode);
+    	List<ReviewParticipant> activeReviews = PropertyListModeFactory.filterActiveReviews(getModel().getObject().getProjectLocale().getParent().getParent(),reviewParticipants);
+		mode = PropertyListModeFactory.allAsMap(activeReviews).get(getPageParameters().get("mode").toString());
+        addLinkList(activeReviews,mode);
 		reviewModel = new LoadableDetachableModel<Multimap<String, Review>>() {
 
 			private static final long serialVersionUID = 1L;
@@ -359,8 +360,9 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		return reviewMap;
 	}
 
-	private void addLinkList(final PropertyListMode currentMode) {
-		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
+    private void addLinkList(List<ReviewParticipant> activeReviews, final PropertyListMode currentMode)
+    {
+		List<PropertyListMode> values = PropertyListModeFactory.all(activeReviews);
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
 
 			private static final long serialVersionUID = 1L;
@@ -371,11 +373,14 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 				String anchor = URLUtil.escapeToIdAttribute(mainModel.getObject().getKey());
 				PageParameters pageParams = new PageParameters(getPageParameters()).clearNamed().set("mode", mode);
 				BookmarkablePageLink<Object> link = new AnchorBookmarkablePageLink<Object>("link", getPage().getClass(), pageParams, anchor);
-
-				link.setBody(new StringResourceModel(item.getModelObject().name(), item, null));
+                ReviewParticipant participant = item.getModel().getObject().getParticipant();
+                if(participant!=null)
+                	link.setBody(nls(participant.getClass(),participant.getName()));
+                else
+                	link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
 				item.add(link);
 				link.add(new AttributeModifier("onclick", "return confirmAction()"));
-				if (item.getModelObject() == currentMode)
+				if (item.getModelObject().equals(currentMode))
 					item.add(new AttributeModifier("class", "active"));
 			}
 		};

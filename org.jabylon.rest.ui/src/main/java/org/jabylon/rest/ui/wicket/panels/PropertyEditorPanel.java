@@ -74,8 +74,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
 
     public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
         super("content", object, parameters);
-
-		PropertyListMode mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
+        List<ReviewParticipant> activeReviews = PropertyListModeFactory.filterActiveReviews(getModel().getObject().getProjectLocale().getParent().getParent(),reviewParticipants);
+		PropertyListMode mode = PropertyListModeFactory.allAsMap(activeReviews).get(parameters.get("mode").toString());
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String,Review>>() {
 
@@ -226,7 +226,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
     }
 
     private void addLinkList(final PropertyListMode currentMode) {
-		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
+    	List<ReviewParticipant> activeReviews = PropertyListModeFactory.filterActiveReviews(getModel().getObject().getProjectLocale().getParent().getParent(),reviewParticipants);
+		List<PropertyListMode> values = PropertyListModeFactory.all(activeReviews);
         ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
 
             private static final long serialVersionUID = 1L;
