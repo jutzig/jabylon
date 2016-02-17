@@ -266,9 +266,10 @@ public final class XliffDownloadHelper {
 	private static Map<String, List<Review>> reviewsAsMap(List<Review> reviews) {
 		Map<String, List<Review>> ret = new HashMap<String, List<Review>>();
 		for (Review r : reviews) {
-			List<Review> value = new ArrayList<Review>();
-			value.add(r);
-			ret.put(r.getKey(), value);
+			if (!ret.containsKey(r.getKey())) {
+				ret.put(r.getKey(), new ArrayList<Review>());
+			}
+			ret.get(r.getKey()).add(r);
 		}
 		return ret;
 	}

@@ -62,7 +62,7 @@ public class EqualityCheck implements ReviewParticipant {
                 Review review = PropertiesFactory.eINSTANCE.createReview();
                 review.setCreated(System.currentTimeMillis());
                 review.setMessage("Template and translated string are identical");
-                review.setReviewType("Equality Check");
+				review.setReviewType(getReviewType());
                 review.setSeverity(Severity.WARNING);
                 review.setUser("Jabylon");
                 return review;
@@ -70,6 +70,11 @@ public class EqualityCheck implements ReviewParticipant {
         }
         return null;
     }
+
+	@Override
+	public String getReviewType() {
+		return "Equality Check";
+	}
 
     public void bindTerminologyProvider(TerminologyProvider provider) {
         this.terminologyProvider = provider;

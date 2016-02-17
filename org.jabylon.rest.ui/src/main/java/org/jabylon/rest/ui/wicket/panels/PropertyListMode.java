@@ -15,43 +15,19 @@ import org.jabylon.rest.ui.model.PropertyPair;
 
 import com.google.common.base.Predicate;
 
-public enum PropertyListMode implements Predicate<PropertyPair> {
+public abstract class PropertyListMode implements Predicate<PropertyPair> {
 
-    ALL {
-        @Override
-        public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-            return true;
-        }
-    },
-    MISSING
+	public abstract String name();
 
-    {
-        @Override
-        public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-            return pair.getOriginal() == null || pair.getTranslated() == null || pair.getOriginal().isEmpty()
-                    || pair.getTranslated().isEmpty();
-        }
-    },
-    FUZZY {
-        @Override
-        public boolean apply(PropertyPair pair, Collection<Review> reviews) {
-            if(MISSING.apply(pair,reviews))
-                return true;
-            return reviews != null && !reviews.isEmpty();
-        }
-    };
+	@Override
+	public final boolean apply(PropertyPair pair) {
+		return apply(pair, null);
+	}
+	
+	@Override
+	public final String toString() {
+		return name();
+	}
 
-
-    public abstract boolean apply(PropertyPair pair, Collection<Review> reviews);
-
-    @Override
-	public boolean apply(PropertyPair pair){
-        return apply(pair,null);
-    }
-
-    public static PropertyListMode getByName(String name) {
-        if (name == null || name.isEmpty())
-            return ALL;
-        return valueOf(name.toUpperCase());
-    }
+	public abstract boolean apply(PropertyPair pair, Collection<Review> reviews);
 }

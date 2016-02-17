@@ -15,7 +15,6 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -59,6 +58,7 @@ import org.eclipse.emf.common.util.URI;
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
 import org.jabylon.common.resolver.URIResolver;
+import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
@@ -103,14 +103,16 @@ public class PropertyListPanel
     private static final Logger logger = LoggerFactory.getLogger(PropertyPairListDataProvider.class);
 
     @Inject
+	List<ReviewParticipant> reviewParticipants;
+
+	@Inject
     private PropertyPersistenceService propertyPersistence;
 	private PropertyListMode mode;
-
 
     public PropertyListPanel(PropertyFileDescriptor object, PageParameters parameters)
     {
         super("content", object, parameters);
-        mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+		mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
     }
 
 
@@ -327,7 +329,7 @@ public class PropertyListPanel
 
     private void addLinkList(final PropertyListMode currentMode)
     {
-        List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
+		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
         ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values)
         {
 
@@ -337,7 +339,7 @@ public class PropertyListPanel
             @Override
             protected void populateItem(ListItem<PropertyListMode> item)
             {
-                String mode = item.getModelObject().name().toLowerCase();
+				String mode = item.getModelObject().name();
                 BookmarkablePageLink<Object> link = new BookmarkablePageLink<Object>("link", getPage().getClass(), new PageParameters(getPageParameters()).set("mode", mode));
                 link.setBody(new StringResourceModel(item.getModelObject().name(),item,null));
                 item.add(link);
@@ -634,6 +636,7 @@ class DeleteLink extends StatelessLink<Void>{
 		if(descriptor!=null){
 			try {
 			ProjectLocale locale = TransactionUtil.commit(descriptor, new Modification<PropertyFileDescriptor, ProjectLocale>() {
+				@Override
 				public ProjectLocale apply(PropertyFileDescriptor object) {
 					ProjectLocale locale = object.getProjectLocale();
 					if(!object.isMaster())

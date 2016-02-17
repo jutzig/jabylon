@@ -9,7 +9,6 @@
 package org.jabylon.rest.ui.wicket.panels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
+import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.PropertyFileDescriptor;
@@ -67,12 +67,15 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
     IModel<Multimap<String, Review>> reviewModel;
 
     @Inject
+	private List<ReviewParticipant> reviewParticipants;
+
+	@Inject
     private PropertyPersistenceService propertyPersistence;
 
     public PropertyEditorPanel(PropertyFileDescriptor object, PageParameters parameters) {
         super("content", object, parameters);
 
-        PropertyListMode mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+		PropertyListMode mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
         addLinkList(mode);
         reviewModel = new LoadableDetachableModel<Multimap<String,Review>>() {
 
@@ -222,9 +225,8 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
         return reviewMap;
     }
 
-
     private void addLinkList(final PropertyListMode currentMode) {
-        List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
+		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
         ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
 
             private static final long serialVersionUID = 1L;

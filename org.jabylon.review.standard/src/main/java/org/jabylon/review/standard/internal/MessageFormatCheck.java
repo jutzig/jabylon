@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
@@ -82,11 +81,16 @@ public class MessageFormatCheck implements ReviewParticipant {
 			review.setMessage(MessageFormat.format(message, mustHavePatterns.iterator().next()));
 			review.setUser("Jabylon");
 			review.setSeverity(Severity.ERROR);
-			review.setReviewType("Message Format");
+			review.setReviewType(getReviewType());
 			return review;
 		}
 		
 		return null;
+	}
+
+	@Override
+	public String getReviewType() {
+		return "Message Format";
 	}
 
 	@Override
@@ -107,9 +111,9 @@ public class MessageFormatCheck implements ReviewParticipant {
 //TODO: unit test for this:
 	/*
 	 * {0} {1} doesn''t have a workspace snapshot attached,
-	 *Mit {0} {1} ist kein Schnappschuß eines Arbeitsbereiches verknüpft,	
-	 * 
-	 * 
+	 *Mit {0} {1} ist kein Schnappschuß eines Arbeitsbereiches verknüpft,
+	 *
+	 *
 	 */
 
 }

@@ -28,4 +28,5 @@ public interface ReviewParticipant {
 
     String getName();
 
+	String getReviewType();
 }

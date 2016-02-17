@@ -9,16 +9,16 @@
 package org.jabylon.rest.ui.wicket.xliff;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -29,8 +29,10 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.resource.IResource;
+import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.properties.Resolvable;
 import org.jabylon.rest.ui.wicket.panels.PropertyListMode;
+import org.jabylon.rest.ui.wicket.panels.PropertyListModeFactory;
 import org.jabylon.rest.ui.wicket.panels.XliffLanguageTupleSelectionPanel;
 
 /**
@@ -46,7 +48,10 @@ public class XliffDownloadForm extends StatelessForm<Void> {
 	private static final String SELECT_FILTER_ID = "mdf-select-filter";
 
 	private final IModel<Resolvable<?, ?>> projectVersion;
-	private PropertyListMode filter = PropertyListMode.ALL;
+	private PropertyListMode filter = PropertyListModeFactory.ALL;
+
+	@Inject
+	List<ReviewParticipant> reviewParticipants;
 
 	public XliffDownloadForm(List<Language> languages, IModel<Resolvable<?, ?>> model) {
 		super(FORM_ID);
@@ -63,13 +68,21 @@ public class XliffDownloadForm extends StatelessForm<Void> {
 	private void buildForm(List<Language> languages) {
 		/* Retrieve language selection panel form elements. */
 		List<XliffLanguageTupleSelectionPanel> languageSelectionTupels = getLanguageSelectionPanels(languages);
-
+		/* Add form components */
 		add(new Label(LABEL_TARGETLANG_ID, new StringResourceModel("label.target.language", this, null)));
 		add(new Label(LABEL_SOURCELANG_ID, new StringResourceModel("label.source.language", this, null)));
 		add(new DropDownChoice<PropertyListMode>(SELECT_FILTER_ID, //
 				new PropertyModel<PropertyListMode>(this, "filter"), //
-				Arrays.asList(PropertyListMode.values()), //
-				new EnumChoiceRenderer<PropertyListMode>(this)));
+				PropertyListModeFactory.all(reviewParticipants)) {
+
+			private static final long serialVersionUID = 1L;
+
+			/* We want to localize the values via property files */
+			@Override
+			protected boolean localizeDisplayValues() {
+				return true;
+			}
+		});
 
 		add(new ListView<XliffLanguageTupleSelectionPanel>(COMPONENT_LIST_ID, languageSelectionTupels) {
 			private static final long serialVersionUID = 1L;

@@ -15,7 +15,6 @@ import java.text.MessageFormat;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
@@ -65,12 +64,17 @@ public class ExistenceCheck implements ReviewParticipant {
             message = MessageFormat.format(message, slave.getKey());
             review.setMessage(message);
             review.setUser("Jabylon");
-            review.setReviewType("Missing Key");
+			review.setReviewType(getReviewType());
             review.setSeverity(Severity.ERROR);
             return review;
         }
         return null;
     }
+
+	@Override
+	public String getReviewType() {
+		return "Missing Key";
+	}
 
     private boolean exists(Property property) {
         if(property==null)

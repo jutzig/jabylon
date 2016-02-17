@@ -11,7 +11,6 @@ package org.jabylon.rest.ui.wicket.panels;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.AttributeModifier;
@@ -52,6 +52,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.TransactionUtil;
+import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
@@ -94,9 +95,12 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	private PropertyListMode mode;
 	private String targetKey;
 
+	@Inject
+	List<ReviewParticipant> reviewParticipants;
+
 	public PropertyEditorSinglePanel(PropertyFileDescriptor object, PageParameters parameters) {
 		super("content", object, parameters);
-		mode = PropertyListMode.getByName(parameters.get("mode").toString("ALL"));
+		mode = PropertyListModeFactory.allAsMap(reviewParticipants).get(parameters.get("mode").toString());
 		targetKey = fixKeyName(parameters.get("key").toString(null));
 	}
 
@@ -335,7 +339,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		progressLabel = MessageFormat.format(progressLabel, index, total);
 		Label progress = new Label("progress", String.valueOf(progressLabel));
 		double actualIndex = Math.max(1, index);
-		int percent = (int) ((actualIndex / (double) total) * 100);
+		int percent = (int) ((actualIndex / total) * 100);
 		progress.add(new AttributeModifier("style", "width: " + percent + "%"));
 		pairForm.add(progress);
 
@@ -356,7 +360,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	}
 
 	private void addLinkList(final PropertyListMode currentMode) {
-		List<PropertyListMode> values = Arrays.asList(PropertyListMode.values());
+		List<PropertyListMode> values = PropertyListModeFactory.all(reviewParticipants);
 		ListView<PropertyListMode> mode = new ListView<PropertyListMode>("view-mode", values) {
 
 			private static final long serialVersionUID = 1L;

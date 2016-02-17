@@ -100,7 +100,7 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
             review.setCreated(System.currentTimeMillis());
             review.setState(ReviewState.OPEN);
             review.setSeverity(Severity.ERROR);
-            review.setReviewType("Terminology");
+			review.setReviewType(getReviewType());
             String message = "Template language contained the term ''{0}'' but the terminology translation ''{1}'' is missing";
             message = MessageFormat.format(message, next.getValue(),next.getKey());
             review.setMessage(message);
@@ -111,6 +111,11 @@ public class TerminologyCheck extends AdapterImpl implements ReviewParticipant {
 
     }
     
+	@Override
+	public String getReviewType() {
+		return "Terminology";
+	}
+
     public void bindTerminologyProvider(TerminologyProvider provider) {
         this.terminologyProvider = provider;
     }

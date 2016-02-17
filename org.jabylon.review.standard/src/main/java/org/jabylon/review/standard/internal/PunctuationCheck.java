@@ -15,7 +15,6 @@ import java.text.MessageFormat;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-
 import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
@@ -61,7 +60,7 @@ public class PunctuationCheck implements ReviewParticipant {
                     message = "Translation contains less ''{0}'' characters than the template.";
                 message = MessageFormat.format(message, hotchars[i]);
                 review.setMessage(message);
-                review.setReviewType("Punctuation Check");
+				review.setReviewType(getReviewType());
                 review.setSeverity(Severity.WARNING);
                 review.setUser("Jabylon");
                 return review;
@@ -71,6 +70,11 @@ public class PunctuationCheck implements ReviewParticipant {
 
 
     }
+
+	@Override
+	public String getReviewType() {
+		return "Punctuation Check";
+	}
 
     private void countHotChars(String value, short[] templateOccurrences) {
         if(value==null)
@@ -144,7 +148,7 @@ public class PunctuationCheck implements ReviewParticipant {
 
     @Override
     public String getID() {
-        return getClass().getSimpleName();
+		return "PunctuationCheck";
     }
 
     @Override
