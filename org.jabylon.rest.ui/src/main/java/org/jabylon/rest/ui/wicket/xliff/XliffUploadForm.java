@@ -142,8 +142,10 @@ public class XliffUploadForm extends StatelessForm<Resolvable<?, ?>> {
 			break;
 		case WARNING:
 			LOG.warn(message);
+			break;
 		case ERROR:
 			LOG.error(message);
+			break;
 		default:
 			break;
 		}
