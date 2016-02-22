@@ -8,12 +8,19 @@
  */
 package org.jabylon.rest.ui.wicket.xliff;
 
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.INVALID_FILENAME;
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.NO_FILE_MATCH;
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.PARSE_SAX;
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.SUCCESS;
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.UNPARSABLE;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,8 +43,6 @@ import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.wicket.panels.PropertyListPanel;
 import org.jabylon.rest.ui.wicket.xliff.XliffUploadResult.Level;
 import org.xml.sax.SAXException;
-
-import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.*;
 
 /**
  * Processes the upload of a ZIP archive containing multiple XLIFF documents.<br>
@@ -62,8 +67,14 @@ public final class XliffUploadHelper  {
 	 * Filled during {@link #readFromStream()} and {@link #handleImport(Entry)} processing, used to
 	 * notify UI about {@link ZipEntry}s which could not be parsed or matched successfully,
 	 * respectively.<br>
+	 * Initialize with default {@link Level#}s, maintaining insertion order.<br>
 	 */
-	private transient final List<XliffUploadResult> uploadResult = new ArrayList<>();
+	private transient final Map<Level, List<XliffUploadResult>> uploadResult = new LinkedHashMap<>();
+	{
+		uploadResult.put(Level.INFO, new ArrayList<XliffUploadResult>());
+		uploadResult.put(Level.WARNING, new ArrayList<XliffUploadResult>());
+		uploadResult.put(Level.ERROR, new ArrayList<XliffUploadResult>());
+	}
 
 	/**
 	 * The only Constructor of this class.<br>
@@ -90,7 +101,7 @@ public final class XliffUploadHelper  {
 	 * @return a {@link Map} of file names for {@link ZipEntry}s which could not be parsed or
 	 *         matched to existing {@link PropertyFileDescriptor}s.<br>
 	 */
-	public final List<XliffUploadResult> handleUpload() throws IOException {
+	public final Map<Level, List<XliffUploadResult>> handleUpload() throws IOException {
 		try {
 			Map<String, PropertyWrapper> wrappers = readFromStream();
 			/* Here be per XLIFF file processing. */
@@ -106,7 +117,7 @@ public final class XliffUploadHelper  {
 			in.doClose();
 		}
 
-		return XliffUploadResult.sort(uploadResult);
+		return uploadResult;
 	}
 
 	/**
@@ -126,9 +137,9 @@ public final class XliffUploadHelper  {
 			try {
 				ret.put(key, XliffReader.read(in, StandardCharsets.UTF_8.displayName()));
 			} catch (IOException e) {
-				uploadResult.add(new XliffUploadResult(UNPARSABLE, Level.ERROR, key));
+				addUploadResult(new XliffUploadResult(UNPARSABLE, Level.ERROR, key));
 			} catch (SAXException e) {
-				uploadResult.add(new XliffUploadResult(PARSE_SAX, Level.ERROR, key, e.getLocalizedMessage()));
+				addUploadResult(new XliffUploadResult(PARSE_SAX, Level.ERROR, key, e.getLocalizedMessage()));
 			}
 		}
 
@@ -144,7 +155,7 @@ public final class XliffUploadHelper  {
 		 * Validate FileName first. Return to caller if not conform (i.e. ends in .xlf).
 		 */
 		if (fileName == null) {
-			uploadResult.add(new XliffUploadResult(INVALID_FILENAME, Level.ERROR, entry.getKey()));
+			addUploadResult(new XliffUploadResult(INVALID_FILENAME, Level.ERROR, entry.getKey()));
 			return;
 		}
 
@@ -160,15 +171,27 @@ public final class XliffUploadHelper  {
 		for (PropertyFileDescriptor descriptor : descriptors) {
 			if (fileName.equals(descriptor.getLocation().path())) {
 				int updated = merge(properties, descriptor);
-				if (updated > 0)
-					uploadResult.add(new XliffUploadResult(SUCCESS, Level.INFO, fileName, String.valueOf(updated)));
+				if (updated > 0) {
+					addUploadResult(new XliffUploadResult(SUCCESS, Level.INFO, fileName, String.valueOf(updated)));
+				}
 				return;
 			}
 		}
 		/*
 		 * This ZipEntry could not be matched to any existing PropertyFile.
 		 */
-		uploadResult.add(new XliffUploadResult(NO_FILE_MATCH, Level.WARNING, fileName));
+		addUploadResult(new XliffUploadResult(NO_FILE_MATCH, Level.WARNING, fileName));
+	}
+
+	/**
+	 * Add the {@link XliffUploadResult} to {@link #uploadResult}.<br>
+	 */
+	private void addUploadResult(XliffUploadResult result) {
+		List<XliffUploadResult> resultList = uploadResult.get(result.getLevel());
+		if (resultList == null) {
+			uploadResult.put(result.getLevel(), resultList = new ArrayList<>());
+		}
+		resultList.add(result);
 	}
 
 	/**

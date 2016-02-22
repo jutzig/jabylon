@@ -14,9 +14,10 @@ package org.jabylon.rest.ui.wicket.xliff;
  * @author c.samulski (2016-02-14)
  */
 public class XliffUploadResultMessageKeys {
-	public static String NO_FILE_MATCH = "xliff.upload.error.nofilematch";
-	public static String PARSE_SAX = "xliff.upload.error.sax";
-	public static String UNPARSABLE = "xliff.upload.error.unparsable";
-	public static String INVALID_FILENAME = "xliff.error.upload.invalid.filename";
-	public static String SUCCESS = "xliff.upload.success";
+	public static final String NO_FILE_MATCH = "xliff.upload.error.nofilematch";
+	public static final String PARSE_SAX = "xliff.upload.error.sax";
+	public static final String UNPARSABLE = "xliff.upload.error.unparsable";
+	public static final String INVALID_FILENAME = "xliff.error.upload.invalid.filename";
+	public static final String SUCCESS = "xliff.upload.success";
+	public static final String NO_PROPERTIES_UPDATED = "xliff.upload.no.properties.updated";
 }
