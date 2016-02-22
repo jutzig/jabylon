@@ -91,6 +91,7 @@ public class XliffUploadForm extends StatelessForm<Resolvable<?, ?>> {
 				break;
 			case ERROR:
 				getSession().error(message);
+				break;
 			default:
 				break;
 			}
