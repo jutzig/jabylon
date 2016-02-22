@@ -10,8 +10,6 @@ package org.jabylon.rest.ui.wicket.xliff;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
@@ -65,19 +63,6 @@ public final class XliffUploadResult {
 		this.level = level;
 		parameters.add(fileName);
 		parameters.addAll(parameters);
-	}
-
-	/**
-	 * Sort the {@link List} of {@link XliffUploadResult}s according to priority.<br>
-	 */
-	public static final List<XliffUploadResult> sort(List<XliffUploadResult> toSort) {
-		Collections.sort(toSort, new Comparator<XliffUploadResult>() {
-			@Override
-			public int compare(XliffUploadResult one, XliffUploadResult two) {
-				return one.getPriority() - two.getPriority();
-			}
-		});
-		return toSort;
 	}
 
 	public final Object[] getParameters() {

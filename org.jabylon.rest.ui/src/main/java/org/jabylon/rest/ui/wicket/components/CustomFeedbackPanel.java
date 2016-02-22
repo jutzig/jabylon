@@ -21,6 +21,7 @@ import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -101,8 +102,6 @@ public class CustomFeedbackPanel extends Panel implements IFeedback {
             listItem.add(label);
             listItem.add(new Label("message-type", getMessageKind(message)));
         }
-
-
     }
 
     /** Message view */
@@ -335,9 +334,8 @@ public class CustomFeedbackPanel extends Panel implements IFeedback {
      */
     protected Component newMessageDisplayComponent(String id, FeedbackMessage message) {
         Serializable serializable = message.getMessage();
-        Label label = new Label(id, (serializable == null) ? "" : serializable.toString());
+		MultiLineLabel label = new MultiLineLabel(id, (serializable == null) ? "" : serializable.toString());
         label.setEscapeModelStrings(CustomFeedbackPanel.this.getEscapeModelStrings());
         return label;
     }
-
 }
