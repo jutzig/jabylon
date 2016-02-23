@@ -295,7 +295,7 @@ public class PropertiesPersistenceServiceImpl implements PropertyPersistenceServ
 		view.options().addChangeSubscriptionPolicy(CDOAdapterPolicy.ALL);
 		CDOResource resource = view.getResource(ServerConstants.WORKSPACE_RESOURCE);
 		workspace = (Workspace) resource.getContents().get(0);
-		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(50000).weigher(new PropertySizeWeigher()).build(new PropertyFileCacheLoader(workspace.cdoView()));
+		cache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).concurrencyLevel(5).maximumWeight(50000).weigher(new PropertySizeWeigher()).build(new PropertyFileCacheLoader(repositoryConnector.openView(session)));
 
 
 		//this is very expensive, so don't do it during the bind phase
