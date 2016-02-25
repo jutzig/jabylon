@@ -8,6 +8,7 @@
  */
 package org.jabylon.rest.ui.wicket.xliff;
 
+import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.INVALID_ARCHIVE;
 import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.INVALID_FILENAME;
 import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.NO_FILE_MATCH;
 import static org.jabylon.rest.ui.wicket.xliff.XliffUploadResultMessageKeys.PARSE_SAX;
@@ -127,12 +128,14 @@ public final class XliffUploadHelper  {
 		Map<String, PropertyWrapper> ret = new HashMap<String, PropertyWrapper>();
 
 		ZipEntry entry = null;
+		boolean processed = false;
 		while ((entry = in.getNextEntry()) != null) {
 
 			if (entry.isDirectory()) {
 				continue; // we only pass files to the parser.
 			}
 
+			processed = true; // signal that we've read at least one file in this archive.
 			String key = entry.getName();
 			try {
 				ret.put(key, XliffReader.read(in, StandardCharsets.UTF_8.displayName()));
@@ -141,6 +144,12 @@ public final class XliffUploadHelper  {
 			} catch (SAXException e) {
 				addUploadResult(new XliffUploadResult(PARSE_SAX, Level.ERROR, key, e.getLocalizedMessage()));
 			}
+		}
+		/*
+		 * If no file was processed, i.e. not a single ZipEntry was found, this is probably not a ZIP archive. Let the user know.
+		 */
+		if (!processed) {
+			addUploadResult(new XliffUploadResult(INVALID_ARCHIVE, Level.ERROR, null));
 		}
 
 		return ret;
