@@ -14,6 +14,7 @@ package org.jabylon.rest.ui.wicket.xliff;
  * @author c.samulski (2016-02-14)
  */
 public class XliffUploadResultMessageKeys {
+	public static final String INVALID_ARCHIVE = "xliff.upload.invalid.archive";
 	public static final String NO_FILE_MATCH = "xliff.upload.error.nofilematch";
 	public static final String PARSE_SAX = "xliff.upload.error.sax";
 	public static final String UNPARSABLE = "xliff.upload.error.unparsable";

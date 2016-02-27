@@ -46,6 +46,16 @@ public final class XliffReader implements XliffXMLConstants {
 		DocumentBuilder builder = getDocumentBuilder();
 		Element root = builder.parse(in).getDocumentElement();
 		Element fileElement = (Element) getChildNodeByTagName(root, TAG_FILE);
+
+		/*
+		 * 2. Validate fileElement. If it's null, we throw a SAXException to produce a friendly UI
+		 * error (instead of throwing NPEs up the stack). Frankly we should be XSD-validating here, but
+		 * the official XLIFF 1.2 XSD's license terms are not exactly transparent.
+		 */
+		if (fileElement == null) {
+			throw new SAXException("Element <file> null.");
+		}
+
 		/*
 		 * 2. Retrieve targetLocale.
 		 */
