@@ -30,7 +30,10 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
+import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.emf.cdo.util.CDOUtil;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jabylon.properties.Project;
 import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
@@ -62,12 +65,12 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
         field.add(UniqueNameValidator.fromCollection(getBranches(model),PropertiesPackage.Literals.RESOLVABLE__NAME,model.getObject()));
         add(field);
-        
+
         ControlGroup readOnlyGroup = new ControlGroup("readonly-group",null, nls("readonly.help"));
         CheckBox readonly = new CheckBox("readonly", new EObjectPropertyModel<Boolean, ProjectVersion>(model, PropertiesPackage.Literals.PROJECT_VERSION__READ_ONLY));
         readOnlyGroup.add(readonly);
         add(readOnlyGroup);
-        
+
         // add(buildAddNewLink(getModel()));
         final WebMarkupContainer rowPanel = new WebMarkupContainer("rowPanel");
         rowPanel.setOutputMarkupId(true);
@@ -126,7 +129,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
             public Object getDisplayValue(String object) {
             	if(TEMPLATE_ID.equals(object))
             		return "Template";
-            	
+
                 Locale locale = (Locale) PropertiesFactory.eINSTANCE.createFromString(PropertiesPackage.Literals.LOCALE, object);
                 String displayName = locale == null ? "Template" : locale.getDisplayName(getSession().getLocale());
                 return displayName;
@@ -181,7 +184,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         form.add(removeLink);
     }
 
-    
+
     public Collection<ProjectVersion> getBranches(IModel<ProjectVersion> current) {
     	if(current==null)
     		return Collections.emptyList();
@@ -198,11 +201,11 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
     public static class VersionConfig extends AbstractConfigSection<ProjectVersion> {
 
         private static final long serialVersionUID = 1L;
-        
+
         private static final Logger LOGGER = LoggerFactory.getLogger(VersionConfig.class);
 
         private ListModel<String> locales;
-        
+
         @Override
         public WebMarkupContainer doCreateContents(String id, IModel<ProjectVersion> input, Preferences prefs) {
         	locales = createListModel(input);
@@ -212,7 +215,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         @Override
         public void commit(IModel<ProjectVersion> input, Preferences config) {
         	applyLocaleList(locales.getObject(), input);
-        	
+
         }
 
 
@@ -225,18 +228,19 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         protected void applyLocaleList(List<String> object, IModel<ProjectVersion> input) {
         	Set<String> locales = new HashSet<String>(object);
         	ProjectVersion version = input.getObject();
-        	Iterator<ProjectLocale> iterator = version.getChildren().iterator();
-        	while (iterator.hasNext()) {
-        		ProjectLocale projectLocale = iterator.next();
+        	List<ProjectLocale> projectLocales = version.getChildren();
+        	List<ProjectLocale> toDelete = new ArrayList<>();
+        	for (Iterator<ProjectLocale> iterator = projectLocales.iterator(); iterator.hasNext();) {
+				ProjectLocale projectLocale = iterator.next();
 				if(projectLocale.isMaster())
-					continue;
-				if(!locales.remove(projectLocale.getName())) {
-					// this locale wasn't contained, so we must delete it
-					LOGGER.info("Deleting ProjectLocale {} from {}",projectLocale.getName(), version.fullPath());
-					//TODO: can this leave database garbage?
-//					projectLocale.getChildren().clear();
-					iterator.remove();
-				}
+        			continue;
+        		if(!locales.remove(projectLocale.getName())) {
+        			toDelete.add(projectLocale);
+        		}
+			}
+        	for (ProjectLocale projectLocale : toDelete) {
+        		LOGGER.info("Deleting ProjectLocale {} from {}",projectLocale.getName(), version.fullPath());
+        		EcoreUtil.delete(projectLocale, true);
 			}
         	for (String locale : locales) {
         		ProjectLocale projectLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
@@ -244,13 +248,13 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         		LOGGER.info("Adding ProjectLocale {} to {}",projectLocale.getName(), version.fullPath());
 				PropertyResourceUtil.addNewLocale(projectLocale, input.getObject());
 			}
-			
+
 		}
 
 		private ListModel<String> createListModel(IModel<ProjectVersion> parent) {
         	ProjectVersion projectVersion = parent.getObject();
         	EList<ProjectLocale> children = projectVersion.getChildren();
-        	
+
         	List<String> list = new ArrayList<String>(children.size());
         	for (ProjectLocale projectLocale : children) {
         		if(projectLocale.isMaster())
@@ -260,7 +264,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
     		}
     		return new ListModel<String>(list);
     	}
-        
+
 
         @Override
         public String getRequiredPermission() {
@@ -270,7 +274,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
             return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
         }
     }
-    
+
     private String safeGet(String s)
     {
     	if(s!=null)
