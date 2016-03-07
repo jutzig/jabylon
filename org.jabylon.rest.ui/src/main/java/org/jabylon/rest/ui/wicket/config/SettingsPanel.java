@@ -11,6 +11,7 @@
  */
 package org.jabylon.rest.ui.wicket.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,7 @@ import org.jabylon.common.util.DelegatingPreferences;
 import org.jabylon.common.util.PreferencesUtil;
 import org.jabylon.common.util.config.DynamicConfigUtil;
 import org.jabylon.properties.PropertiesPackage;
+import org.jabylon.properties.Resolvable;
 import org.jabylon.rest.ui.model.AttachableModel;
 import org.jabylon.rest.ui.model.AttachableWritableModel;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
@@ -60,7 +62,7 @@ import com.google.common.collect.ArrayListMultimap;
 
 /**
  * @author jutzig.dev@googlemail.com
- * 
+ *
  */
 public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 
@@ -97,9 +99,22 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		Form form = new Form("form", getModel()) {
 
 			private static final long serialVersionUID = 1L;
+			String oldName;
+			@Override
+			protected void beforeUpdateFormComponentModels() {
+				super.beforeUpdateFormComponentModels();
+				IModel model = getModel();
+				if(model!=null && model.getObject() instanceof Resolvable)
+				{
+					//store the original project name in case it gets changed
+					Resolvable resolvable = (Resolvable) model.getObject();
+					oldName = resolvable.getName();
+				}
+			}
 
 			@Override
 			protected void onSubmit() {
+				Preferences prefs = preferences;
 				IModel<T> model = SettingsPanel.this.getModel();
 				CDOObject object = model.getObject();
 				CDOView cdoView;
@@ -114,19 +129,23 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 				if (cdoView instanceof CDOTransaction) {
 					CDOTransaction transaction = (CDOTransaction) cdoView;
 
-					Preferences prefs = preferences;
-					if (preferences instanceof AttachablePreferences) {
+					if (prefs instanceof AttachablePreferences) {
 						// the prefs are not in the tree yet
 						Preferences targetPrefs = PreferencesUtil.scopeFor(object);
 						try {
-							PreferencesUtil.cloneNode(preferences, targetPrefs);
+							PreferencesUtil.cloneNode(prefs, targetPrefs);
 							prefs = targetPrefs;
 						} catch (BackingStoreException e) {
 							error("Some settings could not be saved: " + e.getMessage());
 							logger.error("Failed to attach preferences to target path", e);
 						}
 					}
+					if(oldName!=null && !oldName.equals(model.getObject().eGet(PropertiesPackage.Literals.RESOLVABLE__NAME)))
+					{
+						renameResolvable(oldName,model);
 
+						prefs = PreferencesUtil.renamePreferenceNode(preferences, (String) model.getObject().eGet(PropertiesPackage.Literals.RESOLVABLE__NAME));
+					}
 					commit(prefs, object, transaction);
 					// model.detach();
 				} else
@@ -192,6 +211,30 @@ public class SettingsPanel<T extends CDOObject> extends GenericPanel<T> {
 		// form.add(cancelButton);
 
 		add(form);
+
+	}
+
+	/**
+	 * called when the name of a resolvable changes
+	 * @param oldName
+	 * @param model
+	 */
+	@SuppressWarnings("rawtypes")
+	protected void renameResolvable(String oldName, IModel<T> model) {
+		T object = model.getObject();
+		if (object instanceof Resolvable) {
+			Resolvable r = (Resolvable) object;
+			logger.info("Renaming {} {} to {}",r.getClass().getSimpleName(), oldName, r.getName());
+			URI absoluteFilePath = r.absoluteFilePath();
+			String fileString = absoluteFilePath.toFileString();
+			if(!fileString.startsWith("/") || fileString.startsWith("\\"))
+			{
+				fileString = "/"+fileString;
+			}
+			File targetFile = new File(fileString);
+			File sourceFile = new File(targetFile.getParentFile(),oldName);
+			sourceFile.renameTo(targetFile);
+		}
 
 	}
 

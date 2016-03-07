@@ -36,7 +36,7 @@ import com.google.common.base.Suppliers;
  *
  */
 public class PreferencesUtil {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesUtil.class);
 
     public static final String SCAN_CONFIG_INCLUDE = "include";
@@ -68,7 +68,7 @@ public class PreferencesUtil {
         IEclipsePreferences rootNode = InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE);
         return rootNode.node(path);
     }
-    
+
     /**
      * converts a pref node path to a URI that can be resolved by an {@link URIResolver}
      * @param prefs
@@ -107,12 +107,12 @@ public class PreferencesUtil {
 			LOGGER.error("Failed to check if old config needs to be migrated");
 		}
 	}
-	
+
 	/**
 	 * copies all values and child nodes of the source into the target node
 	 * @param source
 	 * @param target
-	 * @throws BackingStoreException 
+	 * @throws BackingStoreException
 	 */
 	public static void cloneNode(Preferences source, Preferences target) throws BackingStoreException {
 		shallowClonePreferences(source, target);
@@ -124,9 +124,9 @@ public class PreferencesUtil {
     {
         return InstanceScope.INSTANCE.getNode(ApplicationConstants.CONFIG_NODE+"/workspace");
     }
-    
+
     /**
-     * 
+     *
      * @return the jabylon root preference node
      */
     public static Preferences rootScope()
@@ -145,16 +145,17 @@ public class PreferencesUtil {
     	node.removeNode();
     	if(parent!=null)
     		parent.flush();
-    }    
-    
-    
+    }
+
+
     public static Preferences renamePreferenceNode(Preferences node, String newName)
     {
         Preferences parent = node.parent();
         Preferences clone = parent.node(newName);
         try {
             copyChildPreferences(node, clone);
-            deleteNode(parent);
+            deleteNode(node);
+            parent.flush();
         } catch (BackingStoreException e) {
         	LOGGER.error("Failed to rename preferences from "+node+" to "+clone,e);
         }
@@ -193,7 +194,7 @@ public class PreferencesUtil {
         configuration.setMasterLocale(node.get(SCAN_CONFIG_MASTER_LOCALE, PropertiesPackage.Literals.SCAN_CONFIGURATION__MASTER_LOCALE.getDefaultValueLiteral()));
         return configuration;
     }
-    
+
     public static Preferences getNodeForJob(Preferences context, String jobID)
     {
     	return context.node(ApplicationConstants.JOBS_NODE_NAME).node(jobID);
