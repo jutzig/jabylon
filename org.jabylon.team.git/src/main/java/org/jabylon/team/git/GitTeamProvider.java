@@ -8,14 +8,18 @@
  */
 package org.jabylon.team.git;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
@@ -39,6 +43,7 @@ import org.eclipse.jgit.api.RebaseCommand.Operation;
 import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
+import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRefNameException;
@@ -64,13 +69,21 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.JschConfigSessionFactory;
+import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
+import org.eclipse.jgit.transport.RemoteSession;
+import org.eclipse.jgit.transport.SshSessionFactory;
+import org.eclipse.jgit.transport.SshTransport;
+import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
+import org.eclipse.jgit.util.FS;
+import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.util.PreferencesUtil;
@@ -85,6 +98,10 @@ import org.jabylon.team.git.util.ProgressMonitorWrapper;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 @Component(enabled=true,immediate=true)
 @Service
@@ -120,6 +137,8 @@ public class GitTeamProvider implements TeamProvider {
             RefSpec spec = new RefSpec(refspecString);
             fetchCommand.setRefSpecs(spec);
             subMon.subTask("Fetching from remote");
+            if(!"https".equals(uri.scheme()) && ! "http".equals(uri.scheme()))
+            	fetchCommand.setTransportConfigCallback(createTransportConfigCallback(project.getParent()));
             fetchCommand.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
             fetchCommand.call();
@@ -256,7 +275,8 @@ public class GitTeamProvider implements TeamProvider {
             clone.setDirectory(repoDir);
 
             URI uri = project.getParent().getRepositoryURI();
-
+            if(!"https".equals(uri.scheme()) && ! "http".equals(uri.scheme()))
+            	clone.setTransportConfigCallback(createTransportConfigCallback(project.getParent()));
             clone.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             clone.setURI(stripUserInfo(uri).toString());
             clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
@@ -274,7 +294,7 @@ public class GitTeamProvider implements TeamProvider {
         }
     }
 
-    @Override
+	@Override
     public void commit(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
         try {
             Repository repository = createRepository(project);
@@ -313,6 +333,8 @@ public class GitTeamProvider implements TeamProvider {
             if(uri!=null)
             	push.setRemote(stripUserInfo(uri).toString());
             push.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(60)));
+            if(!"https".equals(uri.scheme()) && ! "http".equals(uri.scheme()))
+            	push.setTransportConfigCallback(createTransportConfigCallback(project.getParent()));
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             
             RefSpec spec = createRefSpec(project);
@@ -529,7 +551,7 @@ public class GitTeamProvider implements TeamProvider {
 		return oldTreeParser;
 	}
 
-    public static void main(String[] args) throws IOException, JGitInternalException, RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException {
+    public static void main(String[] args) throws IOException, JGitInternalException, RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, JSchException {
         Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
         workspace.setRoot(URI.createFileURI(new File("target/test").getAbsolutePath()));
         Project project = PropertiesFactory.eINSTANCE.createProject();
@@ -552,6 +574,70 @@ public class GitTeamProvider implements TeamProvider {
         return new UsernamePasswordCredentialsProvider(username, password);
     }
 
+	private TransportConfigCallback createTransportConfigCallback(Project project) {
+
+        Preferences node = PreferencesUtil.scopeFor(project);
+//        String username = node.get(GitConstants.KEY_USERNAME, "");
+        final String password = node.get(GitConstants.KEY_PASSWORD, "");
+        String privateKey = node.get(GitConstants.KEY_PRIVATE_KEY, null);
+        File tempFile = null;
+        if(privateKey!=null)
+        {
+        	try {
+				// store it somewhere temporary
+				File tempDir = new File(new File(ServerConstants.WORKING_DIR),"temp");
+				tempDir.mkdirs();
+				tempFile = File.createTempFile("temp", ".key", tempDir);
+				Files.copy(new ByteArrayInputStream(privateKey.getBytes("UTF-8")), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}  catch (IOException e) {
+				LOGGER.error("Could not store private key to "+tempFile.getAbsolutePath(),e);
+			}
+        	
+        }
+        final File keyFile = tempFile;
+		final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+
+			AtomicInteger sessionCounter = new AtomicInteger();
+			
+			@Override
+			protected void configure(Host host, Session session) {
+
+				// do nothing
+			}
+
+			protected JSch createDefaultJSch(FS fs) throws JSchException {
+				JSch defaultJSch = super.createDefaultJSch(fs);
+				if(keyFile!=null)
+					defaultJSch.addIdentity(keyFile.getAbsolutePath(),password);
+				return defaultJSch;
+			}
+			
+			@Override
+			protected Session createSession(Host hc, String user, String host, int port, FS fs) throws JSchException {
+				sessionCounter.getAndIncrement();
+				return super.createSession(hc, user, host, port, fs);
+			}
+			
+			@Override
+			public void releaseSession(RemoteSession session) {
+				if(sessionCounter.decrementAndGet()==0) {
+					LOGGER.debug("Connection closing, deleting keyfile");
+					keyFile.delete();
+				}
+				super.releaseSession(session);
+			}
+			
+		};
+		return new TransportConfigCallback() {
+
+			@Override
+			public void configure(Transport transport) {
+				SshTransport sshTransport = (SshTransport) transport;
+				sshTransport.setSshSessionFactory(sshSessionFactory);
+			}
+		};
+	}
+    
     private URI stripUserInfo(URI uri)
     {
         if(uri.userInfo()!=null && uri.userInfo().length()>0)

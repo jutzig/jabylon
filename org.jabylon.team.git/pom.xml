@@ -91,5 +91,10 @@
         	<groupId>org.apache.felix</groupId>
         	<artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
+      <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <scope>provided</scope>
+      </dependency>
     </dependencies>
 </project>

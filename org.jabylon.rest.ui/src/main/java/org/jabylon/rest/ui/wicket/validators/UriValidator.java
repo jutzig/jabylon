@@ -31,7 +31,7 @@ public class UriValidator implements IValidator<URI> {
 		String key = null;
 		if(uri.isRelative())
 			key = UriValidator.class.getSimpleName()+".not.absolute";
-		if(uri.path()==null)
+		if(uri.path()==null && "https".equals(uri.scheme()) && "http".equals(uri.scheme()))
 			key = UriValidator.class.getSimpleName()+".no.path";
 		if(key!=null) {
 			ValidationError error = new ValidationError();

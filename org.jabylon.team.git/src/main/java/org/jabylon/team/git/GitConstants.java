@@ -29,6 +29,10 @@ public class GitConstants {
     public static final String KEY_MESSAGE = "git.message";
     public static final String KEY_INSERT_CHANGE_ID = "git.changeId";
     /**
+     * the (optional) private key for authentication
+     */
+    public static final String KEY_PRIVATE_KEY = "git.private.key";
+    /**
      * the refspec used for pushes
      */
     public static final String KEY_PUSH_REFSPEC = "git.push.refspec";

@@ -90,6 +90,14 @@ public class GitConfigPanel extends BasicPanel<Project> {
         CheckBox changeIdCheckbox = new CheckBox("changeId", changeIdModel);
         changeIdGroup.add(changeIdCheckbox);
         add(changeIdGroup);
+        
+        
+        PreferencesPropertyModel privateKeyModel = new PreferencesPropertyModel(config, GitConstants.KEY_PRIVATE_KEY, "");
+        ControlGroup privateKeyGroup = new ControlGroup("private-key-group", nls("private.key.label"), nls("private.key.help"));
+        TextArea<String> privateKeyField = new TextArea<String>("private-key", privateKeyModel);
+        privateKeyField.setRequired(false);
+        privateKeyGroup.add(privateKeyField);
+        add(privateKeyGroup);
     }
 
 }
