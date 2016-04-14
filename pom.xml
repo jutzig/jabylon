@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jabylon</groupId>
 	<artifactId>jabylon-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.0</version>
 
 	<properties>
 		<singleton />
@@ -286,11 +285,8 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<copy toDir="${basedir}/OSGI-INF" failonerror="false"
-									overwrite="tr">
-									<fileset
-										dir="${project.build.directory}/scr-plugin-generated/OSGI-INF"
-										includes="*.xml">
+								<copy toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr">
+									<fileset dir="${project.build.directory}/scr-plugin-generated/OSGI-INF" includes="*.xml">
 									</fileset>
 								</copy>
 							</tasks>
@@ -971,7 +967,7 @@
 		<url>https://github.com/jutzig/jabylon</url>
 		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
 		<developerConnection>scm:git:https://github.com/jutzig/jabylon.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v1.2.0</tag>
 	</scm>
 	<issueManagement>
 		<system>Github</system>

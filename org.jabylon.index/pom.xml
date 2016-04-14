@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jabylon</groupId>
         <artifactId>jabylon-parent</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0</version>
     </parent>
 
 	<description>provides the QueryService and indexer capabilities to interact with the lucene index</description>
