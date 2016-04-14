@@ -1,6 +1,20 @@
 
 # Release Notes
 
+## Jabylon 1.2.0
+
+Jabylon 1.2.0 was released on the **14th April 2016** and is available for [download](download.html).
+
+The release includes several bugfixes as well as several new features:
+
+ * [255](https://github.com/jutzig/jabylon/issues/255) - support private key auth for git
+ * [243](https://github.com/jutzig/jabylon/issues/243) - XLIFF support (export and import)
+ * [240](https://github.com/jutzig/jabylon/issues/240) - file upload through web ui
+ * [21](https://github.com/jutzig/jabylon/issues/21) - self registration of users
+  
+For a full list see [here](https://github.com/jutzig/jabylon/issues?q=milestone%3A1.2.0+is%3Aclosed) 
+
+
 ## Jabylon 1.1.4
 
 Jabylon 1.1.4 was released on the **4th March 2015** and is available for [download](download.html).

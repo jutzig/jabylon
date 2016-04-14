@@ -13,8 +13,8 @@
 		<bundle.namespace>${project.groupId}</bundle.namespace>
 		<swt.variant>unknown</swt.variant>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<release.version>1.1.4</release.version>
-		<release.tag>v1.1.4</release.tag>
+		<release.version>1.2.0</release.version>
+		<release.tag>v1.2.0</release.tag>
 	</properties>
 
 	<pluginRepositories>
@@ -71,7 +71,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>1.0</version>
+				<version>2.10</version>
 			</extension>
 		</extensions>
 		<finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
