@@ -153,7 +153,32 @@ public final class XliffReader implements XliffXMLConstants {
 	 */
 	private static Locale getTargetLocale(Element fileElement) throws IOException {
 		String targetLanguage = fileElement.getAttribute(ATT_TARGET_LANGUAGE);
+
+		if (targetLanguage.indexOf("_") != -1) {
+			return parseLocale(targetLanguage, "_");
+		}
+
+		if (targetLanguage.indexOf("-") != -1) {
+			return parseLocale(targetLanguage, "-");
+		}
+
 		return new Locale(targetLanguage);
+	}
+
+	/**
+	 * Return new {@link Locale} for an arbitrary language and country code string.<br>
+	 * TODO: Might want to use org.apache.commons.lang.LocaleUtils for this. Kind of dirty, but
+	 * covers most cases.<br>
+	 */
+	private static Locale parseLocale(String targetLanguage, String split) {
+		String[] locale = targetLanguage.split(split);
+		if (locale.length == 3) { // language, country, variant.
+			return new Locale(locale[0], locale[1], locale[3]);
+		} else if (locale.length == 2) { // language, country.
+			return new Locale(locale[0], locale[1]);
+		} else {
+			return new Locale(locale[0]);
+		}
 	}
 
 	/**
