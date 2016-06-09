@@ -173,7 +173,7 @@ public final class XliffReader implements XliffXMLConstants {
 	private static Locale parseLocale(String targetLanguage, String split) {
 		String[] locale = targetLanguage.split(split);
 		if (locale.length == 3) { // language, country, variant.
-			return new Locale(locale[0], locale[1], locale[3]);
+			return new Locale(locale[0], locale[1], locale[2]);
 		} else if (locale.length == 2) { // language, country.
 			return new Locale(locale[0], locale[1]);
 		} else {
