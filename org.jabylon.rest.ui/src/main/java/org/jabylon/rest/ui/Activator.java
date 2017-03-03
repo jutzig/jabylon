@@ -8,13 +8,23 @@
  */
 package org.jabylon.rest.ui;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
+
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.common.progress.ProgressService;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
+import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.security.auth.AuthenticationService;
+import org.ops4j.pax.web.service.WebContainer;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.http.NamespaceException;
 import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator implements BundleActivator {
@@ -60,9 +70,46 @@ public class Activator implements BundleActivator {
         
         persistenceService = new ServiceTracker<PropertyPersistenceService, PropertyPersistenceService>(context, PropertyPersistenceService.class, null);
         persistenceService.open();
+        
+        if(isWebContainerAvailable())
+        {
+        	@SuppressWarnings({ "unchecked", "rawtypes" })
+			ServiceTracker webContainerTracker = new ServiceTracker(context, WebContainer.class, null) {
+        		@Override
+        		public Object addingService(ServiceReference reference) {	
+        			WebContainer container = (WebContainer) super.addingService(reference);
+//        			Map<String, String> properties 
+        			Hashtable props = new Hashtable();
+        			props.put("applicationClassName", JabylonApplication.class.getName());
+        			props.put("filterMappingUrlPattern", "/*");
+        			props.put("configuration", "deployment");
+        			container.registerFilter(org.jabylon.rest.ui.JabylonFilter.class, new String[]{"/"}, null, props, container.getDefaultSharedHttpContext());
+        			
+        			try {
+						container.registerResources("/", "WebContent", container.getDefaultSharedHttpContext());
+					} catch (NamespaceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        			return container;
+        		}
+        	};
+        	webContainerTracker.open();
+        }
 
     }
-    @Override
+    private boolean isWebContainerAvailable() {
+    	try {
+    		System.out.println(WebContainer.class);
+    		return true;
+    	}catch(Throwable e){
+    		System.out.println("Not available");
+    	}
+		return false;
+	}
+
+
+	@Override
     public void stop(BundleContext context) throws Exception {
 //		repositoryTracker.close();
         lookupTracker.close();

@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.helpers.BasicMarkerFactory;
 
-@Component
+//@Component
 public class OSGiLogger implements LogListener {
     @Reference
     private LogReaderService logReader;
