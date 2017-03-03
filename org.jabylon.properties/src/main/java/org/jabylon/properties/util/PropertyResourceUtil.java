@@ -268,7 +268,7 @@ public class PropertyResourceUtil {
     public static Resolvable<?, ?> getOrCreateFolder(Resolvable<?, ?> parent, String... segments) {
 
         Resolvable currentParent = parent;
-        if (segments == null)
+        if (segments == null || segments.length==0)
             return parent;
         for (String segment : segments) {
         	//in case there was encoded characters in the segment
