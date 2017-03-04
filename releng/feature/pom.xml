@@ -27,10 +27,6 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<properties>
-		<version.karaf>4.1.0</version.karaf>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<!-- scope is compile so all features (there is only one) are installed 
@@ -76,7 +72,7 @@
 			<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>karaf-maven-plugin</artifactId>
-				<version>4.1.0</version>
+				<version>${version.karaf}</version>
 				<extensions>true</extensions>
 				<executions>
 					<execution>

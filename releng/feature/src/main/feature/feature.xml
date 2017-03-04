@@ -39,6 +39,7 @@
 		<!-- <bundle>mvn:${project.groupId}/log.viewer/${project.version}</bundle> -->
 		<bundle>mvn:${project.groupId}/index/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/common/${project.version}</bundle>
+		<bundle>mvn:${project.groupId}/log.viewer/${project.version}</bundle>
 	</feature>
 	
 	<feature name="equinox">

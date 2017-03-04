@@ -66,19 +66,19 @@
         <dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.modules</artifactId>
-        	<version>4.1.0</version>
+        	<version>${version.karaf}</version>
         	<optional>true</optional>
         </dependency>
       <dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.boot</artifactId>
-        	<version>4.1.0</version>
+        	<version>${version.karaf}</version>
         	<optional>true</optional>
         </dependency>
    		<dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.command</artifactId>
-        	<version>4.1.0</version>
+        	<version>${version.karaf}</version>
         	<optional>true</optional>
         </dependency>
         <dependency>
