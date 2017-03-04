@@ -8,13 +8,14 @@
 	<feature name="jabylon" version="${project.version}">
 
 		<feature>scr</feature>
+		<feature>obr</feature>
+		<!-- own features -->
 		<feature>equinox</feature>
 		<feature>cdo</feature>
 		<feature>lucene</feature>
 		<feature>misc</feature>
 		<feature>wicket</feature>
 		<feature>jgit</feature>
-		<feature>obr</feature>
 		
 		<bundle start-level="75">mvn:${project.groupId}/db.migration/${project.version}
 		</bundle>
@@ -41,99 +42,94 @@
 	</feature>
 	
 	<feature name="equinox">
-		<bundle>mvn:org.eclipse.equinox/app/1.3.100</bundle>
-		<bundle>mvn:org.eclipse.core/contenttype/3.4.200</bundle>
-		<bundle>mvn:org.eclipse.equinox/util/1.0.500</bundle>
-		<bundle>mvn:org.eclipse.equinox/common/3.6.200</bundle>
-		<bundle>mvn:org.eclipse.equinox/preferences/3.5.100</bundle>
+		<bundle>mvn:org.eclipse.equinox/app/${version.equinox.app}</bundle>
+		<bundle>mvn:org.eclipse.core/contenttype/${version.equinox.contenttype}</bundle>
+		<bundle>mvn:org.eclipse.equinox/util/${version.equinox.util}</bundle>
+		<bundle>mvn:org.eclipse.equinox/common/${version.equinox.common}</bundle>
+		<bundle>mvn:org.eclipse.equinox/preferences/${version.equinox.preferences}</bundle>
+		<!-- not needed on karaf -->
 		<!-- <bundle>mvn:org.eclipse.equinox/security/1.2.0</bundle> -->
-		
-		<!-- 
-		<bundle>mvn:org.eclipse.osgi/services/3.3.100</bundle> -->
 		
 		<bundle>mvn:org.apache.felix/org.apache.felix.http.api/2.3.2</bundle>
 		
-		<bundle>mvn:org.eclipse.equinox/registry/3.5.301</bundle>
-		<bundle>mvn:org.eclipse.core/runtime/3.9.0</bundle>
-		<bundle>mvn:org.eclipse.core/jobs/3.5.300</bundle>
-		
-		<!-- deleteme 
-		<bundle start-level="500">mvn:org.eclipse/osgi/3.9.1</bundle>-->
+		<bundle>mvn:org.eclipse.equinox/registry/${version.equinox.registry}</bundle>
+		<bundle>mvn:org.eclipse.core/runtime/${version.equinox.runtime}</bundle>
+		<bundle>mvn:org.eclipse.core/jobs/${version.equinox.jobs}</bundle>
 	</feature>
 	
 	<feature name="cdo">
 		<feature>emf</feature>
-		<bundle>mvn:org.eclipse.emf.cdo/common/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.emf/cdo/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.emf.cdo/server/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.emf.cdo/net4j/4.1.101</bundle>
-		<bundle>mvn:org.eclipse/net4j/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.net4j/db/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.net4j/util/3.3.0</bundle>
-		<bundle>mvn:org.eclipse.net4j/jvm/4.1.100</bundle>
-		<bundle>mvn:org.eclipse.emf.cdo.server/db/4.2.1</bundle>
-		<bundle>mvn:org.eclipse.emf.cdo.server/net4j/4.1.1</bundle>
-		<bundle>mvn:org.eclipse.net4j.db/h2/4.2.0</bundle>
-		<bundle>mvn:org/h2/1.3.168</bundle>
-		<bundle>mvn:com.googlecode.flyway/flyway-core/2.1.1</bundle>
+		<bundle>mvn:org.eclipse.emf.cdo/common/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.emf/cdo/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.emf.cdo/server/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.emf.cdo/net4j/${version.cdo.net4j}</bundle>
+		<bundle>mvn:org.eclipse/net4j/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.net4j/db/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.net4j/util/${version.net4j.util}</bundle>
+		<bundle>mvn:org.eclipse.net4j/jvm/${version.net4j.jvm}</bundle>
+		<bundle>mvn:org.eclipse.emf.cdo.server/db/${version.cdo}</bundle>
+		<bundle>mvn:org.eclipse.emf.cdo.server/net4j/${version.cdo.server}</bundle>
+		<bundle>mvn:org.eclipse.net4j.db/h2/${version.cdo.h2}</bundle>
+		<bundle>mvn:org/h2/${version.h2}</bundle>
+		<bundle>mvn:com.googlecode.flyway/flyway-core/${version.flyway}</bundle>
 	</feature>
 	
 	<feature name="emf">
-		<bundle>mvn:org.eclipse.emf/common/2.9.1</bundle>
-		<bundle>mvn:org.eclipse.emf/ecore/2.9.1</bundle>
-		<bundle>mvn:org.eclipse.emf.ecore/change/2.9.0</bundle>
-		<bundle>mvn:org.eclipse.emf.ecore/xmi/2.9.1</bundle>
+		<bundle>mvn:org.eclipse.emf/common/${version.emf}</bundle>
+		<bundle>mvn:org.eclipse.emf/ecore/${version.emf}</bundle>
+		<bundle>mvn:org.eclipse.emf.ecore/change/${version.emf.change}</bundle>
+		<bundle>mvn:org.eclipse.emf.ecore/xmi/${version.emf}</bundle>
 	</feature>
 	
 	<feature name="lucene">
-		<bundle>mvn:org.apache.lucene/core/3.5.0</bundle>
-		<bundle>mvn:org.apache.lucene/misc/3.5.0</bundle>
-		<bundle>mvn:org.apache.lucene/queries/3.5.0</bundle>
-		<bundle>mvn:org.apache.lucene/analysis/3.5.0</bundle>
-		<bundle>mvn:org.apache/lucene/3.5.0</bundle>
+		<bundle>mvn:org.apache.lucene/core/${version.lucene}</bundle>
+		<bundle>mvn:org.apache.lucene/misc/${version.lucene}</bundle>
+		<bundle>mvn:org.apache.lucene/queries/${version.lucene}</bundle>
+		<bundle>mvn:org.apache.lucene/analysis/${version.lucene}</bundle>
+		<bundle>mvn:org.apache/lucene/${version.lucene}</bundle>
 	</feature>
 	
 	<feature name="misc">
-		<bundle>mvn:javax/xml/1.3.4</bundle>
-		<bundle>mvn:com.google.guava/guava/13.0.1</bundle>
-		<bundle>mvn:com.jcraft/jsch/0.1.41-v201101211617</bundle>
-		<bundle>mvn:org.apache/ant/1.8.4</bundle>
+		<bundle>mvn:javax/xml/${version.xml}</bundle>
+		<bundle>mvn:com.google.guava/guava/${version.guava}</bundle>
+		<bundle>mvn:com.jcraft/jsch/${version.jsch}</bundle>
+		<bundle>mvn:org.apache/ant/${version.ant}</bundle>
 	</feature>
 
 
 	<feature name="wicket">
 		<feature>custom-http</feature>
-		<bundle>mvn:org.apache.wicket/wicket-core/6.0.0</bundle>
-		<bundle>mvn:org.apache.wicket/wicket-extensions/6.0.0</bundle>
-		<bundle>mvn:org.apache.wicket/wicket-auth-roles/6.0.0</bundle>
-		<bundle>mvn:org.apache.wicket/wicket-request/6.0.0</bundle>
-		<bundle>mvn:org.apache.wicket/wicket-util/6.0.0</bundle>
-		<bundle>mvn:org.apache.wicket/wicket-ioc/6.0.0</bundle>
-		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/1_2</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-core/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-extensions/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-auth-roles/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-request/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-util/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.wicket/wicket-ioc/${version.wicket}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${version.inject}</bundle>
 	</feature>
 
 
 	<feature name="custom-http">
-		<bundle>mvn:javax/servlet/3.0.0</bundle>
-		<bundle>mvn:org.eclipse.equinox.http/jetty/3.0.100</bundle>
-		<bundle>mvn:org.eclipse.equinox.http/registry/1.1.200</bundle>
-		<bundle>mvn:org.eclipse.equinox.http/servlet/1.1.300</bundle>
-		<bundle>mvn:org.eclipse.jetty/continuation/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/http/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/io/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/security/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/server/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/servlet/8.1.10</bundle>
-		<bundle>mvn:org.eclipse.jetty/util/8.1.10</bundle>
+		<bundle>mvn:javax/servlet/${version.servlet}</bundle>
+		<bundle>mvn:org.eclipse.equinox.http/jetty/${version.equinox.http.jetty}</bundle>
+		<bundle>mvn:org.eclipse.equinox.http/registry/${version.equinox.http.registry}</bundle>
+		<bundle>mvn:org.eclipse.equinox.http/servlet/${version.equinox.http.servlet}</bundle>
+		<bundle>mvn:org.eclipse.jetty/continuation/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/http/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/io/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/security/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/server/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/servlet/${version.jetty}</bundle>
+		<bundle>mvn:org.eclipse.jetty/util/${version.jetty}</bundle>
 	</feature>		
 	
 	<feature name="jgit">
-		<bundle>mvn:org.eclipse.jgit/org.eclipse.jgit/3.0.0.201306101825-r</bundle>
-		<bundle>mvn:javaewah/javaewah/0.5.6</bundle>
+		<bundle>mvn:org.eclipse.jgit/org.eclipse.jgit/${version.jgit}</bundle>
+		<bundle>mvn:javaewah/javaewah/${version.javaewah}</bundle>
 	</feature>
-		
-	<feature name="obr">
-		<!--<bundle>mvn:org.apache.felix/org.apache.felix.bundlerepository/2.0.8</bundle>
-		 <bundle>mvn:org.apache.felix/org.osgi.service.obr/1.0.1</bundle> -->
-	</feature>	
+		<!-- 
+	<feature name="bundlerepository">
+		<bundle>mvn:org.apache.felix/org.apache.felix.bundlerepository/2.0.8</bundle>
+		 <bundle>mvn:org.apache.felix/org.osgi.service.obr/1.0.1</bundle> 
+	</feature>	-->
 </features>
