@@ -10,6 +10,7 @@ package org.jabylon.cdo.server.logging;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
+import org.jabylon.cdo.server.ServerConstants;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogReaderService;
@@ -19,7 +20,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.helpers.BasicMarkerFactory;
 
-//@Component
+/**
+ * pipes OSGi log events to SLF4j.
+ * Only useful for eclipse, so we have a nice logging backend (logback) 
+ *
+ */
+@Component
 public class OSGiLogger implements LogListener {
     @Reference
     private LogReaderService logReader;
@@ -28,13 +34,17 @@ public class OSGiLogger implements LogListener {
     private BasicMarkerFactory factory = new BasicMarkerFactory();
 
     public void bindLogReader(LogReaderService service) {
-        this.logReader = service;
-        logReader.addLogListener(this);
+    	if(!ServerConstants.IS_KARAF) {
+    		this.logReader = service;
+    		logReader.addLogListener(this);    		
+    	}
     }
 
     public void unbindLogReader(LogReaderService service) {
-        service.removeLogListener(this);
-        logReader = null;
+    	if(!ServerConstants.IS_KARAF) {
+    		service.removeLogListener(this);
+    		logReader = null;    		
+    	}
     }
 
     @Override

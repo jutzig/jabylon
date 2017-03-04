@@ -31,6 +31,8 @@
                     <instructions>
                         <Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
                         <Bundle-Activator>org.jabylon.security.JabylonSecurityBundle</Bundle-Activator>
+                        <Import-Package>org.osgi.service.blueprint;resolution:=optional,*</Import-Package>
+                        <_exportcontents>*</_exportcontents>
                         <Include-Resource>
                             {maven-resources},plugin.xml
                         </Include-Resource>
@@ -59,6 +61,25 @@
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>security</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.karaf.jaas</groupId>
+        	<artifactId>org.apache.karaf.jaas.modules</artifactId>
+        	<version>4.1.0</version>
+        	<optional>true</optional>
+        </dependency>
+      <dependency>
+        	<groupId>org.apache.karaf.jaas</groupId>
+        	<artifactId>org.apache.karaf.jaas.boot</artifactId>
+        	<version>4.1.0</version>
+        	<optional>true</optional>
+        </dependency>
+   		<dependency>
+        	<groupId>org.apache.karaf.jaas</groupId>
+        	<artifactId>org.apache.karaf.jaas.command</artifactId>
+        	<version>4.1.0</version>
+        	<optional>true</optional>
         </dependency>
         <dependency>
         	<groupId>org.eclipse.emf</groupId>

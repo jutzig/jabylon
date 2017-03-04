@@ -78,23 +78,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/filtered-resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<!-- karaf-maven-plugin will call both assembly and archive goals -->
 			<plugin>
@@ -103,7 +86,8 @@
 				<version>4.1.0</version>
 				<extensions>true</extensions>
 				<configuration>
-				     
+					<usePathPrefix>false</usePathPrefix>
+					<targetFile>jabylon</targetFile>
 					<property-edits
 						xmlns="http://karaf.apache.org/tools/property-edits/1.0.0">
 						<edits>
@@ -131,6 +115,7 @@
 						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi</org.osgi.framework.bootdelegation>
 						<karaf.framework>equinox</karaf.framework>
 						<org.eclipse.equinox.http.jetty.http.port>8090</org.eclipse.equinox.http.jetty.http.port>
+						<org.eclipse.equinox.http.jetty.http.host>0.0.0.0</org.eclipse.equinox.http.jetty.http.host>
 					</config>
 					<!-- no startupFeatures -->
 					<startupFeatures>
@@ -138,10 +123,10 @@
 					</startupFeatures>
 					<bootFeatures>
 						<feature>standard</feature>
+						<feature>jabylon</feature>
 					</bootFeatures>
 
 					<installedFeatures>
-						<feature>jabylon</feature>
 					</installedFeatures>
 
 					<!-- no installedFeatures 
