@@ -19,6 +19,8 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>org.jabylon.index.properties.IndexActivator</Bundle-Activator>
+						<!-- we need to export the internal packages because to UI references the job -->
+                        <_exportcontents>*</_exportcontents>
                     </instructions>
                 </configuration>
             </plugin>
