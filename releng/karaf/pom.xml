@@ -88,6 +88,7 @@
 				<configuration>
 					<usePathPrefix>false</usePathPrefix>
 					<targetFile>jabylon</targetFile>
+					<archiveTarGz>false</archiveTarGz>
 					<config>
 						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi</org.osgi.framework.bootdelegation>
 						<karaf.framework>equinox</karaf.framework>
@@ -129,7 +130,30 @@
 					-->
 				</configuration>
 			</plugin>
-  
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+            			<id>default</id>
+            			<phase>package</phase>
+            			<inherited>false</inherited>
+            			<!-- make scripts in zip executable so we don't also need a tar -->
+            			<configuration>
+            				<tasks>
+            					<move file="target/jabylon.zip" tofile="target/jabylon-temp.zip"/>
+            					<zip destfile="target/jabylon.zip" update="true">
+            						<zipfileset src="target/jabylon-temp.zip" includes="**/*" excludes="bin/*"/>
+            						<zipfileset dir="target/assembly" includes="bin/*.bat" />
+    								<zipfileset dir="target/assembly" includes="bin/*" excludes="bin/*.bat" filemode="755" />
+								</zip>
+								<delete file="target/jabylon-temp.zip"/>
+            				</tasks>
+            			</configuration>
+          			</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>de.jutzig</groupId>
 				<artifactId>github-release-plugin</artifactId>
@@ -143,7 +167,7 @@
 						<inherited>false</inherited>
 						<configuration>
 							<artifact>${project.build.directory}/jabylon.zip</artifact>
-							<artifact>${project.build.directory}/jabylon.tar.gz</artifact>
+							<!-- <artifact>${project.build.directory}/jabylon.tar.gz</artifact> -->
 						</configuration>
 					</execution>
 				</executions>
