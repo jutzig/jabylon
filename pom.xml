@@ -94,7 +94,7 @@
 		<module>org.jabylon.updatecenter</module>
 		<module>org.jabylon.log.viewer</module>
 		<module>releng/dependencies</module>
-		<module>releng/standalone</module>
+		<!-- <module>releng/standalone</module> -->
 		<module>releng/war</module>
 		<module>releng/feature</module>
 		<module>releng/karaf</module>

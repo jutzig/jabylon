@@ -46,5 +46,7 @@ Jabylon can be a great help if you are working on a software project that needs 
      
 # Deployment
 
-Jabylon runs in an OSGi Container ([Equinox](http://www.eclipse.org/equinox/)) and comes pre-packaged as either a standalone application or as a WAR packaged web application. For details see the [Download Section](./download.html)     
+Jabylon is deployed as a standalone application powered by [Apache Karaf](http://karaf.apache.org/). 
+Alternatively it can be deployed as a WAR packaged web application. Please note that WAR deployment is deprecated.
+For details see the [Download Section](./download.html)     
 

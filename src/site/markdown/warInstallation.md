@@ -1,6 +1,8 @@
 
 # Installing as a web application
 
+Attention: please note that this form of deployment is deprecated as of version 1.3.0. Please use the [standalone](./standaloneInstallation.html) distribution instead.
+
 Jabylon can be deployed into any Java EE application server. This document will show an example on how to do that in Tomcat 7 which can be downloaded [here](http://tomcat.apache.org/download-70.cgi) and Jetty 9 which can be downloaded [here](http://download.eclipse.org/jetty/).
 
 ## Deploying Jabylon in Tomcat 7
