@@ -31,7 +31,7 @@
                     <instructions>
                         <Bundle-SymbolicName>$(maven-symbolicname);singleton:=true</Bundle-SymbolicName>
                         <Bundle-Activator>org.jabylon.security.JabylonSecurityBundle</Bundle-Activator>
-                        <Import-Package>org.osgi.service.blueprint;resolution:=optional,*</Import-Package>
+						<!-- we need to export the internal packages because of the jaas modules -->
                         <_exportcontents>*</_exportcontents>
                         <Include-Resource>
                             {maven-resources},plugin.xml

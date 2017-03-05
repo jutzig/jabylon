@@ -88,29 +88,6 @@
 				<configuration>
 					<usePathPrefix>false</usePathPrefix>
 					<targetFile>jabylon</targetFile>
-					<property-edits
-						xmlns="http://karaf.apache.org/tools/property-edits/1.0.0">
-						<edits>
-							<edit>
-								<file>config.properties</file>
-								<operation>put</operation>
-								<key>karaf.framework</key>
-								<value>equinox</value>
-							</edit>
-							<edit>
-								<file>config.properties</file>
-								<operation>extend</operation>
-								<key>org.osgi.framework.system.capabilities</key>
-								<value>my-magic-capability</value>
-							</edit>
-							<edit>
-								<file>config.properties</file>
-								<operation prepend='true'>extend</operation>
-								<key>org.osgi.framework.bootdelegation</key>
-								<value>javax.sql,javax.naming,javax.naming.spi</value>
-							</edit>
-						</edits>
-					</property-edits>
 					<config>
 						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi</org.osgi.framework.bootdelegation>
 						<karaf.framework>equinox</karaf.framework>
