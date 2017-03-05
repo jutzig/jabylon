@@ -152,6 +152,25 @@
 					-->
 				</configuration>
 			</plugin>
+  
+			<plugin>
+				<groupId>de.jutzig</groupId>
+				<artifactId>github-release-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>release</goal>
+						</goals>
+						<id>upload</id>
+						<inherited>false</inherited>
+						<configuration>
+							<artifact>${project.build.directory}/jabylon.zip</artifact>
+							<artifact>${project.build.directory}/jabylon.tar.gz</artifact>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>        
 		</plugins>
 	</build>
 

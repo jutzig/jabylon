@@ -1,8 +1,15 @@
+/**
+ * (C) Copyright 2013 Jabylon (http://www.jabylon.org) and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 package org.jabylon.log.viewer.pages.util;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.wicket.util.file.File;
 import org.ops4j.pax.logging.PaxLoggingService;
@@ -13,20 +20,13 @@ import org.osgi.util.tracker.ServiceTracker;
 
 public class PaxLogUtil extends LogAccess {
 
-	private PaxLoggingService manager;
+	private ServiceTracker<PaxLoggingService, PaxLoggingService> tracker;
 
 	public PaxLogUtil() {
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 		BundleContext context = bundle.getBundleContext();
-		ServiceTracker<PaxLoggingService,PaxLoggingService> tracker = new ServiceTracker<PaxLoggingService,PaxLoggingService>(context, PaxLoggingService.class, null);
+		tracker = new ServiceTracker<PaxLoggingService,PaxLoggingService>(context, PaxLoggingService.class, null);
 		tracker.open();
-		try {
-			manager = tracker.waitForService(TimeUnit.SECONDS.toMillis(30));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class PaxLogUtil extends LogAccess {
 
 	@Override
 	public LogLevel getLogLevel() {
-		int logLevel = manager.getLogLevel();
+		int logLevel = getManager().getLogLevel();
 		LogLevel level = mapLevel(logLevel);
 		return level;
 	}
@@ -62,6 +62,10 @@ public class PaxLogUtil extends LogAccess {
 	@Override
 	public void setLogLevel(LogLevel level) {
 		//TODO: not yet implemented
+	}
+
+	private PaxLoggingService getManager() {
+		return tracker.getService();
 	}
 
 }
