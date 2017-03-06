@@ -19,7 +19,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.eclipse.emf.common.util.EList;
-import org.jabylon.common.resolver.impl.URIConstants;
+import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.security.CommonPermissions;

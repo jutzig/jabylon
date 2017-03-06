@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
+import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.common.resolver.URIHandler;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersPackage;

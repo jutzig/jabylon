@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.jabylon.common.resolver.impl;
+package org.jabylon.common.resolver;
 
 /**
  * @author jutzig.dev@googlemail.com

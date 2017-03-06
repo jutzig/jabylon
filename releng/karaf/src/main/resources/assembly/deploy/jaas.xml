@@ -10,7 +10,7 @@
         <jaas:module className="org.jabylon.security.internal.DBLoginModule"
                      flags="sufficient">
         </jaas:module>
-        <!-- uncomment to enable LDAP login -->
+        <!-- uncomment to enable LDAP login
 		<jaas:module className="org.jabylon.security.internal.LDAPLoginModule"
                      flags="sufficient">
 			ldap=localhost
@@ -23,7 +23,7 @@
         	root.dn=ou=users,ou=system
         	manager=uid=admin,ou=system
         	manager.password=admin
-        </jaas:module>
+        </jaas:module> -->
     </jaas:config>
 
 </blueprint>

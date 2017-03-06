@@ -14,11 +14,11 @@ For more information on starting and stopping see the [Karaf documentation](http
 Jabylon should now start up and be available at [http://localhost:8080](http://localhost:8080).
 
 By default, it will bind to 0.0.0.0 so it will be reachable on all network interfaces.
-To adjust the default settings you can set these properties in `etc/config.ini` :
+To adjust the default port you can change it in `etc/org.ops4j.pax.web.cf`.
 
- * org.eclipse.equinox.http.jetty.http.host={HOST} to change the IP address that Jabylon will be bound to (all by default)
- * org.eclipse.equinox.http.jetty.http.port={PORT} to change the port Jabylon is using
- 
+If you need to bind to a specific network interface (not 0.0.0.0) you can modify `etc/jetty.xml`.
+Additional details can be found in the  [Karaf documentation](https://karaf.apache.org/manual/latest/webcontainer)
+
 ## Integration in the operating system - Service Wrapper
 
 To run Jabylon as an operating system service first start it in interactive mode with `bin/karaf[.bat]`.

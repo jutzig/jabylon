@@ -9,6 +9,8 @@
 
 		<feature>scr</feature>
 		<feature>obr</feature>
+		<feature>http</feature>
+		<feature>war</feature>
 		<!-- own features -->
 		<feature>equinox</feature>
 		<feature>cdo</feature>
@@ -34,6 +36,7 @@
 		<bundle>mvn:${project.groupId}/scheduler.ui/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/review.standard/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/rest.ui/${project.version}</bundle>
+		<bundle>mvn:${project.groupId}/rest.api/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/resources/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/properties/${project.version}</bundle>
 		<!-- <bundle>mvn:${project.groupId}/log.viewer/${project.version}</bundle> -->
@@ -50,8 +53,6 @@
 		<bundle>mvn:org.eclipse.equinox/preferences/${version.equinox.preferences}</bundle>
 		<!-- not needed on karaf -->
 		<!-- <bundle>mvn:org.eclipse.equinox/security/1.2.0</bundle> -->
-		
-		<bundle>mvn:org.apache.felix/org.apache.felix.http.api/2.3.2</bundle>
 		
 		<bundle>mvn:org.eclipse.equinox/registry/${version.equinox.registry}</bundle>
 		<bundle>mvn:org.eclipse.core/runtime/${version.equinox.runtime}</bundle>
@@ -99,7 +100,7 @@
 
 
 	<feature name="wicket">
-		<feature>custom-http</feature>
+		<!-- <feature>custom-http</feature> -->
 		<bundle>mvn:org.apache.wicket/wicket-core/${version.wicket}</bundle>
 		<bundle>mvn:org.apache.wicket/wicket-extensions/${version.wicket}</bundle>
 		<bundle>mvn:org.apache.wicket/wicket-auth-roles/${version.wicket}</bundle>
@@ -122,6 +123,7 @@
 		<bundle>mvn:org.eclipse.jetty/server/${version.jetty}</bundle>
 		<bundle>mvn:org.eclipse.jetty/servlet/${version.jetty}</bundle>
 		<bundle>mvn:org.eclipse.jetty/util/${version.jetty}</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.http.api/2.3.2</bundle>
 	</feature>		
 	
 	<feature name="jgit">

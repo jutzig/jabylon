@@ -11,7 +11,7 @@ In case you need to roll back an upgrade, it is advisable to backup the database
 ## Standalone
 
 If you run Jabylon in standalone mode, delete the folders `system`, `data`. Extract the new version of Jabylon folder into the same directory , overriding files where necessary and start Jabylon.
-In case you modified the host/port in `etc/config.ini` apply your change again.
+In case you modified the host/port in `etc/jetty.xml` apply your change again.
 
 ### Upgrade to 1.3.0
 
