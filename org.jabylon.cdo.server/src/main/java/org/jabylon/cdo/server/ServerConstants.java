@@ -30,10 +30,10 @@ public class ServerConstants {
     	IS_KARAF = System.getProperty("karaf.home", null)!=null;
         String tmpWorkingDir;
         try {
-            //try in order karaf.home, JABYLON_HOME, -DJABYLON_HOME, osgi.instance.area and user.home/jabylon
+            //try in order jabylon.home, JABYLON_HOME, -DJABYLON_HOME, osgi.instance.area and user.home/jabylon
             String path = System.getenv("JABYLON_HOME");
             if(path==null)
-                path = System.getProperty("karaf.home",System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon")));
+                path = System.getProperty("jabylon.home",System.getProperty("JABYLON_HOME",System.getProperty("osgi.instance.area", System.getProperty("user.home")+"/jabylon")));
             if(path.startsWith("file:")) //eclipse does this when using variables in a launch config
                 path = path.substring("file:".length());
             File instanceArea = new File(path);

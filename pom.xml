@@ -45,6 +45,8 @@
 		<version.equinox.http.servlet>1.1.300</version.equinox.http.servlet>
 		<version.flyway>2.1.1</version.flyway>
 		<version.karaf>4.1.0</version.karaf>
+		<!-- jenkins currently runs java7 so we need a pre 4.1.0 for the plugin -->
+		<version.karaf.older>4.0.8</version.karaf.older>
 
 		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
 		<bundle.namespace>${project.groupId}</bundle.namespace>

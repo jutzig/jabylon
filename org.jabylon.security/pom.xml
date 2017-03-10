@@ -66,19 +66,20 @@
         <dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.modules</artifactId>
-        	<version>${version.karaf}</version>
+        	<!-- use an older version for compile so it works with java 7 -->
+        	<version>${version.karaf.older}</version>
         	<optional>true</optional>
         </dependency>
       <dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.boot</artifactId>
-        	<version>${version.karaf}</version>
+        	<version>${version.karaf.older}</version>
         	<optional>true</optional>
         </dependency>
    		<dependency>
         	<groupId>org.apache.karaf.jaas</groupId>
         	<artifactId>org.apache.karaf.jaas.command</artifactId>
-        	<version>${version.karaf}</version>
+        	<version>${version.karaf.older}</version>
         	<optional>true</optional>
         </dependency>
         <dependency>

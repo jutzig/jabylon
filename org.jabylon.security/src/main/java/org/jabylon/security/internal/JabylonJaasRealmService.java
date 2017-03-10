@@ -30,7 +30,7 @@ public class JabylonJaasRealmService implements JaasRealm
 
     	Bundle bundle = FrameworkUtil.getBundle(getClass());
     	BundleContext bc = bundle.getBundleContext();
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<String, Object>();
         configEntries = new AppConfigurationEntry[2];
         configEntries[0] = new AppConfigurationEntry(ProxyLoginModule.class.getName(),
             LoginModuleControlFlag.SUFFICIENT, options);
