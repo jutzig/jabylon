@@ -83,7 +83,7 @@
 			<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>karaf-maven-plugin</artifactId>
-				<version>${version.karaf}</version>
+				<version>${version.karaf.older}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<usePathPrefix>false</usePathPrefix>
