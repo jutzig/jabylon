@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:jaas="http://karaf.apache.org/xmlns/jaas/v1.0.0"
+           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0">
+
+    <!-- Bean to allow the $[karaf.base] property to be correctly resolved -->
+    <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/>
+
+    <jaas:config name="Jabylon">
+        <jaas:module className="org.jabylon.security.internal.DBLoginModule"
+                     flags="sufficient">
+        </jaas:module>
+        <!-- uncomment to enable LDAP login
+		<jaas:module className="org.jabylon.security.internal.LDAPLoginModule"
+                     flags="sufficient">
+			ldap=localhost
+        	ldap.port=10389
+        	user.id=uid
+        	user.mail=mail
+        	user.name=cn
+        	member.of=memberOf
+        	group.name=name
+        	root.dn=ou=users,ou=system
+        	manager=uid=admin,ou=system
+        	manager.password=admin
+        </jaas:module> -->
+    </jaas:config>
+
+</blueprint>

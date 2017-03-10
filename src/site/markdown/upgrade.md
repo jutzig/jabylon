@@ -8,15 +8,22 @@ Upgrading Jabylon is straightforward since the database and configurations are m
 
 In case you need to roll back an upgrade, it is advisable to backup the database before upgrading. Jabylon uses an embedded H2 database so for a full backup it is enough to create a copy of `[JABYLON_HOME]/cdo`. Please note that Jabylon should be shut down before creating a database backup.
 
+## Standalone
+
+If you run Jabylon in standalone mode, delete the folders `system`, `data`. Extract the new version of Jabylon folder into the same directory , overriding files where necessary and start Jabylon.
+In case you modified the host/port in `etc/jetty.xml` apply your change again.
+
+### Upgrade to 1.3.0
+
+Please note that starting from version 1.3.0 Jabylon is shipped in a Karaf container. To migrate from the old standalone distribution follow these steps:
+
+ * Extract the new archiva to a new folder
+ * Move or copy the folders `workspace`, `lucene` and `cdo` to the root of the new location
+ * If you modified the jaas configuration, apply your changes to `deploy/jaas.xml`
 
 ## WAR
 
 If you run Jabylon as a WAR it is sufficient to deploy a new version of the WAR to the servlet container.
-
-
-## Standalone
-
-If you run Jabylon in standalone mode, backup your jaas config if you customized it (`configuration/jaas.config`) and then delete the folders `configuration` and `plugins`. Extract the new version into the same directory, restore your jaas config and start Jabylon.
 
 ## Plug-Ins
 

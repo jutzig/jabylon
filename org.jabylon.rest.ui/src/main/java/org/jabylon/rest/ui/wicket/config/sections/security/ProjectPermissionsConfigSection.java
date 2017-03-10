@@ -34,8 +34,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.EList;
+import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.common.resolver.URIResolver;
-import org.jabylon.common.resolver.impl.UserManagmentURIHandler;
 import org.jabylon.properties.Project;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.security.RestrictedComponent;
@@ -71,7 +71,7 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 
     @Override
     protected void preConstruct() {
-        Object resolved = resolver.resolve(UserManagmentURIHandler.SECURITY_URI_PREFIX);
+        Object resolved = resolver.resolve(URIConstants.SECURITY_URI_PREFIX);
         if (resolved instanceof UserManagement) {
             UserManagement management = (UserManagement) resolved;
             userManagement = new EObjectModel<UserManagement>(management);

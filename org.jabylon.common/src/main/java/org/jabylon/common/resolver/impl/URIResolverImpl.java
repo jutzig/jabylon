@@ -6,9 +6,6 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-/**
- *
- */
 package org.jabylon.common.resolver.impl;
 
 import java.util.List;

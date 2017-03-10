@@ -20,16 +20,18 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.karaf.jaas.config.JaasRealm;
 import org.eclipse.emf.cdo.util.CommitException;
-import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.jabylon.cdo.connector.Modification;
 import org.jabylon.cdo.connector.RepositoryConnector;
@@ -38,9 +40,12 @@ import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.security.JabylonSecurityBundle;
 import org.jabylon.security.SubjectAttribute;
+import org.jabylon.security.internal.JabylonJaasRealmService;
+import org.jabylon.security.internal.LoginContextWrapper;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
+import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +55,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	private Logger logger = LoggerFactory.getLogger(AuthenticatorServiceImpl.class);
 	private static final String JAAS_CONFIG_FILE = "jaas.config"; //$NON-NLS-1$
+	public static final String REALM_NAME = "Jabylon"; //$NON-NLS-1$
 	@Reference(policy=ReferencePolicy.DYNAMIC,cardinality=ReferenceCardinality.MANDATORY_UNARY,bind="setRepositoryConnector",unbind="unbindRepositoryConnector")
 	private RepositoryConnector repositoryConnector;
 	private UserManagement userManagement;
@@ -63,22 +69,22 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	protected Subject doAuthenticate(final String username, final String password) {
 
-		ILoginContext context = createLoginContext(new CallbackHandler() {
+		try {
+			LoginContext context = createLoginContext(new CallbackHandler() {
 
-			@Override
-			public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-				for (int i = 0; i < callbacks.length; i++) {
-					Callback cb = callbacks[i];
-					if (cb instanceof NameCallback) {
-						((NameCallback) cb).setName(username); //$NON-NLS-1$
-					} else if (cb instanceof PasswordCallback) {
-						((PasswordCallback) cb).setPassword(password.toCharArray()); //$NON-NLS-1$
+				@Override
+				public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+					for (int i = 0; i < callbacks.length; i++) {
+						Callback cb = callbacks[i];
+						if (cb instanceof NameCallback) {
+							((NameCallback) cb).setName(username); //$NON-NLS-1$
+						} else if (cb instanceof PasswordCallback) {
+							((PasswordCallback) cb).setPassword(password.toCharArray()); //$NON-NLS-1$
+						}
 					}
 				}
-			}
-		});
+			});
 
-		try {
 			context.login();
 			final Subject subject = context.getSubject();
 			Set<String> credentials = subject.getPublicCredentials(String.class);
@@ -149,19 +155,22 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 	}
 
-	private ILoginContext createLoginContext(CallbackHandler callbackHandler) {
+	private LoginContext createLoginContext(CallbackHandler callbackHandler) throws LoginException {
 
-		URL configUrl = getJAASConfig();
-		return LoginContextFactory.createContext("Jabylon", configUrl, callbackHandler);
+		if(!ServerConstants.IS_KARAF) {
+			URL configUrl = getJAASConfig();
+			return new LoginContextWrapper(REALM_NAME,LoginContextFactory.createContext(REALM_NAME, configUrl, callbackHandler));			
+		}
+		return new LoginContext(REALM_NAME, new Subject(), callbackHandler);
 	}
 
 	private URL getJAASConfig() {
-		String configArea = System.getProperty("osgi.configuration.area");
+		String configArea = System.getProperty("karaf.etc",System.getProperty("osgi.configuration.area"));
 		if (configArea == null || configArea.isEmpty())
 			configArea = new File(new File(ServerConstants.WORKING_DIR), "configuration").toURI().toString();
 		try {
 			URI uri = new URI(configArea);
-			File jaasConfig = new File(new File(uri), JAAS_CONFIG_FILE);
+			File jaasConfig = new File(uri.getPath(), JAAS_CONFIG_FILE);
 			if (jaasConfig.isFile()) {
 				return jaasConfig.toURI().toURL();
 			}
@@ -206,6 +215,15 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 			this.repositoryConnector = null;
 		}
 	}
+	
+	@Activate
+	protected void activate(BundleContext context) {
+		if(ServerConstants.IS_KARAF) {
+			logger.info("Registering Jabylon JaasRealm in Karaf");
+			context.registerService(JaasRealm.class, new JabylonJaasRealmService(), null);
+		}
+	}
+	
 
 	@Deactivate
 	protected void deactivate() {
@@ -222,4 +240,5 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 		}
 		return anonymous;
 	}
+	
 }

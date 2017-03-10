@@ -22,27 +22,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
 
-public class LogbackUtil {
+public class LogbackUtil extends LogAccess {
 
-	public enum LogLevel {
-		
-		OFF(Level.OFF_INT),ERROR(Level.ERROR_INT),WARN(Level.WARN_INT),INFO(Level.INFO_INT),DEBUG(Level.DEBUG_INT),TRACE(Level.TRACE_INT),ALL(Level.ALL_INT);
-		
-		private int intValue;
-		
-		private LogLevel(int intValue)
-		{
-			this.intValue = intValue;
-		}
-		
-		public static LogLevel fromInt(int intValue) {
-			for (LogLevel level : values()) {
-				if(level.intValue==intValue)
-					return level;
-			}
-			return null;
-		}
-	}
 
 	/**
 	 * Retrieve all configured logback loggers. 
@@ -96,7 +77,7 @@ public class LogbackUtil {
 	 * retrieves information about the available file appenders 
 	 * @return
 	 */
-	public static List<LogFile> getLogFiles() {
+	public List<LogFile> getLogFiles() {
 		
 		List<LogFile> logFiles = new ArrayList<LogFile>();
 		Logger logger = getRootLogger();
@@ -127,11 +108,11 @@ public class LogbackUtil {
 		return lc.getLogger(Logger.ROOT_LOGGER_NAME);
 	}
 	
-	public static LogLevel getLogLevel() {
+	public LogLevel getLogLevel() {
 		return LogLevel.fromInt(getLogger("org.jabylon").getLevel().toInt());
 	}
 	
-	public static void setLogLevel(LogLevel level) {
+	public void setLogLevel(LogLevel level) {
 		Level newLevel = Level.toLevel(level.intValue);
 //		getRootLogger().setLevel(newLevel);
 		List<Logger> loggers = getLoggers(false);

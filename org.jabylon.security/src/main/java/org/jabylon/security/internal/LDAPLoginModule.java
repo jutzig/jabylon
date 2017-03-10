@@ -196,14 +196,19 @@ public class LDAPLoginModule implements LoginModule {
     }
 
     public DirContext createContext(String userDN, String userPassword) {
+    	if(!options.containsKey(KEY_LDAP) || !options.containsKey(KEY_LDAP_PORT)) {
+    		logger.debug("No LDAP url configured, skipping LDAP authentication");
+    	}
         DirContext ctx = null;
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         String providerUrl = MessageFormat.format("ldap://{0}:{1}/{2}", options.get(KEY_LDAP), options.get(KEY_LDAP_PORT), options.get(KEY_ROOT_DN));
         env.put(Context.PROVIDER_URL, providerUrl);
-        env.put(Context.SECURITY_PRINCIPAL, userDN);
+        if(userDN!=null)
+        	env.put(Context.SECURITY_PRINCIPAL, userDN);
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
-        env.put(Context.SECURITY_CREDENTIALS, userPassword);
+        if(userPassword!=null)
+        	env.put(Context.SECURITY_CREDENTIALS, userPassword);
 
         try {
             ctx = new InitialDirContext(env);

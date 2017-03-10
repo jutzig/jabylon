@@ -1,41 +1,34 @@
 
 # Installing as a Standalone Application
 
-Jabylon can be launched as a standalone application with an embedded jetty server. To do that, start by [downloading](./download.html) the standalone distribution and extracting it to a directory of your choice. Please make sure that the user running Jabylon has write permission in this directory.
+Jabylon can be launched as a standalone application based on [Apache Karaf](http://karaf.apache.org). Start by [downloading](./download.html) the standalone distribution and extract it to a directory of your choice. Please make sure that the user running Jabylon has write permission in this directory.
 
-## Starting Jabylon on Linux
+## Starting Jabylon
 
-If you are running Jabylon on a linux system you can use the available startup scripts. To do so, open a shell, `cd` to the directory where you extracted Jabylon and run 
+To start Jabylon simply open a shell, `cd` to the directory where you extracted Jabylon and run 
 
-`./jabylon.sh start`
+`bin/start[.bat]`
+
+For more information on starting and stopping see the [Karaf documentation](http://karaf.apache.org/manual/latest/#_start_stop_restart_connect)
 
 Jabylon should now start up and be available at [http://localhost:8080](http://localhost:8080).
 
-You can change the default port by specifying `--port {PORT}`. By default, Jabylon will be bound to all interfaces. To change this setting you can specifiy `--host {IP_ADDRESS}` 
+By default, it will bind to 0.0.0.0 so it will be reachable on all network interfaces.
+To adjust the default port you can change it in `etc/org.ops4j.pax.web.cf`.
 
-Jabylon needs a working directory to store the translation projects and the embedded database. By default this directory is located at `jabylon/workspace`. To change this default specify `--data {WORKSPACE}` on command line.
+If you need to bind to a specific network interface (not 0.0.0.0) you can modify `etc/jetty.xml`.
+Additional details can be found in the  [Karaf documentation](https://karaf.apache.org/manual/latest/webcontainer)
 
-The logs will be placed to `logs/jabylon.log` by default. To change this location you can set the system property `-Djabylon.log`.
+## Integration in the operating system - Service Wrapper
 
-Here is an example on how to configure these settings in a command line:
+To run Jabylon as an operating system service first start it in interactive mode with `bin/karaf[.bat]`.
+Once the command prompt is shown, type
 
-`./jabylon.sh --port 10000 --host 127.0.01 --data /opt/jabylon start`
+`feature:install service-wrapper`
 
+Next, type
 
-## Starting Jabylon on Windows
+`wrapper:install -n jabylon -d "Jabylon translation server"`
 
-There is currently no startup script for windows available so you will need to start the launcher jar directly. To do so, open a terminal and `cd` to the directory where you extracted Jabylon. To start with default settings (Port 8080) execute
-
-`java -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar`
-
-To adjust the defaults you can set these system properties:
-
- * org.eclipse.equinox.http.jetty.http.host={HOST} to change the IP address that Jabylon will be bound to (all by default)
- * org.eclipse.equinox.http.jetty.http.port={PORT} to change the port Jabylon is using 
- * osgi.instance.area={WORKSPACE} to change the location of the workspace
- * jabylon.log={LOG_DIR) to change where the logfiles will be located
- 
- The resulting command line could look like this:
- 
- `java -Dosgi.instance.area=C:\Jabylon -jar plugins/org.eclipse.equinox.launcher-1.3.0.jar`      
-
+Quit the application by pressing `CTRL+D` and follow the instructions in the command prompt to finish the service installations.
+Additional details can be found in the [Karaf documentation](http://karaf.apache.org/manual/latest/#_integration_in_the_operating_system_the_service_wrapper). 

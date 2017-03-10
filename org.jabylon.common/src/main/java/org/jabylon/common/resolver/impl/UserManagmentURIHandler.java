@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.jabylon.cdo.connector.RepositoryConnector;
 import org.jabylon.cdo.server.ServerConstants;
+import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.common.resolver.URIHandler;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersPackage;
@@ -41,7 +42,6 @@ import org.jabylon.users.UsersPackage;
 @Service
 public class UserManagmentURIHandler implements URIHandler {
 
-    public static final String SECURITY_URI_PREFIX = "security";
     @Reference
     private RepositoryConnector repositoryConnector;
     private CDONet4jSession session;
@@ -72,7 +72,7 @@ public class UserManagmentURIHandler implements URIHandler {
         if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
             return null;
         String firstSegment = uri.segment(0);
-        if (SECURITY_URI_PREFIX.equals(firstSegment)) {
+        if (URIConstants.SECURITY_URI_PREFIX.equals(firstSegment)) {
             List<String> list = uri.segmentsList().subList(1, uri.segmentCount());
             Object parent = userManagment;
             for (String segment : list) {
@@ -117,7 +117,7 @@ public class UserManagmentURIHandler implements URIHandler {
 
     private String getSegmentName(EObject object) {
     	if (object instanceof UserManagement) {
-			return SECURITY_URI_PREFIX;
+			return URIConstants.SECURITY_URI_PREFIX;
 
 		}
     	EStructuralFeature feature = object.eClass().getEStructuralFeature("name");
@@ -139,7 +139,7 @@ public class UserManagmentURIHandler implements URIHandler {
     public boolean canHandle(URI uri) {
         if (uri == null || uri.isEmpty() || uri.segmentCount() == 0)
             return false;
-        return SECURITY_URI_PREFIX.equals(uri.segment(0));
+        return URIConstants.SECURITY_URI_PREFIX.equals(uri.segment(0));
     }
 
     @Override

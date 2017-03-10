@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jabylon</groupId>
@@ -8,6 +9,43 @@
 
 	<properties>
 		<singleton />
+		<version.equinox.app>1.3.100</version.equinox.app>
+		<version.equinox.contenttype>3.4.200</version.equinox.contenttype>
+		<version.equinox.util>1.0.500</version.equinox.util>
+		<version.equinox.common>3.6.200</version.equinox.common>
+		<version.equinox.preferences>3.5.100</version.equinox.preferences>
+		<version.equinox.registry>3.5.301</version.equinox.registry>
+		<version.equinox.runtime>3.9.0</version.equinox.runtime>
+		<version.equinox.jobs>3.5.300</version.equinox.jobs>
+		<version.cdo>4.2.1</version.cdo>
+		<version.cdo.net4j>4.1.101</version.cdo.net4j>
+		<version.net4j.util>3.3.0</version.net4j.util>
+		<version.net4j.jvm>4.1.100</version.net4j.jvm>
+		<version.cdo.server>4.1.1</version.cdo.server>
+		<version.cdo.h2>4.2.0</version.cdo.h2>
+		<version.h2>1.3.168</version.h2>
+		<version.lucene>3.5.0</version.lucene>
+		<version.emf>2.9.1</version.emf>
+		<version.emf.change>2.9.0</version.emf.change>
+		<version.servlet>3.0.0</version.servlet>
+		<version.xml>1.3.4</version.xml>
+		<version.guava>13.0.1</version.guava>
+		<!-- need version with qualifier here, to disambiguate from non-bundle 
+			artifact in central -->
+		<version.jsch>0.1.41-v201101211617</version.jsch>
+		<version.ant>1.8.4</version.ant>
+		<version.wicket>6.0.0</version.wicket>
+		<version.inject>1_2</version.inject>
+		<version.jgit>3.0.0.201306101825-r</version.jgit>
+		<version.javaewah>0.5.6</version.javaewah>
+		<version.obr>2.0.8</version.obr>
+		<version.jetty>8.1.10</version.jetty>
+		<version.equinox.http.jetty>3.0.100</version.equinox.http.jetty>
+		<version.equinox.http.registry>1.1.200</version.equinox.http.registry>
+		<version.equinox.http.servlet>1.1.300</version.equinox.http.servlet>
+		<version.flyway>2.1.1</version.flyway>
+		<version.karaf>4.1.0</version.karaf>
+
 		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
 		<bundle.namespace>${project.groupId}</bundle.namespace>
 		<swt.variant>unknown</swt.variant>
@@ -56,8 +94,10 @@
 		<module>org.jabylon.updatecenter</module>
 		<module>org.jabylon.log.viewer</module>
 		<module>releng/dependencies</module>
-		<module>releng/standalone</module>
+		<!-- <module>releng/standalone</module> -->
 		<module>releng/war</module>
+		<module>releng/feature</module>
+		<module>releng/karaf</module>
 	</modules>
 
 
@@ -65,7 +105,7 @@
 	<build>
 		<extensions>
 			<!-- Enabling the use of sftp -->
-			<!-- <extension> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon-ssh-external</artifactId>
+			<!-- <extension> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon-ssh-external</artifactId> 
 				<version>1.0-beta-6</version> </extension> -->
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -118,7 +158,7 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -285,8 +325,11 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<copy toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr">
-									<fileset dir="${project.build.directory}/scr-plugin-generated/OSGI-INF" includes="*.xml">
+								<copy toDir="${basedir}/OSGI-INF" failonerror="false"
+									overwrite="tr">
+									<fileset
+										dir="${project.build.directory}/scr-plugin-generated/OSGI-INF"
+										includes="*.xml">
 									</fileset>
 								</copy>
 							</tasks>
@@ -453,31 +496,31 @@
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>app</artifactId>
-				<version>1.3.100</version>
+				<version>${version.equinox.app}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>contenttype</artifactId>
-				<version>3.4.200</version>
+				<version>${version.equinox.contenttype}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>util</artifactId>
-				<version>1.0.500</version>
+				<version>${version.equinox.util}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>common</artifactId>
-				<version>3.6.200</version>
+				<version>${version.equinox.common}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>preferences</artifactId>
-				<version>3.5.100</version>
+				<version>${version.equinox.preferences}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -495,19 +538,19 @@
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>registry</artifactId>
-				<version>3.5.301</version>
+				<version>${version.equinox.registry}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>runtime</artifactId>
-				<version>3.9.0</version>
+				<version>${version.equinox.runtime}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
 				<artifactId>jobs</artifactId>
-				<version>3.5.300</version>
+				<version>${version.equinox.jobs}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -521,74 +564,74 @@
 			<dependency>
 				<artifactId>common</artifactId>
 				<groupId>org.eclipse.emf.cdo</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>cdo</artifactId>
 				<groupId>org.eclipse.emf</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>server</artifactId>
 				<groupId>org.eclipse.emf.cdo</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>net4j</artifactId>
 				<groupId>org.eclipse.emf.cdo</groupId>
-				<version>4.1.101</version>
+				<version>${version.cdo.net4j}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>net4j</artifactId>
 				<groupId>org.eclipse</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>db</artifactId>
 				<groupId>org.eclipse.net4j</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.net4j</groupId>
 				<artifactId>util</artifactId>
-				<version>3.3.0</version>
+				<version>${version.net4j.util}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>jvm</artifactId>
 				<groupId>org.eclipse.net4j</groupId>
-				<version>4.1.100</version>
+				<version>${version.net4j.jvm}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>db</artifactId>
 				<groupId>org.eclipse.emf.cdo.server</groupId>
-				<version>4.2.1</version>
+				<version>${version.cdo}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>net4j</artifactId>
 				<groupId>org.eclipse.emf.cdo.server</groupId>
-				<version>4.1.1</version>
+				<version>${version.cdo.server}</version>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<artifactId>h2</artifactId>
 				<groupId>org.eclipse.net4j.db</groupId>
-				<version>4.2.0</version>
+				<version>${version.cdo.h2}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>h2</artifactId>
 				<groupId>org</groupId>
-				<version>1.3.168</version>
+				<version>${version.h2}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -596,31 +639,31 @@
 			<dependency>
 				<artifactId>core</artifactId>
 				<groupId>org.apache.lucene</groupId>
-				<version>3.5.0</version>
+				<version>${version.lucene}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>misc</artifactId>
 				<groupId>org.apache.lucene</groupId>
-				<version>3.5.0</version>
+				<version>${version.lucene}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>queries</artifactId>
 				<groupId>org.apache.lucene</groupId>
-				<version>3.5.0</version>
+				<version>${version.lucene}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>analysis</artifactId>
 				<groupId>org.apache.lucene</groupId>
-				<version>3.5.0</version>
+				<version>${version.lucene}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<artifactId>lucene</artifactId>
 				<groupId>org.apache</groupId>
-				<version>3.5.0</version>
+				<version>${version.lucene}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -628,25 +671,25 @@
 			<dependency>
 				<groupId>org.eclipse.emf</groupId>
 				<artifactId>common</artifactId>
-				<version>2.9.1</version>
+				<version>${version.emf}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.emf</groupId>
 				<artifactId>ecore</artifactId>
-				<version>2.9.1</version>
+				<version>${version.emf}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.emf.ecore</groupId>
 				<artifactId>change</artifactId>
-				<version>2.9.0</version>
+				<version>${version.emf.change}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.emf.ecore</groupId>
 				<artifactId>xmi</artifactId>
-				<version>2.9.1</version>
+				<version>${version.emf}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -654,13 +697,13 @@
 			<dependency>
 				<groupId>javax</groupId>
 				<artifactId>servlet</artifactId>
-				<version>3.0.0</version>
+				<version>${version.servlet}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax</groupId>
 				<artifactId>xml</artifactId>
-				<version>1.3.4</version>
+				<version>${version.xml}</version>
 				<scope>provided</scope>
 				<exclusions>
 					<exclusion>
@@ -672,28 +715,27 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>13.0.1</version>
+				<version>${version.guava}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.jcraft</groupId>
 				<artifactId>jsch</artifactId>
-				<!-- need version with qualifier here, to disambiguate from non-bundle
-					artifact in central -->
-				<version>0.1.41-v201101211617</version>
+
+				<version>${version.jsch}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache</groupId>
 				<artifactId>ant</artifactId>
-				<version>1.8.4</version>
+				<version>${version.ant}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<!-- this is the actual jar, the other is the bundle -->
 				<groupId>org.apache.ant</groupId>
 				<artifactId>ant</artifactId>
-				<version>1.8.4</version>
+				<version>${version.ant}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -733,43 +775,43 @@
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-core</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-extensions</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-auth-roles</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-request</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-util</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-ioc</artifactId>
-				<version>6.0.0</version>
+				<version>${version.wicket}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-				<version>1_2</version>
+				<version>${version.inject}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -794,13 +836,13 @@
 			<dependency>
 				<groupId>org.eclipse.jgit</groupId>
 				<artifactId>org.eclipse.jgit</artifactId>
-				<version>3.0.0.201306101825-r</version>
+				<version>${version.jgit}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javaewah</groupId>
 				<artifactId>javaewah</artifactId>
-				<version>0.5.6</version>
+				<version>${version.javaewah}</version>
 			</dependency>
 
 			<!-- shell -->
@@ -833,7 +875,7 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.bundlerepository</artifactId>
-				<version>1.6.6</version>
+				<version>${version.obr}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -847,61 +889,61 @@
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>server</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>util</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>http</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>io</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>servlet</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>security</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>continuation</artifactId>
-				<version>8.1.10</version>
+				<version>${version.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox.http</groupId>
 				<artifactId>jetty</artifactId>
-				<version>3.0.100</version>
+				<version>${version.equinox.http.jetty}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox.http</groupId>
 				<artifactId>registry</artifactId>
-				<version>1.1.200</version>
+				<version>${version.equinox.http.registry}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.equinox.http</groupId>
 				<artifactId>servlet</artifactId>
-				<version>1.1.300</version>
+				<version>${version.equinox.http.servlet}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -921,7 +963,7 @@
 			<dependency>
 				<groupId>com.googlecode.flyway</groupId>
 				<artifactId>flyway-core</artifactId>
-				<version>2.1.1</version>
+				<version>${version.flyway}</version>
 				<scope>provided</scope>
 			</dependency>
 

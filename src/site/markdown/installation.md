@@ -7,5 +7,6 @@ It is important to change this default password after your first login to secure
 
 The following pages will cover the different installation methods:
 
+ * [Installing standalone](standaloneInstallation.html)
  * [Installing as a web application](warInstallation.html)
- * [Installing standalone](standaloneInstallation.html) 
+  

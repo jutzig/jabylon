@@ -22,6 +22,8 @@ import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.ThreadContext;
+import org.apache.wicket.application.AbstractClassResolver;
+import org.apache.wicket.application.CompoundClassResolver;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
@@ -98,6 +100,24 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         getBehaviorInstantiationListeners().add(injector);
         getResourceSettings().getStringResourceLoaders().add(new OSGiAwareBundleStringResourceLoader());
         getApplicationSettings().setInternalErrorPage(CustomInternalErrorPage.class);
+        //first we look in our own classloader, then in the wicket one
+        CompoundClassResolver resolver = new CompoundClassResolver();
+        resolver.add(new AbstractClassResolver() {
+			
+			@Override
+			public ClassLoader getClassLoader() {
+				return JabylonApplication.class.getClassLoader();
+			}
+		});
+        resolver.add(new AbstractClassResolver() {
+			
+			@Override
+			public ClassLoader getClassLoader() {
+				return Application.class.getClassLoader();
+			}
+		});
+        
+        getApplicationSettings().setClassResolver(resolver);
         getComponentInstantiationListeners().add(injector);
         getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());
         getAjaxRequestTargetListeners().add(new AjaxFeedbackListener());

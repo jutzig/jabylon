@@ -3,7 +3,7 @@
 
 Jabylon comes with 2 pre-installed security modules. However, it is designed in an extensible fashion so you can provide additional [JAAS](http://en.wikipedia.org/wiki/Java_Authentication_and_Authorization_Service) login module plug-ins as required.
 
-Which security modules are used in which order depends on the contents of `configuration/jaas.config`. You can add, delete, modify and reorder the modules there as you see fit.
+Which security modules are used in which order depends on the contents of `deploy/jaas.xml` (or `configuration/jaas.config` for the WAR deployment). You can add, delete, modify and reorder the modules there as you see fit.
 
 
 ## Database Login
@@ -18,7 +18,7 @@ The second pre-installed module enables LDAP authentication. On first login Jaby
 It is also possible to map LDAP to Jabylon roles. To use this feature, create a new Role and set it's type to `LDAP`. The name of the role must be identical to the name of a group in your LDAP.
 That way all users that belong to the LDAP group automatically receive this role.  
 
-To enable LDAP authentication you need to enter a few parameters into `configuration/jaas.config`
+To enable LDAP authentication you need to enter a few parameters into `deploy/jaas.xml`
 
  *  **ldap** the ldap server url
  * **ldap.port** the ldap server port

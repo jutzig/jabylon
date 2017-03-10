@@ -28,6 +28,9 @@
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
+                <directory>src/main/webapp</directory>
+            </resource>
+            <resource>
                 <directory>OSGI-INF</directory>
                 <targetPath>OSGI-INF</targetPath>
             </resource>
@@ -39,8 +42,11 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                    	<Bundle-ClassPath>.,WebContent</Bundle-ClassPath>
+                    	<Require-Bundle>org.apache.wicket.auth-roles,org.apache.wicket.core,org.apache.wicket.extensions,org.apache.wicket.ioc,org.apache.wicket.request,org.apache.wicket.util</Require-Bundle>
                         <Bundle-Activator>org.jabylon.rest.ui.Activator</Bundle-Activator>
                         <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
+                        <Web-ContextPath>/</Web-ContextPath>
                     </instructions>
                 </configuration>
             </plugin>

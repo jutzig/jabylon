@@ -30,9 +30,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.time.Duration;
 import org.jabylon.log.viewer.pages.util.CircularDeque;
+import org.jabylon.log.viewer.pages.util.LogAccess;
+import org.jabylon.log.viewer.pages.util.LogAccess.LogLevel;
 import org.jabylon.log.viewer.pages.util.LogTail;
-import org.jabylon.log.viewer.pages.util.LogbackUtil;
-import org.jabylon.log.viewer.pages.util.LogbackUtil.LogLevel;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.JabylonApplication;
 import org.jabylon.rest.ui.wicket.pages.GenericPage;
@@ -84,18 +84,18 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
     		}
     	});      	
     	final DropDownChoice<LogLevel> logLevel = new DropDownChoice<LogLevel>("loglevel", new EnumSetList(), new LogLevelRenderer());
-    	logLevel.setModel(Model.of(LogbackUtil.getLogLevel()));
+    	logLevel.setModel(Model.of(LogAccess.get().getLogLevel()));
         logLevel.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             
 			private static final long serialVersionUID = -4582780686636922915L;
 
 			protected void onUpdate(AjaxRequestTarget target) {
-            	LogbackUtil.setLogLevel(logLevel.getModelObject());
+            	LogAccess.get().setLogLevel(logLevel.getModelObject());
             }
         });
         add(logLevel);
         
-        File logFile = new File(LogbackUtil.getLogFiles().get(0).getLocation());
+        File logFile = new File(LogAccess.get().getLogFiles().get(0).getLocation());
         add(new DownloadLink("dowloadLog", logFile));     	
 
     }
@@ -124,7 +124,7 @@ public class LogViewerPage extends GenericPage<String> implements RestrictedComp
 	@Override
 	protected IModel<String> createModel(PageParameters params) {
 		try {
-    		logTail = new LogTail(LogbackUtil.getLogFiles().get(0).getLocation());
+    		logTail = new LogTail(LogAccess.get().getLogFiles().get(0).getLocation());
     		String content = readChunk(20);
     		logcontent = Model.of(content);    	
     	} catch (RuntimeException e) {

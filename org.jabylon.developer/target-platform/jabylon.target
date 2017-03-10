@@ -6,7 +6,7 @@
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-request/6.0.0" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-core/6.0.0" type="Directory"/>
-<location path="${system_property:user.home}/.m2/repository/org/apache/felix/org.apache.felix.bundlerepository/1.6.6" type="Directory"/>
+<location path="${system_property:user.home}/.m2/repository/org/apache/felix/org.apache.felix.bundlerepository/2.0.8" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/servicemix/bundles/org.apache.servicemix.bundles.javax-inject/1_2" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-auth-roles/6.0.0" type="Directory"/>
 <location path="${system_property:user.home}/.m2/repository/org/apache/wicket/wicket-extensions/6.0.0" type="Directory"/>

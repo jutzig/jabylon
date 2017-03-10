@@ -19,7 +19,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.eclipse.emf.common.util.EList;
-import org.jabylon.common.resolver.impl.UserManagmentURIHandler;
+import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.security.CommonPermissions;
@@ -76,7 +76,7 @@ public class CDOAuthenticatedSession extends AuthenticatedWebSession {
     {
         if(userManagementModel==null)
         {
-            Object resolved = Activator.getDefault().getRepositoryLookup().resolve(UserManagmentURIHandler.SECURITY_URI_PREFIX);
+            Object resolved = Activator.getDefault().getRepositoryLookup().resolve(URIConstants.SECURITY_URI_PREFIX);
             if (resolved instanceof UserManagement) {
                 UserManagement managment = (UserManagement) resolved;
                 userManagementModel = new EObjectModel<UserManagement>(managment);
