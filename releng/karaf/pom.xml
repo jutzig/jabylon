@@ -83,12 +83,16 @@
 			<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>karaf-maven-plugin</artifactId>
-				<version>${version.karaf.older}</version>
+				<version>${version.karaf}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<usePathPrefix>false</usePathPrefix>
 					<targetFile>jabylon</targetFile>
 					<archiveTarGz>false</archiveTarGz>
+					<javase>1.8</javase>
+					<system>
+						<jabylon.home>${karaf.home}/work</jabylon.home>
+					</system>
 					<config>
 						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi</org.osgi.framework.bootdelegation>
 						<karaf.framework>equinox</karaf.framework>
