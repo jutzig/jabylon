@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -37,6 +39,7 @@ import org.eclipse.emf.common.util.EList;
 import org.jabylon.common.resolver.URIConstants;
 import org.jabylon.common.resolver.URIResolver;
 import org.jabylon.properties.Project;
+import org.jabylon.properties.util.EObjectNameComparator;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -48,6 +51,7 @@ import org.jabylon.users.Role;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
+import org.jabylon.users.UsersPackage;
 import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,8 +88,10 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
 
     private List<UserPermission> createUserPermissions(Project project, UserManagement userManagement, List<IModel<User>> assignableUsers) {
         EList<User> users = userManagement.getUsers();
+        Set<User> sortedUsers = new  TreeSet<User>(new EObjectNameComparator<User>());
+        sortedUsers.addAll(users);
         List<UserPermission> result = new ArrayList<UserPermission>();
-        for (User user : users) {
+        for (User user : sortedUsers) {
             boolean filterUser = user.hasPermission(CommonPermissions.WILDCARD);
             PermissionSetting highestSetting = PermissionSetting.NONE;
             EList<Permission> allPermissions = user.getPermissions();
@@ -111,6 +117,7 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
             if (!filterUser)
                 assignableUsers.add(new EObjectModel<User>(user));
         }
+        Collections.sort(result);
         return result;
     }
 
@@ -118,7 +125,9 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
     private List<RolePermission> createRolePermissions(Project project, UserManagement userManagement, List<IModel<Role>> assignableRoles) {
         EList<Role> roles = userManagement.getRoles();
         List<RolePermission> result = new ArrayList<RolePermission>();
-        for (Role role : roles) {
+        Set<Role> sortedRoles = new  TreeSet<Role>(new EObjectNameComparator<Role>());
+        sortedRoles.addAll(roles);
+        for (Role role : sortedRoles) {
             boolean filterUser = hasPermission(role,CommonPermissions.WILDCARD);
             PermissionSetting highestSetting = PermissionSetting.NONE;
             EList<Permission> allPermissions = role.getPermissions();
@@ -144,6 +153,7 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
             if (!filterUser)
                 assignableRoles.add(new EObjectModel<Role>(role));
         }
+        Collections.sort(result);
         return result;
     }
 
@@ -528,11 +538,13 @@ class UserPermission implements Serializable, Comparable<UserPermission> {
     private static final long serialVersionUID = 1L;
     private IModel<User> registrant;
     private PermissionSetting permission;
+    private EObjectNameComparator<User> comparator;
 
     public UserPermission(IModel<User> registrant, PermissionSetting permission) {
         super();
         this.registrant = registrant;
         this.permission = permission;
+        this.comparator = new EObjectNameComparator<User>(UsersPackage.Literals.USER__DISPLAY_NAME.getName());
     }
 
     public UserPermission() {
@@ -560,7 +572,7 @@ class UserPermission implements Serializable, Comparable<UserPermission> {
             return -1;
         if (o.getRegistrant().getObject().getName() == null)
             return 1;
-        return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
+        return comparator.compare(registrant.getObject(), o.getRegistrant().getObject());
     }
 
 }
@@ -570,11 +582,13 @@ class RolePermission implements Serializable, Comparable<RolePermission> {
     private static final long serialVersionUID = 1L;
     private IModel<Role> registrant;
     private PermissionSetting permission;
+    private EObjectNameComparator<Role> comparator;
 
     public RolePermission(IModel<Role> registrant, PermissionSetting permission) {
         super();
         this.registrant = registrant;
         this.permission = permission;
+        this.comparator = new EObjectNameComparator<Role>();
     }
 
     public RolePermission() {
@@ -602,7 +616,7 @@ class RolePermission implements Serializable, Comparable<RolePermission> {
             return -1;
         if (o.getRegistrant().getObject().getName() == null)
             return 1;
-        return registrant.getObject().getName().compareTo(o.getRegistrant().getObject().getName());
+        return comparator.compare(registrant.getObject(), o.getRegistrant().getObject());
     }
 
 }
