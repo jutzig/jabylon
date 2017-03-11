@@ -198,6 +198,7 @@ public class LDAPLoginModule implements LoginModule {
     public DirContext createContext(String userDN, String userPassword) {
     	if(!options.containsKey(KEY_LDAP) || !options.containsKey(KEY_LDAP_PORT)) {
     		logger.debug("No LDAP url configured, skipping LDAP authentication");
+    		return null;
     	}
         DirContext ctx = null;
         Hashtable<String, String> env = new Hashtable<String, String>();

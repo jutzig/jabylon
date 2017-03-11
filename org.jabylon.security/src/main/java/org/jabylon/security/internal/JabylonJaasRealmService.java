@@ -39,6 +39,7 @@ public class JabylonJaasRealmService implements JaasRealm
         options.put(ProxyLoginModule.PROPERTY_BUNDLE, String.valueOf(bundleId));
         options.put(BundleContext.class.getName(), bc);
         
+        options = new HashMap<String, Object>();
         configEntries[1] = new AppConfigurationEntry(ProxyLoginModule.class.getName(),
                 LoginModuleControlFlag.SUFFICIENT, options);
             options.put(ProxyLoginModule.PROPERTY_MODULE, LDAPLoginModule.class.getName());
