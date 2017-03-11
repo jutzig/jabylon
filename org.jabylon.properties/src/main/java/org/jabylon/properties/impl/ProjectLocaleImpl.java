@@ -88,12 +88,14 @@ public class ProjectLocaleImpl extends ResolvableImpl<ProjectVersion, Resolvable
 		return super.basicSetParent(newParent, msgs);
 	}
 
-				/**
+	/**
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
     public Locale getLocale() {
+    	if(isMaster())
+    		return TEMPLATE_LOCALE;
 		return (Locale)eDynamicGet(PropertiesPackage.PROJECT_LOCALE__LOCALE, PropertiesPackage.Literals.PROJECT_LOCALE__LOCALE, true, true);
 	}
 

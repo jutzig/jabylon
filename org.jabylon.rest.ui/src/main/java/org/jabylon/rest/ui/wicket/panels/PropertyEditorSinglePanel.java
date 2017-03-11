@@ -56,6 +56,7 @@ import org.jabylon.common.review.ReviewParticipant;
 import org.jabylon.common.util.URLUtil;
 import org.jabylon.properties.Comment;
 import org.jabylon.properties.Project;
+import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
@@ -158,8 +159,9 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 	private void createModels(IModel<PropertyFileDescriptor> model, String targetKey, PropertyListMode mode) {
 
 		PropertyFileDescriptor descriptor = model.getObject();
+		boolean isTemplateOnly = descriptor.isMaster();
 		Multimap<String, Review> reviews = reviewModel.getObject();
-		PropertyFileDescriptor master = descriptor.getMaster();
+		PropertyFileDescriptor master = isTemplateOnly ? descriptor : descriptor.getMaster();
 		Map<String, Property> translated = new HashMap<String, Property>(loadProperties(descriptor).asMap());
 		PropertyFile templateFile = loadProperties(master);
 		total = templateFile.getProperties().size();
@@ -173,7 +175,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			if (translation == null)
 				translation = PropertiesFactory.eINSTANCE.createProperty();
 			translation.setKey(property.getKey());
-			PropertyPair pair = new PropertyPair(EcoreUtil.copy(property), EcoreUtil.copy(translation), descriptor.getVariant(), descriptor.cdoID());
+			PropertyPair pair = new PropertyPair(EcoreUtil.copy(property), EcoreUtil.copy(translation), isTemplateOnly ? ProjectLocale.TEMPLATE_LOCALE : descriptor.getVariant(), descriptor.cdoID());
 			String key = pair.getKey();
 			if (mode.apply(pair, reviews.get(key))) {
 				if (main != null) {
@@ -196,7 +198,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		// the template
 		if (next == null) {
 			for (Property property : translated.values()) {
-				PropertyPair pair = new PropertyPair(null, EcoreUtil.copy(property), descriptor.getVariant(), descriptor.cdoID());
+				PropertyPair pair = new PropertyPair(null, EcoreUtil.copy(property), isTemplateOnly ? ProjectLocale.TEMPLATE_LOCALE : descriptor.getVariant(), descriptor.cdoID());
 				if (mode.apply(pair, reviews.get(pair.getKey()))) {
 					if (main != null) {
 						// we already found a hit, this is to compute the next
@@ -245,6 +247,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 	private void buildComponentTree(PropertyPair previous, final PropertyPair main, PropertyPair next) {
 
+		boolean isTemplateOnly = main.getLanguage()==ProjectLocale.TEMPLATE_LOCALE;
 		Form<Property> pairForm = new PropertySubmitForm("properties-form", Model.of(main.getTranslation()), reviewModel, previousModel, mainModel, nextModel,
 				getModel(), editKind);
 
@@ -297,6 +300,8 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		final WebMarkupContainer templatePanel = new WebMarkupContainer("template-area");
 		templatePanel.setOutputMarkupId(true);
 		pairForm.add(templatePanel);
+		if(isTemplateOnly)
+			templatePanel.setVisible(false);
 		final WebMarkupContainer translationPanel = new WebMarkupContainer("translation-area");
 		translationPanel.setOutputMarkupId(true);
 		pairForm.add(translationPanel);
@@ -312,12 +317,14 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 
 		textArea = new TextArea<PropertyPair>("template-comment", new PropertyModel<PropertyPair>(main, "originalComment"));
 		templatePanel.add(textArea);
-
 		textArea = new TextArea<PropertyPair>("translation-comment", new PropertyModel<PropertyPair>(main, "translatedComment"));
 		translationPanel.add(textArea);
 		if (editKind == EditKind.READONLY)
 			textArea.add(new AttributeModifier("readonly", "readonly"));
-
+		if(isTemplateOnly) {
+			textArea.add(new AttributeModifier("class", "span12"));			
+		}
+		
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(main, "translated"));
 		textArea.add(new AttributeModifier("lang", new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
@@ -328,6 +335,9 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 				return main.getLanguage().toString().replace('_', '-');
 			}
 		}));
+		if(isTemplateOnly) {
+			textArea.add(new AttributeModifier("class", "span12"));			
+		}
 		textArea.add(new AttributeModifier("translate", "no"));
 		if (editKind == EditKind.READONLY)
 			textArea.add(new AttributeModifier("readonly", "readonly"));

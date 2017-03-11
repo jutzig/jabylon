@@ -17,7 +17,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.Query;
 import org.eclipse.core.runtime.IProgressMonitor;
-
+import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.PropertyFileDescriptor;
 
 
@@ -46,7 +46,7 @@ public interface QueryService {
      * @see org.jabylon.properties.PropertyFileDescriptor#getLocation()
      */
     String FIELD_TEMPLATE_LOCATION = "templatePath";
-    String MASTER = "master";
+    String MASTER = ProjectLocale.TEMPLATE_LOCALE.getLanguage();
     /**
      * if the value is true, marks that the document was produced by a tmx file and not a normal project
      */

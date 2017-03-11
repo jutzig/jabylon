@@ -78,7 +78,7 @@ public class TerminologyProviderImpl extends CacheLoader<Locale, Map<String, Pro
     @Override
     public Map<String, Property> getTerminology(Locale locale) {
         try {
-            return terminologyCache.get(locale);
+            return terminologyCache.get(locale == null ? ProjectLocale.TEMPLATE_LOCALE : locale);
         } catch (ExecutionException e) {
             logger.error("Failed to retrieve termininology from cache. Skipping check.",e);
             return Collections.emptyMap();

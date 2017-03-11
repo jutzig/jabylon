@@ -108,11 +108,12 @@ public class OtherTranslationsToolPanel extends GenericPanel<PropertyPair> {
 
         CDOID descriptorID = model.getObject().getDescriptorID();
         PropertyFileDescriptor descriptor = (PropertyFileDescriptor) resolver.resolve(descriptorID);
-        if(descriptor.getMaster()==null)
+        PropertyFileDescriptor master = descriptor.isMaster() ? descriptor : descriptor.getMaster();
+        if(master==null)
             return Collections.emptyList();
         BooleanQuery query = new BooleanQuery();
 
-        query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getMaster().getLocation().toString())), Occur.MUST);
+        query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, master.getLocation().toString())), Occur.MUST);
         query.add(new TermQuery(new Term(QueryService.FIELD_KEY, pair.getKey())), Occur.MUST);
 
         // exclude all masters from the search

@@ -31,6 +31,12 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface ProjectLocale extends Resolvable<ProjectVersion, Resolvable<?, ?>> {
+	
+	/**
+	 * a pseudo locale indicating the template "language"
+	 */
+	public static final Locale TEMPLATE_LOCALE = new Locale("template");
+	
     /**
 	 * Returns the value of the '<em><b>Locale</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -551,7 +551,7 @@ class PropertyPairListDataProvider
     {
         PropertyFileDescriptor descriptor = model.getObject();
         Multimap<String, Review> reviews = reviewModel.getObject();
-        PropertyFileDescriptor master = descriptor.getMaster();
+        PropertyFileDescriptor master = descriptor.isMaster() ? descriptor : descriptor.getMaster() ;
         Map<String, Property> translated = new HashMap<String, Property>(loadProperties(descriptor).asMap());
         PropertyFile templateFile = loadProperties(master);
 

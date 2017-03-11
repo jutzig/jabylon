@@ -10,6 +10,8 @@ package org.jabylon.rest.ui.wicket.xliff;
 
 import java.util.Locale;
 
+import org.jabylon.properties.ProjectLocale;
+
 /**
  * @author c.samulski (2016-01-26)
  */
@@ -24,7 +26,7 @@ public class Language implements java.io.Serializable {
 	}
 
 	public final boolean isTemplate() {
-		return locale == null;
+		return locale == null || locale==ProjectLocale.TEMPLATE_LOCALE;
 	}
 
 	@Override

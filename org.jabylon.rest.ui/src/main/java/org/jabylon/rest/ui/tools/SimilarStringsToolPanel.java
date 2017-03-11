@@ -51,6 +51,7 @@ import org.eclipse.emf.common.util.URI;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
 import org.jabylon.properties.Project;
+import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyFileDescriptor;
@@ -224,8 +225,9 @@ public class SimilarStringsToolPanel
 			return null;
 		String key = masterDoc.get(QueryService.FIELD_KEY);
 		BooleanQuery query = new BooleanQuery();
-		query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getLocation().toString())), Occur.MUST);
-		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, language.toString())), Occur.MUST);
+		if(!ProjectLocale.TEMPLATE_LOCALE.equals(language)) // for the template. this field is not set
+			query.add(new TermQuery(new Term(QueryService.FIELD_TEMPLATE_LOCATION, descriptor.getLocation().toString())), Occur.MUST);
+		query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, language==null ? "" : language.toString())), Occur.MUST);
 		query.add(new TermQuery(new Term(QueryService.FIELD_KEY, key)), Occur.MUST);
 
 		SearchResult searchResult = queryService.search(query, 1);

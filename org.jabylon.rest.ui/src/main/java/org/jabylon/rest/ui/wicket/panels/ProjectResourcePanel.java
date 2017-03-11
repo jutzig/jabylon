@@ -105,13 +105,6 @@ public class ProjectResourcePanel extends BasicResolvablePanel<Resolvable<?, ?>>
                 Resolvable<?, ?> resolvable = item.getModelObject();
 
 				item.setVisible(canView(resolvable));
-                if (resolvable instanceof ProjectLocale) {
-                    // hide the template language by default
-                    ProjectLocale locale = (ProjectLocale) resolvable;
-                    if (locale.isMaster())
-                        item.setVisible(false);
-
-                }
 
                 LinkTarget target = buildLinkTarget(resolvable, endsOnSlash);
 
@@ -368,7 +361,7 @@ class ImageSwitch extends PropertiesSwitch<Item<?>> {
 
     @Override
     public Item<?> caseProjectLocale(ProjectLocale object) {
-        if(object.getLocale()==null)
+        if(object.getLocale()==null || object.getLocale()==ProjectLocale.TEMPLATE_LOCALE)
             return addCSSIcon("icon-book");
         WebMarkupContainer markupContainer = new WebMarkupContainer("css-icon");
         item.add(markupContainer);
