@@ -10,15 +10,14 @@ In case you need to roll back an upgrade, it is advisable to backup the database
 
 ## Standalone
 
-If you run Jabylon in standalone mode, delete the folders `system`, `data`. Extract the new version of Jabylon folder into the same directory , overriding files where necessary and start Jabylon.
-In case you modified the host/port in `etc/jetty.xml` apply your change again.
+If you run Jabylon in standalone mode, extract the new version of Jabylon and copy over the `work` folder which contains the database and project rsources. In case you modified the host/port in `etc/org.ops4j.pax.web.cfg` apply your change again.
 
 ### Upgrade to 1.3.0
 
 Please note that starting from version 1.3.0 Jabylon is shipped in a Karaf container. To migrate from the old standalone distribution follow these steps:
 
- * Extract the new archiva to a new folder
- * Move or copy the folders `workspace`, `lucene` and `cdo` to the root of the new location
+ * Extract the new archive to a new folder
+ * Move or copy the folders `workspace`, `lucene` and `cdo` to a folder called `work` in the new location
  * If you modified the jaas configuration, apply your changes to `deploy/jaas.xml`
 
 ## WAR

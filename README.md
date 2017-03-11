@@ -20,6 +20,6 @@ Please check out our [website](http://jabylon.org) for details or have a look at
 
 ## Installation
 
-Jabylon can be installed as a WAR into your favorite application server or be used in standalone mode. The binaries can be obtained from the [download](http://jabylon.org/download.html) section.
+Jabylon is powered by Apache Karaf. The binaries can be obtained from the [download](http://jabylon.org/download.html) section.
 
 

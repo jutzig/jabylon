@@ -14,9 +14,9 @@ For more information on starting and stopping see the [Karaf documentation](http
 Jabylon should now start up and be available at [http://localhost:8080](http://localhost:8080).
 
 By default, it will bind to 0.0.0.0 so it will be reachable on all network interfaces.
-To adjust the default port you can change it in `etc/org.ops4j.pax.web.cf`.
+To adjust the default port and bind host you can change it in `etc/org.ops4j.pax.web.cf`.
 
-If you need to bind to a specific network interface (not 0.0.0.0) you can modify `etc/jetty.xml`.
+If you more advanced listener configuration you can modify `etc/jetty.xml`.
 Additional details can be found in the  [Karaf documentation](https://karaf.apache.org/manual/latest/webcontainer)
 
 ## Integration in the operating system - Service Wrapper
