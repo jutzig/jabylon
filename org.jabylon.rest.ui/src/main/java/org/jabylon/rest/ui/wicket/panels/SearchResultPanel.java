@@ -22,7 +22,9 @@ import javax.inject.Inject;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -34,6 +36,7 @@ import org.eclipse.emf.common.util.URI;
 import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.SearchResult;
+import org.jabylon.properties.ProjectLocale;
 import org.jabylon.properties.ProjectVersion;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
@@ -120,7 +123,14 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
                     Locale locale = WicketUtil.getLocaleFromString(projectLocale);
                     String localeLabel = locale.getDisplayName(WicketUtil.getUserLocale());
                     item.add(new Label("language", localeLabel));
-                    item.add(new Image("flag-icon", WicketUtil.getIconForLocale(locale)));
+                    if(locale==null || locale.equals(ProjectLocale.TEMPLATE_LOCALE)) {
+                        WebMarkupContainer markupContainer = new WebMarkupContainer("flag-icon");
+                        item.add(markupContainer);
+                        markupContainer.add(new AttributeModifier("class", "icon-book"));
+                    }
+                    else {
+                    	item.add(new Image("flag-icon", WicketUtil.getIconForLocale(locale)));                    	
+                    }
                 } catch (CorruptIndexException e) {
                     error(e.getMessage());
                     logger.error("Search failed", e);
@@ -134,7 +144,7 @@ public class SearchResultPanel<T> extends GenericPanel<T> {
         };
         add(repeater);
     }
-
+    
     public QueryService getQueryService() {
         return queryService;
     }

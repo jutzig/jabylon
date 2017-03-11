@@ -154,8 +154,6 @@ public class QueryServiceImpl implements QueryService {
         } catch (ParseException e) {
             throw new RuntimeException(e.getMessage(),e);
         }
-        //TODO: should master files be searchable too?
-        query.add(new TermQuery(new Term(QueryService.FIELD_LOCALE, QueryService.MASTER)), Occur.MUST_NOT); //exclude all masters from the search
         return query;
     }
 
