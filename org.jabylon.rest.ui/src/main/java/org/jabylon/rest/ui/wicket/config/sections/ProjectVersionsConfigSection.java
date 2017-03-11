@@ -302,14 +302,18 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
             public IStatus run(IProgressMonitor monitor) {
                 CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
                 try {
+                	SubMonitor subMonitor = SubMonitor.convert(monitor,100);
                     ProjectVersion version = model.getObject();
                     version = transaction.getObject(version);
                     TeamProvider provider = TeamProviderUtil.getTeamProvider(version.getParent().getTeamProvider());
-                    provider.checkout(version, monitor);
+                    provider.checkout(version, subMonitor.newChild(75));
+                    rescanProject(subMonitor.newChild(25), model);
                 } catch (TeamProviderException e) {
                     logger.error("Checkout failed",e);
                     return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Checkout failed",e);
-                }
+                } catch (CommitException e) {
+                	return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
+				}
                 finally{
                     try {
                         transaction.commit();
@@ -345,26 +349,11 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
 
             @Override
             public IStatus run(IProgressMonitor monitor) {
-                ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
-                ProjectVersion version = model.getObject();
-                SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
-                CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
-                version = transaction.getObject(version);
-                version.fullScan(scanConfiguration, subMonitor.newChild(50));
-                subMonitor.setTaskName("Database Sync");
-                try {
-                    transaction.commit(subMonitor.newChild(50));
-                } catch (CommitException e) {
-                    return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
-                } finally {
-                	transaction.close();
-                	PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
-                	if(persistenceService!=null)
-                		persistenceService.clearCache();
-                	else
-                		logger.error("Could not obtain property persistence service");
-                }
-                monitor.done();
+            	try {
+					rescanProject(monitor, model);
+				} catch (CommitException e) {
+					return new Status(IStatus.ERROR, Activator.BUNDLE_ID, "Transaction commit failed",e);
+				}
                 return Status.OK_STATUS;
             }
         };
@@ -381,6 +370,27 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
             };
         };
 
+    }
+    
+    private void rescanProject(IProgressMonitor monitor, final IModel<ProjectVersion> model) throws CommitException {
+        ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
+        ProjectVersion version = model.getObject();
+        SubMonitor subMonitor = SubMonitor.convert(monitor, "Scanning", 100);
+        CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
+        version = transaction.getObject(version);
+        version.fullScan(scanConfiguration, subMonitor.newChild(50));
+        subMonitor.setTaskName("Database Sync");
+        try {
+            transaction.commit(subMonitor.newChild(50));
+        } finally {
+        	transaction.close();
+        	PropertyPersistenceService persistenceService = Activator.getDefault().getPersistenceService();
+        	if(persistenceService!=null)
+        		persistenceService.clearCache();
+        	else
+        		logger.error("Could not obtain property persistence service");
+        }
+        monitor.done();
     }
 
 
