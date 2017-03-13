@@ -63,7 +63,7 @@ import com.google.common.collect.TreeMultimap;
  * @author jutzig.dev@googlemail.com
  *
  */
-@Component(enabled=true)
+@Component(enabled=true, immediate=true)
 @Service
 public class OBRRepositoryConnectorImpl implements OBRRepositoryService {
 
