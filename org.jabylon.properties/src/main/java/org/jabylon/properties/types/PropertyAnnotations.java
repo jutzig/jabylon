@@ -33,4 +33,10 @@ public class PropertyAnnotations {
 	 * the source language
 	 */
 	public static final String TARGET_LANGUAGE = "target";
+	
+	/**
+	 * marks a property as non translatable which will filter it from the jabylon property model
+	 * e.g. @non-translatable(author="username")
+	 */
+	public static final String NON_TRANSLATABLE = "non-translatable";
 }

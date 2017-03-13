@@ -29,6 +29,7 @@ import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.properties.Property;
 import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
+import org.jabylon.properties.types.PropertyAnnotations;
 import org.jabylon.properties.types.PropertyConverter;
 import org.jabylon.properties.util.NativeToAsciiConverter;
 import org.slf4j.Logger;
@@ -115,8 +116,16 @@ public class PropertiesHelper implements PropertyConverter {
                     continue;
                 }
                 property = PropertiesFactory.eINSTANCE.createProperty();
-                if(comment.length()>0)
-                    property.setComment(comment.toString());
+                if(comment.length()>0) {
+                	property.setComment(comment.toString());
+                	PropertyAnnotation nonTranslatable = property.findAnnotation(PropertyAnnotations.NON_TRANSLATABLE);
+                	if(nonTranslatable!=null) {
+                		logger.info("Property {} in file {} is marked as non-translatable. Skipping",property.getKey(),uri);
+                		propertyValue.setLength(0);
+                		comment.setLength(0);;
+                		continue;
+                	}
+                }
                 if(propertyValue.length()==0)
                     continue;
                 String[] parts = split(propertyValue.toString());

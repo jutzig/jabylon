@@ -225,6 +225,20 @@ public class PropertiesHelperTest {
 		assertEquals("With the leading \\ we need to read into the next line and also ignore leading whitespace there","testtest", property.getValue());
 	}
 
+
+	@Test
+	public void testReadIgnoredProperties() throws IOException {
+		BufferedReader reader = asReader("key = test\n#comment\n#@non-translatable\nkey1=value\n#new comment\nkey2=value");
+		Property property = fixture.readProperty(reader);
+		assertEquals("key", property.getKey());
+		assertEquals("test", property.getValue());
+		
+		property = fixture.readProperty(reader);
+		assertEquals("key1 must be ignored","key2", property.getKey());
+		assertEquals("value", property.getValue());
+		assertEquals("new comment", property.getComment());
+	}	
+	
 	@Test
 	public void testWritePropertyMultilineComment() throws IOException {
 		Property property = PropertiesFactory.eINSTANCE.createProperty();

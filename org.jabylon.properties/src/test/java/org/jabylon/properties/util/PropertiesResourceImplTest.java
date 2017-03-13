@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ContentHandler.ByteOrderMark;
 import org.jabylon.properties.PropertiesFactory;
 import org.jabylon.properties.Property;
+import org.jabylon.properties.PropertyAnnotation;
 import org.jabylon.properties.PropertyFile;
 import org.jabylon.properties.types.impl.JavaPropertyScanner;
 import org.jabylon.properties.types.impl.JavaPropertyScannerUTF8;
@@ -115,7 +116,34 @@ public class PropertiesResourceImplTest
         assertNull(file.getLicenseHeader());
     }
 
+    @Test
+    public void testReadPropertiesWithAnnotations()
+        throws IOException
+    {
+        URI uri = URI.createFileURI("src/test/resources/annotations/annotations.properties");
+        getFixture().setURI(uri);
+        getFixture().load(null);
+        PropertyFile file = (PropertyFile)getFixture().getContents().get(0);
+        EList<Property> properties = file.getProperties();
+        //there is actually 3, but one needs to be hidden because it is non-translatable
+        assertEquals(2, properties.size());
 
+        Property property = properties.get(0);
+        assertEquals("key", property.getKey());
+        assertEquals("value", property.getValue());
+        
+
+        property = properties.get(1);
+        assertEquals("key3", property.getKey());
+        assertEquals("value", property.getValue());
+        
+        EList<PropertyAnnotation> annotations = property.getAnnotations();
+        PropertyAnnotation annotation = annotations.get(0);
+        assertEquals("myannotation", annotation.getName());
+        assertEquals("bar", annotation.getValues().get("foo"));
+        
+    }
+    
     /**
      * @see https://github.com/jutzig/jabylon/issues/62
      */
