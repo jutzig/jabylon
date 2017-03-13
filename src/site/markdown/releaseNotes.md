@@ -1,6 +1,24 @@
 
 # Release Notes
 
+## Jabylon 1.3.0
+
+Jabylon 1.3.0 was released on the **16th March 2017** and is available for [download](download.html).
+
+This release switches from the previous standalone distribution to an Apache Karaf based distribution. Please see the  [upgrade guide](upgrade.html) for specifics on
+how to migrate from an older release to 1.3.0.
+ 
+The release includes several new features and bugfixes:
+
+ * [46](https://github.com/jutzig/jabylon/issues/46) -  Create a Apache Karaf distribution
+ * [14](https://github.com/jutzig/jabylon/issues/14) -  Allow editing the template language
+ * [253](https://github.com/jutzig/jabylon/issues/253) - Allow searching the template language
+ * [261](https://github.com/jutzig/jabylon/issues/261) - User combobox should be sorted in alphabetical manor
+ * [262](https://github.com/jutzig/jabylon/issues/262) - Mark properties as non-translatable
+ 
+  
+For a full list see [here](https://github.com/jutzig/jabylon/issues?q=milestone%3A1.3.0+is%3Aclosed) 
+
 ## Jabylon 1.2.0
 
 Jabylon 1.2.0 was released on the **14th April 2016** and is available for [download](download.html).

@@ -361,7 +361,7 @@
 				<executions>
 					<execution>
 						<id>filter-site</id>
-						<phase>process-resources</phase>
+						<phase>pre-site</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>

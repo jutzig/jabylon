@@ -52,9 +52,18 @@ On the top you will find two more buttons (4) _Save_ and _Reset_. You can use th
 
 ## Translation Checks
 
-If your project is confiured to execute automatic translation checks and the current translation fails for one or more of those, you can see this in the upper left corner. In the example of the screenshot, the template language was _'Search {0}'_. The _{0}_ is an indicator that the application will insert a value at runtime into the string. The translation check now validates if the translation contains the right amount (and numbering) of replacement variables. In this case, it does not because the _{0}_ is missing in the translation.
+If your project is configured to execute automatic translation checks and the current translation fails for one or more of those, you can see this in the upper left corner. In the example of the screenshot, the template language was _'Search {0}'_. The _{0}_ is an indicator that the application will insert a value at runtime into the string. The translation check now validates if the translation contains the right amount (and numbering) of replacement variables. In this case, it does not because the _{0}_ is missing in the translation.
 
 ![Translation Checks](images/reviewExample.png)
+
+## Non-translatable Properties
+
+Sometime property files contain both translatable and non-translatable properties (e.g. a version number). To exclude non-translatable properties from checks and translations you can annotate the non-translatable properties.
+Simply put the `@non-translatable` annotation into the comment section of the non-translatable property in the template language. In a normal java properties file this would look as follows:
+
+    #some comment
+    #@non-translatable
+    version = 1.0.0
 
 
 ## Translation Tools
