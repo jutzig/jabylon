@@ -127,7 +127,7 @@ public class GeneralProjectConfig extends AbstractConfigSection<Project> {
         String projectName = null;
         if(getDomainObject()!=null)
             projectName = getDomainObject().getName();
-        return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_EDIT);
+        return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_CONFIG);
     }
 
 
