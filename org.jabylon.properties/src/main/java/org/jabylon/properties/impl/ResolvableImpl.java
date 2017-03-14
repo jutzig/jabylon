@@ -232,9 +232,9 @@ public abstract class ResolvableImpl<P extends Resolvable<?, ?>, C extends Resol
         
         if (percentComplete != getPercentComplete()) {
             setPercentComplete(percentComplete);
-            if (parent != null) {
-                parent.updatePercentComplete();
-            }
+        }
+        if (parent != null) {
+        	parent.updatePercentComplete();
         }
         return percentComplete;
     }
