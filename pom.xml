@@ -32,7 +32,7 @@
 		<version.guava>13.0.1</version.guava>
 		<!-- need version with qualifier here, to disambiguate from non-bundle 
 			artifact in central -->
-		<version.jsch>0.1.41-v201101211617</version.jsch>
+		<version.jsch>0.1.54-v20170116-1932</version.jsch>
 		<version.ant>1.8.4</version.ant>
 		<version.wicket>6.0.0</version.wicket>
 		<version.inject>1_2</version.inject>

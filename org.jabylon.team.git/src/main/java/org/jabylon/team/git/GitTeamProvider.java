@@ -8,18 +8,16 @@
  */
 package org.jabylon.team.git;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
@@ -60,6 +58,7 @@ import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
@@ -68,22 +67,22 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
-import org.eclipse.jgit.transport.RemoteSession;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.SshTransport;
 import org.eclipse.jgit.transport.Transport;
+import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.util.FS;
-import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.util.PreferencesUtil;
@@ -571,34 +570,44 @@ public class GitTeamProvider implements TeamProvider {
         Preferences node = PreferencesUtil.scopeFor(project);
         String username = node.get(GitConstants.KEY_USERNAME, "");
         String password = node.get(GitConstants.KEY_PASSWORD, "");
-        return new UsernamePasswordCredentialsProvider(username, password);
+        return new UsernamePasswordCredentialsProvider(username, password) {
+        	@Override
+        	public boolean supports(CredentialItem... items) {
+        		for (CredentialItem credentialItem : items) {
+					if (credentialItem instanceof CredentialItem.YesNoType) {
+						return true;
+					}
+					else
+						return super.supports(credentialItem);
+				}
+        		return super.supports(items);
+        	}
+        	
+        	@Override
+        	public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
+        		List<CredentialItem> remaining = new ArrayList<CredentialItem>(Arrays.asList(items));
+        		for (CredentialItem item : items) {
+        			if (item instanceof CredentialItem.YesNoType) {
+						//unknown host warning
+        				remaining.remove(item);
+						CredentialItem.YesNoType yesNo = (CredentialItem.YesNoType) item;
+						yesNo.setValue(true);											
+					}
+				}
+        		return super.get(uri, remaining.toArray(new CredentialItem[0]));
+        	}
+        };
     }
 
 	private TransportConfigCallback createTransportConfigCallback(Project project) {
 
         Preferences node = PreferencesUtil.scopeFor(project);
-//        String username = node.get(GitConstants.KEY_USERNAME, "");
+        final String username = node.get(GitConstants.KEY_USERNAME, "");
         final String password = node.get(GitConstants.KEY_PASSWORD, "");
-        String privateKey = node.get(GitConstants.KEY_PRIVATE_KEY, null);
-        File tempFile = null;
-        if(privateKey!=null)
-        {
-        	try {
-				// store it somewhere temporary
-				File tempDir = new File(new File(ServerConstants.WORKING_DIR),"temp");
-				tempDir.mkdirs();
-				tempFile = File.createTempFile("temp", ".key", tempDir);
-				Files.copy(new ByteArrayInputStream(privateKey.getBytes("UTF-8")), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			}  catch (IOException e) {
-				LOGGER.error("Could not store private key to "+tempFile.getAbsolutePath(),e);
-			}
-        	
-        }
-        final File keyFile = tempFile;
+        final String privateKey = node.get(GitConstants.KEY_PRIVATE_KEY, null);
+
 		final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
 
-			AtomicInteger sessionCounter = new AtomicInteger();
-			
 			@Override
 			protected void configure(Host host, Session session) {
 
@@ -607,26 +616,14 @@ public class GitTeamProvider implements TeamProvider {
 
 			protected JSch createDefaultJSch(FS fs) throws JSchException {
 				JSch defaultJSch = super.createDefaultJSch(fs);
-				if(keyFile!=null)
-					defaultJSch.addIdentity(keyFile.getAbsolutePath(),password);
+				if(privateKey!=null) {
+					byte[] passphrase = null;
+					if(password!=null && !password.trim().isEmpty())
+						passphrase = password.getBytes(StandardCharsets.UTF_8);
+					defaultJSch.addIdentity(username, privateKey.getBytes(), null, passphrase);
+				}
 				return defaultJSch;
 			}
-			
-			@Override
-			protected Session createSession(Host hc, String user, String host, int port, FS fs) throws JSchException {
-				sessionCounter.getAndIncrement();
-				return super.createSession(hc, user, host, port, fs);
-			}
-			
-			@Override
-			public void releaseSession(RemoteSession session) {
-				if(sessionCounter.decrementAndGet()==0) {
-					LOGGER.debug("Connection closing, deleting keyfile");
-					keyFile.delete();
-				}
-				super.releaseSession(session);
-			}
-			
 		};
 		return new TransportConfigCallback() {
 

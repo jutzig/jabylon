@@ -94,8 +94,9 @@
 						<jabylon.home>${karaf.home}/work</jabylon.home>
 					</system>
 					<config>
-						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi</org.osgi.framework.bootdelegation>
+						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi,javax.crypto,javax.crypto.*</org.osgi.framework.bootdelegation>
 						<karaf.framework>equinox</karaf.framework>
+						<osgi.instance.area>${karaf.home}/work/workspace</osgi.instance.area>
 						<org.eclipse.equinox.http.jetty.http.port>8080</org.eclipse.equinox.http.jetty.http.port>
 						<org.eclipse.equinox.http.jetty.http.host>0.0.0.0</org.eclipse.equinox.http.jetty.http.host>
 					</config>
