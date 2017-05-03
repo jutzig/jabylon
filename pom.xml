@@ -290,7 +290,8 @@
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<rebuildBundle>true</rebuildBundle>
-					<remoteOBR>jabylon</remoteOBR>
+					<!-- needed for OBR deployment -->
+					<!-- <remoteOBR>jabylon</remoteOBR> --> 
 					<instructions>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
