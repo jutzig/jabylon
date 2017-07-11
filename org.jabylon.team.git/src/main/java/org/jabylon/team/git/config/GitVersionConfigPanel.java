@@ -35,6 +35,14 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
     public GitVersionConfigPanel(String id, IModel<ProjectVersion> model, Preferences config) {
         super(id, model);
 
+        PreferencesPropertyModel branchName = new PreferencesPropertyModel(config, GitConstants.KEY_BRANCH_NAME, (String)null);
+        ControlGroup branchNameGroup = new ControlGroup("branch-name-group", nls("branch.name.label"),nls("branch.name.help"));
+        TextField<String> branchNameTextField = new TextField<String>("branch-name",branchName);
+        branchNameTextField.setRequired(false);
+        branchNameTextField.setConvertEmptyInputStringToNull(true);
+        branchNameGroup.add(branchNameTextField);
+        add(branchNameGroup);
+
         PreferencesPropertyModel pushRefspecModel = new PreferencesPropertyModel(config, GitConstants.KEY_PUSH_REFSPEC, "");
         ControlGroup pushRefspecGroup = new ControlGroup("push-refspec-group", nls("push.refspec.label"),nls("push.refspec.help"));
         TextField<String> refspecTextField = new TextField<String>("push-refspec",pushRefspecModel);
@@ -43,6 +51,7 @@ public class GitVersionConfigPanel extends BasicPanel<ProjectVersion> {
         refspecTextField.setConvertEmptyInputStringToNull(false);
         pushRefspecGroup.add(refspecTextField);
         add(pushRefspecGroup);
+        
         
         BooleanPreferencesPropertyModel rebase = new BooleanPreferencesPropertyModel(config, GitConstants.KEY_REBASE, true);
         ControlGroup rebaseGroup = new ControlGroup("rebase-group", nls("rebase.label"),nls("rebase.help"));

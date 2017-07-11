@@ -124,6 +124,7 @@ public class GitTeamProvider implements TeamProvider {
     	
         SubMonitor subMon = SubMonitor.convert(monitor,100);
         List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
+        String branchName = getBranchName(project);
         try {
             Repository repository = createRepository(project);
             Git git = Git.wrap(repository);
@@ -132,7 +133,7 @@ public class GitTeamProvider implements TeamProvider {
             if(uri!=null)
             	fetchCommand.setRemote(stripUserInfo(uri).toString());
             String refspecString = "refs/heads/{0}:refs/remotes/origin/{0}";
-            refspecString = MessageFormat.format(refspecString, project.getName());
+            refspecString = MessageFormat.format(refspecString, branchName);
             RefSpec spec = new RefSpec(refspecString);
             fetchCommand.setRefSpecs(spec);
             subMon.subTask("Fetching from remote");
@@ -141,7 +142,7 @@ public class GitTeamProvider implements TeamProvider {
             fetchCommand.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
             fetchCommand.call();
-            ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+project.getName()+"^{tree}");
+            ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+branchName+"^{tree}");
             
             DiffCommand diff = git.diff();
             subMon.subTask("Caculating Diff");
@@ -166,13 +167,13 @@ public class GitTeamProvider implements TeamProvider {
             {
             	checkCanceled(subMon);
             	//no more cancel after this point
-                ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+project.getName()+"^{commit}");
-                LOGGER.info("Merging remote commit {} to {}/{}", new Object[]{lastCommitID,project.getName(),project.getParent().getName()});
+                ObjectId lastCommitID = repository.resolve("refs/remotes/origin/"+branchName+"^{commit}");
+                LOGGER.info("Merging remote commit {} to {}/{}", new Object[]{lastCommitID,branchName,project.getParent().getName()});
                 //TODO: use rebase here?
                 if(isRebase(project))
                 {
                 	RebaseCommand rebase = git.rebase();
-                	rebase.setUpstream("refs/remotes/origin/"+project.getName());
+                	rebase.setUpstream("refs/remotes/origin/"+branchName);
                 	RebaseResult result = rebase.call();
                 	if(result.getStatus().isSuccessful())
                 	{
@@ -266,10 +267,11 @@ public class GitTeamProvider implements TeamProvider {
             CloneCommand clone = Git.cloneRepository();
             clone.setBare(false);
             clone.setNoCheckout(false);
+            String branchName = getBranchName(project);
             // if(!"master".equals(project.getName()))
-            clone.setBranch("refs/heads/" + project.getName());
+            clone.setBranch("refs/heads/" + branchName);
             // clone.setCloneAllBranches(true);
-            clone.setBranchesToClone(Collections.singletonList("refs/heads/" + project.getName()));
+            clone.setBranchesToClone(Collections.singletonList("refs/heads/" + branchName));
 
             clone.setDirectory(repoDir);
 
@@ -350,7 +352,7 @@ public class GitTeamProvider implements TeamProvider {
             	}
             }
             
-            Ref ref = repository.getRef(project.getName());
+            Ref ref = repository.getRef(getBranchName(project));
             if(ref!=null)
             {
             	LOGGER.info("Successfully pushed {} to {}",ref.getObjectId(),project.getParent().getRepositoryURI());
@@ -382,14 +384,19 @@ public class GitTeamProvider implements TeamProvider {
         String refSpecString = node.get(GitConstants.KEY_PUSH_REFSPEC, GitConstants.DEFAULT_PUSH_REFSPEC);
         if(refSpecString.isEmpty())
         	refSpecString = GitConstants.DEFAULT_PUSH_REFSPEC;
-        refSpecString = MessageFormat.format(refSpecString, version.getName());
+        refSpecString = MessageFormat.format(refSpecString, getBranchName(version));
 		return new RefSpec(refSpecString);
 	}
     
     private boolean isRebase(ProjectVersion version) {
         Preferences node = PreferencesUtil.scopeFor(version);
         return node.getBoolean(GitConstants.KEY_REBASE, GitConstants.DEFAULT_REBASE);
-	}    
+	}  
+    
+    private String getBranchName(ProjectVersion version) {
+    	Preferences node = PreferencesUtil.scopeFor(version);
+    	return node.get(GitConstants.KEY_BRANCH_NAME, version.getName());
+    }
 
 	private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
     	monitor.beginTask("Creating Diff", 100);
@@ -439,9 +446,10 @@ public class GitTeamProvider implements TeamProvider {
 			SubMonitor subMon = SubMonitor.convert(monitor, "Reset", 100);
 			Git git = new Git(repository);
 			subMon.subTask("Calculating Diff");
+			String branchName = getBranchName(project);
 			DiffCommand diffCommand = git.diff();
 			diffCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(30)));
-			diffCommand.setOldTree(prepareTreeParser(repository, "refs/remotes/origin/"+project.getName()));
+			diffCommand.setOldTree(prepareTreeParser(repository, "refs/remotes/origin/"+branchName));
 			diffCommand.setNewTree(null);
 			List<DiffEntry> diffs = diffCommand.call();
 			for (DiffEntry diffEntry : diffs) {
@@ -454,7 +462,7 @@ public class GitTeamProvider implements TeamProvider {
 			subMon.subTask("Executing Reset");
 			ResetCommand reset = git.reset();
 			reset.setMode(ResetType.HARD);
-			reset.setRef("refs/remotes/origin/"+project.getName());
+			reset.setRef("refs/remotes/origin/"+branchName);
 			reset.call();
 			
 			

@@ -36,6 +36,12 @@ public class GitConstants {
      * the refspec used for pushes
      */
     public static final String KEY_PUSH_REFSPEC = "git.push.refspec";
+    
+    /**
+     * the real branchname if it doesn't match ProjectVersion.getName
+     */
+    public static final String KEY_BRANCH_NAME = "git.branch.name";
+    
     /**
      * the default for the refspec
      */

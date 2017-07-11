@@ -30,8 +30,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
-import org.eclipse.emf.cdo.util.CDOUtil;
+import org.apache.wicket.validation.validator.PatternValidator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jabylon.properties.Project;
@@ -64,6 +63,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
         IModel<String> nameProperty = new EObjectPropertyModel<String, ProjectVersion>(model, PropertiesPackage.Literals.RESOLVABLE__NAME);
         TextField<String> field = new RequiredTextField<String>("inputName", nameProperty);
         field.add(UniqueNameValidator.fromCollection(getBranches(model),PropertiesPackage.Literals.RESOLVABLE__NAME,model.getObject()));
+        field.add(new PatternValidator("[A-Za-z0-9.\\-+#]+"));
         add(field);
 
         ControlGroup readOnlyGroup = new ControlGroup("readonly-group",null, nls("readonly.help"));
