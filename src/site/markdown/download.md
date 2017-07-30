@@ -12,16 +12,16 @@ This version requires a **JRE 8 or higher**
 
 ### Standalone
 
-Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/${release.tag}/jabylon.zip) to run Jabylon without a servlet container.
+Download the [standalone application](https://github.com/jutzig/jabylon/releases/download/${release.version}/jabylon.zip) to run Jabylon without a servlet container.
 
 ### [Deprecated] WAR  
  
-Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/${release.tag}/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
+Download the [Jabylon WAR](https://github.com/jutzig/jabylon/releases/download/${release.version}/jabylon.war) if you plan to deploy Jabylon in a servlet container like [Jetty](http://www.eclipse.org/jetty/ ) or [Tomcat](http://tomcat.apache.org/).
 
 
 ### Source
 
-Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/${release.tag}.zip).
+Sources can be obtained from [Github](https://github.com/jutzig/jabylon/archive/${release.version}.zip).
 
 
 ## Nightly Build
