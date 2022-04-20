@@ -8,7 +8,7 @@
         <artifactId>jabylon-parent</artifactId>
         <version>1.3.1-SNAPSHOT</version>
     </parent>
-    
+
     <description>provides the SchedulerService and ProgressService that can be used to schedule tasks</description>
 
     <properties>
@@ -37,7 +37,7 @@
                         <Embed-Dependency>quartz</Embed-Dependency>
                         <Embed-Directory>lib</Embed-Directory>
                         <Embed-StripVersion>true</Embed-StripVersion>
-                        <Import-Package>!com.mchange.v2.c3p0,!javax.*,*;common=!;core=!;registry=!</Import-Package>
+                        <Import-Package>org.jabylon.*,org.slf4j.*,org.osgi.*,org.eclipse*;common=!;core=!;registry=!</Import-Package>
                         <!-- we need to export the internal packages because the UI references jobs -->
                         <_exportcontents>org.jabylon*</_exportcontents>
                         <Bundle-ActivationPolicy>!</Bundle-ActivationPolicy>
@@ -56,6 +56,12 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<groupId>*</groupId>
+            		<artifactId>*</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -99,6 +105,10 @@
         <dependency>
         	<groupId>org.eclipse.equinox</groupId>
         	<artifactId>common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 </project>

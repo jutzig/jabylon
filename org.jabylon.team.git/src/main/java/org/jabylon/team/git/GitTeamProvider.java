@@ -10,7 +10,7 @@ package org.jabylon.team.git;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.security.KeyPair;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +19,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sshd.common.NamedResource;
+import org.apache.sshd.common.config.keys.FilePasswordProvider;
+import org.apache.sshd.common.config.keys.loader.KeyPairResourceParser;
+import org.apache.sshd.common.config.keys.loader.openssh.OpenSSHKeyPairResourceParser;
+import org.apache.sshd.common.config.keys.loader.pem.PEMResourceParserUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
@@ -69,8 +75,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.JschConfigSessionFactory;
-import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
@@ -79,10 +83,11 @@ import org.eclipse.jgit.transport.SshTransport;
 import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.transport.sshd.KeyPasswordProvider;
+import org.eclipse.jgit.transport.sshd.SshdSessionFactory;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
-import org.eclipse.jgit.util.FS;
 import org.jabylon.common.team.TeamProvider;
 import org.jabylon.common.team.TeamProviderException;
 import org.jabylon.common.util.PreferencesUtil;
@@ -98,17 +103,13 @@ import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-
 @Component(enabled=true,immediate=true)
 @Service
 public class GitTeamProvider implements TeamProvider {
-	
+
 	@Property(value="Git")
 	private static String KEY_KIND = TeamProvider.KEY_KIND;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitTeamProvider.class);
 
     private Repository createRepository(ProjectVersion project) throws IOException {
@@ -121,13 +122,13 @@ public class GitTeamProvider implements TeamProvider {
     @Override
     public Collection<PropertyFileDiff> update(ProjectVersion project, IProgressMonitor monitor)
         throws TeamProviderException {
-    	
+
         SubMonitor subMon = SubMonitor.convert(monitor,100);
         List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
         String branchName = getBranchName(project);
-        try {
-            Repository repository = createRepository(project);
-            Git git = Git.wrap(repository);
+        try (Repository repository = createRepository(project);
+            Git git = Git.wrap(repository);){
+
             FetchCommand fetchCommand = git.fetch();
             URI uri = project.getParent().getRepositoryURI();
             if(uri!=null)
@@ -143,17 +144,15 @@ public class GitTeamProvider implements TeamProvider {
             fetchCommand.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(80)));
             fetchCommand.call();
             ObjectId remoteHead = repository.resolve("refs/remotes/origin/"+branchName+"^{tree}");
-            
+
             DiffCommand diff = git.diff();
             subMon.subTask("Caculating Diff");
             diff.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(20)));
             diff.setOldTree(new FileTreeIterator(repository));
             CanonicalTreeParser p = new CanonicalTreeParser();
-            ObjectReader reader = repository.newObjectReader();
-            try {
+            try (ObjectReader reader = repository.newObjectReader())
+            {
                 p.reset(reader, remoteHead);
-            } finally {
-                reader.release();
             }
             diff.setNewTree(p);
             checkCanceled(subMon);
@@ -193,8 +192,8 @@ public class GitTeamProvider implements TeamProvider {
                 	MergeCommand merge = git.merge();
                 	merge.include(lastCommitID);
                 	MergeResult mergeResult = merge.call();
-                	
-                	LOGGER.info("Merge finished: {}",mergeResult.getMergeStatus());                	
+
+                	LOGGER.info("Merge finished: {}",mergeResult.getMergeStatus());
                 }
             }
             else
@@ -219,7 +218,7 @@ public class GitTeamProvider implements TeamProvider {
     private void checkCanceled(IProgressMonitor monitor) {
     	if(monitor.isCanceled())
     		throw new OperationCanceledException();
-		
+
 	}
 
 	private PropertyFileDiff convertDiffEntry(DiffEntry diffEntry) {
@@ -243,7 +242,7 @@ public class GitTeamProvider implements TeamProvider {
                 break;
             case RENAME:
                 kind = DiffKind.MOVE;
-                break;	
+                break;
         }
         diff.setKind(kind);
         return diff;
@@ -281,7 +280,7 @@ public class GitTeamProvider implements TeamProvider {
             clone.setCredentialsProvider(createCredentialsProvider(project.getParent()));
             clone.setURI(stripUserInfo(uri).toString());
             clone.setProgressMonitor(new ProgressMonitorWrapper(subMon.newChild(70)));
-            
+
             clone.call();
             subMon.done();
             if (monitor != null)
@@ -297,17 +296,18 @@ public class GitTeamProvider implements TeamProvider {
 
 	@Override
     public void commit(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
-        try {
-            Repository repository = createRepository(project);
+        try (Repository repository = createRepository(project);
+             Git git = new Git(repository);){
+
             SubMonitor subMon = SubMonitor.convert(monitor, "Commit", 100);
-            Git git = new Git(repository);
+
             // AddCommand addCommand = git.add();
             List<String> changedFiles = addNewFiles(git, subMon.newChild(30));
             if (!changedFiles.isEmpty())
             {
             	checkCanceled(subMon);
             	CommitCommand commit = git.commit();
-                Preferences node = PreferencesUtil.scopeFor(project.getParent());
+                Preferences node = getPreferences(project.getParent());
                 String username = node.get(GitConstants.KEY_USERNAME, "Jabylon");
                 String email = node.get(GitConstants.KEY_EMAIL, "jabylon@example.org");
                 String message = node.get(GitConstants.KEY_MESSAGE, "Auto Sync-up by Jabylon");
@@ -319,9 +319,9 @@ public class GitTeamProvider implements TeamProvider {
                 for (String path : changedFiles) {
                 	checkCanceled(subMon);
                     commit.setOnly(path);
-                    
+
                 }
-                commit.call();	
+                commit.call();
                 subMon.worked(10);
             }
             else
@@ -337,12 +337,12 @@ public class GitTeamProvider implements TeamProvider {
             if(!"https".equals(uri.scheme()) && ! "http".equals(uri.scheme()))
             	push.setTransportConfigCallback(createTransportConfigCallback(project.getParent()));
             push.setCredentialsProvider(createCredentialsProvider(project.getParent()));
-            
+
             RefSpec spec = createRefSpec(project);
             push.setRefSpecs(spec);
-            
+
             Iterable<PushResult> result = push.call();
-            for (PushResult r : result) {           
+            for (PushResult r : result) {
             	for(RemoteRefUpdate rru : r.getRemoteUpdates()) {
             		if(rru.getStatus() != RemoteRefUpdate.Status.OK && rru.getStatus() != RemoteRefUpdate.Status.UP_TO_DATE) {
             			String error = "Push failed: "+rru.getStatus();
@@ -351,8 +351,8 @@ public class GitTeamProvider implements TeamProvider {
             		}
             	}
             }
-            
-            Ref ref = repository.getRef(getBranchName(project));
+
+            Ref ref = repository.getRefDatabase().findRef(getBranchName(project));
             if(ref!=null)
             {
             	LOGGER.info("Successfully pushed {} to {}",ref.getObjectId(),project.getParent().getRepositoryURI());
@@ -380,28 +380,33 @@ public class GitTeamProvider implements TeamProvider {
     }
 
     private RefSpec createRefSpec(ProjectVersion version) {
-        Preferences node = PreferencesUtil.scopeFor(version);
+        Preferences node = getPreferences(version);
         String refSpecString = node.get(GitConstants.KEY_PUSH_REFSPEC, GitConstants.DEFAULT_PUSH_REFSPEC);
         if(refSpecString.isEmpty())
         	refSpecString = GitConstants.DEFAULT_PUSH_REFSPEC;
         refSpecString = MessageFormat.format(refSpecString, getBranchName(version));
 		return new RefSpec(refSpecString);
 	}
-    
+
     private boolean isRebase(ProjectVersion version) {
-        Preferences node = PreferencesUtil.scopeFor(version);
+        Preferences node = getPreferences(version);
         return node.getBoolean(GitConstants.KEY_REBASE, GitConstants.DEFAULT_REBASE);
-	}  
-    
+	}
+
     private String getBranchName(ProjectVersion version) {
-    	Preferences node = PreferencesUtil.scopeFor(version);
+    	Preferences node = getPreferences(version);
     	return node.get(GitConstants.KEY_BRANCH_NAME, version.getName());
+    }
+
+    protected Preferences getPreferences(Object o)
+    {
+    	return PreferencesUtil.scopeFor(o);
     }
 
 	private List<String> addNewFiles(Git git, IProgressMonitor monitor) throws IOException, GitAPIException {
     	monitor.beginTask("Creating Diff", 100);
         DiffCommand diffCommand = git.diff();
-        
+
         AddCommand addCommand = git.add();
         List<String> changedFiles = new ArrayList<String>();
         List<String> newFiles = new ArrayList<String>();
@@ -436,15 +441,15 @@ public class GitTeamProvider implements TeamProvider {
 
         // TODO Auto-generated method stub
     }
-    
+
 	@Override
 	public Collection<PropertyFileDiff> reset(ProjectVersion project, IProgressMonitor monitor) throws TeamProviderException {
-		
+
 		List<PropertyFileDiff> updatedFiles = new ArrayList<PropertyFileDiff>();
-        try {
-			Repository repository = createRepository(project);
+        try (Repository repository = createRepository(project);
+			Git git = new Git(repository);) {
+
 			SubMonitor subMon = SubMonitor.convert(monitor, "Reset", 100);
-			Git git = new Git(repository);
 			subMon.subTask("Calculating Diff");
 			String branchName = getBranchName(project);
 			DiffCommand diffCommand = git.diff();
@@ -458,19 +463,19 @@ public class GitTeamProvider implements TeamProvider {
 	        	revertDiff(fileDiff);
 	            updatedFiles.add(fileDiff);
 			}
-			
+
 			subMon.subTask("Executing Reset");
 			ResetCommand reset = git.reset();
 			reset.setMode(ResetType.HARD);
 			reset.setRef("refs/remotes/origin/"+branchName);
 			reset.call();
-			
-			
+
+
 			CleanCommand clean = git.clean();
 			clean.setCleanDirectories(true);
 			Set<String> call = clean.call();
 			LOGGER.info("cleaned "+call);
-			
+
 		} catch (IOException e) {
 			LOGGER.error("reset failed",e);
 			throw new TeamProviderException(e);
@@ -480,7 +485,7 @@ public class GitTeamProvider implements TeamProvider {
 		}
         return updatedFiles;
 	}
-	
+
 	private PropertyFileDiff createDiff(DiffEntry diffEntry, IProgressMonitor monitor) {
 		PropertyFileDiff fileDiff = PropertiesFactory.eINSTANCE.createPropertyFileDiff();
 		switch (diffEntry.getChangeType()) {
@@ -505,13 +510,13 @@ public class GitTeamProvider implements TeamProvider {
         	fileDiff.setKind(DiffKind.MODIFY);
         	fileDiff.setOldPath(diffEntry.getOldPath());
         	fileDiff.setNewPath(diffEntry.getNewPath());
-			return fileDiff;			
+			return fileDiff;
 		case RENAME:
 			monitor.subTask(diffEntry.getNewPath());
         	fileDiff.setKind(DiffKind.MOVE);
         	fileDiff.setOldPath(diffEntry.getOldPath());
         	fileDiff.setNewPath(diffEntry.getOldPath());
-			return fileDiff;			
+			return fileDiff;
 		default:
 			break;
 		}
@@ -538,27 +543,26 @@ public class GitTeamProvider implements TeamProvider {
 			break;
 		}
 	}
-	
+
 	private static AbstractTreeIterator prepareTreeParser(Repository repository, String ref) throws IOException, MissingObjectException,
 			IncorrectObjectTypeException {
 		// from the commit we can build the tree which allows us to construct
 		// the TreeParser
-		Ref head = repository.getRef(ref);
-		RevWalk walk = new RevWalk(repository);
-		RevCommit commit = walk.parseCommit(head.getObjectId());
-		RevTree tree = walk.parseTree(commit.getTree().getId());
-
+		Ref head = repository.getRefDatabase().findRef(ref);
 		CanonicalTreeParser oldTreeParser = new CanonicalTreeParser();
-		ObjectReader oldReader = repository.newObjectReader();
-		try {
-			oldTreeParser.reset(oldReader, tree.getId());
-		} finally {
-			oldReader.release();
+		try(RevWalk walk = new RevWalk(repository))
+		{
+			RevCommit commit = walk.parseCommit(head.getObjectId());
+			RevTree tree = walk.parseTree(commit.getTree().getId());
+
+			try (ObjectReader oldReader = repository.newObjectReader()) {
+				oldTreeParser.reset(oldReader, tree.getId());
+			}
 		}
 		return oldTreeParser;
 	}
 
-    public static void main(String[] args) throws IOException, JGitInternalException, RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, JSchException {
+    public static void main(String[] args) throws IOException, JGitInternalException, RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException {
         Workspace workspace = PropertiesFactory.eINSTANCE.createWorkspace();
         workspace.setRoot(URI.createFileURI(new File("target/test").getAbsolutePath()));
         Project project = PropertiesFactory.eINSTANCE.createProject();
@@ -575,7 +579,7 @@ public class GitTeamProvider implements TeamProvider {
 
     private CredentialsProvider createCredentialsProvider(Project project)
     {
-        Preferences node = PreferencesUtil.scopeFor(project);
+        Preferences node = getPreferences(project);
         String username = node.get(GitConstants.KEY_USERNAME, "");
         String password = node.get(GitConstants.KEY_PASSWORD, "");
         return new UsernamePasswordCredentialsProvider(username, password) {
@@ -590,7 +594,7 @@ public class GitTeamProvider implements TeamProvider {
 				}
         		return super.supports(items);
         	}
-        	
+
         	@Override
         	public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
         		List<CredentialItem> remaining = new ArrayList<CredentialItem>(Arrays.asList(items));
@@ -599,7 +603,7 @@ public class GitTeamProvider implements TeamProvider {
 						//unknown host warning
         				remaining.remove(item);
 						CredentialItem.YesNoType yesNo = (CredentialItem.YesNoType) item;
-						yesNo.setValue(true);											
+						yesNo.setValue(true);
 					}
 				}
         		return super.get(uri, remaining.toArray(new CredentialItem[0]));
@@ -609,30 +613,35 @@ public class GitTeamProvider implements TeamProvider {
 
 	private TransportConfigCallback createTransportConfigCallback(Project project) {
 
-        Preferences node = PreferencesUtil.scopeFor(project);
+        Preferences node = getPreferences(project);
         final String username = node.get(GitConstants.KEY_USERNAME, "");
         final String password = node.get(GitConstants.KEY_PASSWORD, "");
         final String privateKey = node.get(GitConstants.KEY_PRIVATE_KEY, null);
 
-		final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+        final SshSessionFactory sshSessionFactory = new SshdSessionFactory() {
+        	@Override
+        	protected KeyPasswordProvider createKeyPasswordProvider(CredentialsProvider provider) {
+        		return super.createKeyPasswordProvider(new UsernamePasswordCredentialsProvider(username, password.toCharArray()));
+        	}
 
-			@Override
-			protected void configure(Host host, Session session) {
-
-				// do nothing
-			}
-
-			protected JSch createDefaultJSch(FS fs) throws JSchException {
-				JSch defaultJSch = super.createDefaultJSch(fs);
-				if(privateKey!=null) {
-					byte[] passphrase = null;
-					if(password!=null && !password.trim().isEmpty())
-						passphrase = password.getBytes(StandardCharsets.UTF_8);
-					defaultJSch.addIdentity(username, privateKey.getBytes(), null, passphrase);
+        	@Override
+        	protected Iterable<KeyPair> getDefaultKeys(File sshDir) {
+        		if(privateKey==null)
+        			return super.getDefaultKeys(sshDir);
+        		KeyPairResourceParser parser = KeyPairResourceParser.aggregate(PEMResourceParserUtils.PROXY, OpenSSHKeyPairResourceParser.INSTANCE);
+        		try {
+					Collection<KeyPair> keyPairs = parser.loadKeyPairs(null, NamedResource.ofName(project.getName()), FilePasswordProvider.of(password), privateKey);
+					return keyPairs;
+				} catch (Exception e) {
+					LOGGER.error("Failed to load keypairs",e);
 				}
-				return defaultJSch;
-			}
-		};
+        		return Collections.emptyList();
+        	}
+
+
+
+        };
+
 		return new TransportConfigCallback() {
 
 			@Override
@@ -642,7 +651,7 @@ public class GitTeamProvider implements TeamProvider {
 			}
 		};
 	}
-    
+
     private URI stripUserInfo(URI uri)
     {
         if(uri.userInfo()!=null && uri.userInfo().length()>0)

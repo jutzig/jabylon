@@ -433,17 +433,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.apache</groupId>
             <artifactId>ant</artifactId>
             <scope>compile</scope>
@@ -464,12 +453,12 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>        
+        </dependency>
 
         <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>slf4j-api</artifactId>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -613,7 +602,7 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>        
+        </dependency>
 
         <!-- shell -->
         <dependency>

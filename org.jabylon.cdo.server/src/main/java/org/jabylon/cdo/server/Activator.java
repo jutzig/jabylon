@@ -108,7 +108,7 @@ public class Activator implements BundleActivator {
 				try {
 					//this is quite expensive so we do it in a thread
 					initialize();
-				} catch (CommitException e) {
+				} catch (Exception e) {
 					logger.error("Failed to start CDO",e);
 				}
 
@@ -156,7 +156,7 @@ public class Activator implements BundleActivator {
 
 	private void addAdditionalPermissions(UserManagement userManagement) {
 		addPermission(userManagement, null, "User:register");
-		
+
 	}
 
 	private Role addOrUpdateRegisteredRole(UserManagement userManagement) {

@@ -45,7 +45,7 @@
         </dependency>
         <dependency>
         	<groupId>org.slf4j</groupId>
-        	<artifactId>api</artifactId>
+        	<artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -2,7 +2,7 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0"
 	name="jabylon">
 
-	<!-- <repository>mvn:org.apache.cxf.karaf/apache-cxf/${dependency.cxf.version}/xml/features</repository> 
+	<!-- <repository>mvn:org.apache.cxf.karaf/apache-cxf/${dependency.cxf.version}/xml/features</repository>
 		<repository>mvn:org.apache.karaf.cellar/apache-karaf-cellar/LATEST/xml/features</repository> -->
 
 	<feature name="jabylon" version="${project.version}">
@@ -18,7 +18,7 @@
 		<feature>misc</feature>
 		<feature>wicket</feature>
 		<feature>jgit</feature>
-		
+
 		<bundle start-level="75">mvn:${project.groupId}/db.migration/${project.version}
 		</bundle>
 		<bundle start-level="75">mvn:${project.groupId}/cdo.server/${project.version}
@@ -44,45 +44,45 @@
 		<bundle>mvn:${project.groupId}/common/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/log.viewer/${project.version}</bundle>
 	</feature>
-	
+
 	<feature name="equinox">
-		<bundle>mvn:org.eclipse.equinox/app/${version.equinox.app}</bundle>
-		<bundle>mvn:org.eclipse.core/contenttype/${version.equinox.contenttype}</bundle>
-		<bundle>mvn:org.eclipse.equinox/util/${version.equinox.util}</bundle>
-		<bundle>mvn:org.eclipse.equinox/common/${version.equinox.common}</bundle>
-		<bundle>mvn:org.eclipse.equinox/preferences/${version.equinox.preferences}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.equinox/app/${version.equinox.app}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.core/contenttype/${version.equinox.contenttype}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.equinox/util/${version.equinox.util}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.equinox/common/${version.equinox.common}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.equinox/preferences/${version.equinox.preferences}</bundle>
 		<!-- not needed on karaf -->
 		<!-- <bundle>mvn:org.eclipse.equinox/security/1.2.0</bundle> -->
-		
-		<bundle>mvn:org.eclipse.equinox/registry/${version.equinox.registry}</bundle>
-		<bundle>mvn:org.eclipse.core/runtime/${version.equinox.runtime}</bundle>
-		<bundle>mvn:org.eclipse.core/jobs/${version.equinox.jobs}</bundle>
+
+		<bundle start-level="70">mvn:org.eclipse.equinox/registry/${version.equinox.registry}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.core/runtime/${version.equinox.runtime}</bundle>
+		<bundle start-level="70">mvn:org.eclipse.core/jobs/${version.equinox.jobs}</bundle>
 	</feature>
-	
+
 	<feature name="cdo">
 		<feature>emf</feature>
 		<bundle>mvn:org.eclipse.emf.cdo/common/${version.cdo}</bundle>
 		<bundle>mvn:org.eclipse.emf/cdo/${version.cdo}</bundle>
 		<bundle>mvn:org.eclipse.emf.cdo/server/${version.cdo}</bundle>
 		<bundle>mvn:org.eclipse.emf.cdo/net4j/${version.cdo.net4j}</bundle>
-		<bundle>mvn:org.eclipse/net4j/${version.cdo}</bundle>
-		<bundle>mvn:org.eclipse.net4j/db/${version.cdo}</bundle>
-		<bundle>mvn:org.eclipse.net4j/util/${version.net4j.util}</bundle>
-		<bundle>mvn:org.eclipse.net4j/jvm/${version.net4j.jvm}</bundle>
+		<bundle start-level="74">mvn:org.eclipse.net4j/db/${version.cdo}</bundle>
+		<bundle start-level="74">mvn:org.eclipse.net4j.db/h2/${version.cdo.h2}</bundle>
+		<bundle start-level="74">mvn:org.eclipse.net4j/jvm/${version.net4j.jvm}</bundle>
+		<bundle start-level="74">mvn:org.eclipse/net4j/${version.cdo}</bundle>
+		<bundle start-level="74">mvn:org.eclipse.net4j/util/${version.net4j.util}</bundle>
 		<bundle>mvn:org.eclipse.emf.cdo.server/db/${version.cdo}</bundle>
 		<bundle>mvn:org.eclipse.emf.cdo.server/net4j/${version.cdo.server}</bundle>
-		<bundle>mvn:org.eclipse.net4j.db/h2/${version.cdo.h2}</bundle>
 		<bundle>mvn:org/h2/${version.h2}</bundle>
 		<bundle>mvn:com.googlecode.flyway/flyway-core/${version.flyway}</bundle>
 	</feature>
-	
+
 	<feature name="emf">
 		<bundle>mvn:org.eclipse.emf/common/${version.emf}</bundle>
 		<bundle>mvn:org.eclipse.emf/ecore/${version.emf}</bundle>
 		<bundle>mvn:org.eclipse.emf.ecore/change/${version.emf.change}</bundle>
 		<bundle>mvn:org.eclipse.emf.ecore/xmi/${version.emf}</bundle>
 	</feature>
-	
+
 	<feature name="lucene">
 		<bundle>mvn:org.apache.lucene/core/${version.lucene}</bundle>
 		<bundle>mvn:org.apache.lucene/misc/${version.lucene}</bundle>
@@ -90,12 +90,11 @@
 		<bundle>mvn:org.apache.lucene/analysis/${version.lucene}</bundle>
 		<bundle>mvn:org.apache/lucene/${version.lucene}</bundle>
 	</feature>
-	
+
 	<feature name="misc">
 		<bundle>mvn:javax/xml/${version.xml}</bundle>
 		<bundle>mvn:com.google.guava/guava/${version.guava}</bundle>
-		<bundle>mvn:com.jcraft/jsch/${version.jsch}</bundle>
-		<bundle>mvn:org.apache/ant/${version.ant}</bundle>
+		<bundle>mvn:com.google.guava/failureaccess/${version.failureaccess}</bundle>
 	</feature>
 
 
@@ -124,15 +123,18 @@
 		<bundle>mvn:org.eclipse.jetty/servlet/${version.jetty}</bundle>
 		<bundle>mvn:org.eclipse.jetty/util/${version.jetty}</bundle>
 		<bundle>mvn:org.apache.felix/org.apache.felix.http.api/2.3.2</bundle>
-	</feature>		
-	
-	<feature name="jgit">
-		<bundle>mvn:org.eclipse.jgit/org.eclipse.jgit/${version.jgit}</bundle>
-		<bundle>mvn:javaewah/javaewah/${version.javaewah}</bundle>
 	</feature>
-		<!-- 
+
+	<feature name="jgit">
+		<feature>ssh</feature>
+		<bundle>mvn:org.eclipse.jgit/org.eclipse.jgit/${version.jgit}</bundle>
+		<bundle>mvn:org.eclipse.jgit/org.eclipse.jgit.ssh.apache/${version.jgit}</bundle>
+		<bundle>mvn:com.googlecode.javaewah/JavaEWAH/${version.javaewah}</bundle>
+		<bundle>mvn:net.i2p.crypto/eddsa/${version.eddsa}</bundle>
+	</feature>
+		<!--
 	<feature name="bundlerepository">
 		<bundle>mvn:org.apache.felix/org.apache.felix.bundlerepository/2.0.8</bundle>
-		 <bundle>mvn:org.apache.felix/org.osgi.service.obr/1.0.1</bundle> 
+		 <bundle>mvn:org.apache.felix/org.osgi.service.obr/1.0.1</bundle>
 	</feature>	-->
 </features>

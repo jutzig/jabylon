@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<!-- Licensed to the Apache Software Foundation (ASF) under one or more 
-		contributor license agreements. See the NOTICE file distributed with this 
-		work for additional information regarding copyright ownership. The ASF licenses 
-		this file to You under the Apache License, Version 2.0 (the "License"); you 
-		may not use this file except in compliance with the License. You may obtain 
-		a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless 
-		required by applicable law or agreed to in writing, software distributed 
-		under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
-		OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	<!-- Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with this
+		work for additional information regarding copyright ownership. The ASF licenses
+		this file to You under the Apache License, Version 2.0 (the "License"); you
+		may not use this file except in compliance with the License. You may obtain
+		a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless
+		required by applicable law or agreed to in writing, software distributed
+		under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
+		OR CONDITIONS OF ANY KIND, either express or implied. See the License for
 		the specific language governing permissions and limitations under the License. -->
 
 	<modelVersion>4.0.0</modelVersion>
@@ -32,27 +32,10 @@
 	  <tag>HEAD</tag>
   </scm>
 
-	<repositories>
-		<repository>
-			<id>jabylon</id>
-			<url>http://www.jabylon.org/maven</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<properties>
-		<version.karaf>4.1.0</version.karaf>
-	</properties>
-
 	<dependencies>
 		<dependency>
-			<!-- scope is compile so all features (there is only one) are installed 
-				into startup.properties and the feature repo itself is not added in etc/org.apache.karaf.features.cfg 
+			<!-- scope is compile so all features (there is only one) are installed
+				into startup.properties and the feature repo itself is not added in etc/org.apache.karaf.features.cfg
 				file -->
 			<groupId>org.apache.karaf.features</groupId>
 			<artifactId>framework</artifactId>
@@ -60,7 +43,7 @@
 			<type>kar</type>
 		</dependency>
 		<dependency>
-			<!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg 
+			<!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg
 				file, and features will installed into the system directory -->
 			<groupId>org.apache.karaf.features</groupId>
 			<artifactId>standard</artifactId>
@@ -70,7 +53,7 @@
 			<version>${version.karaf}</version>
 		</dependency>
 		<dependency>
-			<!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg 
+			<!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg
 				file, and features will installed into the system directory -->
 			<groupId>${project.groupId}</groupId>
 			<artifactId>feature</artifactId>
@@ -97,8 +80,11 @@
 					<system>
 						<jabylon.home>${karaf.home}/work</jabylon.home>
 					</system>
+
 					<config>
-						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi,javax.crypto,javax.crypto.*</org.osgi.framework.bootdelegation>
+						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi,javax.crypto,javax.crypto.*,javax.security,javax.security.*,javax.management,javax.management.*</org.osgi.framework.bootdelegation>
+						<!-- we need sun.security.x509 extra for eddsa -->
+						<org.osgi.framework.system.packages.extra>org.apache.karaf.branding,sun.misc,com.sun.jmx.remote.protocol,com.sun.jmx.remote.protocol.jmxmp,org.apache.karaf.jaas.boot.principal,org.apache.karaf.jaas.boot,org.apache.karaf.diagnostic.core,org.apache.karaf.diagnostic.core.common,sun.security.x509</org.osgi.framework.system.packages.extra>
 						<karaf.framework>equinox</karaf.framework>
 						<osgi.instance.area>${karaf.home}/work/workspace</osgi.instance.area>
 						<org.eclipse.equinox.http.jetty.http.port>8080</org.eclipse.equinox.http.jetty.http.port>
@@ -116,8 +102,8 @@
 					<installedFeatures>
 					</installedFeatures>
 
-					<!-- no installedFeatures 
-					
+					<!-- no installedFeatures
+
 					<feature>package</feature>
 						<feature>bundle</feature>
 						<feature>feature</feature>
@@ -152,9 +138,12 @@
             				<tasks>
             					<move file="target/jabylon.zip" tofile="target/jabylon-temp.zip" />
             					<zip destfile="target/jabylon.zip" update="true">
-            						<zipfileset src="target/jabylon-temp.zip" includes="**/*" excludes="bin/*" />
+            						<zipfileset src="target/jabylon-temp.zip" includes="**/*" excludes="bin/**" />
+            						<zipfileset file="target/assembly/bin/contrib/karaf-service-win.exe" fullpath="bin/contrib/jabylon-service.exe" />
+            						<zipfileset file="target/assembly/bin/contrib/jabylon-service.xml" fullpath="bin/contrib/jabylon-service.xml" />
             						<zipfileset dir="target/assembly" includes="bin/*.bat" />
     								<zipfileset dir="target/assembly" includes="bin/*" excludes="bin/*.bat" filemode="755" />
+    								<zipfileset dir="target/assembly" includes="bin/contrib/*.sh bin/contrib/*.conf bin/contrib/*.init* bin/contrib/*.systemd*" filemode="755" />
 								</zip>
 								<delete file="target/jabylon-temp.zip" />
             				</tasks>
@@ -180,7 +169,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>        
+			</plugin>
 		</plugins>
 	</build>
 

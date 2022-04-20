@@ -28,22 +28,21 @@
 		<version.emf.change>2.9.0</version.emf.change>
 		<version.servlet>3.0.0</version.servlet>
 		<version.xml>1.3.4</version.xml>
-		<version.guava>13.0.1</version.guava>
-		<!-- need version with qualifier here, to disambiguate from non-bundle 
-			artifact in central -->
-		<version.jsch>0.1.54-v20170116-1932</version.jsch>
-		<version.ant>1.8.4</version.ant>
+		<version.guava>31.1-jre</version.guava>
+		<version.failureaccess>1.0.1</version.failureaccess>
+		<version.ant>1.10.12</version.ant>
 		<version.wicket>6.0.0</version.wicket>
 		<version.inject>1_2</version.inject>
-		<version.jgit>3.0.0.201306101825-r</version.jgit>
-		<version.javaewah>0.5.6</version.javaewah>
+		<version.jgit>6.1.0.202203080745-r</version.jgit>
+		<version.javaewah>1.1.13</version.javaewah>
+		<version.eddsa>0.3.0</version.eddsa>
 		<version.obr>2.0.8</version.obr>
-		<version.jetty>8.1.10</version.jetty>
+		<version.jetty>9.4.43.v20210629</version.jetty>
 		<version.equinox.http.jetty>3.0.100</version.equinox.http.jetty>
 		<version.equinox.http.registry>1.1.200</version.equinox.http.registry>
 		<version.equinox.http.servlet>1.1.300</version.equinox.http.servlet>
 		<version.flyway>2.1.1</version.flyway>
-		<version.karaf>4.1.0</version.karaf>
+		<version.karaf>4.3.6</version.karaf>
 
 		<bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
 		<bundle.namespace>${project.groupId}</bundle.namespace>
@@ -53,13 +52,13 @@
 		<release.tag>v1.3.0</release.tag>
 	</properties>
 
-	<pluginRepositories>
+<!-- 	<pluginRepositories>
 		<pluginRepository>
 			<id>jabylon-plugins</id>
 			<url>http://jabylon.org/maven</url>
 		</pluginRepository>
 	</pluginRepositories>
-
+ -->
 	<distributionManagement>
 		<repository>
 			<id>jabylon</id>
@@ -96,7 +95,7 @@
 		<!-- <module>releng/standalone</module> -->
 		<module>releng/feature</module>
 		<module>releng/karaf</module>
-		<module>releng/war</module>
+		<!-- <module>releng/war</module> -->
 	</modules>
 
 
@@ -104,7 +103,7 @@
 	<build>
 		<extensions>
 			<!-- Enabling the use of sftp -->
-			<!-- <extension> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon-ssh-external</artifactId> 
+			<!-- <extension> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon-ssh-external</artifactId>
 				<version>1.0-beta-6</version> </extension> -->
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -157,7 +156,7 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -218,8 +217,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -284,13 +283,13 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>3.5.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<rebuildBundle>true</rebuildBundle>
 					<!-- needed for OBR deployment -->
-					<!-- <remoteOBR>jabylon</remoteOBR> --> 
+					<!-- <remoteOBR>jabylon</remoteOBR> -->
 					<instructions>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-SymbolicName>${bundle.namespace}.${bundle.symbolicName}${singleton}</Bundle-SymbolicName>
@@ -752,12 +751,12 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.jcraft</groupId>
-				<artifactId>jsch</artifactId>
-
-				<version>${version.jsch}</version>
+				<groupId>com.google.guava</groupId>
+				<artifactId>failureaccess</artifactId>
+				<version>${version.failureaccess}</version>
 				<scope>provided</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.apache</groupId>
 				<artifactId>ant</artifactId>
@@ -775,14 +774,8 @@
 			<!-- SLF4J -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
-				<artifactId>api</artifactId>
-				<version>1.7.2</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.2</version>
+				<version>1.7.30</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -981,15 +974,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>1.9.0</version>
+				<artifactId>mockito-core</artifactId>
+				<version>4.5.1</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
+				<version>4.13.2</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+    			<groupId>org.hamcrest</groupId>
+    			<artifactId>hamcrest-core</artifactId>
+    			<version>2.2</version>
+    			<scope>test</scope>
 			</dependency>
 
 			<!-- flyway -->
@@ -1004,7 +1003,7 @@
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
-				<version>2.1.5</version>
+				<version>2.3.2</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -1017,19 +1016,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<repositories>
-		<repository>
-			<id>jabylon</id>
-			<url>http://www.jabylon.org/maven</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 	<name>Jabylon</name>
 	<url>http://www.jabylon.org</url>

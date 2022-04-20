@@ -8,7 +8,7 @@
         <artifactId>jabylon-parent</artifactId>
         <version>1.3.1-SNAPSHOT</version>
     </parent>
-    
+
     <description>the team provider implementation for Git</description>
 
     <build>
@@ -32,7 +32,7 @@
                             {maven-resources},plugin.xml
                         </Include-Resource>
                         <Import-Package>
-                            org.eclipse.jgit*;version="[2.1.0,4.0.0)",
+                            org.eclipse.jgit*;version="[2.1.0,10.0.0)",
                             *
                         </Import-Package>
                     </instructions>
@@ -60,6 +60,17 @@
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.googlecode.javaewah</groupId>
+            		<artifactId>JavaEWAH</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+		<dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit.ssh.apache</artifactId>
+            <version>${version.jgit}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
@@ -74,6 +85,10 @@
         	<groupId>org.osgi</groupId>
         	<artifactId>org.osgi.compendium</artifactId>
         </dependency>
+        <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
         <dependency>
         	<groupId>org.eclipse.emf</groupId>
         	<artifactId>ecore</artifactId>
@@ -90,10 +105,25 @@
         	<groupId>org.apache.felix</groupId>
         	<artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
-      <dependency>
-        <groupId>com.jcraft</groupId>
-        <artifactId>jsch</artifactId>
-        <scope>provided</scope>
-      </dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+		    <groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>org.hamcrest</groupId>
+    		<artifactId>hamcrest-core</artifactId>
+    		<scope>test</scope>
+		</dependency>
     </dependencies>
 </project>
