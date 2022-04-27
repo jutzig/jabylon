@@ -128,6 +128,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
             			<id>default</id>
@@ -135,18 +136,18 @@
             			<inherited>false</inherited>
             			<!-- make scripts in zip executable so we don't also need a tar -->
             			<configuration>
-            				<tasks>
-            					<move file="target/jabylon.zip" tofile="target/jabylon-temp.zip" />
-            					<zip destfile="target/jabylon.zip" update="true">
-            						<zipfileset src="target/jabylon-temp.zip" includes="**/*" excludes="bin/**" />
+            				<target>
+            					<move file="target/jabylon.zip" tofile="target/jabylon-temp.zip" overwrite="true" />
+            					<zip destfile="target/jabylon.zip">
+            						<zipfileset src="target/jabylon-temp.zip" includes="**" excludes="bin/**" />
             						<zipfileset file="target/assembly/bin/contrib/karaf-service-win.exe" fullpath="bin/contrib/jabylon-service.exe" />
             						<zipfileset file="target/assembly/bin/contrib/jabylon-service.xml" fullpath="bin/contrib/jabylon-service.xml" />
             						<zipfileset dir="target/assembly" includes="bin/*.bat" />
     								<zipfileset dir="target/assembly" includes="bin/*" excludes="bin/*.bat" filemode="755" />
     								<zipfileset dir="target/assembly" includes="bin/contrib/*.sh bin/contrib/*.conf bin/contrib/*.init* bin/contrib/*.systemd*" filemode="755" />
 								</zip>
-								<delete file="target/jabylon-temp.zip" />
-            				</tasks>
+								<!-- <delete file="target/jabylon-temp.zip" /> -->
+            				</target>
             			</configuration>
           			</execution>
 				</executions>

@@ -319,16 +319,17 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<configuration>
-							<tasks>
+							<target>
 								<copy toDir="${basedir}/OSGI-INF" failonerror="false" overwrite="tr">
 									<fileset dir="${project.build.directory}/scr-plugin-generated/OSGI-INF" includes="*.xml">
 									</fileset>
 								</copy>
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
