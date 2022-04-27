@@ -104,14 +104,14 @@ public class PropertyEditorPanel extends BasicResolvablePanel<PropertyFileDescri
         };
         properties.setOutputMarkupId(true);
 
-        Form<List<? extends PropertyPair>> form = new Form<List<? extends PropertyPair>>("properties-form", Model.ofList(contents)) {
+        Form<List<PropertyPair>> form = new Form<List<PropertyPair>>("properties-form", Model.ofList(contents)) {
 
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit() {
                 super.onSubmit();
-                IModel<List<? extends PropertyPair>> model = getModel();
+                IModel<List<PropertyPair>> model = getModel();
                 List<? extends PropertyPair> list = model.getObject();
 
                 PropertyFileDescriptor descriptor = PropertyEditorPanel.this.getModelObject();

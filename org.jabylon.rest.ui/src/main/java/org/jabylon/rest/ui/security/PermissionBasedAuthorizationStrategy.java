@@ -17,6 +17,8 @@ import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.authorization.UnauthorizedActionException;
 import org.apache.wicket.request.component.IRequestableComponent;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.IResource;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.users.User;
 
@@ -58,5 +60,10 @@ public class PermissionBasedAuthorizationStrategy implements IAuthorizationStrat
         }
         return true;
     }
+
+	@Override
+	public boolean isResourceAuthorized(IResource resource, PageParameters parameters) {
+		return true;
+	}
 
 }

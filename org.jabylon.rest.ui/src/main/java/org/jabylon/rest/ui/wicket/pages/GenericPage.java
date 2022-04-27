@@ -20,6 +20,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 import org.jabylon.rest.ui.navbar.NavbarPanel;
 import org.jabylon.rest.ui.util.GlobalResources;
@@ -123,8 +124,8 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
         target.appendJavaScript("$('#" + feedbackPanel.getMarkupId() + "').addClass('ajax')" +
                 ".clearQueue().show().slideDown().delay(5000).slideUp().end().hide();");
     }
-    
-    
+
+
     /**
      * creates a new StringResourceModel for the given key with <code>this</code> as the component
      * @param key
@@ -133,13 +134,13 @@ public abstract class GenericPage<T> extends WebPage implements IAjaxFeedbackPag
      * @return
      */
     protected StringResourceModel nls(String key, Object... parameters) {
-    	return new StringResourceModel(key, this, null, parameters);
+    	return new CustomStringResourceModel(key, this, null, parameters);
     }
 
 
     /**
      * creates a new OSGiStringResourceModel for the given key with <code>this</code> as the component.
-     * 
+     *
      * @param service the service implementation. Its bundle will be used to compute the localization
      * @param key
      * @param parameters

@@ -24,6 +24,7 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.Resolvable;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
 import org.jabylon.rest.ui.wicket.PanelFactory;
 import org.jabylon.rest.ui.wicket.pages.SearchPage;
@@ -96,7 +97,7 @@ public class SearchPanel<T> extends BasicPanel<T> {
             if (object instanceof Resolvable<?, ?>) {
                 Resolvable<?, ?> r = (Resolvable<?, ?>) object;
                 if (r.getName() != null && !r.getName().isEmpty()) {
-                    return new StringResourceModel("SearchPanel.scoped.search.placeholder", SearchPanel.this, null,"",r.getName()); //$NON-NLS-1$
+                    return new CustomStringResourceModel("SearchPanel.scoped.search.placeholder", SearchPanel.this, null,"",r.getName()); //$NON-NLS-1$
                 }
             }
             return plainModel;

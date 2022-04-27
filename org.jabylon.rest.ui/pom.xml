@@ -47,6 +47,7 @@
                         <Bundle-Activator>org.jabylon.rest.ui.Activator</Bundle-Activator>
                         <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
                         <Web-ContextPath>/</Web-ContextPath>
+                        <DynamicImport-Package>org.jabylon.*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>

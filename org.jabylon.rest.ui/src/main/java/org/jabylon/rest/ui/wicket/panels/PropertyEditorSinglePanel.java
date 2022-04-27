@@ -39,7 +39,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -67,6 +66,7 @@ import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Severity;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.Activator;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.PropertyPair;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.RestrictedComponent;
@@ -322,11 +322,11 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		if (editKind == EditKind.READONLY)
 			textArea.add(new AttributeModifier("readonly", "readonly"));
 		if(isTemplateOnly) {
-			textArea.add(new AttributeModifier("class", "span12"));			
+			textArea.add(new AttributeModifier("class", "span12"));
 		}
-		
+
 		textArea = new TextArea<PropertyPair>("translation", new PropertyModel<PropertyPair>(main, "translated"));
-		textArea.add(new AttributeModifier("lang", new AbstractReadOnlyModel<String>() {
+		textArea.add(new AttributeModifier("lang", new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -336,7 +336,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 			}
 		}));
 		if(isTemplateOnly) {
-			textArea.add(new AttributeModifier("class", "span12"));			
+			textArea.add(new AttributeModifier("class", "span12"));
 		}
 		textArea.add(new AttributeModifier("translate", "no"));
 		if (editKind == EditKind.READONLY)
@@ -346,7 +346,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		pairForm.add(nextButton);
 		pairForm.add(previousButton);
 
-		String progressLabel = new StringResourceModel("translation.progress", this, null, index, total).getObject();
+		String progressLabel = new CustomStringResourceModel("translation.progress", this, null, index, total).getObject();
 		progressLabel = MessageFormat.format(progressLabel, index, total);
 		Label progress = new Label("progress", String.valueOf(progressLabel));
 		double actualIndex = Math.max(1, index);
@@ -490,7 +490,7 @@ public class PropertyEditorSinglePanel extends BasicResolvablePanel<PropertyFile
 		}
 
 		protected void doSubmit() {
-			IFormSubmitter submitter = findSubmittingButton();
+			IFormSubmitter submitter = findSubmitter();
 			if (submitter instanceof Button && ((Button) submitter).getId().equals("reset")) {
 				setResponsePage(getPage().getClass(), getPageParameters().set("key", mainModel.getObject().getKey()));
 				return;

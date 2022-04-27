@@ -38,7 +38,7 @@ public class UpdatecenterTabContent extends BasicPanel<ResourceFilter> {
     private static final long serialVersionUID = 1L;
     @Inject
     private OBRRepositoryService repositoryConnector;
-    private IModel<List<? extends ResourceWrapper>> resources;
+    private IModel<List<ResourceWrapper>> resources;
     private static final Logger logger = LoggerFactory.getLogger(UpdatecenterTabContent.class);
 
     public UpdatecenterTabContent(String id, IModel<ResourceFilter> model, PageParameters parameters) {
@@ -150,7 +150,7 @@ class ResourceWrapper implements Serializable
     public boolean isChecked() {
         return checked;
     }
-    
+
     public void setChecked(boolean checked) {
 		this.checked = checked;
 	}

@@ -14,7 +14,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -98,9 +97,9 @@ public class UserConfigSection extends BasicPanel<User> {
 		GenerateTokenButton deleteTokenButton = new GenerateTokenButton("delete-token",true);
 		deleteTokenButton.setDefaultFormProcessing(false);
 		generateTokenGroup.add(deleteTokenButton);
-		
+
 		add(generateTokenGroup);
-		
+
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -183,8 +182,8 @@ public class UserConfigSection extends BasicPanel<User> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-			super.onSubmit(target, form);
+		protected void onSubmit(AjaxRequestTarget target) {
+			super.onSubmit(target);
 			target.add(tokenText);
 			if(delete)
 				tokenText.setDefaultModelObject("");

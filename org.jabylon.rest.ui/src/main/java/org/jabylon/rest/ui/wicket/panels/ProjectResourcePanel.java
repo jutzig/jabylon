@@ -28,7 +28,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.emf.common.util.EList;
 import org.jabylon.properties.Project;
@@ -43,6 +42,7 @@ import org.jabylon.properties.ReviewState;
 import org.jabylon.properties.Workspace;
 import org.jabylon.properties.util.PropertiesSwitch;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.security.CDOAuthenticatedSession;
 import org.jabylon.rest.ui.security.RestrictedComponent;
 import org.jabylon.rest.ui.util.GlobalResources;
@@ -270,11 +270,11 @@ class LinkTarget
 }
 
 class LabelSwitch extends PropertiesSwitch<String> {
-	
+
 	private Locale locale;
-	
-	
-	
+
+
+
     public LabelSwitch(Locale locale) {
 		super();
 		this.locale = locale;
@@ -312,7 +312,7 @@ class Summary extends PropertiesSwitch<IModel<String>> {
 
 	@Override
     public <P extends Resolvable<?, ?>, C extends Resolvable<?, ?>> IModel<String> caseResolvable(Resolvable<P, C> object) {
-		return new StringResourceModel(TRANSLATION_PERCENTAGE_SHORT_KEY, parent, null, object.getPercentComplete());
+		return new CustomStringResourceModel(TRANSLATION_PERCENTAGE_SHORT_KEY, parent, null, object.getPercentComplete());
     }
 
     @Override
@@ -322,7 +322,7 @@ class Summary extends PropertiesSwitch<IModel<String>> {
         ProjectLocale template = object.getParent().getTemplate();
         int propertyCount = template.getPropertyCount();
         int translatedCount = object.getPropertyCount();
-        return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, translatedCount,propertyCount,object.getPercentComplete());
+        return new CustomStringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, translatedCount,propertyCount,object.getPercentComplete());
     }
 
     @Override
@@ -332,12 +332,12 @@ class Summary extends PropertiesSwitch<IModel<String>> {
         {
             String message = NUMBER_OF_KEYS_KEY;
             message = MessageFormat.format(message, propertyCount);
-            return new StringResourceModel(NUMBER_OF_KEYS_KEY, parent, null, propertyCount);
+            return new CustomStringResourceModel(NUMBER_OF_KEYS_KEY, parent, null, propertyCount);
         }
         else
         {
             int templateCount = object.getMaster().getKeys();
-            return new StringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, propertyCount,templateCount,object.getPercentComplete());
+            return new CustomStringResourceModel(TRANSLATION_PERCENTAGE_KEY, parent, null, propertyCount,templateCount,object.getPercentComplete());
 
         }
     }

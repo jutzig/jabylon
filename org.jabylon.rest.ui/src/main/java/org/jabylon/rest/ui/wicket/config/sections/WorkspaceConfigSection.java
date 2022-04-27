@@ -87,20 +87,20 @@ public class WorkspaceConfigSection extends BasicPanel<Workspace> {
     }
 
     static class DeleteAction extends IndicatingAjaxButton {
-    	
+
     	private IModel<Project> model;
     	private IModel<String> confirmationText;
     	private static final long serialVersionUID = 1L;
-    	
+
     	public DeleteAction(String id, IModel<Project> model, IModel<String> confirmationText) {
     		super(id);
     		this.model = model;
     		this.confirmationText = confirmationText;
-    	}    	
-    	
+    	}
+
     	@Override
-    	protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-    		
+    	protected void onAfterSubmit(AjaxRequestTarget target) {
+
     		Project project = model.getObject();
     		CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
     		project = transaction.getObject(project);
@@ -122,17 +122,17 @@ public class WorkspaceConfigSection extends BasicPanel<Workspace> {
     			transaction.close();
     		}
     	}
-    	
-    	
+
+
     	@Override
     	protected void updateAjaxAttributes( AjaxRequestAttributes attributes )
     	{
     		super.updateAjaxAttributes( attributes );
-    		
+
     		AjaxCallListener ajaxCallListener = new AjaxCallListener();
     		ajaxCallListener.onPrecondition( "return confirm('" + confirmationText.getObject() + "');" );
     		attributes.getAjaxCallListeners().add( ajaxCallListener );
-    	}	
-    	
+    	}
+
     }
 }

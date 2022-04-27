@@ -23,7 +23,11 @@ public class OSGiStringResourceModel extends StringResourceModel {
 
 
 	public OSGiStringResourceModel(Class<?> owner, String resourceKey, Component component, IModel<?> model, String defaultValue, Object... parameters) {
-		super(transformKey(owner, resourceKey), component, model, getDefault(resourceKey,defaultValue), parameters);
+		super(transformKey(owner, resourceKey), component, model);
+		if(defaultValue!=null)
+			setDefaultValue(getDefault(resourceKey,defaultValue));
+		if(parameters!=null && parameters.length>0)
+			setParameters(parameters);
 	}
 
 	public OSGiStringResourceModel(Class<?> owner, String resourceKey, IModel<?> model, Object... parameters) {
@@ -39,7 +43,7 @@ public class OSGiStringResourceModel extends StringResourceModel {
 			return defaultValue;
 		return resourceKey;
 	}
-	
+
 	protected static String transformKey(Class<?> owner, String resourceKey) {
 		if(!resourceKey.startsWith("%"))
 			return "|"+resourceKey;
@@ -47,7 +51,7 @@ public class OSGiStringResourceModel extends StringResourceModel {
 		resourceKey = resourceKey.substring(1);
 		resourceKey = "%" + bundleId + "|" + resourceKey;
 		return resourceKey;
-	}	
-	
+	}
+
 
 }

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -104,11 +105,11 @@ public class InstalledSoftwareTab extends BasicPanel<String> implements Restrict
                     private static final long serialVersionUID = 1L;
 
                     @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        if(target!=null)
+                    protected void onSubmit(Optional<AjaxRequestTarget> target) {
+                        if(target.isPresent())
                         {
-                            target.add(this);
-                            target.add(item);
+                            target.get().add(this);
+                            target.get().add(item);
                         }
                         BundleContext context = FrameworkUtil.getBundle(InstalledSoftwareTab.class).getBundleContext();
                         Bundle bundle = context.getBundle(bundleId);
@@ -135,7 +136,7 @@ public class InstalledSoftwareTab extends BasicPanel<String> implements Restrict
                                 logger.error(message,e);
                             }
                         }
-                        super.onSubmit(target, form);
+                        super.onSubmit(target);
                     }
                 };
                 button.setDefaultFormProcessing(false);

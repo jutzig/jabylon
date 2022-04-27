@@ -95,7 +95,7 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 		}
 
 		PermissionSettingModel selected = new PermissionSettingModel(model, management);
-		IModel<List<? extends String>> available = Model.ofList(computePossiblePermissions(management));
+		IModel<List<String>> available = Model.ofList(computePossiblePermissions(management));
 		rolename.add(new UniqueNameValidator(usedRolenames));
 		Palette<String> palette = new Palette<String>("palette", selected, available, new Renderer(), 10, false);
 		add(palette);
@@ -160,7 +160,7 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 
 	}
 
-	private static class PermissionSettingModel extends AbstractEMFModel<UserManagement, List<? extends String>> {
+	private static class PermissionSettingModel extends AbstractEMFModel<UserManagement, List<String>> {
 
 		private static final long serialVersionUID = 1L;
 		private IModel<Role> model;
@@ -182,7 +182,7 @@ public class RolePermissionsConfigSection extends BasicPanel<Role> {
 		}
 
 		@Override
-		public void setObject(List<? extends String> object) {
+		public void setObject(List<String> object) {
 			Role role = model.getObject();
 
 			UserManagement management = getDomainObject();

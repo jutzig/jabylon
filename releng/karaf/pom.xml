@@ -84,7 +84,7 @@
 					<config>
 						<org.osgi.framework.bootdelegation>com.sun.*,javax.transaction,javax.transaction.*,javax.xml.crypto,javax.xml.crypto.*,sun.*,org.apache.karaf.jaas.boot,org.apache.karaf.jaas.boot.principal,javax.sql,javax.naming,javax.naming.spi,javax.crypto,javax.crypto.*,javax.security,javax.security.*,javax.management,javax.management.*</org.osgi.framework.bootdelegation>
 						<!-- we need sun.security.x509 extra for eddsa -->
-						<org.osgi.framework.system.packages.extra>org.apache.karaf.branding,sun.misc,com.sun.jmx.remote.protocol,com.sun.jmx.remote.protocol.jmxmp,org.apache.karaf.jaas.boot.principal,org.apache.karaf.jaas.boot,org.apache.karaf.diagnostic.core,org.apache.karaf.diagnostic.core.common,sun.security.x509</org.osgi.framework.system.packages.extra>
+						<org.osgi.framework.system.packages.extra>org.apache.karaf.branding,sun.misc,com.sun.jmx.remote.protocol,com.sun.jmx.remote.protocol.jmxmp,org.apache.karaf.jaas.boot.principal,org.apache.karaf.jaas.boot,org.apache.karaf.diagnostic.core,org.apache.karaf.diagnostic.core.common,sun.security.x509,com.sun.crypto.provider</org.osgi.framework.system.packages.extra>
 						<karaf.framework>equinox</karaf.framework>
 						<osgi.instance.area>${karaf.home}/work/workspace</osgi.instance.area>
 						<org.eclipse.equinox.http.jetty.http.port>8080</org.eclipse.equinox.http.jetty.http.port>

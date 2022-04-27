@@ -19,12 +19,10 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -47,6 +45,7 @@ import org.jabylon.properties.ScanConfiguration;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.Activator;
 import org.jabylon.rest.ui.model.ComplexEObjectListDataProvider;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.ProgressionModel;
 import org.jabylon.rest.ui.util.WicketUtil;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -80,7 +79,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
             protected void populateItem(ListItem<ProjectVersion> item) {
                 item.setOutputMarkupId(true);
                 item.add(new Label("name", item.getModelObject().getName()));
-                item.add(new Label("summary", new StringResourceModel("ProjectVersionsConfigSection.summary", item, null, item.getModel().getObject().getChildren().size())));
+                item.add(new Label("summary", new CustomStringResourceModel("ProjectVersionsConfigSection.summary", item, null, item.getModel().getObject().getChildren().size())));
                 progressModel = new ProgressionModel("");
                 final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
 
@@ -371,7 +370,7 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
         };
 
     }
-    
+
     private void rescanProject(IProgressMonitor monitor, final IModel<ProjectVersion> model) throws CommitException {
         ScanConfiguration scanConfiguration = PreferencesUtil.getScanConfigForProject(getModelObject());
         ProjectVersion version = model.getObject();
@@ -418,22 +417,22 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
             return CommonPermissions.constructPermission(CommonPermissions.PROJECT,projectName,CommonPermissions.ACTION_CONFIG);
         }
     }
-    
+
     static class DeleteAction extends IndicatingAjaxButton {
-    	
+
     	private IModel<ProjectVersion> model;
     	private IModel<String> confirmationText;
     	private static final long serialVersionUID = 1L;
-    	
+
     	public DeleteAction(String id, IModel<ProjectVersion> model, IModel<String> confirmationText) {
     		super(id);
     		this.model = model;
     		this.confirmationText = confirmationText;
-    	}    	
-    	
+    	}
+
     	@Override
-    	protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-    		
+    	protected void onAfterSubmit(AjaxRequestTarget target) {
+
     		ProjectVersion projectVersion = model.getObject();
     		CDOTransaction transaction = Activator.getDefault().getRepositoryConnector().openTransaction();
     		projectVersion = transaction.getObject(projectVersion);
@@ -455,16 +454,16 @@ public class ProjectVersionsConfigSection extends BasicPanel<Project> {
     			transaction.close();
     		}
     	}
-    	
+
     	@Override
     	protected void updateAjaxAttributes( AjaxRequestAttributes attributes )
     	{
     		super.updateAjaxAttributes( attributes );
-    		
+
     		AjaxCallListener ajaxCallListener = new AjaxCallListener();
     		ajaxCallListener.onPrecondition( "return confirm('" + confirmationText.getObject() + "');" );
     		attributes.getAjaxCallListeners().add( ajaxCallListener );
-    	}	
-    	
-    }    
+    	}
+
+    }
 }

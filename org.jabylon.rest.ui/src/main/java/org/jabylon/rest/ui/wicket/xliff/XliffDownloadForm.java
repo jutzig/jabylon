@@ -153,13 +153,13 @@ public class XliffDownloadForm extends StatelessForm<Void> {
 	 *         {@link Language} tuples (source and target).<br>
 	 */
 	private List<XliffLanguageTupleSelectionPanel> getSelection() {
-		final List<XliffLanguageTupleSelectionPanel> result = new ArrayList<XliffLanguageTupleSelectionPanel>();
-		for (Component languageTupel : this.visitChildren(XliffLanguageTupleSelectionPanel.class)) {
-			XliffLanguageTupleSelectionPanel asLanguageTupel = (XliffLanguageTupleSelectionPanel) languageTupel;
+		final List<XliffLanguageTupleSelectionPanel> result = new ArrayList<>();
+		this.visitChildren(XliffLanguageTupleSelectionPanel.class, (tuple, r) -> {
+			XliffLanguageTupleSelectionPanel asLanguageTupel = (XliffLanguageTupleSelectionPanel) tuple;
 			if (asLanguageTupel.isSelected()) {
 				result.add(asLanguageTupel);
 			}
-		}
+		});
 		return result;
 	}
 

@@ -74,6 +74,7 @@ import org.jabylon.properties.Severity;
 import org.jabylon.properties.util.PropertyResourceUtil;
 import org.jabylon.resources.persistence.PropertyPersistenceService;
 import org.jabylon.rest.ui.Activator;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.EClassSortState;
 import org.jabylon.rest.ui.model.EObjectModel;
 import org.jabylon.rest.ui.model.PropertyPair;
@@ -255,7 +256,7 @@ public class PropertyListPanel
         if (pair.getTranslated() == null || pair.getTranslated().isEmpty())
         {
             Review review = PropertiesFactory.eINSTANCE.createReview();
-            String message = new StringResourceModel("review.missing.translation",this,null,pair.getKey()).getString();
+            String message = new CustomStringResourceModel("review.missing.translation",this,null,pair.getKey()).getString();
             review.setMessage(MessageFormat.format(message, pair.getKey()));
             review.setReviewType(getString("review.missing.translation.type"));
             review.setSeverity(Severity.ERROR);
@@ -494,11 +495,11 @@ public class PropertyListPanel
 				setResponsePage(ResourcePage.class, getPage().getPageParameters());
 			} catch (ExecutionException e) {
 				LOG.error("Failed to merge uploaded properties with "+getModelObject().getLocation(),e);
-				getSession().success(new StringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
+				getSession().success(new CustomStringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
 			}
 			catch (CommitException e) {
 				logger.error("Commit of suggestion failed", e);
-				getSession().success(new StringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
+				getSession().success(new CustomStringResourceModel("message.upload.failed", this, null,e.getMessage()).getString());
 			}
 
 		}

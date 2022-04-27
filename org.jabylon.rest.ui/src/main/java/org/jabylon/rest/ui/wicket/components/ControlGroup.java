@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.FeedbackMessages;
 import org.apache.wicket.markup.ComponentTag;
@@ -21,7 +20,8 @@ import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.iterator.ComponentHierarchyIterator;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 public class ControlGroup extends Border {
 
@@ -51,7 +51,7 @@ public class ControlGroup extends Border {
 
 		addToBorder(this.label, this.help, this.feedbackLabel, this.extra);
 	}
-	
+
 	public void setExtraLabel(IModel<String> model) {
 		extra.setVisible(model.getObject()!=null && !model.getObject().isEmpty());
 		extra.setDefaultModel(model);
@@ -72,19 +72,21 @@ public class ControlGroup extends Border {
 			label.add(new AttributeModifier("for", formComponent.getMarkupId()));
 		}
 	}
-	
+
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected List<FormComponent<?>> collectFormComponents() {
-		ComponentHierarchyIterator visitor = getBodyContainer().visitChildren(FormComponent.class);
-		List components = new ArrayList();
-		while (visitor.hasNext()) {
-			Component next = visitor.next();
-			components.add(next);
-		}
+		List<FormComponent<?>> components = new ArrayList<FormComponent<?>>();
+		getBodyContainer().visitChildren(FormComponent.class, new IVisitor<FormComponent, Void>() {
+
+			@Override
+			public void component(FormComponent object, IVisit<Void> visit) {
+				components.add(object);
+			}
+		});
 		return components;
 	}
-	
+
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
@@ -100,11 +102,11 @@ public class ControlGroup extends Border {
 		hideIfEmpty(help);
 		hideIfEmpty(feedbackLabel);
 	}
-	
+
 	private void hideIfEmpty(Label component) {
 		Object content = component.getDefaultModelObject();
 		component.setVisible(content!=null && !content.toString().isEmpty());
-		
+
 	}
 
 	@Override
@@ -136,17 +138,17 @@ public class ControlGroup extends Border {
 		}
 		return worst;
 	}
-	
+
 	protected String getStateClass(FeedbackMessage message) {
 
 		if(message==null)
 			return "";
-		
+
 		switch (message.getLevel()) {
 		case FeedbackMessage.INFO:
 			return " info";
 		case FeedbackMessage.SUCCESS:
-			return " success";	
+			return " success";
 		case FeedbackMessage.WARNING:
 			return " warning";
 		case FeedbackMessage.ERROR:
@@ -156,5 +158,5 @@ public class ControlGroup extends Border {
 		}
 		return "";
 	}
-	
+
 }

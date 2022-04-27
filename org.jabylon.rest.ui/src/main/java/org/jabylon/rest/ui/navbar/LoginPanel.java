@@ -40,7 +40,7 @@ import org.jabylon.users.User;
  */
 public class LoginPanel<T> extends BasicPanel<T> {
 
-	
+
     private static final String LOGOUT_KEY = "logout.link.title";
 	static final String LOGIN_KEY = "login.link.title";
 	private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class LoginPanel<T> extends BasicPanel<T> {
         super(id, object, parameters);
 
     }
-    
+
     @Override
     protected void onInitialize() {
     	super.onInitialize();
@@ -78,9 +78,9 @@ public class LoginPanel<T> extends BasicPanel<T> {
             }
             else {
             	Url returnUrl = RequestCycle.get().mapUrlFor(getPage().getClass(), getPage().getPageParameters());
-            	
+
             	BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("link", LoginPage.class, new PageParameters().set("target", returnUrl));
-                	
+
                 link.add(new Label("link-label", new StringResourceModel(LOGIN_KEY, this,null)));
                 add(link);
                 userLink.setVisible(false);

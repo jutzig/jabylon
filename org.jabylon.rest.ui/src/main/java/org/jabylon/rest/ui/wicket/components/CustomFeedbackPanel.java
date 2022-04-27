@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -55,23 +54,25 @@ public class CustomFeedbackPanel extends Panel implements IFeedback {
 
         @Override
         protected IModel<FeedbackMessage> getListItemModel(final IModel<? extends List<FeedbackMessage>> listViewModel, final int index) {
-            return new AbstractReadOnlyModel<FeedbackMessage>() {
-                private static final long serialVersionUID = 1L;
+        	return new IModel<FeedbackMessage>() {
+
+				private static final long serialVersionUID = 1L;
 
                 /**
                  * WICKET-4258 Feedback messages might be cleared already.
                  *
                  * @see WebSession#cleanupFeedbackMessages()
                  */
-                @Override
-                public FeedbackMessage getObject() {
+				@Override
+        		public FeedbackMessage getObject() {
                     if (index >= listViewModel.getObject().size()) {
                         return null;
                     } else {
                         return listViewModel.getObject().get(index);
                     }
-                }
-            };
+        		}
+			};
+
         }
 
         @Override

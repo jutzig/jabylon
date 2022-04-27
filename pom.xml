@@ -31,7 +31,7 @@
 		<version.guava>31.1-jre</version.guava>
 		<version.failureaccess>1.0.1</version.failureaccess>
 		<version.ant>1.10.12</version.ant>
-		<version.wicket>6.0.0</version.wicket>
+		<version.wicket>9.4.0</version.wicket>
 		<version.inject>1_2</version.inject>
 		<version.jgit>6.1.0.202203080745-r</version.jgit>
 		<version.javaewah>1.1.13</version.javaewah>

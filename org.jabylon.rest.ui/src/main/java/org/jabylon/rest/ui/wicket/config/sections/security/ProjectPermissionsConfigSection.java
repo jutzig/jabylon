@@ -384,8 +384,8 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                UserPermission userPermission = (UserPermission) form.getModel().getObject();
+            protected void onSubmit(AjaxRequestTarget target) {
+                UserPermission userPermission = (UserPermission) getForm().getModel().getObject();
                 if (userPermission.getPermission() == null) {
                     return;
                 }
@@ -427,8 +427,8 @@ public class ProjectPermissionsConfigSection extends BasicPanel<Project> impleme
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                RolePermission rolePermission = (RolePermission) form.getModel().getObject();
+            protected void onSubmit(AjaxRequestTarget target) {
+                RolePermission rolePermission = (RolePermission) getForm().getModel().getObject();
                 if (rolePermission.getPermission() == null) {
                     return;
                 }

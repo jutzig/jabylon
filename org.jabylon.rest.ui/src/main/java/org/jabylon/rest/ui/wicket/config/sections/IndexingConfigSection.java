@@ -29,7 +29,6 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.MultiFileUploadField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -41,6 +40,7 @@ import org.jabylon.index.properties.QueryService;
 import org.jabylon.index.properties.jobs.impl.ReorgIndexJob;
 import org.jabylon.properties.Workspace;
 import org.jabylon.rest.ui.Activator;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.PreferencesPropertyModel;
 import org.jabylon.rest.ui.model.ProgressionModel;
 import org.jabylon.rest.ui.wicket.BasicPanel;
@@ -60,10 +60,10 @@ import org.slf4j.LoggerFactory;
 public class IndexingConfigSection extends BasicPanel<Workspace> {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Inject
     private QueryService queryService;
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexingConfigSection.class);
 
 	private ProgressionModel progressModel;
@@ -77,26 +77,26 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
         super(id, model);
         this.config = config;
     }
-    
+
     @Override
     protected void construct() {
     	super.construct();
         setOutputMarkupId(true);
         progressModel = new ProgressionModel("");
-        add(new Label("summary", new StringResourceModel("index.size.summary", this, null, getIndexSize())));
+        add(new Label("summary", new CustomStringResourceModel("index.size.summary", this, null, getIndexSize())));
         final ProgressPanel progressPanel = new ProgressPanel("progress", progressModel);
         add(progressPanel);
         add(createUpdateIndexAction(progressPanel));
-        
+
 		Preferences indexJobConfig = PreferencesUtil.getNodeForJob(config, ReorgIndexJob.JOB_ID);
 		PreferencesPropertyModel updateModel = new PreferencesPropertyModel(indexJobConfig, JobExecution.PROP_JOB_SCHEDULE, ReorgIndexJob.DEFAULT_SCHEDULE);
 		ControlGroup indexCronGroup = new ControlGroup("index-cron-group", nls("index.cron.label"), nls("index.cron.description"));
 		TextField<String> indexCron = new TextField<String>("index-cron", updateModel) {
-			
+
 			private static final long serialVersionUID = 1572798560921411829L;
 
 			@Override
-			protected void convertInput() {
+			public void convertInput() {
 				super.convertInput();
 				String[] value = getInputAsArray();
 				String tmp = value != null && value.length > 0 ? value[0] : null;
@@ -108,7 +108,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 		indexCron.setConvertEmptyInputStringToNull(false);
 		indexCronGroup.add(indexCron);
 		add(indexCronGroup);
-		
+
 		if(scheduler!=null) {
 			try {
 				Date nextExecution = scheduler.nextExecution(indexJobConfig);
@@ -123,7 +123,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 		Form<Void> uploadForm = new FileUploadForm("tmx-upload-form");
 		add(uploadForm);
     }
-    
+
 	protected String format(Date nextExecution) {
 		long current = System.currentTimeMillis();
 		//if it's less than 15 hours away only show the time
@@ -131,7 +131,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 			return SimpleDateFormat.getTimeInstance(DateFormat.SHORT,getLocale()).format(nextExecution);
 		return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT,SimpleDateFormat.SHORT,getLocale()).format(nextExecution);
 	}
-  
+
 	private long getIndexSize() {
 		Directory directory = IndexActivator.getDefault().getOrCreateDirectory();
 		long size = 0;
@@ -170,7 +170,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 			}
 		};
 		return new ProgressShowingAjaxButton("update-index", progressPanel, runnable, nls("update.index.job.label"));
-	}  
+	}
 
     public static class IndexingConfig extends AbstractConfigSection<Workspace> {
 
@@ -196,14 +196,14 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
             return CommonPermissions.constructPermission(CommonPermissions.WORKSPACE,projectName,CommonPermissions.ACTION_CONFIG);
         }
     }
-    
+
     private class FileUploadForm extends Form<Void>
     {
 
 		private static final long serialVersionUID = -3653084217384164795L;
-		
+
 		private final ArrayList<FileUpload> uploads;
-    	
+
 		public FileUploadForm(String id) {
 			super(id);
 	           // set this form to multipart mode (always needed for uploads!)
@@ -217,7 +217,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
             // Set maximum size to 100K for demo purposes
 //            setMaxSize(Bytes.kilobytes(100));
 		}
-		
+
 		@Override
 		protected void onSubmit() {
 			super.onSubmit();
@@ -231,7 +231,7 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 					target.createNewFile();
 					fileUpload.writeTo(target);
 					didSomething = true;
-				} catch (IOException e) {
+				} catch (Exception e) {
 					LOGGER.error("Failed to upload TMX file "+target,e);
 				}
 			}
@@ -258,6 +258,6 @@ public class IndexingConfigSection extends BasicPanel<Workspace> {
 				Activator.getDefault().getProgressService().schedule(runnable, nls("update.index.job.label").getString());
 			}
 		}
-    	
+
     }
 }

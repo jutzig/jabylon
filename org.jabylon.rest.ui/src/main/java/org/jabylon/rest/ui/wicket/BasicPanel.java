@@ -17,6 +17,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.jabylon.rest.ui.model.CustomStringResourceModel;
 import org.jabylon.rest.ui.model.OSGiStringResourceModel;
 
 /**
@@ -37,7 +38,7 @@ public class BasicPanel<T>extends GenericPanel<T> {
     public BasicPanel(String id, IModel<T> model) {
         this(id,model,null);
     }
-    
+
     public PageParameters getPageParameters() {
     	if(pageParameters==null)
     		return getPage().getPageParameters();
@@ -92,7 +93,7 @@ public class BasicPanel<T>extends GenericPanel<T> {
 
         // subclasses may override
     }
-    
+
     /**
      * creates a new StringResourceModel for the given key with <code>this</code> as the component
      * @param key
@@ -101,13 +102,13 @@ public class BasicPanel<T>extends GenericPanel<T> {
      * @return
      */
     protected StringResourceModel nls(String key, Object... parameters) {
-    	return new StringResourceModel(key, this, null, parameters);
+    	return new CustomStringResourceModel(key, this, null, parameters);
     }
 
 
     /**
      * creates a new OSGiStringResourceModel for the given key with <code>this</code> as the component.
-     * 
+     *
      * @param service the service implementation. Its bundle will be used to compute the localization
      * @param key
      * @param parameters

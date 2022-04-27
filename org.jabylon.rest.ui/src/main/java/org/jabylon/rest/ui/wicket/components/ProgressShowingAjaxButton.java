@@ -10,7 +10,6 @@ package org.jabylon.rest.ui.wicket.components;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.jabylon.common.progress.RunnableWithProgress;
 import org.jabylon.rest.ui.Activator;
@@ -34,8 +33,8 @@ public class ProgressShowingAjaxButton extends AjaxButton implements ProgressCal
     }
 
     @Override
-    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-        super.onSubmit(target, form);
+    protected void onSubmit(AjaxRequestTarget target) {
+    	super.onSubmit(target);
 
         panel.start(target, this);
         setEnabled(false);

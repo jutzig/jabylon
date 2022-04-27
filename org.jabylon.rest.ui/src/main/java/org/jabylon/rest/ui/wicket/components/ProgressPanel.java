@@ -8,6 +8,8 @@
  */
 package org.jabylon.rest.ui.wicket.components;
 
+import java.time.Duration;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
@@ -16,9 +18,7 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.time.Duration;
 import org.eclipse.core.runtime.IStatus;
 import org.jabylon.common.progress.Progression;
 import org.jabylon.rest.ui.Activator;
@@ -36,7 +36,7 @@ public class ProgressPanel extends Panel {
         this.model = model;
         feedbackPanel = new CustomFeedbackPanel("feedbackPanel"); //$NON-NLS-1$
         add(feedbackPanel);
-        
+
         container = new WebMarkupContainer("container"); //$NON-NLS-1$
         add(container);
         WebComponent bar = new WebComponent("bar"); //$NON-NLS-1$
@@ -54,14 +54,14 @@ public class ProgressPanel extends Panel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				Activator.getDefault().getProgressService().cancel(ProgressPanel.this.model.getId());
-				
+
 			}
-        	
+
 		});
     }
 
     private IModel<String> getWidthModel(final IModel<Progression> model) {
-        return new AbstractReadOnlyModel<String>() {
+        return new IModel<String>() {
 
             private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public class ProgressPanel extends Panel {
     }
 
     private IModel<String> getTaskNameModel(final IModel<Progression> model) {
-        return new AbstractReadOnlyModel<String>() {
+        return new IModel<String>() {
 
             private static final long serialVersionUID = 1L;
 
@@ -88,7 +88,7 @@ public class ProgressPanel extends Panel {
     }
 
     private IModel<String> getSubTaskModel(final IModel<Progression> model) {
-        return new AbstractReadOnlyModel<String>() {
+        return new IModel<String>() {
 
             private static final long serialVersionUID = 1L;
 
@@ -105,7 +105,7 @@ public class ProgressPanel extends Panel {
 
         setVisible(true);
         container.setVisible(true);
-        add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
+        add(new AjaxSelfUpdatingTimerBehavior(Duration.ofSeconds(1)) {
 
             private static final long serialVersionUID = 1L;
 
@@ -144,7 +144,7 @@ public class ProgressPanel extends Panel {
     public void start() {
         setVisible(true);
         container.setVisible(true);
-        add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
+        add(new AjaxSelfUpdatingTimerBehavior(Duration.ofSeconds(1)) {
 
             private static final long serialVersionUID = 1L;
 
@@ -167,7 +167,7 @@ public class ProgressPanel extends Panel {
             }
 
         });
-		
+
 	}
 
 	protected void addFeedbackMessage(IStatus status) {

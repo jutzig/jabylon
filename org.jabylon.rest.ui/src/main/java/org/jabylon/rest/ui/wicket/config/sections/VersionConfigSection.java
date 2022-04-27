@@ -151,7 +151,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            public void onSubmit(AjaxRequestTarget target) {
 //                ProjectLocale newLocale = PropertiesFactory.eINSTANCE.createProjectLocale();
                 Locale locale = new Locale(safeGet(languageField.getModelObject()),safeGet(countryField.getModelObject()),safeGet(variantField.getModelObject()));
                 //make sure to avoid duplicates
@@ -173,7 +173,7 @@ public class VersionConfigSection extends BasicPanel<ProjectVersion> {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            public void onSubmit(AjaxRequestTarget target) {
             	choiceModel.getObject().remove(choice.getModelObject());
 //                provider.getObject().remove(choice.getModelObject());
                 if (target != null)

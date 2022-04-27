@@ -6,14 +6,12 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-/**
- *
- */
 package org.jabylon.rest.ui.wicket;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +24,7 @@ import org.apache.wicket.application.AbstractClassResolver;
 import org.apache.wicket.application.CompoundClassResolver;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.core.request.mapper.HomePageMapper;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.IExceptionMapper;
@@ -35,7 +34,6 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.mapper.CompoundRequestMapper;
 import org.apache.wicket.request.mapper.ICompoundRequestMapper;
-import org.apache.wicket.util.IProvider;
 import org.eclipse.emf.common.util.URI;
 import org.jabylon.properties.PropertiesPackage;
 import org.jabylon.rest.ui.Activator;
@@ -93,6 +91,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
+        getCspSettings().blocking().disabled();
         mount(new ResouceAwareMountedMapper("/", StartupPage.class)); //$NON-NLS-1$
         getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
@@ -103,20 +102,20 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         //first we look in our own classloader, then in the wicket one
         CompoundClassResolver resolver = new CompoundClassResolver();
         resolver.add(new AbstractClassResolver() {
-			
+
 			@Override
 			public ClassLoader getClassLoader() {
 				return JabylonApplication.class.getClassLoader();
 			}
 		});
         resolver.add(new AbstractClassResolver() {
-			
+
 			@Override
 			public ClassLoader getClassLoader() {
 				return Application.class.getClassLoader();
 			}
 		});
-        
+
         getApplicationSettings().setClassResolver(resolver);
         getComponentInstantiationListeners().add(injector);
         getSecuritySettings().setAuthorizationStrategy(new PermissionBasedAuthorizationStrategy());
@@ -205,6 +204,7 @@ public class JabylonApplication extends AuthenticatedWebApplication {
     	unmount("/");
         mount(new ResouceAwareMountedMapper("/login", LoginPage.class)); //$NON-NLS-1$
         mount(new ResouceAwareMountedMapper("/settings", SettingsPage.class)); //$NON-NLS-1$
+        mount(new HomePageMapper(WelcomePage.class));
     }
 
 
@@ -228,14 +228,15 @@ public class JabylonApplication extends AuthenticatedWebApplication {
         return LoginPage.class;
     }
 
+
 	@Override
-	public IProvider<IExceptionMapper> getExceptionMapperProvider()
+	public Supplier<IExceptionMapper> getExceptionMapperProvider()
 	{
 
 		return new CustomExceptionMapperProvider();
 	}
 
-	private static class CustomExceptionMapperProvider implements IProvider<IExceptionMapper>
+	private static class CustomExceptionMapperProvider implements Supplier<IExceptionMapper>
 	{
 		@Override
 		public IExceptionMapper get()
