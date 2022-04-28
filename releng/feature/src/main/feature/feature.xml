@@ -11,6 +11,7 @@
 		<feature>obr</feature>
 		<feature>http</feature>
 		<feature>war</feature>
+		<feature>jaas-deployer</feature>
 		<!-- own features -->
 		<feature>equinox</feature>
 		<feature>cdo</feature>

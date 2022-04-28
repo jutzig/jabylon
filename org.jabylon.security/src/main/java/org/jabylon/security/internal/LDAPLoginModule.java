@@ -8,12 +8,20 @@
  */
 package org.jabylon.security.internal;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -25,6 +33,10 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -44,6 +56,10 @@ public class LDAPLoginModule implements LoginModule {
 
     /** the ldap server url */
     public static final String KEY_LDAP = "ldap";
+    /** the protocol schema (ldap, or ldaps)*/
+    public static final String KEY_LDAP_SCHEME = "ldap.scheme";
+    /** if certificate checks should be disabled (true) */
+    public static final String KEY_LDAP_TRUST_ALL = "ldap.trust.all";
     /** the ldap server port */
     public static final String KEY_LDAP_PORT = "ldap.port";
     /** the uid attribute of a user */
@@ -70,6 +86,7 @@ public class LDAPLoginModule implements LoginModule {
     private boolean authenticated;
     private String user;
     private static final Logger logger = LoggerFactory.getLogger(LDAPLoginModule.class);
+
     private DirContext ctx;
     private String email;
     private String fullName;
@@ -201,20 +218,30 @@ public class LDAPLoginModule implements LoginModule {
     		return null;
     	}
         DirContext ctx = null;
-        Hashtable<String, String> env = new Hashtable<String, String>();
+        Hashtable<String, String> env = new Hashtable<>();
+        String scheme = Optional.ofNullable(options.get(KEY_LDAP_SCHEME)).map(String::valueOf).orElse("ldaps");
+        String port = Optional.ofNullable(options.get(KEY_LDAP_PORT)).map(String::valueOf).orElse("636");
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        String providerUrl = MessageFormat.format("ldap://{0}:{1}/{2}", options.get(KEY_LDAP), options.get(KEY_LDAP_PORT), options.get(KEY_ROOT_DN));
+        String providerUrl = MessageFormat.format("{3}://{0}:{1}/{2}",  options.get(KEY_LDAP), port, options.get(KEY_ROOT_DN), scheme);
         env.put(Context.PROVIDER_URL, providerUrl);
         if(userDN!=null)
         	env.put(Context.SECURITY_PRINCIPAL, userDN);
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         if(userPassword!=null)
         	env.put(Context.SECURITY_CREDENTIALS, userPassword);
+        if("ldaps".equals(scheme))
+        {
+        	env.put(Context.SECURITY_PROTOCOL, "ssl");
+        	if(Optional.ofNullable(options.get(KEY_LDAP_TRUST_ALL)).map(String::valueOf).map(Boolean::parseBoolean).orElse(false))
+        	{
+                env.put("java.naming.ldap.factory.socket", TrustAllSocketFactory.class.getName());
+        	}
+        }
 
         try {
             ctx = new InitialDirContext(env);
         } catch (NamingException e) {
-            logger.warn("Cannot bind user with userDN = " + userDN + " with exception " + e.getLocalizedMessage());
+            logger.warn("Cannot bind user with userDN = " + userDN + " with exception " + e.getLocalizedMessage(),e);
         }
 
         return ctx;
@@ -251,4 +278,72 @@ public class LDAPLoginModule implements LoginModule {
         return true;
     }
 
+    public static class TrustAllSocketFactory extends SSLSocketFactory
+    {
+        private SSLSocketFactory socketFactory;
+
+        public TrustAllSocketFactory() {
+            try {
+                SSLContext ctx = SSLContext.getInstance("TLS");
+                ctx.init(null, new TrustManager[] { new DummyTrustmanager() }, new SecureRandom());
+                socketFactory = ctx.getSocketFactory();
+            } catch (Exception ex) {
+            	logger.error("Failed to create TrustAllSocketFactory");
+            }
+        }
+
+        @Override
+        public String[] getDefaultCipherSuites() {
+            return socketFactory.getDefaultCipherSuites();
+        }
+
+        @Override
+        public String[] getSupportedCipherSuites() {
+            return socketFactory.getSupportedCipherSuites();
+        }
+
+        @Override
+        public Socket createSocket(Socket socket, String string, int i, boolean bln) throws IOException {
+            return socketFactory.createSocket(socket, string, i, bln);
+        }
+
+        @Override
+        public Socket createSocket(String string, int i) throws IOException, UnknownHostException {
+            return socketFactory.createSocket(string, i);
+        }
+
+        @Override
+        public Socket createSocket(String string, int i, InetAddress ia, int i1) throws IOException, UnknownHostException {
+            return socketFactory.createSocket(string, i, ia, i1);
+        }
+
+        @Override
+        public Socket createSocket(InetAddress ia, int i) throws IOException {
+            return socketFactory.createSocket(ia, i);
+        }
+
+        @Override
+        public Socket createSocket(InetAddress ia, int i, InetAddress ia1, int i1) throws IOException {
+            return socketFactory.createSocket(ia, i, ia1, i1);
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            return socketFactory.createSocket();
+        }
+    }
+
+    public static class DummyTrustmanager implements X509TrustManager {
+        public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {
+            // do nothing
+        }
+
+        public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {
+            // do nothing
+        }
+
+        public X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[0];
+        }
+    }
 }

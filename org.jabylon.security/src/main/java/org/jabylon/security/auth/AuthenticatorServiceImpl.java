@@ -23,14 +23,12 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
-import org.apache.karaf.jaas.config.JaasRealm;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.jabylon.cdo.connector.Modification;
@@ -40,12 +38,10 @@ import org.jabylon.cdo.server.ServerConstants;
 import org.jabylon.security.CommonPermissions;
 import org.jabylon.security.JabylonSecurityBundle;
 import org.jabylon.security.SubjectAttribute;
-import org.jabylon.security.internal.JabylonJaasRealmService;
 import org.jabylon.security.internal.LoginContextWrapper;
 import org.jabylon.users.User;
 import org.jabylon.users.UserManagement;
 import org.jabylon.users.UsersFactory;
-import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -159,7 +155,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 
 		if(!ServerConstants.IS_KARAF) {
 			URL configUrl = getJAASConfig();
-			return new LoginContextWrapper(REALM_NAME,LoginContextFactory.createContext(REALM_NAME, configUrl, callbackHandler));			
+			return new LoginContextWrapper(REALM_NAME,LoginContextFactory.createContext(REALM_NAME, configUrl, callbackHandler));
 		}
 		return new LoginContext(REALM_NAME, new Subject(), callbackHandler);
 	}
@@ -180,7 +176,7 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 		// fallback
 		return JabylonSecurityBundle.getBundleContext().getBundle().getEntry("META-INF/" + JAAS_CONFIG_FILE);
 	}
-	
+
 
     private UserManagement getUserManagement()
     {
@@ -197,16 +193,16 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
         }
         return userManagement;
 
-    }	
-    
+    }
+
     public RepositoryConnector getRepositoryConnector() {
 		return repositoryConnector;
 	}
-	
+
 	public void setRepositoryConnector(RepositoryConnector repositoryConnector) {
 		this.repositoryConnector = repositoryConnector;
 	}
-	
+
 	public void unbindRepositoryConnector(RepositoryConnector repositoryConnector) {
 		if(repositoryConnector==this.repositoryConnector) {
 			if(userManagement!=null)
@@ -215,15 +211,8 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 			this.repositoryConnector = null;
 		}
 	}
-	
-	@Activate
-	protected void activate(BundleContext context) {
-		if(ServerConstants.IS_KARAF) {
-			logger.info("Registering Jabylon JaasRealm in Karaf");
-			context.registerService(JaasRealm.class, new JabylonJaasRealmService(), null);
-		}
-	}
-	
+
+
 
 	@Deactivate
 	protected void deactivate() {
@@ -236,9 +225,9 @@ public class AuthenticatorServiceImpl implements AuthenticationService {
 	public User getAnonymousUser() {
 		if(anonymous==null)
 		{
-			anonymous = getUserManagement().findUserByName(CommonPermissions.USER_ANONYMOUS); 
+			anonymous = getUserManagement().findUserByName(CommonPermissions.USER_ANONYMOUS);
 		}
 		return anonymous;
 	}
-	
+
 }
