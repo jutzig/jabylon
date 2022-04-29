@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jabylon</groupId>
         <artifactId>jabylon-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1-SNAPSHOT</version>
     </parent>
 
 	<description>contains the user (ecore) model</description>
