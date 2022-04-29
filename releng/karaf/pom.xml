@@ -22,14 +22,14 @@
 	<parent>
 		<groupId>org.jabylon</groupId>
 		<artifactId>jabylon-parent</artifactId>
-		<version>1.4.2-SNAPSHOT</version>
+		<version>1.4.2</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<scm>
 		<url>https://github.com/jutzig/jabylon</url>
 		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
 		<developerConnection>scm:git:https://github.com/jutzig/jabylon.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>v1.4.2</tag>
   </scm>
 
 	<dependencies>
