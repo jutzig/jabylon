@@ -268,6 +268,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.25.0</version>
 				<executions>
 					<execution>
 						<id>generate-scr-scrdescriptor</id>
@@ -759,12 +760,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache</groupId>
-				<artifactId>ant</artifactId>
-				<version>${version.ant}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<!-- this is the actual jar, the other is the bundle -->
 				<groupId>org.apache.ant</groupId>
 				<artifactId>ant</artifactId>
@@ -867,8 +862,8 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javaewah</groupId>
-				<artifactId>javaewah</artifactId>
+				<groupId>com.googlecode.javaewah</groupId>
+            	<artifactId>JavaEWAH</artifactId>
 				<version>${version.javaewah}</version>
 			</dependency>
 
