@@ -4,7 +4,7 @@
 	<groupId>org.jabylon</groupId>
 	<artifactId>jabylon-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.4.1</version>
 
 	<properties>
 		<singleton />
@@ -1024,7 +1024,7 @@
 		<url>https://github.com/jutzig/jabylon</url>
 		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
 		<developerConnection>scm:git:git@github.com:jutzig/jabylon.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v1.4.1</tag>
 	</scm>
 	<issueManagement>
 		<system>Github</system>
