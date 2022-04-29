@@ -1028,7 +1028,7 @@
 	<scm>
 		<url>https://github.com/jutzig/jabylon</url>
 		<connection>scm:git:https://github.com/jutzig/jabylon.git</connection>
-		<developerConnection>scm:git@github.com:jutzig/jabylon.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:jutzig/jabylon.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<issueManagement>
