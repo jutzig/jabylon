@@ -1,6 +1,12 @@
 
 # Release Notes
 
+## Jabylon 1.4.2
+
+Jabylon 1.4.2 was released on the **30th April 2022** and is available for [download](download.html).
+The release is completely based on karaf and retires all other distribution. The release focuses on the switch to karaf and security updates.
+Starting from this version, Java 11 is required
+
 ## Jabylon 1.3.0
 
 Jabylon 1.3.0 was released on the **16th March 2017** and is available for [download](download.html).

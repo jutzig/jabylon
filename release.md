@@ -1,6 +1,14 @@
 # Release Instructions
 
-Make sure settings.xml contains these entries
+ * In the main pom, set the properties
+
+    	<release.version>[new-version]</release.version>
+		<release.tag>v[new-version]</release.tag>
+		
+ * Update `jabylon/src/site/markdown/releaseNotes.md` with the release notes for the new version
+ * Push the changes
+ * Generate a GH-Access Token https://github.com/settings/tokens
+ * Make sure settings.xml contains these entries
 
 		<server>
 			<id>jabylon</id>
@@ -12,10 +20,14 @@ Make sure settings.xml contains these entries
 		<server>
 			<id>github</id>
 			<username>githubuser</username>
-			<password>password</password>
+			<privateKey>[token]</privateKey>
 		</server>
 		
-Release with
+ * Set JAVA_HOME to a JDK, e.g.
+  
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+  		
+ + Release with
    
-    mvn -DpreparationGoals="clean install" -DreleaseVersion=1.4.0 -DdevelopmentVersion=1.4.1-SNAPSHOT release:prepare release:perform
+    mvn -DpreparationGoals="clean install" -DreleaseVersion=1.4.2 -DdevelopmentVersion=1.4.3-SNAPSHOT release:prepare release:perform
     		

@@ -51,7 +51,6 @@
 		<menu name="Administration guide">
 			<item href="installation.html" name="Installation" collapse="true">
 				<item href="standaloneInstallation.html" name="Standalone" />
-				<item href="warInstallation.html" name="As a WAR" />
 				<item href="upgrade.html" name="Upgrade to a new Version" />
 			</item>
 			<item href="security.html" name="Security" collapse="true">
